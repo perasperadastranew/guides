@@ -361,6 +361,75 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
 .phone.shot img{border-radius:28px}
 .fl-n.start small,.fl-n.end small{color:inherit;opacity:.7}
 
+/* --- правки вёрстки: переносы и узкие карточки --- */
+.chain{grid-template-columns:repeat(var(--n,5),minmax(0,1fr))}
+.tree .branches{grid-template-columns:repeat(var(--n,3),minmax(0,1fr))}
+.stagebar div b,.stagecard .big b,.cv-head b,.chain .node b,.pill,.fl-n,.lcard b,.part b,.leaf b,.fact span,.phone .chip,.phone .item span,.phone .btn,.phone .ghost,.phone .field,.phone .big,td,th,dt{overflow-wrap:anywhere;hyphens:auto}
+.stagebar{grid-template-columns:repeat(auto-fit,minmax(128px,1fr))}
+.stagebar div b{font-size:14px}
+.stagecard .big b{font-size:21px}
+.phone .chips.c4 .chip{font-size:8.5px;padding:8px 1px}
+.phone .chip{overflow:hidden}
+.cv-head b{font-size:17px}
+@media (max-width:760px){
+  .chain,.tree .branches{grid-template-columns:minmax(0,1fr)}
+  .stagebar{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+.fl{overflow:hidden}
+.stagebar div{padding:12px 10px}
+.stagebar div b{font-size:13px;overflow-wrap:break-word;letter-spacing:-.01em}
+.stagecard .big b{overflow-wrap:break-word}
+td,th,dt{overflow-wrap:break-word;hyphens:manual}
+.cv-cols.n6 .cv-head b,.cv-head b{font-size:clamp(12px,1.55vw,17px);letter-spacing:-.02em}
+.chain .node b{font-size:min(17px,calc(84px / var(--n,5)))}
+.chain .node{padding:14px 12px}
+.phone .chip,.phone button.chip{font-size:9px;padding:8px 1px;letter-spacing:-.02em}
+.phone .chips.c2 .chip{font-size:10px}
+.phone .chips.c4 .chip{font-size:8px}
+@media (min-width:761px){
+  .cv-cols.even{grid-auto-flow:column;grid-template-rows:repeat(var(--r),auto)}
+  .cv-cols.even .cv-col,.cv-cols.even .cv-cell{display:contents}
+  .cv-cols.even .cv-head{justify-content:flex-end}
+}
+@media (min-width:761px){.formula .parts:has(.part:nth-child(4):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}.formula .parts:has(.part:nth-child(4):last-child) .part{min-height:120px}}
+
+/* --- вторая волна правок после визуальной проверки --- */
+.where .col>span.pill{font-size:13px;padding:10px;color:var(--ink)}
+.phone .tabs{margin-inline:-6px;gap:0}
+.phone .tabs span{min-width:0;white-space:nowrap;overflow:hidden;letter-spacing:-.02em}
+.wire .phone .tabs span{font-size:8px}
+.wire .phone .tabs.t5 span{font-size:6.8px;letter-spacing:-.03em}
+.phone .tap,.phone .tap.ghost,.phone button.tap{background:var(--accent)!important;color:var(--accent-ink)!important;border-color:var(--accent)!important}
+.phone .tap small{color:var(--accent-ink)!important}
+.phone .big.hi,.phone .timer.hi{padding:6px 8px;border-radius:8px}
+.phone .row{gap:8px}
+.phone .row span:last-child{white-space:nowrap;flex:none}
+.phone .row span:first-child{min-width:0}
+.phone .img{background-image:none;border:1px dashed #333;padding:6px;text-align:center;line-height:1.2}
+.phone .img:empty{background-image:linear-gradient(135deg,transparent 49.5%,#2c2c2c 49.5%,#2c2c2c 50.5%,transparent 50.5%);border:0}
+.cv-body:empty{min-height:0;padding:0;border:0}
+.cv-groups{align-items:end}
+.cv-groups div{font-size:22px;line-height:1.05}
+.task{grid-template-columns:minmax(0,1fr)}
+th:first-child,td:first-child{min-width:150px}
+/* цепочка: заголовки по одной линии, стрелка в промежутке */
+.chain .node{justify-content:flex-start;min-height:0;padding:16px 12px 14px}
+.chain .node:not(:last-child)::after{top:50%;right:-4px;transform:translate(50%,-50%);width:18px;height:18px;border-radius:50%;background:var(--panel);border:1px solid var(--stroke);font-size:10px;line-height:17px;text-align:center;z-index:2;color:var(--ink)}
+@media (min-width:761px){
+  .fl{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));gap:26px}
+  .fl-col{width:auto}
+  .fl-col.rowend>.fl-n:first-child::after{display:none}
+  .fl-col.rowstart::before{content:"↳";position:absolute;left:-15px;top:20px;color:var(--dim);font-size:13px}
+  .wires{flex-wrap:wrap;overflow:visible;justify-content:center;row-gap:22px}
+  .wires.w5,.wires.w6{max-width:620px;margin-inline:auto}
+  .tree .leaf{position:relative}
+  .tree .leaf::before{content:"";position:absolute;left:50%;top:-15px;width:1px;height:14px;background:var(--faint)}
+}
+@media (max-width:760px){.chain .node:not(:last-child)::after{top:auto;right:50%;bottom:-4px;transform:translate(50%,50%)}}
+.chain .node small{overflow-wrap:anywhere}
+.wire .phone .tabs.t4 span{font-size:7.2px}
+@media (max-width:760px){.fl-col:nth-child(even)>.fl-n:first-child::after{display:none}}
+
 .embed .top,.embed .pager{display:none}.embed .where a.pill{pointer-events:none}html,body{margin:0}
 :root.embed-root{color-scheme:normal;background:transparent}body.embed{background:transparent;padding:0}
 </style></head><body>
@@ -372,7 +441,8 @@ var D={"stages": [{"n": 1, "name": "Бриф", "what": "Выбираем иде�
 var app=document.getElementById('app');if(window.PAAA_SHELL)return;
 var ORDER=[]; D.modules.forEach(function(m){m.lessons.forEach(function(id){ORDER.push(id)})});
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function t(s){return esc(s).replace(/&lt;(\/?)(b|i)&gt;/g,'<$1$2>')}
+function typo(x){return x.replace(/ (\u2014|\u2013) /g,'\u00a0$1 ').replace(/(^|[ (\u00ab\u00a0])([A-Za-z\u0410-\u042f\u0430-\u044f\u0401\u0451]{1,2}) (?=\S)/g,'$1$2\u00a0').replace(/(^|[ (\u00ab\u00a0])([A-Za-z\u0410-\u042f\u0430-\u044f\u0401\u0451]{1,2}) (?=\S)/g,'$1$2\u00a0').replace(/(\d)([\u2013-])(\d)/g,'$1\u2060$2\u2060$3').replace(/([A-Za-z\u0410-\u044f\u0401\u0451])-([A-Za-z\u0410-\u044f\u0401\u0451]{1,3})(?![A-Za-z\u0410-\u044f\u0401\u0451])/g,'$1\u2011$2').replace(/(^|[^A-Za-z\u0410-\u044f\u0401\u0451])([A-Za-z\u0410-\u044f\u0401\u0451]{1,3})-(?=[A-Za-z\u0410-\u044f\u0401\u0451])/g,'$1$2\u2011')}
+function t(s){return typo(esc(s)).replace(/&lt;(\/?)(b|i)&gt;/g,'<$1$2>')}
 function ul(a){return '<ul class="plain">'+(a||[]).map(function(x){return '<li>'+t(x)+'</li>'}).join('')+'</ul>'}
 function ol(a){return '<ol>'+(a||[]).map(function(x){return '<li>'+t(x)+'</li>'}).join('')+'</ol>'}
 function modOf(id){for(var i=0;i<D.modules.length;i++){if(D.modules[i].lessons.indexOf(id)>-1)return D.modules[i]}return null}
@@ -392,8 +462,8 @@ function screen(blocks,inter){
       case 'item': h+='<'+tag+at+' class="item'+hi+tap+'"><span>'+t(b.text)+'</span>'+(b.small?'<small>'+t(b.small)+'</small>':'')+'</'+tag+'>';break;
       case 'btn': h+='<'+tag+at+' class="btn'+hi+tap+'">'+t(b.text)+'</'+tag+'>';break;
       case 'ghost': h+='<'+tag+at+' class="ghost'+tap+'">'+t(b.text)+'</'+tag+'>';break;
-      case 'chips': var it=b.items||[]; h+='<div class="chips c'+Math.min(4,Math.max(2,it.length))+'">'+it.map(function(x,i){var on=(b.on===i); return (inter&&b.tap&&on)?'<button type="button" data-next class="chip hi tap">'+t(x)+'</button>':'<div class="chip'+(on?' hi':'')+'">'+t(x)+'</div>'}).join('')+'</div>';break;
-      case 'tabs': h+='<div class="tabs">'+(b.items||[]).map(function(x,i){return '<span'+(b.on===i?' class="on"':'')+'>'+t(x)+'</span>'}).join('')+'</div>';break;
+      case 'chips': var it=b.items||[]; h+='<div class="chips c'+Math.min(4,Math.max(2,it.length))+'">'+it.map(function(x,i){var on=(b.on===i); return (inter&&b.tap&&on)?'<button type="button" data-next class="chip hi tap">'+esc(x)+'</button>':'<div class="chip'+(on?' hi':'')+'">'+esc(x)+'</div>'}).join('')+'</div>';break;
+      case 'tabs': h+='<div class="tabs t'+(b.items||[]).length+'">'+(b.items||[]).map(function(x,i){return '<span'+(b.on===i?' class="on"':'')+'>'+esc(x)+'</span>'}).join('')+'</div>';break;
       case 'map': h+='<div class="map"></div>';break;
       case 'img': h+='<div class="img">'+t(b.text||'')+'</div>';break;
       case 'blk': for(var i=0;i<(b.n||1);i++)h+='<div class="blk"></div>';break;
@@ -414,7 +484,7 @@ var R={
  list:function(b){return ul(b.items)},
  quote:function(b){return '<div class="quote"><q>'+t(b.text)+'</q><span>'+t(b.who)+'</span>'+(b.note?'<p>'+t(b.note)+'</p>':'')+'</div>'},
  formula:function(b){return '<div class="formula"><div class="parts">'+b.parts.map(function(p){return '<div class="part"><b>'+t(p.b)+'</b><small>'+t(p.small)+'</small></div>'}).join('')+'</div>'+(b.example?'<div class="row"><div class="ex">'+t(b.example)+'</div>'+(b.copy?'<button class="copy" type="button" data-copy="'+esc(b.copy)+'">Скопировать формулу</button>':'')+'</div>':'')+'</div>'},
- chain:function(b){return '<div class="chain" style="grid-template-columns:repeat('+b.nodes.length+',minmax(0,1fr))">'+b.nodes.map(function(n){return '<div class="node'+(n.on?' on':'')+'"><b>'+t(n.b)+'</b>'+(n.small?'<small>'+t(n.small)+'</small>':'')+'</div>'}).join('')+'</div>'},
+ chain:function(b){return '<div class="chain" style="--n:'+b.nodes.length+'">'+b.nodes.map(function(n){return '<div class="node'+(n.on?' on':'')+'"><b>'+t(n.b)+'</b>'+(n.small?'<small>'+t(n.small)+'</small>':'')+'</div>'}).join('')+'</div>'},
  terms:function(b){return '<dl>'+b.items.map(function(x){return '<dt>'+t(x[0])+'</dt><dd>'+t(x[1])+'</dd>'}).join('')+'</dl>'},
  steps:function(b){return '<ol class="steps">'+b.items.map(function(s){return '<li><div><div class="t">'+t(s.t)+'</div><div class="d">'+t(s.d)+'</div></div></li>'}).join('')+'</ol>'},
  pairs:function(b){return '<div class="pairs">'+b.groups.map(function(g){
@@ -423,23 +493,25 @@ var R={
  table:function(b){return '<div class="scroll"><table><thead><tr>'+b.head.map(function(h){return '<th>'+t(h)+'</th>'}).join('')+'</tr></thead><tbody>'+b.rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+t(c)+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table></div>'},
  note:function(b){return '<div class="note"><b>'+t(b.title)+'</b><p>'+t(b.text)+'</p></div>'},
  two:function(b){return '<div class="two">'+b.boxes.map(function(x){return '<div class="box"><h3>'+t(x.title)+'</h3>'+(x.text?'<p>'+t(x.text)+'</p>':'')+(x.items?ul(x.items):'')+'</div>'}).join('')+'</div>'},
- tree:function(b){return '<div class="tree"><div class="root"><b>'+t(b.root.b)+'</b>'+(b.root.small?'<small>'+t(b.root.small)+'</small>':'')+'</div><div class="stem"></div><div class="branches" style="grid-template-columns:repeat('+Math.min(4,b.leaves.length)+',minmax(0,1fr))">'+b.leaves.map(function(l){return '<div class="leaf"><b>'+t(l.b)+'</b>'+(l.small?'<small>'+t(l.small)+'</small>':'')+(l.scr?'<span class="scr">'+t(l.scr)+'</span>':'')+'</div>'}).join('')+'</div></div>'},
+ tree:function(b){return '<div class="tree"><div class="root"><b>'+t(b.root.b)+'</b>'+(b.root.small?'<small>'+t(b.root.small)+'</small>':'')+'</div><div class="stem"></div><div class="branches" style="--n:'+Math.min(4,b.leaves.length)+'">'+b.leaves.map(function(l){return '<div class="leaf"><b>'+t(l.b)+'</b>'+(l.small?'<small>'+t(l.small)+'</small>':'')+(l.scr?'<span class="scr">'+t(l.scr)+'</span>':'')+'</div>'}).join('')+'</div></div>'},
  myths:function(b){return '<div class="myths">'+b.items.map(function(m){return '<div class="myth"><div class="m"><i>Миф</i><span>'+t(m.myth)+'</span></div><div class="r"><i>На самом деле</i><span>'+t(m.truth)+'</span></div></div>'}).join('')+'</div>'},
  canvas:function(b){
    var n=b.columns.length, gt='grid-template-columns:repeat('+n+',minmax(0,1fr))';
    var g=b.groups?'<div class="cv-groups" style="'+gt+'">'+b.groups.map(function(x){return '<div style="grid-column:span '+x.span+'">'+t(x.label)+'</div>'}).join('')+'</div>':'';
-   return '<div class="canvas">'+g+'<div class="cv-cols" style="'+gt+'">'+b.columns.map(function(col){return '<div class="cv-col">'+col.map(function(c){
+   var R=b.columns[0].length, ev=R>1&&b.columns.every(function(c){return c.length===R});
+   return '<div class="canvas">'+g+'<div class="cv-cols'+(ev?' even':'')+'" style="'+gt+(ev?';--r:'+(2*R):'')+'">'+b.columns.map(function(col){return '<div class="cv-col">'+col.map(function(c){
      return '<div class="cv-cell'+(c.hl?' hl':'')+'"><div class="cv-head">'+(c.kicker?'<i>'+t(c.kicker)+'</i>':'')+'<b>'+t(c.title)+'</b></div><div class="cv-body">'+(c.hint?'<em>'+t(c.hint)+'</em>':'')+(c.items||[]).map(function(i){return '<span>'+t(i)+'</span>'}).join('')+'</div></div>'}).join('')+'</div>'}).join('')+'</div>'+(b.caption?'<span class="cap">'+t(b.caption)+'</span>':'')+'</div>'},
  flow:function(b){
    function node(n){return '<div class="fl-n '+(n.kind||'screen')+'"><span>'+t(n.text)+(n.note?'<small>'+t(n.note)+'</small>':'')+'</span></div>'}
    var kinds={};
-   var h='<div class="fl">'+b.nodes.map(function(n){kinds[n.kind||'screen']=1;
+   var N=b.nodes.length, per=N<=6?N:Math.ceil(N/2);
+   var h='<div class="fl" style="--n:'+per+'">'+b.nodes.map(function(n,i){kinds[n.kind||'screen']=1;
      var br=n.branch?'<div class="fl-br"><i>'+t(n.branch.label)+'</i>'+n.branch.nodes.map(function(x){kinds[x.kind||'screen']=1;return node(x)}).join('')+'</div>':'';
-     return '<div class="fl-col">'+node(n)+br+'</div>'}).join('')+'</div>';
+     return '<div class="fl-col'+(((i+1)%per===0&&i<N-1)?' rowend':'')+((i%per===0&&i>0)?' rowstart':'')+'">'+node(n)+br+'</div>'}).join('')+'</div>';
    var names={start:'начало',screen:'экран',action:'действие человека',decision:'развилка',error:'ошибка',end:'цель достигнута'};
    var lg='<div class="legend">'+['start','screen','action','decision','error','end'].filter(function(k){return kinds[k]}).map(function(k){return '<span class="l-'+k+'">'+names[k]+'</span>'}).join('')+'</div>';
    return h+lg+(b.caption?'<span class="cap" style="text-align:left">'+t(b.caption)+'</span>':'')},
- wire:function(b){return '<div class="wires">'+b.screens.map(function(s,i){return '<div class="wire"><span class="wn">'+('0'+(i+1)).slice(-2)+'</span><div class="phone">'+screen(s.blocks,false)+'</div><b>'+t(s.title)+'</b>'+(s.note?'<small>'+t(s.note)+'</small>':'')+'</div>'}).join('')+'</div>'+(b.caption?'<span class="cap" style="text-align:left">'+t(b.caption)+'</span>':'')},
+ wire:function(b){return '<div class="wires w'+b.screens.length+'">'+b.screens.map(function(s,i){return '<div class="wire"><span class="wn">'+('0'+(i+1)).slice(-2)+'</span><div class="phone">'+screen(s.blocks,false)+'</div><b>'+t(s.title)+'</b>'+(s.note?'<small>'+t(s.note)+'</small>':'')+'</div>'}).join('')+'</div>'+(b.caption?'<span class="cap" style="text-align:left">'+t(b.caption)+'</span>':'')},
  shot:function(b){return IMG[b.img]?'<div class="shotrow"><div class="phone shot"><img alt="'+esc(b.alt||'')+'" src="'+IMG[b.img]+'"></div><div class="side" style="display:flex;flex-direction:column;gap:10px"><div class="stitle" style="font-family:var(--display);font-size:24px;color:var(--ink)">'+t(b.title)+'</div><p>'+t(b.text)+'</p>'+(b.items?ul(b.items):'')+'</div></div>':''},
  'case':function(b,ctx){
    var id='c'+(ctx.cases.length); ctx.cases.push(b.steps);
@@ -578,7 +650,7 @@ function bind(L,ctx){
 var last='';
 function route(){
   var p=(location.hash||'#/').replace(/^#\/?/,'').split('/'), id=p[0], sec=p[1];
-  if(id==='_code'&&CODE[sec]){last='';app.innerHTML='<section><h2>Код: '+esc(title(sec)||sec)+'</h2><p>Скопируй всё целиком.</p><button class="btn-main" id="cpy" type="button">Скопировать код</button><textarea id="code" style="width:100%;height:60vh;background:#191919;color:#8e8e8c;border:1px solid #2a2a2a;border-radius:10px;font:12px monospace;padding:12px"></textarea></section>';var ta=document.getElementById('code');ta.value=CODE[sec];document.getElementById('cpy').addEventListener('click',function(){var b=this;ta.focus();ta.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(ta.value).then(function(){b.textContent='Скопировано'}).catch(function(){b.textContent=ok?'Скопировано':'Выдели и скопируй вручную'})}else{b.textContent=ok?'Скопировано':'Выдели и скопируй вручную'}});return}
+  if(id==='_code'&&CODE[sec]){last='';app.innerHTML='<section><h2>Код: '+esc(title(sec)||sec)+'</h2><p>Скопируй всё целиком.</p><button class="btn-main" id="cpy" type="button">Скопировать код</button><textarea id="code" style="width:100%;height:60vh;background:#191919;color:#8e8e8c;border:1px solid #2a2a2a;border-radius:10px;font:12px monospace;padding:12px"></textarea></section>';var ta=document.getElementById('code');(function(){var b=atob(CODE[sec]),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).text().then(function(x){ta.value=x;document.getElementById('cpy').textContent='Скопировать код ('+x.length+' знаков)'})})();document.getElementById('cpy').addEventListener('click',function(){var b=this;ta.focus();ta.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(ta.value).then(function(){b.textContent='Скопировано'}).catch(function(){b.textContent=ok?'Скопировано':'Выдели и скопируй вручную'})}else{b.textContent=ok?'Скопировано':'Выдели и скопируй вручную'}});return}
   if(id&&D.lessons[id]){ if(last!==id){lesson(id); window.scrollTo(0,0)} last=id;
     if(sec){var s=document.getElementById('s-'+sec); if(s)s.scrollIntoView()} }
   else{last='';home();window.scrollTo(0,0)}
