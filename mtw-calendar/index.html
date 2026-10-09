@@ -395,6 +395,10 @@ Digital-дизайнер</span><span><b id="weeks" style="font-weight:inherit">2
   window.addEventListener("hashchange",apply);
   apply();
 })();
+
+/* auto-height for iframe embeds (Zenclass) */
+(function(){if(window.parent===window)return;var last=0;function send(){var h=Math.ceil(document.documentElement.scrollHeight);if(Math.abs(h-last)>2){last=h;parent.postMessage({mtwH:h},"*")}}
+window.addEventListener("load",send);window.addEventListener("resize",send);setInterval(send,1000);send()})();
 </script>
 
 </body>
