@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>if(window.parent!==window)document.documentElement.classList.add("embed")</script><style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Календарь Mission to Web</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
@@ -107,7 +107,8 @@ a.bar{text-decoration:none}
 .live.past{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2017%22%3E%3Crect%20width%3D%2224%22%20height%3D%2217%22%20rx%3D%225%22%20fill%3D%22%235a5a58%22/%3E%3Cpath%20d%3D%22M9.6%205.1v6.8c0%20.6.6.9%201.1.6l5.3-3.4c.4-.3.4-.9%200-1.2l-5.3-3.4c-.5-.3-1.1%200-1.1.6z%22%20fill%3D%22%23101010%22/%3E%3C/svg%3E")}
 .current .dl{border-color:var(--accent);background:var(--accent)}
 
-.legend{display:flex;flex-wrap:wrap;gap:8px 22px;padding:14px 8px 0}
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;flex-basis:100%;padding-top:14px;border-top:1px solid var(--stroke)}
+html.embed body{background:transparent;padding:0}html.embed .wrap{max-width:none}
 .legend span{display:inline-flex;align-items:center;gap:8px}
 .sw{width:22px;height:12px;border-radius:3px;display:inline-block;background:var(--card);border:1px solid var(--faint)}
 .sw.d{background:var(--done);border-color:var(--done)}
@@ -171,6 +172,15 @@ Digital-дизайнер</span><span><b id="weeks" style="font-weight:inherit">2
     <button type="button" class="cohort ghost" data-k="aug">Август · с 3 авг</button>
     <button type="button" class="cohort" data-k="oct">Октябрь · с 12 окт</button>
     <p>Выберите свой поток. Наведите или нажмите на полосу, чтобы увидеть подробности.</p>
+    <div class="legend">
+      <span><i class="sw"></i>уроки модуля</span>
+      <span><i class="sw h"></i>домашнее задание</span>
+      <span><i class="sw p"></i>проект</span>
+      <span><i class="sw c"></i>идёт сейчас</span>
+      <span><i class="sw d"></i>пройдено</span>
+      <span><i class="sw k"></i>срок сдачи: загрузить до 23:59 накануне</span>
+      <span><i class="sw lv"></i>прямой эфир</span>
+    </div>
   </section>
 
   <section>
@@ -179,15 +189,6 @@ Digital-дизайнер</span><span><b id="weeks" style="font-weight:inherit">2
     </div>
   </section>
 
-  <div class="legend">
-    <span><i class="sw"></i>уроки модуля</span>
-    <span><i class="sw h"></i>домашнее задание</span>
-    <span><i class="sw p"></i>проект</span>
-    <span><i class="sw c"></i>идёт сейчас</span>
-    <span><i class="sw d"></i>пройдено</span>
-    <span><i class="sw k"></i>срок сдачи: загрузить до 23:59 накануне</span>
-    <span><i class="sw lv"></i>прямой эфир</span>
-  </div>
 </div>
 <div class="tip" id="tip" hidden></div>
 
