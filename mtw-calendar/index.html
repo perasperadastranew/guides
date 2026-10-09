@@ -141,7 +141,7 @@ html.embed body{background:transparent;padding:0}html.embed .wrap{max-width:none
 .parts i{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--accent-wash);border-radius:4px;padding:1px 5px}
 .done .parts span{color:var(--dim)}
 
-@media (max-width:760px){
+@media (max-width:540px){
   :root{--label:0px}
   header,section{padding:18px 16px 24px}
   .chart{min-width:calc(var(--weeks) * 52px)}
@@ -193,6 +193,7 @@ Digital-дизайнер</span><span><b id="weeks" style="font-weight:inherit">2
 <div class="tip" id="tip" hidden></div>
 
 <script>
+var LT=(window.parent!==window)?"_top":"_self";
 (function(){
   // Смещения в днях от понедельника старта; e — последний день (воскресенье), сдача до следующего понедельника.
   // s/e — расписание октябрьского потока (Концепция 2 недели, мудборд во вторую), aug — как шёл августовский поток.
@@ -285,7 +286,7 @@ Digital-дизайнер</span><span><b id="weeks" style="font-weight:inherit">2
       }
       var lab;
       if(r.kind==="mod"){
-        lab='<span class="num">'+r.b.n+'</span><div class="name">'+esc(r.title)+(r.ho?'<a class="hl" href="'+esc(r.ho.url)+'" target="_self" title="'+esc(r.ho.list.length>1?r.ho.list.length+' методичек модуля':'Методичка модуля')+'">'+(r.ho.list.length>1?'методички':'методичка')+' ↗</a>':'')+'</div>'+
+        lab='<span class="num">'+r.b.n+'</span><div class="name">'+esc(r.title)+(r.ho?'<a class="hl" href="'+esc(r.ho.url)+'" target="'+LT+'" title="'+esc(r.ho.list.length>1?r.ho.list.length+' методичек модуля':'Методичка модуля')+'">'+(r.ho.list.length>1?'методички':'методичка')+' ↗</a>':'')+'</div>'+
             '<div class="meta"><time>Уроки · '+fmt(t0+r.s*DAY)+' – '+sunday(r)+'</time>'+(r.live?'<span class="lvm">'+esc(r.liveName)+': '+liveWhen(r)+'</span>':'')+'</div>';
       }else{
         lab='<span class="num">'+(r.first?r.b.n:'')+'</span><div class="name"><span class="tag hwt">'+r.type+'</span>'+esc(r.title)+'</div>'+
@@ -294,7 +295,7 @@ Digital-дизайнер</span><span><b id="weeks" style="font-weight:inherit">2
       }
       h+='<div class="row '+r.kind+' '+st+(r.first?' first':'')+(r.project?' project':'')+(r.live?' haslive':'')+'">'+
          '<div class="lab">'+lab+'</div>'+
-         '<div class="track">'+(r.ho?'<a class="bar link" href="'+esc(r.ho.url)+'" target="_self" data-i="'+idx+'" aria-label="'+esc(r.title)+': открыть методичку" style="'+style+'left:'+(r.s/TOTAL*100)+'%;width:'+(len/TOTAL*100)+'%">'+inner+'<span class="bk">↗</span></a>':
+         '<div class="track">'+(r.ho?'<a class="bar link" href="'+esc(r.ho.url)+'" target="'+LT+'" data-i="'+idx+'" aria-label="'+esc(r.title)+': открыть методичку" style="'+style+'left:'+(r.s/TOTAL*100)+'%;width:'+(len/TOTAL*100)+'%">'+inner+'<span class="bk">↗</span></a>':
          '<div class="bar" tabindex="0" role="button" data-i="'+idx+'" aria-label="'+esc(r.title)+', подробности" style="'+style+'left:'+(r.s/TOTAL*100)+'%;width:'+(len/TOTAL*100)+'%">'+inner+'</div>')+
          (r.kind==="hw"?'<i class="dl" style="left:'+((r.e+1)/TOTAL*100)+'%"></i>':'')+
          (r.live?r.live.map(function(d){return '<i class="live'+(d<off?' past':'')+'" tabindex="0" role="button" aria-label="'+esc(r.liveName+', '+liveDay(d))+'" data-i="'+idx+'" data-d="'+d+'" style="left:max(14px,'+((d+.5)/TOTAL*100)+'%)"></i>'}).join(""):'')+'</div></div>';

@@ -140,14 +140,14 @@ kbd .sym{font-family:var(--body);font-size:13px;color:var(--dim)}
 }
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 
-/* возврат к календарю: крупная кнопка внизу экрана */
-.tocal{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;display:inline-flex;align-items:center;gap:10px;
-  background:var(--accent);color:var(--accent-ink);text-decoration:none;font:500 16px var(--body);border-radius:12px;padding:14px 22px;
-  box-shadow:0 10px 30px rgba(0,0,0,.55),0 0 0 6px rgba(28,28,28,.85);white-space:nowrap}
+/* возврат к календарю: кнопка закреплена в левом верхнем углу */
+.tocal{position:fixed;left:calc(16px + env(safe-area-inset-left,0px));top:calc(14px + env(safe-area-inset-top,0px));z-index:50;display:inline-flex;align-items:center;gap:8px;
+  background:var(--accent);color:var(--accent-ink);text-decoration:none;font:500 15px var(--body);border-radius:10px;padding:10px 16px;
+  box-shadow:0 8px 24px rgba(0,0,0,.5),0 0 0 5px rgba(28,28,28,.85);white-space:nowrap}
 .tocal:hover{filter:brightness(1.06)}
 .tocal:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.tocal svg{width:18px;height:18px;flex:none}
-@media (max-width:760px){.tocal{left:16px;right:16px;transform:none;justify-content:center}}
+.tocal svg{width:17px;height:17px;flex:none}
+body{padding-top:76px!important;padding-bottom:64px!important}
 </style>
 </head>
 <body>
@@ -254,7 +254,7 @@ function route(){const id=decodeURIComponent(location.hash.slice(1));const h=ORD
 addEventListener("hashchange",route);route();
 </script>
 
-<a class="tocal" id="tocal" href="../mtw-calendar/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Вернуться к календарю</a>
+<a class="tocal" id="tocal" href="../mtw-calendar/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Вернуться к расписанию</a>
 <script>
 (function(){
   // Если методичку открыли из календаря в этой же вкладке — возвращаемся назад по истории, пропуская листание методичек; если вкладка новая — открываем календарь по ссылке.
