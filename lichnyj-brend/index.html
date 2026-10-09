@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Личный бренд дизайнера</title>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-слайды на чуть более светлом поле, как в методичках курса. Один тёмный мир, без светлой темы. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.muted{color:var(--dim)}
+.corner,th,.kind,.cap,.slot,.fcard .when i,.bars i,.lvl,.aud i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:38ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-top:10px}
+nav a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 12px 14px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.2;display:flex;flex-direction:column;gap:22px;min-height:104px;justify-content:space-between}
+nav a::before{content:attr(data-n);font-family:var(--mono);font-size:12px;color:var(--dim);background:#262626;border-radius:6px;padding:5px 7px;align-self:flex-start}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+
+.bars{display:flex;flex-direction:column;gap:10px}
+.bars .row{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:14px;align-items:center}
+.bars .row span{color:var(--ink);font-size:16px;line-height:1.2}
+.bars .track{display:flex;align-items:center;gap:10px;min-width:0}
+.bars .bar{height:34px;border-radius:8px;background:var(--well);min-width:6px}
+.bars .row.on .bar{background:var(--accent)}
+.bars b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:26ch}
+
+.myths,.pairs{display:flex;flex-direction:column;gap:8px}
+.myth,.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.myth>div,.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.myth i,.pair i{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.m i,.bad i{color:var(--bad)} .r i,.good i{color:var(--good)}
+.m span{color:var(--ink);font-size:18px;line-height:1.25}
+.r span,.pair span{font-size:16px;color:var(--ink);line-height:1.35}
+.pair small{font-size:14px;line-height:1.35}
+
+.chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.node{position:relative;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0;min-height:112px;justify-content:flex-end}
+.node b{font-size:17px;font-weight:400}
+.node small{font-size:13px;line-height:1.3}
+.node.on{background:var(--accent);border-color:var(--accent)}
+.node.on b,.node.on small{color:var(--accent-ink)}
+.node:not(:last-child)::after{content:"→";position:absolute;right:-9px;top:18px;transform:translateX(50%);color:var(--dim);z-index:1}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+td .lvl{color:var(--accent);display:block;margin-bottom:3px}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box ul,.box ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box li::marker{color:var(--faint)}
+
+/* аудитория */
+.aud{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.aud>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0;position:relative}
+.aud>div:not(:last-child)::after{content:"→";position:absolute;right:-9px;top:16px;transform:translateX(50%);color:var(--dim);z-index:1}
+.aud>div:last-child{border-color:var(--accent)}
+.aud>div:last-child i{color:var(--accent)}
+.aud p{font-size:15px;line-height:1.4}
+.aud .f{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+
+/* карточки форматов */
+.formats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fcard{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.fcard .hd{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.fcard .kind{color:var(--accent)}
+.fcard .what{font-size:16px;line-height:1.4}
+.fcard .when{display:flex;flex-direction:column;gap:3px;font-size:15px;color:var(--ink);line-height:1.35}
+.fcard ol{margin:0;padding:0;list-style:none;counter-reset:f;display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.fcard li{counter-increment:f;display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;padding:9px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.35}
+.fcard li::before{content:counter(f,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--faint);padding-top:3px}
+.exf{margin:0;overflow-x:auto;border-radius:8px}.exf img{display:block;height:200px;max-width:none;border-radius:8px}
+.exm{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}.exm video,.exm img{height:300px;width:auto;max-width:none;flex:none;border-radius:8px;background:#000}
+.exl{margin-top:auto;display:flex;flex-direction:column;gap:6px;border-top:1px dashed var(--faint);padding-top:12px}
+.exl i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-style:normal}
+.exl ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px;line-height:1.35;color:var(--ink)}
+.slot{margin-top:auto;border:1px dashed var(--faint);border-radius:8px;padding:10px 12px;line-height:1.4}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px}
+
+.shotrow{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);gap:26px;align-items:start}
+.phone{width:100%;max-width:250px;justify-self:center;border:1px solid var(--faint);border-radius:26px;padding:14px 12px;display:flex;flex-direction:column;gap:10px;background:var(--panel)}
+.phone .bar{height:5px;width:54px;border-radius:6px;background:var(--stroke);align-self:center}
+.phone .top{display:grid;grid-template-columns:54px minmax(0,1fr);gap:10px;align-items:center}
+.phone .ava{width:54px;height:54px;border-radius:50%;background:var(--accent)}
+.phone .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.phone .stats div{height:22px;border-radius:6px;background:var(--well)}
+.phone .name{font-size:12px;color:var(--ink)}
+.phone .bio{font-size:10.5px;line-height:1.35;color:var(--dim)}
+.phone .link{font-size:10.5px;color:var(--accent)}
+.phone .hl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.phone .hl span{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;color:var(--dim)}
+.phone .hl span::before{content:"";width:36px;height:36px;border-radius:50%;border:1px solid var(--faint);background:var(--card)}
+.phone .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}
+.phone .grid div{aspect-ratio:4/5;background:var(--well);border-radius:4px;display:grid;place-items:center;font-family:var(--mono);font-size:8px;color:var(--faint);text-transform:uppercase;text-align:center;line-height:1.2}
+.phone .grid .pin{background:var(--accent);color:var(--accent-ink)}
+.phone .n,dt .n{font-family:var(--mono);font-size:9px;color:var(--accent-ink);background:var(--accent);border-radius:50%;width:16px;height:16px;display:inline-grid;place-items:center;margin-right:5px}
+.cap{text-align:center}
+dl{margin:0;display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);border-top:1px solid var(--stroke)}
+dt,dd{margin:0;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:16px}
+dt{color:var(--ink);padding-right:14px}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.45;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+details{border-bottom:1px solid var(--stroke);padding:13px 0}
+details:first-of-type{border-top:1px solid var(--stroke)}
+summary{color:var(--ink);cursor:pointer;font-size:18px}
+details p{margin-top:8px}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:760px){
+  header,section{padding:18px 16px 24px}
+  .myth,.pair,.chain,.two,.three,.formats,.shotrow,.aud{grid-template-columns:minmax(0,1fr)}
+  .node{min-height:0}
+  .node:not(:last-child)::after,.aud>div:not(:last-child)::after{content:"↓";right:50%;top:auto;bottom:-9px;transform:translate(50%,50%)}
+  .bars .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl{grid-template-columns:minmax(0,1fr)} dt{border-bottom:0;padding-bottom:0}
+}
+
+/* форматы: линейно, по уровням */
+.formats{display:flex;flex-direction:column;gap:8px}
+.lvlhead{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:40px;padding-bottom:12px;border-bottom:1px solid var(--faint)}
+.lvlhead:first-child{margin-top:8px}
+.lvlhead span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:6px 9px}
+.lvlhead h3{font-size:clamp(22px,3vw,30px)}
+.lvlhead small{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fcard{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px;padding:22px;align-items:start}
+.fcard>div{display:flex;flex-direction:column;gap:14px;min-width:0}
+.fcard .exl{margin-top:0;border-top:0;padding-top:0}
+@media (max-width:760px){.fcard{grid-template-columns:minmax(0,1fr);gap:18px;padding:18px}.lvlhead small{margin-left:0}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+ГАЙД ДЛЯ СТУДЕНТОВ</span><span>ЛИЧНЫЙ БРЕНД
+КАК ПОКАЗЫВАТЬ СВОИ РАБОТЫ</span></div>
+  <h1>Личный бренд дизайнера</h1>
+  <p class="lead"><b>Зачем дизайнеру показывать свои работы, в каких форматах это делать и с чего начать, если ты ещё ничего не выкладывал.</b> Форматы идут от простого к сложному: первый можно сделать сегодня за пятнадцать минут.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav aria-label="Разделы">
+    <a href="#zachem" data-n="01">Зачем показывать работы</a><a href="#formaty" data-n="02">Зачем разные форматы</a><a href="#lestnica" data-n="03">От простого к сложному</a><a href="#posty" data-n="04">Посты</a><a href="#video" data-n="05">Видео</a><a href="#vystup" data-n="06">Выступления</a><a href="#rasskaz" data-n="07">Как рассказать о кейсе</a><a href="#profil" data-n="08">Оформление соцсетей</a><a href="#telegram" data-n="09">Телеграм-канал</a><a href="#vremya" data-n="10">Как не утонуть</a><a href="#zadanie" data-n="11">Задание</a><a href="#check" data-n="12">Чек-лист</a>
+  </nav>
+</header>
+
+<section id="start">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>КАК ЧИТАТЬ</span></div>
+  <h2>Как пользоваться гайдом</h2>
+  <ol class="steps">
+    <li><div><div class="t">Прочитай разделы 01 и 02</div><div class="d">Десять минут. После них понятно, зачем всё это и почему одного поста на проект мало.</div></div></li>
+    <li><div><div class="t">Выбери один формат первого уровня и сделай его сегодня</div><div class="d">Таблица уровней в разделе 03. Первый уровень не требует монтажа и дизайна обложек.</div></div></li>
+    <li><div><div class="t">Возвращайся за следующим форматом с каждым проектом</div><div class="d">Карточки в разделах 04, 05 и 06 работают как шаблоны: открыл, собрал по пунктам, выложил.</div></div></li>
+  </ol>
+</section>
+
+<section id="zachem">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>01 / ЗАЧЕМ</span></div>
+  <h2>Зачем дизайнеру показывать свои работы</h2>
+  <p><b>Личный бренд дизайнера состоит из того, что люди о тебе знают и помнят.</b> Заказчик, арт-директор или рекрутер выбирают из тех, кого видели. Если твои работы лежат в Figma, для рынка их нет, какими бы сильными они ни были.</p>
+  <div class="quote">Люди делают дизайн для людей и вместе с людьми.</div>
+  <p>Поэтому нанимают не только за макеты. Смотрят, как ты думаешь, как объясняешь решения и приятно ли с тобой работать. Всё это видно из того, как ты показываешь проекты.</p>
+
+  <h3>Что ты получаешь</h3>
+  <div class="three">
+    <div class="box"><h3>Заказы и офферы</h3><p>Тебя рекомендуют и находят сами. Первое, что делает человек после рекомендации: открывает твой профиль.</p></div>
+    <div class="box"><h3>Доверие до знакомства</h3><p>Портфолио показывает результат. Публикации показывают ход мысли. К созвону человек уже понимает, как ты работаешь.</p></div>
+    <div class="box"><h3>Обратную связь и рост</h3><p>Чтобы объяснить решение другим, его приходится сформулировать. А комментарии показывают слабые места раньше, чем их найдёт заказчик.</p></div>
+  </div>
+
+  <h3>Типичная ошибка: один пост на проект</h3>
+  <p>Ты два месяца делаешь проект, выкладываешь его одним постом, его видят одногруппники, и ты снова пропадаешь. Человека запоминают, когда встречают в ленте регулярно. Посчитай, сколько раз в год тебя можно встретить.</p>
+  <div class="bars">
+    <div class="row"><span>Один пост раз в два месяца</span><div class="track"><div class="bar" style="width:3.8%"></div><b>6</b></div></div>
+    <div class="row"><span>Один пост в неделю</span><div class="track"><div class="bar" style="width:33.3%"></div><b>52</b></div></div>
+    <div class="row on"><span>Три публикации в неделю</span><div class="track"><div class="bar" style="width:calc(100% - 60px)"></div><b>156</b></div></div>
+    <i>публикаций в год</i>
+  </div>
+  <p class="muted">Проектов при этом столько же. Меняется только то, сколько раз и с каких сторон ты каждый показал.</p>
+
+  <h3>Что обычно мешает начать</h3>
+  <div class="myths">
+    <div class="myth"><div class="m"><i>Отговорка</i><span>«Мне пока нечего показывать, я только учусь»</span></div><div class="r"><i>Как на самом деле</i><span>У тебя есть сильная позиция: позиция новичка. Ты не обязан быть экспертом. Рассказывай как человек, который учится: «попробовал вот так, получилось вот это». За таким путём следят охотнее, чем за идеальными кейсами.</span></div></div>
+    <div class="myth"><div class="m"><i>Отговорка</i><span>«Работа слабая, выложу, когда доделаю»</span></div><div class="r"><i>Как на самом деле</i><span>Процесс тоже контент. Через полгода из этой слабой работы получится пост «было и стало».</span></div></div>
+    <div class="myth"><div class="m"><i>Отговорка</i><span>«Хорошую работу и так заметят»</span></div><div class="r"><i>Как на самом деле</i><span>Заметят ту, которую показали. Вспомнят того, кого видели на прошлой неделе.</span></div></div>
+    <div class="myth"><div class="m"><i>Отговорка</i><span>«На блог нужно много времени»</span></div><div class="r"><i>Как на самом деле</i><span>Если показывать то, что ты и так делаешь, хватает 10–15 минут в день. Как это устроить, написано в разделе 10.</span></div></div>
+  </div>
+</section>
+
+<section id="formaty">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>02 / ЦЕННОСТЬ</span></div>
+  <h2>Зачем показывать один кейс в разных форматах</h2>
+  <div class="three">
+    <div class="box"><h3>Люди смотрят разное</h3><p>Одни листают короткие видео, другие читают длинные разборы, третьи приходят на созвоны и доклады. Один формат достаёт только до одной части людей.</p></div>
+    <div class="box"><h3>Форматы показывают разное</h3><p>Видео показывает, как работа выглядит и движется. Пост показывает, как ты думаешь. Выступление показывает, как ты говоришь и держишься с людьми.</p></div>
+    <div class="box"><h3>Нужно несколько встреч</h3><p>Мало кто пишет дизайнеру после первого просмотра. Сначала человек замечает, потом следит, потом обращается. На каждом шаге работает свой формат.</p></div>
+  </div>
+
+  <h3>Три состояния аудитории</h3>
+  <div class="aud">
+    <div><i>Холодная</i><h3>Не знает тебя</h3><p>Увидит тебя случайно в ленте. Ей нужен широкий контент: коротко, ярко, понятно без контекста.</p><div class="f">Тренд под музыку, короткий показ проекта, «было и стало», концепт в Reels</div></div>
+    <div><i>Тёплая</i><h3>Подписалась и следит</h3><p>Ей интересно, как ты работаешь. Здесь уместны подробности и процесс.</p><div class="f">Дневник обучения, «чему я научился», разбор решения, туториал, посты в Телеграме</div></div>
+    <div><i>Горячая</i><h3>Готова обратиться</h3><p>Выбирает, кому написать. Ей нужны доказательства: глубина, результат, как с тобой связаться.</p><div class="f">Кейс-стади, шоурил, выступление, закреплённые посты и оформленный профиль</div></div>
+  </div>
+
+  <h3>Откуда брать публикации: из этапов проекта</h3>
+  <p>На каждом этапе появляется материал, который обычно остаётся в папке. Один проект даёт минимум десять публикаций.</p>
+  <div class="chain">
+    <div class="node"><b>Бриф</b><small>Задача и ограничения</small></div>
+    <div class="node"><b>Поиск</b><small>Референсы, мудборд, идея</small></div>
+    <div class="node on"><b>Процесс</b><small>Черновики, варианты, правки</small></div>
+    <div class="node"><b>Результат</b><small>Финальные макеты и видео</small></div>
+    <div class="node"><b>Разбор</b><small>Что получилось, чему научился</small></div>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>Этап</th><th>Что публиковать</th><th>Формат</th></tr></thead>
+    <tbody>
+      <tr><td>Бриф</td><td>«Мне дали такую задачу, вот как я её понял»</td><td>Пост в Телеграме</td></tr>
+      <tr><td>Поиск</td><td>Мудборд и три направления, из которых выбираешь</td><td>Карусель, опрос в сторис</td></tr>
+      <tr><td>Поиск</td><td>Подборка референсов по теме проекта</td><td>Карусель «сохрани»</td></tr>
+      <tr><td>Процесс</td><td>Что сделал за неделю и что не получилось</td><td>Дневник обучения</td></tr>
+      <tr><td>Процесс</td><td>Как собирается один экран</td><td>Запись экрана</td></tr>
+      <tr><td>Процесс</td><td>Одна проблема и её решение</td><td>Разбор решения</td></tr>
+      <tr><td>Результат</td><td>Короткий яркий показ</td><td>Тренд под музыку, концепт в Reels</td></tr>
+      <tr><td>Результат</td><td>Было и стало</td><td>Карусель или видео</td></tr>
+      <tr><td>Разбор</td><td>Три вывода после проекта</td><td>«Чему я научился»</td></tr>
+      <tr><td>Разбор</td><td>Полный кейс и рассказ о нём</td><td>Кейс-стади, выступление</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><b>Привычка, на которой всё держится</b><p>Собирай материал по ходу работы. Скриншот в конце каждой сессии, запись экрана на сложных местах, отброшенные варианты не удаляй. В конце проекта восстановить это уже не получится.</p></div>
+</section>
+
+<section id="lestnica">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>03 / КАРТА ФОРМАТОВ</span></div>
+  <h2>Форматы: от простого к сложному</h2>
+  <p>У личного бренда три инструмента. Внутри каждого есть форматы на любой уровень подготовки.</p>
+  <div class="three">
+    <div class="box"><h3>Посты</h3><p>Текст с картинками: пост в Телеграме, карусель, статья-кейс. Проще всего в производстве, лучше всего показывают мышление.</p></div>
+    <div class="box"><h3>Видео</h3><p>Короткие ролики и туториалы. Приводят больше всего новых людей и показывают работу в движении.</p></div>
+    <div class="box"><h3>Выступления</h3><p>Рассказ о проекте вслух: на созвоне группы, защите, эфире. Можно с картинками, можно с видео. Быстрее всего вызывают доверие.</p></div>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>Уровень</th><th>Сколько времени</th><th>Посты</th><th>Видео</th><th>Выступления</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lvl">Уровень 1</span>Начать сегодня</td><td>15–30 минут</td><td>Пост в Телеграме, сторис из процесса</td><td>Чистый показ под музыку, «реакция и результат»</td><td>Голосовое или кружок в канал о том, что сделал</td></tr>
+      <tr><td><span class="lvl">Уровень 2</span>Каждую неделю</td><td>1–2 часа</td><td>Дневник обучения, «чему я научился», карусель, «было и стало»</td><td>Сравнение, «результат и как сделано», кейс голосом, серия с номером</td><td>Пять минут о проекте на созвоне группы</td></tr>
+      <tr><td><span class="lvl">Уровень 3</span>Раз в проект</td><td>От половины дня</td><td>Кейс-стади на площадке для дизайнеров</td><td>Туториал, шоурил по шаблону школы</td><td>Защита проекта с презентацией</td></tr>
+      <tr><td><span class="lvl">Уровень 4</span>Когда есть опыт</td><td>Несколько дней</td><td>Серия статей по теме</td><td>YouTube-туториал с разбором проекта</td><td>Доклад на митапе или эфир</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">Двигайся по уровням по порядку. Тот, кто начинает с YouTube-туториала, обычно бросает на монтаже. Тот, кто начал с поста в Телеграме, через месяц спокойно снимает разбор с голосом.</p>
+</section>
+
+<section id="posty">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>04 / ПОСТЫ</span></div>
+  <h2>Посты: текст с картинками</h2>
+  <p>Форматы разбиты по уровням из таблицы выше. Слева описание и из чего формат состоит, справа примеры.</p>
+  <div class="formats" id="f-post"></div>
+</section>
+
+<section id="video">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>05 / ВИДЕО</span></div>
+  <h2>Видео</h2>
+  <p>Первые семь ходов собраны из подборки реальных роликов дизайнеров: в карточке описано, как устроены примеры. Общее правило для всех: первые две секунды показывают результат или задают вопрос, объяснение идёт после.</p>
+  <div class="formats" id="f-vid"></div>
+  <div class="two">
+    <div class="box"><h3>Чем зацепить в начале</h3><ul>
+      <li>Покажи финал в первом кадре, потом отмотай к началу.</li>
+      <li>Задай вопрос, на который ответит ролик: «Почему этот экран не работал?»</li>
+      <li>Назови срок или цифру: «Лендинг за четыре дня».</li>
+      <li>Начни с ошибки: «Так делать не надо».</li></ul></div>
+    <div class="box"><h3>Технический минимум</h3><ul>
+      <li>Вертикальный кадр 9:16, важное держи в центре: края закрывает интерфейс.</li>
+      <li>От 7 до 30 секунд для показа работы, до 60 для разбора с голосом.</li>
+      <li>Текст на экране крупный и короткий, его читают без звука.</li>
+      <li>Экран записывай программой, а не телефоном с монитора. Приближения делай на монтаже.</li></ul></div>
+  </div>
+<div class="note"><b>Три приёма, которые повторяются в подборке</b><p>Подпись-позиция в первом кадре: «мне 19, я моушен-дизайнер», «я AI-креатор из Казахстана». Номер серии: «часть 3 из 5», «день 6». Кодовое слово в комментариях: зритель пишет слово и получает ссылку или гайд.</p></div>
+</section>
+
+<section id="vystup">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>06 / ВЫСТУПЛЕНИЯ</span></div>
+  <h2>Выступления</h2>
+  <p>Выступление не обязательно означает сцену. Пять минут о своём проекте на созвоне группы тоже выступление. Достаточно показывать картинки и рассказывать, что на них. Вместо картинок можно включить видео и комментировать его.</p>
+  <div class="formats" id="f-talk"></div>
+  <div class="note"><b>Записывай каждое выступление</b><p>Одна запись на десять минут даёт три-пять коротких видео и один пост. Ты рассказал один раз, а публикаций получил на две недели.</p></div>
+</section>
+
+<section id="rasskaz">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>07 / СТРУКТУРА</span></div>
+  <h2>Как рассказать о кейсе</h2>
+  <p>Эта схема работает в любом формате: в карусели на неё уходит шесть слайдов, в видео тридцать секунд, в выступлении пять минут.</p>
+  <div class="chain">
+    <div class="node"><b>Задача</b><small>Что нужно было сделать и для кого</small></div>
+    <div class="node"><b>Сложность</b><small>Что мешало: ограничение, срок, проблема</small></div>
+    <div class="node on"><b>Решение</b><small>Что ты сделал и почему именно так</small></div>
+    <div class="node"><b>Результат</b><small>Что получилось, лучше с цифрой</small></div>
+    <div class="node"><b>Вывод</b><small>Что забираешь в следующий проект</small></div>
+  </div>
+  <div class="two">
+    <div class="box"><h3>Пять правил</h3><ul>
+      <li>Говори «я» и называй свою роль: что в проекте сделал именно ты.</li>
+      <li>У каждого показанного решения есть одно «почему».</li>
+      <li>Показывай два-три ключевых экрана крупно, а не все двадцать мелко.</li>
+      <li>Если есть цифра, назови её: срок, число экранов, результат теста.</li>
+      <li>Скажи, что не получилось. Это добавляет доверия.</li></ul></div>
+    <div class="box"><h3>Пример одной фразой на каждую часть</h3><ul>
+      <li><b>Задача:</b> приложение для записи к ветеринару.</li>
+      <li><b>Сложность:</b> люди бросали запись на третьем шаге.</li>
+      <li><b>Решение:</b> убрал выбор врача в начало и сократил путь до трёх нажатий.</li>
+      <li><b>Результат:</b> на тесте пятеро из пяти записались без подсказок.</li>
+      <li><b>Вывод:</b> теперь сначала считаю шаги, потом рисую.</li></ul></div>
+  </div>
+
+  <h3>Плохо и хорошо</h3>
+  <div class="pairs">
+    <div class="pair">
+      <div class="bad"><i>Плохо</i><span>«Мой новый проект. Как вам?»</span><small>Непонятно, что это, для кого и на что смотреть.</small></div>
+      <div class="good"><i>Хорошо</i><span>«Приложение для записи к ветеринару. Нужно было уместить запись в три нажатия. Показываю, как менялся первый экран».</span><small>Есть задача, сложность и обещание, что будет внутри.</small></div>
+    </div>
+    <div class="pair">
+      <div class="bad"><i>Плохо</i><span>Обложка карусели: мелкий макет целиком и название проекта.</span><small>В ленте это серый прямоугольник.</small></div>
+      <div class="good"><i>Хорошо</i><span>Обложка: один крупный фрагмент и заголовок «Почему я три раза переделал этот экран».</span><small>Заголовок обещает историю, фрагмент показывает качество.</small></div>
+    </div>
+    <div class="pair">
+      <div class="bad"><i>Плохо</i><span>Видео начинается с заставки и слов «Всем привет, сегодня я расскажу…»</span><small>Зритель уходит раньше, чем увидел работу.</small></div>
+      <div class="good"><i>Хорошо</i><span>В первом кадре готовый экран в движении и текст «Собрал за вечер. Показываю как».</span><small>Сначала результат, потом путь к нему.</small></div>
+    </div>
+    <div class="pair">
+      <div class="bad"><i>Плохо</i><span>На защите: «Вот главный экран, вот каталог, вот карточка, вот корзина…»</span><small>Экскурсия по макету. Слушатель не понимает, что здесь было трудным.</small></div>
+      <div class="good"><i>Хорошо</i><span>«У проекта была одна проблема: корзину бросали. Покажу три экрана, где я её решал».</span><small>Есть сюжет, и понятно, куда смотреть.</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="profil">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>08 / СОЦСЕТИ</span></div>
+  <h2>Как оформить соцсети, чтобы с тобой хотели работать</h2>
+  <p>Человек, пришедший с ролика, за несколько секунд решает, подписываться или нет. За это время он видит пять вещей. Схема показана на Instagram, но те же пункты работают на любой площадке.</p>
+  <div class="shotrow">
+    <div>
+      <div class="phone" aria-hidden="true">
+        <div class="bar"></div>
+        <div class="top"><div class="ava"></div><div class="stats"><div></div><div></div><div></div></div></div>
+        <div class="name"><span class="n">1</span>Аня · дизайн интерфейсов</div>
+        <div class="bio"><span class="n">2</span>Проектирую мобильные приложения. Показываю процесс от каркаса до прототипа</div>
+        <div class="link"><span class="n">3</span>портфолио и телеграм-канал</div>
+        <div class="hl"><span>Кейсы</span><span>Процесс</span><span>Обо мне</span><span>Отзывы</span></div>
+        <div class="grid"><div class="pin">Кто я</div><div class="pin">Лучший кейс</div><div class="pin">Как работаю</div><div>Кейс</div><div>Видео</div><div>Разбор</div><div>Видео</div><div>Процесс</div><div>Кейс</div></div>
+      </div>
+      <p class="cap" style="margin-top:10px">Схема профиля, не скриншот</p>
+    </div>
+    <dl>
+      <dt><span class="n">1</span>Имя</dt><dd>Имя и чем ты занимаешься. По этой строке работает поиск, поэтому «дизайн интерфейсов» полезнее фамилии.</dd>
+      <dt><span class="n">2</span>Описание</dt><dd>Две строки: что делаешь, для кого и что у тебя можно увидеть. Без списка программ и слова «креативный».</dd>
+      <dt><span class="n">3</span>Ссылка</dt><dd>Одна ссылка на портфолио или страницу, где собраны портфолио и канал. Проверь, что она открывается с телефона.</dd>
+      <dt><span class="n">4</span>Актуальное</dt><dd>Четыре-пять папок с понятными названиями: кейсы, процесс, обо мне, отзывы. Обложки в одном стиле.</dd>
+      <dt><span class="n">5</span>Закрепы</dt><dd>Три закреплённые публикации: знакомство, сильнейший кейс, пост о том, как ты работаешь и как с тобой связаться.</dd>
+      <dt>Сетка</dt><dd>Обложки каруселей и видео по одному шаблону: один шрифт, одна палитра, крупный заголовок. Профиль должен читаться как серия.</dd>
+    </dl>
+  </div>
+  <div class="slot">Примеры профилей наших студентов · добавим</div>
+  <div class="note"><b>Проверка за десять секунд</b><p>Покажи профиль знакомому, который не знает, чем ты занимаешься. Через десять секунд закрой и спроси, что ты делаешь и для кого. Если не ответил, переписывай описание и закрепы.</p></div>
+</section>
+
+<section id="telegram">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>09 / ТЕЛЕГРАМ</span></div>
+  <h2>Телеграм-канал с работами</h2>
+  <p>Канал заводится за пять минут и не требует монтажа. Это лучший первый шаг. Он работает как рабочий дневник: туда идёт всё, что не дотягивает до отдельной карусели.</p>
+  <div class="two">
+    <div class="box"><h3>Что туда писать</h3><ul>
+      <li>Что сделал сегодня: один скриншот и две строки.</li>
+      <li>Что узнал на уроке и как применил в проекте.</li>
+      <li>Вопрос к читателям: какой из двух вариантов лучше.</li>
+      <li>Находки: шрифт, сайт, приём, плагин.</li>
+      <li>Ошибка недели и как ты её исправил.</li>
+      <li>Ссылки на свои новые видео и кейсы.</li></ul></div>
+    <div class="box"><h3>Как оформить</h3><ul>
+      <li>Название: имя и направление, чтобы канал находился поиском.</li>
+      <li>Описание: одна строка о том, что здесь будет, и ссылка на портфолио.</li>
+      <li>Закреплённый пост-знакомство.</li>
+      <li>Ссылка на канал в описании профиля и в портфолио.</li>
+      <li>Первые подписчики: одногруппники, чат курса, друзья. Позови их лично.</li></ul></div>
+  </div>
+  <div class="tpl">
+    <span class="kind">Шаблон первого поста</span>
+    <pre id="tpl-text">Привет. Меня зовут [имя], я учусь на [направление] и завела этот канал, чтобы показывать, как учусь и что делаю.
+
+Что здесь будет:
+— мои проекты от первого черновика до финала
+— находки и приёмы, которые я разбираю на учёбе
+— ошибки и что я из них вынесла
+
+Сейчас работаю над [проект в одну строку]. Завтра покажу первые наброски.</pre>
+    <button class="copy" id="copy-tpl" type="button">Скопировать шаблон</button>
+  </div>
+</section>
+
+<section id="vremya">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>10 / ВРЕМЯ</span></div>
+  <h2>Как не тратить на это слишком много времени</h2>
+  <p>Блог не должен отнимать время у проектов. Есть два способа его вести, и начинать стоит с первого.</p>
+  <div class="two">
+    <div class="box"><h3>Показывать то, что и так делаешь</h3><p>Ты работаешь над проектом и по дороге фиксируешь: скриншот, запись экрана, две строки о том, что получилось. Отдельно ничего не придумываешь.</p><p class="muted">10–15 минут в день. Подходит всем, кто учится.</p></div>
+    <div class="box"><h3>Делать контент специально</h3><p>Ты придумываешь тему, пишешь сценарий, снимаешь и монтируешь. Получается ярче, но требует отдельных часов.</p><p class="muted">От двух часов на публикацию. Подключай, когда первый способ вошёл в привычку.</p></div>
+  </div>
+  <h3>Пример недели</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>День</th><th>Где</th><th>Что</th><th>Время</th></tr></thead>
+    <tbody>
+      <tr><td>Понедельник</td><td>Телеграм</td><td>План на неделю по проекту, один скриншот</td><td>10 минут</td></tr>
+      <tr><td>Вторник</td><td>Короткое видео</td><td>Запись экрана или тренд под музыку</td><td>40 минут</td></tr>
+      <tr><td>Среда</td><td>Телеграм</td><td>Находка или вывод с урока</td><td>10 минут</td></tr>
+      <tr><td>Четверг</td><td>Карусель</td><td>Разбор решения или «чему я научился»</td><td>60 минут</td></tr>
+      <tr><td>Пятница</td><td>Телеграм</td><td>Что сделано за неделю, вопрос к читателям</td><td>15 минут</td></tr>
+      <tr><td>Выходные</td><td>Сторис</td><td>Процесс и заготовка на следующую неделю</td><td>30 минут</td></tr>
+    </tbody>
+  </table></div>
+  <ol class="steps">
+    <li><div><div class="t">Сделай шаблоны один раз</div><div class="d">Обложка карусели, внутренний слайд, заставка для видео. Дальше меняешь только содержимое.</div></div></li>
+    <li><div><div class="t">Готовь пачкой</div><div class="d">Один вечер в неделю на две-три публикации вперёд. Тогда пропущенный день не ломает ритм.</div></div></li>
+    <li><div><div class="t">Веди список идей</div><div class="d">Заметка в телефоне, куда падает всё: вопрос одногруппника, удачный приём, смешная правка.</div></div></li>
+    <li><div><div class="t">Используй одно и то же несколько раз</div><div class="d">Запись экрана стала коротким видео, три кадра из неё стали каруселью, вывод из неё стал постом в Телеграме.</div></div></li>
+  </ol>
+</section>
+
+<section id="zadanie">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>11 / ДОМАШНЯЯ РАБОТА</span></div>
+  <h2>Задание</h2>
+  <p><b>Что должно получиться:</b> оформленный профиль, работающий канал и один проект, показанный минимум в шести публикациях.</p>
+  <div class="three">
+    <div class="box"><h3>Сегодня</h3><ol>
+      <li>Заведи телеграм-канал, оформи название и описание.</li>
+      <li>Опубликуй пост-знакомство по шаблону.</li>
+      <li>Позови лично десять человек.</li>
+      <li>Сделай одну публикацию первого уровня.</li></ol></div>
+    <div class="box"><h3>За неделю</h3><ol>
+      <li>Перепиши описание профиля и поставь ссылку.</li>
+      <li>Сделай шаблон обложки и внутреннего слайда.</li>
+      <li>Собери одну карусель из текущего проекта.</li>
+      <li>Запиши одно видео до 30 секунд.</li>
+      <li>Три поста в канал о процессе.</li></ol></div>
+    <div class="box"><h3>За месяц</h3><ol>
+      <li>Покажи один проект в шести публикациях по таблице из раздела 02.</li>
+      <li>Попробуй по одному формату из постов, видео и выступлений.</li>
+      <li>Расскажи о проекте на созвоне группы и запиши это.</li>
+      <li>Закрепи три публикации.</li></ol></div>
+  </div>
+</section>
+
+<section id="check">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>12 / ПРОВЕРКА</span></div>
+  <h2>Чек-лист перед публикацией</h2>
+  <p>Отметки сохраняются в этом браузере.</p>
+  <div class="check" id="checklist">
+    <label><input type="checkbox" id="c1"><span>С первого слайда или кадра понятно, что это за проект и для кого.</span></label>
+    <label><input type="checkbox" id="c2"><span>Работа показана крупно: фрагмент читается на экране телефона.</span></label>
+    <label><input type="checkbox" id="c3"><span>Есть хотя бы одно «почему»: объяснение решения, а не только картинка.</span></label>
+    <label><input type="checkbox" id="c4"><span>Текст на слайдах и в видео читается без звука и без увеличения.</span></label>
+    <label><input type="checkbox" id="c5"><span>Обложка сделана по твоему шаблону и узнаётся в сетке.</span></label>
+    <label><input type="checkbox" id="c6"><span>В подписи есть задача, твоя роль и инструменты.</span></label>
+    <label><input type="checkbox" id="c7"><span>В конце есть действие: вопрос, просьба сохранить или ссылка на полный кейс.</span></label>
+    <label><input type="checkbox" id="c8"><span>Ссылка на публикацию продублирована в телеграм-канале.</span></label>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="corner"><span>PERASPERADASTRA
+ЛИЧНЫЙ БРЕНД</span><span>ВОПРОСЫ</span></div>
+  <h2>Вопросы, которые задают чаще всего</h2>
+  <div>
+    <details><summary>Можно ли публиковать учебные работы?</summary><p>Можно и нужно. Подпиши, что это учебный проект, и расскажи, какую задачу ты в нём решал.</p></details>
+    <details><summary>А если работу раскритикуют?</summary><p>Критика по делу бесплатно улучшает проект. Ответь, что учтёшь, и через неделю покажи исправленный вариант. Получится ещё одна публикация.</p></details>
+    <details><summary>Клиентский проект под NDA. Что делать?</summary><p>Показывай процесс без содержания: приёмы, структуру, выводы. Или спроси у клиента разрешение на публикацию после релиза.</p></details>
+    <details><summary>Нужно ли показывать лицо?</summary><p>Не обязательно, но людям проще запомнить человека, чем аккаунт. Хватит фотографии в закрепе и голоса за кадром в части роликов.</p></details>
+    <details><summary>Я боюсь выступать. С чего начать?</summary><p>С голосового сообщения в своём канале на одну минуту. Потом пять минут на созвоне группы с тремя слайдами. Страх уходит с третьего раза.</p></details>
+    <details><summary>Сколько ждать результата?</summary><p>Первые месяц-два публикации смотрят в основном знакомые, это нормально. Оценивай ритм, а не охваты: три публикации в неделю восемь недель подряд.</p></details>
+  </div>
+</section>
+
+<footer>Per Aspera Ad Astra · гайд для студентов · черновик: авторы примеров пока не подписаны</footer>
+</div>
+
+<script>window.LB_MEDIA={"tdp": [{"v": "media/tdp_01.mp4", "p": "media/tdp_01.jpg", "loop": 1}, {"i": "media/tdp_02.jpg"}, {"v": "media/tdp_03.mp4", "p": "media/tdp_03.jpg", "loop": 1}, {"v": "media/tdp_04.mp4", "p": "media/tdp_04.jpg", "loop": 1}, {"i": "media/tdp_05.jpg"}, {"v": "media/tdp_06.mp4", "p": "media/tdp_06.jpg", "loop": 1}, {"v": "media/tdp_07.mp4", "p": "media/tdp_07.jpg", "loop": 1}, {"i": "media/tdp_08.jpg"}, {"v": "media/tdp_09.mp4", "p": "media/tdp_09.jpg", "loop": 1}, {"i": "media/tdp_10.jpg"}, {"i": "media/tdp_11.jpg"}, {"i": "media/tdp_12.jpg"}]};</script>
+<script>
+(function(){
+  var POST=[
+    {l:"Уровень 1 · 15 минут",t:"Пост в Телеграме",d:"Скриншот и несколько строк о том, что ты сделал. Самый простой формат в гайде.",w:"Каждый раз, когда поработал над проектом.",s:["Одна картинка: экран, фрагмент, черновик","Что это и для какого проекта","Что получилось или не получилось сегодня","Вопрос читателям или что будет дальше"]},
+    {l:"Уровень 2 · 30 минут",t:"Дневник обучения",d:"Регулярная рубрика о том, как ты проходишь курс: неделя за неделей.",w:"Пока учишься. Раз в неделю в один и тот же день.",s:["Заголовок с номером: «Неделя 4. Сетки»","Что проходили, своими словами","Что сделал: два-три скриншота","Что было трудным","План на следующую неделю"]},
+    {l:"Уровень 2 · 1 час",t:"«Чему я научился»",d:"Карусель или пост с выводами после проекта, модуля или ошибки.",w:"Закончил проект, модуль или получил жёсткие правки.",s:["Обложка: «5 вещей, которые я понял, сделав первый лендинг»","По одному выводу на слайд, с примером из своей работы","Какой вывод оказался самым неожиданным","Плашка «Сохрани, чтобы не потерять»"]},
+    {l:"Уровень 2 · 1–2 часа",k:"tdp",t:"Карусель-кейс",d:"Короткий рассказ о готовом проекте в шести слайдах по схеме из раздела 07.",w:"Главный показ законченного проекта в ленте.",e:["Кейс студентки курса Камилы Аюбовой: приложение для переговоров Tour de Parole. 12 слайдов: обложка с идеей, проблема, метафора, четыре сценария, цифры проекта, айдентика, итог и призыв"],s:["Обложка: крупный фрагмент и заголовок с задачей","Задача и сложность в двух строках","Поиск: мудборд или отброшенные варианты","Ключевое решение и почему оно такое","Результат: два-три лучших экрана","Вывод и ссылка на полный кейс"]},
+    {l:"Уровень 2 · 1 час",t:"Было и стало",d:"Две версии одной работы рядом и объяснение разницы.",w:"Редизайн, правки после ревью, рост за время учёбы.",s:["Обложка: две половины рядом","«Было» с тремя отмеченными проблемами","«Стало» с теми же тремя точками","Что изменил и зачем","Вопрос: что бы поправил зритель"]},
+    {l:"Уровень 2 · 1 час",t:"Разбор одного решения",d:"Карусель про одну находку в проекте, а не про весь проект.",w:"Когда в работе есть одно интересное место.",s:["Обложка-вопрос: «Почему кнопка внизу?»","Проблема, которую нужно было решить","Варианты, которые не подошли","Решение крупным планом","Правило, которое можно унести"]},
+    {l:"Уровень 3 · от половины дня",t:"Кейс-стади",d:"Полная статья о проекте на площадке для дизайнеров: Dprofile, Behance, Дизайнеры. На неё ведут все остальные публикации.",w:"Раз в проект, когда он закончен.",s:["Обложка и одна строка о проекте","Задача, роль, сроки, инструменты","Исследование и выводы из него","Структура и каркасы","Визуальные решения с объяснениями","Финальные экраны и прототип","Результат и что бы сделал иначе"]},
+    {l:"Уровень 2 · 1–2 часа",k:"cols",t:"Сравнение в две колонки",d:"Карусель, где на каждом слайде два варианта: как делает новичок и как делает профи.",w:"Когда хочешь показать подход к работе, а не конкретный проект.",e:["«Дешёвый дизайнер и дорогой дизайнер»: семь слайдов по этапам от брифинга до поиска клиентов, в конце приглашение на эфир"],s:["Обложка с двумя полюсами","Один этап работы на слайд: сверху слабый вариант, снизу сильный","Простые рисунки вместо скриншотов","Последний слайд: что делать, чтобы перейти из верхней строки в нижнюю"]},
+    {l:"Уровень 2 · 1–2 часа",k:"teach",t:"Обучающая карусель",d:"Одна мысль, разложенная по слайдам: задача, проблема, объяснение, правило.",w:"Когда понял что-то полезное и можешь показать на примере.",e:["«Как перестать придумывать банальные идеи»: логотип для кофейни, первые ассоциации, почему мозг их выдаёт, практическое правило, работы учеников"],s:["Обложка с обещанием результата","Задача на знакомом примере","Проблема: что делают почти все","Почему так происходит","Правило одной фразой","Пример применения и призыв"]},
+    {l:"Уровень 2 · 1 час",k:"review",t:"Разбор чужой работы",d:"Берёшь сильный проект и объясняешь, за счёт чего он работает. Показывает твою насмотренность.",w:"Когда своих кейсов мало. Обязательно называй автора работы.",e:["Разбор рекламной кампании теннисного бренда: крупные кадры и по одному абзацу про арт-дирекшн на слайд"],s:["Обложка: лучший кадр и о чём разбор","Кто автор и что за задача","Три-четыре решения, по одному на слайд","Что из этого можно взять себе"]}
+  ];
+  var VID=[
+    {l:"Уровень 1 · 20 минут",k:"clean",t:"Чистый показ под музыку",d:"Только работа, без лица и слов: кадры проекта сменяются под бит. Сюда же относится тренд под музыку.",w:"Айдентика, упаковка, моушен, иллюстрация. Всё, что красиво само по себе.",e:["Айдентика студии интерьеров: мудборд, логотип, носители, паттерн","Моушен-заставка по мотивам игры: один кадр на бит","Айдентика техкомпании: знак на восьми носителях подряд"],s:["Первый кадр самый сильный, а не логотип на белом","4–8 кадров: общий план, деталь, носитель, паттерн","Смена кадра под бит","В подписи: что за проект и что сделал ты"]},
+    {l:"Уровень 1 · 20 минут",k:"react",t:"Реакция и результат",d:"Первый кадр: ты и короткая подпись-эмоция. Дальше сразу работа. Самый частый ход в подборке.",w:"Когда есть готовая работа и не хочется ничего объяснять.",e:["«Что я сейчас сделал» и моушен-ролик для косметики","«Не верю, что это смонтировала я» и таймлайн с результатом","«Без лишних слов, просто гляньте мои иллюстрации»","«Мне 19, я моушен-дизайнер» и нарезка работ"],s:["1–2 секунды: лицо и подпись в одну строку","Резкий переход на работу","Работа на весь экран или экран с таймлайном","Никаких объяснений, остальное в подписи"]},
+    {l:"Уровень 2 · 1 час",k:"versus",t:"Сравнение",d:"Два варианта одной задачи встык: дёшево и дорого, нейросеть и дизайнер, было и стало.",w:"Когда хочешь показать свою ценность, а не просто картинку.",e:["«Зачем нам дизайнер, нейросеть сделает за 5 минут»: что сделала нейросеть и что сделала я","«Бренд за 480 долларов и за 5000»: те же носители по очереди","«ChatGPT против дизайнера»: бриф выпадает случайно, оба делают бренд свечей"],s:["Заголовок-спор в первом кадре","Вариант А с подписью","Вариант Б с подписью, на тех же носителях","Вывод не проговаривай, зритель сделает его сам"]},
+    {l:"Уровень 2 · 1 час",k:"split",t:"Результат и как сделано",d:"Экран поделён: сверху готовый результат, снизу то, из чего он собран. Таймлайн, референсы, скетч, промпт.",w:"Моушен, монтаж, работа с нейросетями, анимация из скетчей.",e:["Ролик про сумку сверху, исходное фото и промпт снизу","Чёрно-белый клип сверху, таймлайн монтажа снизу","Скетч от руки слева, готовая анимация справа","Некрасивые наброски, которые стали сюрреалистичным фильмом"],s:["Сверху результат, он играет без остановки","Снизу исходники: меняются синхронно с результатом","Подпись частей: «итог», «референсы и промпт»","В конце результат на весь экран"]},
+    {l:"Уровень 2 · 1–2 часа",k:"voice",t:"Кейс голосом в кадре",d:"Ты в кадре рассказываешь о проекте, поверх идут вставки с работой. Строится по схеме из раздела 07.",w:"Когда у проекта есть история: клиент, идея, неожиданное решение.",e:["«Я разработала дизайн для кофейни в Париже»: идея, носители, приглашение на консультацию","Сайт автосалона с юмором: мемы, процесс в редакторе, готовые экраны","Разбор чужого профиля: визуал ленты, монтаж, оформление, рубрики"],s:["Первая фраза с результатом или интригой","Задача и идея, 5–10 секунд","Вставки работы каждые 2–3 секунды","Субтитры на весь ролик","Призыв в конце: консультация, подписка, кейс"]},
+    {l:"Уровень 2 · 1 час",k:"tools",t:"Подборка инструментов",d:"Три-пять сайтов, плагинов или приёмов, каждый показан на экране по несколько секунд.",w:"Когда нет своего проекта или нужна пауза между кейсами. Такие ролики чаще всего сохраняют.",e:["«Почему никто не говорит об этих инструментах»: пять сайтов с подписью, что каждый делает","Сайты для 3D-эффектов и анимации: название сверху, описание снизу"],s:["Реакция или вопрос в первом кадре","Инструмент на экране, название и одна строка зачем он","3–4 секунды на каждый","Где ты сам его применил"]},
+    {l:"Уровень 2 · серия",k:"series",t:"Серия с номером",d:"Один формат повторяется много раз, в первом кадре стоит номер: «день 6», «часть 3 из 5».",w:"Когда учишься или делаешь длинный проект. Серия даёт повод вернуться.",e:["«Придумываю бренды, пока не появятся клиенты. Часть 3 из 5»","«Делаем анимационный фильм. День 6»: проблема дня и как её решили","Дневник настройки рабочего места с нейросетью: день 5"],s:["Название серии и номер в первом кадре","Что делаю сегодня","Процесс ускоренно","Результат дня и что будет в следующей части"]},
+    {l:"Уровень 3 · полдня",t:"Туториал",d:"Короткое обучающее видео: показываешь один приём, который сам недавно освоил.",w:"Когда разобрался в чём-то, что вызывает вопросы у одногруппников.",s:["Что получится в конце, первым кадром","Три-пять шагов, каждый с подписью","Частая ошибка на этом приёме","Где ты применил его в своём проекте"]},
+    {l:"Уровень 3 · полдня",t:"Шоурил",d:"Нарезка лучших работ на 30–60 секунд. Собирается по шаблону школы.",w:"Когда накопилось три и больше проектов. Ставится в закреп и в портфолио.",s:["Самый сильный кадр первым","По 3–5 секунд на проект, под музыку","Подписи: что это и твоя роль","Имя, направление и контакт в конце"]},
+    {l:"Уровень 4 · несколько дней",t:"YouTube-туториал с разбором проекта",d:"Длинное видео на 10–20 минут: проходишь проект от задачи до результата и объясняешь решения.",w:"Когда уже снимал короткие разборы и есть проект, которым гордишься.",s:["Результат и о чём видео, первые 20 секунд","Задача и ограничения","Три-четыре главы по этапам, с записью экрана","Ошибки и что бы сделал иначе","Итог и ссылка на кейс"]}
+  ];
+  var TALK=[
+    {l:"Уровень 1 · 15 минут",t:"Голосовое или кружок в канал",d:"Минута вслух о том, что ты сегодня сделал. Первая тренировка речи.",w:"Когда писать лень, а рассказать есть что.",s:["Что за проект, одной фразой","Что сделал сегодня","Что было трудным","Что будет завтра"]},
+    {l:"Уровень 2 · 1 час",t:"Рассказ с картинками",d:"Пять минут о проекте на созвоне группы. Ты показываешь слайды и говоришь, что на них.",w:"Созвон группы, чат курса, встреча с друзьями-дизайнерами.",s:["Один слайд на одну мысль, всего пять-семь","Задача и для кого","Три ключевых экрана крупно","Что было сложным","Вопрос слушателям"]},
+    {l:"Уровень 2 · 1 час",t:"Рассказ с видео",d:"Вместо слайдов включаешь запись экрана или прототип и комментируешь.",w:"Проекты с анимацией, моушен, интерфейсы с переходами.",s:["20 секунд результата без слов","Пауза: задача и сложность","Фрагмент процесса с комментарием","Финал ещё раз и вывод"]},
+    {l:"Уровень 3 · полдня",t:"Защита проекта",d:"Презентация диплома или проекта модуля перед куратором и группой.",w:"В конце модуля и на дипломе. Это готовое выступление, его стоит записать.",s:["Задача и аудитория","Что выяснил до макетов","Главные решения и почему","Результат и проверка","Что бы сделал иначе"]},
+    {l:"Уровень 4 · несколько дней",t:"Доклад или эфир",d:"Выступление на митапе, в сообществе или совместный эфир на тему из своего опыта.",w:"Когда есть история «как я сделал…» и пара записанных рассказов за плечами.",s:["Тема из своего опыта, а не «всё о дизайне»","История по схеме из раздела 07","Три вещи, которые слушатель унесёт","Где тебя найти: один слайд с контактом"]}
+  ];
+  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+  function fill(id,list){
+    var root=document.getElementById(id), names={1:'Начать сегодня',2:'Каждую неделю',3:'Раз в проект',4:'Когда есть опыт'}, cur=0;
+    var items=list.map(function(f,i){var m=/Уровень (\d)/.exec(f.l);return {f:f,i:i,n:m?+m[1]:9}}).sort(function(a,b){return a.n-b.n||a.i-b.i});
+    items.forEach(function(o){
+      var f=o.f;
+      if(o.n!==cur){cur=o.n;var hd=el('div','lvlhead');hd.appendChild(el('span',null,'Уровень '+o.n));hd.appendChild(el('h3',null,names[o.n]||''));var cnt=items.filter(function(x){return x.n===o.n}).length;hd.appendChild(el('small',null,cnt+' '+(cnt===1?'формат':cnt<5?'формата':'форматов')));root.appendChild(hd)}
+      var c=el('article','fcard'), L=el('div'), R=el('div');
+      L.appendChild(el('span','kind',f.l.split(' · ')[1]||f.l));
+      L.appendChild(el('h3',null,f.t));
+      L.appendChild(el('p','what',f.d));
+      var w=el('div','when'); w.appendChild(el('i',null,'Когда брать')); w.appendChild(el('span',null,f.w)); L.appendChild(w);
+      var ol=el('ol'); ol.setAttribute('aria-label','Из чего состоит'); f.s.forEach(function(s){ol.appendChild(el('li',null,s))});
+      var md=window.LB_MEDIA&&f.k&&window.LB_MEDIA[f.k];
+      if(md){var g=el('div','exm');md.forEach(function(m){var n;if(m.v){n=document.createElement('video');n.src=m.v;n.poster=m.p;n.controls=true;n.preload='none';n.playsInline=true;if(m.loop){n.loop=true;n.muted=true}}else{n=document.createElement('img');n.src=m.i;n.loading='lazy';n.alt='Слайд из примера: '+f.t}g.appendChild(n)});R.appendChild(g)}
+      if(f.e){var x=el('div','exl');x.appendChild(el('i',null,'Примеры из подборки'));var ul=el('ul');f.e.forEach(function(s){ul.appendChild(el('li',null,s))});x.appendChild(ul);R.appendChild(x)}
+      if(md||f.e){L.appendChild(ol)}else{R.appendChild(ol)}
+      c.appendChild(L); c.appendChild(R); root.appendChild(c);
+    });
+  }
+  fill('f-post',POST,'Из чего состоит'); fill('f-vid',VID,'Из чего состоит'); fill('f-talk',TALK,'Из чего состоит');
+
+  var KEY='lb-guide-check', saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){saved={}}
+  document.querySelectorAll('#checklist input').forEach(function(b){
+    if(saved[b.id])b.checked=true;
+    b.addEventListener('change',function(){saved[b.id]=b.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}});
+  });
+  var btn=document.getElementById('copy-tpl'), pre=document.getElementById('tpl-text');
+  btn.addEventListener('click',function(){
+    var done=function(){btn.textContent='Скопировано';setTimeout(function(){btn.textContent='Скопировать шаблон'},1600)};
+    var sel=function(){var r=document.createRange();r.selectNodeContents(pre);var s=window.getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Выделено, скопируй вручную'};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(pre.textContent).then(done).catch(sel)}else{sel()}
+  });
+})();
+</script>
+
+</body>
+</html>
