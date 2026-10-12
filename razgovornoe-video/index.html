@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Разговорное видео</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-слайды на чуть более светлом поле, как в остальных методичках школы. Каждый урок собран по одному шаблону: идея, суть, сравнение, инструмент, задание. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e;
+  --line-e:#6a6a6e; --line-m:#47474b; --line-l:#303033;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em;margin-top:14px}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.mono,.corner,th,.kind,.cap,.slot,.lvl,.pair i,.say i,.task i,.q .n,.bars i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+/* светлые панели: уроки чередуются тёмный / светлый, чтобы длинная страница делилась на главы */
+section.light{
+  color-scheme:light;
+  --panel:#f3f3f1; --card:#ffffff; --stroke:#dededa; --well:#e8e8e5;
+  --ink:#121212; --dim:#5c5c59; --faint:#7d7d79;
+  --accent:#d2571f; --accent-ink:#ffffff;
+  --good:#1e9b45; --bad:#d9263a;
+  --line-e:#85857f; --line-m:#b0afa9; --line-l:#d4d3ce;
+  color:var(--dim);
+}
+
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-top:10px}
+nav a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 12px 14px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.2;display:flex;flex-direction:column;gap:22px;min-height:104px;justify-content:space-between}
+nav a::before{content:attr(data-n);font-family:var(--mono);font-size:12px;color:var(--dim);background:#262626;border-radius:6px;padding:5px 7px;align-self:flex-start}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+
+/* сравнения плохо / хорошо */
+.pairs{display:flex;flex-direction:column;gap:8px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+.pair small,.why{font-size:14px;line-height:1.4}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch}
+.why b{font-weight:400}
+
+/* воронка */
+.funnel{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.funnel a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;text-decoration:none}
+.funnel a:hover,.funnel a:focus-visible{border-color:var(--accent);outline:none}
+.funnel b{font-size:17px;font-weight:400}
+.funnel small{font-size:13px;line-height:1.3;color:var(--dim)}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+td .lvl{color:var(--accent);display:block;margin-bottom:3px}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul,.box ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+.bars{display:flex;flex-direction:column;gap:10px}
+.bars .row{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:14px;align-items:center}
+.bars .row span{color:var(--ink);font-size:16px;line-height:1.2}
+.bars .track{display:flex;align-items:center;gap:10px;min-width:0}
+.bars .bar{height:34px;border-radius:8px;background:var(--well);min-width:6px}
+.bars .row.on .bar{background:var(--accent)}
+.bars b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+dl{margin:0;display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);border-top:1px solid var(--stroke)}
+dt,dd{margin:0;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:16px}
+dt{color:var(--ink);padding-right:14px}
+
+/* готовая фраза */
+.say{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.say i{color:var(--accent)}
+.say span{color:var(--ink);font-size:17px;line-height:1.4;max-width:62ch}
+.says{display:flex;flex-direction:column;gap:8px}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.45;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* задание в конце урока */
+.task{border:1px solid var(--accent);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+.slot{border:1px dashed var(--faint);border-radius:8px;padding:10px 12px;line-height:1.5}
+
+
+
+
+
+
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden}
+.fig .stage{aspect-ratio:5/4;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+.micro{aspect-ratio:16/10;pointer-events:none;--hairline-plate:var(--card);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.micro svg{overflow:visible}
+.micro svg g.lift{transition:transform .7s cubic-bezier(.32,.72,0,1)}
+.funnel a:hover .micro g.lift,.funnel a:focus-visible .micro g.lift,.head:hover .micro g.lift{transform:translateY(-14px)}
+@media (prefers-reduced-motion:reduce){.micro svg g.lift{transition:none}}
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.2}
+.figtext p{font-size:16px}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.head h2{flex:1 1 0;min-width:0}
+.head .micro{flex:0 0 190px;width:190px;margin-top:-34px;--hairline-plate:var(--panel)}
+@media (max-width:760px){.head .micro{flex-basis:112px;width:112px;margin-top:0}}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+/* квиз */
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.q .exp b{font-weight:400}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:18px 16px 24px}
+  .pair,.two,.three,.four{grid-template-columns:minmax(0,1fr)}
+  .bars .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl{grid-template-columns:minmax(0,1fr)} dt{border-bottom:0;padding-bottom:0}
+}
+
+/* воздух: больше полей у панелей, пауза и тонкая линия перед каждым подразделом */
+.wrap{gap:20px}
+header,section{padding:34px 44px 60px;gap:24px}
+.corner{margin-bottom:60px}
+section h3{margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.head{padding-bottom:14px}
+.quote{margin-bottom:10px}
+.figrow{padding:20px;gap:32px}
+.task{margin-top:44px;padding:26px}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:36px}
+  section h3{margin-top:26px;padding-top:22px}
+  .task{margin-top:28px;padding:18px}
+}
+
+/* композиция: контурный номер урока, подзаголовок сбоку у узких блоков и сверху у широких, иллюстрации то слева, то справа */
+.head{align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .micro{flex:0 0 300px;width:300px;margin-top:0}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+section .sub h3{margin:0;padding:0;border:0;position:sticky;top:20px}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+.figrow.flip{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
+.figrow.flip .fig{order:2}
+@media (max-width:760px){
+  .head{align-items:flex-end;gap:14px}
+  .head .micro{flex-basis:118px;width:118px}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:26px;padding-top:22px}
+  section .sub h3{position:static}
+  .figrow.flip{grid-template-columns:minmax(0,1fr)}
+  .figrow.flip .fig{order:0}
+}
+</style>
+
+<style>
+/* примеры роликов: обложки 9:16 и 16:9 с подписью формата */
+.ex{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:8px}
+.ex.c6{--n:6}.ex.c4{--n:4}.ex.c2{--n:2;max-width:640px}
+@media (max-width:900px){.ex.c6{--n:3}}
+@media (max-width:560px){.ex.c6,.ex.c4{--n:2}}
+.ex.wide{--n:2;max-width:none}
+@media (max-width:560px){.ex.wide{--n:1}}
+.vid{background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0;margin:0}
+.vid .shot{position:relative;aspect-ratio:9/16;max-width:100%;background:#000;overflow:hidden}
+.vid.h .shot{aspect-ratio:16/10}
+.vid img{width:100%;height:100%;object-fit:cover;display:block}
+.vid .tag{position:absolute;left:8px;top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:rgba(16,16,16,.82);color:#f4f4f2;border-radius:5px;padding:4px 6px}
+.vid figcaption{padding:12px 12px 14px;display:flex;flex-direction:column;gap:6px}
+.vid figcaption b{font-size:16px;font-weight:400;line-height:1.25}
+.vid figcaption span{font-size:14px;line-height:1.4}
+.vid.own{border-color:var(--accent)}
+.vid.own .tag{background:var(--accent);color:var(--accent-ink)}
+
+/* пример рядом с текстом */
+.exrow{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:28px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px}
+.exrow .shot{aspect-ratio:9/16;max-width:100%;border-radius:8px;overflow:hidden;background:#000;position:relative}
+.exrow .shot img{width:100%;height:100%;object-fit:cover;display:block}
+.exrow .tag{position:absolute;left:8px;top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:rgba(16,16,16,.82);color:#f4f4f2;border-radius:5px;padding:4px 6px}
+.exrow .t{display:flex;flex-direction:column;gap:10px;min-width:0}
+.exrow .t b{font-size:20px;font-weight:400;line-height:1.2}
+.exrow .t p{font-size:16px}
+@media (max-width:760px){.exrow{grid-template-columns:minmax(0,140px) minmax(0,1fr);gap:16px}.exrow .t b{font-size:17px}.exrow .t p{font-size:14px}}
+
+/* композиции кадра: мини-кадры 9:16 */
+.frames{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:680px}
+.frm{display:flex;flex-direction:column;gap:10px;min-width:0}
+.frm .k{aspect-ratio:9/16;max-width:100%;border:1px solid var(--stroke);border-radius:8px;background:var(--card);position:relative;overflow:hidden}
+.frm .k i{position:absolute;display:block;border-radius:4px}
+.frm .sp{background:var(--line-m)}
+.frm .gr{background:var(--accent);opacity:.85}
+.frm .tx{background:var(--ink);height:5px!important;border-radius:2px!important}
+.frm b{font-size:16px;font-weight:400;line-height:1.2}
+.frm span{font-size:14px;line-height:1.4}
+@media (max-width:760px){.frames{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* дорожка ритма */
+.rhythm{display:flex;flex-direction:column;gap:10px}
+.lane{display:flex;gap:3px;height:44px;min-width:0}
+.lane i{display:grid;place-items:center;border-radius:6px;font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;font-style:normal;color:var(--ink);min-width:0;overflow:hidden}
+.lane .s{background:var(--well)}
+.lane .g{background:var(--accent);color:var(--accent-ink)}
+.lane .t{background:var(--line-m)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend span::before{content:"";width:12px;height:12px;border-radius:3px;background:var(--c)}
+.lane-cap{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+
+/* синхрон: слова и кадры */
+.sync{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{border:1px solid var(--stroke);border-radius:6px;padding:7px 10px;color:var(--dim);font-size:16px}
+.words span.hit{border-color:var(--accent);color:var(--ink)}
+.words span.hit::after{content:attr(data-f);display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--accent);margin-top:3px}
+</style>
+
+<style>
+.ex.c3{--n:3}
+@media (max-width:760px){.ex.c3{--n:1}}
+.pipe{display:flex;flex-wrap:wrap;gap:6px}
+.pipe span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--stroke);border-radius:6px;padding:7px 10px;color:var(--dim)}
+.pipe span.on{border-color:var(--accent);color:var(--ink)}
+.pipe span:not(:last-child)::after{content:"→";margin-left:10px;color:var(--faint)}
+.slides{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.slides.one{grid-template-columns:minmax(0,1fr);max-width:640px}
+.slides.one.wide{max-width:none}
+.slide{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.slide img{display:block;width:100%;height:auto;background:#f3f0ea}
+.slide figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.slide figcaption b{font-size:16px;font-weight:400;line-height:1.25}
+.slide figcaption span:last-child{font-size:14px;line-height:1.4}
+.slide .kind{color:var(--accent)}
+@media (max-width:860px){.slides{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.slides{grid-template-columns:minmax(0,1fr)}}
+.lane-cap{display:block}
+.slides.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:860px){.slides.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+ГАЙД ДЛЯ СТУДЕНТОВ</span><span>MISSION TO MOTION
+4 ЭТАПА И КВИЗ</span></div>
+  <h1>Разговорное видео</h1>
+  <p class="lead"><b>Как превратить подкаст, интервью или монолог в ролик, который досматривают.</b> Четыре этапа в том порядке, в котором ты пройдёшь их в работе: концепция, раскадровка, анимация, монтаж. В каждом примеры, сравнения и задание.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav aria-label="Разделы">
+    <a href="#formaty" data-n="00">Форматы и ритм</a><a href="#u1" data-n="01">Концепция и исходник</a><a href="#u2" data-n="02">Раскадровка</a><a href="#u3" data-n="03">Анимация и типографика</a><a href="#u4" data-n="04">Монтаж и переходы</a><a href="#quiz" data-n="05">Квиз</a><a href="#check" data-n="06">Чек-лист</a>
+  </nav>
+</header>
+
+<section id="start">
+<div class="corner"><span>PERASPERADASTRA
+РАЗГОВОРНОЕ ВИДЕО</span><span>КАК ЧИТАТЬ</span></div>
+  <h2>Как пользоваться гайдом</h2>
+  <div class="pipe" aria-label="Путь ролика">
+    <span>история</span><span>концепция</span><span>сценарий</span><span class="on">раскадровка</span><span>дизайн</span><span>генерации</span><span class="on">анимация</span><span>звук</span><span class="on">монтаж</span>
+  </div>
+  <p>Так в Perasperadastra делается любой ролик. Гайд собран в четыре этапа по этому пути, и на каждом ты двигаешь свой ролик дальше.</p>
+  <ol class="steps">
+    <li><div><div class="t">Возьми исходник заранее</div><div class="d">Свой подкаст, интервью, эфир школы или монолог на камеру. Все задания делаются на нём.</div></div></li>
+    <li><div><div class="t">Иди по этапам и делай задание в конце каждого</div><div class="d">После четвёртого этапа у тебя на руках готовый ролик, сценарий и раскадровка для портфолио.</div></div></li>
+    <li><div><div class="t">Перед сдачей пройди квиз и чек-лист</div><div class="d">Если пункт не отмечается, вернись к этапу по ссылке.</div></div></li>
+  </ol>
+  <div class="note"><b>Про примеры</b><p>Ролики играют без звука, когда доходишь до них. Кнопка «звук» в углу включает звук у одного ролика. Оранжевая рамка отмечает работы Perasperadastra, остальное это референсы с эфиров и из презентаций курса.</p></div>
+</section>
+
+<section id="formaty">
+<div class="corner"><span>PERASPERADASTRA
+РАЗГОВОРНОЕ ВИДЕО</span><span>ВСТУПЛЕНИЕ
+ФОРМАТЫ И РИТМ</span></div>
+  <h2>Голос ведёт, картинка удерживает</h2>
+  <p class="quote">Человек в кадре даёт смысл. Твоя задача сделать так, чтобы этот смысл досмотрели.</p>
+  <p>Разговорное видео держится на голосе: история, факт, мнение. Визуал работает как второй рассказчик. Он подчёркивает главное, показывает то, что сложно представить, и не даёт глазу заскучать на говорящей голове.</p>
+  <h3>Шесть форматов</h3>
+  <div class="ex c6">
+
+<figure class="vid own"><div class="shot"><img src="img/speaker.jpg" alt="Спикер в кепке и перебивки с крупным текстом" loading="lazy"><video src="vid/speaker.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Нарезка спикера</span></div><figcaption><b>Монолог на камеру</b><span>Спикер чередуется с перебивками на красном фоне: крупная фраза, знак рубля, цифры. Субтитры идут по словам.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/podcast.jpg" alt="Спикер в зелёной карточке и крупные слова" loading="lazy"><video src="vid/podcast.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Подкаст</span></div><figcaption><b>Фрагмент подкаста</b><span>Спикер уменьшен до карточки, вокруг крупные слова. Между фразами B-roll: книга, грейдинг, город.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/archive-mix.jpg" alt="Архивное интервью в коллаже" loading="lazy"><video src="vid/archive-mix.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Архивное интервью</span></div><figcaption><b>Чужой голос, своя подача</b><span>Архивная запись то на весь кадр, то наклеена на лист. Между ними плакаты, руки, барабанщик и цитата постером.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/self.jpg" alt="Блогер в комнате, текст в пространстве" loading="lazy"><video src="vid/self.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Селф-видео</span></div><figcaption><b>Блогер о своём опыте</b><span>Блогер в разных локациях, перебивки экранами кода. Слова стоят за спиной героя и встроены в пространство.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/story.jpg" alt="Девушка рассказывает историю на камеру" loading="lazy"><video src="vid/story.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Повествование</span></div><figcaption><b>История от первого лица</b><span>Рассказ про основателя Red Bull. Спикер в одном плане, а каждый факт подкреплён вырезкой: банка, архив, коллаж.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/buffett.jpg" alt="Коллаж с фигуркой Баффета" loading="lazy"><video src="vid/buffett.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">История компании</span></div><figcaption><b>Эксплейнер без лица</b><span>Голос за кадром, спикера нет вовсе. Каждая фраза получает свою сцену-коллаж с крупным словом.</span></figcaption></figure>
+  </div>
+  <h3>Треугольник коммуникации</h3>
+  <p>Любой ролик держится на трёх опорах. Если одна проседает, ролик ощущается пустым, даже когда анимация сделана чисто.</p>
+  <div class="three">
+    <div class="box"><span class="kind">История</span><b>Что мы рассказываем?</b><p>Мысль, которую зритель унесёт с собой. Её выбирают на этапе 01.</p></div>
+    <div class="box"><span class="kind">Концепция</span><b>Какая идея лежит в основе?</b><p>Визуальная метафора или приём, через который подаём историю. Её ищут на этапах 01 и 02.</p></div>
+    <div class="box"><span class="kind">Ритм</span><b>Как сделать это интересно?</b><p>Чередование кадров, графики и звука. Его строят на этапах 02–04.</p></div>
+  </div>
+  <h3>Ритм = повтор + интервал + вариация</h3>
+  <p>Ритм это чередование элементов с определённой последовательностью. Он управляет вниманием, передаёт настроение и создаёт динамику. Ниже первые 30 секунд нарезки, где спикер, графика и типографика сменяют друг друга.</p>
+  <div class="rhythm">
+    <span class="lane-cap">0 с</span>
+    <div class="lane" role="img" aria-label="Дорожка из 30 секунд: спикер, графика, спикер, текст, графика, спикер, графика, текст, спикер">
+      <i class="s" style="flex:4">спикер</i><i class="g" style="flex:2">граф.</i><i class="s" style="flex:3">спикер</i><i class="t" style="flex:2">текст</i><i class="g" style="flex:4">графика</i><i class="s" style="flex:5">спикер</i><i class="g" style="flex:3">граф.</i><i class="t" style="flex:2">текст</i><i class="s" style="flex:5">спикер</i>
+    </div>
+    <span class="lane-cap" style="text-align:right">30 с</span>
+    <div class="legend"><span style="--c:var(--well)">Спикер в кадре</span><span style="--c:var(--accent)">Графика, архив, B-roll</span><span style="--c:var(--line-m)">Крупная типографика</span></div>
+  </div>
+  <div class="pair">
+    <div class="bad"><i>Скучно</i><span>Спикер 40 секунд подряд в одном плане, внизу субтитры.</span><small>Глаз ничего не ждёт, палец листает дальше.</small></div>
+    <div class="good"><i>Ритм</i><span>План меняется каждые 2–5 секунд: крупнее, графика, слово на весь кадр, снова спикер.</span><small>Каждая смена обещает что-то новое.</small></div>
+  </div>
+  <p class="why">Обратная ошибка тоже бывает: всё мигает, двигается и звенит, и зритель теряет смысл. Дизайнер всегда ищет баланс между «скучно» и «сложно».</p>
+</section>
+
+<!-- ЭТАП 1 -->
+<section id="u1">
+<div class="corner"><span>PERASPERADASTRA
+РАЗГОВОРНОЕ ВИДЕО</span><span>ЭТАП 01
+КОНЦЕПЦИЯ И ИСХОДНИК</span></div>
+  <div class="head"><h2>Концепция и исходник</h2></div>
+  <p class="quote">Плохой фрагмент не спасёт никакая анимация. Хороший смотрят даже без неё.</p>
+  <p>На этом этапе ты решаешь, что рассказываешь и через какую идею. Из часового разговора в ролик идёт 30–90 секунд, и выбор этого куска решает больше, чем всё остальное.</p>
+
+  <h3>Погрузись в тему</h3>
+  <ol class="steps">
+    <li><div><div class="t">Посмотри 10–20 похожих роликов</div><div class="d">Отметь, что работает, а что нет: где ты досмотрел до конца, где пролистал и почему.</div></div></li>
+    <li><div><div class="t">Выбери музыку заранее</div><div class="d">Её ритм определит темп анимации и монтажа. Менять трек в конце значит переделывать синхрон.</div></div></li>
+    <li><div><div class="t">Ответь на три вопроса</div><div class="d">Что делает эту историю особенной? Какую проблему или интерес зрителя она закрывает? Кто аудитория: студенты, профессионалы, широкая публика?</div></div></li>
+  </ol>
+
+  <h3>Что делает фрагмент сильным</h3>
+  <div class="four">
+    <div class="box"><span class="kind">01</span><b>Законченная мысль</b><p>У куска есть начало и вывод. Зритель без контекста понимает, о чём речь.</p></div>
+    <div class="box"><span class="kind">02</span><b>Крючок в первой фразе</b><p>Вопрос, цифра, спорное утверждение. Первые три секунды решают, досмотрят ли.</p></div>
+    <div class="box"><span class="kind">03</span><b>Конкретика</b><p>Имена, цифры, случаи. Их легко визуализировать, в отличие от общих слов.</p></div>
+    <div class="box"><span class="kind">04</span><b>Эмоция</b><p>Смех, спор, признание, удивление. Живая интонация держит лучше гладкой.</p></div>
+  </div>
+  <div class="pair">
+    <div class="bad"><i>Плохо</i><span>«Ну, вот, значит, мы тогда как раз начали думать про то, как в целом строить работу с клиентами…»</span><small>Три секунды ушли на разгон. Зритель уже листает.</small></div>
+    <div class="good"><i>Хорошо</i><span>«Первый заказ я сделал за три тысячи рублей. Через год за тот же проект брал в двадцать раз больше».</span><small>Цифра и обещание истории. Хочется узнать, что случилось за год.</small></div>
+  </div>
+
+<div class="exrow"><div class="shot"><img src="img/speaker.jpg" alt="Спикер в кепке объясняет" loading="lazy"><video src="vid/speaker.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Нарезка спикера</span></div><div class="t"><span class="mono">Perasperadastra · ценообразование</span><b>Одна тема, один вывод</b><p>Ролик держится на одной мысли: объективной цены нет. Речь плотная, паузы вырезаны, а главные фразы вынесены на красные перебивки крупным текстом.</p></div></div>
+<div class="exrow"><div class="shot"><img src="img/story.jpg" alt="Девушка рассказывает историю" loading="lazy"><video src="vid/story.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Повествование</span></div><div class="t"><span class="mono">Референс · история Red Bull</span><b>Начало с даты и героя</b><p>Рассказ стартует сразу с сути: год, человек, что он сделал. Никаких «привет, сегодня расскажу». Сюжет сам тянет к развязке, а вырезки подтверждают факты.</p></div></div>
+
+  <h3>Структура сюжета</h3>
+  <div class="four">
+    <div class="box"><span class="kind">Завязка</span><p>Крючок и контекст: о чём речь и почему это важно.</p></div>
+    <div class="box"><span class="kind">Развитие</span><p>Факты, примеры, нарастание. Здесь больше всего сцен.</p></div>
+    <div class="box"><span class="kind">Кульминация</span><p>Главная мысль или поворот. Под неё сохрани самый сильный визуальный приём.</p></div>
+    <div class="box"><span class="kind">Финал</span><p>Вывод, который зритель унесёт. Можно вернуться к образу из начала.</p></div>
+  </div>
+
+  <h3>Концепция: устрой гонку</h3>
+  <p class="quote">Дизайнер должен устроить гонку между концепциями.</p>
+  <p>Не останавливайся на первой идее. Придумай две-три подачи одного фрагмента и сравни их по треугольнику: насколько ясно рассказывают историю, насколько оригинальна идея, какой ритм дают.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Вариант A</span><b>Буквально</b><p>Спикер и крупная типографика на ключевых словах. Быстро и надёжно.</p></div>
+    <div class="box"><span class="kind">Вариант B</span><b>Через материал</b><p>Архив, интерфейсы, коллаж из реальных предметов темы.</p></div>
+    <div class="box hot"><span class="kind">Вариант C</span><b>Через метафору</b><p>Одна сквозная идея: история бренда как полёт, кризис как игровой автомат.</p></div>
+  </div>
+
+  <h3>Расшифровка и бумажный монтаж</h3>
+  <p>Текст с таймкодами это карта ролика. По ней ты режешь, пишешь сценарий анимации и ставишь синхрон.</p>
+  <dl>
+    <dt>Premiere Pro</dt><dd>Панель Text → Transcribe. Удаляешь слова в тексте, и монтаж обрезается вместе с ними.</dd>
+    <dt>DaVinci Resolve</dt><dd>Транскрипция клипа в медиапуле или субтитры из аудио на таймлайне.</dd>
+    <dt>Whisper и сервисы</dt><dd>Если монтажка не умеет, расшифруй отдельно и выгрузи в SRT с таймкодами.</dd>
+  </dl>
+  <ol class="steps">
+    <li><div><div class="t">Вычеркни лишнее в тексте</div><div class="d">Разгоны, повторы, «ну», «как бы», оговорки, вторые попытки сказать ту же фразу.</div></div></li>
+    <li><div><div class="t">Прочитай вслух то, что осталось</div><div class="d">Если мысль понятна и звучит естественно, это твой сценарий. Если нет, верни нужную связку.</div></div></li>
+    <li><div><div class="t">Проверь имена и цифры руками</div><div class="d">Автоматическая расшифровка в них ошибается, а из этого текста потом сделаешь субтитры.</div></div></li>
+  </ol>
+
+  <div class="task"><i>Задание этапа</i><b>Выбери фрагмент 30–90 секунд, сделай расшифровку и опиши три концепции подачи.</b><p>Для каждой концепции одна строка: идея и главный визуальный приём. Выбери одну и объясни выбор через треугольник коммуникации.</p></div>
+  <p class="next">Дальше: <a href="#u2">рисуем раскадровку</a></p>
+</section>
+
+<!-- ЭТАП 2 -->
+<section id="u2">
+<div class="corner"><span>PERASPERADASTRA
+РАЗГОВОРНОЕ ВИДЕО</span><span>ЭТАП 02
+РАСКАДРОВКА</span></div>
+  <div class="head"><h2>Раскадровка: мост между сценарием и анимацией</h2></div>
+  <p class="quote">Если при просмотре раскадровки видео уже «слышится» и «движется», концепция живая.</p>
+  <p>Раскадровка показывает, как история развивается в динамике, вскрывает слабые места до продакшна и экономит больше всего времени. Без неё анимация часто выходит хаотичной: переходы резкие, главное не подчёркнуто.</p>
+  <div class="four">
+    <div class="box"><span class="kind">Проверка сценария</span><p>Всё ли визуализируется, нет ли пустых мест.</p></div>
+    <div class="box"><span class="kind">Контроль ритма</span><p>Видно, где сцены слишком длинные или короткие.</p></div>
+    <div class="box"><span class="kind">Общий язык</span><p>Раскадровку понимают дизайнер, аниматор и заказчик.</p></div>
+    <div class="box"><span class="kind">Экономия</span><p>Ошибку проще исправить в скетче, чем в After Effects.</p></div>
+  </div>
+
+  <h3>Пять шагов</h3>
+  <ol class="steps">
+    <li><div><div class="t">Разбей сценарий на сцены</div><div class="d">Одна сцена это одна мысль. Оптимально 8–12 сцен на минуту. Для каждой пропиши действие, текст или голос, эмоцию и задачу: зачем сцена существует.</div></div></li>
+    <li><div><div class="t">Подбери метафоры</div><div class="d">По 1–2 образа на сцену. Переведи смысл в действие или объект: «рост бренда» может стать деревом, лестницей, светом. Ищи контраст: доверие можно показать не рукопожатием, а мостом, который держит двух людей.</div></div></li>
+    <li><div><div class="t">Собери референсы</div><div class="d">2–3 на сцену, с подписью, что берёшь: «композиция по центру», «свет из-за спины», «движение push-in». Кадры из кино ищи на flim.ai, frameset.app, film-grab.com.</div></div></li>
+    <li><div><div class="t">Нарисуй эскизы</div><div class="d">От руки, в Figma или Procreate. В кадре главное действие, ключевой элемент, направление движения и подпись с таймингом. Цель не красиво, а понятно.</div></div></li>
+    <li><div><div class="t">Проверь ритм</div><div class="d">Есть ли завязка, развитие, кульминация и финал? Нет ли подряд однотипных планов? Собери черновой аниматик из кадров с музыкой: он сразу покажет, где скучно.</div></div></li>
+  </ol>
+  <p class="why">Правило проверки: раскадровку должен понять человек, который не писал сценарий.</p>
+
+  <h3>Начни с текстовой иерархии</h3>
+  <p>В разговорном ролике раскадровка растёт из слов. Внутри каждой сцены реши, какие слова станут акцентом, выстрой иерархию и разложи фразы по кадрам. Так сразу видно, какие сцены потребуют сильного визуального решения.</p>
+  <div class="slides one">
+
+<figure class="slide"><img src="img/sb-hier.jpg" alt="Три кадра раскадровки: стоп, по AI, не прокачает" loading="lazy"><figcaption><span class="kind">Текстовая иерархия</span><b>«Стоп» → «по AI» → «не прокачает»</b><span>Короткая фраза работает как резкий акцент, крупная типографика усиливает мысль, а разбивка на кадры управляет вниманием.</span></figcaption></figure>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Таймкод</th><th>Фраза</th><th>Что в кадре</th><th>Приём</th></tr>
+    <tr><td>00:00</td><td>«Первый заказ я сделал за три тысячи рублей»</td><td>Спикер крупно, «3 000 ₽» вылетает рядом с лицом</td><td>Цифра типографикой</td></tr>
+    <tr><td>00:03</td><td>«Через год за тот же проект брал в двадцать раз больше»</td><td>Цифра перещёлкивается до «60 000 ₽», спикер уходит в карточку</td><td>Смена композиции</td></tr>
+    <tr><td>00:07</td><td>«Дело было не в навыках»</td><td>Пустой кадр, одно слово «навыки» перечёркнуто</td><td>Типографическая пауза</td></tr>
+    <tr><td>00:10</td><td>«Я просто перестал продавать часы»</td><td>Циферблат, стрелки которого превращаются в знак рубля</td><td>Метафора</td></tr>
+  </table></div>
+  <p class="why">Пример условный. В своей таблице следи, чтобы в столбце «Приём» не стояли подряд три одинаковых.</p>
+
+  <h3>Усилители сюжета</h3>
+  <p>От типографики переходим к образам. Одну и ту же фразу можно раскрыть очень по-разному, поэтому пробуй несколько вариантов.</p>
+  <div class="slides">
+
+<figure class="slide"><img src="img/sb-evo.jpg" alt="Метафора обратной эволюции" loading="lazy"><figcaption><span class="kind">Метафора</span><b>«Тебя это никак не прокачает»</b><span>Обратная эволюция показывает отсутствие роста без практики.</span></figcaption></figure>
+<figure class="slide"><img src="img/sb-culture.jpg" alt="Отсылка к Тайной вечере" loading="lazy"><figcaption><span class="kind">Культурная отсылка</span><b>«Лучшие нейрокреаторы»</b><span>Композиция «Тайной вечери» мгновенно считывается и добавляет иронии.</span></figcaption></figure>
+<figure class="slide"><img src="img/sb-literal.jpg" alt="Слово кнопки из клавиш" loading="lazy"><figcaption><span class="kind">Буквальная подача</span><b>«Научились нажимать на кнопки»</b><span>Фраза буквально выложена клавишами. Самый быстрый способ, когда метафора не нужна.</span></figcaption></figure>
+  </div>
+  <dl>
+    <dt>Ещё усилители</dt><dd>Контекст, мемы и визуальный язык интернета, объекты и предметы, случайные образы, атмосфера, игровые отсылки, инфографика.</dd>
+  </dl>
+  <div class="ex c6">
+
+<figure class="vid"><div class="shot"><img src="img/netflix.jpg" alt="Окно CD-плеера" loading="lazy"><video src="vid/netflix.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Метафора</span></div><figcaption><b>Новость в старом плеере</b><span>Сделка подана через окно плеера из 90-х, график «медленного падения», пачки денег.</span></figcaption></figure>
+<figure class="vid own"><div class="shot"><img src="img/pad-fonts.jpg" alt="Игровой автомат со шрифтами" loading="lazy"><video src="vid/pad-fonts.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Perasperadastra</span></div><figcaption><b>Шрифтовая лудомания</b><span>Выбор шрифта как игровой автомат: барабаны, свайпы, джекпот.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/nike.jpg" alt="Логотип Nike" loading="lazy"><video src="vid/nike.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Метонимия</span></div><figcaption><b>Nike одной галочкой</b><span>Галочка и слоган возвращаются как опорные образы между кадрами спорта.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/ferrari.jpg" alt="Архивное фото Ferrari" loading="lazy"><video src="vid/ferrari.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Архив</span></div><figcaption><b>Ferrari через архив</b><span>Архивные фото и красные плашки с годами. Хронология видна даже без звука.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/lego.jpg" alt="Архивный кадр Lego" loading="lazy"><video src="vid/lego.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Архив</span></div><figcaption><b>Lego: игрушка или искусство</b><span>Хроника и наборы, поверх слова курсивной антиквой.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/reynolds.jpg" alt="Шахматный король и слово" loading="lazy"><video src="vid/reynolds.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Типографика + образ</span></div><figcaption><b>Герой карточкой</b><span>Белое поле, слова по одному, точечные метафоры: шахматный король, прожектор.</span></figcaption></figure>
+  </div>
+
+  <h3>Визуальные паузы</h3>
+  <p>Не каждая сцена должна быть сложной метафорой. Простые кадры дают передышку между насыщенными сценами, держат ритм и фокусируют внимание на самой мысли.</p>
+  <div class="slides one">
+
+<figure class="slide"><img src="img/sb-pause.jpg" alt="Сильная база рукописным шрифтом" loading="lazy"><figcaption><span class="kind">Типографическая пауза</span><b>Весь кадр держится на тексте</b><span>Два слова на белом поле после плотной сцены звучат громче любой графики.</span></figcaption></figure>
+  </div>
+  <div class="two">
+    <div class="box"><b>Типографические паузы</b><p>Одно-два слова на чистом фоне. Зритель успевает прочитать и выдохнуть.</p></div>
+    <div class="box"><b>Кадры с персонажем</b><p>Герой как точка внимания: спикер, иллюстрированный персонаж, рука в кадре. Подача становится живой.</p></div>
+  </div>
+
+  <h3>Контраст между кадрами</h3>
+  <p>Соседние кадры должны отличаться хотя бы одним параметром. Инструменты: размер, расположение, цвет, форма объекта, форма текста, ракурс.</p>
+  <div class="slides four">
+
+<figure class="slide"><img src="img/sb-scale.jpg" alt="Контраст масштаба" loading="lazy"><figcaption><span class="kind">Масштаб</span><b>Меняем размер внутри кадра</b><span>Мелкие фигуры, затем один огромный круг: тот же мотив, другой масштаб.</span></figcaption></figure>
+<figure class="slide"><img src="img/sb-shot.jpg" alt="Контраст крупности плана" loading="lazy"><figcaption><span class="kind">Крупность плана</span><b>Общий, потом крупный</b><span>Общий план даёт контекст, крупный усиливает акцент.</span></figcaption></figure>
+<figure class="slide"><img src="img/sb-density.jpg" alt="Контраст плотности" loading="lazy"><figcaption><span class="kind">Плотность</span><b>Пусто и заполнено</b><span>Много бутылок, затем одна. Пустота после плотности работает как акцент.</span></figcaption></figure>
+<figure class="slide"><img src="img/sb-typecontrast.jpg" alt="Контраст типографики" loading="lazy"><figcaption><span class="kind">Типографика</span><b>Разные шрифты, один стиль</b><span>Имя антиквой, дата огромным гротеском: кадры соседствуют, но не повторяются.</span></figcaption></figure>
+  </div>
+
+  <h3>Раскадровка по планам</h3>
+  <div class="slides one wide">
+
+<figure class="slide"><img src="img/sb-plans.jpg" alt="Раскадровка часов Omega по планам" loading="lazy"><figcaption><span class="kind">Монтаж по Соколову</span><b>Миксуй планы</b><span>Дальний, общий, второй и первый средний, крупный, деталь. Чередование крупностей самый простой лайфхак для ритма.</span></figcaption></figure>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>План</th><th>Что показывает</th><th>Когда ставить</th></tr>
+    <tr><td>Дальний</td><td>Место целиком</td><td>Вход в историю, смена локации</td></tr>
+    <tr><td>Общий</td><td>Героя и окружение</td><td>Контекст: где и с кем</td></tr>
+    <tr><td>Средний</td><td>Героя по пояс или по колено</td><td>Действие, жесты, основная часть разговора</td></tr>
+    <tr><td>Крупный</td><td>Лицо или предмет</td><td>Эмоция и акцент</td></tr>
+    <tr><td>Деталь</td><td>Фрагмент: глаза, кнопка, текстура</td><td>Самый сильный акцент, перебивка</td></tr>
+  </table></div>
+
+  <h3>Четыре композиции разговорного ролика</h3>
+  <div class="frames">
+    <div class="frm"><div class="k" aria-hidden="true"><i class="sp" style="left:12%;right:12%;top:30%;bottom:0;border-radius:40% 40% 0 0"></i><i class="tx" style="left:28%;right:28%;bottom:16%"></i></div><b>Спикер на весь кадр</b><span>База. Субтитры по центру, графика точечно рядом с лицом.</span></div>
+    <div class="frm"><div class="k" aria-hidden="true"><i class="gr" style="left:10%;right:10%;top:8%;height:30%"></i><i class="sp" style="left:22%;right:22%;top:48%;height:32%"></i><i class="tx" style="left:22%;right:40%;top:84%"></i></div><b>Спикер в карточке</b><span>Видео уменьшено, вокруг место для графики и текста.</span></div>
+    <div class="frm"><div class="k" aria-hidden="true"><i class="gr" style="left:0;right:0;top:0;height:50%;border-radius:0"></i><i class="sp" style="left:0;right:0;bottom:0;height:50%;border-radius:0"></i></div><b>Сплит</b><span>Сверху то, о чём речь, снизу спикер.</span></div>
+    <div class="frm"><div class="k" aria-hidden="true"><i class="gr" style="left:8%;right:8%;top:20%;bottom:20%"></i><i class="tx" style="left:20%;right:20%;top:12%"></i></div><b>Полный перебив</b><span>Только графика, голос за кадром. Для главной мысли.</span></div>
+  </div>
+  <div class="ex c4">
+
+<figure class="vid"><div class="shot"><img src="img/podcast.jpg" alt="Спикер в зелёной карточке" loading="lazy"><video src="vid/podcast.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Карточка</span></div><figcaption><b>Подкаст в карточке</b><span>Спикер собран в маленький кадр, поле отдано словам. Карточка чередуется с полноэкранным B-roll.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/archive-mix.jpg" alt="Интервью на листе бумаги" loading="lazy"><video src="vid/archive-mix.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Микс композиций</span></div><figcaption><b>Интервью как коллаж</b><span>Видео то на всё поле, то наклеено на лист, то спрятано под плакат.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/self.jpg" alt="Блогер и текст в пространстве" loading="lazy"><video src="vid/self.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Текст за героем</span></div><figcaption><b>Слова в пространстве</b><span>Слова стоят за спиной спикера, перебивки экранами кода дают передышку от лица.</span></figcaption></figure>
+<figure class="vid own"><div class="shot"><img src="img/pad-honkai.jpg" alt="Спикер у монумента" loading="lazy"><video src="vid/pad-honkai.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Perasperadastra</span></div><figcaption><b>Кейс Honkai и ВДНХ</b><span>Типографика, интерфейс бота, 3D-карта, фото со стенда и спикер у монумента в финале.</span></figcaption></figure>
+  </div>
+
+  <h3>Чего избегать</h3>
+  <div class="slides one">
+
+<figure class="slide"><img src="img/sb-overdesign.jpg" alt="Сравнение чистого кадра и перегруженного" loading="lazy"><figcaption><span class="kind">Передизайн</span><b>Слишком много всего</b><span>Когда в кадре много деталей и шума, внимание рассеивается. Сверху кадр читается, снизу уже нет.</span></figcaption></figure>
+  </div>
+  <div class="two">
+    <div class="box"><b>Принципы хорошей раскадровки</b><ul><li>Одна мысль, одна сцена.</li><li>Динамика внутри: даже статичный кадр несёт импульс, взгляд, линию, направление.</li><li>Ритм крупностей: общий → средний → крупный.</li><li>Паузы: пустой кадр это момент восприятия.</li><li>Фокус: в каждом кадре понятно, что главное.</li><li>Последовательность: движения, цвета и формы логично переходят из кадра в кадр.</li></ul></div>
+    <div class="box"><b>Нейросети в пайплайне</b><ul><li><b>Чистый лист.</b> Готового решения нейросеть редко даёт, но первые образы найти помогает.</li><li><b>Образы.</b> Уникальные объекты, которые долго собирать из стоков.</li><li><b>Персонаж.</b> Свой визуальный герой делает рубрику узнаваемой.</li><li><b>Композиция.</b> Быстрые скетчи, чтобы оценить сцену до разработки.</li></ul></div>
+  </div>
+  <p class="why">Собери айдентику ролика: шрифты, цвета, приёмы. Важно не только сделать красивые кадры, но и придумать стиль, который держится от первой сцены до последней.</p>
+
+  <div class="task"><i>Задание этапа</i><b>Собери раскадровку на 8–15 кадров в Figma.</b><p>Начни с текстовой иерархии, подбери 1–2 образа и 2–3 референса на сцену. Используй минимум три композиции и хотя бы одну визуальную паузу. Положи кадры в ряд и проверь, что соседние отличаются.</p></div>
+  <p class="next">Дальше: <a href="#u3">оживляем кадры</a></p>
+</section>
+
+<!-- ЭТАП 3 -->
+<section id="u3">
+<div class="corner"><span>PERASPERADASTRA
+РАЗГОВОРНОЕ ВИДЕО</span><span>ЭТАП 03
+АНИМАЦИЯ И ТИПОГРАФИКА</span></div>
+  <div class="head"><h2>Анимация и типографика</h2></div>
+  <p class="quote">В моушене текст живёт на экране секунды. Его надо считать мгновенно.</p>
+  <p>В разговорном ролике типографика главный инструмент: она выносит смысл, задаёт ритм и держит стиль. Текст здесь почти всегда заголовочный и краткий.</p>
+
+  <h3>Шесть правил типографики в моушене</h3>
+  <ol class="steps">
+    <li><div><div class="t">Читаемость важнее всего</div><div class="d">В статике у читателя сколько угодно времени, в моушене секунды. Если зритель не успевает прочитать, текста слишком много или он слишком быстро уходит.</div></div></li>
+    <li><div><div class="t">Сначала статика, потом движение</div><div class="d">Кадр должен работать до анимации. Кривой кернинг, слабую иерархию и плохой контраст с фоном движение не спасёт.</div></div></li>
+    <li><div><div class="t">Движение тоже иерархия</div><div class="d">В статике иерархию задают размер, цвет и начертание. В моушене добавляется движение: то, что двигается, притягивает взгляд. Анимируй главное, а не всё подряд.</div></div></li>
+    <li><div><div class="t">Контраст движения и покоя</div><div class="d">Если двигается всё, глазу не за что зацепиться. Иногда сильнее всего оставить ключевое слово неподвижным, пока вокруг всё движется.</div></div></li>
+    <li><div><div class="t">Типографика работает со звуком</div><div class="d">Текст, который появляется в момент произнесения слова или на бите, ощущается профессионально. Рассинхрон зритель чувствует как «дёшево».</div></div></li>
+    <li><div><div class="t">Текст и графика не конкурируют</div><div class="d">Реши заранее, кто главный в кадре: текст на чистом фоне или текст как подпись к картинке. Если они борются, проигрывают оба.</div></div></li>
+  </ol>
+  <div class="slides one wide">
+
+<figure class="slide"><img src="img/ty-static.jpg" alt="Сравнение собранного и несобранного кадра" loading="lazy"><figcaption><span class="kind">Сначала статика</span><b>Один кадр, два состояния</b><span>Слева кадр собран: иерархия, кернинг, контраст. Справа тот же кадр без этой работы, и никакая анимация его не вытянет.</span></figcaption></figure>
+  </div>
+  <div class="ex c4">
+
+<figure class="vid h"><div class="shot"><img src="img/ty-motion.jpg" alt="Кинетическая типографика: хаос на дорогах" loading="lazy"><video src="vid/ty-motion.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Движение = иерархия</span></div><figcaption><b>Анимируй главное</b><span>Каждый кадр строится вокруг одного крупного слова, остальное поддерживает его.</span></figcaption></figure>
+<figure class="vid"><div class="shot"><img src="img/ty-sound.jpg" alt="Вертикальный ролик со скрепкой и печатной машинкой" loading="lazy"><video src="vid/ty-sound.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Типографика + звук</span></div><figcaption><b>Слово на звук</b><span>Слова и объекты появляются ровно в момент произнесения. Включи звук.</span></figcaption></figure>
+  </div>
+
+  <h3>Заголовок в кадре</h3>
+  <div class="two">
+    <div class="box"><b>Акценты внутри фразы</b><ul><li>Не больше двух стилей в одном заголовке. Цвет, шрифт и размер сразу дают хаос.</li><li>Все слова стоят на одной базовой линии.</li><li>Два начертания должны отличаться сразу, иначе выглядит как ошибка.</li><li>Тонкий курсив и контур проверяй на телефоне и на фоне.</li></ul></div>
+    <div class="box"><b>Шрифтовая пара</b><ul><li>Акцидентный шрифт для акцентов, наборный для субтитров.</li><li>В ролике не больше 2–3 шрифтов.</li><li>Пара должна явно различаться. Две гарнитуры одной семьи читаются как одна.</li><li>Крупный кегль: интерлиньяж 1.1–1.2 вместо обычных 1.3.</li></ul></div>
+  </div>
+  <div class="ex c2">
+
+<figure class="vid h"><div class="shot"><img src="img/self-type.jpg" alt="Героиня на фоне огромного слова" loading="lazy"><video src="vid/self-type.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Текст за героем</span></div><figcaption><b>Огромные слова</b><span>Слова стоят позади героини и перекрываются ею. Приём один, но в каждом плане решён по-новому.</span></figcaption></figure>
+<figure class="vid h"><div class="shot"><img src="img/episode.jpg" alt="Архивное фото и слово" loading="lazy"><video src="vid/episode.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Слово за словом</span></div><figcaption><b>Один кадр, одно слово</b><span>Архивные фото и слова по одному на белом поле. Ритм задаёт сама речь.</span></figcaption></figure>
+  </div>
+
+  <h3>Сборка в After Effects</h3>
+  <ol class="steps">
+    <li><div><div class="t">Композиция под площадку</div><div class="d">Для Reels, Shorts и TikTok 1080×1920, частота кадров как у исходника.</div></div></li>
+    <li><div><div class="t">Подложка и маркеры</div><div class="d">Черновой монтаж внизу, маркеры на ключевых словах по таймкодам сценария.</div></div></li>
+    <li><div><div class="t">Прекомпозиция на каждую сцену</div><div class="d">Одна строка раскадровки, одна прекомпозиция с понятным именем: «03_цифра_60к».</div></div></li>
+    <li><div><div class="t">Стиль один раз</div><div class="d">Шрифты, цвета и субтитры задай в первой сцене и копируй дальше.</div></div></li>
+    <li><div><div class="t">Сначала грубо, потом детали</div><div class="d">Пройди ролик целиком простыми движениями, проверь ритм, потом изинги и мелочи.</div></div></li>
+  </ol>
+  <div class="two">
+    <div class="box"><b>Что перекрывает интерфейс</b><ul><li>Снизу подпись, ник и описание.</li><li>Справа кнопки лайка и комментариев.</li><li>Сверху название площадки.</li></ul></div>
+    <div class="box hot"><b>Где держать главное</b><ul><li>Лицо, субтитры и акценты в центральной части кадра.</li><li>Субтитры выше нижней трети.</li><li>Направляющий слой с интерфейсом площадки, выключенный на рендер.</li></ul></div>
+  </div>
+
+  <h3>Синхрон: самое важное</h3>
+  <div class="sync">
+    <span class="mono">Фраза и кадры появления графики при 25 к/с</span>
+    <div class="words"><span>Через</span><span>год</span><span>за</span><span>тот</span><span>же</span><span>проект</span><span>брал</span><span>в</span><span class="hit" data-f="кадр 61">двадцать</span><span>раз</span><span class="hit" data-f="кадр 78">больше</span></div>
+    <p>Цифра влетает на ударном слоге «двадцать», а не на начале фразы. Акцент «больше» ловит второе движение: укрупнение кадра.</p>
+  </div>
+  <ol class="steps">
+    <li><div><div class="t">Маркеры на ударных слогах</div><div class="d">Ставь их на слое звука во время воспроизведения, потом двигай по волне.</div></div></li>
+    <li><div><div class="t">Движение чуть раньше слова</div><div class="d">Анимации нужно 2–4 кадра на разгон, тогда пик движения совпадёт со звуком.</div></div></li>
+    <li><div><div class="t">Субтитры порциями по 1–4 слова</div><div class="d">Слово появляется, когда его произносят, не раньше.</div></div></li>
+  </ol>
+
+<div class="exrow"><div class="shot"><img src="img/nike.jpg" alt="Логотип Nike" loading="lazy"><video src="vid/nike.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Ритм</span></div><div class="t"><span class="mono">Референс · история компании + ритм</span><b>Слова выходят ровно со звуком</b><p>Короткие фразы ложатся на кадры спорта и рекламы в момент, когда их произносят. Смена плана совпадает с акцентом, и монтаж звучит как ритмичный текст.</p></div></div>
+
+  <div class="task"><i>Задание этапа</i><b>Оживи раскадровку в After Effects и поставь синхрон.</b><p>Сначала собери каждую сцену в статике и проверь читаемость с телефона. Потом анимируй только главное и подгони ключи под ударные слоги.</p></div>
+  <p class="next">Дальше: <a href="#u4">монтаж и переходы</a></p>
+</section>
+
+<!-- ЭТАП 4 -->
+<section id="u4">
+<div class="corner"><span>PERASPERADASTRA
+РАЗГОВОРНОЕ ВИДЕО</span><span>ЭТАП 04
+МОНТАЖ И ПЕРЕХОДЫ</span></div>
+  <div class="head"><h2>Монтаж и переходы</h2></div>
+  <p class="quote">Монтаж это про принципы, а не про программы.</p>
+  <p>На этом этапе ты склеиваешь речь, графику и звук в одно движение. Резка держит темп речи, переходы связывают кадры, звук собирает всё вместе.</p>
+
+  <h3>Как резать говорящую голову</h3>
+  <div class="scroll"><table>
+    <tr><th>Приём</th><th>Что делает</th><th>Когда</th></tr>
+    <tr><td>Jump cut</td><td>Склейка внутри одного плана, убирает паузу или слово</td><td>Базовая резка нарезок, каждые несколько секунд</td></tr>
+    <tr><td>Punch-in</td><td>После склейки кадр увеличен на 10–20%</td><td>Маскирует скачок и подчёркивает фразу</td></tr>
+    <tr><td>J-cut и L-cut</td><td>Звук начинается раньше картинки или тянется после неё</td><td>Переходы между спикером и графикой</td></tr>
+    <tr><td>Перебивка</td><td>Голос продолжается, в кадре графика или B-roll</td><td>Прячет склейку и показывает, о чём речь</td></tr>
+  </table></div>
+  <div class="pair">
+    <div class="bad"><i>Плохо</i><span>Склейка посреди слова или на вдохе, рот спикера прыгает.</span><small>Зритель слышит разрыв, даже если не понимает, что не так.</small></div>
+    <div class="good"><i>Хорошо</i><span>Склейка на границе фраз, вдохи убраны, кадр укрупнён.</span><small>Речь звучит как сказанная на одном дыхании.</small></div>
+  </div>
+
+  <h3>Переходы: клей между кадрами</h3>
+  <p>Думай о переходах как о логических связках: каждый мотивирован сценарием. Большинство переходов стремятся стать невидимыми.</p>
+  <span class="lane-cap">По движению объекта</span>
+  <div class="ex c3 wide">
+
+<figure class="vid h"><div class="shot"><img src="img/tr-rot-obj.jpg" alt="Вращение объекта" loading="lazy"><video src="vid/tr-rot-obj.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Вращение объекта</span></div><figcaption><b>Поворот продолжается</b><span>Кадр заканчивается вращением, следующий подхватывает это движение. Спроси себя, куда объект естественно повернёт дальше.</span></figcaption></figure>
+<figure class="vid h"><div class="shot"><img src="img/tr-zoom-obj.jpg" alt="Зум объекта" loading="lazy"><video src="vid/tr-zoom-obj.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Зум объекта</span></div><figcaption><b>Приближение с новой крупностью</b><span>Объект приближается к камере, следующий кадр продолжает движение с другим ракурсом или скоростью.</span></figcaption></figure>
+<figure class="vid h"><div class="shot"><img src="img/tr-slide-obj.jpg" alt="Слайд объекта" loading="lazy"><video src="vid/tr-slide-obj.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Слайд объекта</span></div><figcaption><b>Вектор движения</b><span>Главный объект продолжает движение во втором кадре. Определи вектор и продолжи его.</span></figcaption></figure>
+  </div>
+  <span class="lane-cap">По движению камеры</span>
+  <div class="ex c3 wide">
+
+<figure class="vid h"><div class="shot"><img src="img/tr-rot-cam.jpg" alt="Вращение камеры" loading="lazy"><video src="vid/tr-rot-cam.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Вращение камеры</span></div><figcaption><b>Поворот открывает новое</b><span>Вращение камеры показывает новые детали или локацию. Реши, что именно оно должно открыть.</span></figcaption></figure>
+<figure class="vid h"><div class="shot"><img src="img/tr-zoom-cam.jpg" alt="Зум камеры" loading="lazy"><video src="vid/tr-zoom-cam.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Зум камеры</span></div><figcaption><b>Зачем приближаемся</b><span>Зум показывает деталь или погружает в окружение. Определи, какой аспект сюжета он раскрывает.</span></figcaption></figure>
+<figure class="vid h"><div class="shot"><img src="img/tr-slide-cam.jpg" alt="Слайд камеры" loading="lazy"><video src="vid/tr-slide-cam.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Слайд камеры</span></div><figcaption><b>Новая локация</b><span>Камера смещается и открывает следующее место. Иди по порядку чтения: слева направо, снизу вверх.</span></figcaption></figure>
+  </div>
+  <span class="lane-cap">По композиции и другие</span>
+  <div class="ex c3 wide">
+
+<figure class="vid h"><div class="shot"><img src="img/tr-shape.jpg" alt="Переход по форме" loading="lazy"><video src="vid/tr-shape.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">По форме</span></div><figcaption><b>Мостик из формы</b><span>Кадр заканчивается круглой кнопкой, следующий начинается с похожей формы. Ищи повторяющиеся мотивы.</span></figcaption></figure>
+<figure class="vid h"><div class="shot"><img src="img/tr-color.jpg" alt="Переход по свету" loading="lazy"><video src="vid/tr-color.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">По цвету и свету</span></div><figcaption><b>Мостик из света</b><span>Световой рисунок или цветовое пятно переходит из кадра в кадр.</span></figcaption></figure>
+<figure class="vid h"><div class="shot"><img src="img/tr-detail.jpg" alt="Переход от детали" loading="lazy"><video src="vid/tr-detail.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">От детали</span></div><figcaption><b>Деталь к общему</b><span>Резкий или плавный отъезд от детали к общему виду: где эта деталь живёт в реальности.</span></figcaption></figure>
+<figure class="vid h"><div class="shot"><img src="img/tr-invisible.jpg" alt="Невидимая склейка лиц" loading="lazy"><video src="vid/tr-invisible.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Невидимая склейка</span></div><figcaption><b>Переход, которого не видно</b><span>Склейка спрятана художественным или техническим приёмом. К этому стремятся почти все переходы.</span></figcaption></figure>
+<figure class="vid h"><div class="shot"><img src="img/tr-parallel.jpg" alt="Параллельный монтаж" loading="lazy"><video src="vid/tr-parallel.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Параллельный монтаж</span></div><figcaption><b>A и B одновременно</b><span>Два события в разных местах идут параллельно и влияют друг на друга.</span></figcaption></figure>
+  </div>
+
+  <h3>Как придумывать переходы</h3>
+  <div class="three">
+    <div class="box"><span class="kind">Обратный ход</span><b>Начни с финала</b><p>Держи финальный кадр перед глазами и спрашивай: какой предыдущий кадр мог бы естественно привести сюда?</p></div>
+    <div class="box"><span class="kind">Вектор внимания</span><b>Куда смотрит зритель</b><p>После каждого кадра определи, где остановился взгляд, и начни следующее движение из этой точки.</p></div>
+    <div class="box"><span class="kind">Непрерывность</span><b>Движение не рвётся</b><p>Главный объект сохраняет направление и скорость через склейку.</p></div>
+  </div>
+  <div class="two">
+    <div class="box"><b>Спрашивай себя</b><ul><li>Как этот кадр «рождается» из предыдущего?</li><li>Как идёт взгляд?</li><li>Не теряется ли фокус?</li></ul></div>
+    <div class="box"><b>Частые ошибки</b><ul><li>Перегруз кадров.</li><li>Отсутствие динамики.</li><li>Рассинхрон с музыкой и речью.</li><li>Переход ради перехода, без мотивации сюжетом.</li></ul></div>
+  </div>
+
+  <h3>Звук</h3>
+  <div class="three">
+    <div class="box hot"><span class="kind">Голос</span><b>Чисто и ровно</b><p>Шумоподавление (Enhance Speech, Voice Isolation), компрессор, разборчивость на динамике телефона.</p></div>
+    <div class="box"><span class="kind">Музыка</span><b>Под голосом</b><p>Без слов или с тихим вокалом. Приглушай под речью, поднимай в паузах.</p></div>
+    <div class="box"><span class="kind">Эффекты</span><b>Звук на событие</b><p>Свуш на вылет графики, щелчок на слово, удар на смену сцены. Тише голоса.</p></div>
+  </div>
+  <dl>
+    <dt>Громкость</dt><dd>Около −14 LUFS для соцсетей и YouTube, пики не выше −1 dB. Проверь в наушниках и на динамике телефона.</dd>
+  </dl>
+
+  <h3>Финал и экспорт</h3>
+  <ol class="steps">
+    <li><div><div class="t">Посмотри без звука</div><div class="d">Понятно ли по субтитрам и графике, о чём ролик?</div></div></li>
+    <li><div><div class="t">Послушай, не глядя</div><div class="d">Звук чистый, музыка не мешает, нет щелчков на склейках?</div></div></li>
+    <li><div><div class="t">Покажи одному человеку</div><div class="d">Не объясняй заранее. Если он не запомнил главную мысль, вернись к раскадровке.</div></div></li>
+  </ol>
+  <div class="scroll"><table>
+    <tr><th>Параметр</th><th>Значение</th></tr>
+    <tr><td>Формат</td><td>H.264, MP4</td></tr>
+    <tr><td>Размер</td><td>1080×1920 для вертикали, 1920×1080 для горизонтали</td></tr>
+    <tr><td>Частота кадров</td><td>Как у исходника, 25 или 30</td></tr>
+    <tr><td>Битрейт</td><td>VBR, 15–20 Мбит/с</td></tr>
+    <tr><td>Звук</td><td>AAC, 48 кГц, 320 кбит/с</td></tr>
+  </table></div>
+  <div class="note"><b>Как показать ролик в портфолио</b><p>Финальное видео, затем сценарий и раскадровка, затем пара сцен «до и после» графики. Так видно, как ты думаешь, а не только результат.</p></div>
+
+  <div class="task"><i>Задание этапа</i><b>Смонтируй ролик с минимум тремя разными типами переходов и сведи звук.</b><p>Для каждого перехода подпиши в раскадровке, чем он мотивирован. Если у тебя уже есть опыт, можешь взять свой исходник и идею вместо учебного задания, приложи два-три референса.</p></div>
+  <p class="next">Дальше: <a href="#quiz">проверь себя в квизе</a></p>
+</section>
+
+<section id="quiz">
+<div class="corner"><span>PERASPERADASTRA
+РАЗГОВОРНОЕ ВИДЕО</span><span>ПРОВЕРЬ СЕБЯ
+10 ВОПРОСОВ</span></div>
+  <h2>Квиз по гайду</h2>
+  <p>После ответа появится разбор и ссылка на этап.</p>
+  <div class="quiz" id="quiz-list"></div>
+  <div class="score"><span class="big" id="quiz-score">0 / 10</span><span id="quiz-verdict">Ответь на все вопросы, чтобы увидеть результат.</span><button type="button" id="quiz-reset">Пройти заново</button></div>
+</section>
+
+<section id="check">
+<div class="corner"><span>PERASPERADASTRA
+РАЗГОВОРНОЕ ВИДЕО</span><span>ЧЕК-ЛИСТ
+ПЕРЕД СДАЧЕЙ</span></div>
+  <h2>Чек-лист перед сдачей</h2>
+  <p>Отметки сохраняются в этом браузере.</p>
+  <div class="check">
+    <label><input type="checkbox" id="c1"><span>Фрагмент 30–90 секунд с законченной мыслью и сильной первой фразой</span></label>
+    <label><input type="checkbox" id="c2"><span>Есть расшифровка, имена и цифры проверены</span></label>
+    <label><input type="checkbox" id="c3"><span>Сравнил три концепции и выбрал одну</span></label>
+    <label><input type="checkbox" id="c4"><span>Раскадровка: 8–12 сцен на минуту, у каждой своя задача</span></label>
+    <label><input type="checkbox" id="c5"><span>Есть хотя бы одна метафора и одна визуальная пауза</span></label>
+    <label><input type="checkbox" id="c6"><span>Соседние кадры различаются масштабом, планом, цветом или плотностью</span></label>
+    <label><input type="checkbox" id="c7"><span>Каждый кадр читается в статике до анимации</span></label>
+    <label><input type="checkbox" id="c8"><span>Анимировано главное, а не всё подряд</span></label>
+    <label><input type="checkbox" id="c9"><span>Графика и слова привязаны к ударным слогам</span></label>
+    <label><input type="checkbox" id="c10"><span>Переходы мотивированы сюжетом и синхронны с музыкой</span></label>
+    <label><input type="checkbox" id="c11"><span>Голос чистый, громкость около −14 LUFS, проверено на телефоне</span></label>
+    <label><input type="checkbox" id="c12"><span>Экспорт H.264 в нужном размере, субтитры в безопасной зоне</span></label>
+  </div>
+</section>
+
+<footer>Perasperadastra · Mission to Motion · разговорное видео</footer>
+</div>
+<script>
+(function(){
+  // номер этапа в шапке и подразделы «подзаголовок сбоку / на всю ширину», как в остальных методичках
+  var secs=document.querySelectorAll('section[id^="u"]');
+  for(var s=0;s<secs.length;s++){
+    var sec=secs[s],head=sec.querySelector(".head"),h2=head&&head.querySelector("h2");
+    if(h2){var left=document.createElement("div"),num=document.createElement("div");left.className="head-l";num.className="num";num.setAttribute("aria-hidden","true");num.textContent="0"+sec.id.slice(1);head.insertBefore(left,h2);left.appendChild(num);left.appendChild(h2)}
+    var kids=Array.prototype.slice.call(sec.children),cur=null;
+    kids.forEach(function(el){
+      if(el.tagName==="H3"){cur=document.createElement("div");cur.className="sub";var hd=document.createElement("div"),bd=document.createElement("div");hd.className="sub-h";bd.className="sub-b";sec.insertBefore(cur,el);hd.appendChild(el);cur.appendChild(hd);cur.appendChild(bd);cur.body=bd;return}
+      if(!cur)return;
+      if(el.classList.contains("task")||el.classList.contains("next")){cur=null;return}
+      cur.body.appendChild(el);
+    });
+    var subs=sec.querySelectorAll(".sub");
+    for(var k=0;k<subs.length;k++)if(subs[k].querySelector(".four,.three,table,.ex,.frames,.exrow,.slides,.two"))subs[k].classList.add("wide");
+  }
+  var QUIZ=[
+    {l:"Вступление",h:"#formaty",p:"Из чего складывается ритм ролика?",o:["Из быстрой музыки","Из повтора, интервала и вариации","Из количества эффектов","Из длины ролика"],a:1,e:"Ритм это чередование элементов с определённой последовательностью."},
+    {l:"Этап 01",h:"#u1",p:"Какая первая фраза лучше всего начинает нарезку?",o:["«Всем привет, сегодня поговорим про цены»","«Ну, вот, значит, мы тогда начали думать…»","«Первый заказ я сделал за три тысячи рублей»","«Это очень важная тема»"],a:2,e:"Конкретная цифра и обещание истории цепляют в первые три секунды."},
+    {l:"Этап 01",h:"#u1",p:"Что значит «устроить гонку между концепциями»?",o:["Сделать ролик быстрее конкурентов","Придумать две-три подачи и сравнить их","Взять самую сложную идею","Спросить заказчика, что он хочет"],a:1,e:"Первая идея редко лучшая. Сравни варианты по треугольнику: история, концепция, ритм."},
+    {l:"Этап 02",h:"#u2",p:"Сколько сцен оптимально закладывать на минуту ролика?",o:["2–3","8–12","20–30","Сколько получится"],a:1,e:"Мельче дробить не стоит, и у каждой сцены должна быть своя задача."},
+    {l:"Этап 02",h:"#u2",p:"«Тебя это никак не прокачает» подано через обратную эволюцию. Что это за усилитель?",o:["Буквальная подача","Культурная отсылка","Метафора","Инфографика"],a:2,e:"Образ эволюции наоборот передаёт смысл фразы, а не показывает её дословно."},
+    {l:"Этап 02",h:"#u2",p:"Три соседних кадра раскадровки выглядят одинаково. Что делать?",o:["Ускорить анимацию","Изменить в одном масштаб, план, цвет или плотность","Добавить эффектов","Ничего, это стиль"],a:1,e:"Соседние кадры должны отличаться хотя бы одним параметром, иначе провиснет ритм."},
+    {l:"Этап 03",h:"#u3",p:"Почему сначала собирают кадр в статике?",o:["Так быстрее рендер","Движение не спасёт плохую иерархию, кернинг и контраст","Так требует After Effects","Чтобы показать заказчику"],a:1,e:"Кадр должен работать ещё до анимации."},
+    {l:"Этап 03",h:"#u3",p:"Когда начинать движение графики относительно слова?",o:["Через секунду после слова","На 2–4 кадра раньше ударного слога","В начале фразы","Когда фраза закончилась"],a:1,e:"Анимации нужно время на разгон, чтобы пик движения совпал со звуком."},
+    {l:"Этап 04",h:"#u4",p:"Кадр заканчивается круглой кнопкой, следующий начинается с круглой линзы. Что это за переход?",o:["Параллельный монтаж","Зум камеры","По форме","Jump cut"],a:2,e:"Повторяющийся мотив работает как мостик между кадрами."},
+    {l:"Этап 04",h:"#u4",p:"Переход не клеится. Какой приём поможет?",o:["Добавить затемнение","Обратный ход: начать с финального кадра","Ускорить переход","Поставить звук свуша"],a:1,e:"Спроси, какой предыдущий кадр мог бы естественно привести к финальному."}
+  ];
+  var list=document.getElementById("quiz-list"),scoreEl=document.getElementById("quiz-score"),verdict=document.getElementById("quiz-verdict"),answered=0,right=0;
+  function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n}
+  function update(){scoreEl.textContent=right+" / "+QUIZ.length;if(answered<QUIZ.length){verdict.textContent="Ответь на все вопросы, чтобы увидеть результат.";return}verdict.textContent=right>=9?"Отлично. Можно садиться за ролик.":right>=6?"Хорошо. Перечитай этапы, где ошибся.":"Пройди этапы ещё раз: задания в них важнее квиза."}
+  function render(){
+    list.textContent="";answered=0;right=0;
+    QUIZ.forEach(function(q,i){
+      var card=el("div","q");card.appendChild(el("span","n",(i<9?"0":"")+(i+1)+" · "+q.l));card.appendChild(el("div","p",q.p));
+      var opts=el("div","opts"),exp=el("div","exp");exp.hidden=true;
+      q.o.forEach(function(t,j){var b=el("button",null,t);b.type="button";b.addEventListener("click",function(){
+        var all=opts.querySelectorAll("button");for(var k=0;k<all.length;k++){all[k].disabled=true;if(k===q.a)all[k].className="right"}
+        var ok=j===q.a;if(!ok)b.className="wrong";answered++;if(ok)right++;
+        exp.textContent="";exp.appendChild(el("b",null,ok?"Верно. ":"Не совсем. "));exp.appendChild(document.createTextNode(q.e+" "));var a=el("a",null,"Открыть этап");a.href=q.h;exp.appendChild(a);exp.hidden=false;update();
+      });opts.appendChild(b)});
+      card.appendChild(opts);card.appendChild(exp);list.appendChild(card);
+    });update();
+  }
+  render();
+  document.getElementById("quiz-reset").addEventListener("click",function(){render();document.getElementById("quiz").scrollIntoView()});
+  var KEY="talking-video-check-v2",state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){state={}}
+  var boxes=document.querySelectorAll(".check input");
+  for(var c=0;c<boxes.length;c++){(function(box){if(state[box.id])box.checked=true;box.addEventListener("change",function(){state[box.id]=box.checked;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}})})(boxes[c])}
+  // ролики: играют без звука, когда видны; кнопка включает звук у одного
+  var vids=document.querySelectorAll("video");
+  if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){v.preload="auto";var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()})},{threshold:.35});vids.forEach(function(v){io.observe(v)})}
+  document.querySelectorAll(".snd").forEach(function(b){b.setAttribute("aria-pressed","false");b.addEventListener("click",function(){var v=b.parentNode.querySelector("video"),on=v.muted;vids.forEach(function(o){o.muted=true});document.querySelectorAll(".snd").forEach(function(x){x.setAttribute("aria-pressed","false");x.textContent="звук"});if(on){v.muted=false;v.currentTime=0;var p=v.play();if(p&&p.catch)p.catch(function(){});b.setAttribute("aria-pressed","true");b.textContent="без звука"}})});
+})();
+</script>
+
+</body>
+</html>
