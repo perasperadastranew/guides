@@ -346,6 +346,21 @@ section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
 .snd[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 .vid .tag,.exrow .tag{z-index:2}
 </style>
+<style>
+/* перемотка: тонкая полоса внизу ролика, клик по видео ставит паузу */
+.shot .scrub{position:absolute;left:0;right:0;bottom:0;z-index:3;width:100%;height:18px;margin:0;padding:0;background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer;--p:0%}
+.shot .scrub::-webkit-slider-runnable-track{height:3px;background:linear-gradient(var(--accent),var(--accent)) 0/var(--p) 100% no-repeat,rgba(255,255,255,.28)}
+.shot .scrub::-moz-range-track{height:3px;background:rgba(255,255,255,.28)}
+.shot .scrub::-moz-range-progress{height:3px;background:var(--accent)}
+.shot .scrub::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--accent);margin-top:-4px;border:0}
+.shot .scrub::-moz-range-thumb{width:11px;height:11px;border-radius:50%;background:var(--accent);border:0}
+.shot .scrub:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.shot .snd{bottom:22px}
+.shot video{cursor:pointer}
+.shot .paused-mark{position:absolute;inset:0;z-index:1;display:grid;place-items:center;pointer-events:none;opacity:0;transition:opacity .2s}
+.shot.is-paused .paused-mark{opacity:1}
+.shot .paused-mark::before{content:"";width:0;height:0;border-left:18px solid rgba(255,255,255,.9);border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px;filter:drop-shadow(0 1px 4px rgba(0,0,0,.5))}
+</style>
 <div class="wrap">
 <header>
   <div class="corner"><span>PERASPERADASTRA
@@ -834,9 +849,23 @@ section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
   for(var c=0;c<boxes.length;c++){(function(box){if(state[box.id])box.checked=true;box.addEventListener("change",function(){state[box.id]=box.checked;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}})})(boxes[c])}
   // ролики: играют без звука, когда видны; кнопка включает звук у одного
   var vids=document.querySelectorAll("video");
-  if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){v.preload="auto";var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()})},{threshold:.35});vids.forEach(function(v){io.observe(v)})}
+  if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){if(v._user)return;v.preload="auto";var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()})},{threshold:.35});vids.forEach(function(v){io.observe(v)})}
   document.querySelectorAll(".snd").forEach(function(b){b.setAttribute("aria-pressed","false");b.addEventListener("click",function(){var v=b.parentNode.querySelector("video"),on=v.muted;vids.forEach(function(o){o.muted=true});document.querySelectorAll(".snd").forEach(function(x){x.setAttribute("aria-pressed","false");x.textContent="звук"});if(on){v.muted=false;v.currentTime=0;var p=v.play();if(p&&p.catch)p.catch(function(){});b.setAttribute("aria-pressed","true");b.textContent="без звука"}})});
   var szt=document.getElementById("sz-toggle"),tp=document.getElementById("tpls");if(szt&&tp)szt.addEventListener("change",function(){tp.classList.toggle("show",szt.checked)});
+  // перемотка и пауза по клику
+  vids.forEach(function(v,i){
+    var shot=v.parentNode,r=document.createElement("input"),mark=document.createElement("span");
+    r.type="range";r.min="0";r.max="1000";r.step="1";r.value="0";r.className="scrub";r.id="scrub-"+i;r.setAttribute("aria-label","Перемотка ролика");
+    mark.className="paused-mark";shot.appendChild(mark);shot.appendChild(r);
+    var drag=false;
+    function seek(){if(!v.duration||isNaN(v.duration)){v.preload="auto";v.load();return}v.currentTime=v.duration*r.value/1000}
+    r.addEventListener("input",function(){drag=true;r.style.setProperty("--p",(r.value/10)+"%");seek()});
+    r.addEventListener("change",function(){drag=false});
+    v.addEventListener("timeupdate",function(){if(drag||!v.duration)return;var p=v.currentTime/v.duration*1000;r.value=p;r.style.setProperty("--p",(p/10)+"%")});
+    v.addEventListener("click",function(){if(v.paused){v._user=false;var p=v.play();if(p&&p.catch)p.catch(function(){})}else{v._user=true;v.pause()}});
+    v.addEventListener("pause",function(){shot.classList.toggle("is-paused",!!v._user)});
+    v.addEventListener("play",function(){shot.classList.remove("is-paused")});
+  });
 })();
 </script>
 
