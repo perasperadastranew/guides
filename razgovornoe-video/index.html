@@ -361,6 +361,20 @@ section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
 .shot.is-paused .paused-mark{opacity:1}
 .shot .paused-mark::before{content:"";width:0;height:0;border-left:18px solid rgba(255,255,255,.9);border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px;filter:drop-shadow(0 1px 4px rgba(0,0,0,.5))}
 </style>
+<style>
+/* открыть ролик крупно: кнопка в углу карточки и окно поверх страницы */
+.shot .zoom{position:absolute;top:8px;right:8px;z-index:3;width:30px;height:30px;border:0;border-radius:6px;background:rgba(16,16,16,.82);color:#f4f4f2;display:grid;place-items:center;cursor:pointer;padding:0}
+.shot .zoom svg{width:14px;height:14px}
+.shot .tag{max-width:calc(100% - 54px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb video{min-width:min(320px,100%);min-height:min(320px,100%)}
+.shot .zoom:hover{background:var(--accent);color:var(--accent-ink)}
+.lb{position:fixed;inset:0;z-index:50;background:rgba(8,8,8,.92);display:flex;align-items:center;justify-content:center;padding:calc(56px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px))}
+.lb[hidden]{display:none!important}
+.lb video{max-width:100%;max-height:100%;width:auto;height:auto;border-radius:10px;background:#000;outline:none}
+.lb .lb-close{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:16px;border:0;border-radius:8px;background:#262626;color:#f4f4f2;font:500 14px var(--body);padding:10px 14px;cursor:pointer}
+.lb .lb-title{position:absolute;top:calc(20px + env(safe-area-inset-top,0px));left:16px;right:120px;color:#f4f4f2;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.lb-open{overflow:hidden}
+</style>
 <div class="wrap">
 <header>
   <div class="corner"><span>PERASPERADASTRA
@@ -866,6 +880,17 @@ section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
     v.addEventListener("pause",function(){shot.classList.toggle("is-paused",!!v._user)});
     v.addEventListener("play",function(){shot.classList.remove("is-paused")});
   });
+  // открыть ролик крупно: свой плеер со звуком и стандартной перемоткой
+  var lb=document.createElement("div");lb.className="lb";lb.hidden=true;lb.setAttribute("role","dialog");lb.setAttribute("aria-modal","true");lb.setAttribute("aria-label","Ролик крупно");
+  lb.innerHTML='<span class="lb-title"></span><button class="lb-close" type="button">Закрыть</button><video controls playsinline></video>';
+  document.body.appendChild(lb);
+  var lbv=lb.querySelector("video"),lbt=lb.querySelector(".lb-title"),lbFrom=null,lbBtn=null;
+  function lbOpen(v,btn){lbFrom=v;lbBtn=btn;v.pause();var fig=v.closest("figure,.exrow"),t=fig&&fig.querySelector("b");lbt.textContent=t?t.textContent:"";lbv.src=v.currentSrc||v.src;lb.hidden=false;document.body.classList.add("lb-open");lbv.addEventListener("loadedmetadata",function once(){lbv.removeEventListener("loadedmetadata",once);try{lbv.currentTime=v.currentTime||0}catch(e){}},false);lbv.muted=false;var p=lbv.play();if(p&&p.catch)p.catch(function(){});lb.querySelector(".lb-close").focus()}
+  function lbClose(){lbv.pause();var t=lbv.currentTime;lbv.removeAttribute("src");lbv.load();lb.hidden=true;document.body.classList.remove("lb-open");if(lbFrom){try{lbFrom.currentTime=t}catch(e){}if(!lbFrom._user){var p=lbFrom.play();if(p&&p.catch)p.catch(function(){})}}if(lbBtn)lbBtn.focus();lbFrom=null}
+  lb.querySelector(".lb-close").addEventListener("click",lbClose);
+  lb.addEventListener("click",function(e){if(e.target===lb)lbClose()});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!lb.hidden)lbClose()});
+  vids.forEach(function(v){var b=document.createElement("button");b.type="button";b.className="zoom";b.setAttribute("aria-label","Открыть ролик крупно");b.innerHTML='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9 7M2.5 13.5 7 9"/></svg>';b.addEventListener("click",function(e){e.stopPropagation();lbOpen(v,b)});v.parentNode.appendChild(b)});
 })();
 </script>
 
