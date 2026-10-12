@@ -338,6 +338,14 @@ section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
 </style>
 </head>
 <body>
+<style>
+/* видео поверх обложки, звук по кнопке */
+.vid .shot video,.exrow .shot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:transparent}
+.vid .shot img,.exrow .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.snd{position:absolute;right:8px;bottom:8px;z-index:2;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:rgba(16,16,16,.82);color:#f4f4f2;border:0;border-radius:5px;padding:6px 8px;font-weight:400;cursor:pointer}
+.snd[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.vid .tag,.exrow .tag{z-index:2}
+</style>
 <div class="wrap">
 <header>
   <div class="corner"><span>PERASPERADASTRA
