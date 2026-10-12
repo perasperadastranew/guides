@@ -1,0 +1,1869 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Графики и принципы</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-слайды на чуть более светлом поле, как в остальных методичках школы. Каждый урок собран по одному шаблону: идея, суть, сравнение, инструмент, задание. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e;
+  --line-e:#6a6a6e; --line-m:#47474b; --line-l:#303033;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em;margin-top:14px}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.mono,.corner,th,.kind,.cap,.slot,.lvl,.pair i,.say i,.task i,.q .n,.bars i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+/* светлые панели: уроки чередуются тёмный / светлый, чтобы длинная страница делилась на главы */
+section.light{
+  color-scheme:light;
+  --panel:#f3f3f1; --card:#ffffff; --stroke:#dededa; --well:#e8e8e5;
+  --ink:#121212; --dim:#5c5c59; --faint:#7d7d79;
+  --accent:#d2571f; --accent-ink:#ffffff;
+  --good:#1e9b45; --bad:#d9263a;
+  --line-e:#85857f; --line-m:#b0afa9; --line-l:#d4d3ce;
+  color:var(--dim);
+}
+
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-top:10px}
+nav a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 12px 14px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.2;display:flex;flex-direction:column;gap:22px;min-height:104px;justify-content:space-between}
+nav a::before{content:attr(data-n);font-family:var(--mono);font-size:12px;color:var(--dim);background:#262626;border-radius:6px;padding:5px 7px;align-self:flex-start}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+
+/* сравнения плохо / хорошо */
+.pairs{display:flex;flex-direction:column;gap:8px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+.pair small,.why{font-size:14px;line-height:1.4}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch}
+.why b{font-weight:400}
+
+/* воронка */
+.funnel{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.funnel a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;text-decoration:none}
+.funnel a:hover,.funnel a:focus-visible{border-color:var(--accent);outline:none}
+.funnel b{font-size:17px;font-weight:400}
+.funnel small{font-size:13px;line-height:1.3;color:var(--dim)}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+td .lvl{color:var(--accent);display:block;margin-bottom:3px}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul,.box ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+.bars{display:flex;flex-direction:column;gap:10px}
+.bars .row{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:14px;align-items:center}
+.bars .row span{color:var(--ink);font-size:16px;line-height:1.2}
+.bars .track{display:flex;align-items:center;gap:10px;min-width:0}
+.bars .bar{height:34px;border-radius:8px;background:var(--well);min-width:6px}
+.bars .row.on .bar{background:var(--accent)}
+.bars b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+dl{margin:0;display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);border-top:1px solid var(--stroke)}
+dt,dd{margin:0;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:16px}
+dt{color:var(--ink);padding-right:14px}
+
+/* готовая фраза */
+.say{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.say i{color:var(--accent)}
+.say span{color:var(--ink);font-size:17px;line-height:1.4;max-width:62ch}
+.says{display:flex;flex-direction:column;gap:8px}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.45;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* задание в конце урока */
+.task{border:1px solid var(--accent);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+.slot{border:1px dashed var(--faint);border-radius:8px;padding:10px 12px;line-height:1.5}
+
+
+
+
+
+
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden}
+.fig .stage{aspect-ratio:5/4;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+.micro{aspect-ratio:16/10;pointer-events:none;--hairline-plate:var(--card);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.micro svg{overflow:visible}
+.micro svg g.lift{transition:transform .7s cubic-bezier(.32,.72,0,1)}
+.funnel a:hover .micro g.lift,.funnel a:focus-visible .micro g.lift,.head:hover .micro g.lift{transform:translateY(-14px)}
+@media (prefers-reduced-motion:reduce){.micro svg g.lift{transition:none}}
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.2}
+.figtext p{font-size:16px}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.head h2{flex:1 1 0;min-width:0}
+.head .micro{flex:0 0 190px;width:190px;margin-top:-34px;--hairline-plate:var(--panel)}
+@media (max-width:760px){.head .micro{flex-basis:112px;width:112px;margin-top:0}}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+/* квиз */
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.q .exp b{font-weight:400}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:18px 16px 24px}
+  .pair,.two,.three,.four{grid-template-columns:minmax(0,1fr)}
+  .bars .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl{grid-template-columns:minmax(0,1fr)} dt{border-bottom:0;padding-bottom:0}
+}
+
+/* воздух: больше полей у панелей, пауза и тонкая линия перед каждым подразделом */
+.wrap{gap:20px}
+header,section{padding:34px 44px 60px;gap:24px}
+.corner{margin-bottom:60px}
+section h3{margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.head{padding-bottom:14px}
+.quote{margin-bottom:10px}
+.figrow{padding:20px;gap:32px}
+.task{margin-top:44px;padding:26px}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:36px}
+  section h3{margin-top:26px;padding-top:22px}
+  .task{margin-top:28px;padding:18px}
+}
+
+/* композиция: контурный номер урока, подзаголовок сбоку у узких блоков и сверху у широких, иллюстрации то слева, то справа */
+.head{align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .micro{flex:0 0 300px;width:300px;margin-top:0}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+section .sub h3{margin:0;padding:0;border:0;position:sticky;top:20px}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+.figrow.flip{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
+.figrow.flip .fig{order:2}
+@media (max-width:760px){
+  .head{align-items:flex-end;gap:14px}
+  .head .micro{flex-basis:118px;width:118px}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:26px;padding-top:22px}
+  section .sub h3{position:static}
+  .figrow.flip{grid-template-columns:minmax(0,1fr)}
+  .figrow.flip .fig{order:0}
+}
+</style>
+
+<style>
+/* лаборатории и карточки принципов: всё рисуется на canvas, цвета берутся из переменных темы */
+.lab{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.lab-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.lab-top b{font-size:20px;font-weight:400;color:var(--ink)}
+.lab-read{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-variant-numeric:tabular-nums}
+.cv{display:block;width:100%;background:var(--panel);border-radius:8px;touch-action:none}
+.cv.stage{aspect-ratio:16/7}
+.cv.gr{aspect-ratio:16/8}
+.graphs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.gbox{display:flex;flex-direction:column;gap:6px;min-width:0}
+.gbox .cap{display:flex;justify-content:space-between;gap:8px}
+.gbox .cap em{font-style:normal;color:var(--dim);text-transform:none;letter-spacing:0;font-family:var(--body);font-size:13px}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.seg{display:inline-flex;background:var(--well);border:1px solid var(--stroke);border-radius:9px;padding:3px;gap:2px}
+.seg button{background:transparent;border:0;color:var(--dim);border-radius:7px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.play{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1px solid var(--stroke);background:var(--well);color:var(--ink);padding:0;flex:0 0 auto}
+.play svg{width:14px;height:14px}
+.timebar{display:flex;align-items:center;gap:10px;flex:1 1 220px;min-width:0}
+.rng{flex:1 1 auto;min-width:0;accent-color:var(--accent);height:22px}
+.sl{display:flex;flex-direction:column;gap:2px;min-width:150px;flex:1 1 150px;font-size:13px;color:var(--dim)}
+.sl span{display:flex;justify-content:space-between;gap:8px}
+.sl .rng{flex:none;width:100%}
+#labA .cv.stage{aspect-ratio:16/5}
+#start .funnel{grid-template-columns:repeat(3,minmax(0,1fr))}
+.sl output{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.tg{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);cursor:pointer}
+.tg input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-size:13px;border:1px solid var(--stroke);border-radius:999px;padding:5px 11px;color:var(--dim);transition:color .15s,border-color .15s,background .15s}
+.chips span.on{border-color:var(--accent);color:var(--accent-ink);background:var(--accent)}
+.lab .hint{font-size:14px;line-height:1.4;color:var(--dim);max-width:70ch}
+.lab .hint b{font-weight:400}
+.ghost-key{color:var(--accent)}
+
+.pcs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pc{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pc .cv.stage{aspect-ratio:16/9}
+.pc .cv.gr{aspect-ratio:16/5}
+.pc-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.pc-h div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.pc-h .kind{color:var(--accent)}
+.pc-h b{font-size:20px;font-weight:400;line-height:1.15}
+.pc .sw{flex:0 0 auto;background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:6px 12px 6px 8px;font-size:13px;font-weight:400;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.pc .sw i{width:26px;height:16px;border-radius:999px;background:var(--stroke);position:relative;flex:0 0 auto;transition:background .2s}
+.pc .sw i::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:var(--dim);transition:transform .2s,background .2s}
+.pc .sw[aria-pressed="true"]{color:var(--ink)}
+.pc .sw[aria-pressed="true"] i{background:var(--accent)}
+.pc .sw[aria-pressed="true"] i::after{transform:translateX(10px);background:var(--accent-ink)}
+.pc p{font-size:15px;line-height:1.42}
+.pc .gcap{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.pc .gcap span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.pc .gcap .lg{display:flex;gap:12px}
+.pc .gcap .lg span::before{content:"";display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:6px;background:var(--accent)}
+.pc .gcap .lg span.off::before{background:repeating-linear-gradient(90deg,var(--faint) 0 4px,transparent 4px 7px)}
+.pc .ae{font-size:14px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px;color:var(--dim)}
+.pc .ae b{font-weight:400;color:var(--accent);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+.pc .sl{min-width:0}
+.legend-note{display:flex;gap:18px;flex-wrap:wrap;font-size:14px}
+.legend-note span::before{content:"";display:inline-block;width:18px;height:2px;vertical-align:middle;margin-right:8px;background:var(--accent)}
+.legend-note span.off::before{background:repeating-linear-gradient(90deg,var(--faint) 0 4px,transparent 4px 7px)}
+.q svg.qg{width:100%;max-width:340px;height:auto;background:var(--panel);border-radius:8px}
+.kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--stroke);border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--ink);white-space:nowrap}
+@media (max-width:860px){.pcs{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){.graphs{grid-template-columns:minmax(0,1fr)}.cv.stage{aspect-ratio:16/9}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+ГАЙД ДЛЯ СТУДЕНТОВ</span><span>MISSION TO MOTION
+3 ЧАСТИ И КВИЗ</span></div>
+  <h1>Графики и&nbsp;принципы анимации</h1>
+  <p class="lead"><b>Почему одно движение выглядит живым, а другое — роботизированным, и как это исправить в Graph Editor.</b> Один мячик проходит через весь гайд: сначала на нём разбираем ключи и графики, потом все 12 принципов. Каждое демо можно остановить, промотать и сломать.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav aria-label="Разделы">
+    <a href="#start" data-n="00">Как читать</a><a href="#u1" data-n="01">Ключи и интерполяция</a><a href="#u2" data-n="02">Speed и Value Graph</a><a href="#u3" data-n="03">12 принципов на графиках</a><a href="#quiz" data-n="04">Квиз</a><a href="#check" data-n="05">Чек-лист</a>
+  </nav>
+</header>
+
+<section id="start">
+<div class="corner"><span>PERASPERADASTRA
+ГРАФИКИ И ПРИНЦИПЫ</span><span>КАК ЧИТАТЬ</span></div>
+  <h2>Принцип — это форма кривой</h2>
+  <p>Двенадцать принципов анимации придумали в Disney для рисованных персонажей. В After Effects ты не рисуешь кадры, а ставишь ключи, и программа достраивает движение сама. Поэтому каждый принцип здесь превращается в конкретную форму графика: подготовка — это провал перед подъёмом, сквозное движение — выход за ключ и возврат, тайминг — ширина кривой.</p>
+  <div class="funnel">
+    <a href="#u1"><div class="micro" data-micro="m1"></div><span class="mono">01</span><div><b>Ключи</b><br><small>Linear, Bezier, Hold</small></div></a>
+    <a href="#u2"><div class="micro" data-micro="m2"></div><span class="mono">02</span><div><b>Графики</b><br><small>скорость и значение</small></div></a>
+    <a href="#u3"><div class="micro" data-micro="m3"></div><span class="mono">03</span><div><b>Принципы</b><br><small>12 демо с кривыми</small></div></a>
+  </div>
+  <ol class="steps">
+    <li><div><div class="t">Открой гайд рядом с After Effects</div><div class="d">Демо повторяют то, что ты видишь в Graph Editor. Покрути ползунки здесь, потом сделай то же самое руками в своём проекте.</div></div></li>
+    <li><div><div class="t">Ломай демо</div><div class="d">У каждого принципа есть переключатель «без него / с ним». Смотри, как меняется и движение, и кривая. Оранжевая линия — то, что сейчас на экране, серая пунктирная — второй вариант.</div></div></li>
+    <li><div><div class="t">В конце пройди квиз и чек-лист</div><div class="d">Квиз проверяет, умеешь ли ты читать графики. Чек-лист пригодится перед сдачей любой домашки с анимацией.</div></div></li>
+  </ol>
+</section>
+
+<section id="u1">
+<div class="corner"><span>PERASPERADASTRA
+ГРАФИКИ И ПРИНЦИПЫ</span><span>ЧАСТЬ 01
+КЛЮЧИ И ИНТЕРПОЛЯЦИЯ</span></div>
+  <div class="head"><h2>Ключи и интерполяция</h2><div class="micro" data-micro="m1"></div></div>
+  <p class="quote">Ключи задают опорные точки. Интерполяция заполняет всё, что между ними.</p>
+  <p>Ключ — это точка во времени, где зафиксировано значение параметра. Поставил один ключ слева, второй справа, и After Effects сам просчитывает кадры между ними. Этот просчёт называется интерполяцией, и от него зависит, будет движение живым или механическим.</p>
+
+  <h3>Мяч, который подбросили</h3>
+  <div class="pair">
+    <div class="bad"><i>Роботизированный</i><span>Мяч летит вверх и вниз с постоянной скоростью, как по линейке, и мгновенно разворачивается в верхней точке.</span><small>Скорость не меняется. Глаз сразу считывает: что-то не так.</small></div>
+    <div class="good"><i>Живой</i><span>Мяч замедляется на подъёме, на миг зависает наверху, потом разгоняется к земле.</span><small>Скорость всё время меняется. Именно за это отвечает Graph Editor.</small></div>
+  </div>
+
+  <h3>Лаборатория: два ключа</h3>
+  <div class="lab" id="labA">
+    <div class="lab-top"><b>Один параметр, два ключа, 24 кадра</b><span class="lab-read" data-read>кадр 0 / 24</span></div>
+    <canvas class="cv stage" data-stage aria-label="Шарик движется между двумя ключами, под ним точки каждого кадра"></canvas>
+    <div class="graphs">
+      <div class="gbox"><div class="cap"><span>Value Graph · Position X</span><em>какое сейчас значение</em></div><canvas class="cv gr" data-value aria-label="График значения"></canvas></div>
+      <div class="gbox"><div class="cap"><span>Speed Graph</span><em>тяни усы у ключей</em></div><canvas class="cv gr" data-speed aria-label="График скорости с ручками влияния"></canvas></div>
+    </div>
+    <div class="ctrls">
+      <div class="seg" role="group" aria-label="Тип ключей"><button type="button" data-type="lin">Linear</button><button type="button" data-type="bez" aria-pressed="true">Bezier · F9</button><button type="button" data-type="hold">Hold</button></div>
+      <label class="sl"><span>Influence выхода из 1-го ключа <output data-o="out">33%</output></span><input class="rng" type="range" min="1" max="100" value="33" data-inf="out"></label>
+      <label class="sl"><span>Influence входа во 2-й ключ <output data-o="in">33%</output></span><input class="rng" type="range" min="1" max="100" value="33" data-inf="in"></label>
+      <label class="tg"><input type="checkbox" data-link checked> связать</label>
+    </div>
+    <div class="ctrls"><div class="timebar"><button class="play" type="button" data-play aria-label="Пауза"></button><input class="rng" type="range" min="0" max="1000" value="0" data-scrub aria-label="Время"></div></div>
+    <p class="hint"><b>Что смотреть.</b> Точки под шариком — это кадры. Где они сжаты, шарик едет медленно, где разъехались — быстро. Linear даёт ровную линию скорости и одинаковые промежутки. Bezier прогибает кривую: у ключей скорость почти ноль. Вытяни Influence до 80–90%, и шарик «залипнет» у ключей, а в середине выстрелит. Сними «связать», чтобы разорвать ручки, как с <span class="kbd">Alt</span> в After Effects.</p>
+  </div>
+
+  <h3>Три типа ключей</h3>
+  <div class="three">
+    <div class="box"><span class="kind">Linear</span><b>Равномерно</b><p>Движение без плавности, «по линейке». Скорость одинаковая от ключа до ключа. Так ключи ставятся по умолчанию.</p><p class="ask">Вернуть: правый клик → Keyframe Interpolation → Linear</p></div>
+    <div class="box hot"><span class="kind">Bezier · Easy Ease</span><b>Разгон и торможение</b><p>Базовый тип, с которого начинается почти любое движение. Плавность настраивается ручками в Graph Editor.</p><p class="ask"><span class="kbd">F9</span> — выделить ключи и нажать</p></div>
+    <div class="box"><span class="kind">Hold</span><b>Мгновенно</b><p>Значение не меняется до следующего ключа, а потом сразу переключается. Для мигания, смены кадров, рывков.</p><p class="ask">Правый клик → Toggle Hold Keyframe</p></div>
+  </div>
+  <div class="note"><b>F9 меняет тип ключей</b><p>Нажимая F9, ты не просто «делаешь плавнее»: ключи из Linear становятся Bezier. Иногда вместо Bezier пишут Easy Ease, на старте это одно и то же.</p></div>
+
+  <h3>Временная и пространственная</h3>
+  <div class="two">
+    <div class="box"><span class="kind">Temporal Interpolation</span><b>Как во времени</b><p>С ускорением, с замедлением или равномерно. Видна как точки вдоль траектории в окне композиции: точки разъехались — быстро, сжались — медленно. Её меняешь в Graph Editor.</p></div>
+    <div class="box"><span class="kind">Spatial Interpolation</span><b>По какому пути</b><p>Прямая это линия или кривая. Её меняешь, когда двигаешь ключ в кадре или гнёшь траекторию Pen Tool. Скорость при этом не трогается, меняется только путь.</p></div>
+  </div>
+  <p class="why">Точки в лаборатории выше — это и есть временная интерполяция. Пространственную увидишь в принципе «Дуги»: там путь меняется, а время нет.</p>
+
+  <div class="task"><i>Задание</i><b>Квадрат в трёх версиях</b><p>Сделай квадрат, который за 1 секунду переезжает слева направо. Продублируй слой трижды: Linear, F9 и Hold. Затем в версии с F9 открой Graph Editor и вытяни ручки до 80%. Сравни четыре версии рядом.</p></div>
+</section>
+
+<section id="u2">
+<div class="corner"><span>PERASPERADASTRA
+ГРАФИКИ И ПРИНЦИПЫ</span><span>ЧАСТЬ 02
+SPEED И VALUE GRAPH</span></div>
+  <div class="head"><h2>Speed Graph и Value Graph</h2><div class="micro" data-micro="m2"></div></div>
+  <p class="quote">Один график показывает, как быстро меняется значение. Другой — какое оно сейчас.</p>
+  <p>У каждой анимации в After Effects есть два графика. По горизонтали у обоих время. По вертикали у Speed Graph скорость, у Value Graph само значение: координата, масштаб, прозрачность.</p>
+
+  <h3>Лаборатория: прыгающий мяч</h3>
+  <div class="lab" id="labB">
+    <div class="lab-top"><b>Мяч прыгает и затухает</b><span class="lab-read" data-read>кадр 0</span></div>
+    <canvas class="cv stage" data-stage aria-label="Прыгающий мяч с точками каждого кадра"></canvas>
+    <div class="chips" aria-label="Фаза прыжка"><span data-ph="fall">Падение: разгон</span><span data-ph="hit">Удар: самая высокая скорость</span><span data-ph="rise">Взлёт: торможение</span><span data-ph="top">Вершина: зависание</span></div>
+    <div class="graphs">
+      <div class="gbox"><div class="cap"><span>Value Graph · Y Position</span><em data-vnote>мяч вверх — график вниз</em></div><canvas class="cv gr" data-value aria-label="График значения высоты мяча"></canvas></div>
+      <div class="gbox"><div class="cap"><span>Speed Graph · Position</span><em>скорость по траектории</em></div><canvas class="cv gr" data-speed aria-label="График скорости мяча"></canvas></div>
+    </div>
+    <div class="ctrls">
+      <div class="seg" role="group" aria-label="Характер движения"><button type="button" data-mode="live" aria-pressed="true">Живой</button><button type="button" data-mode="robot">Роботизированный</button></div>
+      <label class="tg"><input type="checkbox" data-ae checked> ось Y как в After Effects</label>
+      <label class="tg"><input type="checkbox" data-squash> сжатие при ударе</label>
+    </div>
+    <div class="ctrls"><div class="timebar"><button class="play" type="button" data-play aria-label="Пауза"></button><input class="rng" type="range" min="0" max="1000" value="0" data-scrub aria-label="Время"></div></div>
+    <p class="hint"><b>Что смотреть.</b> У живого мяча Speed Graph всё время гуляет: пики в момент удара, провалы на вершине. У роботизированного он почти ровный, а на Value Graph вместо плавных горбов острые углы — мяч разворачивается мгновенно. Сними галочку «ось Y как в After Effects», и Value Graph станет похож на саму траекторию.</p>
+  </div>
+
+  <h3>Почему график перевёрнут</h3>
+  <div class="two">
+    <div class="box"><span class="kind">Как в жизни</span><b>Вверх — значит больше</b><p>Мы привыкли, что подъём на графике означает подъём предмета.</p></div>
+    <div class="box"><span class="kind">Как в After Effects</span><b>Y считается сверху вниз</b><p>Ноль — у верхнего края кадра. Чем ниже объект, тем больше Y. Поэтому мяч поднимается, а график идёт вниз. Это не ошибка, просто так устроены координаты.</p></div>
+  </div>
+
+  <h3>Ручки и точная настройка</h3>
+  <ol class="steps">
+    <li><div><div class="t">Тяни ручки</div><div class="d">У каждого ключа в Graph Editor есть усы. Их длина — Influence, влияние от 0 до 100%. Чем длиннее, тем дольше объект медлит у ключа и тем резче разгон в середине.</div></div></li>
+    <li><div><div class="t">Keyframe Velocity для точных чисел</div><div class="d">Правый клик по ключу → Keyframe Velocity. Там входящая и исходящая скорость и влияние. Можно связать вход и выход, чтобы менялись вместе.</div></div></li>
+    <li><div><div class="t">Разорви ручки с Alt</div><div class="d">Зажми <span class="kbd">Alt</span> (<span class="kbd">Option</span> на Mac) и тяни: стороны ключа станут независимыми. Например, вход линейный, выход плавный. В лаборатории «два ключа» это галочка «связать».</div></div></li>
+  </ol>
+
+  <h3>Подвох с Position и Scale</h3>
+  <div class="note"><b>Value Graph не двигается? Разделяй измерения</b><p>У объединённого Position Value Graph заблокирован: ручки не тянутся, кажется, что всё сломалось. Правый клик по Position → Separate Dimensions, и X с Y станут отдельными свойствами. Со Scale так же: раздели его, и сможешь растягивать по горизонтали и сжимать по вертикали — это Squash and Stretch из части 03.</p></div>
+
+  <h3>Какой график выбирать</h3>
+  <div class="two">
+    <div class="box hot"><span class="kind">По умолчанию</span><b>Speed Graph</b><p>Основной инструмент: easing, плавность по траектории, Opacity, Rotation, Scale. У Path в шейпах доступен только он.</p></div>
+    <div class="box"><span class="kind">Для прыжков и дуг</span><b>Value Graph</b><p>Прыжки, отскоки, дуги: график повторяет само движение, а Speed Graph становится почти нечитаемым.</p></div>
+  </div>
+
+  <h3>Полезные переключатели</h3>
+  <dl>
+    <dt>Snap</dt><dd>Магнитик внизу окна. Привязывает ключи к нулю и к текущему времени. Держи включённым, чтобы случайно не сдвинуть ключ.</dd>
+    <dt>Auto Select Graph Type</dt><dd>Сам выбирает тип графика: для Position покажет Speed, для Opacity — Value. Поэтому вид иногда меняется сам.</dd>
+    <dt>Show Reference Graph</dt><dd>Показывает второй график бледной подсказкой. Лучший способ научиться читать оба.</dd>
+    <dt>Separate Dimensions</dt><dd>Разделяет Position на оси и включает для них Value Graph.</dd>
+  </dl>
+
+  <div class="task"><i>Задание</i><b>Прыгающий мяч по графикам</b><p>Сделай мяч, который прыгает три раза и затухает. Раздели Position на измерения: X — равномерно, Y — по ключам в вершинах и у земли. В вершинах вытяни ручки, у земли сделай острый угол. Включи Show Reference Graph и сверь кривые с лабораторией.</p></div>
+</section>
+
+<section id="u3">
+<div class="corner"><span>PERASPERADASTRA
+ГРАФИКИ И ПРИНЦИПЫ</span><span>ЧАСТЬ 03
+12 ПРИНЦИПОВ</span></div>
+  <div class="head"><h2>12 принципов на графиках</h2><div class="micro" data-micro="m3"></div></div>
+  <p class="quote">Движение должно иметь вес, ритм, структуру и характер.</p>
+  <p>В моушн-дизайне редко есть персонаж, зато есть текст, иконки, интерфейсы и абстрактные формы. Законы движения от этого не меняются. Принципы разбиты на три группы: физика, характер действия и подача. Номер в карточке — классический порядок Disney.</p>
+  <div class="legend-note"><span>что сейчас на экране</span><span class="off">второй вариант для сравнения</span></div>
+
+  <h3>Физика движения</h3>
+  <div class="pcs" data-group="phys"></div>
+
+  <h3>Характер действия</h3>
+  <div class="pcs" data-group="act"></div>
+
+  <h3>Подача и метод</h3>
+  <div class="pcs" data-group="show"></div>
+
+  <h3>Шпаргалка: принцип → кривая → действие</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>Принцип</th><th>Как выглядит на графике</th><th>Что делать в After Effects</th></tr></thead>
+    <tbody>
+      <tr><td>Замедление начала и конца</td><td>Горб на Speed Graph, ноль у ключей</td><td>F9, затем тянуть ручки Influence</td></tr>
+      <tr><td>Сжатие и растяжение</td><td>Scale X и Y расходятся в разные стороны</td><td>Separate Dimensions у Scale, произведение X·Y около 100%</td></tr>
+      <tr><td>Тайминг</td><td>Ширина кривой: узкая — легко, широкая — тяжело</td><td>Раздвигать или сдвигать ключи на таймлайне</td></tr>
+      <tr><td>Дуги</td><td>Изогнутая траектория в кадре</td><td>Гнуть путь ручками ключей или Pen Tool</td></tr>
+      <tr><td>Подготовка</td><td>Небольшой провал перед основным подъёмом</td><td>Добавить ключ с отходом назад на 5–15%</td></tr>
+      <tr><td>Сквозное движение и захлёст</td><td>Выход за финальное значение и затухание, кривые сдвинуты</td><td>Ключи с перелётом, сдвиг слоёв на 2–4 кадра</td></tr>
+      <tr><td>Преувеличение</td><td>Пик выше финального значения</td><td>Усилить перелёт и деформацию, но только у главного</td></tr>
+      <tr><td>Вторичное действие</td><td>Маленькая кривая, привязанная к главной</td><td>Тень, вспышка или волна, стартующая от главного события</td></tr>
+      <tr><td>Сценичность</td><td>Главный растёт, остальные гаснут</td><td>Opacity и Scale второстепенных вниз, пауза на главном</td></tr>
+      <tr><td>От позы к позе</td><td>Гладкая кривая между ключами</td><td>Сначала ключевые позы, потом плавность</td></tr>
+      <tr><td>Ясный рисунок</td><td>Кривые объёма: ширина, ребро, тень</td><td>Изображать объём при повороте: ребро, тень, перспективу</td></tr>
+      <tr><td>Привлекательность</td><td>Мелкие живые колебания поверх основного движения</td><td>Дыхание, моргание, взгляд: короткие циклы на loopOut</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="task"><i>Задание</i><b>Один объект, три принципа</b><p>Возьми иконку или логотип из своего проекта и анимируй появление за 1,5 секунды так, чтобы в нём читались подготовка, сквозное движение и сжатие с растяжением. Приложи скриншот Graph Editor: по нему проверяющий должен узнать все три принципа.</p></div>
+</section>
+
+<section id="quiz">
+<div class="corner"><span>PERASPERADASTRA
+ГРАФИКИ И ПРИНЦИПЫ</span><span>ПРОВЕРЬ СЕБЯ
+10 ВОПРОСОВ</span></div>
+  <h2>Квиз: прочитай график</h2>
+  <p>После ответа появится разбор и ссылка на часть гайда.</p>
+  <div class="quiz" id="quiz-list"></div>
+  <div class="score"><span class="big" id="quiz-score">0 / 10</span><span id="quiz-verdict">Ответь на все вопросы, чтобы увидеть результат.</span><button type="button" id="quiz-reset">Пройти заново</button></div>
+</section>
+
+<section id="check">
+<div class="corner"><span>PERASPERADASTRA
+ГРАФИКИ И ПРИНЦИПЫ</span><span>ЧЕК-ЛИСТ
+ПЕРЕД СДАЧЕЙ</span></div>
+  <h2>Чек-лист анимации</h2>
+  <p>Подходит к любой домашке с движением. Отметки сохраняются в этом браузере.</p>
+  <div class="check">
+    <label><input type="checkbox" id="c1"><span>Нет линейных ключей там, где движение должно жить: везде F9 или своя плавность</span></label>
+    <label><input type="checkbox" id="c2"><span>Открыл Speed Graph: нет случайных ступенек, пиков и обрывов</span></label>
+    <label><input type="checkbox" id="c3"><span>Для прыжков и дуг смотрел Value Graph, Position разделён на измерения</span></label>
+    <label><input type="checkbox" id="c4"><span>Перед заметным действием есть подготовка</span></label>
+    <label><input type="checkbox" id="c5"><span>Объекты останавливаются мягко или с перелётом, а не врезаются в ключ</span></label>
+    <label><input type="checkbox" id="c6"><span>Элементы стартуют не одновременно, смещение 2–4 кадра</span></label>
+    <label><input type="checkbox" id="c7"><span>Траектории идут по дугам, а не по линейке</span></label>
+    <label><input type="checkbox" id="c8"><span>Тайминг передаёт вес: лёгкое быстро, тяжёлое медленно</span></label>
+    <label><input type="checkbox" id="c9"><span>Деформации сохраняют объём</span></label>
+    <label><input type="checkbox" id="c10"><span>Главное читается сразу, вторичные действия с ним не спорят</span></label>
+    <label><input type="checkbox" id="c11"><span>Посмотрел анимацию на 100% скорости и покадрово</span></label>
+  </div>
+</section>
+
+<footer>Perasperadastra · Mission to Motion · графики и принципы анимации</footer>
+</div>
+
+<script>
+/* Hairline kernel. Copyright (c) Lucas Marques, MIT License. https://github.com/lucasmarkes/hairline */
+/* hairline kernel sha256:3a19aa2640ba8c6c306184d05fddfbd4f3323a6ebd9217dd3cbb38e9db74991c */
+/*
+ * HL: everything a figure may call. Read this index; the code under it is the
+ * package's src/core, unchanged, and a figure should not need to read it.
+ *
+ * Every figure is drawn in a 400 × 320 viewBox. World space is x/y on the
+ * ground and z up. Plates are filled with the ground colour and painted back
+ * to front, so a nearer one covers a farther one: append in that order. At
+ * the default camera, Cam(45, 0.5, S), +x runs down to the right and +y down
+ * to the left, so the corner with the largest x and y is nearest the viewer:
+ * append by ascending x + y, from the far corner (smallest x and y) to it.
+ *
+ * Camera
+ *   Cam(azDeg, k, S)                       a camera: azimuth in degrees, k = sin(elevation) (0.5 is the 2:1 view), S = scale
+ *   fit(C, points, cx, cy)                 centres the box of [x, y, z] points on (cx, cy); call it once, before proj
+ *                                          it only centres, it never scales: choose S by trying values, with the most extreme pose in points.
+ *                                          The six figures use S 1.42 to 2.12; the boxes they fit come out 230 to 310 wide and 180 to 245 tall
+ *   proj(C)                                returns P(x, y, z), which gives [sx, sy]
+ *   unproj(C, sx, sy, z)                   the world [x, y] under a screen point, on the plane at height z
+ *   facing(C)                              returns front(sample): whether a ring sample faces the camera
+ * Rounded solids
+ *   rrect(u0, v0, u1, v1, r, n)            a rounded rectangle, as a ring of samples {u, v, nu, nv}
+ *   circ(R, n)                             a circle, as a ring
+ *   rings(x0, y0, x1, y1, r, b)            [ring, inner]: a rounded footprint and its crease ring, inset by b
+ *                                          r, the corner radius, is cut to half the shorter side. b, the crease's inset in world units
+ *                                          (0.6 to 2.2 in the figures), must stay under half the shorter side or the crease turns inside out
+ *   prism(P, front, ring, inner, z0, z1)   {sil, crease}: a solid standing from z0 to z1, as two path strings
+ *   ringAt(P, ring, z)                     the ring's points, projected at height z
+ *   run(ring, keep)                        the one cyclic run of samples that pass keep
+ *   hull(points)                           the convex hull of screen points
+ *   extremes(P, ring)                      [left, right, nearest] samples: where dashed drops fall from
+ *   fillet(points, radii, n)               rounds every vertex of a closed polygon; returns the new points
+ *                                          radii is an array, one radius per vertex, each cut to half its shorter edge; a single number gives NaN.
+ *                                          n is the steps round each corner, default 4: each vertex becomes n + 1 points
+ *   ghost(P, front, ring, z0, depth)       a reflection's path {d, y0, y1}; reflect() draws it for you
+ * Paths and numbers
+ *   poly(points)                           a closed path string
+ *   open(points)                           an open polyline string
+ *   seg(a, b)                              one segment between two screen points [sx, sy], as its own subpath; project world points with P first
+ *   clamp(v, a, b)
+ *   lerp(a, b, t)
+ *   rad(deg)
+ *   r2(n)                                  two decimals
+ * The continuous clock: one spring per moving number
+ *   spring(x, opts)                        at rest on x; write .t to retarget; opts {k, c, m, eps}, default k 100, c 18, m 1
+ *   stepS(sp, dt)                          advances by dt seconds; returns whether it is still moving
+ * The discrete clock: a 700ms tween on (.32, .72, 0, 1)
+ *   tween(v, dur)                          at rest on v; dur defaults to 700 (ms)
+ *   tset(tw, to, now, delay)               retargets from where it is, after delay ms: the stagger
+ *                                          the same target again does nothing, so calling it on every pointer move is safe
+ *   tval(tw, now)                          its value at now
+ *   tdone(tw, now)                         whether it has landed
+ *   bezier(x1, y1, x2, y2)                 a CSS cubic-bezier, as a function of progress
+ *   EASE_LIFT                              the lift curve itself
+ *   reducedMotion()                        true when the reader asked for less motion; springs and tweens already land at once
+ *   setReducedMotion(on)                   the loop's business, not a figure's
+ * Drawing
+ *   mk(tag, attrs, parent)                 one svg element: the only way a figure makes a node
+ *   solid(parent)                          {g, sil, cr}: a group holding a silhouette path and a crease path
+ *   put(solid, paths)                      writes prism()'s {sil, crease} into solid()'s {sil, cr}: sil into sil, crease into cr
+ *   flatDot(parent, C, r, cls)             a dot lying on the ground plane; cls is "dot", "dot m" or "dot off"
+ *   place(el, point)                       moves a dot or a circle to [sx, sy]
+ *   reflect(svg, parent, P, front, ring, z0, depth)   a fading mirror under a solid
+ *   fade(svg, y0, y1, a0)                  a vertical fade, as a mask; returns the value for a mask attribute
+ * Life
+ *   register(stage, tick)                  joins the one frame loop; tick(dt in seconds, now in ms) returns true to ask for another frame; gives {wake, unregister}
+ *   pointer(stage, handlers)               {move(point), down(point), leave()}, points in viewBox units; returns its disposer
+ *   disposer()                             {add, on, dispose}: collects tear-down, so destroy is bag.dispose
+ * The bench's business, not a figure's
+ *   css(lightDark)
+ *   inject(root)
+ *   tour(stage, stops, onStop)             an unseen pointer that walks the stops, [x, y] in viewBox units or null to leave, and gives way to a real one; onStop(i) on each arrival; returns {stop}
+ *   LAP                                    the default stops: a diamond around the centre, then a leave
+ *
+ * Classes, on path, polygon, ellipse and line. They are the whole palette; a
+ * figure sets no colour, width or fill of its own.
+ *     (none)   filled with the ground colour, medium stroke
+ *     sil      the silhouette's stroke        hi    the bright stroke: the only highlight
+ *     lo       the dim stroke                 nf    no fill        fo   fill only, no stroke
+ *     dash     a dashed guide
+ *     dot      a bright dot                   dot m   a medium dot     dot off   a dim dot
+ */
+var HL = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+  // packages/hairline/src/core/kernel.ts
+  var kernel_exports = {};
+  __export(kernel_exports, {
+    Cam: () => Cam,
+    EASE_LIFT: () => EASE_LIFT,
+    LAP: () => LAP,
+    bezier: () => bezier,
+    circ: () => circ,
+    clamp: () => clamp,
+    css: () => css,
+    disposer: () => disposer,
+    extremes: () => extremes,
+    facing: () => facing,
+    fade: () => fade,
+    fillet: () => fillet,
+    fit: () => fit,
+    flatDot: () => flatDot,
+    ghost: () => ghost,
+    hull: () => hull,
+    inject: () => inject,
+    lerp: () => lerp,
+    mk: () => mk,
+    open: () => open,
+    place: () => place,
+    pointer: () => pointer,
+    poly: () => poly,
+    prism: () => prism,
+    proj: () => proj,
+    put: () => put,
+    r2: () => r2,
+    rad: () => rad,
+    reducedMotion: () => reducedMotion,
+    reflect: () => reflect,
+    register: () => register,
+    ringAt: () => ringAt,
+    rings: () => rings,
+    rrect: () => rrect,
+    run: () => run,
+    seg: () => seg,
+    setReducedMotion: () => setReducedMotion,
+    solid: () => solid,
+    spring: () => spring,
+    stepS: () => stepS,
+    tdone: () => tdone,
+    tour: () => tour,
+    tset: () => tset,
+    tval: () => tval,
+    tween: () => tween,
+    unproj: () => unproj
+  });
+
+  // packages/hairline/src/core/iso.ts
+  var clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  var lerp = (a, b, t) => a + (b - a) * t;
+  var rad = (d) => d * Math.PI / 180;
+  var r2 = (n) => Math.round(n * 100) / 100;
+  var poly = (pts) => "M" + pts.map((p) => r2(p[0]) + " " + r2(p[1])).join("L") + "Z";
+  var seg = (a, b) => `M${r2(a[0])} ${r2(a[1])}L${r2(b[0])} ${r2(b[1])}`;
+  var open = (pts) => pts.length < 2 ? "" : "M" + pts.map((p) => r2(p[0]) + " " + r2(p[1])).join("L");
+  var Cam = (azDeg, k, S) => ({ az: rad(azDeg), k, S, ox: 0, oy: 0 });
+  function proj(C) {
+    const c = Math.cos(C.az), s = Math.sin(C.az), zf = Math.sqrt(1 - C.k * C.k);
+    return (x, y, z) => {
+      const X = x * c - y * s, Y = x * s + y * c;
+      return [C.ox + C.S * X, C.oy + C.S * (Y * C.k - z * zf)];
+    };
+  }
+  function unproj(C, sx, sy, z) {
+    const c = Math.cos(C.az), s = Math.sin(C.az), zf = Math.sqrt(1 - C.k * C.k);
+    const X = (sx - C.ox) / C.S, Y = ((sy - C.oy) / C.S + z * zf) / C.k;
+    return [X * c + Y * s, -X * s + Y * c];
+  }
+  function fit(C, pts, cx, cy) {
+    C.ox = 0;
+    C.oy = 0;
+    const P = proj(C);
+    let a = 1e9, b = -1e9, c = 1e9, d = -1e9;
+    for (const p of pts) {
+      const q = P(p[0], p[1], p[2]);
+      a = Math.min(a, q[0]);
+      b = Math.max(b, q[0]);
+      c = Math.min(c, q[1]);
+      d = Math.max(d, q[1]);
+    }
+    C.ox = cx - (a + b) / 2;
+    C.oy = cy - (c + d) / 2;
+  }
+  function rrect(u0, v0, u1, v1, r, n = 4) {
+    r = Math.max(0, Math.min(r, (u1 - u0) / 2, (v1 - v0) / 2));
+    const out = [];
+    for (const [cu, cv, a0] of [[u1 - r, v1 - r, 0], [u0 + r, v1 - r, 90], [u0 + r, v0 + r, 180], [u1 - r, v0 + r, 270]])
+      for (let k = 0; k <= n; k++) {
+        const a = rad(a0 + 90 * k / n), ca = Math.cos(a), sa = Math.sin(a);
+        out.push({ u: cu + r * ca, v: cv + r * sa, nu: ca, nv: sa });
+      }
+    return out;
+  }
+  function circ(R, n = 96) {
+    const out = [];
+    for (let k = 0; k < n; k++) {
+      const a = k / n * Math.PI * 2, ca = Math.cos(a), sa = Math.sin(a);
+      out.push({ u: R * ca, v: R * sa, nu: ca, nv: sa });
+    }
+    return out;
+  }
+  function hull(input) {
+    const pts = input.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    const x = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    const lo = [], up = [];
+    for (const p of pts) {
+      while (lo.length > 1 && x(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop();
+      lo.push(p);
+    }
+    for (let i = pts.length - 1; i >= 0; i--) {
+      const p = pts[i];
+      while (up.length > 1 && x(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop();
+      up.push(p);
+    }
+    lo.pop();
+    up.pop();
+    return lo.concat(up);
+  }
+  var ringAt = (P, ring, z) => ring.map((q) => P(q.u, q.v, z));
+  var facing = (C) => {
+    const s = Math.sin(C.az), c = Math.cos(C.az);
+    return (q) => q.nu * s + q.nv * c >= -1e-6;
+  };
+  function run(ring, keep) {
+    const n = ring.length;
+    let s = -1;
+    for (let i = 0; i < n; i++) if (keep(ring[i]) && !keep(ring[(i + n - 1) % n])) {
+      s = i;
+      break;
+    }
+    if (s < 0) return keep(ring[0]) ? ring.slice() : [];
+    const out = [];
+    for (let k = 0; k < n && keep(ring[(s + k) % n]); k++) out.push(ring[(s + k) % n]);
+    return out;
+  }
+  function prism(P, front, ring, inner, z0, z1) {
+    return {
+      sil: poly(hull(ringAt(P, ring, z1).concat(ringAt(P, ring, z0)))),
+      crease: inner ? open(ringAt(P, run(inner, front), z1)) : ""
+    };
+  }
+  var rings = (x0, y0, x1, y1, r, b) => [
+    rrect(x0, y0, x1, y1, r),
+    rrect(x0 + b, y0 + b, x1 - b, y1 - b, Math.max(0.3, r - b))
+  ];
+  function extremes(P, ring) {
+    const pr = ring.map((q) => P(q.u, q.v, 0));
+    let a = 0, b = 0, c = 0;
+    pr.forEach((p, k) => {
+      if (p[0] < pr[a][0]) a = k;
+      if (p[0] > pr[b][0]) b = k;
+      if (p[1] > pr[c][1]) c = k;
+    });
+    return [ring[a], ring[b], ring[c]];
+  }
+  function fillet(pts, rs, n = 4) {
+    const m = pts.length, out = [];
+    for (let i = 0; i < m; i++) {
+      const a = pts[(i + m - 1) % m], p = pts[i], b = pts[(i + 1) % m];
+      const la = Math.hypot(a[0] - p[0], a[1] - p[1]), lb = Math.hypot(b[0] - p[0], b[1] - p[1]);
+      const t = Math.min(rs[i], la / 2, lb / 2);
+      const p1 = [p[0] + (a[0] - p[0]) / la * t, p[1] + (a[1] - p[1]) / la * t];
+      const p2 = [p[0] + (b[0] - p[0]) / lb * t, p[1] + (b[1] - p[1]) / lb * t];
+      for (let k = 0; k <= n; k++) {
+        const s = k / n, w = 1 - s;
+        out.push([w * w * p1[0] + 2 * w * s * p[0] + s * s * p2[0], w * w * p1[1] + 2 * w * s * p[1] + s * s * p2[1]]);
+      }
+    }
+    return out;
+  }
+  function ghost(P, front, ring, z0, depth) {
+    const f = run(ring, front), lowP = ringAt(P, f, z0 - depth);
+    return {
+      d: open(lowP) + [f[0], f[f.length - 1]].map((q) => seg(P(q.u, q.v, z0), P(q.u, q.v, z0 - depth))).join(""),
+      y0: Math.min(...ringAt(P, f, z0).map((p) => p[1])),
+      y1: Math.max(...lowP.map((p) => p[1])) + 2
+    };
+  }
+
+  // packages/hairline/src/core/motion.ts
+  var reduced = false;
+  var setReducedMotion = (on) => {
+    reduced = on;
+  };
+  var reducedMotion = () => reduced;
+  function spring(x, o = {}) {
+    return { x, v: 0, t: x, k: o.k ?? 100, c: o.c ?? 18, m: o.m ?? 1, eps: o.eps ?? 0.01 };
+  }
+  function stepS(sp, dt) {
+    if (reduced) {
+      sp.x = sp.t;
+      sp.v = 0;
+      return false;
+    }
+    const n = Math.max(1, Math.ceil(dt * 240)), h = dt / n;
+    for (let i = 0; i < n; i++) {
+      const a = (-sp.k * (sp.x - sp.t) - sp.c * sp.v) / sp.m;
+      sp.v += a * h;
+      sp.x += sp.v * h;
+    }
+    if (Math.abs(sp.x - sp.t) < sp.eps && Math.abs(sp.v) < sp.eps * 10) {
+      sp.x = sp.t;
+      sp.v = 0;
+      return false;
+    }
+    return true;
+  }
+  function bezier(x1, y1, x2, y2) {
+    const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+    const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+    const X = (u) => ((ax * u + bx) * u + cx) * u;
+    const Y = (u) => ((ay * u + by) * u + cy) * u;
+    const dX = (u) => (3 * ax * u + 2 * bx) * u + cx;
+    return (t) => {
+      if (t <= 0) return 0;
+      if (t >= 1) return 1;
+      let u = t;
+      for (let i = 0; i < 8; i++) {
+        const e = X(u) - t;
+        if (Math.abs(e) < 1e-5) break;
+        const d = dX(u);
+        if (Math.abs(d) < 1e-6) break;
+        u -= e / d;
+      }
+      if (!(u >= 0 && u <= 1) || Math.abs(X(u) - t) > 1e-4) {
+        let lo = 0, hi = 1;
+        u = t;
+        for (let i = 0; i < 24; i++) {
+          if (X(u) < t) lo = u;
+          else hi = u;
+          u = (lo + hi) / 2;
+        }
+      }
+      return Y(u);
+    };
+  }
+  var EASE_LIFT = bezier(0.32, 0.72, 0, 1);
+  var tween = (v, dur = 700) => ({ from: v, to: v, t0: -1e9, dur });
+  var tval = (tw, now) => {
+    const p = clamp((now - tw.t0) / tw.dur, 0, 1);
+    return tw.from + (tw.to - tw.from) * (reduced ? 1 : EASE_LIFT(p));
+  };
+  var tset = (tw, to, now, delay) => {
+    if (tw.to === to) return;
+    tw.from = tval(tw, now);
+    tw.to = to;
+    tw.t0 = now + delay;
+  };
+  var tdone = (tw, now) => reduced || now >= tw.t0 + tw.dur;
+
+  // packages/hairline/src/core/stage.ts
+  var NS = "http://www.w3.org/2000/svg";
+  function mk(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    if (attrs) for (const k in attrs) e.setAttribute(k, String(attrs[k]));
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function solid(parent) {
+    const g = mk("g", {}, parent);
+    return { g, sil: mk("path", { class: "sil" }, g), cr: mk("path", { class: "nf lo" }, g) };
+  }
+  var put = (el, s) => {
+    el.sil.setAttribute("d", s.sil);
+    el.cr.setAttribute("d", s.crease);
+  };
+  var flatDot = (parent, C, r, cls) => mk("ellipse", { rx: r2(r * C.S), ry: r2(r * C.S * C.k), class: cls }, parent);
+  var place = (el, q) => {
+    el.setAttribute("cx", String(r2(q[0])));
+    el.setAttribute("cy", String(r2(q[1])));
+  };
+  var fid = 0;
+  function fade(svg, y0, y1, a0 = 0.7) {
+    const id = "hl-fd" + ++fid, defs = mk("defs", {}, svg);
+    const lg = mk("linearGradient", { id: id + "g", gradientUnits: "userSpaceOnUse", x1: 0, y1: r2(y0), x2: 0, y2: r2(y1) }, defs);
+    mk("stop", { offset: 0, "stop-color": "#fff", "stop-opacity": a0 }, lg);
+    mk("stop", { offset: 1, "stop-color": "#fff", "stop-opacity": 0 }, lg);
+    const m = mk("mask", { id, maskUnits: "userSpaceOnUse", x: 0, y: 0, width: 400, height: 320 }, defs);
+    mk("rect", { x: 0, y: 0, width: 400, height: 320, fill: `url(#${id}g)` }, m);
+    return `url(#${id})`;
+  }
+  function reflect(svg, parent, P, front, ring, z0, depth) {
+    const r = ghost(P, front, ring, z0, depth);
+    const gh = mk("g", { class: "ghost", mask: fade(svg, r.y0, r.y1) }, parent);
+    mk("path", { d: r.d }, gh);
+  }
+  var boards = [];
+  var byStage = /* @__PURE__ */ new Map();
+  var raf = 0;
+  var last = 0;
+  var io = null;
+  var rm = null;
+  function frame(now) {
+    const dt = Math.min(0.05, Math.max(0, (now - last) / 1e3));
+    last = now;
+    let any = false;
+    for (const b of boards.slice()) if (b.vis && b.awake) {
+      try {
+        b.awake = !!b.tick(dt, now);
+      } catch (err) {
+        b.awake = false;
+        setTimeout(() => {
+          throw err;
+        });
+      }
+      any = any || b.awake;
+    }
+    raf = any ? requestAnimationFrame(frame) : 0;
+  }
+  function wake(b) {
+    b.awake = true;
+    if (!raf) {
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    }
+  }
+  var onMotion = () => {
+    setReducedMotion(!!rm?.matches);
+    boards.forEach(wake);
+  };
+  function start() {
+    if (io) return;
+    io = new IntersectionObserver((es) => {
+      for (const e of es) {
+        const set = byStage.get(e.target);
+        if (!set) continue;
+        for (const b of set) {
+          b.vis = e.isIntersecting;
+          if (b.vis) wake(b);
+        }
+      }
+    }, { rootMargin: "80px" });
+    rm = matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(rm.matches);
+    rm.addEventListener("change", onMotion);
+  }
+  function stop() {
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+    io?.disconnect();
+    io = null;
+    rm?.removeEventListener("change", onMotion);
+    rm = null;
+  }
+  function register(stage, tick) {
+    start();
+    const b = { stage, tick, vis: false, awake: true };
+    boards.push(b);
+    const peers = byStage.get(stage);
+    if (peers) {
+      for (const p of peers) b.vis = p.vis;
+      peers.add(b);
+      if (b.vis) wake(b);
+    } else {
+      byStage.set(stage, /* @__PURE__ */ new Set([b]));
+      io.observe(stage);
+    }
+    tick(0, performance.now());
+    let gone = false;
+    return {
+      wake: () => {
+        if (!gone) wake(b);
+      },
+      unregister: () => {
+        if (gone) return;
+        gone = true;
+        boards = boards.filter((x) => x !== b);
+        const set = byStage.get(stage);
+        if (set) {
+          set.delete(b);
+          if (!set.size) {
+            byStage.delete(stage);
+            io?.unobserve(stage);
+          }
+        }
+        if (!boards.length) stop();
+      }
+    };
+  }
+  var handlers = /* @__PURE__ */ new WeakMap();
+  var touring = /* @__PURE__ */ new WeakMap();
+  function pointer(stage, on) {
+    handlers.set(stage, on);
+    let tm = 0;
+    const pt = (e) => {
+      const r = stage.getBoundingClientRect();
+      return [(e.clientX - r.left) / r.width * 400, (e.clientY - r.top) / r.height * 320];
+    };
+    const move = (e) => {
+      clearTimeout(tm);
+      touring.get(stage)?.hold();
+      on.move(pt(e), e);
+    };
+    const down = (e) => {
+      clearTimeout(tm);
+      touring.get(stage)?.hold();
+      if (e.pointerType !== "mouse") stage.releasePointerCapture?.(e.pointerId);
+      if (on.down) on.down(pt(e), e);
+      else on.move(pt(e), e);
+    };
+    const leave = (e) => {
+      clearTimeout(tm);
+      tm = window.setTimeout(() => {
+        on.leave(e);
+        touring.get(stage)?.release();
+      }, e.pointerType === "mouse" ? 0 : 1400);
+    };
+    stage.addEventListener("pointermove", move);
+    stage.addEventListener("pointerdown", down);
+    stage.addEventListener("pointerleave", leave);
+    return () => {
+      clearTimeout(tm);
+      if (handlers.get(stage) === on) handlers.delete(stage);
+      stage.removeEventListener("pointermove", move);
+      stage.removeEventListener("pointerdown", down);
+      stage.removeEventListener("pointerleave", leave);
+    };
+  }
+  var LAP = [[128, 150], [200, 118], [272, 150], [200, 206], null];
+  var TRAVEL = 900;
+  var DWELL = 1200;
+  var REST = 1800;
+  var RESUME = 1200;
+  var STAGGER = 450;
+  var GHOST = { pointerType: "ghost" };
+  var started = 0;
+  function entry([x, y]) {
+    const dx = x - 200, dy = y - 160;
+    if (!dx && !dy) return [200, 320];
+    const k = Math.min(dx ? (dx > 0 ? 200 : -200) / dx : Infinity, dy ? (dy > 0 ? 160 : -160) / dy : Infinity);
+    return [200 + dx * k, 160 + dy * k];
+  }
+  function tour(stage, stops, onStop) {
+    let i = 0;
+    let wait = RESUME + STAGGER * (started++ % 4);
+    let t = -1;
+    let at = null;
+    let origin = [200, 320];
+    let hand = false, keys = stage.contains(stage.ownerDocument.activeElement);
+    let gone = false;
+    const leave = () => {
+      at = null;
+      t = -1;
+      handlers.get(stage)?.leave(GHOST);
+    };
+    const tick = (dt) => {
+      if (hand || keys || !stops.length) return false;
+      if (reducedMotion()) {
+        if (at) leave();
+        return false;
+      }
+      if (wait > 0) {
+        wait -= dt * 1e3;
+        return true;
+      }
+      const stop2 = stops[i];
+      if (stop2 === null) {
+        if (at) leave();
+        onStop?.(i);
+        i = (i + 1) % stops.length;
+        wait = REST;
+        return true;
+      }
+      const h = handlers.get(stage);
+      if (!h) return true;
+      if (t < 0) {
+        origin = at ?? entry(stop2);
+        t = 0;
+      }
+      t = Math.min(TRAVEL, t + dt * 1e3);
+      const k = EASE_LIFT(t / TRAVEL);
+      at = [origin[0] + (stop2[0] - origin[0]) * k, origin[1] + (stop2[1] - origin[1]) * k];
+      h.move(at, GHOST);
+      if (t < TRAVEL) return true;
+      onStop?.(i);
+      i = (i + 1) % stops.length;
+      t = -1;
+      wait = DWELL;
+      return true;
+    };
+    const take = () => {
+      at = null;
+      t = -1;
+    };
+    const give = () => {
+      if (hand || keys) return;
+      i = 0;
+      t = -1;
+      wait = RESUME;
+      board.wake();
+    };
+    const me = {
+      hold: () => {
+        hand = true;
+        take();
+      },
+      release: () => {
+        if (!hand) return;
+        hand = false;
+        give();
+      }
+    };
+    const focusIn = () => {
+      keys = true;
+      take();
+    };
+    const focusOut = (e) => {
+      if (keys && !stage.contains(e.relatedTarget)) {
+        keys = false;
+        give();
+      }
+    };
+    stage.addEventListener("focusin", focusIn);
+    stage.addEventListener("focusout", focusOut);
+    touring.set(stage, me);
+    const board = register(stage, tick);
+    return {
+      stop: () => {
+        if (gone) return;
+        gone = true;
+        board.unregister();
+        stage.removeEventListener("focusin", focusIn);
+        stage.removeEventListener("focusout", focusOut);
+        if (touring.get(stage) === me) touring.delete(stage);
+        if (at) leave();
+      }
+    };
+  }
+  function disposer() {
+    let fns = [];
+    return {
+      add: (fn) => {
+        fns.push(fn);
+      },
+      on: (target, type, fn, opts) => {
+        const h = fn;
+        target.addEventListener(type, h, opts);
+        fns.push(() => target.removeEventListener(type, h, opts));
+      },
+      dispose: () => {
+        const run2 = fns;
+        fns = [];
+        for (let i = run2.length - 1; i >= 0; i--) run2[i]();
+      }
+    };
+  }
+
+  // packages/hairline/src/core/styles.ts
+  var LIGHT = { plate: "#ffffff", hi: "#232327", edge: "#a4a4ac", mid: "#c3c3c9", lo: "#e0e0e4" };
+  var DARK = { plate: "#08090a", hi: "#d0d6e0", edge: "#5b5d64", mid: "#3e3e44", lo: "#29292d" };
+  var KEYS = ["plate", "hi", "edge", "mid", "lo"];
+  var vars = (p) => KEYS.map((k) => `--hl-${k}:var(--hairline-${k},${p[k]});`).join("");
+  var EASE = "cubic-bezier(0.5,0,0.1,1)";
+  var SVG = ":where([data-hairline]>svg)";
+  function css(lightDark) {
+    const both = Object.fromEntries(KEYS.map((k) => [k, `light-dark(${LIGHT[k]},${DARK[k]})`]));
+    return [
+      // the box, and the palette: light unless something below says otherwise
+      `:where([data-hairline]){display:block;position:relative;aspect-ratio:5/4;touch-action:pan-y;user-select:none;-webkit-user-select:none;--hl-sw:var(--hairline-stroke,0.9);${vars(LIGHT)}}`,
+      // the page's color-scheme
+      lightDark ? `:where([data-hairline]){${vars(both)}}` : "",
+      // an ancestor that says dark
+      `:where(.dark,[data-theme="dark"]) :where([data-hairline]){${vars(DARK)}}`,
+      // the figure's own theme option
+      `:where([data-hairline][data-hairline-theme="light"]){${vars(LIGHT)}}`,
+      `:where([data-hairline][data-hairline-theme="dark"]){${vars(DARK)}}`,
+      `:where([data-hairline]:focus-visible){outline:1.5px solid var(--hl-hi);outline-offset:2px}`,
+      `${SVG}{position:absolute;inset:0;width:100%;height:100%;display:block}`,
+      // Riffle's live region: read, not seen
+      `:where([data-hairline]>[data-hairline-live]){position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}`,
+      // the drawing: plates are filled with the plate colour and painted back to front
+      `${SVG} :where(path,polygon,ellipse,line){fill:var(--hl-plate);stroke:var(--hl-mid);stroke-width:var(--hl-sw);vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round;transition:stroke 260ms ${EASE}}`,
+      `${SVG} :where(.nf){fill:none}`,
+      `${SVG} :where(.fo){stroke:none}`,
+      `${SVG} :where(.sil){stroke:var(--hl-edge)}`,
+      `${SVG} :where(.hi){stroke:var(--hl-hi)}`,
+      `${SVG} :where(.lo){stroke:var(--hl-lo)}`,
+      `${SVG} :where(.dash){stroke-dasharray:1 3}`,
+      `${SVG} :where(.dot){stroke:none;fill:var(--hl-hi);transition:fill 260ms ${EASE}}`,
+      `${SVG} :where(.dot.m){fill:var(--hl-edge)}`,
+      `${SVG} :where(.dot.off){fill:var(--hl-lo)}`,
+      `${SVG} :where(.ghost path){fill:none;stroke:var(--hl-mid)}`
+    ].join("");
+  }
+  var done = /* @__PURE__ */ new WeakSet();
+  function inject(root) {
+    if (done.has(root)) return;
+    done.add(root);
+    const doc = root.nodeType === 9 ? root : root.ownerDocument;
+    const win = doc.defaultView;
+    const text = css(!!win?.CSS?.supports?.("color", "light-dark(#000,#fff)"));
+    if (win && "adoptedStyleSheets" in root) {
+      try {
+        const sheet = new win.CSSStyleSheet();
+        sheet.replaceSync(text);
+        root.adoptedStyleSheets = [...root.adoptedStyleSheets, sheet];
+        return;
+      } catch {
+      }
+    }
+    const style = doc.createElement("style");
+    style.setAttribute("data-hairline-style", "");
+    style.textContent = text;
+    (root.nodeType === 9 ? doc.head ?? doc.documentElement : root).appendChild(style);
+  }
+  return __toCommonJS(kernel_exports);
+})();
+/* /hairline kernel */
+
+</script>
+
+<script>
+/* Микро-иллюстрации частей: неподвижные фигуры в изометрическом штрихе Hairline. */
+(function(){
+  if(!window.HL) return;
+  var H = HL;
+  function shift(ring, cx, cy){ return ring.map(function(q){ return { u: q.u + cx, v: q.v + cy, nu: q.nu, nv: q.nv }; }); }
+  var SPEC = {
+    /* Ключи: таймлайн с ромбами ключей и плейхед */
+    m1: { S: 3.2, box: [0, -6, 78, 18, 26], draw: function(c, g, up){
+      c.box(g, [0, 0, 78, 12, 4, 1.4, 0, 3]);
+      c.path(g, H.seg(c.P(5, 6, 3), c.P(73, 6, 3)), "nf lo");
+      [9, 24, 52, 71].forEach(function(x, k){ c.dot(g, c.P(x, 6, 3), k < 2 ? "dot m" : "dot off", 2.6); });
+      c.box(up, [37, -6, 41, 18, 1.5, 0.6, 3, 26], true);
+      c.dot(up, c.P(39, 6, 3), "dot", 2.8);
+    } },
+    /* Графики: планшет с S-кривой, двумя ключами и усами */
+    m2: { S: 3.0, box: [0, 0, 74, 50, 12], draw: function(c, g, up){
+      c.box(g, [0, 0, 74, 50, 5, 1.6, 0, 3]);
+      var d = "", z = 3, i;
+      for(i = 1; i < 4; i++) d += H.seg(c.P(6, 6 + i * 10, z), c.P(68, 6 + i * 10, z));
+      c.path(g, d, "nf lo");
+      var pts = [];
+      for(i = 0; i <= 40; i++){ var t = i / 40, e = t * t * (3 - 2 * t); pts.push(c.P(10 + t * 54, 42 - e * 34, z)); }
+      c.path(up, H.open(pts), "nf hi");
+      c.path(up, H.seg(c.P(10, 42, z), c.P(28, 42, z)) + H.seg(c.P(64, 8, z), c.P(46, 8, z)), "nf");
+      c.dot(up, c.P(28, 42, z), "dot m", 2.2); c.dot(up, c.P(46, 8, z), "dot m", 2.2);
+      c.dot(up, c.P(10, 42, z), "dot", 3); c.dot(up, c.P(64, 8, z), "dot", 3);
+    } },
+    /* Принципы: мячик над плитой и точки кадров по дуге прыжка */
+    m3: { S: 3.0, box: [0, 0, 80, 24, 46], draw: function(c, g, up){
+      c.box(g, [0, 0, 80, 24, 4, 1.4, 0, 3]);
+      var d = "", i;
+      for(i = 0; i <= 22; i++){
+        var t = i / 22, x = 6 + t * 50, h = 3 + 36 * 4 * t * (1 - t);
+        var p = c.P(x, 12, h);
+        c.dot(g, p, i % 2 ? "dot off" : "dot m", 1.6);
+      }
+      var bp = c.P(66, 12, 9);
+      c.path(up, H.poly(H.ringAt(c.P, shift(H.circ(7, 18), 66, 12), 3)), "nf lo");
+      H.mk("circle", { cx: H.r2(bp[0]), cy: H.r2(bp[1]), r: 16, "class": "sil hi" }, up);
+    } }
+  };
+  function mount(el){
+    var spec = SPEC[el.getAttribute("data-micro")];
+    if(!spec) return;
+    H.inject(document);
+    el.setAttribute("data-hairline", "micro");
+    el.setAttribute("data-hairline-theme", "dark");
+    el.setAttribute("aria-hidden", "true");
+    var svg = H.mk("svg", { viewBox: "0 0 400 320" }, el), b = spec.box, pts = [];
+    [0, b[4]].forEach(function(z){ pts.push([b[0], b[1], z], [b[2], b[3], z], [b[2], b[1], z], [b[0], b[3], z]); });
+    var C = H.Cam(45, 0.5, spec.S);
+    H.fit(C, pts, 200, 166);
+    var P = H.proj(C), front = H.facing(C);
+    var c = {
+      P: P, front: front,
+      box: function(g, a, hi){ var r = H.rings(a[0], a[1], a[2], a[3], a[4], a[5]), s = H.solid(g); H.put(s, H.prism(P, front, r[0], r[1], a[6], a[7])); if(hi) s.sil.classList.add("hi"); return r[0]; },
+      path: function(g, d, cls){ return H.mk("path", { d: d, "class": cls }, g); },
+      dot: function(g, p, cls, r){ return H.mk("circle", { cx: H.r2(p[0]), cy: H.r2(p[1]), r: r || 3, "class": cls }, g); }
+    };
+    var g = H.mk("g", {}, svg), up = H.mk("g", { "class": "lift" }, g);
+    spec.draw(c, g, up);
+    if(up.childNodes.length) g.appendChild(up); else { g.removeChild(up); g.setAttribute("class", "lift"); }
+    try { var bb = g.getBBox(); if(bb.width) svg.setAttribute("viewBox", [H.r2(bb.x - 14), H.r2(bb.y - 26), H.r2(bb.width + 28), H.r2(bb.height + 40)].join(" ")); } catch(e) {}
+  }
+  var all = document.querySelectorAll("[data-micro]");
+  for(var i = 0; i < all.length; i++) mount(all[i]);
+})();
+</script>
+
+<script>
+/* Ядро демо: цвета темы, холсты, общий тикер, кривые Безье как в After Effects, рисование графиков. */
+var M = (function(){
+  var CS = getComputedStyle(document.documentElement);
+  function cv(n){ return CS.getPropertyValue(n).trim(); }
+  var COL = { ink: cv("--ink"), dim: cv("--dim"), faint: cv("--faint"), acc: cv("--accent"), stroke: cv("--stroke"), well: cv("--well"), panel: cv("--panel"), card: cv("--card"), good: cv("--good") };
+  var REDUCE = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function clamp(v, a, b){ return v < a ? a : v > b ? b : v; }
+  function lerp(a, b, t){ return a + (b - a) * t; }
+
+  function fit(c){
+    var r = c.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1);
+    var w = Math.max(1, Math.round(r.width)), h = Math.max(1, Math.round(r.height));
+    if(c.width !== w * d || c.height !== h * d){ c.width = w * d; c.height = h * d; }
+    var x = c.getContext("2d"); x.setTransform(d, 0, 0, d, 0, 0); x.clearRect(0, 0, w, h);
+    return { x: x, w: w, h: h };
+  }
+
+  /* кубическая Безье во времени: контрольные точки (ax, ay) и (bx, by) в долях сегмента */
+  function cub(ax, ay, bx, by){
+    function B(p1, p2, s){ var m = 1 - s; return 3 * m * m * s * p1 + 3 * m * s * s * p2 + s * s * s; }
+    return function(x){
+      if(x <= 0) return 0; if(x >= 1) return 1;
+      var lo = 0, hi = 1, s = x;
+      for(var k = 0; k < 30; k++){ s = (lo + hi) / 2; if(B(ax, bx, s) < x) lo = s; else hi = s; }
+      return B(ay, by, s);
+    };
+  }
+  /* ease как ручки ключей в AE: o — влияние выхода, i — влияние входа (0..1), скорость у ключей ноль */
+  function ease(o, i){ return cub(o, 0, 1 - i, 1); }
+  /* ключи: [время, значение, влияние выхода, влияние входа]; "l" — линейная сторона, "h" — Hold */
+  function track(keys){
+    var segs = [];
+    for(var k = 0; k < keys.length - 1; k++){
+      var A = keys[k], Bk = keys[k + 1], eo = A[2], ei = Bk.length > 3 ? Bk[3] : Bk[2];
+      if(eo === "h"){ segs.push({ a: A, b: Bk, h: 1 }); continue; }
+      if(eo === undefined) eo = "l"; if(ei === undefined || ei === "h") ei = "l";
+      segs.push({ a: A, b: Bk, f: cub(eo === "l" ? 1 / 3 : eo, eo === "l" ? 1 / 3 : 0, ei === "l" ? 2 / 3 : 1 - ei, ei === "l" ? 2 / 3 : 1) });
+    }
+    return function(u){
+      if(u <= keys[0][0]) return keys[0][1];
+      for(var k = 0; k < segs.length; k++){
+        var s = segs[k];
+        if(u <= s.b[0]){ if(s.h) return u >= s.b[0] ? s.b[1] : s.a[1]; var x = (u - s.a[0]) / (s.b[0] - s.a[0] || 1); return lerp(s.a[1], s.b[1], s.f(x)); }
+      }
+      return keys[keys.length - 1][1];
+    };
+  }
+  function deriv(f, e){ e = e || 0.002; return function(u){ return (f(Math.min(1, u + e)) - f(Math.max(0, u - e))) / ((Math.min(1, u + e) - Math.max(0, u - e)) || 1); }; }
+
+  /* график: линии текущего варианта оранжевые, второго — серые пунктирные; плейхед */
+  function plot(g, lines, u, o){
+    o = o || {};
+    var x = g.x, w = g.w, h = g.h, pl = o.pl == null ? 12 : o.pl, pr = 12, pt = 12, pb = 14;
+    var lo = o.lo == null ? 0 : o.lo, hi = o.hi == null ? 1 : o.hi, gw = w - pl - pr, gh = h - pt - pb;
+    function X(t){ return pl + t * gw; }
+    function Y(v){ return pt + (1 - (v - lo) / (hi - lo)) * gh; }
+    x.lineWidth = 1; x.strokeStyle = COL.stroke; x.setLineDash([]);
+    x.beginPath();
+    for(var k = 0; k <= 4; k++){ var yy = Math.round(pt + gh * k / 4) + .5; x.moveTo(pl, yy); x.lineTo(w - pr, yy); }
+    x.stroke();
+    if(o.zero != null){ x.strokeStyle = COL.faint; x.beginPath(); var zy = Math.round(Y(o.zero)) + .5; x.moveTo(pl, zy); x.lineTo(w - pr, zy); x.stroke(); }
+    var N = o.n || 220;
+    lines.slice().sort(function(a, b){ return (a.off ? 0 : 1) - (b.off ? 0 : 1); }).forEach(function(L){
+      x.beginPath();
+      for(var i = 0; i <= N; i++){ var t = i / N, v = L.f(t), px = X(t), py = Y(v); if(i) x.lineTo(px, py); else x.moveTo(px, py); }
+      if(L.off){ x.setLineDash([4, 4]); x.strokeStyle = COL.faint; x.lineWidth = 1.3; x.globalAlpha = 1; }
+      else { x.setLineDash([]); x.strokeStyle = L.color || COL.acc; x.lineWidth = 2; x.globalAlpha = L.a == null ? 1 : L.a; }
+      x.stroke(); x.globalAlpha = 1; x.setLineDash([]);
+    });
+    (o.keys || []).forEach(function(k){ var px = X(k[0]), py = Y(k[1]); x.save(); x.translate(px, py); x.rotate(Math.PI / 4); x.fillStyle = COL.ink; x.fillRect(-3.5, -3.5, 7, 7); x.restore(); });
+    if(u != null){
+      var ux = X(clamp(u, 0, 1));
+      x.strokeStyle = COL.ink; x.globalAlpha = .45; x.lineWidth = 1; x.beginPath(); x.moveTo(ux, pt - 4); x.lineTo(ux, h - pb + 4); x.stroke(); x.globalAlpha = 1;
+      lines.forEach(function(L){ if(L.off) return; x.fillStyle = L.color || COL.acc; x.globalAlpha = L.a == null ? 1 : L.a; x.beginPath(); x.arc(ux, Y(L.f(clamp(u, 0, 1))), 4, 0, 7); x.fill(); x.globalAlpha = 1; });
+    }
+    return { X: X, Y: Y, pl: pl, pr: pr, pt: pt, pb: pb, gw: gw, gh: gh };
+  }
+
+  /* общий тикер: крутятся только видимые и не на паузе */
+  var list = [], last = 0;
+  function reg(a){
+    a.vis = false; a.t = a.t || 0; a.playing = !REDUCE; a.dirty = true; list.push(a);
+    if("IntersectionObserver" in window){ new IntersectionObserver(function(es){ es.forEach(function(e){ a.vis = e.isIntersecting; if(a.vis) a.dirty = true; }); }, { rootMargin: "120px" }).observe(a.el); }
+    else a.vis = true;
+    if("ResizeObserver" in window) new ResizeObserver(function(){ a.dirty = true; }).observe(a.el);
+    return a;
+  }
+  function loop(now){
+    var dt = last ? Math.min(.05, (now - last) / 1000) : 0; last = now;
+    for(var i = 0; i < list.length; i++){ var a = list[i]; if(!a.vis) continue; if(a.playing){ a.t += dt; a.dirty = true; } if(a.dirty){ a.dirty = false; a.render(); } }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  var ICON = { pause: '<svg viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="2.5" y="2" width="3" height="10" rx="1"/><rect x="8.5" y="2" width="3" height="10" rx="1"/></svg>', play: '<svg viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><path d="M3.5 2.2v9.6a.6.6 0 0 0 .9.5l7.7-4.8a.6.6 0 0 0 0-1L4.4 1.7a.6.6 0 0 0-.9.5z"/></svg>' };
+  function playBtn(b, a){
+    function sync(){ b.innerHTML = a.playing ? ICON.pause : ICON.play; b.setAttribute("aria-label", a.playing ? "Пауза" : "Играть"); }
+    b.addEventListener("click", function(){ a.playing = !a.playing; sync(); });
+    sync(); return sync;
+  }
+  function ellipse(x, cx, cy, rx, ry){ x.beginPath(); x.ellipse(cx, cy, Math.max(.1, rx), Math.max(.1, ry), 0, 0, 7); }
+  function rrect(x, X0, Y0, w, h, r){ r = Math.min(r, Math.abs(w) / 2, Math.abs(h) / 2); x.beginPath(); x.roundRect ? x.roundRect(X0, Y0, w, h, r) : x.rect(X0, Y0, w, h); }
+  function diamond(x, cx, cy, s, fill){ x.save(); x.translate(cx, cy); x.rotate(Math.PI / 4); if(fill){ x.fillStyle = fill; x.fillRect(-s, -s, 2 * s, 2 * s); } else x.strokeRect(-s, -s, 2 * s, 2 * s); x.restore(); }
+  function label(x, t, px, py, col, align){ x.font = '500 10px "SF Mono","JetBrains Mono",ui-monospace,monospace'; x.fillStyle = col || COL.faint; x.textAlign = align || "center"; x.textBaseline = "middle"; x.fillText(t.toUpperCase(), px, py); }
+  return { COL: COL, REDUCE: REDUCE, clamp: clamp, lerp: lerp, fit: fit, cub: cub, ease: ease, track: track, deriv: deriv, plot: plot, reg: reg, playBtn: playBtn, ellipse: ellipse, rrect: rrect, diamond: diamond, label: label };
+})();
+
+/* Раскладка разделов, квиз с графиками и чек-лист — как в остальных методичках. */
+(function(){
+  var secs = document.querySelectorAll('section[id^="u"]');
+  for(var s = 0; s < secs.length; s++){
+    var sec = secs[s], head = sec.querySelector(".head"), h2 = head && head.querySelector("h2");
+    if(h2){ var left = document.createElement("div"), num = document.createElement("div"); left.className = "head-l"; num.className = "num"; num.setAttribute("aria-hidden", "true"); num.textContent = "0" + sec.id.slice(1); head.insertBefore(left, h2); left.appendChild(num); left.appendChild(h2); }
+    var kids = Array.prototype.slice.call(sec.children), cur = null;
+    kids.forEach(function(el){
+      if(el.tagName === "H3"){ cur = document.createElement("div"); cur.className = "sub"; var hd = document.createElement("div"), bd = document.createElement("div"); hd.className = "sub-h"; bd.className = "sub-b"; sec.insertBefore(cur, el); hd.appendChild(el); cur.appendChild(hd); cur.appendChild(bd); cur.body = bd; return; }
+      if(!cur) return;
+      if(el.classList.contains("task")){ cur = null; return; }
+      cur.body.appendChild(el);
+    });
+    var subs = sec.querySelectorAll(".sub");
+    for(var k = 0; k < subs.length; k++) if(subs[k].querySelector(".three,table,.two,.lab,.pcs,.pair")) subs[k].classList.add("wide");
+  }
+
+  function g(paths){ return '<svg class="qg" viewBox="0 0 200 90" aria-hidden="true"><path d="M10 20H190M10 50H190M10 80H190" stroke="var(--stroke)" fill="none"/>' + paths + '</svg>'; }
+  function line(d, a){ return '<path d="' + d + '" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"' + (a ? ' opacity="' + a + '"' : '') + '/>'; }
+  var QUIZ = [
+    { l: "Часть 01", h: "#u1", p: "Это Speed Graph движения между двумя ключами. Как едет объект?", g: g(line("M10 45H190")), o: ["Равномерно и механически: ключи Linear", "Плавно разгоняется и тормозит", "Стоит, а потом мгновенно прыгает", "Перелетает финиш и возвращается"], a: 0, e: "Ровная линия на графике скорости значит, что скорость не меняется. Это Linear, движение «по линейке»." },
+    { l: "Часть 01", h: "#u1", p: "А такой Speed Graph?", g: g(line("M10 80C70 80 70 15 100 15S130 80 190 80")), o: ["Равномерное движение", "Разгон от ключа и торможение к ключу: Bezier, Easy Ease", "Hold-ключи", "Объект едет назад"], a: 1, e: "У ключей скорость около нуля, в середине пик. Так выглядит F9 и любое плавное движение." },
+    { l: "Часть 01", h: "#u1", p: "Это Value Graph. Какой тип ключей?", g: g(line("M10 75H120V20H190")), o: ["Linear", "Bezier", "Hold", "Auto Bezier"], a: 2, e: "Значение стоит на месте, а потом мгновенно переключается. Это Hold: правый клик → Toggle Hold Keyframe." },
+    { l: "Часть 01", h: "#u1", p: "Что делает F9?", o: ["Удаляет ключи", "Меняет ключи с Linear на Bezier и даёт базовую плавность", "Разделяет Position на измерения", "Включает Graph Editor"], a: 1, e: "F9 экономит время: вместо ручной настройки каждого ключа сразу получаешь Easy Ease." },
+    { l: "Часть 01", h: "#u1", p: "Точки вдоль траектории в окне композиции стоят плотно. Что это значит?", o: ["Тут много ключей", "Объект здесь движется медленно", "Объект движется быстро", "Траектория сломана"], a: 1, e: "Точки — это кадры. Сжались — медленно, разъехались — быстро. Это временная интерполяция." },
+    { l: "Часть 02", h: "#u2", p: "Мяч поднимается, а линия Y Position на Value Graph идёт вниз. Что не так?", o: ["Сломались ключи", "Всё нормально: в After Effects Y растёт сверху вниз", "Надо нажать F9", "Включён Snap"], a: 1, e: "Ноль по Y у верхнего края кадра. Объект выше — значение меньше, поэтому график перевёрнут." },
+    { l: "Часть 02", h: "#u2", p: "Value Graph у Position не редактируется, ручки не тянутся. Что сделать?", o: ["Переключиться на Speed Graph", "Правый клик по Position → Separate Dimensions", "Удалить ключи и поставить заново", "Включить Auto Select Graph Type"], a: 1, e: "У объединённого Position Value Graph заблокирован. После разделения X и Y редактируются отдельно." },
+    { l: "Часть 03", h: "#u3", p: "Какой принцип виден на этом Value Graph?", g: g(line("M10 62C30 62 38 76 55 76C80 76 98 22 128 18H190")), o: ["Подготовка", "Тайминг", "Сценичность", "Ясный рисунок"], a: 0, e: "Перед основным подъёмом значение немного проваливается назад. Это anticipation." },
+    { l: "Часть 03", h: "#u3", p: "Три кривые сдвинуты во времени и перелетают финальное значение. Какие принципы?", g: g(line("M10 80C40 80 45 8 62 22S80 30 90 28H190") + line("M10 80C52 80 57 8 74 22S92 30 102 28H190", ".65") + line("M10 80C64 80 69 8 86 22S104 30 114 28H190", ".35")), o: ["Сжатие и растяжение", "Захлёст и сквозное движение", "Дуги", "Привлекательность"], a: 1, e: "Сдвиг стартов — захлёст, перелёт и затухание — сквозное движение. Вместе они убирают «роботизированность»." },
+    { l: "Часть 03", h: "#u3", p: "Мяч сплющивается при ударе. Что важно сохранить?", o: ["Скорость", "Объём: Scale X растёт, когда Y уменьшается", "Позицию по X", "Цвет"], a: 1, e: "Деформация не должна менять массу. Удобная проверка: X·Y около 100%." }
+  ];
+  var list = document.getElementById("quiz-list"), scoreEl = document.getElementById("quiz-score"), verdict = document.getElementById("quiz-verdict"), answered = 0, right = 0;
+  function el(t, c, x){ var n = document.createElement(t); if(c) n.className = c; if(x != null) n.textContent = x; return n; }
+  function update(){ scoreEl.textContent = right + " / " + QUIZ.length; if(answered < QUIZ.length){ verdict.textContent = "Ответь на все вопросы, чтобы увидеть результат."; return; } verdict.textContent = right >= 9 ? "Отлично. Графики читаешь свободно." : right >= 6 ? "Хорошо. Вернись к частям, где ошибся." : "Пройди лаборатории ещё раз и покрути ползунки."; }
+  function render(){
+    list.textContent = ""; answered = 0; right = 0;
+    QUIZ.forEach(function(q, i){
+      var card = el("div", "q"); card.appendChild(el("span", "n", (i < 9 ? "0" : "") + (i + 1) + " · " + q.l)); card.appendChild(el("div", "p", q.p));
+      if(q.g){ var w = el("div"); w.innerHTML = q.g; card.appendChild(w); }
+      var opts = el("div", "opts"), exp = el("div", "exp"); exp.hidden = true;
+      q.o.forEach(function(t, j){ var b = el("button", null, t); b.type = "button"; b.addEventListener("click", function(){
+        var all = opts.querySelectorAll("button"); for(var k = 0; k < all.length; k++){ all[k].disabled = true; if(k === q.a) all[k].className = "right"; }
+        var ok = j === q.a; if(!ok) b.className = "wrong"; answered++; if(ok) right++;
+        exp.textContent = ""; exp.appendChild(el("b", null, ok ? "Верно. " : "Не совсем. ")); exp.appendChild(document.createTextNode(q.e + " ")); var a = el("a", null, "Открыть часть"); a.href = q.h; exp.appendChild(a); exp.hidden = false; update();
+      }); opts.appendChild(b); });
+      card.appendChild(opts); card.appendChild(exp); list.appendChild(card);
+    }); update();
+  }
+  render();
+  document.getElementById("quiz-reset").addEventListener("click", function(){ render(); document.getElementById("quiz").scrollIntoView(); });
+  var KEY = "motion-graphs-check-v1", state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e){ state = {}; }
+  var boxes = document.querySelectorAll(".check input");
+  for(var c = 0; c < boxes.length; c++){ (function(box){ if(state[box.id]) box.checked = true; box.addEventListener("change", function(){ state[box.id] = box.checked; try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }); })(boxes[c]); }
+})();
+
+/* Лаборатория 01: два ключа, типы интерполяции и ручки Influence. */
+(function(){
+  var root = document.getElementById("labA"); if(!root) return;
+  var C = M.COL, F = 24, TOT = 36, FPS = 20;
+  var st = { type: "bez", o: .33, i: .33, link: true };
+  var cS = root.querySelector("[data-stage]"), cV = root.querySelector("[data-value]"), cP = root.querySelector("[data-speed]");
+  var read = root.querySelector("[data-read]"), scrub = root.querySelector("[data-scrub]");
+  var rO = root.querySelector('[data-inf="out"]'), rI = root.querySelector('[data-inf="in"]'), oO = root.querySelector('[data-o="out"]'), oI = root.querySelector('[data-o="in"]'), lk = root.querySelector("[data-link]");
+  var curve = M.ease(st.o, st.i);
+  function val(x){ x = M.clamp(x, 0, 1); return st.type === "lin" ? x : st.type === "hold" ? (x >= 1 ? 1 : 0) : curve(x); }
+  function spd(x){ if(st.type === "lin") return 1; if(st.type === "hold") return 0; var e = .004, a = Math.max(0, x - e), b = Math.min(1, x + e); return (curve(b) - curve(a)) / (b - a); }
+  var peak = 1.5;
+  function rebuild(){
+    curve = M.ease(st.o, st.i); peak = 1;
+    if(st.type === "bez") for(var k = 0; k <= 200; k++) peak = Math.max(peak, spd(k / 200));
+    rO.value = Math.round(st.o * 100); rI.value = Math.round(st.i * 100);
+    oO.textContent = Math.round(st.o * 100) + "%"; oI.textContent = Math.round(st.i * 100) + "%";
+    var dis = st.type !== "bez"; rO.disabled = dis; rI.disabled = dis;
+    root.querySelectorAll("[data-type]").forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-type") === st.type ? "true" : "false"); });
+    A.dirty = true;
+  }
+  var A = M.reg({ el: root, render: render });
+  var sync = M.playBtn(root.querySelector("[data-play]"), A);
+  function frame(){ return (A.t * FPS) % TOT; }
+  function render(){
+    var f = frame(), x = Math.min(1, f / F);
+    read.textContent = "кадр " + Math.min(F, Math.floor(f)) + " / " + F + (st.type === "bez" ? " · Bezier" : st.type === "lin" ? " · Linear" : " · Hold");
+    if(document.activeElement !== scrub) scrub.value = Math.round(f / TOT * 1000);
+    var g = M.fit(cS), c = g.x, w = g.w, h = g.h, pad = Math.max(34, w * .07), ty = h * .58, L = w - pad * 2;
+    c.strokeStyle = C.stroke; c.lineWidth = 2; c.beginPath(); c.moveTo(pad, ty); c.lineTo(w - pad, ty); c.stroke();
+    for(var k = 0; k <= F; k++){ var px = pad + val(k / F) * L; c.fillStyle = k / F <= x ? C.dim : C.faint; c.beginPath(); c.arc(px, ty + 22, 2.6, 0, 7); c.fill(); }
+    c.strokeStyle = C.acc; c.lineWidth = 1.5;
+    [0, 1].forEach(function(s){ var px = pad + s * L; M.diamond(c, px, ty, 6, C.acc); M.label(c, s ? "ключ 2" : "ключ 1", px, ty + 44, C.faint); });
+    var r = Math.min(22, h * .13), bx = pad + val(x) * L;
+    c.fillStyle = C.ink; c.beginPath(); c.arc(bx, ty - r - 6, r, 0, 7); c.fill();
+    M.label(c, "точки — кадры", w - pad, 18, C.faint, "right");
+    // Value Graph
+    var gv = M.fit(cV);
+    var lines = [{ f: val }];
+    if(st.type !== "lin") lines.push({ f: function(t){ return t; }, off: true });
+    M.plot(gv, lines, x, { lo: -.08, hi: 1.08, keys: [[0, 0], [1, 1]] });
+    // Speed Graph с усами
+    var gp = M.fit(cP), hi = Math.max(1.6, peak * 1.12);
+    var sl = [{ f: spd }];
+    if(st.type !== "lin") sl.push({ f: function(){ return 1; }, off: true });
+    var P = M.plot(gp, sl, x, { lo: -.12, hi: hi, zero: 0 });
+    var pc = gp.x;
+    if(st.type === "hold"){ pc.strokeStyle = C.acc; pc.lineWidth = 2; pc.beginPath(); pc.moveTo(P.X(1), P.Y(0)); pc.lineTo(P.X(1), P.Y(hi)); pc.stroke(); M.label(pc, "мгновенно", P.X(1) - 6, P.Y(hi * .85), C.acc, "right"); }
+    if(st.type === "bez"){
+      var y0 = P.Y(0), ho = [P.X(st.o), y0], hn = [P.X(1 - st.i), y0];
+      pc.strokeStyle = C.ink; pc.lineWidth = 1.2;
+      pc.beginPath(); pc.moveTo(P.X(0), y0); pc.lineTo(ho[0], y0); pc.moveTo(P.X(1), y0); pc.lineTo(hn[0], y0); pc.stroke();
+      [ho, hn].forEach(function(p){ pc.fillStyle = C.panel; pc.strokeStyle = C.acc; pc.lineWidth = 2; pc.beginPath(); pc.arc(p[0], p[1], 5.5, 0, 7); pc.fill(); pc.stroke(); });
+      M.diamond(pc, P.X(0), y0, 4, C.ink); M.diamond(pc, P.X(1), y0, 4, C.ink);
+    }
+    cP._P = P;
+  }
+  // тянуть усы прямо на графике скорости
+  var drag = null;
+  function local(e){ var r = cP.getBoundingClientRect(); return e.clientX - r.left; }
+  cP.addEventListener("pointerdown", function(e){
+    var P = cP._P; if(!P) return;
+    if(st.type !== "bez"){ st.type = "bez"; }
+    var px = local(e); drag = px < P.X(.5) ? "o" : "i"; cP.setPointerCapture(e.pointerId); move(e);
+  });
+  function move(e){
+    if(!drag) return; var P = cP._P, px = local(e);
+    var v = drag === "o" ? (px - P.pl) / P.gw : (P.pl + P.gw - px) / P.gw;
+    v = M.clamp(v, .01, 1); st[drag] = v; if(st.link) st[drag === "o" ? "i" : "o"] = v; rebuild();
+  }
+  cP.addEventListener("pointermove", move);
+  cP.addEventListener("pointerup", function(){ drag = null; });
+  cP.addEventListener("pointercancel", function(){ drag = null; });
+  rO.addEventListener("input", function(){ st.o = rO.value / 100; if(st.link) st.i = st.o; rebuild(); });
+  rI.addEventListener("input", function(){ st.i = rI.value / 100; if(st.link) st.o = st.i; rebuild(); });
+  lk.addEventListener("change", function(){ st.link = lk.checked; if(st.link){ st.i = st.o; rebuild(); } });
+  root.querySelectorAll("[data-type]").forEach(function(b){ b.addEventListener("click", function(){ st.type = b.getAttribute("data-type"); rebuild(); }); });
+  scrub.addEventListener("input", function(){ A.playing = false; sync(); A.t = scrub.value / 1000 * TOT / FPS; A.dirty = true; });
+  cS.addEventListener("click", function(){ A.playing = !A.playing; sync(); });
+  rebuild();
+})();
+
+/* Лаборатория 02: прыгающий мяч, Value и Speed Graph, перевёрнутая ось Y. */
+(function(){
+  var root = document.getElementById("labB"); if(!root) return;
+  var C = M.COL, FPS = 24, HS = [1, .56, .3, .14], D0 = 30;
+  var segs = [], t = 0;
+  segs.push({ t0: 0, t1: D0 / 2, h: HS[0], half: true }); t = D0 / 2;
+  for(var k = 1; k < HS.length; k++){ var d = D0 * Math.sqrt(HS[k]); segs.push({ t0: t, t1: t + d, h: HS[k] }); t += d; }
+  var MOVE = t, TOT = Math.round(MOVE + 18);
+  var keysT = [[0, HS[0]]]; segs.forEach(function(s){ if(!s.half) keysT.push([(s.t0 + s.t1) / 2, s.h]); keysT.push([s.t1, 0]); });
+  var st = { robot: false, ae: true, squash: false };
+  var cS = root.querySelector("[data-stage]"), cV = root.querySelector("[data-value]"), cP = root.querySelector("[data-speed]");
+  var read = root.querySelector("[data-read]"), scrub = root.querySelector("[data-scrub]"), vnote = root.querySelector("[data-vnote]");
+  var chips = {}; root.querySelectorAll("[data-ph]").forEach(function(s){ chips[s.getAttribute("data-ph")] = s; });
+  function seg(f){ for(var i = 0; i < segs.length; i++) if(f <= segs[i].t1) return segs[i]; return null; }
+  function hgt(f){
+    var s = seg(f); if(!s) return 0;
+    var x = (f - s.t0) / (s.t1 - s.t0);
+    if(s.half) return st.robot ? s.h * (1 - x) : s.h * (1 - x * x);
+    return st.robot ? s.h * (1 - Math.abs(2 * x - 1)) : s.h * 4 * x * (1 - x);
+  }
+  function xpos(f){ return M.clamp(f / MOVE, 0, 1); }
+  function phase(f){
+    var s = seg(f); if(!s) return null;
+    var x = (f - s.t0) / (s.t1 - s.t0);
+    if(s.half) return x < .14 ? "top" : x > .9 ? "hit" : "fall";
+    return x < .08 || x > .94 ? "hit" : x > .38 && x < .62 ? "top" : x < .5 ? "rise" : "fall";
+  }
+  var geo = { w: 600, h: 260 };
+  function scr(f){ var pad = Math.max(30, geo.w * .06), r = Math.min(18, geo.h * .07), gy = geo.h - 26 - r, top = 22 + r; return [pad + xpos(f) * (geo.w - 2 * pad), gy - hgt(f) * (gy - top), r, gy]; }
+  function speed(f){ var e = .5, s = seg(f), lo = s ? s.t0 : MOVE, hi = s ? s.t1 : TOT, fa = Math.max(lo, f - e), fb = Math.min(hi, f + e); if(fb - fa < 1e-3) return 0; var a = scr(fa), b = scr(fb); return Math.hypot(b[0] - a[0], b[1] - a[1]) / (fb - fa); }
+  var vmax = 1;
+  function calib(){ vmax = 1; var o = st.robot; [false, true].forEach(function(rb){ st.robot = rb; for(var f = 0; f <= MOVE; f += .25) vmax = Math.max(vmax, speed(f)); }); st.robot = o; }
+  var A = M.reg({ el: root, render: render });
+  var sync = M.playBtn(root.querySelector("[data-play]"), A);
+  function render(){
+    var f = (A.t * FPS) % TOT;
+    read.textContent = "кадр " + Math.floor(f) + " / " + TOT;
+    if(document.activeElement !== scrub) scrub.value = Math.round(f / TOT * 1000);
+    var g = M.fit(cS), c = g.x;
+    if(geo.w !== g.w || geo.h !== g.h){ geo.w = g.w; geo.h = g.h; calib(); }
+    var p = scr(f), r = p[2], gy = p[3];
+    c.strokeStyle = C.stroke; c.lineWidth = 2; c.beginPath(); c.moveTo(14, gy + r + 1); c.lineTo(g.w - 14, gy + r + 1); c.stroke();
+    for(var k = 0; k <= Math.floor(MOVE); k++){ var q = scr(k); c.fillStyle = k <= f ? C.dim : C.faint; c.globalAlpha = k <= f ? .9 : .55; c.beginPath(); c.arc(q[0], q[1], 2, 0, 7); c.fill(); }
+    c.globalAlpha = 1;
+    var sy = 1, ph = phase(f);
+    if(st.squash && f < MOVE){
+      var near = 99; keysT.forEach(function(kk){ if(kk[1] === 0) near = Math.min(near, Math.abs(f - kk[0])); });
+      var v = speed(f) / vmax;
+      sy = near < 2 ? 1 - .38 * (1 - near / 2) : 1 + .2 * v;
+    }
+    var sx = 1 / sy, sh = 1 - hgt(f) * .6;
+    c.fillStyle = C.well; M.ellipse(c, p[0], gy + r + 1, r * 1.2 * sh, r * .28 * sh); c.fill();
+    c.fillStyle = C.ink; M.ellipse(c, p[0], p[1] + r - r * sy, r * sx, r * sy); c.fill();
+    if(p[1] < gy - 1 && ph === "top"){ M.label(c, "зависание", p[0], p[1] - r - 12, C.acc); }
+    Object.keys(chips).forEach(function(n){ chips[n].classList.toggle("on", n === ph); });
+    // графики
+    var u = f / TOT, vk = keysT.map(function(kk){ return [kk[0] / TOT, st.ae ? 1 - kk[1] : kk[1]]; });
+    var save = st.robot;
+    function hv(rob){ return function(t){ var o = st.robot; st.robot = rob; var v = hgt(t * TOT); st.robot = o; return st.ae ? 1 - v : v; }; }
+    M.plot(M.fit(cV), [{ f: hv(save) }, { f: hv(!save), off: true }], u, { lo: -.1, hi: 1.1, keys: vk });
+    vnote.textContent = st.ae ? "мяч вверх — график вниз" : "график повторяет прыжок";
+    function sp(rob){ return function(t){ var o = st.robot; st.robot = rob; var v = speed(t * TOT); st.robot = o; return v; }; }
+    M.plot(M.fit(cP), [{ f: sp(save) }, { f: sp(!save), off: true }], u, { lo: -vmax * .08, hi: vmax * 1.12, zero: 0, n: 300 });
+  }
+  root.querySelectorAll("[data-mode]").forEach(function(b){ b.addEventListener("click", function(){ st.robot = b.getAttribute("data-mode") === "robot"; root.querySelectorAll("[data-mode]").forEach(function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); }); A.dirty = true; }); });
+  root.querySelector("[data-ae]").addEventListener("change", function(e){ st.ae = e.target.checked; A.dirty = true; });
+  root.querySelector("[data-squash]").addEventListener("change", function(e){ st.squash = e.target.checked; A.dirty = true; });
+  scrub.addEventListener("input", function(){ A.playing = false; sync(); A.t = scrub.value / 1000 * TOT / FPS; A.dirty = true; });
+  cS.addEventListener("click", function(){ A.playing = !A.playing; sync(); });
+})();
+
+/* 12 принципов: у каждого живое демо, кривая и переключатель «без / с». */
+(function(){
+  var C = M.COL, T = M.track, E = M.ease, cl = M.clamp, L = M.lerp;
+  function ground(c, w, y){ c.strokeStyle = C.stroke; c.lineWidth = 2; c.beginPath(); c.moveTo(14, y); c.lineTo(w - 14, y); c.stroke(); }
+  function ball(c, x, y, r, sx, sy, col){ c.fillStyle = col || C.ink; M.ellipse(c, x, y, r * (sx || 1), r * (sy || 1)); c.fill(); }
+  function hash(n){ var s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); }
+  var e5 = E(.5, .5), e7 = E(.7, .7);
+
+  var P = [
+  /* ---------- физика ---------- */
+  { n: "06", g: "phys", en: "Slow in & slow out", ru: "Замедление начала и конца", T: 2.2,
+    text: "Почти любое естественное движение не начинается мгновенно и не обрывается резко: объекту нужно время разогнаться и время остановиться. Линейное движение выглядит механическим, а с разгоном и торможением у объекта появляется масса. Это самый базовый принцип моушна: появление текста, карточки интерфейса, переходы, логотипы.",
+    ae: "Выдели ключи и нажми F9, затем в Speed Graph вытяни ручки до 60–80%. Чем глубже прогиб, тем дольше объект медлит у ключа.",
+    cap: "Speed Graph", lo: -.1, hi: "auto",
+    pos: function(on){ var a = on ? .7 : "l"; return T([[0, 0, a], [.1, 0, a], [.45, 1, a], [.6, 1, a], [.95, 0, a], [1, 0, a]]); },
+    ser: function(on){ return [M.deriv(this.pos(on))].map(function(f){ return function(u){ return Math.abs(f(u)) / 2.86; }; }); },
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h, pad = w * .1, Lw = w - 2 * pad, ty = h * .55, f = this.pos(on);
+      c.strokeStyle = C.stroke; c.lineWidth = 2; c.beginPath(); c.moveTo(pad, ty); c.lineTo(w - pad, ty); c.stroke();
+      for(var k = 0; k <= 14; k++){ var x = pad + f(.1 + .35 * k / 14) * Lw; c.fillStyle = C.faint; c.beginPath(); c.arc(x, ty + 18, 2.4, 0, 7); c.fill(); }
+      ball(c, pad + f(u) * Lw, ty - h * .12, h * .1);
+    } },
+  { n: "01", g: "phys", en: "Squash & stretch", ru: "Сжатие и растяжение", T: 1.3,
+    text: "Объект меняет форму в движении, и зритель чувствует массу и упругость. Главное условие — сохранение объёма: мяч при ударе сплющивается, но не теряет массу. В моушне принцип применяют к простым формам, иконкам, буквам и кнопкам. Деформация может быть даже гротескной, но не случайной.",
+    ae: "Раздели Scale на измерения. У земли X около 130%, Y около 70%, в быстром полёте наоборот. Следи, чтобы X·Y оставалось около 100%.",
+    cap: "Scale Y · высота", lo: .55, hi: 1.3,
+    sy: function(u, on){ if(!on) return 1; var d = Math.min(u, 1 - u), vv = Math.abs(1 - 2 * u); return d < .06 ? 1 - .35 * (1 - d / .06) + .2 * (d / .06) * vv : 1 + .2 * vv; },
+    ser: function(on){ var s = this; return [function(u){ return s.sy(u, on); }]; },
+    extra: function(){ return [{ f: function(u){ return .55 + .7 * 4 * u * (1 - u); }, color: C.dim, a: .55 }]; },
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h, gy = h * .86, r = h * .12, y = 4 * u * (1 - u), sy = this.sy(u, on), sx = 1 / sy;
+      ground(c, w, gy + 1);
+      c.fillStyle = C.well; M.ellipse(c, w / 2, gy + 1, r * 1.3 * (1 - y * .6), r * .3 * (1 - y * .6)); c.fill();
+      ball(c, w / 2, gy - r * sy - y * h * .55, r, sx, sy);
+    } },
+  { n: "09", g: "phys", en: "Timing", ru: "Тайминг", T: 2.4,
+    text: "Тайминг — это сколько кадров занимает движение, и именно он задаёт характер. Быстрое кажется лёгким и резким, медленное — тяжёлым и торжественным. В моушне движение часто заменяет актёрскую игру: интерфейс бывает дружелюбным или строгим, логотип — премиальным или энергичным только за счёт тайминга.",
+    ae: "Раздвигай и сдвигай ключи на таймлайне. Здесь прыжок занимает 10, 17 и 29 кадров. Тяжёлый почти не отскакивает, лёгкий отскакивает высоко.",
+    cap: "Y · высота трёх мячей", lo: -.08, hi: 1.08,
+    D: [[.18, .38], [.3, .2], [.5, .05]],
+    yb: function(u, i, on){ var d = on ? this.D[i] : this.D[1], dur = d[0], b = d[1], fall = dur * .66; if(u < fall){ var x = u / fall; return 1 - x * x; } if(u < dur){ var z = (u - fall) / (dur - fall); return b * 4 * z * (1 - z); } return 0; },
+    ser: function(on){ var s = this; return [0, 1, 2].map(function(i){ return function(u){ return s.yb(u, i, on); }; }); },
+    alpha: [1, .7, .42],
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h, gy = h * .74, r = h * .075, s = this, names = ["лёгкий", "обычный", "тяжёлый"];
+      ground(c, w, gy + r + 1);
+      [0, 1, 2].forEach(function(i){ var x = w * (.25 + .25 * i), y = s.yb(u, i, on); c.globalAlpha = s.alpha[i]; ball(c, x, gy - y * (gy - r - 14), r); c.globalAlpha = 1; M.label(c, on ? names[i] : "одинаково", x, h - 22); M.label(c, Math.round((on ? s.D[i] : s.D[1])[0] * 57.6) + " кадров", x, h - 9); });
+    } },
+  { n: "07", g: "phys", en: "Arcs", ru: "Дуги", T: 2.6,
+    text: "В жизни почти всё движется по дугам: рука, голова, хвост, брошенный предмет. Движение по прямой кажется жёстким и техническим. В моушне иконка влетает по дуге, текст чуть поднимается и опускается, камера идёт по мягкой траектории. Иногда достаточно совсем небольшого отклонения от прямой.",
+    ae: "Гни траекторию ручками ключей в кадре или Pen Tool. Второй способ: раздели Position и дай X и Y разную плавность — путь изогнётся сам.",
+    cap: "X и Y по отдельности", lo: -.08, hi: 1.08,
+    p: function(u){ return u < .08 ? 0 : u < .48 ? e5((u - .08) / .4) : u < .58 ? 1 : u < .98 ? 1 - e5((u - .58) / .4) : 0; },
+    xy: function(u, on){ var p = this.p(u); var px = p, py = on ? 1 - Math.pow(1 - p, 2.4) : p; return [px, py]; },
+    ser: function(on){ var s = this; return [function(u){ return s.xy(u, on)[0]; }, function(u){ return s.xy(u, on)[1]; }]; },
+    alpha: [1, .55],
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h, A = [w * .14, h * .82], B = [w * .86, h * .2], s = this;
+      function at(q){ return [L(A[0], B[0], q[0]), L(A[1], B[1], q[1])]; }
+      c.strokeStyle = C.faint; c.setLineDash([3, 5]); c.lineWidth = 1.3; c.beginPath();
+      for(var k = 0; k <= 40; k++){ var p = k / 40, q = at([p, on ? 1 - Math.pow(1 - p, 2.4) : p]); if(k) c.lineTo(q[0], q[1]); else c.moveTo(q[0], q[1]); }
+      c.stroke(); c.setLineDash([]);
+      for(k = 0; k <= 12; k++){ var tt = .08 + .4 * k / 12, qq = at(s.xy(tt, on)); c.fillStyle = C.faint; c.beginPath(); c.arc(qq[0], qq[1], 2.2, 0, 7); c.fill(); }
+      M.diamond(c, A[0], A[1], 5, C.acc); M.diamond(c, B[0], B[1], 5, C.acc);
+      var q0 = at(s.xy(u, on)); ball(c, q0[0], q0[1], h * .075);
+    } },
+
+  /* ---------- характер действия ---------- */
+  { n: "02", g: "act", en: "Anticipation", ru: "Подготовка", T: 2.4,
+    text: "Предварительное движение перед основным действием: перед прыжком сгибают ноги, перед броском отводят руку. Зритель успевает считать намерение, и движение становится понятным. В моушне подготовка деликатная: текст чуть отъезжает назад и вылетает вперёд, кнопка сжимается перед нажатием, иконка отклоняется перед вращением.",
+    ae: "Добавь ключ перед стартом: объект отходит назад на 5–15% пути за 6–10 кадров. На графике это провал перед подъёмом.",
+    cap: "Position X", lo: -.3, hi: 1.12,
+    pos: function(on){ return on ? T([[0, 0, .5], [.14, 0, .5], [.32, -.16, .6], [.5, 1, .75], [.72, 1, .5], [.95, 0, .5], [1, 0, .5]]) : T([[0, 0, .5], [.32, 0, .5], [.5, 1, .75], [.72, 1, .5], [.95, 0, .5], [1, 0, .5]]); },
+    ser: function(on){ return [this.pos(on)]; },
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h, pad = w * .2, Lw = w - 2 * pad, ty = h * .62, x = this.pos(on)(u), s = h * .26;
+      c.strokeStyle = C.stroke; c.lineWidth = 2; c.beginPath(); c.moveTo(w * .08, ty + s / 2 + 2); c.lineTo(w * .92, ty + s / 2 + 2); c.stroke();
+      M.label(c, "старт", pad, h - 10); M.label(c, "финиш", pad + Lw, h - 10);
+      var sx = 1 + Math.min(0, x) * 1.3, sy = 1 / sx;
+      c.fillStyle = C.ink; M.rrect(c, pad + x * Lw - s * sx / 2, ty + s / 2 - s * sy, s * sx, s * sy, 8); c.fill();
+    } },
+  { n: "05", g: "act", en: "Follow through & overlapping", ru: "Сквозное движение и захлёст", T: 2.8,
+    text: "После остановки основного тела части продолжают двигаться по инерции, а разные части стартуют и останавливаются не одновременно. Ничто в жизни не движется единым жёстким блоком. В моушне это спасает от «роботизированности»: буквы появляются со смещением, часть логотипа чуть запаздывает, карточки в системе приезжают волной.",
+    ae: "Сдвинь слои на 2–4 кадра друг от друга. В финале поставь ключ с перелётом на 5–10% и вернись к значению — или используй expression inertia.",
+    cap: "Position X трёх строк", lo: -1.15, hi: 1.25,
+    v: function(u, i, on){ var dl = on ? .055 * i : 0, x = cl((u - .05 - dl) / .4, 0, 1), y = on ? 1 - Math.exp(-6 * x) * Math.cos(11 * x) : e5(x); if(x >= 1) y = 1; var x2 = cl((u - .7 - dl) / .2, 0, 1); return -1 + y + Math.pow(x2, 2.4); },
+    ser: function(on){ var s = this; return [0, 1, 2].map(function(i){ return function(u){ return s.v(u, i, on); }; }); },
+    alpha: [1, .7, .42],
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h, s = this, W = [.5, .38, .26], bh = h * .12;
+      c.save(); c.beginPath(); c.rect(0, 0, w, h); c.clip();
+      [0, 1, 2].forEach(function(i){ var v = s.v(u, i, on), bw = W[i] * w, x = w * .12 + v * w * .9, y = h * .24 + i * bh * 1.6; c.fillStyle = i ? C.dim : C.ink; M.rrect(c, x, y, bw, bh, bh / 2); c.fill(); });
+      c.restore();
+    } },
+  { n: "10", g: "act", en: "Exaggeration", ru: "Преувеличение", T: 2.2, range: { label: "Сила перелёта", val: 55 },
+    text: "Усиление движения, формы или акцента ради выразительности: абсолютный реализм часто выглядит скучно. Это не обязательно карикатура — иногда чуть больший перелёт или чуть сильнее растяжение. В моушне объект должен считываться мгновенно. Главное — мера: если преувеличено всё сразу, сцена становится шумной.",
+    ae: "Усиль перелёт: Scale до 115–130% и обратно к 100%. Преувеличивай главное, второстепенное оставь спокойным.",
+    cap: "Scale", lo: -.05, hi: 1.55,
+    sc: function(u, on, amt){ var x = cl((u - .08) / .32, 0, 1), c1 = on ? amt * 5 : 0, y = x >= 1 ? 1 : (c1 ? 1 + (c1 + 1) * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2) : e5(x)); var x2 = cl((u - .76) / .16, 0, 1); return y * (1 - x2 * x2); },
+    ser: function(on, st){ var s = this; return [function(u){ return s.sc(u, on, st.amt); }]; },
+    draw: function(g, u, on, st){
+      var c = g.x, w = g.w, h = g.h, k = this.sc(u, on, st.amt), r = h * .22, cx = w / 2, cy = h / 2;
+      c.save(); c.translate(cx, cy); c.scale(Math.max(.001, k), Math.max(.001, k));
+      c.fillStyle = C.acc; c.beginPath(); c.arc(0, 0, r, 0, 7); c.fill();
+      c.strokeStyle = C.panel; c.lineWidth = r * .16; c.lineCap = "round"; c.lineJoin = "round"; c.beginPath(); c.moveTo(-r * .4, 0); c.lineTo(-r * .1, r * .3); c.lineTo(r * .45, -r * .3); c.stroke();
+      c.restore();
+    } },
+  { n: "08", g: "act", en: "Secondary action", ru: "Вторичное действие", T: 2.4,
+    text: "Дополнительное движение, которое поддерживает основное и делает сцену богаче. Объект вылетает в кадр, а вместе с ним появляется тень, вспышка или волна. Важно, чтобы вторичное не конкурировало с главным: если акцентов слишком много, внимание рассеивается. Хороший вторичный жест работает на идею, а не ради эффекта.",
+    ae: "Привяжи второстепенное к главному событию: тень, круг или вспышка стартуют в кадре удара и затухают быстрее основного движения.",
+    cap: "Y карточки и волна", lo: -.1, hi: 1.1,
+    y: function(u){ if(u < .05) return 1; if(u < .3){ var x = (u - .05) / .25; return 1 - x * x; } if(u < .42){ var z = (u - .3) / .12; return .12 * 4 * z * (1 - z); } return 0; },
+    ring: function(u, on){ if(!on) return 0; var x = (u - .3) / .3; return x < 0 || x > 1 ? 0 : x; },
+    op: function(u){ return u > .78 ? 1 - cl((u - .78) / .14, 0, 1) : u < .05 ? 0 : 1; },
+    ser: function(on){ var s = this; return [function(u){ return s.y(u); }, function(u){ var r = s.ring(u, on); return r ? 1 - r : 0; }]; },
+    alpha: [1, .5],
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h, gy = h * .78, cw = w * .26, ch = h * .3, y = this.y(u), op = this.op(u), top = gy - ch - y * (gy - ch);
+      c.globalAlpha = op;
+      if(on){
+        c.fillStyle = C.well; M.ellipse(c, w / 2, gy + 6, cw * .6 * (1 - y * .7), 7 * (1 - y * .7)); c.fill();
+        var r = this.ring(u, on);
+        if(r){ c.strokeStyle = C.acc; c.globalAlpha = op * (1 - r); c.lineWidth = 2; M.ellipse(c, w / 2, gy + 6, cw * .5 + r * w * .3, 8 + r * 22); c.stroke();
+          c.lineCap = "round"; [-1, 1].forEach(function(sgn){ for(var k = 0; k < 2; k++){ var a = sgn * (.5 + k * .45), l0 = cw * .6 + r * 20, l1 = l0 + 14 * (1 - r); c.beginPath(); c.moveTo(w / 2 + Math.cos(a) * l0 * sgn, gy - Math.abs(Math.sin(a)) * l0 * .5); c.lineTo(w / 2 + Math.cos(a) * l1 * sgn, gy - Math.abs(Math.sin(a)) * l1 * .5); c.stroke(); } }); }
+        c.globalAlpha = op;
+      }
+      c.fillStyle = C.ink; M.rrect(c, w / 2 - cw / 2, top, cw, ch, 10); c.fill();
+      c.fillStyle = C.dim; M.rrect(c, w / 2 - cw / 2 + 12, top + 14, cw * .5, 6, 3); c.fill(); M.rrect(c, w / 2 - cw / 2 + 12, top + 28, cw * .32, 6, 3); c.fill();
+      c.globalAlpha = 1;
+    } },
+
+  /* ---------- подача и метод ---------- */
+  { n: "03", g: "show", en: "Staging", ru: "Сценичность", T: 3,
+    text: "Ясная подача: внимание зрителя направлено на главное, происходящее однозначно понятно. Если в кадре много равнозначных элементов, непонятно, куда смотреть. В моушне иерархию строят через композицию, масштаб, контраст, направление движения, цвет и паузы. Хороший staging — это отбор: подчеркнуть главное и убрать мешающее.",
+    ae: "Второстепенным слоям опусти Opacity и Scale в тот момент, когда главный выходит вперёд. Дай паузу на главном, прежде чем двигаться дальше.",
+    cap: "Scale главного и Opacity остальных", lo: -.05, hi: 1.75,
+    env: function(u){ return u < .1 ? 0 : u < .35 ? e7((u - .1) / .25) : u < .75 ? 1 : u < .95 ? 1 - e7((u - .75) / .2) : 0; },
+    ser: function(on){ var s = this; return on ? [function(u){ return 1 + .6 * s.env(u); }, function(u){ return 1 - .7 * s.env(u); }] : [function(u){ return 1 + .25 * s.env(u); }]; },
+    alpha: [1, .5],
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h, p = this.env(u), r = Math.min(w / 14, h / 7);
+      for(var i = 0; i < 6; i++){
+        var col = i % 3, row = i / 3 | 0, x = w * (.3 + .2 * col), y = h * (.33 + .36 * row), main = i === 4;
+        var k = on ? (main ? 1 + .6 * p : 1 - .25 * p) : 1 + .25 * p, a = on && !main ? 1 - .7 * p : 1;
+        c.globalAlpha = a; c.fillStyle = on && main ? C.acc : on ? C.dim : C.acc; c.beginPath(); c.arc(x, y, r * k, 0, 7); c.fill(); c.globalAlpha = 1;
+      }
+    } },
+  { n: "04", g: "show", en: "Straight ahead & pose to pose", ru: "Последовательно и от позы к позе", T: 3, lbl: ["Последовательно", "От позы к позе"],
+    text: "Можно рисовать кадр за кадром от начала к концу — straight ahead. А можно сначала задать ключевые позы и потом достроить промежутки — pose to pose. В моушне почти всегда работают от позы к позе: ставишь ключевые состояния, программа интерполирует. Последовательный подход нужен для органики: огонь, дым, вода, нарочито живые рисованные элементы.",
+    ae: "Сначала расставь ключевые позы с Linear, проверь, что история читается по ним. Только потом включай F9 и настраивай графики.",
+    cap: "X позы · высота пламени", lo: -.05, hi: 1.08,
+    K: [[.05, 0], [.38, .5], [.7, 1], [.95, 0]],
+    pose: function(u){ return T([[0, 0, .6], [.05, 0, .6], [.38, .5, .6], [.7, 1, .6], [.95, 0, .6], [1, 0, .6]])(u); },
+    flame: function(u){ var st = Math.floor(u * 36); return .45 + .4 * hash(st) * .6 + .2 * Math.sin(st * 1.7); },
+    ser: function(on){ var s = this; return [on ? function(u){ return s.pose(u); } : function(u){ return s.flame(u); }]; },
+    keys: function(on){ return on ? this.K.map(function(k){ return [k[0], k[1]]; }) : []; },
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h;
+      if(on){
+        var poses = [[0, 0, 1], [.5, 45, 1.3], [1, 90, 1]], s = h * .2, pad = w * .2, Lw = w - 2 * pad, cy = h * .55;
+        poses.forEach(function(p, i){ c.save(); c.translate(pad + p[0] * Lw, cy - (i === 1 ? h * .12 : 0)); c.rotate(p[1] * Math.PI / 180); c.scale(p[2], p[2]); c.strokeStyle = C.faint; c.setLineDash([3, 4]); c.lineWidth = 1.2 / p[2]; c.strokeRect(-s / 2, -s / 2, s, s); c.restore(); M.label(c, "поза " + (i + 1), pad + p[0] * Lw, h - 10); });
+        c.setLineDash([]);
+        var x = this.pose(u), rot = x * 90, sc = 1 + .3 * Math.sin(x * Math.PI), yy = cy - h * .12 * Math.sin(x * Math.PI);
+        c.save(); c.translate(pad + x * Lw, yy); c.rotate(rot * Math.PI / 180); c.scale(sc, sc); c.fillStyle = C.ink; c.fillRect(-s / 2, -s / 2, s, s); c.restore();
+      } else {
+        var stp = Math.floor(u * 36), cx = w / 2, base = h * .86, fh = h * (.45 + .25 * this.flame(u)), fw = h * .2;
+        c.fillStyle = C.acc; c.beginPath(); c.moveTo(cx - fw, base);
+        for(var k = 0; k <= 10; k++){ var t = k / 10, a = Math.PI * t, jit = (hash(stp * 13 + k) - .5) * fw * .5; c.lineTo(cx - Math.cos(a) * fw * (1 - .6 * Math.sin(a) * .3) + jit, base - Math.sin(a) * fh * (k === 5 ? 1 : .55 + .45 * hash(stp * 7 + k))); }
+        c.lineTo(cx + fw, base); c.closePath(); c.fill();
+        c.fillStyle = C.ink; c.globalAlpha = .85; c.beginPath(); c.ellipse(cx + (hash(stp) - .5) * 6, base - fh * .25, fw * .4, fh * .22, 0, 0, 7); c.fill(); c.globalAlpha = 1;
+        M.label(c, "каждый кадр нарисован заново", cx, 14);
+      }
+    } },
+  { n: "11", g: "show", en: "Solid drawing", ru: "Ясный рисунок и объём", T: 2.6, lbl: ["Плоско", "С объёмом"],
+    text: "Даже плоское изображение должно ощущаться как объект в трёхмерном мире: с объёмом, массой и балансом. В моушне это solid posing — ясные силуэты, читаемое движение и ощущение веса через анимацию. Если поза или форма неясны, зритель не понимает действия.",
+    ae: "Плоский слой при повороте просто сужается и выглядит как сжатие. Добавь ребро, затемнение граней и лёгкую перспективу — или включи 3D-слой со светом.",
+    cap: "Ширина лица и толщина ребра", lo: -.05, hi: 1.08,
+    ang: function(u){ return u < .1 ? 0 : u < .42 ? Math.PI * e5((u - .1) / .32) : u < .58 ? Math.PI : u < .9 ? Math.PI * (1 + e5((u - .58) / .32)) : 0; },
+    ser: function(on){ var s = this; var a = [function(u){ return Math.abs(Math.cos(s.ang(u))); }]; if(on) a.push(function(u){ return Math.abs(Math.sin(s.ang(u))) * .35; }); return a; },
+    alpha: [1, .5],
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h, a = this.ang(u), co = Math.cos(a), si = Math.sin(a), cx = w / 2, cy = h / 2, W = h * .5, H = h * .66, hw = W / 2 * co;
+      if(!on){ c.fillStyle = C.ink; c.fillRect(cx - Math.abs(hw), cy - H / 2, Math.abs(hw) * 2, H); if(co > 0){ c.fillStyle = C.acc; M.ellipse(c, cx, cy, W * .18 * co, W * .18); c.fill(); } return; }
+      var dep = W * .14, k = .12 * si, hl = H * (1 + k) / 2, hr = H * (1 - k) / 2, ex = dep * si;
+      c.fillStyle = C.faint;
+      c.beginPath(); c.moveTo(cx + hw, cy - hr); c.lineTo(cx + hw + ex, cy - hr * .96); c.lineTo(cx + hw + ex, cy + hr * .96); c.lineTo(cx + hw, cy + hr); c.closePath(); c.fill();
+      var lit = .45 + .55 * Math.abs(co);
+      c.globalAlpha = lit; c.fillStyle = co >= 0 ? C.ink : C.dim;
+      c.beginPath(); c.moveTo(cx - hw, cy - hl); c.lineTo(cx + hw, cy - hr); c.lineTo(cx + hw, cy + hr); c.lineTo(cx - hw, cy + hl); c.closePath(); c.fill(); c.globalAlpha = 1;
+      if(co > 0){ c.fillStyle = C.acc; M.ellipse(c, cx, cy, W * .18 * co, W * .18); c.fill(); }
+      c.fillStyle = C.well; M.ellipse(c, cx, cy + H / 2 + 12, Math.abs(hw) + Math.abs(ex) / 2 + 6, 5); c.fill();
+    } },
+  { n: "12", g: "show", en: "Appeal", ru: "Привлекательность", T: 3, lbl: ["Без характера", "С характером"],
+    text: "Качество, из-за которого за объектом хочется наблюдать. Это не «миловидность»: привлекательным бывает и злодей, и монстр, и абстрактная форма. Appeal складывается из дизайна, силуэта, тайминга, характера движения и деталей. Итоговое ощущение: объект живой.",
+    ae: "Мелочи дают характер: моргание, взгляд, дыхание на короткой петле loopOut(). Но только поверх ясного основного движения.",
+    cap: "Y прыжка и моргание", lo: -.35, hi: 1.12,
+    hop: function(on){ return on ? T([[0, 0, .5], [.12, 0, .5], [.2, -.22, .6], [.36, 1, .8], [.52, 0, "l"], [.58, -.1, .5], [.64, 0, .5], [1, 0, .5]]) : T([[0, 0, "l"], [.2, 0, "l"], [.36, 1, "l"], [.52, 0, "l"], [1, 0, "l"]]); },
+    blink: function(u, on){ if(!on) return 1; var d = Math.abs(u - .8); return d < .03 ? d / .03 : 1; },
+    ser: function(on){ var s = this, f = this.hop(on); var a = [f]; if(on) a.push(function(u){ return (s.blink(u, on) - 1) * .3; }); return a; },
+    alpha: [1, .5],
+    draw: function(g, u, on){
+      var c = g.x, w = g.w, h = g.h, y = this.hop(on)(u), gy = h * .9, bw = h * .36, bh = h * .32;
+      var sq = on ? (y < 0 ? 1 + y * 1.2 : 1 + .12 * Math.max(0, Math.sin(Math.min(1, y) * Math.PI)) ) : 1, br = on ? 1 + .02 * Math.sin(u * Math.PI * 6) : 1;
+      var sy = sq * br, sx = 1 / sq, H2 = bh * sy, W2 = bw * sx, cx = w / 2, by = gy - y * h * .4;
+      ground(c, w, gy + 1);
+      c.fillStyle = C.well; M.ellipse(c, cx, gy + 1, W2 * .55 * (1 - Math.max(0, y) * .5), 5); c.fill();
+      c.save(); c.translate(cx, by); if(on) c.rotate(Math.sin(u * Math.PI * 2) * .06);
+      c.fillStyle = on ? C.acc : C.dim; M.rrect(c, -W2 / 2, -H2, W2, H2, Math.min(W2, H2) * .45); c.fill();
+      var look = on ? (u < .5 ? -1 : u < .7 ? 1 : 0) : 0, eh = this.blink(u, on);
+      [-1, 1].forEach(function(s){ var ex = s * W2 * .18, ey = -H2 * .58; c.fillStyle = C.panel; M.ellipse(c, ex, ey, W2 * .1, W2 * .13 * Math.max(.08, eh)); c.fill(); if(on && eh > .5){ c.fillStyle = C.ink; M.ellipse(c, ex + look * W2 * .035, ey, W2 * .05, W2 * .06); c.fill(); } });
+      c.restore();
+    } }
+  ];
+
+  var groups = {};
+  document.querySelectorAll(".pcs[data-group]").forEach(function(el){ groups[el.getAttribute("data-group")] = el; });
+  function el(t, cls, txt){ var n = document.createElement(t); if(cls) n.className = cls; if(txt != null) n.textContent = txt; return n; }
+  P.forEach(function(d){
+    var host = groups[d.g]; if(!host) return;
+    var card = el("article", "pc"), hd = el("div", "pc-h"), tt = el("div");
+    tt.appendChild(el("span", "kind", d.n + " · " + d.en)); tt.appendChild(el("b", null, d.ru));
+    var lbl = d.lbl || ["Без принципа", "С принципом"];
+    var sw = el("button", "sw"); sw.type = "button"; sw.setAttribute("aria-pressed", "true"); var sl = el("span", null, lbl[1]); sw.appendChild(el("i")); sw.appendChild(sl);
+    hd.appendChild(tt); hd.appendChild(sw); card.appendChild(hd);
+    var stg = el("canvas", "cv stage"); stg.setAttribute("aria-label", d.ru + ": демо движения. Клик — пауза."); card.appendChild(stg);
+    var gc = el("div", "gcap"); gc.appendChild(el("span", null, d.cap)); var lg = el("span", "lg"); var l1 = el("span", null, lbl[1]), l2 = el("span", "off", lbl[0]); lg.appendChild(l1); lg.appendChild(l2); gc.appendChild(lg); card.appendChild(gc);
+    var gr = el("canvas", "cv gr"); gr.setAttribute("aria-label", "График: " + d.cap); card.appendChild(gr);
+    var st = { on: true, amt: d.range ? d.range.val / 100 : 0 };
+    if(d.range){ var lab = el("label", "sl"), sp = el("span"), out = el("output", null, d.range.val + "%"), rr = el("input", "rng"); sp.appendChild(document.createTextNode(d.range.label)); sp.appendChild(out); rr.type = "range"; rr.min = "0"; rr.max = "100"; rr.value = d.range.val; lab.appendChild(sp); lab.appendChild(rr); card.appendChild(lab); rr.addEventListener("input", function(){ st.amt = rr.value / 100; out.textContent = rr.value + "%"; if(!st.on){ st.on = true; syncSw(); } A.dirty = true; }); }
+    card.appendChild(el("p", null, d.text));
+    var ae = el("p", "ae"); ae.appendChild(el("b", null, "В After Effects")); ae.appendChild(document.createTextNode(d.ae)); card.appendChild(ae);
+    host.appendChild(card);
+    function syncSw(){ sw.setAttribute("aria-pressed", st.on ? "true" : "false"); sl.textContent = st.on ? lbl[1] : lbl[0]; l1.textContent = st.on ? lbl[1] : lbl[0]; l2.textContent = st.on ? lbl[0] : lbl[1]; }
+    sw.addEventListener("click", function(){ st.on = !st.on; syncSw(); A.dirty = true; });
+    var A = M.reg({ el: card, t: Math.random() * d.T, render: function(){
+      var u = (A.t / d.T) % 1;
+      d.draw(M.fit(stg), u, st.on, st);
+      var cur = d.ser(st.on, st), oth = d.ser(!st.on, st), al = d.alpha || [];
+      var lines = oth.map(function(f){ return { f: f, off: true }; }).concat(cur.map(function(f, i){ return { f: f, a: al[i] == null ? 1 : al[i] }; }));
+      if(d.extra && st.on) lines = lines.concat(d.extra());
+      var hi = d.hi; if(hi === "auto"){ hi = 1; lines.forEach(function(l){ for(var q = 0; q <= 200; q++) hi = Math.max(hi, l.f(q / 200)); }); hi *= 1.1; }
+      M.plot(M.fit(gr), lines, u, { lo: d.lo, hi: hi, keys: d.keys ? d.keys(st.on) : [] });
+    } });
+    if(M.REDUCE) A.t = d.T * .3;
+    stg.addEventListener("click", function(){ A.playing = !A.playing; });
+  });
+})();
+
+</script>
+</body>
+</html>
