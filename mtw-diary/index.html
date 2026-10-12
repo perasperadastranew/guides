@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<script>if(window.parent!==window)document.documentElement.classList.add("embed")</script>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Дневник обучения Mission to Web</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010; --accent-wash:rgba(235,117,64,.14);
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html.embed{color-scheme:normal;background:transparent}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:16px;line-height:1.45;padding:16px 16px 64px}
+html.embed body{background:transparent;padding:0}
+.wrap{max-width:2200px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em;font-size:clamp(38px,6.4vw,76px);line-height:.95}
+h1 em{font-style:normal;color:var(--dim)}
+h2{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);letter-spacing:-.02em;font-size:clamp(26px,3.4vw,40px);line-height:1.05;text-wrap:balance}
+h3{margin:0;font-family:var(--display);font-weight:500;color:var(--ink);font-size:18px;line-height:1.2;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{color:var(--ink);font-weight:400}
+
+.head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 24px}
+.head p{max-width:62ch;font-size:15px}
+.sec-n{display:flex;align-items:baseline;gap:14px}
+.sec-n .mono{color:var(--accent)}
+
+/* путь */
+.path{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
+.step{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0;position:relative}
+.step .mono{display:flex;justify-content:space-between;gap:10px}
+.step h3{font-size:20px}
+.step p{font-size:14px}
+.step ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--dim)}
+.step li{display:flex;gap:9px;align-items:flex-start}
+.step li::before{content:"";flex:none;width:7px;height:7px;border:1px solid var(--dim);border-radius:2px;margin-top:7px;transform:rotate(45deg)}
+.step li.case::before{background:var(--accent);border-color:var(--accent)}
+.step.hi{border-color:var(--accent);background:linear-gradient(var(--accent-wash),var(--accent-wash)) var(--card)}
+.step .out{margin-top:auto;padding-top:12px;border-top:1px solid var(--stroke);font-size:14px;color:var(--ink)}
+.step .out i{font-style:normal;color:var(--dim)}
+.live{display:inline-flex;align-items:center;gap:7px;color:var(--accent);font-size:13px}
+.live::before{content:"";width:16px;height:12px;border-radius:3px;background:var(--accent) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 12"><path d="M6.3 3.2v5.6L10.8 6z" fill="%23101010"/></svg>') center/16px 12px no-repeat}
+.live.plan{color:var(--dim)}
+.live.plan::before{background-color:var(--faint)}
+
+/* кейсы */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.case{background:var(--card);border:1px solid var(--stroke);border-radius:12px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;text-align:left;padding:0;color:inherit;font:inherit;min-width:0;transition:border-color .15s,transform .15s}
+.case:hover,.case:focus-visible{border-color:var(--dim);transform:translateY(-2px);outline:none}
+.case:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+.case .cov{aspect-ratio:900/594;background:#222;overflow:hidden;position:relative}
+.case .cov img{display:block;width:100%;height:100%;object-fit:cover}
+.case .cov::after{content:"открыть кейс ↗";position:absolute;right:10px;bottom:10px;font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:rgba(16,16,16,.78);border-radius:6px;padding:7px 9px;opacity:0;transition:opacity .15s}
+.case:hover .cov::after,.case:focus-visible .cov::after{opacity:1}
+.case .txt{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px}
+.case .txt .mono{display:flex;justify-content:space-between;gap:10px}
+.case h3{font-size:19px}
+.case p{font-size:14px;color:var(--dim)}
+.case .by{font-size:13px;color:var(--ink);margin-top:4px}
+.case .by i{font-style:normal;color:var(--faint)}
+.soon{border:1px dashed var(--stroke);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:8px;justify-content:center;min-height:200px}
+.soon h3{color:var(--dim);font-weight:400}
+
+/* как упаковано */
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.how div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.how b{color:var(--ink);font-weight:500;font-size:15px}
+.how p{font-size:14px}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--stroke);background:var(--card);color:var(--ink);text-decoration:none;border-radius:10px;padding:10px 14px;font-size:15px}
+.links a:hover{border-color:var(--dim)}
+.links a.pri{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+
+/* просмотрщик */
+.viewer{position:fixed;inset:0;z-index:50;background:rgba(10,10,10,.92);display:flex;flex-direction:column;backdrop-filter:blur(6px)}
+.viewer .bar{flex:none;display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--panel);border-bottom:1px solid var(--stroke)}
+.viewer .bar .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.viewer .bar h3{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.viewer .bar .mono{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.viewer button{font:500 14px var(--body);border-radius:9px;padding:9px 12px;cursor:pointer;background:var(--card);color:var(--ink);border:1px solid var(--stroke);white-space:nowrap}
+.viewer button:hover{border-color:var(--dim)}
+.viewer button.x{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.viewer .body{flex:1;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.viewer .col{max-width:1400px;margin:0 auto;display:flex;flex-direction:column;background:#fff}
+.viewer .col img{display:block;width:100%;height:auto;background:#eee}
+.viewer .col .ph{width:100%;background:#1a1a1a}
+.viewer .end{max-width:1400px;margin:0 auto;padding:28px 16px 60px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+body.locked{overflow:hidden}
+@media (max-width:600px){
+  header,section{padding:18px 16px 24px}
+  .viewer .bar{padding:10px 12px}
+  .viewer button span{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="corner"><span>Perasperadastra
+Digital-дизайнер</span><span>Дневник обучения
+14 кейсов</span></div>
+    <h1>Дневник обучения <em>Mission to Web</em></h1>
+    <p class="lead">Что ты сделаешь за курс, что из этого станет кейсом и как выглядят работы ребят, которые прошли этот путь до тебя. <b>Нажми на обложку, чтобы пролистать весь кейс.</b></p>
+  </header>
+
+  <section>
+    <div class="head">
+      <div class="sec-n"><span class="mono">01</span><h2>Путь: от заданий к кейсам</h2></div>
+      <p>Первые пять недель ты набираешь инструменты. Дальше каждый большой блок заканчивается проектом, а проект — кейсом в портфолио. Сроки по неделям смотри в <a href="../mtw-calendar/">календаре</a>.</p>
+    </div>
+    <div class="path">
+      <div class="step">
+        <span class="mono"><span>Недели 1–5</span><span>октябрь</span></span>
+        <h3>Разгон</h3>
+        <ul>
+          <li>Практикумы по Figma</li>
+          <li>Смысловой прототип</li>
+          <li>UI-кит</li>
+          <li>Библиотека референсов</li>
+          <li>Мудборд и концепция</li>
+        </ul>
+        <span class="live">Вступительный эфир · пн, 12 окт</span>
+        <span class="live">Эфир по мудборду · чт, 12 ноя</span>
+        <div class="out"><i>В портфолио пока не идёт.</i> Идёт в твой Telegram-канал: процесс, находки, первые экраны.</div>
+      </div>
+      <div class="step hi">
+        <span class="mono"><span>Недели 6–8</span><span>ноябрь</span></span>
+        <h3>AI-проект</h3>
+        <ul><li class="case">Первый проект в портфолио</li><li>Концепция и визуал с нейросетями</li></ul>
+        <span class="live">Эфиры по AI-проектам · пн и чт</span>
+        <div class="out">Кейс № 1 → <i>Behance + карусель</i></div>
+      </div>
+      <div class="step hi">
+        <span class="mono"><span>Недели 9–13</span><span>дек — янв</span></span>
+        <h3>Лендинг</h3>
+        <ul><li class="case">Главный проект курса</li><li>Айдентика, главный экран, адаптив, анимация</li></ul>
+        <span class="live plan">Отчётный эфир по лендингам · уточняется</span>
+        <div class="out">Кейс № 2 → <i>Behance + рилс с прокруткой</i></div>
+      </div>
+      <div class="step hi">
+        <span class="mono"><span>Недели 14–19</span><span>янв — фев</span></span>
+        <h3>Корпоративный сайт / Лонгрид</h3>
+        <ul><li class="case">Большой проект на выбор</li><li>Многостраничник или редакционный формат</li></ul>
+        <span class="live plan">Отчётный эфир по лонгридам · уточняется</span>
+        <div class="out">Кейс № 3 → <i>Behance + пост-разбор</i></div>
+      </div>
+      <div class="step">
+        <span class="mono"><span>Недели 20–21</span><span>фев — март</span></span>
+        <h3>Карьера и фриланс</h3>
+        <ul><li>Портфолио из трёх кейсов</li><li>Резюме, отклики, первые заказы</li><li>Вёрстка на Tilda и Taptop, анимация в Jitter</li></ul>
+        <div class="out"><i>Выход:</i> собранное портфолио и первые отклики.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="web">
+    <div class="head">
+      <div class="sec-n"><span class="mono">02 · Web</span><h2>Лендинги</h2></div>
+      <p>Один экран за другим: оффер, аргументы, кнопка. Хороший лендинг держится на идее — у «Уютников» это персонажи-помощники, у Rainbow — хулиганский маскот боулинг-центра.</p>
+    </div>
+    <div class="grid" data-block="land"></div>
+  </section>
+
+  <section id="longread">
+    <div class="head">
+      <div class="sec-n"><span class="mono">03 · Web</span><h2>Лонгриды</h2></div>
+      <p>Длинная история про одного героя или тему. Здесь важнее всего типографика, ритм блоков и то, как картинка работает с текстом. Все четыре кейса — про культуру, и у каждого свой характер.</p>
+    </div>
+    <div class="grid" data-block="long"></div>
+  </section>
+
+  <section id="app">
+    <div class="head">
+      <div class="sec-n"><span class="mono">04 · UX/UI</span><h2>Приложения</h2></div>
+      <p>Мобильные продукты с полной UX-частью: исследование, персоны, JTBD, user flow, вайрфреймы — и только потом экраны. Это самые длинные кейсы на странице, листай до конца.</p>
+    </div>
+    <div class="grid" data-block="app"></div>
+  </section>
+
+  <section id="3d">
+    <div class="head">
+      <div class="sec-n"><span class="mono">05 · 3D</span><h2>3D-продукты</h2></div>
+      <p>Предмет, которого не существует, и сайт для него. Рендеры из Blender становятся главным визуалом, а интерфейс строится вокруг них.</p>
+    </div>
+    <div class="grid" data-block="3d"></div>
+  </section>
+
+  <section id="ai">
+    <div class="head">
+      <div class="sec-n"><span class="mono">06 · AI</span><h2>AI-проекты</h2></div>
+      <p>Первый проект курса. Кейсы этого блока появятся здесь после первого потока.</p>
+    </div>
+    <div class="grid"><div class="soon"><h3>Здесь будут AI-проекты студентов</h3><p>Раздел пополнится после ноябрьских эфиров.</p></div></div>
+  </section>
+
+  <section>
+    <div class="head">
+      <div class="sec-n"><span class="mono">07</span><h2>Как мы упаковываем и выкладываем</h2></div>
+      <p>Каждый кейс выше собран по шаблону школы. Полный разбор форматов — в гайде по личному бренду.</p>
+    </div>
+    <div class="how">
+      <div><b>Кейс на Behance</b><p>Обложка → задача → метафора → главный экран → блоки → адаптив → палитра и шрифты → «спасибо за просмотр». Тот же порядок, что и в примерах выше.</p></div>
+      <div><b>Карусель в Instagram и Telegram</b><p>Обложка с названием, 4–6 карточек с лучшими экранами, последняя — ссылка на Behance.</p></div>
+      <div><b>Рилс с прокруткой</b><p>Экранная запись кейса под музыку, 15–30 секунд. Самый быстрый способ показать работу.</p></div>
+      <div><b>Пост-разбор</b><p>Что было, что сделал, что получилось. Три абзаца и две картинки. Хорошо работает в Telegram-канале.</p></div>
+    </div>
+    <div class="links">
+      <a class="pri" href="../lichnyj-brend/">Гайд «Личный бренд дизайнера» ↗</a>
+      <a href="../mtw-calendar/">Календарь курса</a>
+      <a href="../mtw-metodichki/">Методички</a>
+    </div>
+  </section>
+</div>
+
+<div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="Кейс">
+  <div class="bar">
+    <button type="button" id="prev" title="Предыдущий кейс">←<span> назад</span></button>
+    <div class="t"><h3 id="vt"></h3><span class="mono" id="vs"></span></div>
+    <button type="button" id="next" title="Следующий кейс"><span>дальше </span>→</button>
+    <button type="button" class="x" id="close">Закрыть</button>
+  </div>
+  <div class="body" id="vbody"><div class="col" id="vcol"></div><div class="end" id="vend"></div></div>
+</div>
+
+<script>
+var CASES=[
+  {b:"land",id:"uyutniki",t:"Уютники",by:"Алина (@alinovui)",k:"Сервис по ремонту квартир",d:"Персонажи-уютники превращают скучную услугу в тёплую историю. Главный экран, услуги, калькулятор, отзывы."},
+  {b:"land",id:"rainbow",t:"Rainbow",by:"Юля Голоунина",k:"Боулинг-центр",d:"Брендинг и лендинг: маскот, яркая полоса-радуга, мерч и меню. Пример, где айдентика ведёт весь сайт."},
+  {b:"land",id:"bukashki",t:"Букашки",by:"Софья Яковлева",k:"Частный детский сад",d:"Сайт и айдентика. Иллюстрации-насекомые, тёплая палитра, понятная структура для родителей."},
+  {b:"land",id:"chef",t:"Chef Experience",by:"Aurelia Stashkova",k:"Шеф-повар на дом",d:"Премиальный e-commerce: тёмная атмосфера ресторана, большие фото, спокойная типографика."},
+
+  {b:"long",id:"female",t:"Strong Female Characters in Movies",by:"Мария Тетерина",k:"Лонгрид о кино",d:"Чёрно-белый редакционный лонгрид. Символ ♀ как визуальный стержень, кадры из фильмов как иллюстрации."},
+  {b:"long",id:"nintendo",t:"История Nintendo",by:"Софья (@sophdesign)",k:"Лонгрид о бренде",d:"Пиксель-арт встречается с 3D. Таймлайн компании от карт ханафуда до Super Mario, анимированные блоки."},
+  {b:"long",id:"kubrick",t:"Фильмография Стэнли Кубрика",by:"renssunn",k:"Лонгрид о режиссёре",d:"Красно-чёрный коллажный лонгрид: что смотреть у Кубрика в начале, разбор ключевых фильмов."},
+  {b:"long",id:"bjork",t:"Björk",by:"Соня Яковлева",k:"Лонгрид о музыканте",d:"Визуальный таймлайн эволюции Бьорк. Фактуры, рукописные пометки, плакатная типографика."},
+
+  {b:"app",id:"abc",t:"ABC app",by:"Варвара Кучерова",k:"Изучение английского",d:"Полный UX-процесс: метафора, персоны, JTBD, user flow, вайрфреймы, затем экраны и айдентика. Самый длинный кейс на странице."},
+  {b:"app",id:"prisoed",t:"Присоединяйся",by:"Ярославна Челатканова",k:"Поиск событий и компании",d:"Приложение и лендинг. Фиолетовые пазлы как метафора «найти своих», карточки событий, профиль организатора."},
+  {b:"app",id:"yarnpaw",t:"YarnPaw",by:"Валерия Г.",k:"Вязание и мастер-классы",d:"Тёплое приложение для вязальщиц: мастер-классы, учебник, сообщество. Персонаж-кот ведёт по интерфейсу."},
+  {b:"app",id:"woofy",t:"Woofy",by:"Студент курса",k:"Догситтер в Тбилиси",d:"Поиск догситтера за три шага и почасовые отчёты о собаке. Маскот, айдентика и сайт в одном кейсе."},
+
+  {b:"3d",id:"travelkit",t:"Travel Kit’ten",by:"Арина Галимова",k:"3D | UX/UI",d:"Дорожные бутылочки-котики. Персонажи Рыжик, Облачко и Вишенка, рендеры, карточки товара и сайт."},
+  {b:"3d",id:"heatcup",t:"Heatcup",by:"Sofiia Railian",k:"3D-продукт | Web",d:"Термос с подогревом и перемешиванием. Три модели, выбор отделки, продуктовый сайт на рендерах."}
+];
+var META={};
+fetch("cases/meta.json").then(function(r){return r.json()}).then(function(m){META=m}).catch(function(){});
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+document.querySelectorAll(".grid[data-block]").forEach(function(g){
+  var b=g.dataset.block;
+  g.innerHTML=CASES.filter(function(c){return c.b===b}).map(function(c){
+    var i=CASES.indexOf(c);
+    return '<button type="button" class="case" data-i="'+i+'">'+
+      '<span class="cov"><img src="cases/'+c.id+'/cover.jpg" alt="" loading="lazy"></span>'+
+      '<span class="txt"><span class="mono"><span>'+esc(c.k)+'</span></span><h3>'+esc(c.t)+'</h3><p>'+esc(c.d)+'</p><span class="by"><i>Дизайн — </i>'+esc(c.by)+'</span></span></button>';
+  }).join("");
+});
+
+var viewer=document.getElementById("viewer"),vcol=document.getElementById("vcol"),vend=document.getElementById("vend"),vbody=document.getElementById("vbody"),cur=-1;
+function open(i,push){
+  var c=CASES[i]; if(!c)return; cur=i;
+  document.getElementById("vt").textContent=c.t;
+  document.getElementById("vs").textContent=c.k+" · "+c.by;
+  var m=META[c.id]||{tiles:20,w:1400,h:0};
+  var html="";
+  for(var n=0;n<m.tiles;n++){
+    var h=Math.min(2000, m.h? m.h-n*2000 : 2000);
+    html+='<img src="cases/'+c.id+'/'+(n<10?"0":"")+n+'.jpg" alt="" loading="'+(n<2?"eager":"lazy")+'" width="1400" height="'+h+'">';
+  }
+  vcol.innerHTML=html;
+  var nx=CASES[i+1];
+  vend.innerHTML='<button type="button" onclick="open('+(i+1)+',true)"'+(nx?'':' disabled')+'>'+(nx?'Следующий кейс: '+esc(nx.t)+' →':'Это последний кейс')+'</button><button type="button" class="x" onclick="closeV()">Вернуться к дневнику</button>';
+  vbody.scrollTop=0;
+  viewer.hidden=false; document.body.classList.add("locked");
+  if(push){try{history.pushState({c:c.id},"","#case="+c.id)}catch(e){}}
+  document.getElementById("close").focus();
+}
+function closeV(){viewer.hidden=true;document.body.classList.remove("locked");vcol.innerHTML="";var el=document.querySelector('.case[data-i="'+cur+'"]');if(el)el.focus();cur=-1;
+  if(location.hash.indexOf("#case=")===0){try{history.pushState(null,"",location.pathname+location.search)}catch(e){}}}
+document.addEventListener("click",function(e){var el=e.target.closest(".case");if(el)open(+el.dataset.i,true)});
+document.getElementById("close").onclick=closeV;
+document.getElementById("prev").onclick=function(){if(cur>0)open(cur-1,true)};
+document.getElementById("next").onclick=function(){if(cur<CASES.length-1)open(cur+1,true)};
+document.addEventListener("keydown",function(e){if(viewer.hidden)return;if(e.key==="Escape")closeV();if(e.key==="ArrowRight"&&cur<CASES.length-1)open(cur+1,true);if(e.key==="ArrowLeft"&&cur>0)open(cur-1,true)});
+window.addEventListener("popstate",function(){var m=location.hash.match(/^#case=([\w-]+)/);if(m){var i=CASES.findIndex(function(c){return c.id===m[1]});if(i>=0)open(i,false)}else if(!viewer.hidden)closeV()});
+(function(){var m=location.hash.match(/^#case=([\w-]+)/);if(m){var i=CASES.findIndex(function(c){return c.id===m[1]});if(i>=0)setTimeout(function(){open(i,false)},300)}})();
+</script>
+</body>
+</html>
