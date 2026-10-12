@@ -254,7 +254,11 @@ section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
 .sl span{display:flex;justify-content:space-between;gap:8px}
 .sl .rng{flex:none;width:100%}
 #labA .cv.stage{aspect-ratio:16/5}
-#start .funnel{grid-template-columns:repeat(3,minmax(0,1fr))}
+#start .funnel{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:640px){#start .funnel{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cv.tl{aspect-ratio:auto;height:30px}
+.ex .seg{align-self:flex-start;flex-wrap:wrap}
+.ex-note{color:var(--ink)}
 .sl output{font-family:var(--mono);font-size:12px;color:var(--ink)}
 .tg{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);cursor:pointer}
 .tg input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
@@ -302,12 +306,12 @@ section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
 <header>
   <div class="corner"><span>PERASPERADASTRA
 ГАЙД ДЛЯ СТУДЕНТОВ</span><span>MISSION TO MOTION
-3 ЧАСТИ И КВИЗ</span></div>
+4 ЧАСТИ И КВИЗ</span></div>
   <h1>Графики и&nbsp;принципы анимации</h1>
-  <p class="lead"><b>Почему одно движение выглядит живым, а другое — роботизированным, и как это исправить в Graph Editor.</b> Один мячик проходит через весь гайд: сначала на нём разбираем ключи и графики, потом все 12 принципов. Каждое демо можно остановить, промотать и сломать.</p>
+  <p class="lead"><b>Почему одно движение выглядит живым, а другое — роботизированным, и как это исправить в Graph Editor.</b> Один мячик проходит через весь гайд: на нём разбираем ключи и графики, потом смотрим те же кривые в реальных задачах и в 12 принципах. Каждое демо можно остановить, промотать и сломать.</p>
   <span class="save">Сохрани, чтобы не потерять</span>
   <nav aria-label="Разделы">
-    <a href="#start" data-n="00">Как читать</a><a href="#u1" data-n="01">Ключи и интерполяция</a><a href="#u2" data-n="02">Speed и Value Graph</a><a href="#u3" data-n="03">12 принципов на графиках</a><a href="#quiz" data-n="04">Квиз</a><a href="#check" data-n="05">Чек-лист</a>
+    <a href="#start" data-n="00">Как читать</a><a href="#u1" data-n="01">Ключи и интерполяция</a><a href="#u2" data-n="02">Speed и Value Graph</a><a href="#u3" data-n="03">Графики в работе</a><a href="#u4" data-n="04">12 принципов на графиках</a><a href="#quiz" data-n="05">Квиз</a><a href="#check" data-n="06">Чек-лист</a>
   </nav>
 </header>
 
@@ -319,7 +323,8 @@ section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
   <div class="funnel">
     <a href="#u1"><div class="micro" data-micro="m1"></div><span class="mono">01</span><div><b>Ключи</b><br><small>Linear, Bezier, Hold</small></div></a>
     <a href="#u2"><div class="micro" data-micro="m2"></div><span class="mono">02</span><div><b>Графики</b><br><small>скорость и значение</small></div></a>
-    <a href="#u3"><div class="micro" data-micro="m3"></div><span class="mono">03</span><div><b>Принципы</b><br><small>12 демо с кривыми</small></div></a>
+    <a href="#u3"><div class="micro" data-micro="m4"></div><span class="mono">03</span><div><b>В работе</b><br><small>текст, переход, кнопка</small></div></a>
+    <a href="#u4"><div class="micro" data-micro="m3"></div><span class="mono">04</span><div><b>Принципы</b><br><small>12 демо с кривыми</small></div></a>
   </div>
   <ol class="steps">
     <li><div><div class="t">Открой гайд рядом с After Effects</div><div class="d">Демо повторяют то, что ты видишь в Graph Editor. Покрути ползунки здесь, потом сделай то же самое руками в своём проекте.</div></div></li>
@@ -440,10 +445,32 @@ SPEED И VALUE GRAPH</span></div>
 <section id="u3">
 <div class="corner"><span>PERASPERADASTRA
 ГРАФИКИ И ПРИНЦИПЫ</span><span>ЧАСТЬ 03
+ГРАФИКИ В РАБОТЕ</span></div>
+  <div class="head"><h2>Графики в работе</h2><div class="micro" data-micro="m4"></div></div>
+  <p class="quote">Где зритель должен успеть рассмотреть — там медленно. Где ему нечего смотреть — быстро.</p>
+  <p>Шесть типовых задач из коммерческого моушна. У каждой три версии: Linear, обычный Easy Ease и то, как это делают в работе. Под кадром таймлайн с ключами, как в After Effects, ниже — кривая свойства. Переключай версии и смотри, что меняется одновременно в кадре и на графике.</p>
+  <div class="legend-note"><span>выбранная версия</span><span class="off">версия для сравнения</span></div>
+
+  <h3>Шесть задач</h3>
+  <div class="pcs" id="ex-list"></div>
+
+  <h3>Что общего</h3>
+  <div class="three">
+    <div class="box"><span class="kind">Быстро там, где нечего смотреть</span><b>Узкий пик</b><p>Середина перехода, вылет из маски, полёт части логотипа. Чем уже пик на Speed Graph, тем энергичнее движение.</p></div>
+    <div class="box"><span class="kind">Медленно там, где читают</span><b>Долгий доезд</b><p>Финал текста, итоговая цифра, встающий на место логотип. Длинная входящая ручка у финального ключа.</p></div>
+    <div class="box"><span class="kind">Linear тоже инструмент</span><b>Петли и механика</b><p>Спиннеры, бегущие строки, вращение планет, конвейеры. Всё, что крутится бесконечно, делается в Linear.</p></div>
+  </div>
+
+  <div class="task"><i>Задание</i><b>Повтори один пример в трёх версиях</b><p>Выбери любую из шести задач и сделай её в After Effects трижды: Linear, F9 и «как в работе». Положи три версии рядом в одной композиции и приложи скриншот Graph Editor финальной версии.</p></div>
+</section>
+
+<section id="u4">
+<div class="corner"><span>PERASPERADASTRA
+ГРАФИКИ И ПРИНЦИПЫ</span><span>ЧАСТЬ 04
 12 ПРИНЦИПОВ</span></div>
   <div class="head"><h2>12 принципов на графиках</h2><div class="micro" data-micro="m3"></div></div>
   <p class="quote">Движение должно иметь вес, ритм, структуру и характер.</p>
-  <p>В моушн-дизайне редко есть персонаж, зато есть текст, иконки, интерфейсы и абстрактные формы. Законы движения от этого не меняются. Принципы разбиты на три группы: физика, характер действия и подача. Номер в карточке — классический порядок Disney.</p>
+  <p>В моушн-дизайне редко есть персонаж, зато есть текст, иконки, интерфейсы и абстрактные формы. Законы движения от этого не меняются. Многие из них ты уже видел в задачах выше. Принципы разбиты на три группы: физика, характер действия и подача. Номер в карточке — классический порядок Disney.</p>
   <div class="legend-note"><span>что сейчас на экране</span><span class="off">второй вариант для сравнения</span></div>
 
   <h3>Физика движения</h3>
@@ -480,11 +507,11 @@ SPEED И VALUE GRAPH</span></div>
 <section id="quiz">
 <div class="corner"><span>PERASPERADASTRA
 ГРАФИКИ И ПРИНЦИПЫ</span><span>ПРОВЕРЬ СЕБЯ
-10 ВОПРОСОВ</span></div>
+12 ВОПРОСОВ</span></div>
   <h2>Квиз: прочитай график</h2>
   <p>После ответа появится разбор и ссылка на часть гайда.</p>
   <div class="quiz" id="quiz-list"></div>
-  <div class="score"><span class="big" id="quiz-score">0 / 10</span><span id="quiz-verdict">Ответь на все вопросы, чтобы увидеть результат.</span><button type="button" id="quiz-reset">Пройти заново</button></div>
+  <div class="score"><span class="big" id="quiz-score">0 / 12</span><span id="quiz-verdict">Ответь на все вопросы, чтобы увидеть результат.</span><button type="button" id="quiz-reset">Пройти заново</button></div>
 </section>
 
 <section id="check">
@@ -504,6 +531,7 @@ SPEED И VALUE GRAPH</span></div>
     <label><input type="checkbox" id="c8"><span>Тайминг передаёт вес: лёгкое быстро, тяжёлое медленно</span></label>
     <label><input type="checkbox" id="c9"><span>Деформации сохраняют объём</span></label>
     <label><input type="checkbox" id="c10"><span>Главное читается сразу, вторичные действия с ним не спорят</span></label>
+    <label><input type="checkbox" id="c12"><span>Бесконечные петли (спиннеры, бегущие строки) — в Linear с loopOut()</span></label>
     <label><input type="checkbox" id="c11"><span>Посмотрел анимацию на 100% скорости и покадрово</span></label>
   </div>
 </section>
@@ -1257,6 +1285,13 @@ var HL = (() => {
       c.dot(up, c.P(28, 42, z), "dot m", 2.2); c.dot(up, c.P(46, 8, z), "dot m", 2.2);
       c.dot(up, c.P(10, 42, z), "dot", 3); c.dot(up, c.P(64, 8, z), "dot", 3);
     } },
+    /* В работе: два кадра перехода, второй въезжает */
+    m4: { S: 3.0, box: [0, 0, 84, 30, 30], draw: function(c, g, up){
+      c.box(g, [0, 0, 84, 30, 4, 1.4, 0, 3]);
+      c.box(g, [6, 10, 40, 13, 1.2, .6, 3, 26]);
+      c.box(up, [46, 10, 80, 13, 1.2, .6, 3, 26], true);
+      c.path(g, H.seg(c.P(10, 11.5, 14), c.P(30, 11.5, 14)) + H.seg(c.P(10, 11.5, 19), c.P(24, 11.5, 19)), "nf lo");
+    } },
     /* Принципы: мячик над плитой и точки кадров по дуге прыжка */
     m3: { S: 3.0, box: [0, 0, 80, 24, 46], draw: function(c, g, up){
       c.box(g, [0, 0, 80, 24, 4, 1.4, 0, 3]);
@@ -1434,13 +1469,15 @@ var M = (function(){
     { l: "Часть 01", h: "#u1", p: "Точки вдоль траектории в окне композиции стоят плотно. Что это значит?", o: ["Тут много ключей", "Объект здесь движется медленно", "Объект движется быстро", "Траектория сломана"], a: 1, e: "Точки — это кадры. Сжались — медленно, разъехались — быстро. Это временная интерполяция." },
     { l: "Часть 02", h: "#u2", p: "Мяч поднимается, а линия Y Position на Value Graph идёт вниз. Что не так?", o: ["Сломались ключи", "Всё нормально: в After Effects Y растёт сверху вниз", "Надо нажать F9", "Включён Snap"], a: 1, e: "Ноль по Y у верхнего края кадра. Объект выше — значение меньше, поэтому график перевёрнут." },
     { l: "Часть 02", h: "#u2", p: "Value Graph у Position не редактируется, ручки не тянутся. Что сделать?", o: ["Переключиться на Speed Graph", "Правый клик по Position → Separate Dimensions", "Удалить ключи и поставить заново", "Включить Auto Select Graph Type"], a: 1, e: "У объединённого Position Value Graph заблокирован. После разделения X и Y редактируются отдельно." },
-    { l: "Часть 03", h: "#u3", p: "Какой принцип виден на этом Value Graph?", g: g(line("M10 62C30 62 38 76 55 76C80 76 98 22 128 18H190")), o: ["Подготовка", "Тайминг", "Сценичность", "Ясный рисунок"], a: 0, e: "Перед основным подъёмом значение немного проваливается назад. Это anticipation." },
-    { l: "Часть 03", h: "#u3", p: "Три кривые сдвинуты во времени и перелетают финальное значение. Какие принципы?", g: g(line("M10 80C40 80 45 8 62 22S80 30 90 28H190") + line("M10 80C52 80 57 8 74 22S92 30 102 28H190", ".65") + line("M10 80C64 80 69 8 86 22S104 30 114 28H190", ".35")), o: ["Сжатие и растяжение", "Захлёст и сквозное движение", "Дуги", "Привлекательность"], a: 1, e: "Сдвиг стартов — захлёст, перелёт и затухание — сквозное движение. Вместе они убирают «роботизированность»." },
-    { l: "Часть 03", h: "#u3", p: "Мяч сплющивается при ударе. Что важно сохранить?", o: ["Скорость", "Объём: Scale X растёт, когда Y уменьшается", "Позицию по X", "Цвет"], a: 1, e: "Деформация не должна менять массу. Удобная проверка: X·Y около 100%." }
+    { l: "Часть 03", h: "#u3", p: "Переход между кадрами выглядит вялым, середину видно слишком долго. Что сделать?", o: ["Сделать ключи Linear", "Вытянуть Influence до 85–95%, чтобы пик скорости стал узким", "Добавить Hold-ключи", "Растянуть переход на секунду"], a: 1, e: "Длинные ручки сжимают движение в узкий пик: зритель почти не видит середину, и переход «щёлкает»." },
+    { l: "Часть 03", h: "#u3", p: "Где Linear — правильный выбор?", o: ["Появление заголовка", "Нажатие на кнопку", "Спиннер загрузки и бегущая строка", "Счётчик в инфографике"], a: 2, e: "Бесконечные петли делают в Linear с loopOut(), иначе на каждом цикле движение «спотыкается»." },
+    { l: "Часть 04", h: "#u4", p: "Какой принцип виден на этом Value Graph?", g: g(line("M10 62C30 62 38 76 55 76C80 76 98 22 128 18H190")), o: ["Подготовка", "Тайминг", "Сценичность", "Ясный рисунок"], a: 0, e: "Перед основным подъёмом значение немного проваливается назад. Это anticipation." },
+    { l: "Часть 04", h: "#u4", p: "Три кривые сдвинуты во времени и перелетают финальное значение. Какие принципы?", g: g(line("M10 80C40 80 45 8 62 22S80 30 90 28H190") + line("M10 80C52 80 57 8 74 22S92 30 102 28H190", ".65") + line("M10 80C64 80 69 8 86 22S104 30 114 28H190", ".35")), o: ["Сжатие и растяжение", "Захлёст и сквозное движение", "Дуги", "Привлекательность"], a: 1, e: "Сдвиг стартов — захлёст, перелёт и затухание — сквозное движение. Вместе они убирают «роботизированность»." },
+    { l: "Часть 04", h: "#u4", p: "Мяч сплющивается при ударе. Что важно сохранить?", o: ["Скорость", "Объём: Scale X растёт, когда Y уменьшается", "Позицию по X", "Цвет"], a: 1, e: "Деформация не должна менять массу. Удобная проверка: X·Y около 100%." }
   ];
   var list = document.getElementById("quiz-list"), scoreEl = document.getElementById("quiz-score"), verdict = document.getElementById("quiz-verdict"), answered = 0, right = 0;
   function el(t, c, x){ var n = document.createElement(t); if(c) n.className = c; if(x != null) n.textContent = x; return n; }
-  function update(){ scoreEl.textContent = right + " / " + QUIZ.length; if(answered < QUIZ.length){ verdict.textContent = "Ответь на все вопросы, чтобы увидеть результат."; return; } verdict.textContent = right >= 9 ? "Отлично. Графики читаешь свободно." : right >= 6 ? "Хорошо. Вернись к частям, где ошибся." : "Пройди лаборатории ещё раз и покрути ползунки."; }
+  function update(){ scoreEl.textContent = right + " / " + QUIZ.length; if(answered < QUIZ.length){ verdict.textContent = "Ответь на все вопросы, чтобы увидеть результат."; return; } verdict.textContent = right >= 11 ? "Отлично. Графики читаешь свободно." : right >= 8 ? "Хорошо. Вернись к частям, где ошибся." : "Пройди лаборатории ещё раз и покрути ползунки."; }
   function render(){
     list.textContent = ""; answered = 0; right = 0;
     QUIZ.forEach(function(q, i){
@@ -1614,6 +1651,199 @@ var M = (function(){
   root.querySelector("[data-squash]").addEventListener("change", function(e){ st.squash = e.target.checked; A.dirty = true; });
   scrub.addEventListener("input", function(){ A.playing = false; sync(); A.t = scrub.value / 1000 * TOT / FPS; A.dirty = true; });
   cS.addEventListener("click", function(){ A.playing = !A.playing; sync(); });
+})();
+
+/* Графики в работе: шесть типовых задач, у каждой три версии и мини-таймлайн с ключами. */
+(function(){
+  var host = document.getElementById("ex-list"); if(!host) return;
+  var C = M.COL, cl = M.clamp, E = M.ease, cub = M.cub;
+  var FONT = '-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif';
+  function seg(u, a, b, f){ return f(cl((u - a) / (b - a), 0, 1)); }
+  function abs(f){ var d = M.deriv(f); return function(u){ return Math.abs(d(u)); }; }
+  function spring(x){ return x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.exp(-6 * x) * Math.cos(11 * x); }
+  var LIN = function(x){ return x; }, F9 = E(.33, .33);
+  var M3 = [{ k: "lin", label: "Linear" }, { k: "ease", label: "Easy Ease" }, { k: "pro", label: "Как в работе" }];
+  var KT = { lin: "l", ease: "e", pro: "e" };
+
+  var X = [
+  { ttl: "Текст по буквам из маски", prop: "Position Y · Speed Graph", T: 2.6, modes: M3, ref: "lin",
+    note: { lin: "Буквы едут с постоянной скоростью и врезаются в место. Глазу не за что зацепиться.", ease: "Плавно, но все буквы стартуют вместе и читаются как один жёсткий блок.", pro: "Резкий выход из маски и долгий доезд: пик скорости в самом начале. Каждая буква стартует на 1–2 кадра позже соседней." },
+    how: "Ключи Position Y у каждой буквы (или Text Animator с Offset). Выход: вытяни входящую ручку финального ключа до 85–95%, исходящую у стартового оставь короткой. Сдвинь буквы на 1–2 кадра — или Offset в Range Selector.",
+    word: "ДВИЖЕНИЕ",
+    inF: { lin: LIN, ease: F9, pro: cub(.08, .5, .06, 1) }, outF: { lin: LIN, ease: F9, pro: cub(.7, 0, .95, .6) }, st: { lin: 0, ease: 0, pro: .028 },
+    y: function(u, i, k){ var s = this.st[k] * i, a = .06 + s, b = .64 + s * .5; return 1 - seg(u, a, a + .3, this.inF[k]) - seg(u, b, b + .18, this.outF[k]); },
+    ser: function(k){ var s = this; return (k === "pro" ? [0, 3, 7] : [0]).map(function(i){ return abs(function(u){ return s.y(u, i, k); }); }); },
+    alpha: [1, .55, .3], hi: "auto",
+    tl: function(k){ var s = this; return (k === "pro" ? [0, 1, 2] : [0]).map(function(i){ var d = s.st[k] * i; return { n: k === "pro" ? "Буква " + (i + 1) : "Все буквы", keys: [.06 + d, .36 + d, .64 + d * .5, .82 + d * .5] }; }); },
+    draw: function(g, u, k){
+      var c = g.x, w = g.w, h = g.h, fs = Math.min(h * .3, w / 7.2), s = this, mh = fs * 1.2, my = h / 2 - mh / 2;
+      c.font = "600 " + fs + "px " + FONT; c.textBaseline = "alphabetic";
+      var ws = this.word.split("").map(function(ch){ return c.measureText(ch).width; }), tw = ws.reduce(function(a, b){ return a + b; }, 0), x = w / 2 - tw / 2;
+      c.strokeStyle = C.faint; c.setLineDash([3, 5]); c.lineWidth = 1; c.strokeRect(x - 14, my, tw + 28, mh); c.setLineDash([]);
+      M.label(c, "маска", x - 14, my - 10, C.faint, "left");
+      c.font = "600 " + fs + "px " + FONT; c.textAlign = "left"; c.textBaseline = "alphabetic";
+      c.save(); c.beginPath(); c.rect(x - 14, my, tw + 28, mh); c.clip(); c.fillStyle = C.ink;
+      this.word.split("").forEach(function(ch, i){ c.fillText(ch, x, my + fs * 1.0 + s.y(u, i, k) * mh); x += ws[i]; });
+      c.restore();
+    } },
+
+  { ttl: "Переход между двумя кадрами", prop: "Position X · Speed Graph", T: 2.8, modes: M3, ref: "lin",
+    note: { lin: "Кадры едут ровно, переход тянется и выглядит как слайд-шоу.", ease: "Лучше, но Influence 33% даёт широкий пик: середина перехода видна слишком долго.", pro: "Influence 90%: пик скорости узкий и острый. Середину зритель почти не видит, переход «щёлкает», а размытие появляется ровно на пике." },
+    how: "Оба кадра в одном прекомпе, Position X с ключами в начале и конце перехода. F9, затем в Speed Graph вытяни обе ручки до 85–95%. Включи Motion Blur у слоёв и у композиции.",
+    f: { lin: LIN, ease: F9, pro: E(.9, .9) },
+    p: function(u, k){ return seg(u, .14, .44, this.f[k]) - seg(u, .62, .92, this.f[k]); },
+    ser: function(k){ var s = this; return [abs(function(u){ return s.p(u, k); })]; }, hi: "auto",
+    tl: function(){ return [{ n: "Кадр 1", keys: [.14, .44, .62, .92] }, { n: "Кадр 2", keys: [.14, .44, .62, .92] }]; },
+    frame: function(c, x0, w, h, n){
+      c.fillStyle = n ? C.well : C.acc; c.fillRect(x0, 0, w, h);
+      c.fillStyle = n ? C.ink : C.panel; c.font = "600 " + (h * .34) + "px " + FONT; c.textBaseline = "middle"; c.textAlign = "left";
+      c.fillText(n ? "02" : "01", x0 + w * .1, h * .52);
+      c.beginPath(); c.arc(x0 + w * .74, h * .5, h * .2, 0, 7); c.fillStyle = n ? C.acc : C.panel; c.fill();
+      M.label(c, n ? "кадр 2" : "кадр 1", x0 + w * .1, h * .16, n ? C.dim : C.panel, "left");
+    },
+    draw: function(g, u, k){
+      var c = g.x, w = g.w, h = g.h, s = this, p = this.p(u, k);
+      if(k === "pro"){
+        var dp = (p - this.p(Math.max(0, u - .008), k)) * w, n = 7;
+        for(var j = n; j >= 1; j--){ c.globalAlpha = .13; var o = dp * j / n * 2.2; s.frame(c, -p * w + o, w, h, 0); s.frame(c, (1 - p) * w + o, w, h, 1); }
+        c.globalAlpha = Math.abs(dp) > 2 ? .55 : 1;
+      }
+      s.frame(c, -p * w, w, h, 0); s.frame(c, (1 - p) * w, w, h, 1); c.globalAlpha = 1;
+    } },
+
+  { ttl: "Нажатие на кнопку", prop: "Scale · Value Graph", T: 2.6, modes: M3, ref: "lin", lo: .86, hi: 1.12,
+    note: { lin: "Кнопка сжимается и разжимается рывками, углы на графике — как у роботизированного мяча.", ease: "Мягко, но безжизненно: нажали и вернули.", pro: "Подготовка до 92%, перелёт до 107%, затухание к 100%. Два принципа на одной кривой — так сделана почти любая UI-анимация." },
+    how: "Scale с ключами: 100 → 92 → 107 → 98,5 → 100 за 8–10 кадров. Все ключи F9, в Value Graph проверь, что перелёт плавный, без ступенек.",
+    tr: {},
+    sc: function(u, k){
+      if(!this.tr[k]){ var a = k === "lin" ? "l" : .33; this.tr[k] = k === "pro" ? M.track([[0, 1, .5], [.22, 1, .5], [.3, .92, .6], [.42, 1.07, .55], [.5, .985, .5], [.56, 1, .5], [1, 1, .5]]) : M.track([[0, 1, a], [.22, 1, a], [.3, .92, a], [.42, 1, a], [1, 1, a]]); }
+      return this.tr[k](u);
+    },
+    ser: function(k){ var s = this; return [function(u){ return s.sc(u, k); }]; },
+    gkeys: function(k){ return (k === "pro" ? [[.22, 1], [.3, .92], [.42, 1.07], [.5, .985], [.56, 1]] : [[.22, 1], [.3, .92], [.42, 1]]); },
+    tl: function(k){ return [{ n: "Scale", keys: k === "pro" ? [.22, .3, .42, .5, .56] : [.22, .3, .42] }]; },
+    draw: function(g, u, k){
+      var c = g.x, w = g.w, h = g.h, s = this.sc(u, k), bw = Math.min(w * .42, 230), bh = Math.min(h * .24, 58), cx = w / 2, cy = h / 2, on = u > .3 && u < .9;
+      c.save(); c.translate(cx, cy); c.scale(s, s);
+      c.fillStyle = on ? C.acc : C.ink; M.rrect(c, -bw / 2, -bh / 2, bw, bh, bh / 2); c.fill();
+      c.fillStyle = C.panel; c.font = "500 " + (bh * .34) + "px " + FONT; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(on ? "В корзине ✓" : "Купить", 0, 1);
+      c.restore();
+      var t = u < .2 ? E(.5, .7)(u / .2) : u < .7 ? 1 : 1 - E(.5, .5)(cl((u - .7) / .2, 0, 1)), px = M.lerp(w * .85, cx + bw * .18, t), py = M.lerp(h * .9, cy + bh * .2, t);
+      var press = u > .2 && u < .32 ? .7 : 1;
+      c.fillStyle = C.ink; c.strokeStyle = C.panel; c.lineWidth = 2; c.beginPath(); c.arc(px, py, 9 * press, 0, 7); c.fill(); c.stroke();
+    } },
+
+  { ttl: "Счётчик в инфографике", prop: "Slider · Value Graph", T: 3, modes: M3, ref: "lin", lo: -.05, hi: 1.08,
+    note: { lin: "Последние сотни пролетают так же быстро, как первые. Число «врезается» в финал, и его не успеваешь прочитать.", ease: "Плавнее, но середина бежит слишком быстро, а финиш всё ещё короткий.", pro: "Быстрый старт и долгий доезд: последние цифры меняются медленно, глаз успевает поймать 1 250." },
+    how: "Slider Control от 0 до 1250 и expression Math.round(...) в Source Text. Финальному ключу дай входящее Influence 85–95%, стартовому — короткую ручку: на Value Graph кривая резко взлетает и долго ложится.",
+    f: { lin: LIN, ease: F9, pro: cub(.1, .62, .1, 1) },
+    v: function(u, k){ return seg(u, .06, .64, this.f[k]); },
+    ser: function(k){ var s = this; return [function(u){ return s.v(u, k); }]; },
+    gkeys: function(){ return [[.06, 0], [.64, 1]]; },
+    tl: function(){ return [{ n: "Slider", keys: [.06, .64] }]; },
+    draw: function(g, u, k){
+      var c = g.x, w = g.w, h = g.h, v = this.v(u, k), op = u > .88 ? 1 - cl((u - .88) / .1, 0, 1) : 1, n = Math.round(v * 1250);
+      c.globalAlpha = op; c.fillStyle = C.ink; c.font = "600 " + Math.min(h * .32, w / 5) + "px " + FONT; c.textAlign = "center"; c.textBaseline = "middle";
+      c.fillText(String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " "), w / 2, h * .44);
+      M.label(c, "заказов за месяц", w / 2, h * .68, C.dim);
+      var bw = w * .5; c.fillStyle = C.well; M.rrect(c, w / 2 - bw / 2, h * .78, bw, 6, 3); c.fill(); c.fillStyle = C.acc; M.rrect(c, w / 2 - bw / 2, h * .78, Math.max(6, bw * v), 6, 3); c.fill();
+      c.globalAlpha = 1;
+    } },
+
+  { ttl: "Логотип собирается из частей", prop: "Position · Value Graph", T: 2.8, modes: M3, ref: "lin", lo: -.05, hi: 1.25,
+    note: { lin: "Части съезжаются вместе и одновременно, как по рельсам. Механика без характера.", ease: "Плавно, но всё ещё единым блоком: части стартуют и встают в одну секунду.", pro: "Части приезжают волной со сдвигом в 3 кадра, перелетают место и затухают. Захлёст и сквозное движение на реальной задаче." },
+    how: "У каждой части свои ключи Position. Сдвинь слои на 2–4 кадра. Перелёт — лишним ключом на 5–10% за финальной позицией или expression inertia на Position.",
+    v: function(u, i, k){ if(k === "pro"){ return spring(cl((u - .08 - .05 * i) / .42, 0, 1)); } return seg(u, .08, .42, k === "lin" ? LIN : F9); },
+    ser: function(k){ var s = this; return (k === "pro" ? [0, 1, 2, 3] : [0]).map(function(i){ return function(u){ return s.v(u, i, k); }; }); },
+    alpha: [1, .75, .5, .3],
+    tl: function(k){ var n = ["Круг", "Квадрат", "Треугольник", "Полоса"]; return n.map(function(nm, i){ var d = k === "pro" ? .05 * i : 0; return { n: nm, keys: [.08 + d, (k === "pro" ? .5 : .42) + d] }; }); },
+    draw: function(g, u, k){
+      var c = g.x, w = g.w, h = g.h, s = this, z = Math.min(h * .2, w * .12), cx = w / 2, cy = h / 2, D = Math.max(w, h) * .55, op = u > .84 ? 1 - cl((u - .84) / .1, 0, 1) : 1;
+      var parts = [[-1, 0, -.55, -.55], [0, -1, .55, -.55], [0, 1, -.55, .55], [1, 0, .55, .55]];
+      c.globalAlpha = op;
+      parts.forEach(function(p, i){
+        var v = s.v(u, i, k), x = cx + p[2] * z * 1.1 + p[0] * D * (1 - v), y = cy + p[3] * z * 1.1 + p[1] * D * (1 - v);
+        c.save(); c.translate(x, y); if(k === "pro") c.rotate((1 - v) * (i % 2 ? .6 : -.6));
+        if(i === 0){ c.fillStyle = C.acc; c.beginPath(); c.arc(0, 0, z / 2, 0, 7); c.fill(); }
+        if(i === 1){ c.fillStyle = C.ink; c.fillRect(-z / 2, -z / 2, z, z); }
+        if(i === 2){ c.fillStyle = C.dim; c.beginPath(); c.moveTo(0, -z / 2); c.lineTo(z / 2, z / 2); c.lineTo(-z / 2, z / 2); c.closePath(); c.fill(); }
+        if(i === 3){ c.fillStyle = C.acc; M.rrect(c, -z / 2, -z / 6, z, z / 3, z / 6); c.fill(); }
+        c.restore();
+      });
+      c.globalAlpha = 1;
+    } },
+
+  { ttl: "Петля: спиннер и бегущая строка", prop: "Rotation · Value Graph", T: 2.4, modes: [{ k: "ease", label: "Easy Ease" }, { k: "lin", label: "Linear + loopOut()" }], def: "lin", ref: null, lo: -.05, hi: 2.05,
+    note: { ease: "Каждый оборот разгоняется и тормозит: спиннер «спотыкается», строка дёргается на каждом цикле. Здесь плавность — ошибка.", lin: "Ровная наклонная линия: скорость постоянная, швов между циклами нет. Для бесконечных петель Linear — правильный выбор." },
+    how: "Два ключа Rotation (0° и 360°) в Linear и expression loopOut() — петля без шва. Для бегущей строки то же самое с Position X. F9 в бесконечных циклах не нажимай.",
+    r: function(u, k){ var q = u * 2, n = Math.floor(q), f = q - n; return n + (k === "lin" ? f : F9(f)); },
+    ser: function(k){ var s = this; return [function(u){ return s.r(u, k); }]; },
+    other: function(k){ return k === "lin" ? "ease" : "lin"; },
+    tl: function(){ return [{ n: "Rotation", keys: [0, .5, 1] }]; },
+    draw: function(g, u, k){
+      var c = g.x, w = g.w, h = g.h, r = this.r(u, k), R = Math.min(h * .2, w * .12), cx = w / 2, cy = h * .4;
+      c.strokeStyle = C.well; c.lineWidth = R * .22; c.beginPath(); c.arc(cx, cy, R, 0, 7); c.stroke();
+      c.strokeStyle = C.acc; c.lineCap = "round"; c.beginPath(); var a = r * Math.PI * 2 - Math.PI / 2; c.arc(cx, cy, R, a, a + 1.6); c.stroke(); c.lineCap = "butt";
+      var bh = h * .16, by = h * .78 - bh / 2;
+      c.fillStyle = C.well; c.fillRect(0, by, w, bh);
+      c.save(); c.beginPath(); c.rect(0, by, w, bh); c.clip();
+      c.font = "600 " + (bh * .5) + "px " + FONT; c.textBaseline = "middle"; c.textAlign = "left"; c.fillStyle = C.ink;
+      var t = "НОВЫЙ ПОТОК  •  МОУШН-ДИЗАЙН  •  ", tw = c.measureText(t).width, off = -((r / 2) % 1) * tw;
+      for(var x = off; x < w; x += tw) c.fillText(t, x, by + bh / 2 + 1);
+      c.restore();
+    } }
+  ];
+
+  function el(t, cls, txt){ var n = document.createElement(t); if(cls) n.className = cls; if(txt != null) n.textContent = txt; return n; }
+  function timeline(cv, rows, u, typ){
+    var hh = 10 + rows.length * 20; if(cv.style.height !== hh + "px") cv.style.height = hh + "px";
+    var g = M.fit(cv), c = g.x, w = g.w, lx = Math.min(96, w * .26), tw = w - lx - 12;
+    rows.forEach(function(r, i){
+      var y = 5 + i * 20 + 10;
+      M.label(c, r.n, 10, y, C.faint, "left");
+      c.strokeStyle = C.stroke; c.lineWidth = 1; c.beginPath(); c.moveTo(lx, y + .5); c.lineTo(lx + tw, y + .5); c.stroke();
+      if(r.keys.length > 1){ c.strokeStyle = C.faint; c.lineWidth = 3; c.globalAlpha = .4; c.beginPath(); c.moveTo(lx + r.keys[0] * tw, y + .5); c.lineTo(lx + r.keys[r.keys.length - 1] * tw, y + .5); c.stroke(); c.globalAlpha = 1; }
+      r.keys.forEach(function(kk){
+        var x = lx + kk * tw; c.fillStyle = C.ink;
+        if(typ === "l") M.diamond(c, x, y, 3.6, C.ink);
+        else { c.beginPath(); c.moveTo(x - 4.5, y - 5); c.lineTo(x + 4.5, y - 5); c.lineTo(x, y); c.lineTo(x + 4.5, y + 5); c.lineTo(x - 4.5, y + 5); c.lineTo(x, y); c.closePath(); c.fill(); }
+      });
+    });
+    var px = lx + u * tw; c.strokeStyle = C.acc; c.lineWidth = 1.5; c.beginPath(); c.moveTo(px, 0); c.lineTo(px, g.h); c.stroke();
+  }
+
+  X.forEach(function(d, idx){
+    var card = el("article", "pc ex"), hd = el("div", "pc-h"), tt = el("div");
+    tt.appendChild(el("span", "kind", "Пример " + (idx + 1) + " · " + d.prop)); tt.appendChild(el("b", null, d.ttl));
+    hd.appendChild(tt); card.appendChild(hd);
+    var st = { k: d.def || "pro" }, segEl = el("div", "seg"); segEl.setAttribute("role", "group"); segEl.setAttribute("aria-label", "Версия анимации");
+    var btns = d.modes.map(function(m){ var b = el("button", null, m.label); b.type = "button"; b.addEventListener("click", function(){ st.k = m.k; sync(); A.dirty = true; }); segEl.appendChild(b); return [m.k, b]; });
+    card.appendChild(segEl);
+    var stg = el("canvas", "cv stage"); stg.setAttribute("aria-label", d.ttl + ": демо. Клик — пауза."); card.appendChild(stg);
+    var tl = el("canvas", "cv tl"); tl.setAttribute("aria-label", "Таймлайн с ключами"); card.appendChild(tl);
+    var gc = el("div", "gcap"), lg = el("span", "lg"), l1 = el("span"), l2 = el("span", "off"); gc.appendChild(el("span", null, d.prop)); lg.appendChild(l1); lg.appendChild(l2); gc.appendChild(lg); card.appendChild(gc);
+    var gr = el("canvas", "cv gr"); gr.setAttribute("aria-label", "График: " + d.prop); card.appendChild(gr);
+    var nt = el("p", "ex-note"); card.appendChild(nt);
+    var how = el("p", "ae"); how.appendChild(el("b", null, "Как сделать")); how.appendChild(document.createTextNode(d.how)); card.appendChild(how);
+    host.appendChild(card);
+    function refK(){ return d.other ? d.other(st.k) : st.k === "lin" ? "pro" : "lin"; }
+    function lab(k){ for(var i = 0; i < d.modes.length; i++) if(d.modes[i].k === k) return d.modes[i].label; return k; }
+    function sync(){ btns.forEach(function(p){ p[1].setAttribute("aria-pressed", p[0] === st.k ? "true" : "false"); }); nt.textContent = d.note[st.k]; l1.textContent = lab(st.k); l2.textContent = lab(refK()); }
+    var A = M.reg({ el: card, t: 0, render: function(){
+      var u = (A.t / d.T) % 1, k = st.k;
+      d.draw(M.fit(stg), u, k);
+      timeline(tl, d.tl(k), u, KT[k] || "e");
+      var al = d.alpha || [], cur = d.ser(k), oth = d.ser(refK());
+      var lines = oth.slice(0, 1).map(function(f){ return { f: f, off: true }; }).concat(cur.map(function(f, i){ return { f: f, a: al[i] == null ? 1 : al[i] }; }));
+      var hi = d.hi, lo = d.lo == null ? -.05 : d.lo;
+      if(hi === "auto"){ hi = .5; lines.forEach(function(l){ for(var q = 0; q <= 240; q++) hi = Math.max(hi, l.f(q / 240)); }); hi *= 1.1; lo = -hi * .06; }
+      if(hi == null) hi = 1.08;
+      M.plot(M.fit(gr), lines, u, { lo: lo, hi: hi, keys: d.gkeys ? d.gkeys(k) : [], zero: d.hi === "auto" ? 0 : null, n: 260 });
+    } });
+    if(M.REDUCE) A.t = d.T * .3;
+    stg.addEventListener("click", function(){ A.playing = !A.playing; });
+    sync();
+  });
 })();
 
 /* 12 принципов: у каждого живое демо, кривая и переключатель «без / с». */
