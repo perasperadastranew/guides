@@ -616,6 +616,21 @@ footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transfor
   });
 })();
 </script>
+<script>
+(function(){
+  document.addEventListener('play',function(e){
+    var cur=e.target; if(cur.tagName!=='VIDEO')return;
+    document.querySelectorAll('video').forEach(function(v){if(v!==cur&&!v.paused)v.pause()});
+  },true);
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.intersectionRatio<0.25&&!en.target.paused)en.target.pause()})},{threshold:[0,0.25]});
+    var watch=function(){document.querySelectorAll('video').forEach(function(v){if(!v.dataset.io){v.dataset.io=1;io.observe(v)}})};
+    watch(); setTimeout(watch,1000);
+  }
+  document.addEventListener('visibilitychange',function(){if(document.hidden)document.querySelectorAll('video').forEach(function(v){v.pause()})});
+})();
+</script>
+
 
 </body>
 </html>
