@@ -62,6 +62,80 @@ header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transp
 .live.plan{color:var(--dim)}
 .live.plan::before{background-color:var(--faint)}
 
+
+/* дорожная карта по неделям */
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px}
+.flow button{font:500 15px var(--body);border-radius:10px;padding:10px 14px;cursor:pointer;background:var(--ink);color:var(--panel);border:1px solid var(--ink)}
+.flow button.ghost{background:transparent;color:var(--ink);border-color:var(--stroke)}
+.flow .cal{margin-left:auto;font-size:14px;color:var(--dim);text-decoration:none}
+.flow .cal:hover{color:var(--ink)}
+.now2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.now2 div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:18px;min-height:104px;justify-content:space-between}
+.now2 div.on{background:var(--accent);border-color:var(--accent)}
+.now2 div.on *{color:var(--accent-ink)!important}
+.now2 b{color:var(--ink);font:400 20px/1.15 var(--display);letter-spacing:-.01em}
+.now2 small{display:block;color:var(--dim);font-size:14px;margin-top:4px}
+.ticks{display:grid;grid-template-columns:repeat(var(--n,21),minmax(0,1fr));gap:4px;position:relative}
+.tick{display:flex;flex-direction:column;gap:6px;min-width:0;text-decoration:none;cursor:pointer}
+.tick i{display:block;height:34px;border-radius:6px;background:var(--card);border:1px solid var(--stroke);position:relative}
+.tick.proj i{background:repeating-linear-gradient(135deg,rgba(255,255,255,.09) 0 6px,transparent 6px 12px) var(--card)}
+.tick.done i{background:#2a2a29;border-color:#2a2a29}
+.tick.cur i{background:var(--accent);border-color:var(--accent)}
+.tick.due i::after{content:"";position:absolute;right:5px;top:50%;width:7px;height:7px;margin-top:-4px;border:1.5px solid var(--ink);transform:rotate(45deg);border-radius:1px}
+.tick.cur.due i::after{border-color:var(--accent-ink)}
+.tick span{font:400 10px/1 var(--mono);color:var(--faint);text-align:center;letter-spacing:.04em}
+.tick.cur span{color:var(--accent)}
+.tick:hover i{border-color:var(--dim)}
+.weeks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;counter-reset:w}
+.wk{display:grid;grid-template-columns:200px minmax(0,1fr);gap:0;background:var(--card);border:1px solid var(--stroke);border-radius:12px;overflow:hidden;scroll-margin-top:16px}
+.wk.cur{border-color:var(--accent)}
+.wk.done{opacity:.62}
+.wk.done:hover{opacity:1}
+.wk .side{padding:16px 16px 18px;border-right:1px solid var(--stroke);display:flex;flex-direction:column;gap:6px}
+.wk .side .mono{color:var(--dim)}
+.wk .side b{font:400 26px/1 var(--display);color:var(--ink);letter-spacing:-.02em}
+.wk .side small{font-size:14px;color:var(--dim)}
+.wk .badge{align-self:flex-start;margin-top:6px;font:500 10px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;border-radius:5px;padding:5px 7px;background:var(--stroke);color:var(--dim)}
+.wk.cur .badge{background:var(--accent);color:var(--accent-ink)}
+.wk .main{padding:16px 18px 18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.wk .learn{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.wk .learn h3{font-size:20px;margin-right:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);border:1px solid var(--stroke);border-radius:7px;padding:4px 9px;text-decoration:none;background:var(--panel)}
+a.chip:hover{border-color:var(--dim)}
+.chip.ho::after{content:"↗";color:var(--faint)}
+.tasks{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.task{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.task.proj{border-style:dashed}
+.task .shots{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:1px;background:var(--stroke)}
+.task .shots a{display:block;aspect-ratio:16/10;overflow:hidden;background:#222;position:relative}
+.task .shots img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .2s}
+.task .shots a:hover img{transform:scale(1.03)}
+.task .shots a span{position:absolute;left:6px;bottom:6px;font:500 10px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;background:rgba(16,16,16,.8);color:var(--ink);border-radius:4px;padding:4px 6px}
+.task .tx{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.task .tx .mono{display:flex;gap:8px;align-items:center}
+.tag2{font:500 10px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--accent);color:var(--accent);border-radius:5px;padding:3px 6px}
+.task h4{margin:0;font:500 17px/1.2 var(--display);color:var(--ink);letter-spacing:-.01em}
+.task .dl{font-size:14px;color:var(--dim)}
+.task .dl b{color:var(--ink);font-weight:500}
+.task .dl.soon b{color:var(--accent)}
+.task .act{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.task .act a{font-size:13px;color:var(--ink);text-decoration:none;border:1px solid var(--stroke);border-radius:7px;padding:5px 9px}
+.task .act a:hover{border-color:var(--dim)}
+.task .act a.pri{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.lives{display:flex;flex-direction:column;gap:6px}
+.lives .live{font-size:14px}
+.wk .out{font-size:14px;color:var(--dim);border-top:1px solid var(--stroke);padding-top:12px}
+.wk .out b{color:var(--ink);font-weight:500}
+.wk .out a{color:var(--accent);text-decoration:none}
+@media (max-width:760px){
+  .wk{grid-template-columns:minmax(0,1fr)}
+  .wk .side{border-right:0;border-bottom:1px solid var(--stroke);flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+  .wk .side b{font-size:22px}
+  .wk .badge{margin:0 0 0 auto}
+  .ticks{gap:2px}.tick i{height:26px;border-radius:4px}.tick span{display:none}.tick.due i::after{width:5px;height:5px;right:3px;margin-top:-3px}
+  .flow .cal{margin-left:0}
+}
+
 /* кейсы */
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 @media (max-width:1240px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -119,59 +193,25 @@ body.locked{overflow:hidden}
   <header>
     <div class="corner"><span>Perasperadastra
 Digital-дизайнер</span><span>Дневник обучения
-14 кейсов</span></div>
+недели и кейсы</span></div>
     <h1>Дневник обучения <em>Mission to Web</em></h1>
-    <p class="lead">Что ты сделаешь за курс, что из этого станет кейсом и как выглядят работы ребят, которые прошли этот путь до тебя. <b>Нажми на обложку, чтобы пролистать весь кейс.</b></p>
+    <p class="lead">Что ты делаешь каждую неделю, что сдаёшь и что из этого станет кейсом. А ниже — работы ребят, которые прошли этот путь до тебя. <b>Нажми на обложку, чтобы пролистать весь кейс.</b></p>
   </header>
 
-  <section>
+  <section id="path">
     <div class="head">
-      <div class="sec-n"><span class="mono">01</span><h2>Путь: от заданий к кейсам</h2></div>
-      <p>Первые пять недель ты набираешь инструменты. Дальше каждый большой блок заканчивается проектом, а проект — кейсом в портфолио. Сроки по неделям смотри в <a href="../mtw-calendar/">календаре</a>.</p>
+      <div class="sec-n"><span class="mono">01</span><h2>Путь по неделям</h2></div>
+      <p>Что ты делаешь каждую неделю, что сдаёшь и до какого дня. Первые пять недель ты набираешь инструменты, дальше каждый блок заканчивается проектом, а проект становится кейсом.</p>
     </div>
-    <div class="path">
-      <div class="step">
-        <span class="mono"><span>Недели 1–5</span><span>октябрь</span></span>
-        <h3>Разгон</h3>
-        <ul>
-          <li>Практикумы по Figma</li>
-          <li>Смысловой прототип</li>
-          <li>UI-кит</li>
-          <li>Библиотека референсов</li>
-          <li>Мудборд и концепция</li>
-        </ul>
-        <span class="live">Вступительный эфир · пн, 12 окт</span>
-        <span class="live">Эфир по мудборду · чт, 12 ноя</span>
-        <div class="out"><i>В портфолио пока не идёт.</i> Идёт в твой Telegram-канал: процесс, находки, первые экраны.</div>
-      </div>
-      <div class="step hi">
-        <span class="mono"><span>Недели 6–8</span><span>ноябрь</span></span>
-        <h3>AI-проект</h3>
-        <ul><li class="case">Первый проект в портфолио</li><li>Концепция и визуал с нейросетями</li></ul>
-        <span class="live">Эфиры по AI-проектам · пн и чт</span>
-        <div class="out">Кейс № 1 → <i>Behance + карусель</i></div>
-      </div>
-      <div class="step hi">
-        <span class="mono"><span>Недели 9–13</span><span>дек — янв</span></span>
-        <h3>Лендинг</h3>
-        <ul><li class="case">Главный проект курса</li><li>Айдентика, главный экран, адаптив, анимация</li></ul>
-        <span class="live plan">Отчётный эфир по лендингам · уточняется</span>
-        <div class="out">Кейс № 2 → <i>Behance + рилс с прокруткой</i></div>
-      </div>
-      <div class="step hi">
-        <span class="mono"><span>Недели 14–19</span><span>янв — фев</span></span>
-        <h3>Корпоративный сайт / Лонгрид</h3>
-        <ul><li class="case">Большой проект на выбор</li><li>Многостраничник или редакционный формат</li></ul>
-        <span class="live plan">Отчётный эфир по лонгридам · уточняется</span>
-        <div class="out">Кейс № 3 → <i>Behance + пост-разбор</i></div>
-      </div>
-      <div class="step">
-        <span class="mono"><span>Недели 20–21</span><span>фев — март</span></span>
-        <h3>Карьера и фриланс</h3>
-        <ul><li>Портфолио из трёх кейсов</li><li>Резюме, отклики, первые заказы</li><li>Вёрстка на Tilda и Taptop, анимация в Jitter</li></ul>
-        <div class="out"><i>Выход:</i> собранное портфолио и первые отклики.</div>
-      </div>
+    <div class="flow" id="flow">
+      <span class="mono">Поток</span>
+      <button type="button" class="ghost" data-k="aug">Август · с 3 авг</button>
+      <button type="button" data-k="oct">Октябрь · с 12 окт</button>
+      <a class="cal" href="../mtw-calendar/">Открыть календарь ↗</a>
     </div>
+    <div class="now2" id="now2"></div>
+    <div class="ticks" id="ticks" role="list" aria-label="Недели курса"></div>
+    <ol class="weeks" id="weeks"></ol>
   </section>
 
   <section id="web">
@@ -263,6 +303,105 @@ var CASES=[
   {b:"3d",id:"travelkit",t:"Travel Kit’ten",by:"Арина Галимова",k:"3D | UX/UI",d:"Дорожные бутылочки-котики. Персонажи Рыжик, Облачко и Вишенка, рендеры, карточки товара и сайт."},
   {b:"3d",id:"heatcup",t:"Heatcup",by:"Sofiia Railian",k:"3D-продукт | Web",d:"Термос с подогревом и перемешиванием. Три модели, выбор отделки, продуктовый сайт на рендерах."}
 ];
+
+/* ---------- дорожная карта по неделям ---------- */
+var HW={"practicum":[{"label":"Инструменты","url":"https://www.figma.com/design/lqprTOIEIQZblOVUe9tvfA?node-id=1-530","img":"hw/practicum-0.jpg"},{"label":"Auto Layout","url":"https://www.figma.com/design/1x7eyemhwsxKbQ0G4GlKDp?node-id=3081-1272","img":"hw/practicum-1.jpg"},{"label":"Компоненты","url":"https://www.figma.com/design/ePhmKGYkh4p4HY4L11HCz6?node-id=3157-3407","img":"hw/practicum-2.jpg"}],
+ "proto":[{"label":"Задание","url":"https://www.figma.com/design/4GGmx7KAuj7QOKkPy4GjYd?node-id=916-209","img":"hw/proto-0.jpg"}],
+ "uikit":[{"label":"Задание","url":"https://www.figma.com/design/WsmVgNlYzksqUKMuaDmg8v?node-id=9904-35","img":"hw/uikit-0.jpg"}],
+ "refs":[{"label":"Задание","url":"https://www.figma.com/design/qi7aHB1PKCpfvPq2BjMzOi?node-id=12544-2740","img":"hw/refs-0.jpg"}],
+ "mood":[{"label":"Задание","url":"https://www.figma.com/design/tFolHx6vTjmTpJchOl6fxc?node-id=4377-112","img":"hw/mood-0.jpg"}],
+ "landing":[{"label":"Задание","url":"https://www.figma.com/design/qi7aHB1PKCpfvPq2BjMzOi?node-id=12544-708","img":"hw/landing-0.jpg"}]};
+var HO={figma:{t:"Основы Figma",u:"../mtw-metodichki/#figma-basics"},web:{t:"Веб-дизайн и бизнес",u:"../mtw-metodichki/#web-and-business"},ui:{t:"Стили в веб-дизайне",u:"../mtw-metodichki/#web-styles"},refs:{t:"Референсы",u:"../mtw-metodichki/#references-search-select-adapt"},concept:{t:"Креативные методологии",u:"../mtw-metodichki/#creative-methods-concept"}};
+/* недели: s/e — дни от старта потока; tasks: hs..he — дни работы, срок = he+1 */
+function plan(k){
+  var A=k==="aug";
+  var W=[
+    {s:0,e:6,title:"Старт",learn:[["1","Дизайн-процесс"],["2","Figma","figma"]],
+      tasks:[{t:"Практикумы по Figma",hs:0,he:6,f:"practicum",parts:true}],lives:[{t:"Вступительный эфир",d:0}],
+      out:"Аккаунт в Figma, первые три практикума и <b>Telegram-канал</b>, куда ты будешь выкладывать процесс."},
+    {s:7,e:13,title:"Смысл и интерфейс",learn:[["3","Веб-дизайн","web"],["4","UI-дизайн","ui"]],
+      tasks:[{t:"Смысловой прототип",hs:7,he:9,f:"proto"},{t:"UI-кит",hs:10,he:13,f:"uikit"}],
+      out:"Два задания за неделю: сначала структура и смыслы, потом визуальный язык."},
+    {s:14,e:20,title:"Насмотренность",learn:[["3","Веб-дизайн","web"],["4","UI-дизайн","ui"],["5","Референсы","refs"]],
+      tasks:[{t:"Библиотека референсов",hs:14,he:20,f:"refs"}],
+      out:"Своя библиотека референсов. Она понадобится в каждом следующем проекте."}
+  ];
+  if(A){
+    W.push({s:21,e:27,title:"Концепция",learn:[["6","Концепция","concept"]],tasks:[{t:"Мудборд",hs:21,he:27,f:"mood"}],
+      out:"Метафора и мудборд будущего проекта."});
+  }else{
+    W.push({s:21,e:27,title:"Концепция",learn:[["6","Концепция","concept"]],tasks:[],
+      out:"Неделя на уроки: креативные методологии и то, где в сайте живёт метафора. Задание — на следующей неделе."});
+    W.push({s:28,e:34,title:"Мудборд",learn:[["6","Концепция","concept"]],tasks:[{t:"Мудборд",hs:28,he:34,f:"mood"}],lives:[{t:"Эфир по мудборду",d:31}],
+      out:"Метафора и мудборд будущего проекта. На эфире разбираем ваши мудборды вживую."});
+  }
+  var o=A?-7:0, P=[
+    {s:35+o,e:55+o,title:"AI-проект",proj:true,learn:[["7","Mission to AI"]],tasks:[{t:"AI-проект",hs:35+o,he:55+o,proj:true}],lives:[{t:"Эфиры по AI-проектам",rule:"mt",a:35+o,b:55+o}],
+      out:"<b>Кейс № 1.</b> Behance и карусель. <a href=\"#ai\">Примеры AI-проектов ↓</a>"},
+    {s:56+o,e:90+o,title:"Лендинг",proj:true,learn:[["★","Проект «Лендинг»"]],tasks:[{t:"Лендинг",hs:56+o,he:90+o,f:"landing",proj:true}],lives:[{t:"Отчётный эфир по лендингам",plan:true}],
+      out:"<b>Кейс № 2</b>, главный проект курса. Behance и рилс с прокруткой. <a href=\"#web\">Примеры лендингов ↓</a>"},
+    {s:91+o,e:132+o,title:"Корпоративный сайт / Лонгрид",proj:true,learn:[["★","Проект на выбор"]],tasks:[{t:"Корпоративный сайт или лонгрид",hs:91+o,he:132+o,proj:true}],lives:[{t:"Отчётный эфир по лонгридам",plan:true}],
+      out:"<b>Кейс № 3.</b> Behance и пост-разбор. <a href=\"#longread\">Примеры лонгридов ↓</a>"},
+    {s:133+o,e:146+o,title:"Карьера",learn:[["8","Карьера и фриланс"],["9","Tilda и Taptop"],["10","Анимация в Jitter"]],tasks:[],
+      out:"Портфолио из трёх кейсов, резюме, отклики и первые заказы. Сайт-портфолио собираешь сам на Tilda или Taptop."}
+  ];
+  return W.concat(P);
+}
+var FLOWS={aug:"2026-08-03",oct:"2026-10-12"},DAY=864e5,flow="oct";
+var MS=["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];
+var WG=["воскресенья","понедельника","вторника","среды","четверга","пятницы","субботы"];
+var WN=["вс","пн","вт","ср","чт","пт","сб"];
+function t0(){var p=FLOWS[flow].split("-");return new Date(+p[0],+p[1]-1,+p[2]).getTime()}
+function dt(d){return new Date(t0()+d*DAY)}
+function f(d){var x=dt(d);return x.getDate()+" "+MS[x.getMonth()]}
+function today(){var n=new Date();return Math.floor((new Date(n.getFullYear(),n.getMonth(),n.getDate()).getTime()-t0())/DAY)}
+function plural(n,a,b,c){n=Math.abs(n)%100;var m=n%10;return n>10&&n<20?c:m===1?a:m>1&&m<5?b:c}
+function renderPlan(){
+  var W=plan(flow),T=today(),total=W[W.length-1].e+1,nW=Math.ceil(total/7);
+  document.querySelectorAll("#flow button").forEach(function(b){b.classList.toggle("ghost",b.dataset.k!==flow)});
+  // ticks
+  var ticks="";
+  for(var w=0;w<nW;w++){
+    var a=w*7,b=a+6,st=W.filter(function(x){return x.s<=a&&x.e>=a})[0]||W[W.length-1];
+    var due=W.some(function(x){return x.tasks.some(function(t){var d=t.he+1;return d>a&&d<=b+1})});
+    var cls="tick"+(st.proj?" proj":"")+(T>b?" done":"")+(T>=a&&T<=b?" cur":"")+(due?" due":"");
+    ticks+='<a class="'+cls+'" href="#w'+W.indexOf(st)+'" role="listitem" title="Неделя '+(w+1)+' · '+f(a)+' — '+f(b)+' · '+esc(st.title)+'"><i></i><span>'+(w+1)+'</span></a>';
+  }
+  var tk=document.getElementById("ticks");tk.style.setProperty("--n",nW);tk.innerHTML=ticks;
+  // now
+  var cw=W.filter(function(x){return T>=x.s&&T<=x.e})[0],nextDue=null;
+  W.forEach(function(x){x.tasks.forEach(function(t){var d=t.he+1;if(d>=T&&(!nextDue||d<nextDue.d))nextDue={d:d,t:t.t}})});
+  var nh="";
+  if(T<0) nh+='<div class="on"><span class="mono">До старта</span><span><b>'+(-T)+' '+plural(-T,"день","дня","дней")+'</b><small>первый урок '+f(0)+'</small></span></div>';
+  else if(cw) nh+='<div class="on"><span class="mono">Сейчас · неделя '+(Math.floor(T/7)+1)+' из '+nW+'</span><span><b>'+esc(cw.title)+'</b><small>'+f(cw.s)+' — '+f(cw.e)+'</small></span></div>';
+  else nh+='<div><span class="mono">Курс</span><span><b>Пройден</b><small>'+f(0)+' — '+f(total-1)+'</small></span></div>';
+  if(nextDue){var dd=dt(nextDue.d),left=nextDue.d-T;nh+='<div><span class="mono">Ближайшая сдача'+(left>=0?' · через '+left+' '+plural(left,"день","дня","дней"):'')+'</span><span><b>'+esc(nextDue.t)+'</b><small>до '+WG[dd.getDay()]+', '+f(nextDue.d)+' (загрузить до 23:59 накануне)</small></span></div>'}
+  nh+='<div><span class="mono">Весь курс</span><span><b>'+nW+' '+plural(nW,"неделя","недели","недель")+'</b><small>'+f(0)+' — '+f(total-1)+'</small></span></div>';
+  document.getElementById("now2").innerHTML=nh;
+  // weeks
+  var html="";
+  W.forEach(function(x,i){
+    var w1=Math.floor(x.s/7)+1,w2=Math.floor(x.e/7)+1,cur=T>=x.s&&T<=x.e,done=T>x.e;
+    var learn='<h3>'+esc(x.title)+'</h3>'+x.learn.map(function(l){var h=l[2]&&HO[l[2]];return h?'<a class="chip ho" href="'+h.u+'" title="Методичка: '+esc(h.t)+'"><span class="mono">'+l[0]+'</span>'+esc(l[1])+'</a>':'<span class="chip"><span class="mono">'+l[0]+'</span>'+esc(l[1])+'</span>'}).join("");
+    var tasks=x.tasks.map(function(t){
+      var files=t.f?HW[t.f]:null,d=t.he+1,dd=dt(d),soon=d>=T&&d-T<=3;
+      var shots=files?'<div class="shots">'+files.map(function(fl){return '<a href="'+fl.url+'" target="_blank" rel="noopener" title="Открыть в Figma"><img src="'+fl.img+'" alt="" loading="lazy">'+(t.parts?'<span>'+esc(fl.label)+'</span>':'')+'</a>'}).join("")+'</div>':'';
+      var act=files?'<div class="act">'+files.map(function(fl,j){return '<a class="'+(j===0?'pri':'')+'" href="'+fl.url+'" target="_blank" rel="noopener">'+(files.length>1?esc(fl.label):'Задание в Figma')+' ↗</a>'}).join("")+'</div>':'';
+      return '<div class="task'+(t.proj?' proj':'')+'">'+shots+'<div class="tx"><span class="mono"><span class="tag2">'+(t.proj?'Проект':'ДЗ')+'</span>'+f(t.hs)+' — '+f(t.he)+'</span><h4>'+esc(t.t)+'</h4><p class="dl'+(soon?' soon':'')+'">Сдать до '+WG[dd.getDay()]+', <b>'+f(d)+'</b></p>'+act+'</div></div>';
+    }).join("");
+    var lives=(x.lives||[]).map(function(l){
+      if(l.plan)return '<span class="live plan">'+esc(l.t)+' · дата уточняется</span>';
+      if(l.rule){return '<span class="live">'+esc(l.t)+' · по понедельникам и четвергам, '+f(l.a)+' — '+f(l.b)+'</span>'}
+      return '<span class="live">'+esc(l.t)+' · '+WN[dt(l.d).getDay()]+', '+f(l.d)+'</span>';
+    }).join("");
+    html+='<li class="wk'+(cur?' cur':'')+(done?' done':'')+'" id="w'+i+'"><div class="side"><span class="mono">'+(w1===w2?'Неделя':'Недели')+'</span><b>'+(w1===w2?w1:w1+'–'+w2)+'</b><small>'+f(x.s)+' — '+f(x.e)+'</small><span class="badge">'+(cur?'Сейчас':done?'Пройдено':'Впереди')+'</span></div>'+
+      '<div class="main"><div class="learn">'+learn+'</div>'+(tasks?'<div class="tasks">'+tasks+'</div>':'')+(lives?'<div class="lives">'+lives+'</div>':'')+'<p class="out">'+x.out+'</p></div></li>';
+  });
+  document.getElementById("weeks").innerHTML=html;
+}
+document.getElementById("flow").addEventListener("click",function(e){var b=e.target.closest("button[data-k]");if(!b)return;flow=b.dataset.k;try{localStorage.setItem("mtw-flow",flow)}catch(_){}renderPlan()});
+(function(){var h=(location.hash||"").replace("#",""),sv=null;try{sv=localStorage.getItem("mtw-flow")}catch(_){}flow=FLOWS[h]?h:FLOWS[sv]?sv:"oct";renderPlan()})();
+
 var META={};
 fetch("cases/meta.json").then(function(r){return r.json()}).then(function(m){META=m}).catch(function(){});
 
