@@ -348,14 +348,14 @@ section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
 </style>
 <style>
 /* перемотка: тонкая полоса внизу ролика, клик по видео ставит паузу */
-.shot .scrub{position:absolute;left:0;right:0;bottom:0;z-index:3;width:100%;height:18px;margin:0;padding:0;background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer;--p:0%}
+.shot .scrub{position:absolute;left:10px;right:10px;bottom:6px;z-index:3;width:calc(100% - 20px);height:18px;margin:0;padding:0;background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer;--p:0%}
 .shot .scrub::-webkit-slider-runnable-track{height:3px;background:linear-gradient(var(--accent),var(--accent)) 0/var(--p) 100% no-repeat,rgba(255,255,255,.28)}
 .shot .scrub::-moz-range-track{height:3px;background:rgba(255,255,255,.28)}
 .shot .scrub::-moz-range-progress{height:3px;background:var(--accent)}
 .shot .scrub::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--accent);margin-top:-4px;border:0}
 .shot .scrub::-moz-range-thumb{width:11px;height:11px;border-radius:50%;background:var(--accent);border:0}
 .shot .scrub:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
-.shot .snd{bottom:22px}
+.shot .snd{bottom:28px}
 .shot video{cursor:pointer}
 .shot .paused-mark{position:absolute;inset:0;z-index:1;display:grid;place-items:center;pointer-events:none;opacity:0;transition:opacity .2s}
 .shot.is-paused .paused-mark{opacity:1}
