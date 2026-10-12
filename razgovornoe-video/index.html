@@ -375,6 +375,60 @@ section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
 .lb .lb-title{position:absolute;top:calc(20px + env(safe-area-inset-top,0px));left:16px;right:120px;color:#f4f4f2;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 body.lb-open{overflow:hidden}
 </style>
+<style>
+/* варианты появления текста: живые петли по 3,6 с */
+.tanims{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ta{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.ta-st{aspect-ratio:16/10;max-width:100%;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:12px;text-align:center;color:var(--ink);font-family:var(--display);font-size:clamp(17px,2vw,22px);line-height:1.15;letter-spacing:-.01em;overflow:hidden;position:relative}
+.ta-st .big{font-size:clamp(30px,3.6vw,44px);font-weight:600;letter-spacing:-.03em;line-height:1}
+.ta-st .ac{color:var(--accent)}
+.ta figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.ta figcaption b{font-size:16px;font-weight:400;color:var(--ink);line-height:1.2}
+.ta figcaption>span:not(.kind){font-size:14px;line-height:1.4}
+.ta .kind{color:var(--accent);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.ta .ae{font-family:var(--mono);font-size:11px!important;letter-spacing:.02em;color:var(--faint);border-top:1px solid var(--stroke);padding-top:8px;margin-top:2px}
+@media (max-width:980px){.tanims{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.tanims{grid-template-columns:minmax(0,1fr)}}
+:root{--ta-d:3.6s}
+/* 01 по словам */
+.ta-words{flex-direction:row;flex-wrap:wrap;align-content:center;column-gap:.28em}
+.ta-words span{display:inline-block;opacity:0;animation:taWord var(--ta-d) infinite;animation-delay:calc(var(--i)*.22s)}
+@keyframes taWord{0%{opacity:0;transform:translateY(10px)}7%,78%{opacity:1;transform:none}88%,100%{opacity:0;transform:none}}
+/* 02 печать */
+.ta-type .tw .ch{opacity:0;animation:taType var(--ta-d) infinite steps(1,end);animation-delay:calc(var(--i)*.07s)}
+@keyframes taType{0%{opacity:0}2%,80%{opacity:1}86%,100%{opacity:0}}
+.ta-type .caret{display:inline-block;width:2px;height:1.1em;background:var(--accent);margin-left:2px;vertical-align:-.15em;animation:taBlink .8s infinite steps(1,end)}
+.ta-type{flex-direction:row;flex-wrap:wrap;align-content:center}
+@keyframes taBlink{50%{opacity:0}}
+/* 03 из маски */
+.ta-mask .ln{display:block;overflow:hidden;padding:0 4px}
+.ta-mask .ln>span{display:inline-block;transform:translateY(110%);animation:taMask var(--ta-d) infinite cubic-bezier(.2,.8,.2,1);animation-delay:calc(var(--i)*.18s)}
+@keyframes taMask{0%{transform:translateY(110%)}14%,76%{transform:none}86%,100%{transform:translateY(-110%)}}
+/* 04 масштаб с отскоком */
+.ta-pop .big{display:inline-block;animation:taPop var(--ta-d) infinite}
+@keyframes taPop{0%{transform:scale(0);opacity:0}6%{transform:scale(1.14);opacity:1}11%{transform:scale(.96)}15%,78%{transform:scale(1);opacity:1}86%,100%{transform:scale(.6);opacity:0}}
+/* 05 из размытия */
+.ta-blur .ch{display:inline-block;opacity:0;filter:blur(10px);animation:taBlur var(--ta-d) infinite ease-out;animation-delay:calc(var(--i)*.09s)}
+@keyframes taBlur{0%{opacity:0;filter:blur(10px)}18%,78%{opacity:1;filter:blur(0)}88%,100%{opacity:0;filter:blur(6px)}}
+/* 06 трекинг */
+.ta-track .big{display:inline-block;animation:taTrack var(--ta-d) infinite cubic-bezier(.16,1,.3,1)}
+@keyframes taTrack{0%{letter-spacing:.7em;opacity:0}30%,78%{letter-spacing:-.03em;opacity:1}88%,100%{letter-spacing:-.03em;opacity:0}}
+/* 07 маркер */
+.ta-mark em{font-style:normal;position:relative;z-index:0;padding:0 3px;color:var(--ink);animation:taMarkInk var(--ta-d) infinite}
+.ta-mark em::before{content:"";position:absolute;inset:.08em 0;background:var(--accent);z-index:-1;transform-origin:left;transform:scaleX(0);animation:taMark var(--ta-d) infinite cubic-bezier(.65,0,.35,1)}
+@keyframes taMark{0%,22%{transform:scaleX(0)}38%,82%{transform:scaleX(1)}92%,100%{transform:scaleX(0)}}
+@keyframes taMarkInk{0%,28%{color:var(--ink)}38%,82%{color:var(--accent-ink)}92%,100%{color:var(--ink)}}
+/* 08 перещёлкивание */
+.ta-swap .win{display:block;height:1.2em;overflow:hidden;font-size:clamp(26px,3vw,36px);font-weight:600;letter-spacing:-.02em}
+.ta-swap .roll{display:flex;flex-direction:column;animation:taRoll var(--ta-d) infinite cubic-bezier(.7,0,.2,1)}
+.ta-swap .roll span{height:1.2em;line-height:1.2em}
+@keyframes taRoll{0%,35%{transform:none}48%,88%{transform:translateY(-1.2em)}96%,100%{transform:none}}
+/* 09 удар */
+.ta-punch .big{display:inline-block;color:var(--accent);animation:taPunch var(--ta-d) infinite}
+@keyframes taPunch{0%,24%{transform:scale(1.7);opacity:0}28%{transform:scale(1);opacity:1}30%{transform:translate(-3px,1px)}32%{transform:translate(3px,-1px)}34%,80%{transform:none;opacity:1}88%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.tanims *{animation:none!important;opacity:1!important;transform:none!important;filter:none!important;letter-spacing:normal}.ta-mark em::before{transform:scaleX(1)!important}.ta-mark em{color:var(--accent-ink)!important}}
+</style>
+<style>#start .funnel{grid-template-columns:repeat(4,minmax(0,1fr))}@media (max-width:640px){#start .funnel{grid-template-columns:repeat(2,minmax(0,1fr))}}</style>
 <div class="wrap">
 <header>
   <div class="corner"><span>PERASPERADASTRA
@@ -396,6 +450,12 @@ body.lb-open{overflow:hidden}
     <span>история</span><span>концепция</span><span>сценарий</span><span class="on">раскадровка</span><span>дизайн</span><span>генерации</span><span class="on">анимация</span><span>звук</span><span class="on">монтаж</span>
   </div>
   <p>Так в Perasperadastra делается любой ролик. Гайд собран в четыре этапа по этому пути, и на каждом ты двигаешь свой ролик дальше.</p>
+  <div class="funnel">
+    <a href="#u1"><div class="micro" data-micro="u1"></div><span class="mono">01</span><div><b>Концепция</b><br><small>что и через какую идею</small></div></a>
+    <a href="#u2"><div class="micro" data-micro="u2"></div><span class="mono">02</span><div><b>Раскадровка</b><br><small>ролик до анимации</small></div></a>
+    <a href="#u3"><div class="micro" data-micro="u3"></div><span class="mono">03</span><div><b>Анимация</b><br><small>типографика и синхрон</small></div></a>
+    <a href="#u4"><div class="micro" data-micro="u4"></div><span class="mono">04</span><div><b>Монтаж</b><br><small>резка, переходы, звук</small></div></a>
+  </div>
   <ol class="steps">
     <li><div><div class="t">Возьми исходник заранее</div><div class="d">Свой подкаст, интервью, эфир школы или монолог на камеру. Все задания делаются на нём.</div></div></li>
     <li><div><div class="t">Иди по этапам и делай задание в конце каждого</div><div class="d">После четвёртого этапа у тебя на руках готовый ролик, сценарий и раскадровка для портфолио.</div></div></li>
@@ -450,7 +510,7 @@ body.lb-open{overflow:hidden}
 <div class="corner"><span>PERASPERADASTRA
 РАЗГОВОРНОЕ ВИДЕО</span><span>ЭТАП 01
 КОНЦЕПЦИЯ И ИСХОДНИК</span></div>
-  <div class="head"><h2>Концепция и исходник</h2></div>
+  <div class="head"><h2>Концепция и исходник</h2><div class="micro" data-micro="u1"></div></div>
   <p class="quote">Плохой фрагмент не спасёт никакая анимация. Хороший смотрят даже без неё.</p>
   <p>На этом этапе ты решаешь, что рассказываешь и через какую идею. Из часового разговора в ролик идёт 30–90 секунд, и выбор этого куска решает больше, чем всё остальное.</p>
 
@@ -515,7 +575,7 @@ body.lb-open{overflow:hidden}
 <div class="corner"><span>PERASPERADASTRA
 РАЗГОВОРНОЕ ВИДЕО</span><span>ЭТАП 02
 РАСКАДРОВКА</span></div>
-  <div class="head"><h2>Раскадровка: мост между сценарием и анимацией</h2></div>
+  <div class="head"><h2>Раскадровка: мост между сценарием и анимацией</h2><div class="micro" data-micro="u2"></div></div>
   <p class="quote">Если при просмотре раскадровки видео уже «слышится» и «движется», концепция живая.</p>
   <p>Раскадровка показывает, как история развивается в динамике, вскрывает слабые места до продакшна и экономит больше всего времени. Без неё анимация часто выходит хаотичной: переходы резкие, главное не подчёркнуто.</p>
   <div class="four">
@@ -581,6 +641,7 @@ body.lb-open{overflow:hidden}
   <div class="cpairs"><figure class="cpair"><div class="fr two"><svg viewBox="0 0 90 160" role="img" aria-label="много мелких"><defs><clipPath id="c94758455"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c94758455)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><circle cx="18" cy="40" r="4" style="fill:var(--accent)"/><circle cx="36" cy="40" r="4" style="fill:var(--accent)"/><circle cx="54" cy="40" r="4" style="fill:var(--accent)"/><circle cx="72" cy="40" r="4" style="fill:var(--accent)"/><circle cx="18" cy="56" r="4" style="fill:var(--accent)"/><circle cx="36" cy="56" r="4" style="fill:var(--accent)"/><circle cx="54" cy="56" r="4" style="fill:var(--accent)"/><circle cx="72" cy="56" r="4" style="fill:var(--accent)"/><circle cx="18" cy="72" r="4" style="fill:var(--accent)"/><circle cx="36" cy="72" r="4" style="fill:var(--accent)"/><circle cx="54" cy="72" r="4" style="fill:var(--accent)"/><circle cx="72" cy="72" r="4" style="fill:var(--accent)"/><circle cx="18" cy="88" r="4" style="fill:var(--accent)"/><circle cx="36" cy="88" r="4" style="fill:var(--accent)"/><circle cx="54" cy="88" r="4" style="fill:var(--accent)"/><circle cx="72" cy="88" r="4" style="fill:var(--accent)"/><circle cx="18" cy="104" r="4" style="fill:var(--accent)"/><circle cx="36" cy="104" r="4" style="fill:var(--accent)"/><circle cx="54" cy="104" r="4" style="fill:var(--accent)"/><circle cx="72" cy="104" r="4" style="fill:var(--accent)"/><circle cx="18" cy="120" r="4" style="fill:var(--accent)"/><circle cx="36" cy="120" r="4" style="fill:var(--accent)"/><circle cx="54" cy="120" r="4" style="fill:var(--accent)"/><circle cx="72" cy="120" r="4" style="fill:var(--accent)"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg><svg viewBox="0 0 90 160" role="img" aria-label="один крупный"><defs><clipPath id="c84331686"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c84331686)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><circle cx="45" cy="80" r="34" style="fill:var(--accent)"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption><span class="kind">Масштаб</span><span>Тот же мотив, другой размер: много мелких, затем один огромный.</span></figcaption></figure><figure class="cpair"><div class="fr two"><svg viewBox="0 0 90 160" role="img" aria-label="общий план"><defs><clipPath id="c59243592"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c59243592)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><circle cx="45" cy="112" r="4.5" style="fill:var(--line-m)"/><rect x="34.5" y="117.6" width="21.0" height="31.5" rx="7.0" style="fill:var(--line-m)"/><rect x="10" y="132" width="70" height="1" rx="1.5" style="fill:var(--faint);opacity:1"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg><svg viewBox="0 0 90 160" role="img" aria-label="крупный план"><defs><clipPath id="c9631690"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c9631690)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><circle cx="45" cy="96" r="33.8" style="fill:var(--line-m)"/><rect x="-33.0" y="137.6" width="156.0" height="234.0" rx="52.0" style="fill:var(--line-m)"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption><span class="kind">Крупность</span><span>Общий план даёт контекст, крупный усиливает акцент.</span></figcaption></figure><figure class="cpair"><div class="fr two"><svg viewBox="0 0 90 160" role="img" aria-label="плотно"><defs><clipPath id="c63768582"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c63768582)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><rect x="10" y="36" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="25" y="36" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="40" y="36" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="55" y="36" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="70" y="36" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="10" y="70" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="25" y="70" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="40" y="70" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="55" y="70" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="70" y="70" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="10" y="104" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="25" y="104" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="40" y="104" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="55" y="104" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/><rect x="70" y="104" width="8" height="26" rx="2" style="fill:var(--ink);opacity:1"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg><svg viewBox="0 0 90 160" role="img" aria-label="пусто"><defs><clipPath id="c88245086"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c88245086)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><rect x="39" y="60" width="12" height="44" rx="3" style="fill:var(--ink);opacity:1"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption><span class="kind">Плотность</span><span>Заполненный кадр, затем пустой с одним объектом.</span></figcaption></figure><figure class="cpair"><div class="fr two"><svg viewBox="0 0 90 160" role="img" aria-label="цветной фон"><defs><clipPath id="c40076169"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c40076169)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--accent)"/><text x="45" y="86" text-anchor="middle" font-size="14" style="fill:var(--accent-ink);font-family:var(--display);font-weight:600;letter-spacing:-.02em">ЗАДАЧА</text></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg><svg viewBox="0 0 90 160" role="img" aria-label="тёмный фон"><defs><clipPath id="c13749890"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c13749890)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><text x="45" y="86" text-anchor="middle" font-size="13" style="fill:var(--ink);font-family:var(--display);font-weight:600;letter-spacing:-.02em">РЕШЕНИЕ</text></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption><span class="kind">Цвет</span><span>Соседние сцены в разных цветовых решениях.</span></figcaption></figure><figure class="cpair"><div class="fr two"><svg viewBox="0 0 90 160" role="img" aria-label="антиква"><defs><clipPath id="c2625039"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c2625039)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><text x="45" y="84" text-anchor="middle" font-size="13" style="fill:var(--ink);font-family:var(--display);font-weight:400;letter-spacing:-.02em;font-style:italic">Сэмюэл</text><text x="45" y="100" text-anchor="middle" font-size="13" style="fill:var(--ink);font-family:var(--display);font-weight:400;letter-spacing:-.02em;font-style:italic">Уилсон</text></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg><svg viewBox="0 0 90 160" role="img" aria-label="гротеск"><defs><clipPath id="c23354813"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c23354813)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><text x="45" y="96" text-anchor="middle" font-size="30" style="fill:var(--accent);font-family:var(--display);font-weight:800;letter-spacing:-.02em">1812</text></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption><span class="kind">Типографика</span><span>Имя курсивной антиквой, дата огромным гротеском.</span></figcaption></figure></div>
 
   <h3>Раскадровка по планам</h3>
+  <div class="figrow"><div class="fig"><span class="fig-read">наведи курсор</span><div class="stage" data-fig="storyboard" data-label="Подставка с шестью кадрами раскадровки: от дальнего плана сзади до детали спереди. Кадр под курсором встаёт и поднимается."></div></div><div class="figtext"><b>Шесть планов в одной подставке</b><p>Сзади дальний план с крошечной фигурой на горизонте, спереди деталь: один глаз. Наведи на кадр, и он встанет, а соседние разойдутся. Так и в раскадровке: каждый следующий кадр меняет крупность.</p></div></div>
   <div class="plans"><figure class="pl"><div class="fr"><svg viewBox="0 0 90 160" role="img" aria-label="дальний"><defs><clipPath id="c72150613"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c72150613)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><rect x="0" y="120" width="90" height="1" rx="1.5" style="fill:var(--faint);opacity:1"/><circle cx="45" cy="112" r="2.3" style="fill:var(--line-m)"/><rect x="39.6" y="114.9" width="10.8" height="16.2" rx="3.6" style="fill:var(--line-m)"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption>Дальний</figcaption></figure><figure class="pl"><div class="fr"><svg viewBox="0 0 90 160" role="img" aria-label="общий"><defs><clipPath id="c60530906"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c60530906)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><circle cx="45" cy="70" r="7.2" style="fill:var(--line-m)"/><rect x="28.5" y="78.8" width="33.0" height="49.5" rx="11.0" style="fill:var(--line-m)"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption>Общий</figcaption></figure><figure class="pl"><div class="fr"><svg viewBox="0 0 90 160" role="img" aria-label="второй средний"><defs><clipPath id="c6320487"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c6320487)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><circle cx="45" cy="64" r="12.3" style="fill:var(--line-m)"/><rect x="16.5" y="79.2" width="57.0" height="85.5" rx="19.0" style="fill:var(--line-m)"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption>2-й средний</figcaption></figure><figure class="pl"><div class="fr"><svg viewBox="0 0 90 160" role="img" aria-label="первый средний"><defs><clipPath id="c67223470"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c67223470)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><circle cx="45" cy="70" r="18.2" style="fill:var(--line-m)"/><rect x="3.0" y="92.4" width="84.0" height="126.0" rx="28.0" style="fill:var(--line-m)"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption>1-й средний</figcaption></figure><figure class="pl"><div class="fr"><svg viewBox="0 0 90 160" role="img" aria-label="крупный"><defs><clipPath id="c96687523"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c96687523)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><circle cx="45" cy="84" r="31.2" style="fill:var(--line-m)"/><rect x="-27.0" y="122.4" width="144.0" height="216.0" rx="48.0" style="fill:var(--line-m)"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption>Крупный</figcaption></figure><figure class="pl"><div class="fr"><svg viewBox="0 0 90 160" role="img" aria-label="деталь"><defs><clipPath id="c92012661"><rect x="0" y="0" width="90" height="160" rx="4"/></clipPath></defs><g clip-path="url(#c92012661)"><rect x="0" y="0" width="90" height="160" rx="4" style="fill:var(--well)"/><ellipse cx="45" cy="80" rx="40" ry="20" style="fill:var(--line-m)"/><circle cx="45" cy="80" r="12" style="fill:var(--panel)"/><circle cx="45" cy="80" r="5" style="fill:var(--accent)"/></g><rect x=".5" y=".5" width="89" height="159" rx="4" style="fill:none;stroke:var(--stroke)"/></svg></div><figcaption>Деталь</figcaption></figure></div><p class="why">Монтаж по Соколову: чередуй крупности, это самый простой лайфхак для ритма. Например: крупный → 1-й средний → дальний → деталь → общий.</p>
   <div class="scroll"><table>
     <tr><th>План</th><th>Что показывает</th><th>Когда ставить</th></tr>
@@ -624,7 +685,7 @@ body.lb-open{overflow:hidden}
 <div class="corner"><span>PERASPERADASTRA
 РАЗГОВОРНОЕ ВИДЕО</span><span>ЭТАП 03
 АНИМАЦИЯ И ТИПОГРАФИКА</span></div>
-  <div class="head"><h2>Анимация и типографика</h2></div>
+  <div class="head"><h2>Анимация и типографика</h2><div class="micro" data-micro="u3"></div></div>
   <p class="quote">В моушене текст живёт на экране секунды. Его надо считать мгновенно.</p>
   <p>В разговорном ролике типографика главный инструмент: она выносит смысл, задаёт ритм и держит стиль. Текст здесь почти всегда заголовочный и краткий.</p>
 
@@ -642,6 +703,34 @@ body.lb-open{overflow:hidden}
 
 <figure class="vid h"><div class="shot"><img src="img/ty-motion.jpg" alt="Кинетическая типографика: хаос на дорогах" loading="lazy"><video src="vid/ty-motion.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Движение = иерархия</span></div><figcaption><b>Анимируй главное</b><span>Каждый кадр строится вокруг одного крупного слова, остальное поддерживает его.</span></figcaption></figure>
 <figure class="vid"><div class="shot"><img src="img/ty-sound.jpg" alt="Вертикальный ролик со скрепкой и печатной машинкой" loading="lazy"><video src="vid/ty-sound.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><button class="snd" type="button" aria-label="Включить звук">звук</button><span class="tag">Типографика + звук</span></div><figcaption><b>Слово на звук</b><span>Слова и объекты появляются ровно в момент произнесения. Включи звук.</span></figcaption></figure>
+  </div>
+
+  <h3>Как может появляться текст</h3>
+  <p>Девять базовых способов. Все анимации живые и крутятся по кругу. Под каждой подписано, когда способ работает и как собрать его в After Effects.</p>
+  <div class="tanims">
+    <figure class="ta"><div class="ta-st ta-words" aria-hidden="true"><span style="--i:0">каждое</span> <span style="--i:1">слово</span> <span style="--i:2">на</span> <span style="--i:3" class="ac">своём</span> <span style="--i:4">звуке</span></div>
+      <figcaption><span class="kind">01 · По словам</span><b>Слово на звук</b><span>База для субтитров и нарезок: слово появляется, когда его произносят.</span><span class="ae">AE: Text → Animate → Opacity 0, Range Selector по словам (Based On: Words), ключи на Start.</span></figcaption></figure>
+    <figure class="ta"><div class="ta-st ta-type" aria-hidden="true"><span class="tw" data-split>печатаю по буквам</span><i class="caret"></i></div>
+      <figcaption><span class="kind">02 · Печать</span><b>По буквам с кареткой</b><span>Цитаты, поиск, интерфейсы, переписка. Хорошо ложится на звук клавиатуры.</span><span class="ae">AE: пресет Typewriter или Opacity 0 с Range Selector по буквам, Start от 0 до 100% линейно.</span></figcaption></figure>
+    <figure class="ta"><div class="ta-st ta-mask" aria-hidden="true"><span class="ln"><span style="--i:0">из-за</span></span><span class="ln"><span style="--i:1" class="big">КРАЯ</span></span></div>
+      <figcaption><span class="kind">03 · Из маски</span><b>Выезд из-под края</b><span>Чистый «журнальный» вход для заголовков. Строки выезжают по очереди.</span><span class="ae">AE: Position Y со смещением вниз, сверху маска или track matte по габариту строки, Easy Ease In на финише.</span></figcaption></figure>
+    <figure class="ta"><div class="ta-st ta-pop" aria-hidden="true"><span class="big ac">60К</span></div>
+      <figcaption><span class="kind">04 · Масштаб с отскоком</span><b>Цифра влетает</b><span>Цифры и короткие акценты. Отскок даёт ощущение веса.</span><span class="ae">AE: Scale 0 → 110 → 100 за 8–10 кадров, в Graph Editor резкий выход и мягкий финиш.</span></figcaption></figure>
+    <figure class="ta"><div class="ta-st ta-blur" aria-hidden="true"><span class="big" data-split>фокус</span></div>
+      <figcaption><span class="kind">05 · Из размытия</span><b>Проявление</b><span>Спокойные, атмосферные фразы и переходы между сценами.</span><span class="ae">AE: Animator Blur + Opacity, Range Selector по буквам, можно Randomize Order.</span></figcaption></figure>
+    <figure class="ta"><div class="ta-st ta-track" aria-hidden="true"><span class="big">ТРЕКИНГ</span></div>
+      <figcaption><span class="kind">06 · Трекинг</span><b>Буквы сходятся</b><span>Премиальная, кинематографичная подача названий и вывода.</span><span class="ae">AE: Animator Tracking Amount от большого значения к 0 вместе с Opacity, медленный изинг.</span></figcaption></figure>
+    <figure class="ta"><div class="ta-st ta-mark" aria-hidden="true"><span>дело не в навыках,</span><span>а <em class="mk">в цене</em></span></div>
+      <figcaption><span class="kind">07 · Маркер</span><b>Подсветка ключевого</b><span>Текст уже на экране, а акцент добавляется на ударном слове.</span><span class="ae">AE: шейп-прямоугольник под словом, Scale X от 0 с Anchor Point слева или Trim Paths у толстой линии.</span></figcaption></figure>
+    <figure class="ta"><div class="ta-st ta-swap" aria-hidden="true"><span class="win"><span class="roll"><span>3 000 ₽</span><span class="ac">60 000 ₽</span></span></span></div>
+      <figcaption><span class="kind">08 · Перещёлкивание</span><b>Было → стало</b><span>Сравнения и рост: одно значение уезжает, другое встаёт на место.</span><span class="ae">AE: два слоя в маске, Position Y в противофазе. Для счётчика Slider Control и выражение Math.round().</span></figcaption></figure>
+    <figure class="ta"><div class="ta-st ta-punch" aria-hidden="true"><span class="big">БОЛЬШЕ</span></div>
+      <figcaption><span class="kind">09 · Удар</span><b>Акцент на ударном слоге</b><span>Одно слово в кульминации. Работает, только если таких моментов в ролике мало.</span><span class="ae">AE: Scale 160 → 100 за 3–4 кадра точно на слоге, короткий shake позиции и Motion Blur.</span></figcaption></figure>
+  </div>
+  <div class="three">
+    <div class="box"><span class="kind">Правило 1</span><b>2–3 способа на ролик</b><p>Один основной для субтитров и один-два для акцентов. Девять способов в одном ролике выглядят как каталог пресетов.</p></div>
+    <div class="box"><span class="kind">Правило 2</span><b>Вход мягкий, выход быстрый</b><p>На входе Ease Out: быстро стартует и мягко садится. Уход в 1,5–2 раза короче входа, чтобы не задерживать следующий кадр.</p></div>
+    <div class="box"><span class="kind">Правило 3</span><b>Способ под смысл</b><p>Удар для кульминации, печать для цитат, маркер для акцента внутри фразы. Не выбирай анимацию только потому, что она красивая.</p></div>
   </div>
 
   <h3>Заголовок в кадре</h3>
@@ -691,7 +780,7 @@ body.lb-open{overflow:hidden}
 <div class="corner"><span>PERASPERADASTRA
 РАЗГОВОРНОЕ ВИДЕО</span><span>ЭТАП 04
 МОНТАЖ И ПЕРЕХОДЫ</span></div>
-  <div class="head"><h2>Монтаж и переходы</h2></div>
+  <div class="head"><h2>Монтаж и переходы</h2><div class="micro" data-micro="u4"></div></div>
   <p class="quote">Монтаж это про принципы, а не про программы.</p>
   <p>На этом этапе ты склеиваешь речь, графику и звук в одно движение. Резка держит темп речи, переходы связывают кадры, звук собирает всё вместе.</p>
 
@@ -812,6 +901,8 @@ body.lb-open{overflow:hidden}
 
 <script>
 (function(){
+  // разбивка на буквы для анимаций появления текста
+  document.querySelectorAll("[data-split]").forEach(function(el){var t=el.textContent;el.textContent="";Array.prototype.forEach.call(t,function(c,i){var s=document.createElement("span");s.className="ch";s.style.setProperty("--i",i);s.textContent=c===" "?" ":c;el.appendChild(s)})});
   // номер этапа в шапке и подразделы «подзаголовок сбоку / на всю ширину», как в остальных методичках
   var secs=document.querySelectorAll('section[id^="u"]');
   for(var s=0;s<secs.length;s++){
@@ -894,5 +985,999 @@ body.lb-open{overflow:hidden}
 })();
 </script>
 
+<!--HL-START-->
+<script>
+/* Hairline kernel. Copyright (c) Lucas Marques, MIT License. https://github.com/lucasmarkes/hairline */
+/* hairline kernel sha256:3a19aa2640ba8c6c306184d05fddfbd4f3323a6ebd9217dd3cbb38e9db74991c */
+/*
+ * HL: everything a figure may call. Read this index; the code under it is the
+ * package's src/core, unchanged, and a figure should not need to read it.
+ *
+ * Every figure is drawn in a 400 × 320 viewBox. World space is x/y on the
+ * ground and z up. Plates are filled with the ground colour and painted back
+ * to front, so a nearer one covers a farther one: append in that order. At
+ * the default camera, Cam(45, 0.5, S), +x runs down to the right and +y down
+ * to the left, so the corner with the largest x and y is nearest the viewer:
+ * append by ascending x + y, from the far corner (smallest x and y) to it.
+ *
+ * Camera
+ *   Cam(azDeg, k, S)                       a camera: azimuth in degrees, k = sin(elevation) (0.5 is the 2:1 view), S = scale
+ *   fit(C, points, cx, cy)                 centres the box of [x, y, z] points on (cx, cy); call it once, before proj
+ *                                          it only centres, it never scales: choose S by trying values, with the most extreme pose in points.
+ *                                          The six figures use S 1.42 to 2.12; the boxes they fit come out 230 to 310 wide and 180 to 245 tall
+ *   proj(C)                                returns P(x, y, z), which gives [sx, sy]
+ *   unproj(C, sx, sy, z)                   the world [x, y] under a screen point, on the plane at height z
+ *   facing(C)                              returns front(sample): whether a ring sample faces the camera
+ * Rounded solids
+ *   rrect(u0, v0, u1, v1, r, n)            a rounded rectangle, as a ring of samples {u, v, nu, nv}
+ *   circ(R, n)                             a circle, as a ring
+ *   rings(x0, y0, x1, y1, r, b)            [ring, inner]: a rounded footprint and its crease ring, inset by b
+ *                                          r, the corner radius, is cut to half the shorter side. b, the crease's inset in world units
+ *                                          (0.6 to 2.2 in the figures), must stay under half the shorter side or the crease turns inside out
+ *   prism(P, front, ring, inner, z0, z1)   {sil, crease}: a solid standing from z0 to z1, as two path strings
+ *   ringAt(P, ring, z)                     the ring's points, projected at height z
+ *   run(ring, keep)                        the one cyclic run of samples that pass keep
+ *   hull(points)                           the convex hull of screen points
+ *   extremes(P, ring)                      [left, right, nearest] samples: where dashed drops fall from
+ *   fillet(points, radii, n)               rounds every vertex of a closed polygon; returns the new points
+ *                                          radii is an array, one radius per vertex, each cut to half its shorter edge; a single number gives NaN.
+ *                                          n is the steps round each corner, default 4: each vertex becomes n + 1 points
+ *   ghost(P, front, ring, z0, depth)       a reflection's path {d, y0, y1}; reflect() draws it for you
+ * Paths and numbers
+ *   poly(points)                           a closed path string
+ *   open(points)                           an open polyline string
+ *   seg(a, b)                              one segment between two screen points [sx, sy], as its own subpath; project world points with P first
+ *   clamp(v, a, b)
+ *   lerp(a, b, t)
+ *   rad(deg)
+ *   r2(n)                                  two decimals
+ * The continuous clock: one spring per moving number
+ *   spring(x, opts)                        at rest on x; write .t to retarget; opts {k, c, m, eps}, default k 100, c 18, m 1
+ *   stepS(sp, dt)                          advances by dt seconds; returns whether it is still moving
+ * The discrete clock: a 700ms tween on (.32, .72, 0, 1)
+ *   tween(v, dur)                          at rest on v; dur defaults to 700 (ms)
+ *   tset(tw, to, now, delay)               retargets from where it is, after delay ms: the stagger
+ *                                          the same target again does nothing, so calling it on every pointer move is safe
+ *   tval(tw, now)                          its value at now
+ *   tdone(tw, now)                         whether it has landed
+ *   bezier(x1, y1, x2, y2)                 a CSS cubic-bezier, as a function of progress
+ *   EASE_LIFT                              the lift curve itself
+ *   reducedMotion()                        true when the reader asked for less motion; springs and tweens already land at once
+ *   setReducedMotion(on)                   the loop's business, not a figure's
+ * Drawing
+ *   mk(tag, attrs, parent)                 one svg element: the only way a figure makes a node
+ *   solid(parent)                          {g, sil, cr}: a group holding a silhouette path and a crease path
+ *   put(solid, paths)                      writes prism()'s {sil, crease} into solid()'s {sil, cr}: sil into sil, crease into cr
+ *   flatDot(parent, C, r, cls)             a dot lying on the ground plane; cls is "dot", "dot m" or "dot off"
+ *   place(el, point)                       moves a dot or a circle to [sx, sy]
+ *   reflect(svg, parent, P, front, ring, z0, depth)   a fading mirror under a solid
+ *   fade(svg, y0, y1, a0)                  a vertical fade, as a mask; returns the value for a mask attribute
+ * Life
+ *   register(stage, tick)                  joins the one frame loop; tick(dt in seconds, now in ms) returns true to ask for another frame; gives {wake, unregister}
+ *   pointer(stage, handlers)               {move(point), down(point), leave()}, points in viewBox units; returns its disposer
+ *   disposer()                             {add, on, dispose}: collects tear-down, so destroy is bag.dispose
+ * The bench's business, not a figure's
+ *   css(lightDark)
+ *   inject(root)
+ *   tour(stage, stops, onStop)             an unseen pointer that walks the stops, [x, y] in viewBox units or null to leave, and gives way to a real one; onStop(i) on each arrival; returns {stop}
+ *   LAP                                    the default stops: a diamond around the centre, then a leave
+ *
+ * Classes, on path, polygon, ellipse and line. They are the whole palette; a
+ * figure sets no colour, width or fill of its own.
+ *     (none)   filled with the ground colour, medium stroke
+ *     sil      the silhouette's stroke        hi    the bright stroke: the only highlight
+ *     lo       the dim stroke                 nf    no fill        fo   fill only, no stroke
+ *     dash     a dashed guide
+ *     dot      a bright dot                   dot m   a medium dot     dot off   a dim dot
+ */
+var HL = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+  // packages/hairline/src/core/kernel.ts
+  var kernel_exports = {};
+  __export(kernel_exports, {
+    Cam: () => Cam,
+    EASE_LIFT: () => EASE_LIFT,
+    LAP: () => LAP,
+    bezier: () => bezier,
+    circ: () => circ,
+    clamp: () => clamp,
+    css: () => css,
+    disposer: () => disposer,
+    extremes: () => extremes,
+    facing: () => facing,
+    fade: () => fade,
+    fillet: () => fillet,
+    fit: () => fit,
+    flatDot: () => flatDot,
+    ghost: () => ghost,
+    hull: () => hull,
+    inject: () => inject,
+    lerp: () => lerp,
+    mk: () => mk,
+    open: () => open,
+    place: () => place,
+    pointer: () => pointer,
+    poly: () => poly,
+    prism: () => prism,
+    proj: () => proj,
+    put: () => put,
+    r2: () => r2,
+    rad: () => rad,
+    reducedMotion: () => reducedMotion,
+    reflect: () => reflect,
+    register: () => register,
+    ringAt: () => ringAt,
+    rings: () => rings,
+    rrect: () => rrect,
+    run: () => run,
+    seg: () => seg,
+    setReducedMotion: () => setReducedMotion,
+    solid: () => solid,
+    spring: () => spring,
+    stepS: () => stepS,
+    tdone: () => tdone,
+    tour: () => tour,
+    tset: () => tset,
+    tval: () => tval,
+    tween: () => tween,
+    unproj: () => unproj
+  });
+
+  // packages/hairline/src/core/iso.ts
+  var clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  var lerp = (a, b, t) => a + (b - a) * t;
+  var rad = (d) => d * Math.PI / 180;
+  var r2 = (n) => Math.round(n * 100) / 100;
+  var poly = (pts) => "M" + pts.map((p) => r2(p[0]) + " " + r2(p[1])).join("L") + "Z";
+  var seg = (a, b) => `M${r2(a[0])} ${r2(a[1])}L${r2(b[0])} ${r2(b[1])}`;
+  var open = (pts) => pts.length < 2 ? "" : "M" + pts.map((p) => r2(p[0]) + " " + r2(p[1])).join("L");
+  var Cam = (azDeg, k, S) => ({ az: rad(azDeg), k, S, ox: 0, oy: 0 });
+  function proj(C) {
+    const c = Math.cos(C.az), s = Math.sin(C.az), zf = Math.sqrt(1 - C.k * C.k);
+    return (x, y, z) => {
+      const X = x * c - y * s, Y = x * s + y * c;
+      return [C.ox + C.S * X, C.oy + C.S * (Y * C.k - z * zf)];
+    };
+  }
+  function unproj(C, sx, sy, z) {
+    const c = Math.cos(C.az), s = Math.sin(C.az), zf = Math.sqrt(1 - C.k * C.k);
+    const X = (sx - C.ox) / C.S, Y = ((sy - C.oy) / C.S + z * zf) / C.k;
+    return [X * c + Y * s, -X * s + Y * c];
+  }
+  function fit(C, pts, cx, cy) {
+    C.ox = 0;
+    C.oy = 0;
+    const P = proj(C);
+    let a = 1e9, b = -1e9, c = 1e9, d = -1e9;
+    for (const p of pts) {
+      const q = P(p[0], p[1], p[2]);
+      a = Math.min(a, q[0]);
+      b = Math.max(b, q[0]);
+      c = Math.min(c, q[1]);
+      d = Math.max(d, q[1]);
+    }
+    C.ox = cx - (a + b) / 2;
+    C.oy = cy - (c + d) / 2;
+  }
+  function rrect(u0, v0, u1, v1, r, n = 4) {
+    r = Math.max(0, Math.min(r, (u1 - u0) / 2, (v1 - v0) / 2));
+    const out = [];
+    for (const [cu, cv, a0] of [[u1 - r, v1 - r, 0], [u0 + r, v1 - r, 90], [u0 + r, v0 + r, 180], [u1 - r, v0 + r, 270]])
+      for (let k = 0; k <= n; k++) {
+        const a = rad(a0 + 90 * k / n), ca = Math.cos(a), sa = Math.sin(a);
+        out.push({ u: cu + r * ca, v: cv + r * sa, nu: ca, nv: sa });
+      }
+    return out;
+  }
+  function circ(R, n = 96) {
+    const out = [];
+    for (let k = 0; k < n; k++) {
+      const a = k / n * Math.PI * 2, ca = Math.cos(a), sa = Math.sin(a);
+      out.push({ u: R * ca, v: R * sa, nu: ca, nv: sa });
+    }
+    return out;
+  }
+  function hull(input) {
+    const pts = input.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    const x = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    const lo = [], up = [];
+    for (const p of pts) {
+      while (lo.length > 1 && x(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop();
+      lo.push(p);
+    }
+    for (let i = pts.length - 1; i >= 0; i--) {
+      const p = pts[i];
+      while (up.length > 1 && x(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop();
+      up.push(p);
+    }
+    lo.pop();
+    up.pop();
+    return lo.concat(up);
+  }
+  var ringAt = (P, ring, z) => ring.map((q) => P(q.u, q.v, z));
+  var facing = (C) => {
+    const s = Math.sin(C.az), c = Math.cos(C.az);
+    return (q) => q.nu * s + q.nv * c >= -1e-6;
+  };
+  function run(ring, keep) {
+    const n = ring.length;
+    let s = -1;
+    for (let i = 0; i < n; i++) if (keep(ring[i]) && !keep(ring[(i + n - 1) % n])) {
+      s = i;
+      break;
+    }
+    if (s < 0) return keep(ring[0]) ? ring.slice() : [];
+    const out = [];
+    for (let k = 0; k < n && keep(ring[(s + k) % n]); k++) out.push(ring[(s + k) % n]);
+    return out;
+  }
+  function prism(P, front, ring, inner, z0, z1) {
+    return {
+      sil: poly(hull(ringAt(P, ring, z1).concat(ringAt(P, ring, z0)))),
+      crease: inner ? open(ringAt(P, run(inner, front), z1)) : ""
+    };
+  }
+  var rings = (x0, y0, x1, y1, r, b) => [
+    rrect(x0, y0, x1, y1, r),
+    rrect(x0 + b, y0 + b, x1 - b, y1 - b, Math.max(0.3, r - b))
+  ];
+  function extremes(P, ring) {
+    const pr = ring.map((q) => P(q.u, q.v, 0));
+    let a = 0, b = 0, c = 0;
+    pr.forEach((p, k) => {
+      if (p[0] < pr[a][0]) a = k;
+      if (p[0] > pr[b][0]) b = k;
+      if (p[1] > pr[c][1]) c = k;
+    });
+    return [ring[a], ring[b], ring[c]];
+  }
+  function fillet(pts, rs, n = 4) {
+    const m = pts.length, out = [];
+    for (let i = 0; i < m; i++) {
+      const a = pts[(i + m - 1) % m], p = pts[i], b = pts[(i + 1) % m];
+      const la = Math.hypot(a[0] - p[0], a[1] - p[1]), lb = Math.hypot(b[0] - p[0], b[1] - p[1]);
+      const t = Math.min(rs[i], la / 2, lb / 2);
+      const p1 = [p[0] + (a[0] - p[0]) / la * t, p[1] + (a[1] - p[1]) / la * t];
+      const p2 = [p[0] + (b[0] - p[0]) / lb * t, p[1] + (b[1] - p[1]) / lb * t];
+      for (let k = 0; k <= n; k++) {
+        const s = k / n, w = 1 - s;
+        out.push([w * w * p1[0] + 2 * w * s * p[0] + s * s * p2[0], w * w * p1[1] + 2 * w * s * p[1] + s * s * p2[1]]);
+      }
+    }
+    return out;
+  }
+  function ghost(P, front, ring, z0, depth) {
+    const f = run(ring, front), lowP = ringAt(P, f, z0 - depth);
+    return {
+      d: open(lowP) + [f[0], f[f.length - 1]].map((q) => seg(P(q.u, q.v, z0), P(q.u, q.v, z0 - depth))).join(""),
+      y0: Math.min(...ringAt(P, f, z0).map((p) => p[1])),
+      y1: Math.max(...lowP.map((p) => p[1])) + 2
+    };
+  }
+
+  // packages/hairline/src/core/motion.ts
+  var reduced = false;
+  var setReducedMotion = (on) => {
+    reduced = on;
+  };
+  var reducedMotion = () => reduced;
+  function spring(x, o = {}) {
+    return { x, v: 0, t: x, k: o.k ?? 100, c: o.c ?? 18, m: o.m ?? 1, eps: o.eps ?? 0.01 };
+  }
+  function stepS(sp, dt) {
+    if (reduced) {
+      sp.x = sp.t;
+      sp.v = 0;
+      return false;
+    }
+    const n = Math.max(1, Math.ceil(dt * 240)), h = dt / n;
+    for (let i = 0; i < n; i++) {
+      const a = (-sp.k * (sp.x - sp.t) - sp.c * sp.v) / sp.m;
+      sp.v += a * h;
+      sp.x += sp.v * h;
+    }
+    if (Math.abs(sp.x - sp.t) < sp.eps && Math.abs(sp.v) < sp.eps * 10) {
+      sp.x = sp.t;
+      sp.v = 0;
+      return false;
+    }
+    return true;
+  }
+  function bezier(x1, y1, x2, y2) {
+    const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+    const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+    const X = (u) => ((ax * u + bx) * u + cx) * u;
+    const Y = (u) => ((ay * u + by) * u + cy) * u;
+    const dX = (u) => (3 * ax * u + 2 * bx) * u + cx;
+    return (t) => {
+      if (t <= 0) return 0;
+      if (t >= 1) return 1;
+      let u = t;
+      for (let i = 0; i < 8; i++) {
+        const e = X(u) - t;
+        if (Math.abs(e) < 1e-5) break;
+        const d = dX(u);
+        if (Math.abs(d) < 1e-6) break;
+        u -= e / d;
+      }
+      if (!(u >= 0 && u <= 1) || Math.abs(X(u) - t) > 1e-4) {
+        let lo = 0, hi = 1;
+        u = t;
+        for (let i = 0; i < 24; i++) {
+          if (X(u) < t) lo = u;
+          else hi = u;
+          u = (lo + hi) / 2;
+        }
+      }
+      return Y(u);
+    };
+  }
+  var EASE_LIFT = bezier(0.32, 0.72, 0, 1);
+  var tween = (v, dur = 700) => ({ from: v, to: v, t0: -1e9, dur });
+  var tval = (tw, now) => {
+    const p = clamp((now - tw.t0) / tw.dur, 0, 1);
+    return tw.from + (tw.to - tw.from) * (reduced ? 1 : EASE_LIFT(p));
+  };
+  var tset = (tw, to, now, delay) => {
+    if (tw.to === to) return;
+    tw.from = tval(tw, now);
+    tw.to = to;
+    tw.t0 = now + delay;
+  };
+  var tdone = (tw, now) => reduced || now >= tw.t0 + tw.dur;
+
+  // packages/hairline/src/core/stage.ts
+  var NS = "http://www.w3.org/2000/svg";
+  function mk(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    if (attrs) for (const k in attrs) e.setAttribute(k, String(attrs[k]));
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function solid(parent) {
+    const g = mk("g", {}, parent);
+    return { g, sil: mk("path", { class: "sil" }, g), cr: mk("path", { class: "nf lo" }, g) };
+  }
+  var put = (el, s) => {
+    el.sil.setAttribute("d", s.sil);
+    el.cr.setAttribute("d", s.crease);
+  };
+  var flatDot = (parent, C, r, cls) => mk("ellipse", { rx: r2(r * C.S), ry: r2(r * C.S * C.k), class: cls }, parent);
+  var place = (el, q) => {
+    el.setAttribute("cx", String(r2(q[0])));
+    el.setAttribute("cy", String(r2(q[1])));
+  };
+  var fid = 0;
+  function fade(svg, y0, y1, a0 = 0.7) {
+    const id = "hl-fd" + ++fid, defs = mk("defs", {}, svg);
+    const lg = mk("linearGradient", { id: id + "g", gradientUnits: "userSpaceOnUse", x1: 0, y1: r2(y0), x2: 0, y2: r2(y1) }, defs);
+    mk("stop", { offset: 0, "stop-color": "#fff", "stop-opacity": a0 }, lg);
+    mk("stop", { offset: 1, "stop-color": "#fff", "stop-opacity": 0 }, lg);
+    const m = mk("mask", { id, maskUnits: "userSpaceOnUse", x: 0, y: 0, width: 400, height: 320 }, defs);
+    mk("rect", { x: 0, y: 0, width: 400, height: 320, fill: `url(#${id}g)` }, m);
+    return `url(#${id})`;
+  }
+  function reflect(svg, parent, P, front, ring, z0, depth) {
+    const r = ghost(P, front, ring, z0, depth);
+    const gh = mk("g", { class: "ghost", mask: fade(svg, r.y0, r.y1) }, parent);
+    mk("path", { d: r.d }, gh);
+  }
+  var boards = [];
+  var byStage = /* @__PURE__ */ new Map();
+  var raf = 0;
+  var last = 0;
+  var io = null;
+  var rm = null;
+  function frame(now) {
+    const dt = Math.min(0.05, Math.max(0, (now - last) / 1e3));
+    last = now;
+    let any = false;
+    for (const b of boards.slice()) if (b.vis && b.awake) {
+      try {
+        b.awake = !!b.tick(dt, now);
+      } catch (err) {
+        b.awake = false;
+        setTimeout(() => {
+          throw err;
+        });
+      }
+      any = any || b.awake;
+    }
+    raf = any ? requestAnimationFrame(frame) : 0;
+  }
+  function wake(b) {
+    b.awake = true;
+    if (!raf) {
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    }
+  }
+  var onMotion = () => {
+    setReducedMotion(!!rm?.matches);
+    boards.forEach(wake);
+  };
+  function start() {
+    if (io) return;
+    io = new IntersectionObserver((es) => {
+      for (const e of es) {
+        const set = byStage.get(e.target);
+        if (!set) continue;
+        for (const b of set) {
+          b.vis = e.isIntersecting;
+          if (b.vis) wake(b);
+        }
+      }
+    }, { rootMargin: "80px" });
+    rm = matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(rm.matches);
+    rm.addEventListener("change", onMotion);
+  }
+  function stop() {
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+    io?.disconnect();
+    io = null;
+    rm?.removeEventListener("change", onMotion);
+    rm = null;
+  }
+  function register(stage, tick) {
+    start();
+    const b = { stage, tick, vis: false, awake: true };
+    boards.push(b);
+    const peers = byStage.get(stage);
+    if (peers) {
+      for (const p of peers) b.vis = p.vis;
+      peers.add(b);
+      if (b.vis) wake(b);
+    } else {
+      byStage.set(stage, /* @__PURE__ */ new Set([b]));
+      io.observe(stage);
+    }
+    tick(0, performance.now());
+    let gone = false;
+    return {
+      wake: () => {
+        if (!gone) wake(b);
+      },
+      unregister: () => {
+        if (gone) return;
+        gone = true;
+        boards = boards.filter((x) => x !== b);
+        const set = byStage.get(stage);
+        if (set) {
+          set.delete(b);
+          if (!set.size) {
+            byStage.delete(stage);
+            io?.unobserve(stage);
+          }
+        }
+        if (!boards.length) stop();
+      }
+    };
+  }
+  var handlers = /* @__PURE__ */ new WeakMap();
+  var touring = /* @__PURE__ */ new WeakMap();
+  function pointer(stage, on) {
+    handlers.set(stage, on);
+    let tm = 0;
+    const pt = (e) => {
+      const r = stage.getBoundingClientRect();
+      return [(e.clientX - r.left) / r.width * 400, (e.clientY - r.top) / r.height * 320];
+    };
+    const move = (e) => {
+      clearTimeout(tm);
+      touring.get(stage)?.hold();
+      on.move(pt(e), e);
+    };
+    const down = (e) => {
+      clearTimeout(tm);
+      touring.get(stage)?.hold();
+      if (e.pointerType !== "mouse") stage.releasePointerCapture?.(e.pointerId);
+      if (on.down) on.down(pt(e), e);
+      else on.move(pt(e), e);
+    };
+    const leave = (e) => {
+      clearTimeout(tm);
+      tm = window.setTimeout(() => {
+        on.leave(e);
+        touring.get(stage)?.release();
+      }, e.pointerType === "mouse" ? 0 : 1400);
+    };
+    stage.addEventListener("pointermove", move);
+    stage.addEventListener("pointerdown", down);
+    stage.addEventListener("pointerleave", leave);
+    return () => {
+      clearTimeout(tm);
+      if (handlers.get(stage) === on) handlers.delete(stage);
+      stage.removeEventListener("pointermove", move);
+      stage.removeEventListener("pointerdown", down);
+      stage.removeEventListener("pointerleave", leave);
+    };
+  }
+  var LAP = [[128, 150], [200, 118], [272, 150], [200, 206], null];
+  var TRAVEL = 900;
+  var DWELL = 1200;
+  var REST = 1800;
+  var RESUME = 1200;
+  var STAGGER = 450;
+  var GHOST = { pointerType: "ghost" };
+  var started = 0;
+  function entry([x, y]) {
+    const dx = x - 200, dy = y - 160;
+    if (!dx && !dy) return [200, 320];
+    const k = Math.min(dx ? (dx > 0 ? 200 : -200) / dx : Infinity, dy ? (dy > 0 ? 160 : -160) / dy : Infinity);
+    return [200 + dx * k, 160 + dy * k];
+  }
+  function tour(stage, stops, onStop) {
+    let i = 0;
+    let wait = RESUME + STAGGER * (started++ % 4);
+    let t = -1;
+    let at = null;
+    let origin = [200, 320];
+    let hand = false, keys = stage.contains(stage.ownerDocument.activeElement);
+    let gone = false;
+    const leave = () => {
+      at = null;
+      t = -1;
+      handlers.get(stage)?.leave(GHOST);
+    };
+    const tick = (dt) => {
+      if (hand || keys || !stops.length) return false;
+      if (reducedMotion()) {
+        if (at) leave();
+        return false;
+      }
+      if (wait > 0) {
+        wait -= dt * 1e3;
+        return true;
+      }
+      const stop2 = stops[i];
+      if (stop2 === null) {
+        if (at) leave();
+        onStop?.(i);
+        i = (i + 1) % stops.length;
+        wait = REST;
+        return true;
+      }
+      const h = handlers.get(stage);
+      if (!h) return true;
+      if (t < 0) {
+        origin = at ?? entry(stop2);
+        t = 0;
+      }
+      t = Math.min(TRAVEL, t + dt * 1e3);
+      const k = EASE_LIFT(t / TRAVEL);
+      at = [origin[0] + (stop2[0] - origin[0]) * k, origin[1] + (stop2[1] - origin[1]) * k];
+      h.move(at, GHOST);
+      if (t < TRAVEL) return true;
+      onStop?.(i);
+      i = (i + 1) % stops.length;
+      t = -1;
+      wait = DWELL;
+      return true;
+    };
+    const take = () => {
+      at = null;
+      t = -1;
+    };
+    const give = () => {
+      if (hand || keys) return;
+      i = 0;
+      t = -1;
+      wait = RESUME;
+      board.wake();
+    };
+    const me = {
+      hold: () => {
+        hand = true;
+        take();
+      },
+      release: () => {
+        if (!hand) return;
+        hand = false;
+        give();
+      }
+    };
+    const focusIn = () => {
+      keys = true;
+      take();
+    };
+    const focusOut = (e) => {
+      if (keys && !stage.contains(e.relatedTarget)) {
+        keys = false;
+        give();
+      }
+    };
+    stage.addEventListener("focusin", focusIn);
+    stage.addEventListener("focusout", focusOut);
+    touring.set(stage, me);
+    const board = register(stage, tick);
+    return {
+      stop: () => {
+        if (gone) return;
+        gone = true;
+        board.unregister();
+        stage.removeEventListener("focusin", focusIn);
+        stage.removeEventListener("focusout", focusOut);
+        if (touring.get(stage) === me) touring.delete(stage);
+        if (at) leave();
+      }
+    };
+  }
+  function disposer() {
+    let fns = [];
+    return {
+      add: (fn) => {
+        fns.push(fn);
+      },
+      on: (target, type, fn, opts) => {
+        const h = fn;
+        target.addEventListener(type, h, opts);
+        fns.push(() => target.removeEventListener(type, h, opts));
+      },
+      dispose: () => {
+        const run2 = fns;
+        fns = [];
+        for (let i = run2.length - 1; i >= 0; i--) run2[i]();
+      }
+    };
+  }
+
+  // packages/hairline/src/core/styles.ts
+  var LIGHT = { plate: "#ffffff", hi: "#232327", edge: "#a4a4ac", mid: "#c3c3c9", lo: "#e0e0e4" };
+  var DARK = { plate: "#08090a", hi: "#d0d6e0", edge: "#5b5d64", mid: "#3e3e44", lo: "#29292d" };
+  var KEYS = ["plate", "hi", "edge", "mid", "lo"];
+  var vars = (p) => KEYS.map((k) => `--hl-${k}:var(--hairline-${k},${p[k]});`).join("");
+  var EASE = "cubic-bezier(0.5,0,0.1,1)";
+  var SVG = ":where([data-hairline]>svg)";
+  function css(lightDark) {
+    const both = Object.fromEntries(KEYS.map((k) => [k, `light-dark(${LIGHT[k]},${DARK[k]})`]));
+    return [
+      // the box, and the palette: light unless something below says otherwise
+      `:where([data-hairline]){display:block;position:relative;aspect-ratio:5/4;touch-action:pan-y;user-select:none;-webkit-user-select:none;--hl-sw:var(--hairline-stroke,0.9);${vars(LIGHT)}}`,
+      // the page's color-scheme
+      lightDark ? `:where([data-hairline]){${vars(both)}}` : "",
+      // an ancestor that says dark
+      `:where(.dark,[data-theme="dark"]) :where([data-hairline]){${vars(DARK)}}`,
+      // the figure's own theme option
+      `:where([data-hairline][data-hairline-theme="light"]){${vars(LIGHT)}}`,
+      `:where([data-hairline][data-hairline-theme="dark"]){${vars(DARK)}}`,
+      `:where([data-hairline]:focus-visible){outline:1.5px solid var(--hl-hi);outline-offset:2px}`,
+      `${SVG}{position:absolute;inset:0;width:100%;height:100%;display:block}`,
+      // Riffle's live region: read, not seen
+      `:where([data-hairline]>[data-hairline-live]){position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}`,
+      // the drawing: plates are filled with the plate colour and painted back to front
+      `${SVG} :where(path,polygon,ellipse,line){fill:var(--hl-plate);stroke:var(--hl-mid);stroke-width:var(--hl-sw);vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round;transition:stroke 260ms ${EASE}}`,
+      `${SVG} :where(.nf){fill:none}`,
+      `${SVG} :where(.fo){stroke:none}`,
+      `${SVG} :where(.sil){stroke:var(--hl-edge)}`,
+      `${SVG} :where(.hi){stroke:var(--hl-hi)}`,
+      `${SVG} :where(.lo){stroke:var(--hl-lo)}`,
+      `${SVG} :where(.dash){stroke-dasharray:1 3}`,
+      `${SVG} :where(.dot){stroke:none;fill:var(--hl-hi);transition:fill 260ms ${EASE}}`,
+      `${SVG} :where(.dot.m){fill:var(--hl-edge)}`,
+      `${SVG} :where(.dot.off){fill:var(--hl-lo)}`,
+      `${SVG} :where(.ghost path){fill:none;stroke:var(--hl-mid)}`
+    ].join("");
+  }
+  var done = /* @__PURE__ */ new WeakSet();
+  function inject(root) {
+    if (done.has(root)) return;
+    done.add(root);
+    const doc = root.nodeType === 9 ? root : root.ownerDocument;
+    const win = doc.defaultView;
+    const text = css(!!win?.CSS?.supports?.("color", "light-dark(#000,#fff)"));
+    if (win && "adoptedStyleSheets" in root) {
+      try {
+        const sheet = new win.CSSStyleSheet();
+        sheet.replaceSync(text);
+        root.adoptedStyleSheets = [...root.adoptedStyleSheets, sheet];
+        return;
+      } catch {
+      }
+    }
+    const style = doc.createElement("style");
+    style.setAttribute("data-hairline-style", "");
+    style.textContent = text;
+    (root.nodeType === 9 ? doc.head ?? doc.documentElement : root).appendChild(style);
+  }
+  return __toCommonJS(kernel_exports);
+})();
+/* /hairline kernel */
+
+</script>
+<script>
+/* Площадка для фигур: то же, что делает страница-стенд из набора Hairline, только для нескольких фигур сразу. */
+(function(){
+  var seen = "IntersectionObserver" in window;
+  window.hairline = function(figure){
+    var stage = document.querySelector('[data-fig="' + figure.name + '"]');
+    if(!stage) return;
+    HL.inject(document);
+    stage.setAttribute("data-hairline", figure.name);
+    stage.setAttribute("data-hairline-theme", "dark");
+    stage.setAttribute("role", "img");
+    stage.setAttribute("aria-label", stage.getAttribute("data-label") || figure.means);
+    var svg = HL.mk("svg", { viewBox: "0 0 400 320", "aria-hidden": "true" }, stage);
+    var out = stage.parentNode.querySelector(".fig-read"), hint = out.textContent, text = null;
+    var read = {
+      get textContent(){ return text; },
+      set textContent(v){ text = v == null ? "" : String(v); var rest = text === "rest"; out.textContent = rest ? hint : text; out.classList.toggle("on", !rest); }
+    };
+    figure.mount({ stage: stage, svg: svg, read: read }, figure.range[1]);
+    if(text === null) read.textContent = "rest";
+    /* один проход невидимого курсора, когда фигура впервые попала на экран: так историю видно и без мыши */
+    if(!seen || !figure.tour || HL.reducedMotion()) return;
+    var io = new IntersectionObserver(function(entries){
+      if(!entries[0].isIntersecting) return;
+      io.disconnect();
+      var lap = HL.tour(stage, figure.tour, function(i){ if(i === figure.tour.length - 1) setTimeout(function(){ lap.stop(); }, 0); });
+    }, { threshold: 0.7 });
+    io.observe(stage);
+  };
+})();
+</script>
+
+<script>
+(() => {
+/**
+ * Storyboard: a rounded tray holding six storyboard frames, upright and
+ * portrait like a phone screen. Each frame is drawn at one shot size, from the
+ * far shot at the back (a tiny figure on a horizon) to the detail at the front
+ * (one eye). The frame under the pointer stands up and lifts; the ones in front
+ * lean forward and the ones behind lean back, staggered outwards from it. At
+ * rest the close-up stands a little higher and holds the bright edge. The
+ * slider is the stagger, in ms.
+ *
+ * The pattern: one of many, borrowed from Riffle. Tweens, a stagger by
+ * distance, and a hit test on static bands along the resting top edges.
+ */
+const {
+  Cam, circ, clamp, facing, fillet, fit, hull, open, poly, proj, rad, ringAt, rrect, run, seg,
+  tdone, tset, tval, tween, disposer, mk, pointer, reflect, register,
+} = HL;
+
+const N = 6, W = 46, H = 78, G = 15, TK = 1.4;
+const REST = -12, BACK = -24, FWD = 20, LIFT = 18, HOME = 4, HOMEZ = 7;
+const X0 = -6, X1 = W + 6, Y0 = -9, Y1 = (N - 1) * G + 9, WH = 18, WR = 6, WT = 2.4;
+const NAMES = ["дальний", "общий", "2 средний", "1 средний", "крупный", "деталь"];
+
+const LR = (pts) => (pts[0][0] <= pts[pts.length - 1][0] ? pts : pts.slice().reverse());
+
+/** The tray, which never moves: `far` is painted before the frames, `near` after them. */
+function tray(P, front, outer, inner) {
+  const far = [
+    [poly(hull(ringAt(P, outer, 0).concat(ringAt(P, outer, WH)))), "sil"],
+    [poly(ringAt(P, inner, WH)), "nf"],
+    [open(ringAt(P, run(inner, (q) => !front(q)), 2.5)), "nf lo"],
+  ];
+  const iF = LR(ringAt(P, run(inner, front), WH)), oT = LR(ringAt(P, run(outer, front), WH)), oB = LR(ringAt(P, run(outer, front), 0));
+  const near = [
+    [poly([...iF, oT[oT.length - 1], ...oB.slice().reverse(), oT[0]]), "fo"],
+    [open(oT), "nf lo"],
+    [open(iF), "nf"],
+    [open([oT[0], ...oB, oT[oT.length - 1]]), "nf sil"],
+  ];
+  return { far, near };
+}
+
+/** A figure in the frame's own plane: a head and rounded shoulders, cut by the frame's lower edge. */
+function person(cx, hv, r) {
+  const head = circ(r, 20).map((q) => [cx + q.u, hv + q.v]);
+  const sw = r * 2.5, top = hv - r * 1.35, bot = Math.max(3, top - r * 4.2);
+  const body = fillet([[cx - sw, bot], [cx + sw, bot], [cx + sw, top - r * .3], [cx + r * .9, top], [cx - r * .9, top], [cx - sw, top - r * .3]], [0.5, 0.5, r * .9, r * .5, r * .5, r * .9], 4);
+  return [head, body];
+}
+
+/** What frame i shows, as closed outlines in its plane (u across, v up from the bottom edge). */
+function shot(i) {
+  const c = W / 2;
+  if (i === 0) return { lines: [[[5, 24], [W - 5, 24]]], shapes: person(c, 30, 1.7) };
+  if (i === 1) return { lines: [[[5, 14], [W - 5, 14]]], shapes: person(c, 50, 3) };
+  if (i === 2) return { lines: [], shapes: person(c, 54, 5) };
+  if (i === 3) return { lines: [], shapes: person(c, 52, 7.5) };
+  if (i === 4) return { lines: [], shapes: person(c, 42, 13) };
+  const eye = [];
+  for (let k = 0; k < 24; k++) { const t = (k / 24) * Math.PI * 2; eye.push([c + 17 * Math.cos(t), 40 + 8 * Math.sin(t) * Math.abs(Math.sin(t)) ** 0.2]); }
+  return { lines: [], shapes: [eye, circ(5, 16).map((q) => [c + q.u, 40 + q.v])] };
+}
+
+const OUTLINE = fillet([[0, 0], [W, 0], [W, H], [0, H]], [3, 3, 3, 3], 4);
+
+/** Frame i leaning th degrees and lifted by `lift`: its paths. */
+function pose(P, i, th, lift) {
+  const yb = i * G, s = Math.sin(rad(th)), c = Math.cos(rad(th));
+  const w = (u, v) => P(u, yb + v * s, v * c + lift);
+  const wb = (u, v) => P(u, yb + v * s - TK * c, v * c + TK * s + lift);
+  const sh = shot(i);
+  const inset = rrect(3, 3, W - 3, H - 3, 2, 3).map((q) => w(q.u, q.v));
+  return {
+    back: poly(OUTLINE.map((p) => wb(p[0], p[1]))),
+    face: poly(OUTLINE.map((p) => w(p[0], p[1]))),
+    inset: poly(inset),
+    art: sh.shapes.map((pts) => poly(pts.map((p) => w(p[0], p[1])))).join("") + sh.lines.map((l) => seg(w(l[0][0], l[0][1]), w(l[1][0], l[1][1]))).join(""),
+  };
+}
+
+function mount({ stage, svg, read }, value) {
+  const bag = disposer();
+  let stag = value;
+  const C = Cam(45, 0.5, 1.72);
+  fit(C, [[X0, Y0, 0], [X1, Y1, -8], [X1, Y0, 0], [X0, Y1, 0], [X0, Y0, H], [X1, Y0, H + LIFT]], 200, 166);
+  const P = proj(C), front = facing(C);
+  const outer = rrect(X0, Y0, X1, Y1, WR, 6), inner = rrect(X0 + WT, Y0 + WT, X1 - WT, Y1 - WT, WR - WT, 6);
+  const paths = tray(P, front, outer, inner);
+
+  const g = mk("g", {}, svg);
+  reflect(svg, g, P, front, outer, 0, 14);
+  for (const [d, cls] of paths.far) mk("path", { d, class: cls }, g);
+
+  const frames = [];
+  for (let i = 0; i < N; i++) {
+    const grp = mk("g", {}, g);
+    const back = mk("path", { class: "lo" }, grp), face = mk("path", { class: "sil" }, grp);
+    const inset = mk("path", { class: "nf lo" }, grp), art = mk("path", { class: "nf" }, grp);
+    const home = i === HOME;
+    frames.push({ back, face, inset, art, a: tween(REST), z: tween(home ? HOMEZ : 0) });
+  }
+  frames[HOME].face.classList.add("hi");
+
+  for (const [d, cls] of paths.near) mk("path", { d, class: cls }, g);
+
+  // hit bands along the RESTING top edges; they never move
+  const top = (i) => P(W / 2, i * G + H * Math.sin(rad(REST)), H * Math.cos(rad(REST)));
+  const c0 = top(0), c1 = top(1), d = [c1[0] - c0[0], c1[1] - c0[1]];
+  const px0 = P(0, 0, 0), px1 = P(1, 0, 0), ex = [px1[0] - px0[0], px1[1] - px0[1]];
+  const HALF = W / 2 + 6, det = d[0] * ex[1] - d[1] * ex[0];
+  function hit([x, y]) {
+    const qx = x - c0[0], qy = y - c0[1];
+    const s = (qx * ex[1] - qy * ex[0]) / det, r = (d[0] * qy - d[1] * qx) / det;
+    if (Math.abs(r) > HALF || s < -0.5 || s > N + 1) return -1;
+    return clamp(Math.round(s), 0, N - 1);
+  }
+
+  const last = [];
+  function draw(i, th, lift) {
+    const key = th.toFixed(2) + "/" + lift.toFixed(2);
+    if (last[i] === key) return;
+    last[i] = key;
+    const fr = frames[i], q = pose(P, i, th, lift);
+    fr.back.setAttribute("d", q.back);
+    fr.face.setAttribute("d", q.face);
+    fr.inset.setAttribute("d", q.inset);
+    fr.art.setAttribute("d", q.art);
+  }
+
+  const B = register(stage, (_dt, now) => {
+    let moving = false;
+    frames.forEach((fr, i) => { draw(i, tval(fr.a, now), tval(fr.z, now)); if (!tdone(fr.a, now) || !tdone(fr.z, now)) moving = true; });
+    return moving;
+  });
+  bag.add(B.unregister);
+
+  let act = -1;
+  function setActive(a) {
+    if (a === act) return;
+    const now = performance.now(), from = a >= 0 ? a : act;
+    act = a;
+    frames.forEach((fr, i) => {
+      const delay = Math.abs(i - from) * stag;
+      const th = a < 0 ? REST : i < a ? BACK : i > a ? FWD : 0;
+      tset(fr.a, th, now, delay);
+      tset(fr.z, a === i ? LIFT : a < 0 && i === HOME ? HOMEZ : 0, now, delay);
+      fr.face.classList.toggle("hi", a < 0 ? i === HOME : i === a);
+      fr.art.classList.toggle("hi", i === a);
+    });
+    read.textContent = a < 0 ? "rest" : NAMES[a];
+    B.wake();
+  }
+
+  bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave: () => setActive(-1) }));
+  bag.add(() => svg.replaceChildren());
+  return { set: (v) => { stag = v; }, destroy: bag.dispose };
+}
+
+hairline({
+  name: "storyboard",
+  means: "Шесть кадров раскадровки от дальнего плана до детали: кадр под курсором встаёт, соседние расходятся.",
+  rules: [1, 2, 5, 10],
+  range: [0, 45, 90],
+  tour: [[150, 150], [205, 125], [250, 120], null],
+  mount,
+});
+
+})();
+</script>
+<script>
+/* Микро-иллюстрации этапов: неподвижные фигуры в том же изометрическом штрихе, собранные из функций ядра Hairline. */
+(function(){
+  var H = HL, TAU = Math.PI * 2;
+  function shift(ring, cx, cy){ return ring.map(function(q){ return { u: q.u + cx, v: q.v + cy, nu: q.nu, nv: q.nv }; }); }
+  var SPEC = {
+    /* Концепция и исходник: микрофон на подставке */
+    u1: { S: 3.4, box: [-15, -15, 15, 15, 46], draw: function(c, g, up){
+      c.cyl(g, 0, 0, 15, 1.6, 0, 3);
+      c.cyl(g, 0, 0, 1.8, 0.5, 3, 24);
+      var ring = c.cyl(up, 0, 0, 7.5, 1.3, 24, 46, true), d = "";
+      for(var z = 30; z <= 40; z += 3.4) d += H.open(H.ringAt(c.P, H.run(ring, c.front), z));
+      c.path(up, d, "nf lo");
+    } },
+    /* Раскадровка: планшет с сеткой кадров, один кадр поднят */
+    u2: { S: 3.0, box: [0, 0, 74, 52, 9], draw: function(c, g, up){
+      c.box(g, [0, 0, 74, 52, 5, 1.6, 0, 3]);
+      var d = "", col, row;
+      for(row = 0; row < 2; row++) for(col = 0; col < 3; col++){
+        if(row === 0 && col === 1) continue;
+        var x = 6 + col * 22.5, y = 6 + row * 22.5;
+        d += H.poly(H.ringAt(c.P, H.rrect(x, y, x + 17, y + 18, 2, 3), 3));
+        d += H.poly(H.ringAt(c.P, shift(H.circ(2.6, 12), x + 8.5, y + 7), 3));
+      }
+      c.path(g, d, "nf lo");
+      c.box(up, [28.5, 6, 45.5, 24, 2, 0.8, 3, 9], true);
+      c.path(up, H.poly(H.ringAt(c.P, shift(H.circ(3.6, 14), 37, 13), 9)) + H.seg(c.P(32, 19.5, 9), c.P(42, 19.5, 9)), "nf");
+    } },
+    /* Анимация: таймлайн с ключами и плейхед */
+    u3: { S: 3.2, box: [0, -6, 78, 18, 26], draw: function(c, g, up){
+      c.box(g, [0, 0, 78, 12, 4, 1.4, 0, 3]);
+      c.path(g, H.seg(c.P(5, 6, 3), c.P(73, 6, 3)), "nf lo");
+      [9, 21, 30, 52, 64, 71].forEach(function(x, k){ c.dot(g, c.P(x, 6, 3), k < 3 ? "dot m" : "dot off", 2.4); });
+      c.box(up, [38, -6, 42, 18, 1.5, 0.6, 3, 26], true);
+      c.dot(up, c.P(40, 6, 3), "dot", 2.8);
+    } },
+    /* Монтаж: два клипа на дорожке и лезвие склейки между ними */
+    u4: { S: 3.0, box: [-4, -4, 82, 22, 24], draw: function(c, g, up){
+      c.box(g, [-4, -4, 82, 22, 4, 1.4, 0, 2]);
+      c.box(g, [0, 0, 37, 18, 3, 1.2, 2, 8]);
+      c.box(g, [41, 0, 78, 18, 3, 1.2, 2, 8]);
+      c.path(g, H.seg(c.P(4, 9, 8), c.P(30, 9, 8)) + H.seg(c.P(45, 9, 8), c.P(66, 9, 8)), "nf lo");
+      c.box(up, [38, -3, 40, 21, 0.8, 0.35, 2, 24], true);
+    } }
+  };
+  function mount(el){
+    var spec = SPEC[el.getAttribute("data-micro")];
+    if(!spec) return;
+    H.inject(document);
+    el.setAttribute("data-hairline", "micro");
+    el.setAttribute("data-hairline-theme", "dark");
+    el.setAttribute("aria-hidden", "true");
+    var svg = H.mk("svg", { viewBox: "0 0 400 320" }, el), b = spec.box, pts = [];
+    [0, b[4]].forEach(function(z){ pts.push([b[0], b[1], z], [b[2], b[3], z], [b[2], b[1], z], [b[0], b[3], z]); });
+    var C = H.Cam(45, 0.5, spec.S);
+    H.fit(C, pts, 200, 166);
+    var P = H.proj(C), front = H.facing(C);
+    var c = {
+      P: P, front: front,
+      box: function(g, a, hi){ var r = H.rings(a[0], a[1], a[2], a[3], a[4], a[5]), s = H.solid(g); H.put(s, H.prism(P, front, r[0], r[1], a[6], a[7])); if(hi) s.sil.classList.add("hi"); return r[0]; },
+      cyl: function(g, cx, cy, R, bb, z0, z1, hi){ var o = shift(H.circ(R, 48), cx, cy), s = H.solid(g); H.put(s, H.prism(P, front, o, shift(H.circ(R - bb, 48), cx, cy), z0, z1)); if(hi) s.sil.classList.add("hi"); return o; },
+      path: function(g, d, cls){ return H.mk("path", { d: d, "class": cls }, g); },
+      dot: function(g, p, cls, r){ return H.mk("circle", { cx: H.r2(p[0]), cy: H.r2(p[1]), r: r || 3, "class": cls }, g); }
+    };
+    var g = H.mk("g", {}, svg), up = H.mk("g", { "class": "lift" }, g);
+    spec.draw(c, g, up);
+    if(up.childNodes.length) g.appendChild(up); else { g.removeChild(up); g.setAttribute("class", "lift"); }
+    try { var bb = g.getBBox(); if(bb.width) svg.setAttribute("viewBox", [H.r2(bb.x - 14), H.r2(bb.y - 26), H.r2(bb.width + 28), H.r2(bb.height + 40)].join(" ")); } catch(e) {}
+  }
+  var all = document.querySelectorAll("[data-micro]");
+  for(var i = 0; i < all.length; i++) mount(all[i]);
+})();
+</script>
+<!--HL-END-->
 </body>
 </html>
