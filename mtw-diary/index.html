@@ -63,7 +63,9 @@ header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transp
 .live.plan::before{background-color:var(--faint)}
 
 /* кейсы */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:1240px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.grid{grid-template-columns:minmax(0,1fr)}}
 .case{background:var(--card);border:1px solid var(--stroke);border-radius:12px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;text-align:left;padding:0;color:inherit;font:inherit;min-width:0;transition:border-color .15s,transform .15s}
 .case:hover,.case:focus-visible{border-color:var(--dim);transform:translateY(-2px);outline:none}
 .case:focus-visible{box-shadow:0 0 0 2px var(--accent)}
