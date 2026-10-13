@@ -47,7 +47,7 @@ description: Собрать вертикальный ролик-разбор п�
 
 ## Файлы кита
 
-Кит лежит на GitHub Pages: https://perasperadastranew.github.io/guides/mascot-poster/ (репозиторий https://github.com/perasperadastranew/guides, папка `mascot-poster`). Скачай файлы `mascot.js`, `scene.js`, `starter.html`, `cap.py`, `sfx.py`, `brief-template.md` и папку `posters` по прямым ссылкам вида `https://perasperadastranew.github.io/guides/mascot-poster/mascot.js` (WebFetch или curl), либо клонируй репозиторий. Если кит приложен файлами к чату, работай с ними.
+Кит лежит на GitHub Pages: https://perasperadastranew.github.io/guides/mascot-poster/ (репозиторий https://github.com/perasperadastranew/guides, папка `mascot-poster`). Скачай файлы `mascot.js`, `scene.js`, `starter.html`, `cap.py`, `sfx.py`, `brief-template.md` и папку `posters` по прямым ссылкам вида `https://perasperadastranew.github.io/guides/mascot-poster/mascot.js` (WebFetch или curl), либо клонируй репозиторий. Если кит приложен файлами к чату, работай с ними. Конструктор формы, глаз и цвета маскота: `constructor.html` в той же папке; формы из него уже вшиты в `mascot.js`, открывать его нужно только чтобы посмотреть варианты.
 
 - `mascot.js` — движок маскота. Не переписывать: формы, глаза, физика капель и тайминги согласованы.
 - `scene.js` — пример сцены: список постеров, главы, расписание действий. Шаблон под свою серию.

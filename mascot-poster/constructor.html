@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>туманность — тест маскота</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#0b0a14;--ink:#f3f1ff;--mute:#8d88b5;--line:#2a2648;--chip:#16132a}
+*,*:before,*:after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,"SF Pro Display","Inter","Segoe UI",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;overflow-y:auto;touch-action:manipulation}
+.stage{flex:0 0 auto;height:min(54vh,460px);width:100%;display:flex;align-items:center;justify-content:center}
+svg{width:min(100%,560px);height:100%;display:block;overflow:visible}
+.word{font-size:clamp(34px,9vw,64px);font-weight:600;letter-spacing:-0.045em;line-height:1;margin:0 0 6px;min-height:1em;transition:opacity .18s}
+.note{color:var(--mute);font-size:15px;letter-spacing:-0.01em;margin:0 0 18px;min-height:1.3em;text-align:center;padding:0 20px}
+.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:0 16px;margin-bottom:10px}
+button{font:inherit;font-size:15px;letter-spacing:-0.01em;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:9px 15px;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+button:hover{border-color:#4a437e}
+button:focus-visible{outline:2px solid #c8f031;outline-offset:2px}
+button[aria-pressed="true"]{background:var(--ink);color:#0b0a14;border-color:var(--ink)}
+.eyesrow{margin-bottom:22px}
+.row span{color:var(--mute);font-size:15px;align-self:center;margin-right:4px}
+.core{opacity:0;transform:scale(.2) rotate(-40deg);transform-box:fill-box;transform-origin:center;transition:opacity .22s ease,transform .45s cubic-bezier(.34,1.56,.64,1)}
+.core.on{opacity:1;transform:scale(1) rotate(0)}
+.eyeset{opacity:0;transition:opacity .2s}
+.eyeset.on{opacity:1}
+.dust circle{animation:tw 3s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}
+@media (prefers-reduced-motion:reduce){.dust circle{animation:none}}
+</style>
+</head>
+<body>
+<div class="stage">
+<svg id="svg" viewBox="-200 -190 400 380" role="img" aria-label="Маскот-туманность: светящееся облако с глазами и меняющейся начинкой внутри">
+<defs>
+<filter id="goo" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="b"/><feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 24 -10" result="g"/><feGaussianBlur in="g" stdDeviation="7" result="b2"/><feColorMatrix id="darkM" in="b2" values="0 0 0 0 .04  0 0 0 0 .05  0 0 0 0 .02  0 0 0 26 -22.4" result="c"/><feGaussianBlur in="c" stdDeviation="2.5" result="cs"/><feMerge><feMergeNode in="g"/><feMergeNode in="cs"/></feMerge></filter>
+<filter id="halo" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="26"/></filter>
+<filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="13"/></filter>
+<filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="9"/></filter>
+<filter id="hl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+<linearGradient id="g-star" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset=".55" stop-color="#ff6fd0"/><stop offset="1" stop-color="#8a5cff"/></linearGradient>
+<linearGradient id="g-bolt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4ff6a"/><stop offset="1" stop-color="#5dffb4"/></linearGradient>
+<linearGradient id="g-cur" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#7cc6ff"/></linearGradient>
+<linearGradient id="g-heart" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7ab0"/><stop offset="1" stop-color="#ffb86b"/></linearGradient>
+<linearGradient id="g-boom" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc24d"/><stop offset="1" stop-color="#ff4d5e"/></linearGradient>
+<linearGradient id="gr-aurora" gradientUnits="userSpaceOnUse" x1="-150" y1="-150" x2="150" y2="150"><stop offset="0" stop-color="#7a5cff"/><stop offset=".5" stop-color="#3df0d0"/><stop offset="1" stop-color="#ff5fd2"/></linearGradient>
+<linearGradient id="gr-galaxy" gradientUnits="userSpaceOnUse" x1="-150" y1="150" x2="150" y2="-150"><stop offset="0" stop-color="#3d5bff"/><stop offset=".55" stop-color="#b06cff"/><stop offset="1" stop-color="#ff8ad8"/></linearGradient>
+<linearGradient id="gr-sunset" gradientUnits="userSpaceOnUse" x1="0" y1="-160" x2="0" y2="160"><stop offset="0" stop-color="#ffb347"/><stop offset=".5" stop-color="#ff4fd8"/><stop offset="1" stop-color="#6f5cff"/></linearGradient>
+</defs>
+<g class="dust" id="dust" fill="#cfc8ff"></g>
+<g id="mascot">
+  <g id="beam"></g>
+  <use href="#lobes" id="haloUse" filter="url(#halo)" opacity=".5" fill="#6f5cff"/>
+  <g filter="url(#goo)" style="fill:var(--rim)"><g id="lobes"></g></g>
+  <g id="inner" style="display:none"></g>
+  <g id="hlg"><ellipse rx="30" ry="12" fill="#fff" opacity=".13" filter="url(#hl)" transform="rotate(-24)"/></g>
+  <g id="over"></g>
+  <g id="coreWrap"></g>
+  <g id="eyes">
+    <g class="eyeset" id="eyes-dash" fill="#fff">
+      <rect id="dL" x="-19" y="-13" width="10" height="27" rx="5"/>
+      <rect id="dR" x="9" y="-13" width="10" height="27" rx="5"/>
+    </g>
+    <g class="eyeset" id="eyes-lid">
+      <path d="M-26 -4L-2 -4A12 15 0 0 1 -26 -4Z" fill="#fff"/>
+      <path d="M2 -4L26 -4A12 15 0 0 1 2 -4Z" fill="#fff"/>
+      <g class="pup"><ellipse cx="-14" cy="2.5" rx="4.6" ry="6" fill="#0b0a14"/><ellipse cx="14" cy="2.5" rx="4.6" ry="6" fill="#0b0a14"/></g>
+    </g>
+    <g class="eyeset" id="eyes-mask">
+      <path d="M-28 -8L28 -8Q28 12 14 12Q4 12 0 2Q-4 12 -14 12Q-28 12 -28 -8Z" fill="#fff"/>
+      <g class="pup"><ellipse cx="-13" cy="-1" rx="4.5" ry="6.5" fill="#0b0a14"/><ellipse cx="13" cy="-1" rx="4.5" ry="6.5" fill="#0b0a14"/></g>
+    </g>
+    <g class="eyeset" id="eyes-tall">
+      <ellipse cx="-10" cy="-2" rx="8.5" ry="19" fill="#fff"/><ellipse cx="10" cy="-2" rx="8.5" ry="19" fill="#fff"/>
+      <g class="pup" data-f="1"><ellipse cx="-9" cy="3" rx="4.2" ry="11" fill="#0b0a14"/><ellipse cx="11" cy="3" rx="4.2" ry="11" fill="#0b0a14"/></g>
+    </g>
+    <g class="eyeset" id="eyes-angry">
+      <path d="M-27 -14L-2 -3Q-2 12 -14 12Q-27 12 -27 -14Z" fill="#fff"/><path d="M27 -14L2 -3Q2 12 14 12Q27 12 27 -14Z" fill="#fff"/>
+      <g class="pup"><circle cx="-12" cy="3" r="4.6" fill="#0b0a14"/><circle cx="12" cy="3" r="4.6" fill="#0b0a14"/></g>
+    </g>
+    <g class="eyeset" id="eyes-wide">
+      <circle cx="-15" cy="0" r="14" fill="#fff"/><circle cx="15" cy="0" r="14" fill="#fff"/>
+      <g class="pup" data-f="1"><circle cx="-15" cy="0" r="3.4" fill="#0b0a14"/><circle cx="15" cy="0" r="3.4" fill="#0b0a14"/></g>
+    </g>
+    <g class="eyeset" id="eyes-one">
+      <circle r="18" fill="#fff"/>
+      <g class="pup" data-f="1"><circle r="9.5" data-rf="1"/><circle r="4.8" fill="#0b0a14"/><circle cx="-3" cy="-3" r="1.9" fill="#fff"/></g>
+    </g>
+    <g class="eyeset" id="eyes-pixel">
+      <rect x="-25" y="-11" width="20" height="22" fill="#fff"/><rect x="5" y="-11" width="20" height="22" fill="#fff"/>
+      <g class="pup" data-f="1"><rect x="-17" y="-3" width="9" height="11" fill="#0b0a14"/><rect x="13" y="-3" width="9" height="11" fill="#0b0a14"/></g>
+    </g>
+    <g class="eyeset" id="eyes-dots" fill="#fff"><circle cx="-11" r="5.5"/><circle cx="11" r="5.5"/></g>
+    <g class="eyeset" id="eyes-glass">
+      <g fill="none" stroke="#fff" stroke-width="3"><circle cx="-15" r="13"/><circle cx="15" r="13"/></g>
+      <g class="pup" data-f="1" fill="#fff"><circle cx="-15" r="4"/><circle cx="15" r="4"/></g>
+    </g>
+    <g class="eyeset" id="eyes-visor">
+      <rect x="-31" y="-11" width="62" height="22" rx="11" fill="#fff" fill-opacity=".1" data-rs="1" stroke-width="2.5"/>
+      <g class="pup" data-f="1"><rect x="-18" y="-4" width="11" height="8" rx="2.5" data-rf="1"/><rect x="7" y="-4" width="11" height="8" rx="2.5" data-rf="1"/></g>
+    </g>
+    <g class="eyeset" id="eyes-spark" fill="#fff"><path transform="translate(-15 0)" d="M0 -14Q2 -2 14 0Q2 2 0 14Q-2 2 -14 0Q-2 -2 0 -14Z"/><path transform="translate(15 0)" d="M0 -14Q2 -2 14 0Q2 2 0 14Q-2 2 -14 0Q-2 -2 0 -14Z"/></g>
+    <g class="eyeset" id="eyes-retro">
+      <ellipse cx="-12.5" cy="0" rx="12.5" ry="16" fill="#fff"/><ellipse cx="12.5" cy="0" rx="12.5" ry="16" fill="#fff"/>
+      <g class="pup" data-f="1"><g transform="translate(-11 1)"><ellipse rx="7" ry="9.5" fill="#0b0a14"/><path d="M1 0L9 -5L9 3Z" fill="#fff"/></g><g transform="translate(14 1)"><ellipse rx="7" ry="9.5" fill="#0b0a14"/><path d="M1 0L9 -5L9 3Z" fill="#fff"/></g></g>
+    </g>
+  </g>
+  </g>
+</g>
+</svg>
+</div>
+<p class="word" id="word" aria-live="polite"></p>
+<p class="note" id="note"></p>
+<div class="row" id="cores" role="group" aria-label="Начинка"></div>
+<div class="row" id="shapes" role="group" aria-label="Форма"><span>форма</span></div>
+<div class="row" id="shapes-s" role="group" aria-label="Космос"><span>космос</span></div>
+<div class="row" id="shapes-d" role="group" aria-label="Дизайн"><span>дизайн</span></div>
+<div class="row" id="eyesrow" role="group" aria-label="Глаза"><span>глаза</span></div>
+<div class="row eyesrow" id="themes" role="group" aria-label="Цвет"><span>цвет</span></div>
+<script>
+(function(){
+function sp(n,ri,ro){var p=[];for(var i=0;i<2*n;i++){var r=i%2?ri:ro,a=(-90+i*180/n)*Math.PI/180;p.push((r*Math.cos(a)).toFixed(1)+','+(r*Math.sin(a)).toFixed(1))}return p.join(' ')}
+var CORES=[
+ {id:'star',chip:'звезда',word:'получилось',note:'макет приняли с первого раза',halo:'#b06cff',tilt:[14,14],shape0:'star',
+  shape:'<polygon points="'+sp(5,21,44)+'" fill="url(#g-star)" stroke="url(#g-star)" stroke-width="9" stroke-linejoin="round"/>'},
+ {id:'bolt',chip:'молния',word:'идея',note:'придумал, как сделать первый экран',halo:'#7dffb0',tilt:[-8,8],shape0:'rocket',
+  shape:'<path d="M10 -48L-26 6L-5 6L-13 48L27 -10L5 -10Z" fill="url(#g-bolt)" stroke="url(#g-bolt)" stroke-width="5" stroke-linejoin="round"/>'},
+ {id:'cur',chip:'курсор',word:'работаю',note:'двигает пиксели, не отвлекать',halo:'#6fa8ff',tilt:[0,0],shape0:'frame',
+  shape:'<path d="M-22 -42L-22 30L-6 16L5 44L18 38L7 12L30 12Z" fill="url(#g-cur)" stroke="url(#g-cur)" stroke-width="4" stroke-linejoin="round"/>'},
+ {id:'heart',chip:'сердце',word:'нравится',note:'увидел хороший референс',halo:'#ff7ab0',tilt:[16,-16],shape0:'cat',
+  shape:'<path d="M0 40C-56 4 -36 -42 0 -14C36 -42 56 4 0 40Z" fill="url(#g-heart)"/>'},
+ {id:'boom',chip:'взрыв',word:'дедлайн',note:'сдавать через час, правок двенадцать',halo:'#ff5a4d',tilt:[-22,22],shape0:'puddle',
+  shape:'<polygon points="'+sp(9,20,48)+'" fill="url(#g-boom)" stroke="url(#g-boom)" stroke-width="4" stroke-linejoin="round"/>'}
+];
+var NS='http://www.w3.org/2000/svg',$=function(i){return document.getElementById(i)};
+function mk(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);parent.appendChild(e);return e}
+
+var GRP={};'ufo helmet comet planet rocket sat hole stars moon star rover'.split(' ').forEach(function(k){GRP[k]='shapes-s'});'frame corner window bubble cursor figma pen bezier layers text toggle'.split(' ').forEach(function(k){GRP[k]='shapes-d'});
+var SHAPES={
+ flower:{chip:'цветок',c:[[0,6,80],[0,-56,52],[59,-13,52],[36,56,52],[-36,56,52],[-59,-13,52],[0,6,40]],eye:[0,-44],core:[0,26,1],hl:[-34,-70]},
+ loaf:{chip:'комок',c:[[0,30,92],[-50,50,60],[50,50,60],[0,-20,60],[-34,-62,20],[34,-62,20],[0,60,70]],eye:[0,-12],core:[0,64,.72],hl:[-30,-52]},
+ stretch:{chip:'тянется',c:[[-90,30,50],[-40,10,52],[10,0,54],[60,10,52],[105,-30,44],[120,-80,30],[-120,60,36]],eye:[100,-40],core:[-30,14,.6],hl:[-45,-26]},
+ cat:{chip:'котик',c:[[0,52,80],[0,-10,64],[0,-58,58],[-52,86,50],[52,86,50],[0,20,50],[0,60,60]],eye:[0,-58],core:[0,46,.85],hl:[-24,-86]},
+ ufo:{chip:'тарелка',c:[[0,-10,54],[-50,36,24],[50,36,24],[-95,36,20],[95,36,20],[0,36,26],[0,12,44]],eye:[0,-22],core:[0,124,.55],hl:[-22,-42]},
+ helmet:{chip:'шлем',c:[[0,0,96],[-92,4,22],[92,4,22],[0,40,70],[0,-30,70],[-40,60,50],[40,60,50]],eye:[0,-6],core:[0,-136,.5],hl:[-64,-72]},
+ comet:{chip:'комета',c:[[-60,40,62],[-20,10,46],[20,-18,34],[55,-44,24],[-70,48,50],[-50,30,50],[-64,44,40]],eye:[-62,26],es:.9,core:[-56,72,.36],hl:[-92,2]},
+ planet:{chip:'планета',c:[[0,0,84],[0,0,60],[-30,10,50],[30,10,50],[0,-30,50],[0,30,50],[0,0,40]],eye:[0,-28],core:[0,34,.7],hl:[-36,-62]},
+ rocket:{chip:'ракета',c:[[0,-70,44],[0,-20,52],[0,30,54],[0,72,46],[0,0,50],[0,50,50],[0,-45,46]],eye:[0,-48],es:.78,core:[0,144,.45],hl:[-24,14]},
+ sat:{chip:'спутник',c:[[0,0,44],[-14,-14,34],[14,-14,34],[-14,14,34],[14,14,34],[0,0,30],[0,0,30]],eye:[0,-14],es:.85,core:[0,26,.4],hl:[-28,-38]},
+ hole:{chip:'чёрная дыра',c:[[0,0,72],[0,0,60],[0,0,50],[0,0,50],[0,0,40],[0,0,40],[0,0,30]],eye:[0,-8],core:[120,-27,.34],hl:[-46,-52]},
+ stars:{chip:'созвездие',c:[[20,10,46],[-110,44,26],[-52,-46,30],[96,-64,26],[124,52,24],[-22,96,22],[64,104,20]],eye:[20,4],es:.9,core:[-52,-46,.34],hl:[6,-22]},
+ moon:{chip:'луна',c:[[0,0,90],[0,0,70],[-20,0,60],[20,0,60],[0,-20,60],[0,20,60],[0,0,50]],eye:[-50,12],es:.75,sleep:1,core:[60,-22,.5],hl:[-58,-56]},
+ star:{chip:'звезда',c:[[0,6,58],[0,6,50],[0,6,50],[0,6,44],[0,6,44],[0,6,40],[0,6,40]],eye:[0,-12],core:[0,38,.42],hl:[-22,-40]},
+ frame:{chip:'фрейм',c:[[0,0,70],[-30,-30,50],[30,-30,50],[-30,30,50],[30,30,50],[0,0,50],[0,0,40]],eye:[0,-24],core:[0,36,.6],hl:[-50,-62]},
+ bubble:{chip:'реплика',c:[[0,-16,56],[-52,-16,52],[52,-16,52],[-30,-16,50],[30,-16,50],[0,-16,40],[0,-16,40]],eye:[0,-40],es:.95,core:[0,8,.5],hl:[-72,-64]},
+ rover:{chip:'марсоход',c:[[-58,58,24],[0,60,24],[58,58,24],[-30,8,28],[30,8,28],[0,8,28],[44,-98,22]],eye:[44,-99],es:.62,core:[-28,6,.36],hl:[-58,-12]},
+ cursor:{chip:'курсор',c:[[-22,-6,34],[-22,-30,30],[-22,20,30],[-30,-50,24],[-10,10,26],[-22,-6,22],[-22,-6,22]],eye:[-22,-22],es:.72,core:[-26,26,.3],hl:[-44,-72]},
+ figma:{chip:'figma',c:[[-37,-74,35],[37,-74,35],[-37,0,35],[37,0,35],[-37,74,35],[0,-74,31],[-37,-74,20]],eye:[0,-78],es:.85,core:[38,2,.36],hl:[-56,-100]},
+ pen:{chip:'перо',c:[[0,10,30],[0,-10,28],[0,30,26],[0,-30,24],[0,40,22],[0,10,20],[0,10,20]],eye:[0,26],es:.68,core:[0,-150,.34],hl:[-24,-30]},
+ bezier:{chip:'безье',c:[[0,0,26],[0,0,24],[0,0,24],[0,0,22],[0,0,22],[0,0,20],[0,0,20]],eye:[0,0],es:.6,core:[-110,-106,.3],hl:[-100,28]},
+ layers:{chip:'слои',c:[[0,-72,20],[-40,-72,16],[40,-72,16],[0,0,20],[-40,0,16],[0,72,20],[40,72,16]],eye:[0,-72],es:.5,core:[0,0,.26],hl:[-50,-80]},
+ text:{chip:'текст',c:[[0,-76,24],[-50,-76,22],[50,-76,22],[0,-30,24],[0,10,24],[0,50,24],[0,80,22]],eye:[0,-76],es:.7,core:[0,30,.32],hl:[-70,-92]},
+ toggle:{chip:'тумблер',c:[[-52,0,46],[52,0,46],[0,0,46],[-26,0,44],[26,0,44],[0,0,40],[0,0,40]],eye:[-44,0],es:.8,core:[52,0,.44],hl:[-70,-34]},
+ corner:{chip:'фрейм с героем',c:[[0,0,70],[-30,-30,50],[30,-30,50],[-30,30,50],[30,30,50],[0,0,50],[0,0,40]],eye:[-44,-46],es:.62,core:[16,22,.62],hl:[50,-62]},
+ window:{chip:'окно',c:[[0,15,60],[-40,-20,40],[40,-20,40],[-40,50,40],[40,50,40],[-52,-92,20],[0,15,40]],eye:[-52,-90],es:.6,core:[0,20,.75],hl:[60,-48]},
+ puddle:{chip:'лужа',c:[[0,70,60],[-70,84,46],[70,84,46],[-125,96,30],[125,96,30],[0,40,50],[0,90,56]],eye:[0,44],core:[0,98,.5],hl:[-18,8]}
+};
+var lobes=$('lobes'),inner=$('inner'),N=7,outer=[],inn=[],pos=[],shapeKey='flower',shapeBtns={};
+for(var i=0;i<N;i++){outer.push(mk('circle',{},lobes));inn.push(mk('circle',{},inner));pos.push(SHAPES.flower.c[i].slice())}
+var EX=[];
+function ex(parent,tag,attrs,key,ax,ay,mode,base){var e=mk(tag,attrs,parent);EX.push({e:e,key:key,ax:ax,ay:ay,mode:mode,base:base||1,k:0});return e}
+ex(lobes,'path',{d:'M-58 -76L-48 -152L-6 -100Z'},'cat',-34,-92,'s');
+ex(lobes,'path',{d:'M58 -76L48 -152L6 -100Z'},'cat',34,-92,'s');
+ex(lobes,'path',{d:'M56 106Q130 114 126 44',fill:'none','data-rs':1,'stroke-width':30,'stroke-linecap':'round'},'cat',56,106,'s');
+ex(lobes,'ellipse',{cx:0,cy:36,rx:142,ry:27},'ufo',0,36,'s');
+ex(inner,'ellipse',{cx:0,cy:38,rx:112,ry:9},'ufo',0,38,'s');
+ex($('beam'),'path',{d:'M-34 56L34 56L80 178L-80 178Z',fill:'#c8f031'},'ufo',0,56,'o',.2);
+ex($('over'),'path',{d:'M-48 -46L-90 -54M-48 -37L-90 -33M48 -46L90 -54M48 -37L90 -33',stroke:'#fff','stroke-width':2.2,'stroke-linecap':'round',fill:'none'},'cat',0,0,'o',.85);
+ex($('over'),'g',{fill:'#c8f031'},'ufo',0,0,'o',1).innerHTML='<circle cx="-80" cy="40" r="5.5"/><circle cx="0" cy="47" r="5.5"/><circle cx="80" cy="40" r="5.5"/>';
+var V='#6f5cff',L='#b9b0ff',BM=$('beam'),OV=$('over');
+ex(lobes,'path',{d:'M0 -88L0 -116',fill:'none','data-rs':1,'stroke-width':20,'stroke-linecap':'round'},'helmet',0,-88,'s');
+ex(lobes,'rect',{x:-58,y:74,width:116,height:40,rx:16},'helmet',0,90,'s');
+ex(OV,'g',{},'helmet',0,0,'o').innerHTML='<ellipse cx="0" cy="-8" rx="68" ry="54" fill="#0c0824" data-ls="1" stroke-width="4"/><path d="M-46 -30Q-30 -50 -6 -52" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none" opacity=".35"/>';
+ex(lobes,'path',{d:'M-70 -18L170 -140L-10 70Z'},'comet',-40,26,'s');
+ex(OV,'path',{d:'M24 -42L120 -104M44 -2L112 -46',stroke:'#fff','stroke-width':3,'stroke-linecap':'round',fill:'none'},'comet',0,0,'o',.3);
+ex(BM,'ellipse',{rx:150,ry:30,fill:'none','data-ls':1,'stroke-width':9,transform:'rotate(-14)'},'planet',0,0,'o');
+ex(OV,'path',{d:'M-150 0A150 30 0 0 0 150 0',fill:'none','data-ls':1,'stroke-width':9,'stroke-linecap':'round',transform:'rotate(-14)'},'planet',0,0,'o');
+ex(lobes,'path',{d:'M-40 -78L0 -168L40 -78Z'},'rocket',0,-78,'s');
+ex(lobes,'path',{d:'M-38 30L-96 118L-28 100Z'},'rocket',-38,70,'s');
+ex(lobes,'path',{d:'M38 30L96 118L28 100Z'},'rocket',38,70,'s');
+ex(BM,'path',{d:'M-30 100Q0 205 30 100Z',fill:'#ffb347'},'rocket',0,0,'o',.55);
+ex(OV,'circle',{cx:0,cy:-46,r:35,fill:'#0c0824','data-ls':1,'stroke-width':4},'rocket',0,0,'o');
+ex(lobes,'rect',{x:-52,y:-52,width:104,height:104,rx:24},'sat',0,0,'s');
+ex(lobes,'path',{d:'M-50 -6H-84V-30H-176V30H-84V6H-50Z'},'sat',-50,0,'s');
+ex(lobes,'path',{d:'M50 -6H84V-30H176V30H84V6H50Z'},'sat',50,0,'s');
+ex(lobes,'path',{d:'M10 -50L28 -100',fill:'none','data-rs':1,'stroke-width':18,'stroke-linecap':'round'},'sat',10,-50,'s');
+ex(inner,'rect',{x:-30,y:-30,width:60,height:60,rx:14},'sat',0,0,'s');
+ex(OV,'g',{},'sat',0,0,'o').innerHTML='<path d="M-153 -24V24M-130 -24V24M-107 -24V24M-170 0H-90M153 -24V24M130 -24V24M107 -24V24M170 0H90" data-rs="1" stroke-width="2.5" opacity=".7" fill="none"/><circle cx="29" cy="-104" r="6.5" fill="#c8f031"/>';
+ex(BM,'g',{transform:'rotate(-12)',fill:'none'},'hole',0,0,'o').innerHTML='<ellipse rx="152" ry="24" stroke="#ff7a4d" stroke-width="18" opacity=".25"/><ellipse rx="152" ry="24" stroke="#ffb86b" stroke-width="7"/>';
+ex(OV,'circle',{r:57,fill:'#05040c'},'hole',0,0,'o');
+ex(OV,'path',{d:'M-152 0A152 24 0 0 0 152 0',fill:'none',stroke:'#ffb86b','stroke-width':7,'stroke-linecap':'round',transform:'rotate(-12)'},'hole',0,0,'o');
+ex(BM,'path',{d:'M-110 44L-52 -46L20 10L96 -64M20 10L124 52M20 10L-22 96L64 104',fill:'none','data-ls':1,'stroke-width':2.5},'stars',0,0,'o',.7);
+ex(OV,'circle',{cx:60,cy:-18,r:78,fill:'#0b0a14'},'moon',0,0,'o');
+ex(lobes,'polygon',{points:sp(5,54,114)},'star',0,6,'s');
+ex(lobes,'rect',{x:-84,y:-84,width:168,height:168,rx:6},'frame',0,0,'s');
+ex(OV,'g',{},'frame',0,0,'o').innerHTML='<g fill="#fff" data-rs="1" stroke-width="3"><rect x="-91" y="-91" width="14" height="14"/><rect x="77" y="-91" width="14" height="14"/><rect x="-91" y="77" width="14" height="14"/><rect x="77" y="77" width="14" height="14"/></g><rect x="-42" y="104" width="84" height="24" rx="6" data-rf="1"/><text x="0" y="121" text-anchor="middle" font-size="13" font-weight="600" fill="#0b0a14">168 × 168</text>';
+ex(lobes,'rect',{x:-112,y:-84,width:224,height:136,rx:44},'bubble',0,-16,'s');
+ex(lobes,'path',{d:'M-56 36L-78 104L-4 44Z'},'bubble',-40,40,'s');
+ex(lobes,'rect',{x:-80,y:-24,width:160,height:62,rx:22},'rover',0,8,'s');
+ex(lobes,'path',{d:'M44 -20L44 -78',fill:'none','data-rs':1,'stroke-width':18,'stroke-linecap':'round'},'rover',44,-20,'s');
+ex(lobes,'rect',{x:4,y:-124,width:80,height:50,rx:18},'rover',44,-90,'s');
+ex(OV,'g',{},'rover',0,0,'o').innerHTML='<g fill="none" data-rs="1" stroke-width="4"><circle cx="-58" cy="58" r="10"/><circle cx="0" cy="60" r="10"/><circle cx="58" cy="58" r="10"/></g>';
+ex(lobes,'path',{d:'M-60 -112L-60 82L-18 46L12 114L52 98L22 32L84 32Z'},'cursor',-10,0,'s');
+ex(lobes,'path',{d:'M0 -118L50 -24L28 62L-28 62L-50 -24Z'},'pen',0,0,'s');
+ex(lobes,'rect',{x:-34,y:84,width:68,height:26,rx:8},'pen',0,90,'s');
+ex(OV,'g',{fill:'none'},'pen',0,0,'o').innerHTML='<path d="M0 -96L0 -22" data-ls="1" stroke-width="3"/><circle cx="0" cy="-12" r="9" data-ls="1" stroke-width="3"/>';
+ex(lobes,'path',{d:'M-110 56C-110 -90 110 90 110 -56',fill:'none','data-rs':1,'stroke-width':56,'stroke-linecap':'round'},'bezier',0,0,'s');
+ex(OV,'g',{},'bezier',0,0,'o').innerHTML='<path d="M-110 56L-110 -70M110 -56L110 70" data-ls="1" stroke-width="2.5" fill="none"/><circle cx="-110" cy="-70" r="6" fill="#fff"/><circle cx="110" cy="70" r="6" fill="#fff"/><g fill="#fff" data-rs="1" stroke-width="3"><rect x="-118" y="48" width="16" height="16"/><rect x="102" y="-64" width="16" height="16"/></g>';
+ex(lobes,'path',{d:'M0 -96L116 -72L0 -48L-116 -72Z'},'layers',0,-72,'s');
+ex(lobes,'path',{d:'M0 -24L116 0L0 24L-116 0Z'},'layers',0,0,'s');
+ex(lobes,'path',{d:'M0 48L116 72L0 96L-116 72Z'},'layers',0,72,'s');
+ex(lobes,'path',{d:'M-96 -104H96V-48H30V104H-30V-48H-96Z'},'text',0,-76,'s');
+ex(lobes,'rect',{x:-104,y:-52,width:208,height:104,rx:52},'toggle',0,0,'s');
+ex(OV,'circle',{cx:52,cy:0,r:36,fill:'#fff'},'toggle',0,0,'o');
+ex(lobes,'rect',{x:-100,y:-70,width:200,height:170,rx:3},'window',0,15,'s');
+ex(lobes,'rect',{x:-100,y:-118,width:98,height:60,rx:3},'window',-52,-70,'s');
+ex(lobes,'rect',{x:-84,y:-84,width:168,height:168,rx:6},'corner',0,0,'s');
+ex(OV,'g',{},'corner',0,0,'o').innerHTML='<g fill="#fff" data-rs="1" stroke-width="3"><rect x="-91" y="-91" width="14" height="14"/><rect x="77" y="-91" width="14" height="14"/><rect x="-91" y="77" width="14" height="14"/><rect x="77" y="77" width="14" height="14"/></g>';
+var an={es:1,ex:0,ey:-44,cx:0,cy:26,cs:1,hx:-34,hy:-70};
+function setShape(k){shapeKey=k;for(var n in shapeBtns)shapeBtns[n].setAttribute('aria-pressed',n===k?'true':'false');kick=1;lastKick=performance.now()}
+Object.keys(SHAPES).forEach(function(k){var b=document.createElement('button');b.textContent=SHAPES[k].chip;b.setAttribute('aria-pressed',k==='flower'?'true':'false');
+  b.addEventListener('click',function(){pauseUntil=performance.now()+12000;setShape(k)});$(GRP[k]||'shapes').appendChild(b);shapeBtns[k]=b});
+
+var dust=$('dust');
+for(var d=0;d<16;d++){var a=d*2.399,r=150+((d*37)%40);mk('circle',{cx:(r*Math.cos(a)).toFixed(1),cy:(r*0.85*Math.sin(a)).toFixed(1),r:(1+(d%3)*0.7).toFixed(1),style:'animation-delay:-'+(d*0.37).toFixed(2)+'s'},dust)}
+
+var wrap=$('coreWrap'),chips=$('cores'),coreEls=[],chipEls=[];
+CORES.forEach(function(c,i){
+  var g=mk('g',{'class':'core'},wrap);
+  g.innerHTML='<g filter="url(#glow)" opacity=".95">'+c.shape+'</g>'+c.shape;
+  coreEls.push(g);
+  var b=document.createElement('button');b.textContent=c.chip;b.setAttribute('aria-pressed','false');
+  b.addEventListener('click',function(){pauseUntil=performance.now()+9000;setCore(i)});
+  chips.appendChild(b);chipEls.push(b);
+});
+
+var cur=-1,kick=0,lastKick=0,pauseUntil=0,lastSwitch=0,tilt=[14,14],tiltT=[14,14];
+function setCore(i){
+  if(i===cur)return;cur=i;var c=CORES[i];
+  coreEls.forEach(function(e,j){e.classList.toggle('on',j===i)});
+  chipEls.forEach(function(e,j){e.setAttribute('aria-pressed',j===i?'true':'false')});
+  $('word').textContent=c.word;$('note').textContent=c.note;
+  tiltT=c.tilt;lastSwitch=performance.now();if(performance.now()>pauseUntil||cur<0)setShape(c.shape0);else{kick=1;lastKick=lastSwitch}
+}
+
+var EYES=[['retro','ретро'],['mask','маска'],['lid','с веками'],['dash','штрихи'],['tall','высокие'],['angry','хмурые'],['wide','круглые'],['one','циклоп'],['pixel','пиксель'],['dots','точки'],['glass','очки'],['visor','визор'],['spark','звёзды']],eyeBtns={};
+function setEyes(m){EYES.forEach(function(E){$('eyes-'+E[0]).classList.toggle('on',E[0]===m);eyeBtns[E[0]].setAttribute('aria-pressed',E[0]===m?'true':'false')})}
+EYES.forEach(function(E){var b=document.createElement('button');b.textContent=E[1];b.addEventListener('click',function(){setEyes(E[0])});$('eyesrow').appendChild(b);eyeBtns[E[0]]=b});
+setEyes('retro');
+var THEMES=[['фиолет','#6f5cff','#b9b0ff',[.07,.05,.2]],['аврора','url(#gr-aurora)','#b8fff0',[.04,.04,.13]],['галактика','url(#gr-galaxy)','#e2c8ff',[.06,.04,.16]],['закат','url(#gr-sunset)','#ffd0a8',[.09,.03,.1]],['ультрамарин','#4d6bff','#a9b8ff',[.03,.04,.16]],['бирюза','#3df0d0','#b8fff0',[.02,.07,.08]],['маджента','#ff4fd8','#ffb3ee',[.1,.02,.09]],['лайм','#c8f031','#e9ff9a',[.04,.05,.02]]],thBtns=[];
+function setTheme(i){var T=THEMES[i];document.documentElement.style.setProperty('--rim',T[1]);
+  document.querySelectorAll('[data-rs]').forEach(function(e){e.setAttribute('stroke',T[1])});
+  document.querySelectorAll('[data-ls]').forEach(function(e){e.setAttribute('stroke',T[2])});
+  $('haloUse').setAttribute('fill',T[1]);document.querySelectorAll('[data-rf]').forEach(function(e){e.setAttribute('fill',T[1])});
+  $('darkM').setAttribute('values','0 0 0 0 '+T[3][0]+'  0 0 0 0 '+T[3][1]+'  0 0 0 0 '+T[3][2]+'  0 0 0 26 -22.4');
+  thBtns.forEach(function(b,j){b.setAttribute('aria-pressed',j===i?'true':'false')})}
+THEMES.forEach(function(T,i){var b=document.createElement('button');b.textContent=T[0];b.addEventListener('click',function(){setTheme(i)});$('themes').appendChild(b);thBtns.push(b)});
+setTheme(0);
+var look={x:0,y:0},lookT={x:0,y:0},lastPointer=-1e9,svg=$('svg');
+window.addEventListener('pointermove',function(e){
+  var r=svg.getBoundingClientRect(),dx=(e.clientX-(r.left+r.width/2))/(r.width/2),dy=(e.clientY-(r.top+r.height/2))/(r.height/2);
+  var l=Math.hypot(dx,dy)||1,k=Math.min(1,l)/l;lookT.x=dx*k;lookT.y=dy*k;lastPointer=performance.now();
+},{passive:true});
+
+var nextBlink=1800,blinkStart=-1;
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(now){
+  var t=now/1000;
+  var S=SHAPES[shapeKey];
+  for(var i=0;i<N;i++){
+    var T=S.c[i],P=pos[i],k=0.07+0.018*i;
+    P[0]+=(T[0]-P[0])*k;P[1]+=(T[1]-P[1])*k;P[2]+=(T[2]-P[2])*k;
+    var wx=P[0]+3*Math.sin(t*1.1+i*1.7),wy=P[1]+3*Math.cos(t*0.9+i*2.3),wr=P[2]+2.5*Math.sin(t*1.3+i);
+    outer[i].setAttribute('cx',wx.toFixed(2));outer[i].setAttribute('cy',wy.toFixed(2));outer[i].setAttribute('r',Math.max(0,wr).toFixed(2));
+    inn[i].setAttribute('cx',wx.toFixed(2));inn[i].setAttribute('cy',(wy+2).toFixed(2));inn[i].setAttribute('r',Math.max(0,wr-20).toFixed(2));
+  }
+  an.es+=((S.es||1)-an.es)*.12;an.ex+=(S.eye[0]-an.ex)*.12;an.ey+=(S.eye[1]-an.ey)*.12;an.cx+=(S.core[0]-an.cx)*.12;an.cy+=(S.core[1]-an.cy)*.12;an.cs+=(S.core[2]-an.cs)*.12;an.hx+=(S.hl[0]-an.hx)*.12;an.hy+=(S.hl[1]-an.hy)*.12;
+  EX.forEach(function(X){X.k+=((shapeKey===X.key?1:0)-X.k)*.12;
+    if(X.mode==='s')X.e.setAttribute('transform','translate('+X.ax+' '+X.ay+') scale('+X.k.toFixed(3)+') translate('+(-X.ax)+' '+(-X.ay)+')');
+    else X.e.setAttribute('opacity',(X.base*X.k).toFixed(3))});
+  $('hlg').setAttribute('transform','translate('+an.hx.toFixed(1)+' '+an.hy.toFixed(1)+')');
+  kick*=0.9;
+  var sq=kick*Math.sin((now-lastKick)/55)*0.09,bob=reduce?0:Math.sin(t*1.5)*6;
+  $('mascot').setAttribute('transform','translate(0 '+bob.toFixed(2)+') scale('+(1+sq).toFixed(4)+' '+(1-sq).toFixed(4)+')');
+
+  if(now-lastPointer>2500){lookT.x=Math.sin(t*0.7)*0.7;lookT.y=Math.sin(t*0.45+1)*0.35}
+  look.x+=(lookT.x-look.x)*0.12;look.y+=(lookT.y-look.y)*0.12;
+  tilt[0]+=(tiltT[0]-tilt[0])*0.15;tilt[1]+=(tiltT[1]-tilt[1])*0.15;
+
+  if(blinkStart<0&&now>nextBlink){blinkStart=now}
+  var by=1;if(blinkStart>=0){var p=(now-blinkStart)/150;if(p>=1){blinkStart=-1;nextBlink=now+2200+Math.random()*2600}else{by=0.12+0.88*Math.abs(1-2*p)}}
+  $('eyes').setAttribute('transform','translate('+(an.ex+look.x*6).toFixed(2)+' '+(an.ey+look.y*4).toFixed(2)+') scale('+(1.35*an.es).toFixed(3)+' '+(1.35*an.es*(S.sleep?0.22:by)).toFixed(3)+')');
+  $('dL').setAttribute('transform','rotate('+tilt[0].toFixed(1)+' -14 0)');
+  $('dR').setAttribute('transform','rotate('+tilt[1].toFixed(1)+' 14 0)');
+  var px=look.x*4.5,py=Math.max(0,look.y)*3;
+  document.querySelectorAll('.pup').forEach(function(e){e.setAttribute('transform','translate('+px.toFixed(2)+' '+(e.dataset.f?look.y*4:py).toFixed(2)+')')});
+  wrap.setAttribute('transform','translate('+(an.cx+look.x*3).toFixed(2)+' '+(an.cy+look.y*2+Math.sin(t*1.5+1)*2).toFixed(2)+') rotate('+(Math.sin(t*0.8)*5).toFixed(2)+') scale('+an.cs.toFixed(3)+')');
+
+  if(!reduce&&now>pauseUntil&&now-lastSwitch>2600){setCore((cur+1)%CORES.length)}
+  requestAnimationFrame(frame);
+}
+setCore(0);requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
