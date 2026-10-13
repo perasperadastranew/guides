@@ -1,0 +1,228 @@
+<title>Маскот: правила разбора</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Слева — живой стенд маскота в рамке телефона (липкий), справа — правила как методичка; на телефоне — стопкой */
+:root{
+  --bg:#f2f1f8; --panel:#ffffff; --fg:#17152b; --muted:#5d5a78; --line:#dcd9ec;
+  --vio:#6f5cff; --vio-ink:#4b39e0; --lime:#2f9e2a; --stage:#0d0c14; --chip:#ebe8fb;
+  --display:'Unbounded',system-ui,sans-serif; --body:'Onest',system-ui,-apple-system,sans-serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f0e17; --panel:#17152a; --fg:#ece9ff; --muted:#a29fc2; --line:#2a2742;
+  --vio:#8a7bff; --vio-ink:#a99dff; --lime:#7dff6a; --stage:#07060c; --chip:#221f3a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f0e17; --panel:#17152a; --fg:#ece9ff; --muted:#a29fc2; --line:#2a2742;
+  --vio:#8a7bff; --vio-ink:#a99dff; --lime:#7dff6a; --stage:#07060c; --chip:#221f3a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 16px/1.6 var(--body);padding-inline:20px;padding-block:28px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(280px,380px) minmax(0,1fr);gap:48px;align-items:start}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr);gap:32px}}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);display:grid;gap:14px}
+@media (max-width:860px){.side{position:static;max-width:380px;width:100%;margin:0 auto}}
+.phone{position:relative;aspect-ratio:9/16;width:100%;max-width:100%;border-radius:22px;overflow:hidden;background:var(--stage);box-shadow:0 0 0 1px var(--line),0 18px 50px -20px rgba(60,40,200,.45)}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;overflow:hidden;background:var(--stage)}
+#poster{position:absolute;left:0;top:195px;width:1080px;height:1530px}
+#poster img{position:absolute;inset:0;width:1080px;height:1530px;display:block}
+.ctrl{display:flex;align-items:center;gap:10px}
+.btn{font:500 14px/1 var(--body);border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:9px 14px;cursor:pointer}
+.btn:hover{border-color:var(--vio)}.btn:focus-visible,.chapter:focus-visible{outline:2px solid var(--vio);outline-offset:2px}
+input[type=range]{flex:1;min-width:0;accent-color:var(--vio)}
+.tc{font:500 13px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+.chapters{display:grid;gap:2px;margin:0;padding:0;list-style:none}
+.chapter{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;width:100%;text-align:left;border:0;background:transparent;color:var(--fg);padding:7px 10px;border-radius:10px;cursor:pointer;font:inherit}
+.chapter:hover{background:var(--chip)}.chapter.on{background:var(--chip)}
+.chapter .t{font:500 12px/1.9 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.chapter b{font-weight:600;font-size:14px;display:block;line-height:1.35}.chapter span{font-size:13px;color:var(--muted);line-height:1.35;display:block}
+.chapter.on .t{color:var(--vio-ink)}
+main{min-width:0;display:grid;gap:44px}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--vio-ink)}
+h1{font:700 clamp(30px,4.4vw,50px)/1.08 var(--display);letter-spacing:-.02em;margin:12px 0 16px;text-wrap:balance}
+h2{font:700 22px/1.2 var(--display);letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+.lead{font-size:18px;max-width:62ch;color:var(--fg);margin:0}
+p{margin:0;max-width:66ch}
+section{display:grid;gap:12px}
+ul.rules{margin:0;padding:0;list-style:none;display:grid;gap:10px;max-width:68ch}
+ul.rules li{padding-left:22px;position:relative}
+ul.rules li::before{content:'';position:absolute;left:2px;top:.62em;width:9px;height:9px;border-radius:50%;background:var(--vio)}
+ul.no li::before{background:transparent;border:2px solid #e2475d;border-radius:2px;transform:rotate(45deg);width:8px;height:8px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+code{font:400 12.5px/1.5 var(--mono);color:var(--vio-ink);word-break:break-word}
+.rule{border:1px solid var(--line);border-left:0;border-radius:14px;padding:16px 18px;background:var(--panel);display:grid;gap:6px;max-width:68ch}
+.rule b{font-family:var(--display);font-weight:500;font-size:15px}
+ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:12px;max-width:68ch}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px}
+ol.steps li::before{content:counter(s);font:700 14px/32px var(--display);text-align:center;width:32px;height:32px;border-radius:50%;background:var(--chip);color:var(--vio-ink)}
+.files{display:grid;gap:8px}
+.file{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.file .n{font:500 14px/1.3 var(--mono)}.file .d{font-size:13px;color:var(--muted);line-height:1.4}
+.toast{font:500 13px/1 var(--body);color:var(--lime);min-height:1em}
+.ask{font:400 14px/1.55 var(--mono);background:var(--panel);border:1px dashed var(--vio);border-radius:12px;padding:14px 16px;max-width:68ch}
+@media (prefers-reduced-motion:reduce){.chapter,.btn{transition:none}}
+</style>
+
+<div class="wrap">
+  <aside class="side" aria-label="Живой стенд">
+    <div class="phone" id="phone"><div id="stage"><div id="poster"><img id="pimg" alt="Постер серии «одно яйцо»"></div></div></div>
+    <div class="ctrl">
+      <button class="btn" id="play" type="button">Пауза</button>
+      <input type="range" id="scrub" min="0" max="24" step="0.01" value="0" aria-label="Время">
+      <span class="tc" id="tc">0.0 с</span>
+    </div>
+    <ul class="chapters" id="chapters"></ul>
+  </aside>
+
+  <main>
+    <header>
+      <div class="eyebrow">Per Aspera Ad Astra · маскот</div>
+      <h1>Маскот: правила разбора</h1>
+      <p class="lead">По этим правилам собраны разборы чумного доктора и скрепки. Слева движок вживую: каждое действие можно включить кликом по главе. Внизу файлы кита и скилл для Claude, чтобы собрать свою серию.</p>
+    </header>
+
+    <section>
+      <h2>Характер</h2>
+      <ul class="rules">
+        <li>Маскот дополняет дизайн и не перетягивает внимание. Если зритель смотрит на него вместо постера, действие лишнее.</li>
+        <li>Фиолетовая «туманность» из мягких капель, глаза — белок со зрачком и бликом. Летает тарелкой.</li>
+        <li>Из тела ничего не вытягивается: ни рук, ни палок, ни курсоров-указателей.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Формат ролика</h2>
+      <ul class="rules">
+        <li>9:16, кадр 1080 × 1920, постер 1080 × 1530 по центру. Маской не обрезается, может уходить за край кадра.</li>
+        <li>Хук: постеры щёлкают без слайда. Разбираемый постер стоит последним, переход не нужен.</li>
+        <li>Сразу после хука тарелка подлетает и сканирует постер лучом сверху вниз. Комментарии начинаются после скана.</li>
+        <li>Подписи мелкие, строчные, SF Pro, без анимации появления, на тёмной плашке по ширине текста.</li>
+        <li>Плашка сверху и постер не пересекаются в статике и держатся в safe zones Reels и TikTok.</li>
+        <li>Финал: постеры серии уменьшены и стянуты к центру. Маскот появляется тарелкой между ними, становится комочком, потом фреймом и смотрит на каждый постер.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Движение и взгляд</h2>
+      <ul class="rules">
+        <li>Между точками он не летает, а исчезает и появляется со вспышкой-кольцом. Перед появлением смотрит туда, где появится.</li>
+        <li>Кривые скорости мягкие. Приземлился — быстро успокоился, без тряски и сильного растяжения.</li>
+        <li>В углу рамки он маленький и не закрывает изображение.</li>
+        <li>На прилёте глаза — простые овалы, смотрит вверх на постер. По умолчанию не хмурится.</li>
+        <li>Из левого верхнего угла рамки смотрит вниз вправо, на выделенный кусок. Взгляд ведёт зрителя.</li>
+        <li>Злится только на ошибку: плохой промежуток, кривой трекинг. На тарелке не моргает.</li>
+        <li>Где в кадре мало движения, добавляется анимация глаз.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Приёмы</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Что показать</th><th>Что он делает</th><th>Вызов</th></tr></thead>
+        <tbody>
+          <tr><td>Начало разбора</td><td>прилёт тарелкой и полный скан</td><td><code>arriveScan([540,-105], 1.5)</code></td></tr>
+          <tr><td>Блок, зона, якорная точка</td><td>садится в угол, мягкая рамка-маркер растёт из него</td><td><code>frameRect([x,y,w,h])</code></td></tr>
+          <tr><td>Деталь, слово, форма</td><td>обводит маленьким карандашом</td><td><code>writePts(ellPts(cx,cy,rx,ry))</code></td></tr>
+          <tr><td>Направление, ось, сетка</td><td>схлопывается и разлетается линиями</td><td><code>gridBurst(lines, [x,y])</code></td></tr>
+          <tr><td>Мелкие или спрятанные детали</td><td>светит лаймовым лучом с мягким градиентом</td><td><code>beamRect([x,y,w,h])</code></td></tr>
+          <tr><td>Путь взгляда, ритм</td><td>маленькая тарелка оставляет тонкий след</td><td><code>trailPts(spline(pts), 1.6)</code></td></tr>
+          <tr><td>Отступ, размер</td><td>размерная линия с числом, потом «ок»</td><td><code>measure([...])</code>, <code>measColor()</code></td></tr>
+          <tr><td>Идея, метафора</td><td>лампочка внутри тела, под глазами</td><td><code>coreOn(0.8)</code></td></tr>
+          <tr><td>Эмоция</td><td>angry, wow, happy, focus, curious</td><td><code>mood('angry')</code></td></tr>
+          <tr><td>Финал</td><td>тарелка → комочек → фрейм → взгляды</td><td><code>toolSeq([x,y], 1.1, .8, looks)</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="rule"><b>Правило линии</b><p>В линию он превращается только там, где нужно показать направление или выравнивание: спираль, взгляд к центру, сетку. Всё остальное выделяется рамками.</p></div>
+      <div class="rule"><b>Приём отыгрывается буквально</b><p>Масштаб — тянет угол рамки выделения, и объект растёт. Акцент — физически толкает элемент. Цвет — пипеткой берёт цвет и перекрашивает ячейки.</p></div>
+    </section>
+
+    <section>
+      <h2>Чего не делать</h2>
+      <ul class="rules no">
+        <li>Анимировать текст постера типографически. Текст стоит на месте, маскот его подсвечивает.</li>
+        <li>Длинные быстрые пролёты тарелкой. Пустое место показывать спокойным пролётом или лупой.</li>
+        <li>Непонятные значки вроде «×20», белые квадраты-маркеры, лампочку не к месту.</li>
+        <li>Элементы постера, которые мигают или пропадают сами.</li>
+        <li>Звук на каждое появление. Эффекты только на действия и тихо, музыка под голосом примерно на −15 дБ.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Как передать эпизод другу</h2>
+      <p>Придумывание и рендер лучше разделить. Постеры, сценарий, маскота и переходы мы собираем в одном чате и сводим в ТЗ-пакет. Рендерит друг в отдельном чате со скиллом, и ему не нужна история нашей переписки.</p>
+      <ul class="rules">
+        <li>Один эпизод — один чат. Решения по прошлым эпизодам живут в скилле и ТЗ.</li>
+        <li>В пакете: <code>brief.md</code>, постеры в PNG и HTML, <code>script.md</code> с секундами, <code>scene.js</code>, переходы, голос и список шрифтов.</li>
+        <li>Координаты выделений берутся из HTML постеров, чтобы исполнитель ничего не измерял на глаз.</li>
+        <li>Все замечания по версии отправлять одним списком.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Как собрать свой разбор</h2>
+      <ol class="steps">
+        <li><p><b>Постеры.</b> Серия одного предмета в разных приёмах, HTML 1080 × 1530 → PNG.</p></li>
+        <li><p><b>Текст.</b> Разговорным языком: приём → что чувствует зритель. Согласовать до анимации.</p></li>
+        <li><p><b>Голос.</b> Паузы внутри фраз оставить, между примерами сократить, но не в ноль.</p></li>
+        <li><p><b>Разметка.</b> Каждое действие маскота стартует на слове, которое его объясняет.</p></li>
+        <li><p><b>Сцена.</b> В <code>scene.js</code> поменять постеры, длительность и расписание действий.</p></li>
+        <li><p><b>Проверка.</b> Рендер с 2 fps и контактный лист: маскот не закрывает то, на что указывает.</p></li>
+        <li><p><b>Рендер и звук.</b> <code>cap.py</code> → кадры и <code>events.json</code>, <code>sfx.py</code> → тихие эффекты, ffmpeg → mp4.</p></li>
+      </ol>
+    </section>
+
+    <section id="kit">
+      <h2>Файлы кита</h2>
+      <p>Кнопка копирует файл целиком. Положите всё в одну папку, постеры — в <code>posters/</code>.</p>
+      <div class="files" id="files"></div>
+      <div class="toast" id="toast" role="status"></div>
+    </section>
+
+    <section>
+      <h2>Скилл для Claude</h2>
+      <p>Добавьте <code>SKILL.md</code> как скилл, и Claude будет собирать разборы по этим правилам. Скилл сам заберёт движок из этой страницы. Запрос может выглядеть так:</p>
+      <div class="ask">Сделай разбор с маскотом по скиллу mascot-poster-breakdown: пять постеров с ложкой, мой голос во вложении.</div>
+    </section>
+  </main>
+</div>
+
+<script src="mascot.js"></script>
+<script src="scene.js"></script>
+<script>
+(function(){
+  const stage=document.getElementById('stage'),phone=document.getElementById('phone'),img=document.getElementById('pimg');
+  const scrub=document.getElementById('scrub'),tc=document.getElementById('tc'),play=document.getElementById('play'),list=document.getElementById('chapters');
+  function fit(){stage.style.transform='scale('+(phone.clientWidth/1080)+')'}
+  new ResizeObserver(fit).observe(phone);fit();
+  scrub.max=TOTAL;
+  const btns=CHAPTERS.map(function(c,i){const li=document.createElement('li'),b=document.createElement('button');b.type='button';b.className='chapter';
+    b.innerHTML='<span class="t">'+c[0].toFixed(1)+'</span><div><b>'+c[1]+'</b><span>'+c[2]+'</span></div>';
+    b.addEventListener('click',function(){seek(c[0]);if(!playing)toggle()});li.appendChild(b);list.appendChild(li);return b});
+  let ready=false,last=-1,t=0,playing=!matchMedia('(prefers-reduced-motion: reduce)').matches,prev=performance.now();
+  function draw(){if(!ready){ready=true;MASCOT.build();setupScene()}
+    const i=posterAt(t);if(i!==last){img.src=POSTERS[i];last=i}
+    MASCOT.render(t);scrub.value=t;tc.textContent=t.toFixed(1)+' с';
+    let on=0;CHAPTERS.forEach(function(c,k){if(t>=c[0])on=k});btns.forEach(function(b,k){b.classList.toggle('on',k===on)})}
+  function seek(x){t=Math.max(0,Math.min(TOTAL,x));draw()}
+  function toggle(){playing=!playing;play.textContent=playing?'Пауза':'Играть';prev=performance.now()}
+  play.textContent=playing?'Пауза':'Играть';
+  play.addEventListener('click',toggle);
+  scrub.addEventListener('input',function(){seek(+scrub.value)});
+  POSTERS.forEach(function(s){const im=new Image();im.src=s});
+  (function loop(now){if(playing){t+=(now-prev)/1000;if(t>TOTAL)t=0;draw()}prev=now;requestAnimationFrame(loop)})(performance.now());
+  draw();
+
+  // файлы кита: тексты подгружаются заранее, чтобы копирование шло прямо в клике
+  const FILES=[['SKILL.md','скилл для Claude: правила, порядок работы, API'],['mascot.js','движок маскота, менять не нужно'],['scene.js','пример сцены: постеры, главы, расписание'],['starter.html','сцена 1080 × 1920 с renderAt(t)'],['cap.py','покадровый рендер через Playwright'],['sfx.py','тихий звук по событиям маскота'],['brief-template.md','шаблон ТЗ на эпизод для исполнителя']];
+  const box=document.getElementById('files'),toast=document.getElementById('toast'),TXT={};
+  FILES.forEach(function(f){fetch(f[0]).then(function(r){return r.ok?r.text():''}).then(function(x){TXT[f[0]]=x}).catch(function(){});
+    const d=document.createElement('div');d.className='file';d.innerHTML='<div><div class="n">'+f[0]+'</div><div class="d">'+f[1]+'</div></div>';
+    const b=document.createElement('button');b.type='button';b.className='btn';b.textContent='Скопировать';
+    b.addEventListener('click',function(){const x=TXT[f[0]];if(!x){toast.textContent='Файл ещё загружается, нажмите через секунду';return}
+      navigator.clipboard.writeText(x).then(function(){toast.textContent=f[0]+' скопирован'}).catch(function(){
+        const ta=document.createElement('textarea');ta.value=x;ta.style.cssText='width:100%;height:160px;font:12px monospace';d.after(ta);ta.select();toast.textContent='Буфер недоступен: текст выделен, скопируйте вручную'})});
+    d.appendChild(b);box.appendChild(d)});
+})();
+</script>

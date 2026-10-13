@@ -1,0 +1,27 @@
+<!doctype html><meta charset="utf-8"><title>Mascot reel starter</title>
+<!-- Шаблон рендера 1080×1920. Открыть локально: файл + mascot.js + scene.js + posters/ рядом.
+     В браузере играет сам; для рендера cap.py вызывает window.renderAt(t) покадрово. -->
+<style>
+html,body{margin:0;background:#0d0c14;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;background:#0d0c14;transform-origin:0 0;overflow:hidden}
+#poster{position:absolute;left:0;top:195px;width:1080px;height:1530px}
+#poster img{position:absolute;left:0;top:0;width:1080px;height:1530px;display:block}
+#cap{position:absolute;left:0;right:0;top:1768px;text-align:center;font:500 34px/1 -apple-system,'SF Pro Display',system-ui,sans-serif;color:#e9e6ff}
+#cap span{background:rgba(0,0,0,.55);padding:8px 14px;border-radius:6px}
+</style>
+<div id="stage"><div id="poster"><img id="pimg" alt=""></div><div id="cap"><span id="capt"></span></div></div>
+<script src="mascot.js"></script><script src="scene.js"></script>
+<script>
+const st=document.getElementById('stage'),img=document.getElementById('pimg'),capt=document.getElementById('capt');
+const render=new URLSearchParams(location.search).has('render');
+function fit(){const k=render?1:Math.min(innerWidth/1080,innerHeight/1920);st.style.transform='scale('+k+')'}fit();addEventListener('resize',fit);
+let ready=false,last=-1;
+window.renderAt=function(t){
+  if(!ready){ready=true;MASCOT.build();setupScene()}
+  const i=posterAt(t);if(i!==last){img.src=POSTERS[i];last=i}
+  let c='';CHAPTERS.forEach(ch=>{if(t>=ch[0])c=ch[1]});capt.textContent=c;
+  MASCOT.render(Math.max(0,Math.min(TOTAL,t)))};
+Promise.all(POSTERS.map(s=>new Promise(r=>{const im=new Image();im.onload=im.onerror=r;im.src=s}))).then(()=>document.fonts.ready).then(()=>{
+  window.renderAt(0);window.FIT=1;
+  if(!render){const t0=performance.now();(function loop(){window.renderAt(((performance.now()-t0)/1000)%TOTAL);requestAnimationFrame(loop)})()}});
+</script>
