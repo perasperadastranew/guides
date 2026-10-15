@@ -539,6 +539,9 @@ section>h2+h3,section>h2+p+h3{margin-top:12px;padding-top:0;border-top:0}
 .shotc.noimg .frame span{font-family:var(--display);font-size:20px;color:var(--ink)}
 .shotc.noimg .frame em{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 
+/* ссылки на SCRN скрыты: у студентов нет доступа */
+.srcl{display:none!important}
+
 .embed .top,.embed .pager{display:none}.embed .where a.pill{pointer-events:none}html,body{margin:0}
 :root.embed-root{color-scheme:normal;background:transparent}body.embed{background:transparent;padding:0}
 </style></head><body>
@@ -5383,7 +5386,7 @@ var R={
      it.forEach(function(x){if(x.wide){fl();o+=F(x)}else run.push(x)});fl();return o})()+(b.caption?'<span class="cap" style="text-align:left">'+t(b.caption)+'</span>':'');
    function F(x){var src=IMG[x.img]||(window.NOIMG?'':((window.IMGBASE||'img/')+x.img+(x.ext||'.webp')));
      if(!src)return '<figure class="shotc noimg'+(x.wide?' wide':'')+'"><a class="frame" href="'+esc(x.link||'#')+'" target="_blank" rel="noopener"><span>'+t(x.app||'')+'</span><em>открыть экран в SCRN →</em></a><figcaption><b>'+t(x.title)+'</b>'+(x.note?'<small>'+t(x.note)+'</small>':'')+'</figcaption></figure>';
-     return '<figure class="shotc'+(x.wide?' wide':'')+'"><a class="frame" href="'+esc(src)+'" target="_blank" rel="noopener" title="Открыть крупно"><img loading="lazy" alt="'+esc((x.app?x.app+': ':'')+x.title)+'" src="'+esc(src)+'"'+(x.src?' data-f="'+esc(x.src)+'" onerror="this.onerror=null;this.src=this.dataset.f;this.parentNode.href=this.dataset.f"':'')+'></a><figcaption>'+(x.app?'<i>'+t(x.app)+(x.tag?' · '+t(x.tag):'')+'</i>':'')+'<b>'+t(x.title)+'</b>'+(x.note?'<small>'+t(x.note)+'</small>':'')+(x.link?'<a class="srcl" href="'+esc(x.link)+'" target="_blank" rel="noopener">открыть в SCRN</a>':'')+'</figcaption></figure>'}},
+     return '<figure class="shotc'+(x.wide?' wide':'')+'"><a class="frame" href="'+esc(src)+'" target="_blank" rel="noopener" title="Открыть крупно"><img loading="lazy" alt="'+esc((x.app?x.app+': ':'')+x.title)+'" src="'+esc(src)+'"'+(x.src?' data-f="'+esc(x.src)+'" onerror="this.onerror=null;this.src=this.dataset.f"':'')+'></a><figcaption>'+(x.app?'<i>'+t(x.app)+(x.tag?' · '+t(x.tag):'')+'</i>':'')+'<b>'+t(x.title)+'</b>'+(x.note?'<small>'+t(x.note)+'</small>':'')+(x.link?'<a class="srcl" href="'+esc(x.link)+'" target="_blank" rel="noopener">открыть в SCRN</a>':'')+'</figcaption></figure>'}},
  shot:function(b){return IMG[b.img]?'<div class="shotrow"><div class="phone shot"><img alt="'+esc(b.alt||'')+'" src="'+IMG[b.img]+'"></div><div class="side" style="display:flex;flex-direction:column;gap:10px"><div class="stitle" style="font-family:var(--display);font-size:24px;color:var(--ink)">'+t(b.title)+'</div><p>'+t(b.text)+'</p>'+(b.items?ul(b.items):'')+'</div></div>':''},
  'case':function(b,ctx){
    var id='c'+(ctx.cases.length); ctx.cases.push(b.steps);
