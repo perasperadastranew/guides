@@ -73,7 +73,7 @@ var R={
    var kinds={};
    var N=b.nodes.length, per=N<=6?N:Math.ceil(N/2);
    var h='<div class="fl" style="--n:'+per+'">'+b.nodes.map(function(n,i){kinds[n.kind||'screen']=1;
-     var br=n.branch?'<div class="fl-br"><i>'+t(n.branch.label)+'</i>'+n.branch.nodes.map(function(x){kinds[x.kind||'screen']=1;return node(x)}).join('')+'</div>':'';
+     var br=n.branch?'<div class="fl-br"'+(n.branch.to?' data-to="'+n.branch.to+'"':'')+'><i>'+t(n.branch.label)+'</i>'+n.branch.nodes.map(function(x){kinds[x.kind||'screen']=1;return node(x)}).join('')+'</div>':'';
      return '<div class="fl-col'+(((i+1)%per===0&&i<N-1)?' rowend':'')+((i%per===0&&i>0)?' rowstart':'')+'">'+node(n,('0'+(i+1)).slice(-2))+br+'</div>'}).join('')+'</div>';
    var names={start:'начало',screen:'экран',action:'действие человека',decision:'развилка',error:'ошибка',end:'цель достигнута'};
    var lg='<div class="legend">'+['start','screen','action','decision','error','end'].filter(function(k){return kinds[k]}).map(function(k){return '<span class="l-'+k+'">'+names[k]+'</span>'}).join('')+'</div>';
@@ -153,10 +153,105 @@ function home(){
   h+='<footer>Per Aspera Ad Astra · Mission to UX/UI</footer>';
   app.innerHTML=h; document.title='Методички курса'; if(window.HLmount)HLmount(app);
 }
+/* схемы пути: линии-соединители между шагами, перенос строки и подписи развилок */
+var FLOW_OPP={'да':'нет','нет':'да','есть':'нет','yes':'no','no':'yes'};
+function flowDraw(fl){
+  var old=fl.querySelector(':scope>svg.fl-lines'); if(old)old.remove();
+  fl.querySelectorAll(':scope>.fl-lab').forEach(function(x){x.remove()});
+  var cols=[].slice.call(fl.querySelectorAll(':scope>.fl-col')); if(!cols.length)return;
+  var R=fl.getBoundingClientRect(), NS='http://www.w3.org/2000/svg', RAD=8;
+  var svg=document.createElementNS(NS,'svg'); svg.setAttribute('class','fl-lines'); svg.setAttribute('aria-hidden','true');
+  svg.setAttribute('width',R.width); svg.setAttribute('height',R.height);
+  var mid='flA'+(flowDraw.n=(flowDraw.n||0)+1);
+  svg.innerHTML='<defs><marker id="'+mid+'" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.6 L7.4,4 L0,7.4 z" class="fl-head"/></marker></defs>';
+  function box(e){var b=e.getBoundingClientRect();return {l:b.left-R.left,r:b.right-R.left,t:b.top-R.top,b:b.bottom-R.top,cx:(b.left+b.right)/2-R.left,cy:(b.top+b.bottom)/2-R.top}}
+  /* ломаная со скруглёнными углами: точки идут только по горизонтали и вертикали */
+  function poly(pts){
+    var d='M'+pts[0][0]+','+pts[0][1];
+    for(var k=1;k<pts.length-1;k++){
+      var p0=pts[k-1],p1=pts[k],p2=pts[k+1];
+      var l1=Math.hypot(p1[0]-p0[0],p1[1]-p0[1]), l2=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
+      if(l1<0.5||l2<0.5)continue;
+      var r=Math.min(RAD,l1/2,l2/2);
+      var bx=p1[0]-(p1[0]-p0[0])/l1*r, by=p1[1]-(p1[1]-p0[1])/l1*r, ax=p1[0]+(p2[0]-p1[0])/l2*r, ay=p1[1]+(p2[1]-p1[1])/l2*r;
+      d+=' L'+bx+','+by+' Q'+p1[0]+','+p1[1]+' '+ax+','+ay;
+    }
+    var e=pts[pts.length-1]; return d+' L'+e[0]+','+e[1];
+  }
+  function line(pts,cls){
+    var p=document.createElementNS(NS,'path');p.setAttribute('d',poly(pts));p.setAttribute('class','fl-line'+(cls?' '+cls:''));p.setAttribute('marker-end','url(#'+mid+')');svg.appendChild(p);
+    var c=document.createElementNS(NS,'circle');c.setAttribute('cx',pts[0][0]);c.setAttribute('cy',pts[0][1]);c.setAttribute('r',2.6);c.setAttribute('class','fl-port'+(cls?' '+cls:''));svg.appendChild(c);
+  }
+  function label(txt,x,y){var s=el('span','fl-lab',txt);fl.appendChild(s);var w=s.offsetWidth||30;x=Math.max(w/2+4,Math.min(R.width-w/2-4,x));s.style.left=x+'px';s.style.top=y+'px'}
+  function opp(t){t=(t||'').trim().toLowerCase().split(/[ ,]/)[0];return FLOW_OPP[t]||null}
+  var mains=cols.map(function(c){return c.querySelector(':scope>.fl-n')});
+  /* строки: колонки с одинаковым верхом */
+  var rows=[]; cols.forEach(function(c){var bb=box(c),t=Math.round(bb.t); var r=rows.length&&Math.abs(rows[rows.length-1].t-t)<4?rows[rows.length-1]:null; if(!r){r={t:t,bottom:0};rows.push(r)} r.bottom=Math.max(r.bottom,bb.b); c._row=rows.length-1});
+  /* основной путь */
+  for(var i=0;i<mains.length-1;i++){
+    var a=box(mains[i]), z=box(mains[i+1]), sameRow=cols[i]._row===cols[i+1]._row;
+    var bi=cols[i].querySelector(':scope>.fl-br>i'), out=bi?opp(bi.textContent):null;
+    if(sameRow){
+      var x1=a.r+3, x2=z.l-3, mx=(x1+x2)/2;
+      line(Math.abs(a.cy-z.cy)<2?[[x1,a.cy],[x2,z.cy]]:[[x1,a.cy],[mx,a.cy],[mx,z.cy],[x2,z.cy]]);
+      if(out) label(out,mx,a.cy-12);
+    } else {
+      /* перенос строки: вправо, вниз в промежуток между строками, влево и вниз в первый шаг новой строки */
+      var row=rows[cols[i]._row], nrow=rows[cols[i+1]._row], gx=Math.min(a.r+13,R.width-7), yMid=row.bottom+(nrow.t-row.bottom)/2;
+      line([[a.r+3,a.cy],[gx,a.cy],[gx,yMid],[z.cx,yMid],[z.cx,z.t-3]]); cols[i+1]._wrapY=yMid; cols[i+1]._wrapX=[z.cx,gx];
+      if(out) label(out,(gx+z.cx)/2,yMid);
+    }
+  }
+  /* ветки: от развилки вниз к своим шагам */
+  cols.forEach(function(c,i){
+    var nodes=[].slice.call(c.querySelectorAll(':scope>.fl-br>.fl-n')); if(!nodes.length)return;
+    var prev=box(mains[i]);
+    nodes.forEach(function(n){var b=box(n); line([[prev.cx,prev.b+3],[b.cx,b.t-3]]); prev=b});
+  });
+  /* возврат ветки на основной путь: data-to — номер шага */
+  cols.forEach(function(c,i){
+    var br=c.querySelector(':scope>.fl-br[data-to]'); if(!br)return;
+    var to=+br.getAttribute('data-to')-1; if(!(to>=0&&to<mains.length))return;
+    var nodes=br.querySelectorAll(':scope>.fl-n'); if(!nodes.length)return;
+    var L=box(nodes[nodes.length-1]), T=box(mains[to]), tc=cols[to], tHasBr=!!tc.querySelector(':scope>.fl-br');
+    var rowB=rows[c._row], rowT=rows[tc._row], lowY=T.b-Math.min(10,(T.b-T.t)/4);
+    if(to===i){ /* петля к своей же развилке: по левому краю */
+      var xs=Math.min(L.l,T.l)-12; line([[L.l-3,L.cy],[xs,L.cy],[xs,lowY],[T.l-3,lowY]],'back'); return;
+    }
+    if(tc._wrapY!=null&&L.cx>=Math.min(tc._wrapX[0],tc._wrapX[1])&&L.cx<=Math.max(tc._wrapX[0],tc._wrapX[1])&&tc._row>c._row){ /* цель — начало следующей строки: вливаемся в линию переноса */
+      var pth=document.createElementNS(NS,'path');pth.setAttribute('d',poly([[L.cx,L.b+3],[L.cx,tc._wrapY]]));pth.setAttribute('class','fl-line back');svg.appendChild(pth);
+      var c0=document.createElementNS(NS,'circle');c0.setAttribute('cx',L.cx);c0.setAttribute('cy',L.b+3);c0.setAttribute('r',2.6);c0.setAttribute('class','fl-port back');svg.appendChild(c0);
+      var j=document.createElementNS(NS,'circle');j.setAttribute('cx',L.cx);j.setAttribute('cy',tc._wrapY);j.setAttribute('r',3);j.setAttribute('class','fl-join');svg.appendChild(j);
+      return;
+    }
+    if(tc._row===c._row){ /* та же строка: под строкой и вверх в цель, у каждого обхода своя полоса */
+      rowB.k=(rowB.k||0)+1; var lane=rowB.bottom+4+rowB.k*8;
+      if(!tHasBr){ line([[L.cx,L.b+3],[L.cx,lane],[T.cx,lane],[T.cx,T.b+3]],'back'); }
+      else { var sx=to<i?T.r+13:T.l-13; line([[L.cx,L.b+3],[L.cx,lane],[sx,lane],[sx,lowY],[to<i?T.r+3:T.l-3,lowY]],'back'); }
+      return;
+    }
+    if(tc._row>c._row){ /* цель в следующих строках: вниз до промежутка над её строкой */
+      var prevB=rows[tc._row-1].bottom, ly=prevB+(rowT.t-prevB)*0.78, tx=T.cx+(cols[to-1]&&cols[to-1]._row!==tc._row?14:0);
+      line([[L.cx,L.b+3],[L.cx,ly],[tx,ly],[tx,T.t-3]],'back'); return;
+    }
+    /* цель в строке выше: по левому полю вверх, под строку цели, вверх в неё */
+    rowT.k=(rowT.k||0)+1; var lx=7, ly2=rowT.bottom+4+rowT.k*8;
+    line([[L.l-3,L.cy],[lx,L.cy],[lx,ly2],[T.cx-14,ly2],[T.cx-14,T.b+3]],'back');
+  });
+  fl.insertBefore(svg,fl.firstChild);
+}
+function flowsInit(root){
+  root.querySelectorAll('.fl').forEach(function(fl){
+    flowDraw(fl);
+    if(window.ResizeObserver){var w=0;new ResizeObserver(function(){var nw=fl.getBoundingClientRect().width;if(Math.abs(nw-w)>1){w=nw;flowDraw(fl)}}).observe(fl)}
+  });
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){root.querySelectorAll('.fl').forEach(flowDraw)});
+}
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function store(k,v){try{if(v===undefined){return JSON.parse(localStorage.getItem(k)||'{}')||{}}localStorage.setItem(k,JSON.stringify(v))}catch(e){return {}}}
 
 function bind(L,ctx){
+  flowsInit(app);
   var KEY='paaa-guide-check', saved=store(KEY)||{};
   app.querySelectorAll('[data-ck]').forEach(function(b){var id=b.getAttribute('data-ck');if(saved[id])b.checked=true;
     b.addEventListener('change',function(){saved[id]=b.checked;store(KEY,saved)})});

@@ -347,3 +347,21 @@ section>h2+h3,section>h2+p+h3{margin-top:12px;padding-top:0;border-top:0}
 .fl-col.rowstart::before{display:none}
 /* телефоны в пропорциях телефона, а не планшета */
 .phone{aspect-ratio:9/19.5;min-height:0!important;height:auto}
+/* схемы пути: линии рисует скрипт, текстовые стрелки не нужны */
+.fl{position:relative}
+.fl>svg.fl-lines{position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:0}
+.fl-col,.fl-n{z-index:1}
+.fl .fl-line{fill:none;stroke:#6f6f6d;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.fl .fl-head{fill:#6f6f6d}
+.fl-col:not(:last-child)>.fl-n:first-child::after,.fl-col.rowstart::before{display:none!important}
+.fl-br>i{position:relative;z-index:2;background:var(--card);padding:1px 6px;border-radius:4px}
+.fl-br>i::before{content:none}
+.fl-lab{position:absolute;z-index:2;transform:translate(-50%,-50%);font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);background:var(--card);padding:1px 5px;border-radius:4px;pointer-events:none}
+/* схемы: порты линий, промежуток между строками под обходные линии */
+.fl .fl-port{fill:var(--card);stroke:#6f6f6d;stroke-width:1.3}
+.fl .fl-line.back{stroke-dasharray:4 3}
+@media (min-width:761px){.fl{row-gap:44px;padding-bottom:30px}}
+@media (max-width:760px){.fl{row-gap:40px;padding-bottom:30px}}
+.fl .fl-join{fill:#6f6f6d}
+@media (min-width:761px){.fl{row-gap:56px;padding-bottom:40px}}
+@media (max-width:760px){.fl{row-gap:52px;padding-bottom:40px}}
