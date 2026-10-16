@@ -24,8 +24,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
 .stagebar div i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--faint)}
 .stagebar div b{font-weight:400;font-size:15px;line-height:1.15}
 .stagebar div small{font-size:12px;line-height:1.3}
-.stagebar div.on{background:var(--accent);border-color:var(--accent)}
-.stagebar div.on *{color:var(--accent-ink)}
+.stagebar div.on{border-color:var(--accent)}
 .stagebar div.done i::after{content:" ✓";color:var(--good)}
 
 /* где мы */
