@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Классификация айдентики</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МИНИ-МЕТОДИЧКА К УРОКУ</span><span>БРЕНДИНГ И АЙДЕНТИКА
+УРОК 05 ИЗ 06</span></div>
+  <div class="series"><span>01 Платформа бренда</span><span>02 Метафора</span><span>03 Креативные методологии</span><span>04 Айдентика</span><b>05 Классификация айдентики</b><span>06 Брендбук</span></div>
+  <h1>Классификация айдентики</h1>
+  <p class="lead"><b>Какие бывают визуальные системы и как выбрать свою.</b> От жёсткого логотипа на всех носителях до системы, которая каждый раз собирается заново по правилам.</p>
+  <nav class="toc" aria-label="Разделы"><a href="#map">Карта видов</a><a href="#types">Виды</a><a href="#choose">Как выбрать</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="map">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>От жёсткой к гибкой</h2></div></div>
+  <p>Виды удобно выстроить по гибкости: насколько система меняется от носителя к носителю. Чем она гибче, тем больше свободы и тем важнее, чтобы все понимали концепцию.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Вид</th><th>Что меняется</th><th>Когда подходит</th></tr></thead>
+    <tbody>
+      <tr><td>Классическая</td><td>Ничего, логотип переносится как есть</td><td>Крупные компании и франшизы с предсказуемыми носителями</td></tr>
+      <tr><td>Динамическая</td><td>Графический приём подстраивается под каждый носитель</td><td>Растущие компании с новыми продуктами</td></tr>
+      <tr><td>Полиморфная</td><td>Сам логотип становится конструктором</td><td>Бренды с направлениями: фонды, города, туризм</td></tr>
+      <tr><td>Генеративная</td><td>Графику создаёт алгоритм или нейросеть по правилам</td><td>Бренды, которым нужно много уникальных вариаций</td></tr>
+      <tr><td>Маскотная</td><td>Персонаж живёт в разных сюжетах</td><td>Массовые продукты, приложения, детские бренды</td></tr>
+      <tr><td>Интерпретация</td><td>Общепринятый символ получает новую роль</td><td>Когда символ точно описывает суть бренда</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="types">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Шесть видов</h2></div></div>
+  <div class="sub">
+    <h3>Классическая</h3>
+    <div class="sub-b"><p>Одна графика без гибкости и жёсткие правила, чтобы никто не нарушил целостность. Задача — узнаваемость в огромном масштабе. Coca-Cola и Pepsi держатся на логотипе, IKEA — на знаке и цвете. Логотип Apple классический, но идентичность складывается из сотен касаний: упаковки, магазинов, интерфейса.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Динамическая</h3>
+    <div class="sub-b"><p>Минималистичный приём, который подстраивается под любой носитель. У Яндекс Услуг метафора — руки: они становятся главным элементом и разыгрываются в разных сюжетах. Pinterest строит стиль на коллажах, подобранных по цвету, форме и смыслу. Идея может быть неочевидна по одному макету, но после нескольких считывается и запоминается.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Полиморфная</h3>
+    <div class="sub-b"><p>Похожа на динамическую, но меняется сам логотип. В турбренде России фигура становится рамкой для разнообразия страны. У фонда Melk знак перестраивается под направление: дизайн, танец, музыка. У Poster&amp;Sail от Shuka амперсанд превращается в символы городов. Человек запоминает не логотип, а правило.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Генеративная</h3>
+    <div class="sub-b">
+      <p>Графику создаёт скрипт или нейросеть. Nutella выпустила сотни упаковок, нарисованных алгоритмом: внимание привлекает, но единой концепции мало. Collins сделали для симфонического оркестра Сан-Франциско редактор, который строит шрифт и логотип по звуку — здесь генерация работает внутри идеи.</p>
+      <div class="upd"><i>Обновлено</i>Сегодня сгенерировать тысячу вариантов может любой. Ценность генеративной айдентики теперь в правилах: что именно меняется, что остаётся постоянным и почему. Без концепции это просто много картинок.</div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Маскоты</h3>
+    <div class="sub-b"><p>Персонаж — прямое отражение характера бренда, поэтому его образ продумывают особенно тщательно. Mercuryo от Shuka: инвестиции простые, как фокус с кроликом из шляпы. Корм Oops!: питомцы, пойманные с поличным. Персонажем может стать что угодно — винная пробка с ногами или велосипед, который выражает эмоции взглядом.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Интерпретация</h3>
+    <div class="sub-b"><p>Знакомый всем символ получает новый смысл. У бренда шляп Cardinal&amp;Margo амперсанд надел шляпу. Литературная премия рисует скобки в стиле каждой номинации. Символ не будет принадлежать только вам — амперсанд есть и у Рамблера, — но обычно это не проблема.</p></div>
+  </div>
+  <div class="note"><b>Виды смешиваются</b><p>Hungry Worms раздаёт книги больным людям. Книжные черви — маскоты, каждый отвечает за жанр. Их эмоции набраны символами клавиатуры, а после каждого читателя в карточке появляются новые дырки. Тут и маскот, и динамика, и интерпретация.</p></div>
+</section>
+
+<section id="choose">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Как выбрать</h2></div></div>
+  <ol class="steps">
+    <li><div><div class="t">Посчитай носители</div><div class="d">Пять предсказуемых носителей — классика справится. Сотни постов в месяц — нужна динамика.</div></div></li>
+    <li><div><div class="t">Посмотри на структуру бизнеса</div><div class="d">Есть направления или продукты, которые надо различать? Подумай о полиморфной системе.</div></div></li>
+    <li><div><div class="t">Оцени, кто будет поддерживать</div><div class="d">Гибкую систему легко сломать. Если у клиента нет своих дизайнеров, правила должны быть очень простыми.</div></div></li>
+    <li><div><div class="t">Проверь характер</div><div class="d">Маскот подходит дружелюбному бренду, интерпретация — умному и сдержанному.</div></div></li>
+  </ol>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Классификация вместе с нейронкой</h2></div></div>
+  <p>Здесь нейронка полезна в двух ролях: как собеседник, который помогает выбрать тип системы под задачу, и как напарник для разбора чужих кейсов.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Платформа, метафора и список носителей.</div>
+    <div><i>Правило 2</i><b>Вопросы, а не ответы</b>Пусть нейронка выясняет, а не назначает.</div>
+    <div><i>Правило 3</i><b>Решение за тобой</b>Тип системы выбираешь и обосновываешь ты.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Выбор системы</span><b>Какой вид подойдёт моему бренду</b>
+<pre id="p1">Ты — арт-директор. Помоги выбрать тип визуальной системы: классическая, динамическая, полиморфная, генеративная, маскотная или интерпретация.
+Мой бренд: <em>[позиционирование, метафора, характер]</em>
+
+Сначала задай мне 5 вопросов по одному: о носителях, направлениях бизнеса, команде клиента, частоте публикаций, аудитории.
+После ответов предложи 2 подходящих вида, для каждого — плюсы, риски и что придётся описать в гайдлайнах. Выбор оставь мне.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> выбираешь вид и записываешь, почему он, а не другой.</p>
+    </div>
+    <div class="prompt"><span class="kind">Библиотека метафор</span><b>Разбор чужого кейса</b>
+<pre id="p2">Я разбираю кейс для своей библиотеки метафор. Вот описание проекта: <em>[вставь текст кейса со студии или фестиваля]</em>
+Не пересказывай. Задай мне 4 вопроса, которые помогут самому понять: какая метафора лежит в основе, какой это вид айдентики, какую задачу клиента она решает и что в ней можно применить в моих проектах.
+После моих ответов скажи, что я упустил.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> записываешь разбор в свою библиотеку.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Начни библиотеку метафор</b><p>В студии мы постоянно собираем и систематизируем чужие концепции, чтобы развивать их в своих проектах. Разбери 10 работ-победителей дизайн-фестивалей или кейсов любимых студий. Для каждой запиши: бренд, метафора по формуле, вид айдентики, задача клиента. Добавляй по проекту в неделю.</p></div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — брендбук: как упаковать систему, чтобы ей пользовались без тебя.</p>
+</section>
+<footer>Perasperadastra · Брендинг и айдентика · Урок 05</footer>
+</div>
+
+
+<script type="application/json" id="quiz-data">[{"p": "Чем полиморфная айдентика отличается от динамической?", "o": ["Меняется сам логотип", "В ней нет логотипа", "Её делает нейросеть"], "a": 0, "e": "В динамической меняется графический приём, в полиморфной логотип становится конструктором."}, {"p": "Франшиза с сотней точек и предсказуемыми носителями. Что выбрать?", "o": ["Генеративную", "Классическую", "Полиморфную"], "a": 1, "e": "Классическая система проще всего держит узнаваемость в большом масштабе и её сложно сломать."}, {"p": "В чём главная ценность генеративной айдентики сегодня?", "o": ["В количестве вариантов", "В правилах: что меняется и что остаётся", "В использовании нейросети"], "a": 1, "e": "Вариантов теперь может нагенерировать любой. Без концепции это просто много картинок."}]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+
+</body></html>

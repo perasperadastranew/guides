@@ -1,0 +1,1311 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Платформа бренда</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:32px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.25}
+.figtext p{font-size:16px}
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden;min-width:0}
+.fig .stage{aspect-ratio:5/4;max-width:100%;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:#6a6a6e;--hairline-mid:#47474b;--hairline-lo:#303033}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+</style>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МИНИ-МЕТОДИЧКА К УРОКУ</span><span>БРЕНДИНГ И АЙДЕНТИКА
+УРОК 01 ИЗ 06</span></div>
+  <div class="series"><b>01 Платформа бренда</b><span>02 Метафора</span><span>03 Креативные методологии</span><span>04 Айдентика</span><span>05 Классификация айдентики</span><span>06 Брендбук</span></div>
+  <h1>Платформа бренда</h1>
+  <p class="lead"><b>Из чего бренд состоит внутри и как это записать на одну страницу.</b> Платформа — фундамент, на котором потом строятся метафора, логотип и весь фирменный стиль.</p>
+  <nav class="toc" aria-label="Разделы"><a href="#brand">Бренд</a><a href="#ice">Айсберг</a><a href="#pyramid">Пирамида</a><a href="#pos">Позиционирование</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="brand">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Бренд — это образ в голове</h2></div></div>
+  <p><b>Бренд</b> — образы и ощущения в голове аудитории, связанные с продуктом. <b>Брендинг</b> — всё, что мы делаем, чтобы этот образ появился. Бренд есть у любой компании, даже если она ничего на него не тратит. Вопрос только в том, управляет ли им компания.</p>
+  <p>Ford называет машину Bronco, «полудикая лошадь», и в рекламе сравнивает её с табуном. Apple продаёт не планшет, а жизнь, в которой ты снимаешь кино и рисуешь. Людям нужен образ, а не список характеристик.</p>
+  <div class="sub">
+    <h3>Бренд как человек</h3>
+    <div class="sub-b">
+      <p>У человека есть внешность и внутренний мир: убеждения, характер, манера говорить. У бренда так же. Логотип — это буква «S» на груди Супермена: по ней узнают, но персонажа целиком она не описывает.</p>
+      <p>Аудитория выбирает компанию, как анкету в приложении знакомств: сначала смотрит на внешний вид, потом читает и сверяет ценности. Если бренд пишет «мы современные», а сайт выглядит как из нулевых, его свайпают влево.</p>
+      <p class="why">Попробуй представить бренд человеком. Как он одевается? Как разговаривает? Открытый или сдержанный? Ответы пригодятся в разделе про характер.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Три уровня мышления</h3>
+    <div class="sub-b">
+      <div class="three">
+        <div class="box"><span class="kind">Продукт</span><b>«Я сделал хорошую вещь — её купят»</b><p>Цель в цифрах: доля рынка, выручка. Владелец знает характеристики, но не умеет их донести.</p></div>
+        <div class="box"><span class="kind">Маркетинг</span><b>«Я объясню, почему моя вещь лучше»</b><p>Запуск продукта, рост продаж, метрики. Отсюда появляются задачи для дизайнера: сайт, айдентика.</p></div>
+        <div class="box hot"><span class="kind">Брендинг</span><b>«Я создаю образ, в который влюбляются»</b><p>Какое ощущение компания оставляет целиком, во всех касаниях.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ice">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Айсберг: образ и продукт</h2></div></div>
+  <p>Брендинг — это упаковка продукта в образ. Пользователь видит только верхушку.</p>
+  <div class="ice">
+    <div class="up"><span class="kind">Над водой</span><b>Айдентика</b>Логотип, цвет, шрифт, графика, сайт — то, что видит аудитория.</div>
+    <div class="water"><span class="kind">Вода</span><b>Метафора</b>Мост между смыслом и картинкой. Про неё следующий урок.</div>
+    <div class="down"><span class="kind">Под водой</span><b>Платформа бренда</b>Атрибуты, преимущества, ценности, характер, позиционирование.</div>
+  </div>
+  <div class="pair">
+    <div class="bad"><i>Образ лучше продукта</i><span>Посредственность в красивой обёртке. Заявки придут, но человек разочаруется. С такими проектами не работаем.</span></div>
+    <div class="bad"><i>Продукт лучше образа</i><span>Самый частый случай у наших клиентов: внутри хорошая вещь, а снаружи этого не видно. Это и есть наша работа.</span></div>
+  </div>
+  <p class="quote">Брендинг не начинается с картинки. Сначала суть компании, потом визуал.</p>
+</section>
+
+<section id="pyramid">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Пирамида бренда</h2></div></div>
+  <p>Платформу удобно собирать как пирамиду: снизу факты, наверху одно короткое сообщение. Каждая ступень опирается на предыдущую.</p>
+  <div class="figrow">
+    <div class="figtext">
+      <span class="kind">Пять ступеней</span>
+      <b>Снизу факты, наверху одно сообщение</b>
+      <p>Наведи курсор на ступень, и она выдвинется, как ящик. Без нижних ступеней верхняя ни на чём не держится: позиционирование без атрибутов — просто красивая фраза.</p>
+      <ol class="steps">
+        <li><div><div class="t">Атрибуты</div><div class="d">факты и доказательства</div></div></li>
+        <li><div><div class="t">Преимущества</div><div class="d">польза для клиента</div></div></li>
+        <li><div><div class="t">Ценности</div><div class="d">во что бренд верит</div></div></li>
+        <li><div><div class="t">Характер</div><div class="d">как бренд звучит</div></div></li>
+        <li><div><div class="t">Позиционирование</div><div class="d">сумма всего ниже</div></div></li>
+      </ol>
+    </div>
+    <div class="fig" data-fig="pyramid" data-label="Пирамида бренда из пяти ступеней: атрибуты, преимущества, ценности, характер, позиционирование. Ступень под курсором выдвигается."><span class="fig-read">наведи курсор</span><div class="stage"></div></div>
+  </div>
+
+  <div class="sub">
+    <h3>1. Атрибуты</h3>
+    <div class="sub-b">
+      <p>Факты, на которых держатся обещания. Их ещё называют <b>reason to believe</b> — причины нам верить: патенты, технологии, команда, количество складов. В цифровом продукте это конкретные фичи.</p>
+      <div class="pair">
+        <div class="bad"><i>Точки подобия</i><span>Есть у всех. Онлайн-формат, записи уроков, обратная связь. Без них продукт несостоятелен, но выделиться на них нельзя.</span></div>
+        <div class="good"><i>Точки отличия</i><span>Есть только у нас. Короткие уроки вместо двухчасовых вебинаров, разбор от арт-директора, коммерческие заказы от студии лучшим студентам.</span></div>
+      </div>
+      <div class="note"><b>Приём «а почему?»</b><p>Клиент говорит: «У нас лучшие металлоконструкции в городе». Спрашиваешь: «А почему лучшие?» — и ещё раз, пока не дойдёшь до факта. Владельцу его особенности кажутся очевидными, поэтому он о них забывает.</p></div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>2. Преимущества</h3>
+    <div class="sub-b">
+      <p>Человеку нужен не продукт, а польза. Переводим характеристики в выгоды. Для этого разбираемся с аудиторией: кто она, чего хочет, что ей мешает.</p>
+      <div class="two">
+        <div class="box"><span class="kind">Рациональные</span><p>Экономит время, повышает продуктивность. Часто звучат как клише, поэтому каждое подкрепляем атрибутом.</p></div>
+        <div class="box"><span class="kind">Эмоциональные</span><p>Радость, удобство, удовольствие. К ним стремятся почти все, так что большой акцент на них не делаем.</p></div>
+      </div>
+      <p class="why">Преимущества почти всегда сводятся к одним словам: быстрый, доступный, качественный, удобный, технологичный. Отличает бренд не слово, а доказательство под ним.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>3. Ценности</h3>
+    <div class="sub-b">
+      <p>Во что бренд верит. Человек, который любит панк, и одевается вызывающе — у бренда так же. Apple показывает план стать углеродно-нейтральной, Додо открыто пишет свои ценности на сайте. Когда ценности записаны, дизайнеры, копирайтеры и сотрудники действуют в одну сторону.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>4. Характер</h3>
+    <div class="sub-b">
+      <p>Голос бренда, tone of voice. С кем говорит аудитория, когда общается с компанией? Официально или на «ты»? Discord пишет разговорно, бренд дорогих часов — сдержанно.</p>
+      <p>Характер записываем прилагательными, и они становятся визуальными критериями. Кофе Drip Coffee очень бодрящий, значит бренд «бодрый»: резкие формы, никаких спокойных гротесков.</p>
+      <div class="words"><span>человечный — корпоративный</span><span>дружелюбный — серьёзный</span><span>тёплый — холодный</span><span>экспрессивный — сдержанный</span><span>прогрессивный — консервативный</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="pos">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Позиционирование</h2></div></div>
+  <p>Вершина пирамиды: одна фраза, которая показывает, чем бренд отличается от остальных. Часто она же становится заголовком первого экрана.</p>
+  <div class="formula"><span>Продукт</span><em>—</em><span>для кого</span><em>—</em><span class="m">чем лучше</span><em>—</em><span>как ощущается</span></div>
+  <div class="two">
+    <div class="box"><span class="kind">Сервис авиабилетов</span><p class="ask">Сервис поиска авиабилетов для обычных людей, которые хотят путешествовать выгодно и с удовольствием</p></div>
+    <div class="box"><span class="kind">Наша школа</span><p class="ask">Нескучное дизайн-образование для тех, кто хочет за короткий срок стать востребованным специалистом в нескольких направлениях</p></div>
+  </div>
+  <div class="pair">
+    <div class="bad"><i>Широкое</i><span>Много продуктов, много конкурентов, разная аудитория. Цельный образ сделать очень сложно.</span></div>
+    <div class="good"><i>Узкое</i><span>Конкретный сегмент или функция. На курсе всегда выбираем его: так проще найти яркую метафору.</span></div>
+  </div>
+  <div class="sub">
+    <h3>Шаблон платформы</h3>
+    <div class="sub-b">
+      <div class="tpl">
+<pre id="tpl">Продукт:
+Аудитория (кто, чего хочет, что мешает):
+Атрибуты — точки подобия:
+Атрибуты — точки отличия:
+Рациональные преимущества:
+Эмоциональные преимущества:
+Ценности:
+Характер (3 прилагательных):
+Позиционирование: [продукт] для [кого], [чем лучше], [как ощущается]</pre>
+        <button class="copy" type="button" data-copy="tpl">Скопировать шаблон</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Платформа вместе с нейронкой</h2></div></div>
+  <p>Нейросеть не знает твоего клиента. Если попросить «придумай платформу для кофейни», она выдаст среднее по интернету. Поэтому работаем в паре: ты даёшь факты, она задаёт вопросы и находит дыры.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Бриф, ответы клиента, твои заметки. Без них ответ будет про любой бренд.</div>
+    <div><i>Правило 2</i><b>Вопросы, а не ответы</b>Проси нейронку спрашивать по одному вопросу и ждать твой ответ.</div>
+    <div><i>Правило 3</i><b>Решение за тобой</b>Нейронка предлагает варианты, выбираешь и формулируешь ты.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Докопаться до атрибутов</span><b>Интервью «а почему?»</b>
+<pre id="p1">Ты — стратег брендингового агентства. Я дизайнер и собираю платформу бренда для клиента.
+Вот что я знаю о клиенте: <em>[вставь бриф и заметки со встречи]</em>
+
+Не придумывай ничего за меня. Задавай мне вопросы по одному и жди ответа. Цель — найти 3–5 точек отличия: фактов, которых нет у конкурентов.
+Если я отвечаю общими словами («качественно», «быстро»), переспрашивай «а почему?» или «чем это доказать?».
+Когда наберём факты, разложи их на точки подобия и точки отличия и покажи, каких данных не хватает.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь на вопросы, а где не знаешь — записываешь вопрос для клиента.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Проверить платформу</span><b>Найти клише и дыры</b>
+<pre id="p2">Вот моя платформа бренда: <em>[вставь заполненный шаблон]</em>
+
+Не переписывай её. Пройди по каждой строке и отметь:
+— где преимущество не подкреплено атрибутом;
+— где формулировка подойдёт любому конкуренту;
+— где характер противоречит ценностям или аудитории.
+К каждому замечанию задай мне один вопрос, который поможет исправить строку.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь формулировки сам, опираясь на вопросы.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Позиционирование</span><b>Три разные версии</b>
+<pre id="p3">Вот моя платформа: <em>[вставь]</em>
+Сформулируй три версии позиционирования по формуле «продукт — для кого — чем лучше — как ощущается».
+Сделай их разными: одна с акцентом на аудиторию, одна на точку отличия, одна на характер.
+Для каждой напиши, какой риск у этой формулировки. Потом спроси, какая мне ближе и почему.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> выбираешь направление и дописываешь финальную фразу своими словами.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Собери платформу для своего проекта</b><p>Заполни шаблон для проекта, который делаешь в спринте. Найди минимум две точки отличия через приём «а почему?» и сформулируй узкое позиционирование одной фразой. Покажи её человеку из аудитории: понял ли он, чем вы лучше?</p></div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — метафора: мост между платформой и картинкой.</p>
+</section>
+<footer>Perasperadastra · Брендинг и айдентика · Урок 01</footer>
+</div>
+
+
+<script>/* Hairline kernel. Copyright (c) Lucas Marques, MIT License. */
+/* hairline kernel sha256:346b48bdef2cdfafd5343eba01494255cf75f9c078e6fcd1aafc62bab62980a1 */
+/*
+ * HL: everything a figure may call. Read this index; the code under it is the
+ * package's src/core, unchanged, and a figure should not need to read it.
+ *
+ * Every figure is drawn in a 400 × 320 viewBox. World space is x/y on the
+ * ground and z up. Plates are filled with the ground colour and painted back
+ * to front, so a nearer one covers a farther one: append in that order. At
+ * the default camera, Cam(45, 0.5, S), +x runs down to the right and +y down
+ * to the left, so the corner with the largest x and y is nearest the viewer:
+ * append by ascending x + y, from the far corner (smallest x and y) to it.
+ *
+ * Camera
+ *   Cam(azDeg, k, S)                       a camera: azimuth in degrees, k = sin(elevation) (0.5 is the 2:1 view), S = scale
+ *   fit(C, points, cx, cy)                 centres the box of [x, y, z] points on (cx, cy); call it once, before proj
+ *                                          it only centres, it never scales: choose S by trying values, with the most extreme pose in points.
+ *                                          The six figures use S 1.42 to 2.12; the boxes they fit come out 230 to 310 wide and 180 to 245 tall
+ *   proj(C)                                returns P(x, y, z), which gives [sx, sy]
+ *   unproj(C, sx, sy, z)                   the world [x, y] under a screen point, on the plane at height z
+ *   facing(C)                              returns front(sample): whether a ring sample faces the camera
+ * Rounded solids
+ *   rrect(u0, v0, u1, v1, r, n)            a rounded rectangle, as a ring of samples {u, v, nu, nv}
+ *   circ(R, n)                             a circle, as a ring
+ *   rings(x0, y0, x1, y1, r, b)            [ring, inner]: a rounded footprint and its crease ring, inset by b
+ *                                          r, the corner radius, is cut to half the shorter side. b, the crease's inset in world units
+ *                                          (0.6 to 2.2 in the figures), must stay under half the shorter side or the crease turns inside out
+ *   prism(P, front, ring, inner, z0, z1)   {sil, crease}: a solid standing from z0 to z1, as two path strings
+ *   ringAt(P, ring, z)                     the ring's points, projected at height z
+ *   run(ring, keep)                        the one cyclic run of samples that pass keep
+ *   hull(points)                           the convex hull of screen points
+ *   extremes(P, ring)                      [left, right, nearest] samples: where dashed drops fall from
+ *   fillet(points, radii, n)               rounds every vertex of a closed polygon; returns the new points
+ *                                          radii is an array, one radius per vertex, each cut to half its shorter edge; a single number gives NaN.
+ *                                          n is the steps round each corner, default 4: each vertex becomes n + 1 points
+ *   ghost(P, front, ring, z0, depth)       a reflection's path {d, y0, y1}; reflect() draws it for you
+ * Paths and numbers
+ *   poly(points)                           a closed path string
+ *   open(points)                           an open polyline string
+ *   seg(a, b)                              one segment between two screen points [sx, sy], as its own subpath; project world points with P first
+ *   clamp(v, a, b)
+ *   lerp(a, b, t)
+ *   rad(deg)
+ *   r2(n)                                  two decimals
+ * The continuous clock: one spring per moving number
+ *   spring(x, opts)                        at rest on x; write .t to retarget; opts {k, c, m, eps}, default k 100, c 18, m 1
+ *   stepS(sp, dt)                          advances by dt seconds; returns whether it is still moving
+ * The discrete clock: a 700ms tween on (.32, .72, 0, 1)
+ *   tween(v, dur)                          at rest on v; dur defaults to 700 (ms)
+ *   tset(tw, to, now, delay)               retargets from where it is, after delay ms: the stagger
+ *                                          the same target again does nothing, so calling it on every pointer move is safe
+ *   tval(tw, now)                          its value at now
+ *   tdone(tw, now)                         whether it has landed
+ *   bezier(x1, y1, x2, y2)                 a CSS cubic-bezier, as a function of progress
+ *   EASE_LIFT                              the lift curve itself
+ *   reducedMotion()                        true when the reader asked for less motion; springs and tweens already land at once
+ *   setReducedMotion(on)                   the loop's business, not a figure's
+ * Drawing
+ *   mk(tag, attrs, parent)                 one svg element: the only way a figure makes a node
+ *   solid(parent)                          {g, sil, cr}: a group holding a silhouette path and a crease path
+ *   put(solid, paths)                      writes prism()'s {sil, crease} into solid()'s {sil, cr}: sil into sil, crease into cr
+ *   flatDot(parent, C, r, cls)             a dot lying on the ground plane; cls is "dot", "dot m" or "dot off"
+ *   place(el, point)                       moves a dot or a circle to [sx, sy]
+ *   reflect(svg, parent, P, front, ring, z0, depth)   a fading mirror under a solid
+ *   fade(svg, y0, y1, a0)                  a vertical fade, as a mask; returns the value for a mask attribute
+ * Life
+ *   register(stage, tick)                  joins the one frame loop; tick(dt in seconds, now in ms) returns true to ask for another frame; gives {wake, unregister}
+ *   pointer(stage, handlers)               {move(point), down(point), leave()}, points in viewBox units; returns its disposer
+ *   disposer()                             {add, on, dispose}: collects tear-down, so destroy is bag.dispose
+ * The bench's business, not a figure's
+ *   css(lightDark)
+ *   inject(root)
+ *   tour(stage, stops, onStop)             an unseen pointer that walks the stops, [x, y] in viewBox units or null to leave, and gives way to a real one; onStop(i) on each arrival; returns {stop}
+ *   LAP                                    the default stops: a diamond around the centre, then a leave
+ *
+ * Classes, on path, polygon, ellipse and line. They are the whole palette; a
+ * figure sets no colour, width or fill of its own.
+ *     (none)   filled with the ground colour, medium stroke
+ *     sil      the silhouette's stroke        hi    the bright stroke: the only highlight
+ *     lo       the dim stroke                 nf    no fill        fo   fill only, no stroke
+ *     dash     a dashed guide
+ *     dot      a bright dot                   dot m   a medium dot     dot off   a dim dot
+ */
+var HL = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+  // packages/hairline/src/core/kernel.ts
+  var kernel_exports = {};
+  __export(kernel_exports, {
+    Cam: () => Cam,
+    EASE_LIFT: () => EASE_LIFT,
+    LAP: () => LAP,
+    bezier: () => bezier,
+    circ: () => circ,
+    clamp: () => clamp,
+    css: () => css,
+    disposer: () => disposer,
+    extremes: () => extremes,
+    facing: () => facing,
+    fade: () => fade,
+    fillet: () => fillet,
+    fit: () => fit,
+    flatDot: () => flatDot,
+    ghost: () => ghost,
+    hull: () => hull,
+    inject: () => inject,
+    lerp: () => lerp,
+    mk: () => mk,
+    open: () => open,
+    place: () => place,
+    pointer: () => pointer,
+    poly: () => poly,
+    prism: () => prism,
+    proj: () => proj,
+    put: () => put,
+    r2: () => r2,
+    rad: () => rad,
+    reducedMotion: () => reducedMotion,
+    reflect: () => reflect,
+    register: () => register,
+    ringAt: () => ringAt,
+    rings: () => rings,
+    rrect: () => rrect,
+    run: () => run,
+    seg: () => seg,
+    setReducedMotion: () => setReducedMotion,
+    solid: () => solid,
+    spring: () => spring,
+    stepS: () => stepS,
+    tdone: () => tdone,
+    tour: () => tour,
+    tset: () => tset,
+    tval: () => tval,
+    tween: () => tween,
+    unproj: () => unproj
+  });
+
+  // packages/hairline/src/core/iso.ts
+  var clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  var lerp = (a, b, t) => a + (b - a) * t;
+  var rad = (d) => d * Math.PI / 180;
+  var r2 = (n) => Math.round(n * 100) / 100;
+  var poly = (pts) => "M" + pts.map((p) => r2(p[0]) + " " + r2(p[1])).join("L") + "Z";
+  var seg = (a, b) => `M${r2(a[0])} ${r2(a[1])}L${r2(b[0])} ${r2(b[1])}`;
+  var open = (pts) => pts.length < 2 ? "" : "M" + pts.map((p) => r2(p[0]) + " " + r2(p[1])).join("L");
+  var Cam = (azDeg, k, S) => ({ az: rad(azDeg), k, S, ox: 0, oy: 0 });
+  function proj(C) {
+    const c = Math.cos(C.az), s = Math.sin(C.az), zf = Math.sqrt(1 - C.k * C.k);
+    return (x, y, z) => {
+      const X = x * c - y * s, Y = x * s + y * c;
+      return [C.ox + C.S * X, C.oy + C.S * (Y * C.k - z * zf)];
+    };
+  }
+  function unproj(C, sx, sy, z) {
+    const c = Math.cos(C.az), s = Math.sin(C.az), zf = Math.sqrt(1 - C.k * C.k);
+    const X = (sx - C.ox) / C.S, Y = ((sy - C.oy) / C.S + z * zf) / C.k;
+    return [X * c + Y * s, -X * s + Y * c];
+  }
+  function fit(C, pts, cx, cy) {
+    C.ox = 0;
+    C.oy = 0;
+    const P = proj(C);
+    let a = 1e9, b = -1e9, c = 1e9, d = -1e9;
+    for (const p of pts) {
+      const q = P(p[0], p[1], p[2]);
+      a = Math.min(a, q[0]);
+      b = Math.max(b, q[0]);
+      c = Math.min(c, q[1]);
+      d = Math.max(d, q[1]);
+    }
+    C.ox = cx - (a + b) / 2;
+    C.oy = cy - (c + d) / 2;
+  }
+  function rrect(u0, v0, u1, v1, r, n = 4) {
+    r = Math.max(0, Math.min(r, (u1 - u0) / 2, (v1 - v0) / 2));
+    const out = [];
+    for (const [cu, cv, a0] of [[u1 - r, v1 - r, 0], [u0 + r, v1 - r, 90], [u0 + r, v0 + r, 180], [u1 - r, v0 + r, 270]])
+      for (let k = 0; k <= n; k++) {
+        const a = rad(a0 + 90 * k / n), ca = Math.cos(a), sa = Math.sin(a);
+        out.push({ u: cu + r * ca, v: cv + r * sa, nu: ca, nv: sa });
+      }
+    return out;
+  }
+  function circ(R, n = 96) {
+    const out = [];
+    for (let k = 0; k < n; k++) {
+      const a = k / n * Math.PI * 2, ca = Math.cos(a), sa = Math.sin(a);
+      out.push({ u: R * ca, v: R * sa, nu: ca, nv: sa });
+    }
+    return out;
+  }
+  function hull(input) {
+    const pts = input.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    const x = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    const lo = [], up = [];
+    for (const p of pts) {
+      while (lo.length > 1 && x(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop();
+      lo.push(p);
+    }
+    for (let i = pts.length - 1; i >= 0; i--) {
+      const p = pts[i];
+      while (up.length > 1 && x(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop();
+      up.push(p);
+    }
+    lo.pop();
+    up.pop();
+    return lo.concat(up);
+  }
+  var ringAt = (P, ring, z) => ring.map((q) => P(q.u, q.v, z));
+  var facing = (C) => {
+    const s = Math.sin(C.az), c = Math.cos(C.az);
+    return (q) => q.nu * s + q.nv * c >= -1e-6;
+  };
+  function run(ring, keep) {
+    const n = ring.length;
+    let s = -1;
+    for (let i = 0; i < n; i++) if (keep(ring[i]) && !keep(ring[(i + n - 1) % n])) {
+      s = i;
+      break;
+    }
+    if (s < 0) return keep(ring[0]) ? ring.slice() : [];
+    const out = [];
+    for (let k = 0; k < n && keep(ring[(s + k) % n]); k++) out.push(ring[(s + k) % n]);
+    return out;
+  }
+  function prism(P, front, ring, inner, z0, z1) {
+    return {
+      sil: poly(hull(ringAt(P, ring, z1).concat(ringAt(P, ring, z0)))),
+      crease: inner ? open(ringAt(P, run(inner, front), z1)) : ""
+    };
+  }
+  var rings = (x0, y0, x1, y1, r, b) => [
+    rrect(x0, y0, x1, y1, r),
+    rrect(x0 + b, y0 + b, x1 - b, y1 - b, Math.max(0.3, r - b))
+  ];
+  function extremes(P, ring) {
+    const pr = ring.map((q) => P(q.u, q.v, 0));
+    let a = 0, b = 0, c = 0;
+    pr.forEach((p, k) => {
+      if (p[0] < pr[a][0]) a = k;
+      if (p[0] > pr[b][0]) b = k;
+      if (p[1] > pr[c][1]) c = k;
+    });
+    return [ring[a], ring[b], ring[c]];
+  }
+  function fillet(pts, rs, n = 4) {
+    const m = pts.length, out = [];
+    for (let i = 0; i < m; i++) {
+      const a = pts[(i + m - 1) % m], p = pts[i], b = pts[(i + 1) % m];
+      const la = Math.hypot(a[0] - p[0], a[1] - p[1]), lb = Math.hypot(b[0] - p[0], b[1] - p[1]);
+      const t = Math.min(rs[i], la / 2, lb / 2);
+      const p1 = [p[0] + (a[0] - p[0]) / la * t, p[1] + (a[1] - p[1]) / la * t];
+      const p2 = [p[0] + (b[0] - p[0]) / lb * t, p[1] + (b[1] - p[1]) / lb * t];
+      for (let k = 0; k <= n; k++) {
+        const s = k / n, w = 1 - s;
+        out.push([w * w * p1[0] + 2 * w * s * p[0] + s * s * p2[0], w * w * p1[1] + 2 * w * s * p[1] + s * s * p2[1]]);
+      }
+    }
+    return out;
+  }
+  function ghost(P, front, ring, z0, depth) {
+    const f = run(ring, front), lowP = ringAt(P, f, z0 - depth);
+    return {
+      d: open(lowP) + [f[0], f[f.length - 1]].map((q) => seg(P(q.u, q.v, z0), P(q.u, q.v, z0 - depth))).join(""),
+      y0: Math.min(...ringAt(P, f, z0).map((p) => p[1])),
+      y1: Math.max(...lowP.map((p) => p[1])) + 2
+    };
+  }
+
+  // packages/hairline/src/core/motion.ts
+  var reduced = false;
+  var setReducedMotion = (on) => {
+    reduced = on;
+  };
+  var reducedMotion = () => reduced;
+  function spring(x, o = {}) {
+    return { x, v: 0, t: x, k: o.k ?? 100, c: o.c ?? 18, m: o.m ?? 1, eps: o.eps ?? 0.01 };
+  }
+  function stepS(sp, dt) {
+    if (reduced) {
+      sp.x = sp.t;
+      sp.v = 0;
+      return false;
+    }
+    const n = Math.max(1, Math.ceil(dt * 240)), h = dt / n;
+    for (let i = 0; i < n; i++) {
+      const a = (-sp.k * (sp.x - sp.t) - sp.c * sp.v) / sp.m;
+      sp.v += a * h;
+      sp.x += sp.v * h;
+    }
+    if (Math.abs(sp.x - sp.t) < sp.eps && Math.abs(sp.v) < sp.eps * 10) {
+      sp.x = sp.t;
+      sp.v = 0;
+      return false;
+    }
+    return true;
+  }
+  function bezier(x1, y1, x2, y2) {
+    const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+    const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+    const X = (u) => ((ax * u + bx) * u + cx) * u;
+    const Y = (u) => ((ay * u + by) * u + cy) * u;
+    const dX = (u) => (3 * ax * u + 2 * bx) * u + cx;
+    return (t) => {
+      if (t <= 0) return 0;
+      if (t >= 1) return 1;
+      let u = t;
+      for (let i = 0; i < 8; i++) {
+        const e = X(u) - t;
+        if (Math.abs(e) < 1e-5) break;
+        const d = dX(u);
+        if (Math.abs(d) < 1e-6) break;
+        u -= e / d;
+      }
+      if (!(u >= 0 && u <= 1) || Math.abs(X(u) - t) > 1e-4) {
+        let lo = 0, hi = 1;
+        u = t;
+        for (let i = 0; i < 24; i++) {
+          if (X(u) < t) lo = u;
+          else hi = u;
+          u = (lo + hi) / 2;
+        }
+      }
+      return Y(u);
+    };
+  }
+  var EASE_LIFT = bezier(0.32, 0.72, 0, 1);
+  var tween = (v, dur = 700) => ({ from: v, to: v, t0: -1e9, dur });
+  var tval = (tw, now) => {
+    const p = clamp((now - tw.t0) / tw.dur, 0, 1);
+    return tw.from + (tw.to - tw.from) * (reduced ? 1 : EASE_LIFT(p));
+  };
+  var tset = (tw, to, now, delay) => {
+    if (tw.to === to) return;
+    tw.from = tval(tw, now);
+    tw.to = to;
+    tw.t0 = now + delay;
+  };
+  var tdone = (tw, now) => reduced || now >= tw.t0 + tw.dur;
+
+  // packages/hairline/src/core/stage.ts
+  var NS = "http://www.w3.org/2000/svg";
+  function mk(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    if (attrs) for (const k in attrs) e.setAttribute(k, String(attrs[k]));
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function solid(parent) {
+    const g = mk("g", {}, parent);
+    return { g, sil: mk("path", { class: "sil" }, g), cr: mk("path", { class: "nf lo" }, g) };
+  }
+  var put = (el, s) => {
+    el.sil.setAttribute("d", s.sil);
+    el.cr.setAttribute("d", s.crease);
+  };
+  var flatDot = (parent, C, r, cls) => mk("ellipse", { rx: r2(r * C.S), ry: r2(r * C.S * C.k), class: cls }, parent);
+  var place = (el, q) => {
+    el.setAttribute("cx", String(r2(q[0])));
+    el.setAttribute("cy", String(r2(q[1])));
+  };
+  var fid = 0;
+  function fade(svg, y0, y1, a0 = 0.7) {
+    const id = "hl-fd" + ++fid, defs = mk("defs", {}, svg);
+    const lg = mk("linearGradient", { id: id + "g", gradientUnits: "userSpaceOnUse", x1: 0, y1: r2(y0), x2: 0, y2: r2(y1) }, defs);
+    mk("stop", { offset: 0, "stop-color": "#fff", "stop-opacity": a0 }, lg);
+    mk("stop", { offset: 1, "stop-color": "#fff", "stop-opacity": 0 }, lg);
+    const m = mk("mask", { id, maskUnits: "userSpaceOnUse", x: 0, y: 0, width: 400, height: 320 }, defs);
+    mk("rect", { x: 0, y: 0, width: 400, height: 320, fill: `url(#${id}g)` }, m);
+    return `url(#${id})`;
+  }
+  function reflect(svg, parent, P, front, ring, z0, depth) {
+    const r = ghost(P, front, ring, z0, depth);
+    const gh = mk("g", { class: "ghost", mask: fade(svg, r.y0, r.y1) }, parent);
+    mk("path", { d: r.d }, gh);
+  }
+  var boards = [];
+  var byStage = /* @__PURE__ */ new Map();
+  var raf = 0;
+  var last = 0;
+  var io = null;
+  var rm = null;
+  function frame() {
+    const now = performance.now();
+    const dt = Math.min(0.05, Math.max(0, (now - last) / 1e3));
+    last = now;
+    let any = false;
+    for (const b of boards.slice()) if (b.vis && b.awake) {
+      try {
+        b.awake = !!b.tick(dt, now);
+      } catch (err) {
+        b.awake = false;
+        setTimeout(() => {
+          throw err;
+        });
+      }
+      any = any || b.awake;
+    }
+    raf = any ? requestAnimationFrame(frame) : 0;
+  }
+  function wake(b) {
+    b.awake = true;
+    if (!raf) {
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    }
+  }
+  var onMotion = () => {
+    setReducedMotion(!!rm?.matches);
+    boards.forEach(wake);
+  };
+  function start() {
+    if (io) return;
+    io = new IntersectionObserver((es) => {
+      for (const e of es) {
+        const set = byStage.get(e.target);
+        if (!set) continue;
+        for (const b of set) {
+          b.vis = e.isIntersecting;
+          if (b.vis) wake(b);
+        }
+      }
+    }, { rootMargin: "80px" });
+    rm = matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(rm.matches);
+    rm.addEventListener("change", onMotion);
+  }
+  function stop() {
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+    io?.disconnect();
+    io = null;
+    rm?.removeEventListener("change", onMotion);
+    rm = null;
+  }
+  function register(stage, tick) {
+    start();
+    const b = { stage, tick, vis: false, awake: true };
+    boards.push(b);
+    const peers = byStage.get(stage);
+    if (peers) {
+      for (const p of peers) b.vis = p.vis;
+      peers.add(b);
+      if (b.vis) wake(b);
+    } else {
+      byStage.set(stage, /* @__PURE__ */ new Set([b]));
+      io.observe(stage);
+    }
+    tick(0, performance.now());
+    let gone = false;
+    return {
+      wake: () => {
+        if (!gone) wake(b);
+      },
+      unregister: () => {
+        if (gone) return;
+        gone = true;
+        boards = boards.filter((x) => x !== b);
+        const set = byStage.get(stage);
+        if (set) {
+          set.delete(b);
+          if (!set.size) {
+            byStage.delete(stage);
+            io?.unobserve(stage);
+          }
+        }
+        if (!boards.length) stop();
+      }
+    };
+  }
+  var handlers = /* @__PURE__ */ new WeakMap();
+  var touring = /* @__PURE__ */ new WeakMap();
+  function pointer(stage, on) {
+    handlers.set(stage, on);
+    let tm = 0;
+    const pt = (e) => {
+      const r = stage.getBoundingClientRect();
+      return [(e.clientX - r.left) / r.width * 400, (e.clientY - r.top) / r.height * 320];
+    };
+    const move = (e) => {
+      clearTimeout(tm);
+      touring.get(stage)?.hold();
+      on.move(pt(e), e);
+    };
+    const down = (e) => {
+      clearTimeout(tm);
+      touring.get(stage)?.hold();
+      if (e.pointerType !== "mouse") stage.releasePointerCapture?.(e.pointerId);
+      if (on.down) on.down(pt(e), e);
+      else on.move(pt(e), e);
+    };
+    const leave = (e) => {
+      clearTimeout(tm);
+      tm = window.setTimeout(() => {
+        on.leave(e);
+        touring.get(stage)?.release();
+      }, e.pointerType === "mouse" ? 0 : 1400);
+    };
+    stage.addEventListener("pointermove", move);
+    stage.addEventListener("pointerdown", down);
+    stage.addEventListener("pointerleave", leave);
+    return () => {
+      clearTimeout(tm);
+      if (handlers.get(stage) === on) handlers.delete(stage);
+      stage.removeEventListener("pointermove", move);
+      stage.removeEventListener("pointerdown", down);
+      stage.removeEventListener("pointerleave", leave);
+    };
+  }
+  var LAP = [[128, 150], [200, 118], [272, 150], [200, 206], null];
+  var TRAVEL = 900;
+  var DWELL = 1200;
+  var REST = 1800;
+  var RESUME = 1200;
+  var STAGGER = 450;
+  var GHOST = { pointerType: "ghost" };
+  var started = 0;
+  function entry([x, y]) {
+    const dx = x - 200, dy = y - 160;
+    if (!dx && !dy) return [200, 320];
+    const k = Math.min(dx ? (dx > 0 ? 200 : -200) / dx : Infinity, dy ? (dy > 0 ? 160 : -160) / dy : Infinity);
+    return [200 + dx * k, 160 + dy * k];
+  }
+  function tour(stage, stops, onStop) {
+    let i = 0;
+    let wait = RESUME + STAGGER * (started++ % 4);
+    let t = -1;
+    let at = null;
+    let origin = [200, 320];
+    let hand = false, keys = stage.contains(stage.ownerDocument.activeElement);
+    let gone = false;
+    const leave = () => {
+      at = null;
+      t = -1;
+      handlers.get(stage)?.leave(GHOST);
+    };
+    const tick = (dt) => {
+      if (hand || keys || !stops.length) return false;
+      if (reducedMotion()) {
+        if (at) leave();
+        return false;
+      }
+      if (wait > 0) {
+        wait -= dt * 1e3;
+        return true;
+      }
+      const stop2 = stops[i];
+      if (stop2 === null) {
+        if (at) leave();
+        onStop?.(i);
+        i = (i + 1) % stops.length;
+        wait = REST;
+        return true;
+      }
+      const h = handlers.get(stage);
+      if (!h) return true;
+      if (t < 0) {
+        origin = at ?? entry(stop2);
+        t = 0;
+      }
+      t = Math.min(TRAVEL, t + dt * 1e3);
+      const k = EASE_LIFT(t / TRAVEL);
+      at = [origin[0] + (stop2[0] - origin[0]) * k, origin[1] + (stop2[1] - origin[1]) * k];
+      h.move(at, GHOST);
+      if (t < TRAVEL) return true;
+      onStop?.(i);
+      i = (i + 1) % stops.length;
+      t = -1;
+      wait = DWELL;
+      return true;
+    };
+    const take = () => {
+      at = null;
+      t = -1;
+    };
+    const give = () => {
+      if (hand || keys) return;
+      i = 0;
+      t = -1;
+      wait = RESUME;
+      board.wake();
+    };
+    const me = {
+      hold: () => {
+        hand = true;
+        take();
+      },
+      release: () => {
+        if (!hand) return;
+        hand = false;
+        give();
+      }
+    };
+    const focusIn = () => {
+      keys = true;
+      take();
+    };
+    const focusOut = (e) => {
+      if (keys && !stage.contains(e.relatedTarget)) {
+        keys = false;
+        give();
+      }
+    };
+    stage.addEventListener("focusin", focusIn);
+    stage.addEventListener("focusout", focusOut);
+    touring.set(stage, me);
+    const board = register(stage, tick);
+    return {
+      stop: () => {
+        if (gone) return;
+        gone = true;
+        board.unregister();
+        stage.removeEventListener("focusin", focusIn);
+        stage.removeEventListener("focusout", focusOut);
+        if (touring.get(stage) === me) touring.delete(stage);
+        if (at) leave();
+      }
+    };
+  }
+  function disposer() {
+    let fns = [];
+    return {
+      add: (fn) => {
+        fns.push(fn);
+      },
+      on: (target, type, fn, opts) => {
+        const h = fn;
+        target.addEventListener(type, h, opts);
+        fns.push(() => target.removeEventListener(type, h, opts));
+      },
+      dispose: () => {
+        const run2 = fns;
+        fns = [];
+        for (let i = run2.length - 1; i >= 0; i--) run2[i]();
+      }
+    };
+  }
+
+  // packages/hairline/src/core/styles.ts
+  var LIGHT = { plate: "#ffffff", hi: "#232327", edge: "#a4a4ac", mid: "#c3c3c9", lo: "#e0e0e4" };
+  var DARK = { plate: "#08090a", hi: "#d0d6e0", edge: "#5b5d64", mid: "#3e3e44", lo: "#29292d" };
+  var KEYS = ["plate", "hi", "edge", "mid", "lo"];
+  var vars = (p) => KEYS.map((k) => `--hl-${k}:var(--hairline-${k},${p[k]});`).join("");
+  var EASE = "cubic-bezier(0.5,0,0.1,1)";
+  var SVG = ":where([data-hairline]>svg)";
+  function css(lightDark) {
+    const both = Object.fromEntries(KEYS.map((k) => [k, `light-dark(${LIGHT[k]},${DARK[k]})`]));
+    return [
+      // the box, and the palette: light unless something below says otherwise
+      `:where([data-hairline]){display:block;position:relative;aspect-ratio:5/4;touch-action:pan-y;user-select:none;-webkit-user-select:none;--hl-sw:var(--hairline-stroke,0.9);${vars(LIGHT)}}`,
+      // the page's color-scheme
+      lightDark ? `:where([data-hairline]){${vars(both)}}` : "",
+      // an ancestor that says dark
+      `:where(.dark,[data-theme="dark"]) :where([data-hairline]){${vars(DARK)}}`,
+      // the figure's own theme option
+      `:where([data-hairline][data-hairline-theme="light"]){${vars(LIGHT)}}`,
+      `:where([data-hairline][data-hairline-theme="dark"]){${vars(DARK)}}`,
+      `:where([data-hairline]:focus-visible){outline:1.5px solid var(--hl-hi);outline-offset:2px}`,
+      `${SVG}{position:absolute;inset:0;width:100%;height:100%;display:block}`,
+      // Riffle's live region: read, not seen
+      `:where([data-hairline]>[data-hairline-live]){position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}`,
+      // the drawing: plates are filled with the plate colour and painted back to front
+      `${SVG} :where(path,polygon,ellipse,line){fill:var(--hl-plate);stroke:var(--hl-mid);stroke-width:var(--hl-sw);vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round;transition:stroke 260ms ${EASE}}`,
+      `${SVG} :where(.nf){fill:none}`,
+      `${SVG} :where(.fo){stroke:none}`,
+      `${SVG} :where(.sil){stroke:var(--hl-edge)}`,
+      `${SVG} :where(.hi){stroke:var(--hl-hi)}`,
+      `${SVG} :where(.lo){stroke:var(--hl-lo)}`,
+      `${SVG} :where(.dash){stroke-dasharray:1 3}`,
+      `${SVG} :where(.dot){stroke:none;fill:var(--hl-hi);transition:fill 260ms ${EASE}}`,
+      `${SVG} :where(.dot.m){fill:var(--hl-edge)}`,
+      `${SVG} :where(.dot.off){fill:var(--hl-lo)}`,
+      `${SVG} :where(.ghost path){fill:none;stroke:var(--hl-mid)}`
+    ].join("");
+  }
+  var done = /* @__PURE__ */ new WeakSet();
+  function inject(root) {
+    if (done.has(root)) return;
+    done.add(root);
+    const doc = root.nodeType === 9 ? root : root.ownerDocument;
+    const win = doc.defaultView;
+    const text = css(!!win?.CSS?.supports?.("color", "light-dark(#000,#fff)"));
+    if (win && "adoptedStyleSheets" in root) {
+      try {
+        const sheet = new win.CSSStyleSheet();
+        sheet.replaceSync(text);
+        root.adoptedStyleSheets = [...root.adoptedStyleSheets, sheet];
+        return;
+      } catch {
+      }
+    }
+    const style = doc.createElement("style");
+    style.setAttribute("data-hairline-style", "");
+    style.textContent = text;
+    (root.nodeType === 9 ? doc.head ?? doc.documentElement : root).appendChild(style);
+  }
+  return __toCommonJS(kernel_exports);
+})();
+/* /hairline kernel */
+</script>
+<script>window.hairline = (figure) => {
+  const host = document.querySelector('[data-fig="' + figure.name + '"]');
+  if (!host) return;
+  const stage = host.querySelector(".stage"), label = host.querySelector(".fig-read");
+  HL.inject(document);
+  stage.setAttribute("data-hairline", figure.name);
+  stage.setAttribute("data-hairline-theme", "dark");
+  stage.setAttribute("role", "img");
+  stage.setAttribute("aria-label", host.dataset.label || figure.means);
+  const svg = HL.mk("svg", { viewBox: "0 0 400 320", "aria-hidden": "true" }, stage);
+  const hint = host.dataset.hint || "наведи курсор";
+  let text = "";
+  const read = {
+    get textContent() { return text; },
+    set textContent(v) { text = v == null ? "" : String(v); const rest = text === "rest" || text === ""; label.textContent = rest ? hint : text; label.classList.toggle("on", !rest); },
+  };
+  figure.mount({ stage, svg, read }, figure.range[1]);
+  if (!text) read.textContent = "rest";
+  if (HL.reducedMotion() || !figure.tour || !("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver((es) => {
+    if (!es.some((e) => e.isIntersecting)) return;
+    io.disconnect();
+    const last = figure.tour.length - 1;
+    const t = HL.tour(stage, figure.tour, (i) => { if (i >= last) t.stop(); });
+  }, { threshold: 0.6 });
+  io.observe(stage);
+};
+</script>
+<script>(() => {
+/**
+ * Pyramid: five rounded slabs stacked into a stepped pyramid, the brand
+ * platform from attributes at the foot to positioning at the top. The slab
+ * under the pointer slides out towards the viewer like a drawer; its
+ * neighbours follow a little, staggered outwards from it. At rest the stack
+ * is slightly off-centre, each slab nudged, and the top slab is bright.
+ * The slider is how far the chosen slab slides out, in world units.
+ */
+const {
+  Cam, clamp, facing, fit, proj, rings, prism, unproj, tween, tset, tval, tdone,
+  disposer, mk, solid, put, pointer, register,
+} = HL;
+
+const N = 5, T = 11, R = 6, B = 1.4;
+const HALF = [46, 38, 30, 22, 14];
+const NUDGE = [[0, 0], [-2, 3], [1, -2], [-3, 1], [2, 2]];
+const NAMES = ["атрибуты", "преимущества", "ценности", "характер", "позиция"];
+const MAXOUT = 26, STEP = 45, NEAR = 0.32;
+
+function mount({ stage, svg, read }, value) {
+  const bag = disposer();
+  let out = value;
+
+  const C = Cam(45, 0.5, 1.95);
+  const box = [];
+  for (let i = 0; i < N; i++) {
+    const h = HALF[i], [nx, ny] = NUDGE[i];
+    for (const z of [i * T, (i + 1) * T]) {
+      box.push([nx - h, ny - h, z], [nx + h + MAXOUT, ny + h + MAXOUT, z], [nx - h, ny + h + MAXOUT, z], [nx + h + MAXOUT, ny - h, z]);
+    }
+  }
+  fit(C, box, 200, 170);
+  const P = proj(C), front = facing(C);
+
+  const g = mk("g", {}, svg);
+
+  // slabs bottom to top: an upper slab is painted over the one it rests on
+  const slabs = [];
+  for (let i = 0; i < N; i++) slabs.push({ s: solid(g), o: tween(0), last: NaN });
+
+  function draw(i, d) {
+    const sl = slabs[i];
+    if (d === sl.last) return;
+    sl.last = d;
+    const h = HALF[i], [nx, ny] = NUDGE[i];
+    const [ring, inner] = rings(nx - h + d, ny - h + d, nx + h + d, ny + h + d, R, B);
+    put(sl.s, prism(P, front, ring, inner, i * T, (i + 1) * T - 0.6));
+  }
+
+  /** The slab under a screen point, from the REST footprints: highest first, top or front face. */
+  function hit([x, y]) {
+    for (let i = N - 1; i >= 0; i--) {
+      const h = HALF[i] + 1, [nx, ny] = NUDGE[i];
+      for (const z of [(i + 1) * T, i * T]) {
+        const [wx, wy] = unproj(C, x, y, z);
+        if (Math.abs(wx - nx) <= h && Math.abs(wy - ny) <= h) return i;
+      }
+    }
+    return -1;
+  }
+
+  const B2 = register(stage, (_dt, now) => {
+    let moving = false;
+    slabs.forEach((sl, i) => { draw(i, tval(sl.o, now)); if (!tdone(sl.o, now)) moving = true; });
+    return moving;
+  });
+  bag.add(B2.unregister);
+
+  let act = -2;
+  function setActive(a) {
+    if (a === act) return;
+    const now = performance.now(), from = a >= 0 ? a : Math.max(act, 0);
+    act = a;
+    slabs.forEach((sl, i) => {
+      const d = a < 0 ? 0 : i === a ? out : Math.abs(i - a) === 1 ? out * NEAR : 0;
+      tset(sl.o, clamp(d, 0, MAXOUT), now, Math.abs(i - from) * STEP);
+      sl.s.sil.classList.toggle("hi", a < 0 ? i === N - 1 : i === a);
+    });
+    read.textContent = a < 0 ? "rest" : NAMES[a];
+    B2.wake();
+  }
+  setActive(-1);
+
+  bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave: () => setActive(-1) }));
+  bag.add(() => svg.replaceChildren());
+
+  return {
+    set: (v) => { out = v; if (act >= 0) { const a = act; act = -2; setActive(a); } },
+    destroy: bag.dispose,
+  };
+}
+
+hairline({
+  name: "pyramid",
+  means: "Пирамида бренда: ступень под курсором выдвигается, как ящик, соседние идут за ней чуть-чуть.",
+  rules: [1, 2, 5, 9],
+  range: [10, 18, 26],
+  tour: [[200, 222], [204, 152], [204, 119], null],
+  mount,
+});
+
+})();</script>
+
+<script type="application/json" id="quiz-data">[{"p": "Что такое точки отличия?", "o": ["Преимущества, которые есть у всех на рынке", "Факты, которые есть только у нашего бренда", "Эмоции от использования продукта"], "a": 1, "e": "Точки отличия отвечают на вопрос «чем мы лучше». Точки подобия есть у всех и нужны, чтобы продукт был состоятельным."}, {"p": "Где в айсберге находится платформа бренда?", "o": ["Над водой", "В воде", "Под водой"], "a": 2, "e": "Под водой платформа, вода — метафора, над водой айдентика, которую видит аудитория."}, {"p": "Клиент говорит: «У нас лучший сервис». Что делаешь?", "o": ["Пишешь это на первом экране", "Спрашиваешь «а почему лучший?» до конкретного факта", "Подбираешь яркую картинку"], "a": 1, "e": "Общие слова ничего не доказывают. Факт под ними и есть атрибут, на котором строится коммуникация."}, {"p": "Какое позиционирование выбираем в проектах курса?", "o": ["Широкое", "Узкое", "Любое"], "a": 1, "e": "Узкое позиционирование даёт понятную аудиторию и яркую метафору."}]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+
+</body></html>

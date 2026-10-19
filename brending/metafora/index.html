@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Метафора бренда</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МИНИ-МЕТОДИЧКА К УРОКУ</span><span>БРЕНДИНГ И АЙДЕНТИКА
+УРОК 02 ИЗ 06</span></div>
+  <div class="series"><span>01 Платформа бренда</span><b>02 Метафора</b><span>03 Креативные методологии</span><span>04 Айдентика</span><span>05 Классификация айдентики</span><span>06 Брендбук</span></div>
+  <h1>Метафора бренда</h1>
+  <p class="lead"><b>Как объяснить продукт через что-то знакомое.</b> Метафора — мост между тем, что бренд говорит, и тем, что дизайнер рисует. Из неё вырастают логотип, графика и даже название.</p>
+  <nav class="toc" aria-label="Разделы"><a href="#what">Что это</a><a href="#formula">Формула</a><a href="#levels">Три уровня</a><a href="#criteria">Критерии</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="what">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Зачем метафора</h2></div></div>
+  <p>Дизайнеру часто нужно показать абстрактное: сложный продукт, понятие, преимущество. Метафора объясняет одно через другое. В 2008 году облачное хранилище было непонятной штукой, а коробка, в которой лежат файлы, — понятной. Так Dropbox объяснил себя.</p>
+  <div class="pair">
+    <div class="bad"><i>Без метафоры</i><span>«Сегодня на меня скинули четыре задачи из других отделов, работы на неделю, сделать нужно за день. Я измотан и больше ничего не хочу».</span></div>
+    <div class="good"><i>С метафорой</i><span>«Я выжат как лимон».</span></div>
+  </div>
+  <p>Мы сразу видим лимон и считываем состояние. Так работает и дизайн. Метафору подбирают после платформы и позиционирования: позиционирование подсказывает, <b>что</b> рисовать, характер — <b>как</b> это будет выглядеть.</p>
+</section>
+
+<section id="formula">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Формула</h2></div></div>
+  <div class="formula"><span>[Продукт]</span><span>[преимущество, характер или ценность]</span><em>как</em><span class="m">[метафора]</span></div>
+  <p>Слова для формулы берём из платформы. Прогони через неё несколько атрибутов, и узнаваемый образ найдётся.</p>
+  <div class="two">
+    <div class="fm"><i>Сервис доставки Jiffy</i><b>[Доставка] [быстрая и заботливая] как <u>[птица]</u></b><span class="why">Птица быстрая и носит еду птенцам — сразу два качества.</span></div>
+    <div class="fm"><i>Витамины</i><b>[Наши витамины] такие же [ценные] как <u>[жемчужины]</u></b><span class="why">Ценность продукта заявлена напрямую через упаковку-раковину.</span></div>
+    <div class="fm"><i>Корм Oops!</i><b>[Корм] [такой вкусный, что не удержаться] как <u>[кража с поличным]</u></b><span class="why">Питомцев поймали за воровством — это и название, и графика.</span></div>
+    <div class="fm"><i>Финсервис Malaa</i><b>[Сбережения] [растут] как <u>[цветок]</u></b><span class="why">Метафора работает на главное преимущество.</span></div>
+  </div>
+  <div class="note"><b>Метафора подсказывает название</b><p>Если у бренда ещё нет имени, придумывай его на этом этапе. Когда понятен образ, нейминг появляется почти сам.</p></div>
+</section>
+
+<section id="levels">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Три уровня</h2></div></div>
+  <p>Не каждый проект ложится в формулу. Есть три уровня работы с образом. Хороший проект получается на любом, выбор зависит от задачи.</p>
+  <div class="sub">
+    <h3>Метонимия: шаг вглубь</h3>
+    <div class="sub-b">
+      <p>Целое через часть. Берём сферу компании и находим объект внутри неё. Найти легко, поэтому часто выходит банально. Но если приём понятен, гибок и его ещё никто на рынке не использует — это удача.</p>
+      <div class="words"><span>мебель Resource — буква R как стул</span><span>пекарня Molt — мельница вместо «O»</span><span>ковры Knotting Matters — изогнутая нить</span><span>ресторан The Hunter — «H» как рыболовная сеть</span><span>стриминг KINEMA — «KI» как камера</span></div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Метафора свойства: шаг наружу</h3>
+    <div class="sub-b">
+      <p>Находим другой объект с похожим качеством. Сложнее придумать, но результат почти всегда уникален.</p>
+      <div class="words"><span>исчезновение видов как падающее домино</span><span>хлеб Буше тёплый как лучи солнца</span><span>шахматы интимные как любовь</span><span>персонал нового поколения как роботы</span></div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Расширенная метафора</h3>
+    <div class="sub-b">
+      <p>Аналогия для целой системы: свой образ есть у рынка, продукта, аудитории, услуг. Подходит большим брендам с широким миром. Это не «лучше» обычной метафоры, а другой масштаб.</p>
+      <div class="two">
+        <div class="box"><span class="kind">Мобильный оператор</span><p>Вышки — ульи по стране, абоненты — пчёлы, трафик — мёд.</p></div>
+        <div class="box"><span class="kind">VPN-сервис</span><p>Сети — тоннели, пользователи — кроты, которые прокладывают свои пути.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="criteria">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Критерии</h2></div></div>
+  <div class="three">
+    <div class="box"><span class="kind">Понятность</span><b>Считывается сразу</b><p>Ценность метафоры в упрощении. У Т-Банка сервис «Долями»: оплата четырьмя частями, и деление показывает весь продукт. Пикассо в «Метаморфозе быка» дошёл до нескольких линий.</p></div>
+    <div class="box"><span class="kind">Узнаваемость</span><b>Из словаря аудитории</b><p>Ребус IBM «глаз — пчела — М» поймёт ребёнок. А «быстрый как кошка» не сработает: кошка мало у кого ассоциируется со скоростью. Размытое «красиво как Ван Гог» тоже: вкусы у всех разные.</p></div>
+    <div class="box"><span class="kind">Консистентность</span><b>Совпадает с позиционированием</b><p>Реклама «Петелинки» (2020) показывала куриный курорт с йогой и СПА, а в финале курицы становились фаршем. Курорт превратился в концлагерь. Для бренда яиц та же идея заботы сработала бы.</p></div>
+  </div>
+  <p class="quote">Концепция похожа на шутку: если её надо объяснять, она не сработала.</p>
+  <div class="pair">
+    <div class="bad"><i>Штампы</i><span>Сердце, часы, лампочка-идея, рукопожатие. Слишком примитивно, эмоций не вызывает.</span></div>
+    <div class="good"><i>Свежий образ</i><span>Знакомый предмет в неожиданной роли: «Дарить настоящее» для фонда, который дарит детям опыт, а не вещи.</span></div>
+  </div>
+  <div class="upd"><i>Обновлено</i>Delivery Club со страусом из старой версии урока больше не работает как бренд, а Тинькофф стал Т-Банком. Примеры заменены на актуальные.</div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Метафора вместе с нейронкой</h2></div></div>
+  <p>Нейросеть быстро выдаёт десятки образов, но почти все из кольца банальностей. Используй её как спарринг-партнёра: ты приносишь платформу и свои варианты, она расширяет, проверяет и спорит.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Платформа и позиционирование целиком.</div>
+    <div><i>Правило 2</i><b>Сначала свои 10</b>Придумай свои метафоры до того, как просить чужие.</div>
+    <div><i>Правило 3</i><b>Решение за тобой</b>Финальную метафору выбираешь и защищаешь ты.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Вглубь и наружу</span><b>Направления, а не готовые образы</b>
+<pre id="p1">Ты — арт-директор брендинговой студии. Вот платформа бренда: <em>[вставь]</em>
+
+Не предлагай готовые метафоры. Сначала задай мне 3 уточняющих вопроса об аудитории и её повседневном словаре. После моих ответов:
+— выпиши 10 объектов «вглубь» — что есть внутри этой отрасли (для метонимии);
+— выпиши 10 качеств из платформы, к которым можно искать образ «наружу».
+Дальше я сам подберу метафоры, а ты будешь их проверять.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> по этим спискам пишешь 15–20 строк по формуле.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Проверка по критериям</span><b>Честный разбор моих метафор</b>
+<pre id="p2">Вот мои метафоры по формуле [продукт] [качество] как [образ]: <em>[вставь список]</em>
+Аудитория бренда: <em>[кто это]</em>
+
+Оцени каждую по трём критериям: понятность, узнаваемость для этой аудитории, консистентность с позиционированием. Ставь «да / сомнительно / нет» и объясняй в одной фразе.
+Отдельно отметь штампы. Не придумывай новые метафоры вместо моих — максимум подскажи, как усилить сильную.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> оставляешь 2–3 метафоры и проверяешь их на живом человеке из аудитории.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Адвокат дьявола</span><b>Как метафора может сломаться</b>
+<pre id="p3">Моя финальная метафора: <em>[формула]</em>. Бренд: <em>[кратко]</em>.
+Сыграй скептичного клиента и критика из соцсетей. Найди 5 способов, как эту метафору могут понять неправильно или высмеять, как случилось с рекламой «Петелинки».
+Для каждого риска спроси меня, как я его закрою в дизайне.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> решаешь, что поправить в подаче, или меняешь метафору.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Три метафоры трёх уровней</b><p>Для своего проекта придумай одну метонимию, одну метафору свойства и попробуй одну расширенную. Запиши каждую по формуле, прогони через три критерия и выбери главную. Если у бренда нет названия, предложи три варианта имени из метафоры.</p></div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — креативные методологии: как находить метафоры системно.</p>
+</section>
+<footer>Perasperadastra · Брендинг и айдентика · Урок 02</footer>
+</div>
+
+
+<script type="application/json" id="quiz-data">[{"p": "Буква R в логотипе мебельной компании нарисована как стул. Какой это уровень?", "o": ["Метонимия", "Метафора свойства", "Расширенная метафора"], "a": 0, "e": "Стул — часть мира мебели. Это шаг вглубь: целое через часть."}, {"p": "Почему «сервис быстрый, как кошка» — плохая метафора?", "o": ["Кошки слишком милые", "Аудитория не связывает кошку со скоростью", "Это метонимия"], "a": 1, "e": "Метафора должна быть из повседневного словаря аудитории и сразу считываться."}, {"p": "Что пошло не так в рекламе «Петелинки»?", "o": ["Плохая графика", "Метафора противоречит продукту", "Слишком сложная анимация"], "a": 1, "e": "Курорт для куриц, которые становятся фаршем, ломает консистентность. Для бренда яиц та же идея сработала бы."}, {"p": "Когда уместна расширенная метафора?", "o": ["Всегда, она лучше обычной", "Когда у бренда большой мир: рынок, услуги, аудитория", "Только для логотипа"], "a": 1, "e": "Это другой масштаб, а не уровень качества. Подходит большим брендам."}]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+
+</body></html>

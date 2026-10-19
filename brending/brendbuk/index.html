@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Брендбук и гайдлайны</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МИНИ-МЕТОДИЧКА К УРОКУ</span><span>БРЕНДИНГ И АЙДЕНТИКА
+УРОК 06 ИЗ 06</span></div>
+  <div class="series"><span>01 Платформа бренда</span><span>02 Метафора</span><span>03 Креативные методологии</span><span>04 Айдентика</span><span>05 Классификация айдентики</span><b>06 Брендбук</b></div>
+  <h1>Брендбук и гайдлайны</h1>
+  <p class="lead"><b>Как упаковать айдентику, чтобы ей правильно пользовались без тебя.</b> Ты сдал проект и ушёл. Дальше бренд ведут маркетологи, SMM, подрядчики и типография. Брендбук — то, что у них остаётся вместо тебя.</p>
+  <nav class="toc" aria-label="Разделы"><a href="#what">Что это</a><a href="#inside">Что внутри</a><a href="#rules">Можно и нельзя</a><a href="#use">Как им пользуются</a><a href="#present">Презентация</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="what">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Брендбук и гайдлайны</h2></div></div>
+  <div class="formula"><span>Платформа бренда</span><em>+</em><span>Гайдлайны</span><em>=</em><span class="m">Брендбук</span></div>
+  <div class="two">
+    <div class="box"><span class="kind">Брендбук</span><p>Система правил по работе с брендом целиком: кто мы, для кого, чем лучше, как выглядим и как говорим.</p></div>
+    <div class="box"><span class="kind">Гайдлайны</span><p>Часть брендбука про фирменный стиль: как использовать логотип, цвета, шрифты и графику на любом новом носителе.</p></div>
+  </div>
+  <p>Брендбук особенно важен, когда бренд ведёт много людей. У Додо Пиццы франшиза по всему миру, поэтому их брендбук — публичный сайт, где расписано всё, вплоть до того, как голос бренда звучит в джингле.</p>
+  <div class="sub">
+    <h3>Когда клиент приходит за айдентикой</h3>
+    <div class="sub-b">
+      <div class="three">
+        <div class="box"><span class="kind">Запуск</span><p>Новая компания или продукт, бренда ещё нет.</p></div>
+        <div class="box"><span class="kind">Смена позиционирования</span><p>Бизнес вырос или сменил аудиторию, старый образ мешает.</p></div>
+        <div class="box"><span class="kind">Слияние</span><p>Две компании становятся одной. Vodafone и Idea в Индии объединились в оператора Vi.</p></div>
+      </div>
+      <p class="why">Задачи бывают эволюционные, когда сохраняем узнаваемость и аккуратно обновляем, и революционные, когда меняем всё. От типа задачи зависит, сколько старого стоит оставить в брендбуке.</p>
+    </div>
+  </div>
+</section>
+
+<section id="inside">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Что внутри</h2></div></div>
+  <p>Хороший брендбук похож на инструкцию IKEA: человек без опыта собирает вещь правильно, потому что каждый шаг показан. Порядок разделов идёт от смысла к носителям.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Раздел</th><th>Что в нём</th><th>Кто чаще открывает</th></tr></thead>
+    <tbody>
+      <tr><td>Платформа</td><td>Позиционирование, ценности, характер, метафора одной фразой</td><td>Новые сотрудники, агентства</td></tr>
+      <tr><td>Логотип</td><td>Версии (основная, упрощённая, знак), охранное поле, минимальный размер, на каких фонах можно</td><td>Все</td></tr>
+      <tr><td>Цвет</td><td>Палитра в HEX, RGB, CMYK и Pantone, пропорции, допустимые пары текст/фон</td><td>Дизайнеры, типография, разработчики</td></tr>
+      <tr><td>Типографика</td><td>Шрифты, иерархия заголовков, кегли для экрана и печати, где взять лицензию</td><td>Дизайнеры, разработчики</td></tr>
+      <tr><td>Ключевой идентификатор</td><td>Как строится главный графический приём, его правила и вариации</td><td>Дизайнеры, моушн</td></tr>
+      <tr><td>Фото и иллюстрации</td><td>Стиль съёмки, ракурсы, обработка, примеры хороших и плохих кадров</td><td>Фотографы, SMM</td></tr>
+      <tr><td>Голос бренда</td><td>Как пишем: на «ты» или на «вы», примеры фраз, слова-табу</td><td>Копирайтеры, поддержка, SMM</td></tr>
+      <tr><td>Носители</td><td>Готовые примеры: соцсети, сайт, мерч, вывеска, документы</td><td>Все</td></tr>
+      <tr><td>Файлы</td><td>Логотипы в SVG и PNG, шаблоны постов и презентаций, Figma-библиотека</td><td>Все</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="rules">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Можно и нельзя</h2></div></div>
+  <p>Все гайдлайны устроены одинаково: как надо и как не надо. Правило без примера ошибки почти всегда нарушают.</p>
+  <div class="dodont">
+    <div class="good"><i>Можно</i><ul><li>Логотип на фирменных цветах и спокойных фото</li><li>Масштабировать пропорционально, не меньше минимального размера</li><li>Использовать готовые шаблоны и менять в них текст</li><li>Сочетать цвета только из таблицы допустимых пар</li></ul></div>
+    <div class="bad"><i>Нельзя</i><ul><li>Растягивать, поворачивать, добавлять тени и обводки</li><li>Ставить логотип на пёстрый фон без подложки</li><li>Заменять шрифт на «похожий» системный</li><li>Придумывать новые цвета «для разнообразия»</li></ul></div>
+  </div>
+  <div class="note"><b>Правило охранного поля</b><p>Вокруг логотипа задаётся пустая зона, в которую нельзя заходить другим элементам. Её меряют в частях самого логотипа, например высотой буквы, а не в пикселях — тогда правило работает в любом масштабе.</p></div>
+</section>
+
+<section id="use">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Как брендбуком пользуются в работе</h2></div></div>
+  <p>Брендбук делают не для красивого кейса, а для людей, которые будут работать с брендом каждый день. Посмотри на него их глазами.</p>
+  <div class="two">
+    <div class="box"><span class="kind">SMM-менеджер</span><b>«Нужен пост к празднику через час»</b><p>Открывает шаблоны соцсетей, меняет текст и фото по правилам фотостиля. Ему нужны готовые файлы, а не теория.</p></div>
+    <div class="box"><span class="kind">Подрядчик</span><b>«Делаем стенд для выставки»</b><p>Берёт логотип в векторе, цвета в CMYK и Pantone, примеры носителей. Без брендбука он придумает стиль сам.</p></div>
+    <div class="box"><span class="kind">Разработчик</span><b>«Собираем новый экран приложения»</b><p>Берёт цвета и шрифты как токены из Figma-библиотеки, проверяет контраст текста.</p></div>
+    <div class="box"><span class="kind">Новый сотрудник</span><b>«Как мы общаемся с клиентами?»</b><p>Читает платформу и голос бренда: на «ты» или на «вы», какие слова не используем.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Каким брендбук бывает сегодня</h3>
+    <div class="sub-b">
+      <div class="pair">
+        <div class="bad"><i>PDF на 200 страниц</i><span>Красиво для портфолио, но его не открывают. Через год половина правил устарела, а файлы потерялись.</span></div>
+        <div class="good"><i>Живой брендбук</i><span>Сайт или страница с поиском, Figma-библиотека с компонентами, папка с файлами. Обновляется вместе с брендом.</span></div>
+      </div>
+      <p class="why">Для студенческого проекта достаточно 15–25 слайдов: платформа, логотип, цвет, шрифт, графический приём, «нельзя» и 5–6 носителей.</p>
+    </div>
+  </div>
+</section>
+
+<section id="present">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Презентация проекта</h2></div></div>
+  <p>Брендбук — для тех, кто будет пользоваться стилем. Презентация — для того, кто должен его утвердить. Её задача — провести клиента по той же логике, по которой ты пришёл к решению.</p>
+  <ol class="steps">
+    <li><div><div class="t">Задача</div><div class="d">Что хотел клиент и что мы поняли на брифинге.</div></div></li>
+    <li><div><div class="t">Платформа и позиционирование</div><div class="d">Одна страница: на чём строим бренд.</div></div></li>
+    <li><div><div class="t">Метафора</div><div class="d">Формула и мудборд. Клиент должен согласиться с идеей до того, как увидит логотип.</div></div></li>
+    <li><div><div class="t">Логотип и система</div><div class="d">Знак, шрифт, цвет, графический приём.</div></div></li>
+    <li><div><div class="t">Носители</div><div class="d">Бренд в жизни: соцсети, сайт, мерч, вывеска. На этом этапе клиент влюбляется.</div></div></li>
+  </ol>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Брендбук вместе с нейронкой</h2></div></div>
+  <p>Нейросеть хорошо играет роль человека, который впервые открыл твой брендбук. Пусть она попробует сломать твои правила раньше, чем это сделает подрядчик.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Текст гайдлайнов или описание всех разделов.</div>
+    <div><i>Правило 2</i><b>Роль, а не автор</b>Нейронка играет пользователя брендбука, а не пишет его.</div>
+    <div><i>Правило 3</i><b>Правишь ты</b>Каждую найденную дыру закрываешь сам.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Структура</span><b>Что я забыл</b>
+<pre id="p1">Я собираю брендбук для студенческого проекта. Вот бренд: <em>[позиционирование, вид айдентики, носители]</em>
+Вот мой список разделов: <em>[вставь]</em>
+Не пиши разделы за меня. Скажи, каких разделов не хватает для этого бренда и его носителей, и задай мне по одному вопросу к каждому пропуску.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> решаешь, что добавить, и собираешь разделы в Figma.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Стресс-тест</span><b>Нейронка играет SMM-менеджера</b>
+<pre id="p2">Сыграй SMM-менеджера, который впервые получил мой брендбук и должен сегодня сделать пост к акции.
+Вот гайдлайны: <em>[вставь текст правил или описание]</em>
+Задавай мне вопросы, которые возникнут у тебя по ходу работы, по одному: где не хватает правила, файла или примера. Если правило можно понять двумя способами, скажи как.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> дописываешь правила и примеры «нельзя» там, где возник вопрос.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Голос бренда</span><b>Примеры фраз</b>
+<pre id="p3">Характер бренда: <em>[3 прилагательных]</em>. Аудитория: <em>[кто]</em>. Вот 5 фраз, которые я написал в голосе бренда: <em>[вставь]</em>
+Оцени, звучат ли они одним человеком. Перепиши каждую в двух неправильных тонах — слишком официально и слишком панибратски — чтобы я вставил их в раздел «как мы не говорим».</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> выбираешь удачные контрпримеры и правишь свои фразы.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Брендбук на 15–25 слайдов</b><p>Собери в Figma брендбук своего проекта: платформа, логотип с охранным полем и минимальным размером, цвет в HEX и CMYK, шрифты, ключевой приём, раздел «нельзя» минимум с шестью примерами и 5–6 носителей. Отдай его однокурснику и попроси сделать по нему пост. Всё, где он ошибся, — пробел в твоих правилах.</p></div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Это последний урок блока. Дальше — собрать всё в финальный проект.</p>
+</section>
+<footer>Perasperadastra · Брендинг и айдентика · Урок 06</footer>
+</div>
+
+
+<script type="application/json" id="quiz-data">[{"p": "Из чего состоит брендбук?", "o": ["Только из правил использования логотипа", "Платформа бренда плюс гайдлайны", "Из презентации для клиента"], "a": 1, "e": "Гайдлайны — часть брендбука про стиль. Вместе с платформой это и есть брендбук."}, {"p": "Почему в гайдлайнах обязательно показывают «как нельзя»?", "o": ["Для красоты слайдов", "Правило без примера ошибки почти всегда нарушают", "Так требует закон"], "a": 1, "e": "Пример ошибки сразу показывает границу правила."}, {"p": "Подрядчику нужно напечатать стенд. Что ему важнее всего в брендбуке?", "o": ["Миссия компании", "Логотип в векторе и цвета в CMYK и Pantone", "История основателя"], "a": 1, "e": "Брендбук работает, когда в нём есть готовые файлы и значения для нужного носителя."}, {"p": "В каком порядке показывать айдентику клиенту?", "o": ["Сразу логотип, потом объяснение", "Задача, платформа, метафора, система, носители", "Только носители"], "a": 1, "e": "Клиент должен согласиться с идеей до того, как увидит логотип."}]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+
+</body></html>
