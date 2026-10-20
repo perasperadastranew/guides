@@ -374,7 +374,7 @@ section>h2+h3,section>h2+p+h3{margin-top:12px;padding-top:0;border-top:0}
 .zres i{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
 .zres p{max-width:none;font-family:var(--display);font-size:clamp(19px,2.3vw,24px);line-height:1.25;letter-spacing:-.01em;color:var(--accent-ink)}
 .zres b{color:var(--accent-ink)}
-.zroute{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;counter-reset:z}
+.zroute{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:8px}
 .zstep{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;position:relative}
 .zstep b{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.2;color:var(--ink)}
 .zstep small{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin-top:auto}
@@ -399,4 +399,4 @@ section>h2+h3,section>h2+p+h3{margin-top:12px;padding-top:0;border-top:0}
 .zlink span{color:var(--dim);font-size:15px}
 .zlink b{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:400;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:8px 11px}
 .zlink:hover b{filter:brightness(1.08)}
-@media (max-width:700px){.zsub,.zhow{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:700px){.zroute,.zsub,.zhow{grid-template-columns:minmax(0,1fr)}}

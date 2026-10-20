@@ -586,7 +586,7 @@ section>h2+h3,section>h2+p+h3{margin-top:12px;padding-top:0;border-top:0}
 .zres i{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
 .zres p{max-width:none;font-family:var(--display);font-size:clamp(19px,2.3vw,24px);line-height:1.25;letter-spacing:-.01em;color:var(--accent-ink)}
 .zres b{color:var(--accent-ink)}
-.zroute{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;counter-reset:z}
+.zroute{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:8px}
 .zstep{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;position:relative}
 .zstep b{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.2;color:var(--ink)}
 .zstep small{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin-top:auto}
@@ -611,7 +611,7 @@ section>h2+h3,section>h2+p+h3{margin-top:12px;padding-top:0;border-top:0}
 .zlink span{color:var(--dim);font-size:15px}
 .zlink b{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:400;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:8px 11px}
 .zlink:hover b{filter:brightness(1.08)}
-@media (max-width:700px){.zsub,.zhow{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:700px){.zroute,.zsub,.zhow{grid-template-columns:minmax(0,1fr)}}
 
 .embed .top,.embed .pager{display:none}.embed .where a.pill{pointer-events:none}html,body{margin:0}
 :root.embed-root{color-scheme:normal;background:transparent}body.embed{background:transparent;padding:0}
@@ -5522,7 +5522,7 @@ function zadanie(id){
   var T=null; L.sections.forEach(function(s){s.blocks.forEach(function(b){if(b.type==='task'&&!T)T=b})}); if(!T)return lesson(id);
   var k=ORDER.indexOf(id)+(ORDER[0]==='s0'?0:1), num=('0'+k).slice(-2), st=(L.stage&&L.stage.n)||m.stage;
   var url='https://perasperadastranew.github.io/guides/#/'+id+'/zadanie';
-  var h='<header class="zhead">'+corner('PERASPERADASTRA','ЗАДАНИЕ К УРОКУ\nМОДУЛЬ «'+m.name.toUpperCase()+'»')+
+  var h='<header class="zhead">'+corner('ЗАДАНИЕ К УРОКУ','МОДУЛЬ «'+m.name.toUpperCase()+'»')+
     '<div class="hrow"><div class="ztitle"><span class="zkick">Домашнее задание · урок '+num+'</span><h1>'+t(L.title)+'</h1></div><span class="lnum" aria-hidden="true">'+num+'</span></div>'+
     '<div class="zres"><i>Что должно получиться</i><p>'+t(T.result)+'</p></div></header>';
   if(T.parts&&T.parts.length){
