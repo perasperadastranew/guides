@@ -1543,6 +1543,14 @@
        "href": "https://perasperadastranew.github.io/guides/uxui-metodichki/files/uxui-diploma.zip",
        "btn": "Скачать скилл",
        "download": true
+      },
+      {
+       "kind": "Архив · ChatGPT",
+       "title": "Версия для ChatGPT",
+       "text": "Те же инструкции для проекта «Диплом» в ChatGPT. Как поставить — в файле 0_KAK_USTANOVIT.txt внутри архива.",
+       "href": "https://perasperadastranew.github.io/guides/uxui-metodichki/files/uxui-diploma-chatgpt.zip",
+       "btn": "Скачать для ChatGPT",
+       "download": true
       }
      ]
     }
