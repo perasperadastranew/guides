@@ -387,7 +387,7 @@ section>h2+h3,section>h2+p+h3{margin-top:12px;padding-top:0;border-top:0}
 .zbox{flex:none;width:18px;height:18px;margin-top:3px;border:1.5px solid var(--accent);border-radius:5px}
 .zchk{color:var(--dim)}
 .zchk i,.zcur i{display:block;font-style:normal;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin:4px 0 2px}
-.zcur{border:1px solid var(--accent);border-left-width:4px;border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+.zcur{background:var(--card);border:1px solid var(--accent);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
 .zcur i{color:var(--accent);margin-top:0}
 .zcur p{color:var(--ink);max-width:none}
 .zhow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
