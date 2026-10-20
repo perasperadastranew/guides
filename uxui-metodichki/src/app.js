@@ -142,6 +142,36 @@ function lesson(id){
     W.parentNode.querySelector('.wnav').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var col=W.querySelector('.col');W.scrollBy({left:(+b.dataset.w)*((col?col.offsetWidth:220)+10)*2,behavior:'smooth'})})}
   bind(L,ctx);
 }
+/* ---------- карточка задания для ZenClass: #/zadanie/<id> ---------- */
+var ZPAGE={1:'Бриф',2:'Исследование',3:'Проектирование',4:'Визуал и дизайн-система',5:'Тестирование',6:'Кейс'};
+function zadanie(id){
+  var L=D.lessons[id], m=modOf(id); if(!L)return home();
+  var T=null; L.sections.forEach(function(s){s.blocks.forEach(function(b){if(b.type==='task'&&!T)T=b})}); if(!T)return lesson(id);
+  var k=ORDER.indexOf(id)+(ORDER[0]==='s0'?0:1), num=('0'+k).slice(-2), st=(L.stage&&L.stage.n)||m.stage;
+  var url='https://perasperadastranew.github.io/guides/#/'+id+'/zadanie';
+  var h='<header class="zhead">'+corner('PERASPERADASTRA','ЗАДАНИЕ К УРОКУ\nМОДУЛЬ «'+m.name.toUpperCase()+'»')+
+    '<div class="hrow"><div class="ztitle"><span class="zkick">Домашнее задание · урок '+num+'</span><h1>'+t(L.title)+'</h1></div><span class="lnum" aria-hidden="true">'+num+'</span></div>'+
+    '<div class="zres"><i>Что должно получиться</i><p>'+t(T.result)+'</p></div></header>';
+  if(T.parts&&T.parts.length){
+    h+='<section>'+corner('01 / МАРШРУТ')+'<h2>Три шага до сдачи</h2><div class="zroute">'+T.parts.map(function(p,i){var ti=String(p.title).replace(/^Часть\s*\d+\.\s*/,'');
+      return '<div class="zstep"><span class="zn">'+('0'+(i+1)).slice(-2)+'</span><b>'+t(ti)+'</b><small>'+(p.steps||[]).length+' '+plural((p.steps||[]).length,'шаг','шага','шагов')+' в методичке</small></div>'}).join('')+'</div></section>';
+    h=h.replace('<h2>Три шага до сдачи</h2>','<h2>'+(T.parts.length===3?'Три шага до сдачи':T.parts.length===2?'Два шага до сдачи':T.parts.length+' '+plural(T.parts.length,'шаг','шага','шагов')+' до сдачи')+'</h2>');
+  }
+  if(T.submit&&T.submit.length){
+    h+='<section>'+corner('02 / ЧТО СДАТЬ',T.submit.length+' '+plural(T.submit.length,'ПУНКТ','ПУНКТА','ПУНКТОВ'))+'<h2>Что сдать</h2><div class="zsub">'+T.submit.map(function(r){
+      return '<div class="zitem"><span class="zbox" aria-hidden="true"></span><div><b>'+t(r[0])+'</b><p>'+t(r[1])+'</p>'+(r[2]?'<p class="zchk"><i>Как проверяют</i>'+t(r[2])+'</p>':'')+'</div></div>'}).join('')+'</div>'+
+      (T.note?'<div class="zcur"><i>Куратор смотрит первым</i><p>'+t(T.note)+'</p></div>':'')+'</section>';
+  }
+  var how;
+  if(id==='s0')how=['Сделай скриншот проекта «Диплом» с паспортом.','Допиши одну строку: какой скилл стоит и когда в календаре слоты на курс.','Отправь скриншот и строку в ответе ниже.'];
+  else if(id==='s1')how=['Собери все части задания в одном фрейме в Figma или в одном документе.','Открой доступ по ссылке на комментирование.','Пришли ссылку в ответе ниже.'];
+  else how=['Положи результат на страницу «'+ZPAGE[st]+'» в своей копии шаблона в Figma.','Заполни блок «Работа с нейросетью»'+(st===4?', картинкам от нейросети поставь бейдж «Сгенерировано ИИ»':'')+' и поставь статус «На проверке».','Пришли ссылку на файл с доступом на комментирование в ответе ниже.'];
+  h+='<section>'+corner('03 / КАК СДАТЬ')+'<h2>Как сдать</h2><div class="zhow">'+how.map(function(x,i){return '<div class="zh'+(i===how.length-1?' on':'')+'"><span class="zn">'+(i+1)+'</span><p>'+t(x)+'</p></div>'}).join('')+'</div>'+
+    '<a class="zlink" href="'+url+'" target="_blank" rel="noopener"><span>Пошаговая инструкция, самопроверка и «Если застрял»</span><b>Открыть методичку урока →</b></a></section>';
+  h+='<footer>Perasperadastra · Mission to UX/UI</footer>';
+  app.innerHTML=h; document.title='Задание: '+L.title;
+}
+function plural(n,a,b,c){var x=n%10,y=n%100;return x===1&&y!==11?a:x>=2&&x<=4&&(y<12||y>14)?b:c}
 function home(){
   var n=(ORDER[0]==='s0')?-1:0;
   var h='<header>'+corner('PER ASPERA AD ASTRA','МЕТОДИЧКИ К УРОКАМ')+'<span class="kicker">Методички курса</span><h1 class="brand">Mission<br>to UX/UI</h1><p class="lead"><b>По одной на каждый урок.</b> Что прошли, что запомнить, шаблон, плохо и хорошо, два кейса по шагам, подробное задание и тест.</p><span class="save">Сохрани, чтобы не потерять</span></header>';
@@ -327,6 +357,7 @@ var FORCE=null;
 function route(){
   var p=(FORCE!==null?FORCE:(location.hash||'#/')).replace(/^#\/?/,'').split('/'), id=p[0], sec=p[1]; FORCE=null;
   if(id==='_code'&&CODE[sec]){last='';app.innerHTML='<section><h2>Код: '+esc(title(sec)||sec)+'</h2><p>Скопируй всё целиком.</p><button class="btn-main" id="cpy" type="button">Скопировать код</button><textarea id="code" style="width:100%;height:60vh;background:#191919;color:#8e8e8c;border:1px solid #2a2a2a;border-radius:10px;font:12px monospace;padding:12px"></textarea></section>';var ta=document.getElementById('code');(function(){var b=atob(CODE[sec]),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).text().then(function(x){ta.value=x;document.getElementById('cpy').textContent='Скопировать код ('+x.length+' знаков)'})})();document.getElementById('cpy').addEventListener('click',function(){var b=this;ta.focus();ta.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(ta.value).then(function(){b.textContent='Скопировано'}).catch(function(){b.textContent=ok?'Скопировано':'Выдели и скопируй вручную'})}else{b.textContent=ok?'Скопировано':'Выдели и скопируй вручную'}});return}
+  if(id==='zadanie'&&D.lessons[sec]){ if(last!=='z'+sec){zadanie(sec); window.scrollTo(0,0)} last='z'+sec; return }
   if(id&&D.lessons[id]){ if(last!==id){lesson(id); window.scrollTo(0,0)} last=id;
     if(sec){var s=document.getElementById('s-'+sec); if(s)s.scrollIntoView()} }
   else{last='';home();window.scrollTo(0,0)}
