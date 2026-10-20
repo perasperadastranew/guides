@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>Нейросети: доступ и бюджет</title><style>body{margin:0}</style></head><body>
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:32px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.25}
+.figtext p{font-size:16px}
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden;min-width:0}
+.fig .stage{aspect-ratio:5/4;max-width:100%;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:#6a6a6e;--hairline-mid:#47474b;--hairline-lo:#303033}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+
+
+/* сравнение «с нейросетью и без», способы оплаты, калькулятор бюджета */
+.head .tag{margin-top:4px}
+.cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cmp .side{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.cmp .side.on{border-color:var(--accent)}
+.cmp i,.ways i,.warn i,.legend,.calc label{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+.cmp .side.on i{color:var(--accent)}
+.cmp .big,.res .big{font-family:var(--display);font-size:clamp(40px,6vw,64px);line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.cmp p{font-size:15px}
+
+.bars{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px}
+.legend span{display:flex;align-items:center;gap:8px}
+.sw{width:14px;height:8px;border-radius:2px;display:inline-block}
+.sw.m{background:#4a4a48}.sw.a{background:var(--accent)}
+.bar{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr);gap:6px 16px;align-items:center}
+.bar .nm{color:var(--ink);font-size:15px;line-height:1.25}
+.bar .tr{display:flex;flex-direction:column;gap:4px;min-width:0}
+.bar .ln{display:flex;align-items:center;gap:10px;min-width:0}
+.bar .f{height:10px;border-radius:3px;min-width:3px;flex:none}
+.bar .f.m{background:#4a4a48}.bar .f.a{background:var(--accent)}
+.bar .v{font-family:var(--mono);font-size:12px;color:var(--dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bar .ln.a .v{color:var(--ink)}
+
+table td.hl{color:var(--ink);box-shadow:inset 2px 0 0 var(--accent);padding-left:12px}
+table small{color:var(--faint);font-size:13px}
+td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.warn{border:1px solid var(--bad);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.warn i{color:var(--bad)}
+.warn p{color:var(--ink);font-size:16px;max-width:75ch}
+
+.ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.way{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.way .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.way b.t{font-size:20px;font-weight:400;color:var(--ink);line-height:1.2}
+.way .risk{flex:none;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 9px;border:1px solid currentColor}
+.risk.lo{color:var(--good)}.risk.md{color:#e5b53a}.risk.hi{color:var(--bad)}
+.way .price{font-family:var(--display);font-size:22px;color:var(--ink);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.way .price small{display:block;font-family:var(--body);font-size:13px;color:var(--faint);letter-spacing:0;margin-top:2px}
+.way p{font-size:15px}
+.way .pm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;border-top:1px solid var(--stroke);padding-top:12px}
+.way .pm ul{margin:4px 0 0;padding-left:16px;display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.35}
+.way .pm .g i{color:var(--good)}.way .pm .b i{color:var(--bad)}
+.way .for{font-size:14px;color:var(--ink);border-left:1px solid var(--accent);padding-left:10px}
+.way.wide{grid-column:1/-1}
+
+.calc{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:18px}
+.kits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kits button{text-align:left;background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:14px;color:var(--dim);font-weight:400;font-size:14px;line-height:1.35;display:flex;flex-direction:column;gap:6px}
+.kits button b{font-size:17px;font-weight:400;color:var(--ink)}
+.kits button[aria-checked="true"]{border-color:var(--accent)}
+.kits button[aria-checked="true"] b{color:var(--accent)}
+.months{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.months input{flex:1 1 200px;accent-color:var(--accent)}
+.months output{font-family:var(--display);font-size:28px;color:var(--ink);min-width:1.2em;font-variant-numeric:tabular-nums}
+.res{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--stroke);padding-top:16px}
+.res p{font-size:15px}
+
+@media (max-width:760px){
+  .cmp,.ways,.kits,.way .pm{grid-template-columns:minmax(0,1fr)}
+  .bar{grid-template-columns:minmax(0,1fr)}
+}
+
+</style>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА ДЛЯ СТУДЕНТОВ</span><span>НЕЙРОСЕТИ В РАБОТЕ
+ЦЕНЫ НА 20 ОКТЯБРЯ 2026</span></div>
+  <h1>Claude, ChatGPT и&nbsp;Grok в&nbsp;нашем процессе</h1>
+  <p class="lead"><b>Какую нейросеть взять, как встроить её в&nbsp;проект, как оплатить из&nbsp;России и&nbsp;сколько это стоит.</b> Всё в&nbsp;одном месте, чтобы ты не&nbsp;потерял неделю и&nbsp;деньги на&nbsp;поиски.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#who">Кто есть кто</a><a href="#process">Как встроить</a><a href="#time">С нейросетью и без</a><a href="#plans">Тарифы</a><a href="#pay">Как оплатить</a><a href="#safe">Как не потерять деньги</a><a href="#budget">Бюджет</a><a href="#ai">Промпты</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="who">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Кто есть кто</h2></div></div>
+  <p>Три большие модели умеют примерно одно и то же: читать, писать, разбирать файлы и картинки, рассуждать. Разница в том, что вокруг модели: проекты, скиллы, генерация картинок, интеграции. Для нашего процесса это и решает.</p>
+  <div class="three">
+    <div class="box hot"><span class="kind">Основная · Anthropic</span><b>Claude</b>
+      <ul><li>Сильнее всех в текстах, структуре, разборе интервью и длинных документах.</li><li>Проекты, скиллы и паспорт проекта: на нём собран наш скилл <b>uxui-diploma</b>.</li><li>Claude Design, связка с Figma, сборка сайтов и прототипов кодом.</li><li>Картинки и видео не генерирует, только понимает.</li></ul>
+      <p class="ask">Бери, если оплачиваешь одну подписку.</p></div>
+    <div class="box"><span class="kind">Запасная · OpenAI</span><b>ChatGPT</b>
+      <ul><li>Универсал: тексты, голос, поиск, генерация изображений прямо в чате.</li><li>Наши инструкции агентов работают и здесь: есть версия скилла для проекта ChatGPT.</li><li>Удобен для мокапов, черновых картинок и быстрых вопросов.</li></ul>
+      <p class="ask">Бери вторым, если нужны картинки в том же окне, или вместо Claude, если с ним не получилось.</p></div>
+    <div class="box"><span class="kind">По желанию · xAI</span><b>Grok</b>
+      <ul><li>Генерация картинок и видео (Grok Imagine), свежие данные из X.</li><li>Мягче ограничения, но и выше риск получить неточный ответ.</li><li>Подписка дороже остальных, наших скиллов под него нет.</li></ul>
+      <p class="ask">Для курса не обязателен. Пробуй бесплатный тариф.</p></div>
+  </div>
+  <div class="note"><b>Главное</b>Одной подписки на&nbsp;$20 хватает на&nbsp;весь курс. Midjourney и&nbsp;Nano Banana для графики — отдельная история, про них в&nbsp;модуле по&nbsp;генерации.</div>
+</section>
+
+<section id="process">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Как встроить в&nbsp;процесс</h2></div></div>
+  <p class="quote">Нейросеть пишет черновик. Решение принимаешь ты.</p>
+  <p>Мы не&nbsp;делаем отдельный «нейро-проект». Ты идёшь по&nbsp;тем же этапам, что и&nbsp;без нейросети, и&nbsp;сдаёшь куратору те же артефакты. Нейросеть берёт рутину: собрать, разобрать, проверить.</p>
+  <div class="sub">
+    <h3>Настройка один раз</h3>
+    <div class="sub-b">
+      <ol class="steps">
+        <li><div><div class="t">Проект «Диплом: название»</div><div class="d">В Claude или ChatGPT создай проект под свою работу. Всё, что лежит в проекте, видно во всех его чатах.</div></div></li>
+        <li><div><div class="t">Паспорт проекта</div><div class="d">Один файл с фактами о проекте: продукт одной строкой, аудитория, ограничения, выводы этапов. У каждого утверждения пометка «данные» или «гипотеза». Положи его в проект.</div></div></li>
+        <li><div><div class="t">Скилл курса</div><div class="d">В Claude загрузи <a href="https://perasperadastranew.github.io/guides/uxui-metodichki/files/uxui-diploma.zip" download>наш скилл</a>: Customize → Skills → «+» → Create skill. В ChatGPT поставь в&nbsp;проект <a href="https://perasperadastranew.github.io/guides/uxui-metodichki/files/uxui-diploma-chatgpt.zip" download>версию для&nbsp;ChatGPT</a>, инструкция внутри архива. Скилл сам понимает, на каком ты этапе.</div></div></li>
+      </ol>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Как вести работу</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><span class="kind">Один этап — один чат</span><p>Новый чат, когда меняется артефакт: «02 Исследование — разбор интервью», «03 Проектирование — карта ценности». Весь диплом в одном чате не веди: к третьему этапу модель путает старые версии с новыми.</p></div>
+        <div class="box"><span class="kind">Паспорт — мост между чатами</span><p>В конце этапа попроси блок «Обновление паспорта», замени файл в проекте и открой новый чат. Вернуться к прошлому этапу — тоже новый чат с актуальным паспортом.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Где нейросеть не&nbsp;используем</h3>
+    <div class="sub-b">
+      <div class="dodont">
+        <div class="bad"><i>Нельзя</i><ul><li>Вместо живых людей в интервью и тестах.</li><li>Вместо финальных экранов: в кейс идут макеты из Figma на твоей сетке.</li><li>Вместо цитат: цитата только из реальной расшифровки.</li><li>С личными данными респондентов.</li></ul></div>
+        <div class="good"><i>Можно</i><ul><li>Подготовить гайд интервью и проверить вопросы.</li><li>Разобрать расшифровки и отзывы в таблицу болей.</li><li>Посчитать палитру, шкалу, токены.</li><li>Проверить макет по чек-листу до куратора.</li></ul></div>
+      </div>
+      <p class="why">Перед загрузкой расшифровок замени имена на Р1, Р2, Р3 и убери место работы, адреса и телефоны.</p>
+    </div>
+  </div>
+</section>
+
+<section id="time">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>С нейросетью и без</h2><span class="tag">Оценки без замера на потоке</span></div></div>
+  <p>Оба пути рабочие, куратор принимает оба. Нейросеть не&nbsp;делает проект лучше сама по&nbsp;себе: она освобождает часы, которые ты тратишь на&nbsp;решения и&nbsp;визуал.</p>
+  <div class="sub wide">
+    <h3>Лендинг · Mission to&nbsp;Web</h3>
+    <div class="cmp">
+      <div class="side"><i>Без нейросети</i><span class="big">24–29 ч</span><p>Шесть этапов регламента: тема и концепция, смысловой прототип, стайлборд, вайрфрейм, дизайн, кейс.</p></div>
+      <div class="side on"><i>С Claude</i><span class="big">16–22 ч</span><p>Быстрее всего тексты, контент-анализ, графика по якорю и черновик кейса. Референсы и вайрфрейм почти не ускоряются: там работают насмотренность и руки.</p></div>
+    </div>
+  </div>
+  <div class="sub wide">
+    <h3>Приложение · Mission to&nbsp;UX/UI</h3>
+    <div class="bars" id="bars">
+      <div class="legend"><span><i class="sw m"></i>Без нейросети</span><span><i class="sw a"></i>С Claude и скиллом курса</span></div>
+    </div>
+    <div class="cmp">
+      <div class="side"><i>Без нейросети</i><span class="big">≈ 54 ч</span><p>Сумма по шести этапам диплома. Больше всего уходит на исследование и визуал.</p></div>
+      <div class="side on"><i>С Claude</i><span class="big">≈ 12 ч</span><p>Самый большой выигрыш на исследовании: разбор трёх интервью и сотни отзывов из сторов занимает час вместо двух дней. Разговоры с людьми всё равно ведёшь ты.</p></div>
+    </div>
+    <p class="why">Часы — это работа за компьютером на этапах, без времени на уроки и правки от куратора. Мы замерим их на ближайшем потоке и обновим цифры.</p>
+  </div>
+</section>
+
+<section id="plans">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Тарифы</h2><span class="tag">Официальные цены в долларах, без налога</span></div></div>
+  <p>У всех трёх есть бесплатный тариф с жёсткими лимитами: попробовать хватит, вести диплом — нет. Тарифы за&nbsp;$100 и&nbsp;дороже нужны тем, кто работает с нейросетью целый день, студенту они не нужны.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Сервис</th><th>Бесплатно</th><th>Начальный</th><th>Основной</th><th>Для тяжёлой работы</th></tr></thead>
+    <tbody>
+      <tr><td>Claude</td><td>Free: лимиты, базовые модели</td><td>—</td><td class="hl">Pro — $20/мес<br><small>или $200 за год</small></td><td>Max 5x — $100<br>Max 20x — $200</td></tr>
+      <tr><td>ChatGPT</td><td>Free: с рекламой</td><td>Go — $8/мес<br><small>с рекламой, без старших моделей</small></td><td class="hl">Plus — $20/мес</td><td>Pro — $100 или $200</td></tr>
+      <tr><td>Grok</td><td>Free: около 10 запросов за 2 часа</td><td>SuperGrok Lite — $10</td><td>SuperGrok — $30/мес</td><td>SuperGrok Heavy — $300</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="box"><span class="kind">Claude Pro</span><p>Проекты без ограничений, скиллы, Claude Design, Claude Code, исследование по сети. Лимит считается окнами по 5 часов плюс недельный. Если упёрся — подожди окно или раздели работу на чаты.</p></div>
+    <div class="box"><span class="kind">ChatGPT Plus</span><p>Старшие модели, генерация изображений и проекты. Go дешевле, но с рекламой и без старших моделей: для диплома слабоват.</p></div>
+  </div>
+</section>
+
+<section id="pay">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Как оплатить из&nbsp;России</h2></div></div>
+  <div class="warn"><i>Сначала прочитай</i><p>Claude, ChatGPT и Grok не&nbsp;принимают карты российских банков, включая «Мир». Anthropic и OpenAI официально не&nbsp;работают в&nbsp;России, и&nbsp;их правила запрещают пользоваться сервисом из&nbsp;неподдерживаемых стран. Аккаунт могут закрыть в&nbsp;любой момент, при любом способе оплаты, вместе с&nbsp;историей чатов. Это не&nbsp;повод отказаться, но повод платить помесячно и&nbsp;хранить важное у&nbsp;себя.</p></div>
+  <p>Ниже все способы, которыми пользуются студенты. Цены — среднее по&nbsp;площадкам в&nbsp;сентябре–октябре 2026, курс ЦБ около 84&nbsp;₽ за&nbsp;доллар.</p>
+  <div class="ways" id="ways"></div>
+</section>
+
+<section id="safe">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Как не&nbsp;потерять деньги</h2></div></div>
+  <ol class="steps">
+    <li><div><div class="t">Плати за месяц, а не за год</div><div class="d">Годовой Pro дешевле на $40, но при блокировке сгорит весь. Месяц покажет, что схема работает.</div></div></li>
+    <li><div><div class="t">Только на свой аккаунт</div><div class="d">Готовый чужой аккаунт продавец может забрать обратно или продать ещё раз. Ищи формулировки «на ваш аккаунт», «без входа», «подарочная ссылка».</div></div></li>
+    <li><div><div class="t">Не отдавай пароль и коды</div><div class="d">Нормальному продавцу хватает почты аккаунта. Просит пароль, код из письма или данные карты — закрывай вкладку.</div></div></li>
+    <li><div><div class="t">Проверь продавца вне его сайта</div><div class="d">Число сделок, свежие отрицательные отзывы, сколько лет на площадке, что обещают при блокировке. Слова «гарантия от блокировки» ничего не стоят: блокирует сам сервис, а не продавец.</div></div></li>
+    <li><div><div class="t">Посчитай итог в рублях до оплаты</div><div class="d">Если выходит больше 1,5 официальной цены, ищи дальше. Для Pro ориентир — 1 900–2 400 ₽ в месяц.</div></div></li>
+    <li><div><div class="t">Храни паспорт проекта у себя</div><div class="d">Паспорт, промпты и выводы этапов держи в Figma, Notion или файлом на диске. Тогда блокировка стоит тебе вечера, а не диплома.</div></div></li>
+  </ol>
+</section>
+
+<section id="budget">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Сколько закладывать</h2></div></div>
+  <p>Выбери набор и длину курса. Mission to&nbsp;UX/UI длится 10 недель, это около трёх оплат подписки.</p>
+  <div class="calc">
+    <div class="kits" role="radiogroup" aria-label="Набор" id="kits"></div>
+    <div class="months"><label for="m">Месяцев подписки</label><input type="range" id="m" min="1" max="6" value="3"><output id="mo">3</output></div>
+    <div class="res"><span class="big" id="sum"></span><p id="sumt"></p></div>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>Подписка</th><th>Официально</th><th>По курсу ЦБ</th><th>Реально с посредником</th></tr></thead>
+    <tbody>
+      <tr><td>Claude Pro</td><td>$20</td><td class="t">≈ 1 680 ₽</td><td class="t">1 900–2 400 ₽</td></tr>
+      <tr><td>ChatGPT Go</td><td>$8</td><td class="t">≈ 670 ₽</td><td class="t">520–570 ₽</td></tr>
+      <tr><td>ChatGPT Plus</td><td>$20</td><td class="t">≈ 1 680 ₽</td><td class="t">1 770–2 400 ₽</td></tr>
+      <tr><td>SuperGrok</td><td>$30</td><td class="t">≈ 2 510 ₽</td><td class="t">от 2 800 ₽</td></tr>
+      <tr><td>Claude Max 5x</td><td>$100</td><td class="t">≈ 8 400 ₽</td><td class="t">12 000–14 000 ₽</td></tr>
+    </tbody>
+  </table></div>
+  <p class="why">Go у посредников бывает дешевле официальной цены: в стране покупки он стоит меньше $8. Цены на площадках меняются каждую неделю, смотри их в день оплаты.</p>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>В&nbsp;паре с&nbsp;нейронкой</h2></div></div>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Паспорт проекта, бриф, твои заметки. Без них нейросеть придумывает продукт заново.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть нейросеть спрашивает и ждёт ответа, а не выдаёт готовое решение.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Нейросеть даёт варианты и их слабые места. Выбор и формулировка твои.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Старт проекта</span><b>Собрать паспорт проекта</b>
+      <pre id="p1">Я начинаю дипломный проект в курсе по дизайну. Помоги собрать паспорт проекта.
+
+Вот что у меня есть: <em>[вставь идею проекта и бриф, если он уже есть]</em>
+
+Задавай по одному вопросу и жди ответа. Не предлагай функции и решения, только уточняй.
+Когда ответы соберутся, выдай паспорт по шаблону:
+- Продукт одной строкой
+- Платформа и формат
+- Ограничения: срок, число экранов, что не делаем
+- Для кого и какую задачу решает
+У каждого утверждения о пользователях поставь пометку [гипотеза].</pre>
+      <button type="button" class="copy" data-copy="p1">Скопировать</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь на вопросы и вычёркиваешь из паспорта всё, с чем не согласен.</p></div>
+    <div class="prompt"><span class="kind">Конец этапа</span><b>Обновить паспорт и перейти дальше</b>
+      <pre id="p2">Мы закончили этап <em>[название этапа]</em>. Вот текущий паспорт: <em>[вставь паспорт]</em>
+
+Собери блок «Обновление паспорта»: только итоги этого этапа, коротко, с пометками [данные] или [гипотеза].
+Не переписывай прошлые блоки. Если итог этапа противоречит паспорту, покажи противоречие и спроси, что оставить.</pre>
+      <button type="button" class="copy" data-copy="p2">Скопировать</button>
+      <p class="you"><b>Что делаешь ты:</b> решаешь противоречия, заменяешь файл паспорта в проекте и открываешь новый чат.</p></div>
+    <div class="prompt"><span class="kind">Перед сдачей</span><b>Предпроверка до куратора</b>
+      <pre id="p3">Ты — куратор курса по UX/UI. Вот критерии приёмки этапа: <em>[вставь критерии из урока]</em>
+Вот моя работа: <em>[вставь текст или скриншот]</em>
+
+Пройди по критериям и назови три главные правки, по важности.
+Не переделывай работу за меня и не предлагай готовый вариант. Задай вопрос, если не хватает данных.</pre>
+      <button type="button" class="copy" data-copy="p3">Скопировать</button>
+      <p class="you"><b>Что делаешь ты:</b> вносишь правки сам и сдаёшь куратору. Предпроверка не заменяет проверку.</p></div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и&nbsp;квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Настрой рабочее место до первого урока</b><p>Выбери нейросеть и способ оплаты, создай проект «Диплом: название», собери первую версию паспорта с первым промптом из раздела 08 и открой чат «01 Бриф». Сдай куратору скриншот проекта и паспорт.</p></div>
+  <div class="check">
+    <label><input type="checkbox" id="c1"><span>Выбрал сервис и тариф, посчитал бюджет на весь курс</span></label>
+    <label><input type="checkbox" id="c2"><span>Оплатил месяц на свой аккаунт, пароль никому не отдавал</span></label>
+    <label><input type="checkbox" id="c3"><span>Создал проект и положил в него паспорт</span></label>
+    <label><input type="checkbox" id="c4"><span>Подключил скилл курса или версию для ChatGPT</span></label>
+    <label><input type="checkbox" id="c5"><span>Сохранил копию паспорта вне нейросети</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Цены и способы оплаты меняются быстрее, чем идёт поток. Методичку обновляем перед каждым набором.</p>
+</section>
+<footer>Perasperadastra · Нейросети в работе · Октябрь 2026</footer>
+</div>
+
+<script type="application/json" id="quiz-data">[
+{"p":"Ты оплачиваешь одну подписку на весь курс. Что взять?","o":["Claude Pro","Claude Max 20x","SuperGrok Heavy","Только бесплатные тарифы"],"a":0,"e":"Pro за $20 закрывает весь курс, на нём работают проекты и скилл. Max и Heavy рассчитаны на работу целый день, бесплатных лимитов на диплом не хватит."},
+{"p":"Продавец на площадке просит логин и пароль от Claude, чтобы оформить подписку. Как поступить?","o":["Дать, но потом сменить пароль","Отказаться и найти продавца, которому хватает почты или подарочной ссылки","Дать, если у него высокий рейтинг","Купить у него готовый аккаунт"],"a":1,"e":"Пароль и коды не отдаём никому. Нормальной услуге хватает почты аккаунта, а подарочная подписка вообще активируется по ссылке."},
+{"p":"Почему из России лучше платить помесячно?","o":["Годовой тариф недоступен","Помесячно дешевле","Аккаунт могут заблокировать, и сгорит всё, что оплачено вперёд","Помесячно больше лимитов"],"a":2,"e":"Сервисы не работают в России официально и могут закрыть аккаунт в любой момент. При помесячной оплате теряешь максимум месяц."},
+{"p":"Что даёт агрегатор вроде BotHub и чего в нём нет?","o":["Даёт всё то же, что официальный Claude","Оплата в рублях без своего аккаунта у Anthropic, но нет проектов, скиллов и Claude Design","Только картинки","Бесплатный безлимит"],"a":1,"e":"Агрегатор удобен для оплаты и не банит, но фирменных функций оригинала в нём нет: промпты из методички работают, скилл курса — нет."},
+{"p":"Ведёшь диплом с нейросетью. Как правильно?","o":["Один чат на весь диплом","Один чат на этап и паспорт проекта как мост между ними","Новый чат на каждое сообщение","Без паспорта, нейросеть всё помнит"],"a":1,"e":"Один этап — один чат. К третьему этапу общий чат путает версии, а паспорт переносит только итоги."},
+{"p":"Что нельзя отдавать нейросети в UX/UI-проекте?","o":["Проверку макета по чек-листу","Разбор расшифровок интервью","Интервью с пользователями вместо живых людей","Расчёт типографической шкалы"],"a":2,"e":"Синтетические респонденты дают усреднённые ответы и не находят неожиданных болей. Интервью проводишь ты, нейросеть готовит и разбирает."}
+]</script>
+
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>(function(){
+  // этапы диплома Mission to UX/UI: часы без нейросети и с ней (оценка из AI-пайплайна курса)
+  const ST=[["Бриф",8,0.33,"день","20 мин"],["Исследование",14,3],["Проектирование",8,2.5],["Визуал и\u00a0дизайн-система",11,3.5],["Тестирование",4,1],["Кейс и\u00a0передача в\u00a0разработку",9,2]];
+  const max=14,box=document.getElementById('bars');
+  const fmt=h=>(String(h).replace('.',','))+' ч';
+  ST.forEach(([n,m,a,ml,al])=>{
+    const r=document.createElement('div');r.className='bar';
+    r.innerHTML='<span class="nm"></span><div class="tr"><div class="ln"><span class="f m"></span><span class="v"></span></div><div class="ln a"><span class="f a"></span><span class="v"></span></div></div>';
+    r.querySelector('.nm').textContent=n;
+    const f=r.querySelectorAll('.f'),v=r.querySelectorAll('.v');
+    f[0].style.width='calc((100% - 70px) * '+(m/max)+')';f[1].style.width='calc((100% - 70px) * '+(a/max)+')';
+    v[0].textContent=ml||fmt(m);v[1].textContent=al||fmt(a);
+    box.append(r);
+  });
+
+  const W=[
+    {t:"Подарочная подписка через знакомого",r:["lo","Самый чистый"],p:"Официальная цена",ps:"Pro или\u00a0Max на\u00a01, 3, 6 или\u00a012 месяцев",d:"Человек с\u00a0картой поддерживаемой страны покупает подарочную подписку Claude и\u00a0присылает ссылку. Ты\u00a0активируешь её\u00a0в\u00a0браузере на\u00a0своём аккаунте, карта не\u00a0нужна. ChatGPT так не\u00a0умеет: там знакомый оплачивает подписку на\u00a0твоём аккаунте сам.",g:["Без\u00a0наценки","Пароль никому не\u00a0нужен","Деньги идут напрямую сервису"],b:["Нужен знакомый за\u00a0границей","Подарок не\u00a0складывается с\u00a0активной подпиской"],f:"Если есть кого попросить."},
+    {t:"Зарубежная виртуальная карта",r:["lo","Надёжный"],p:"≈ 2 100–2 600 ₽ за\u00a0Pro",ps:"плюс выпуск карты, обычно 500–1 000 ₽ один раз",d:"Выпускаешь онлайн карту иностранного банка, пополняешь рублями через СБП и\u00a0платишь сам на\u00a0сайте. Подписка продлевается автоматически. Сравнивай сервисы по\u00a0стране карты, цене выпуска, комиссии за\u00a0пополнение и\u00a0курсу.",g:["Платишь сам, без\u00a0посредника","Работает для\u00a0всех подписок","Выгоднее на\u00a03+ месяца"],b:["Нужна верификация","Страна карты должна совпадать с\u00a0регионом аккаунта"],f:"Если планируешь пользоваться весь курс и\u00a0дальше."},
+    {t:"Маркетплейсы: GGsel, Plati.Market, FunPay, KupiKod",r:["md","Быстро"],p:"Pro 1 900–2 400 ₽",ps:"ChatGPT Plus 1 770–2 400 ₽ · Go 520–570 ₽",d:"Магазины цифровых товаров с\u00a0рейтингом продавцов и\u00a0арбитражем. Платишь картой или\u00a0СБП, подписку оформляют за\u00a0минуты или\u00a0часы. Выбирай вариант «на\u00a0ваш аккаунт»: по\u00a0подарочной ссылке, без\u00a0входа или\u00a0через временный токен.",g:["Рубли и\u00a0СБП","Отзывы и\u00a0защита сделки","Можно на\u00a0один месяц"],b:["Наценка 10–25%","Под\u00a0одним названием продают разное, читай описание"],f:"Чтобы быстро оплатить первый месяц."},
+    {t:"Авито",r:["hi","Рискованно"],p:"Цена подписки + 100–500 ₽",ps:"за\u00a0услугу «оформлю доступ»",d:"Частные объявления. Цены бывают ниже маркетплейсов, но\u00a0защиты сделки для\u00a0цифровой услуги почти нет, а\u00a0«гарантия от\u00a0блокировки» ничем не\u00a0подкреплена. Мошенников здесь больше, чем на\u00a0площадках с\u00a0арбитражем.",g:["Можно найти дешевле","Можно договориться лично"],b:["Нет арбитража","Часто просят пароль или\u00a0продают общий аккаунт"],f:"Только если продавца тебе порекомендовали лично."},
+    {t:"Сервисы-посредники",r:["md","Без\u00a0карты"],p:"От\u00a0цены подписки до\u00a0почти ×2",ps:"наценка у\u00a0сервисов очень разная",d:"Сайты и\u00a0Telegram-боты: пишешь тариф и\u00a0почту аккаунта, переводишь рубли, сервис платит своей картой или\u00a0выдаёт одноразовые реквизиты, которые ты\u00a0вводишь сам.",g:["Ничего не\u00a0нужно оформлять","Работает для\u00a0Claude, ChatGPT и\u00a0Grok"],b:["Наценку видно только в\u00a0итоге","Нужно проверять сервис по\u00a0отзывам вне его\u00a0сайта"],f:"Если нет времени разбираться с\u00a0картой."},
+    {t:"Агрегаторы: BotHub, GPTunneL, ChadGPT",r:["lo","Без\u00a0блокировок"],p:"От\u00a0290 ₽ в\u00a0месяц",ps:"или\u00a0оплата за\u00a0использование во\u00a0внутренней валюте",d:"Российские сервисы, где Claude, GPT, Gemini и\u00a0генераторы картинок собраны в\u00a0одном окне. Оплата российской картой, работают без\u00a0VPN. Своего аккаунта у\u00a0Anthropic или\u00a0OpenAI нет, поэтому и\u00a0банить нечего.",g:["Рубли, никаких карт и\u00a0посредников","Много моделей в\u00a0одном месте"],b:["Нет проектов, скиллов, Claude Design и\u00a0связки с\u00a0Figma","Старшие модели Claude быстро съедают баланс"],f:"Для\u00a0промптов из\u00a0методичек. Скилл курса здесь не\u00a0заработает.",w:1}
+  ];
+  const ways=document.getElementById('ways');
+  W.forEach(x=>{
+    const d=document.createElement('div');d.className='way'+(x.w?' wide':'');
+    d.innerHTML='<div class="top"><b class="t"></b><span class="risk"></span></div><div class="price"><span></span><small></small></div><p class="d"></p><div class="pm"><div class="g"><i>Плюсы</i><ul></ul></div><div class="b"><i>Минусы</i><ul></ul></div></div><p class="for"></p>';
+    d.querySelector('.t').textContent=x.t;const r=d.querySelector('.risk');r.classList.add(x.r[0]);r.textContent=x.r[1];
+    d.querySelector('.price span').textContent=x.p;d.querySelector('.price small').textContent=x.ps;
+    d.querySelector('.d').textContent=x.d;d.querySelector('.for').textContent=x.f;
+    const add=(sel,arr)=>arr.forEach(s=>{const li=document.createElement('li');li.textContent=s;d.querySelector(sel).append(li)});
+    add('.g ul',x.g);add('.b ul',x.b);ways.append(d);
+  });
+
+  const K=[
+    {n:"Минимум",d:"Бесплатные тарифы и\u00a0ChatGPT Go или\u00a0агрегатор",lo:300,hi:600,s:"Хватит на\u00a0промпты и\u00a0черновики. Скилл курса и\u00a0проекты Claude будут недоступны."},
+    {n:"Оптимум",d:"Claude Pro",lo:1900,hi:2400,s:"Весь пайплайн курса: проект, паспорт, скилл, Claude Design."},
+    {n:"С\u00a0картинками",d:"Claude Pro и\u00a0ChatGPT Plus",lo:3670,hi:4800,s:"Claude для\u00a0процесса, ChatGPT для\u00a0мокапов и\u00a0черновых изображений."}
+  ];
+  let ki=1;const kits=document.getElementById('kits'),m=document.getElementById('m'),mo=document.getElementById('mo');
+  const rub=n=>Math.round(n/100)*100;const sp=n=>n.toLocaleString('ru-RU').replace(/\s/g,' ');
+  function render(){
+    const k=K[ki],n=+m.value;mo.textContent=n;
+    kits.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-checked',i===ki));
+    document.getElementById('sum').textContent=sp(rub(k.lo*n))+'–'+sp(rub(k.hi*n))+' ₽';
+    document.getElementById('sumt').textContent=k.s+' Расчёт по ценам маркетплейсов, за '+n+' мес.';
+  }
+  K.forEach((k,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','radio');
+    b.innerHTML='<b></b><span></span>';b.querySelector('b').textContent=k.n;b.querySelector('span').textContent=k.d+' · '+sp(k.lo)+'–'+sp(k.hi)+' ₽/мес';
+    b.addEventListener('click',()=>{ki=i;render()});kits.append(b);});
+  m.addEventListener('input',render);render();
+})();
+</script>
+
+</body></html>
