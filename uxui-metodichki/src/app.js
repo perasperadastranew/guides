@@ -148,26 +148,24 @@ function zadanie(id){
   var L=D.lessons[id], m=modOf(id); if(!L)return home();
   var T=null; L.sections.forEach(function(s){s.blocks.forEach(function(b){if(b.type==='task'&&!T)T=b})}); if(!T)return lesson(id);
   var k=ORDER.indexOf(id)+(ORDER[0]==='s0'?0:1), num=('0'+k).slice(-2), st=(L.stage&&L.stage.n)||m.stage;
-  var url='https://perasperadastranew.github.io/guides/#/'+id+'/zadanie';
-  var h='<header class="zhead">'+corner('ЗАДАНИЕ К УРОКУ','МОДУЛЬ «'+m.name.toUpperCase()+'»')+
+  var h='<header class="zone">'+corner('ЗАДАНИЕ К УРОКУ','МОДУЛЬ «'+m.name.toUpperCase()+'»')+
     '<div class="hrow"><div class="ztitle"><span class="zkick">Домашнее задание · урок '+num+'</span><h1>'+t(L.title)+'</h1></div><span class="lnum" aria-hidden="true">'+num+'</span></div>'+
-    '<div class="zres"><i>Что должно получиться</i><p>'+t(T.result)+'</p></div></header>';
-  if(T.parts&&T.parts.length){
-    h+='<section>'+corner('01 / МАРШРУТ')+'<h2>Три шага до сдачи</h2><div class="zroute">'+T.parts.map(function(p,i){var ti=String(p.title).replace(/^Часть\s*\d+\.\s*/,'');
-      return '<div class="zstep"><span class="zn">'+('0'+(i+1)).slice(-2)+'</span><b>'+t(ti)+'</b><small>'+(p.steps||[]).length+' '+plural((p.steps||[]).length,'шаг','шага','шагов')+' в методичке</small></div>'}).join('')+'</div></section>';
-    h=h.replace('<h2>Три шага до сдачи</h2>','<h2>'+(T.parts.length===3?'Три шага до сдачи':T.parts.length===2?'Два шага до сдачи':T.parts.length+' '+plural(T.parts.length,'шаг','шага','шагов')+' до сдачи')+'</h2>');
+    '<div class="zres"><i>Что должно получиться</i><p>'+t(T.result)+'</p></div>';
+  if(T.parts&&T.parts.length){var n=T.parts.length;
+    h+='<div class="zpart"><h2>'+(n===2?'Два шага':n===3?'Три шага':n+' '+plural(n,'шаг','шага','шагов'))+' до сдачи</h2><div class="zroute" style="--n:'+n+'">'+T.parts.map(function(p,i){var ti=String(p.title).replace(/^Часть\s*\d+\.\s*/,'');
+      return '<div class="zstep"><span class="zn">'+('0'+(i+1)).slice(-2)+'</span><b>'+t(ti)+'</b></div>'}).join('')+'</div></div>';
   }
   if(T.submit&&T.submit.length){
-    h+='<section>'+corner('02 / ЧТО СДАТЬ',T.submit.length+' '+plural(T.submit.length,'ПУНКТ','ПУНКТА','ПУНКТОВ'))+'<h2>Что сдать</h2><div class="zsub">'+T.submit.map(function(r){
+    h+='<div class="zpart"><h2>Что сдать</h2><div class="zsub">'+T.submit.map(function(r){
       return '<div class="zitem"><span class="zbox" aria-hidden="true"></span><div><b>'+t(r[0])+'</b><p>'+t(r[1])+'</p>'+(r[2]?'<p class="zchk"><i>Как проверяют</i>'+t(r[2])+'</p>':'')+'</div></div>'}).join('')+'</div>'+
-      (T.note?'<div class="zcur"><i>Куратор смотрит первым</i><p>'+t(T.note)+'</p></div>':'')+'</section>';
+      (T.note?'<div class="zcur"><i>Куратор смотрит первым</i><p>'+t(T.note)+'</p></div>':'')+'</div>';
   }
   var how;
   if(id==='s0')how=['Сделай скриншот проекта «Диплом» с паспортом.','Допиши одну строку: какой скилл стоит и когда в календаре слоты на курс.','Отправь скриншот и строку в ответе ниже.'];
   else if(id==='s1')how=['Собери все части задания в одном фрейме в Figma или в одном документе.','Открой доступ по ссылке на комментирование.','Пришли ссылку в ответе ниже.'];
   else how=['Положи результат на страницу «'+ZPAGE[st]+'» в своей копии шаблона в Figma.','Заполни блок «Работа с нейросетью»'+(st===4?', картинкам от нейросети поставь бейдж «Сгенерировано ИИ»':'')+' и поставь статус «На проверке».','Пришли ссылку на файл с доступом на комментирование в ответе ниже.'];
-  h+='<section>'+corner('03 / КАК СДАТЬ')+'<h2>Как сдать</h2><div class="zhow">'+how.map(function(x,i){return '<div class="zh'+(i===how.length-1?' on':'')+'"><span class="zn">'+(i+1)+'</span><p>'+t(x)+'</p></div>'}).join('')+'</div>'+
-    '<a class="zlink" href="'+url+'" target="_blank" rel="noopener"><span>Пошаговая инструкция, самопроверка и «Если застрял»</span><b>Открыть методичку урока →</b></a></section>';
+  h+='<div class="zpart"><h2>Как сдать</h2><div class="zhow">'+how.map(function(x,i){return '<div class="zh'+(i===how.length-1?' on':'')+'"><span class="zn">'+(i+1)+'</span><p>'+t(x)+'</p></div>'}).join('')+'</div>'+
+    '<p class="zmore">Пошаговая инструкция, самопроверка и «Если застрял» — в методичке этого урока, раздел «Задание».</p></div></header>';
   h+='<footer>Perasperadastra · Mission to UX/UI</footer>';
   app.innerHTML=h; document.title='Задание: '+L.title;
 }

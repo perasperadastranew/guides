@@ -400,3 +400,9 @@ section>h2+h3,section>h2+p+h3{margin-top:12px;padding-top:0;border-top:0}
 .zlink b{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:400;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:8px 11px}
 .zlink:hover b{filter:brightness(1.08)}
 @media (max-width:700px){.zroute,.zsub,.zhow{grid-template-columns:minmax(0,1fr)}}
+
+.zone{gap:22px}
+.zone .hrow{align-items:flex-end}
+.zpart{display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--stroke);padding-top:26px;margin-top:6px}
+.zpart h2{font-size:clamp(24px,3.4vw,34px)}
+.zmore{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);max-width:none}
