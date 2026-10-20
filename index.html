@@ -5472,7 +5472,7 @@ function lesson(id){
   secs.forEach(function(s,i){var fr='';if(F&&s.id==='glavnoe')fr='<div class="figrow'+(fk%2?' flip':'')+'"><div class="fig"><span class="fig-read">наведи курсор</span><div class="stage" data-fig="'+F[0]+'" data-label="'+esc(F[2])+'"></div></div><div class="figtext"><b>'+t(F[1])+'</b><p>'+t(F[2])+'</p></div></div>';
     h+='<section id="s-'+s.id+'">'+corner(('0'+(i+1)).slice(-2)+' / '+L.title.toUpperCase())+'<h2>'+t(s.title)+'</h2>'+(s.intro?'<p>'+t(s.intro)+'</p>':'')+s.html+fr+'</section>'});
   h+='<div class="pager">'+(prev?'<a href="#/'+prev+'">← Предыдущий урок<b>'+t(title(prev))+'</b></a>':'<a href="#/">← Оглавление<b>Все методички</b></a>')+(next&&D.lessons[next]?'<a class="next" href="#/'+next+'">Следующий урок →<b>'+t(title(next))+'</b></a>':'<a class="next" href="#/">Оглавление →<b>Все методички</b></a>')+'</div>';
-  h+='<footer>Per Aspera Ad Astra · Mission to UX/UI · примеры приложений приведены как наблюдение со стороны</footer>';
+  h+='<footer>Perasperadastra · Mission to UX/UI · примеры приложений приведены как наблюдение со стороны</footer>';
   app.innerHTML=h; document.title=L.title+': методичка'; if(window.HLmount)HLmount(app);
   var W=document.getElementById('where');if(W){var c=W.querySelector('.col.cur');var c0=W.querySelector('.col');if(c&&c0)W.scrollLeft=Math.max(0,c.offsetLeft-c0.offsetLeft);
     var cols=[].slice.call(W.querySelectorAll('.col')),raf=0,fit=function(){raf=0;var r=W.getBoundingClientRect(),m=0;cols.forEach(function(c){var b=c.getBoundingClientRect();if(b.right>r.left+24&&b.left<r.right-24)m=Math.max(m,c.offsetHeight)});if(m)W.style.height=(m+12)+'px'};
@@ -5488,7 +5488,7 @@ function home(){
     h+='<section>'+corner('МОДУЛЬ '+('0'+(mi+1)).slice(-2),'ЭТАП '+m.stage)+'<h2>'+t(m.name)+'</h2><p>'+t(m.about)+'</p><div class="cards">'+m.lessons.map(function(id){n++;var L=D.lessons[id];
       var F=(D.figs||{})[id];return '<a class="lcard'+(L?'':' off')+(F?' withfig':'')+'" href="#/'+id+'">'+(F?'<div class="micro" data-fig="'+F[0]+'" data-micro="1"></div>':'')+'<span class="n">'+('0'+n).slice(-2)+'</span><span><b>'+t(title(id))+'</b><small>'+t(L?(L.card||''):'готовится')+'</small></span></a>'}).join('')+'</div></section>';
   });
-  h+='<footer>Per Aspera Ad Astra · Mission to UX/UI</footer>';
+  h+='<footer>Perasperadastra · Mission to UX/UI</footer>';
   app.innerHTML=h; document.title='Методички курса'; if(window.HLmount)HLmount(app);
 }
 /* схемы пути: линии-соединители между шагами, перенос строки и подписи развилок */
