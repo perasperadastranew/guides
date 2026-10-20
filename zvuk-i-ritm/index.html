@@ -1,0 +1,1211 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Саунд-дизайн и ритм</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-слайды на чуть более светлом поле, как в остальных методичках школы. Каждый урок собран по одному шаблону: идея, суть, сравнение, инструмент, задание. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e;
+  --line-e:#6a6a6e; --line-m:#47474b; --line-l:#303033;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em;margin-top:14px}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.mono,.corner,th,.kind,.cap,.slot,.lvl,.pair i,.say i,.task i,.q .n,.bars i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+/* светлые панели: уроки чередуются тёмный / светлый, чтобы длинная страница делилась на главы */
+section.light{
+  color-scheme:light;
+  --panel:#f3f3f1; --card:#ffffff; --stroke:#dededa; --well:#e8e8e5;
+  --ink:#121212; --dim:#5c5c59; --faint:#7d7d79;
+  --accent:#d2571f; --accent-ink:#ffffff;
+  --good:#1e9b45; --bad:#d9263a;
+  --line-e:#85857f; --line-m:#b0afa9; --line-l:#d4d3ce;
+  color:var(--dim);
+}
+
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-top:10px}
+nav a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 12px 14px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.2;display:flex;flex-direction:column;gap:22px;min-height:104px;justify-content:space-between}
+nav a::before{content:attr(data-n);font-family:var(--mono);font-size:12px;color:var(--dim);background:#262626;border-radius:6px;padding:5px 7px;align-self:flex-start}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+
+/* сравнения плохо / хорошо */
+.pairs{display:flex;flex-direction:column;gap:8px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+.pair small,.why{font-size:14px;line-height:1.4}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch}
+.why b{font-weight:400}
+
+/* воронка */
+.funnel{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.funnel a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;text-decoration:none}
+.funnel a:hover,.funnel a:focus-visible{border-color:var(--accent);outline:none}
+.funnel b{font-size:17px;font-weight:400}
+.funnel small{font-size:13px;line-height:1.3;color:var(--dim)}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+td .lvl{color:var(--accent);display:block;margin-bottom:3px}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul,.box ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+.bars{display:flex;flex-direction:column;gap:10px}
+.bars .row{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:14px;align-items:center}
+.bars .row span{color:var(--ink);font-size:16px;line-height:1.2}
+.bars .track{display:flex;align-items:center;gap:10px;min-width:0}
+.bars .bar{height:34px;border-radius:8px;background:var(--well);min-width:6px}
+.bars .row.on .bar{background:var(--accent)}
+.bars b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+dl{margin:0;display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);border-top:1px solid var(--stroke)}
+dt,dd{margin:0;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:16px}
+dt{color:var(--ink);padding-right:14px}
+
+/* готовая фраза */
+.say{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.say i{color:var(--accent)}
+.say span{color:var(--ink);font-size:17px;line-height:1.4;max-width:62ch}
+.says{display:flex;flex-direction:column;gap:8px}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.45;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* задание в конце урока */
+.task{border:1px solid var(--accent);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+.slot{border:1px dashed var(--faint);border-radius:8px;padding:10px 12px;line-height:1.5}
+
+
+
+
+
+
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden}
+.fig .stage{aspect-ratio:5/4;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+.micro{aspect-ratio:16/10;pointer-events:none;--hairline-plate:var(--card);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.micro svg{overflow:visible}
+.micro svg g.lift{transition:transform .7s cubic-bezier(.32,.72,0,1)}
+.funnel a:hover .micro g.lift,.funnel a:focus-visible .micro g.lift,.head:hover .micro g.lift{transform:translateY(-14px)}
+@media (prefers-reduced-motion:reduce){.micro svg g.lift{transition:none}}
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.2}
+.figtext p{font-size:16px}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.head h2{flex:1 1 0;min-width:0}
+.head .micro{flex:0 0 190px;width:190px;margin-top:-34px;--hairline-plate:var(--panel)}
+@media (max-width:760px){.head .micro{flex-basis:112px;width:112px;margin-top:0}}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+/* квиз */
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.q .exp b{font-weight:400}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:18px 16px 24px}
+  .pair,.two,.three,.four{grid-template-columns:minmax(0,1fr)}
+  .bars .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl{grid-template-columns:minmax(0,1fr)} dt{border-bottom:0;padding-bottom:0}
+}
+
+/* воздух: больше полей у панелей, пауза и тонкая линия перед каждым подразделом */
+.wrap{gap:20px}
+header,section{padding:34px 44px 60px;gap:24px}
+.corner{margin-bottom:60px}
+section h3{margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.head{padding-bottom:14px}
+.quote{margin-bottom:10px}
+.figrow{padding:20px;gap:32px}
+.task{margin-top:44px;padding:26px}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:36px}
+  section h3{margin-top:26px;padding-top:22px}
+  .task{margin-top:28px;padding:18px}
+}
+
+/* композиция: контурный номер урока, подзаголовок сбоку у узких блоков и сверху у широких, иллюстрации то слева, то справа */
+.head{align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .micro{flex:0 0 300px;width:300px;margin-top:0}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+section .sub h3{margin:0;padding:0;border:0;position:sticky;top:20px}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+.figrow.flip{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
+.figrow.flip .fig{order:2}
+@media (max-width:760px){
+  .head{align-items:flex-end;gap:14px}
+  .head .micro{flex-basis:118px;width:118px}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:26px;padding-top:22px}
+  section .sub h3{position:static}
+  .figrow.flip{grid-template-columns:minmax(0,1fr)}
+  .figrow.flip .fig{order:0}
+}
+</style>
+
+<style>
+:root{--line2:#5b8def}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--dim);max-width:70ch}
+.kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--stroke);border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--ink);white-space:nowrap}
+.snd-note{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.4;max-width:640px;color:var(--ink)}
+.snd-note svg{width:20px;height:20px;flex:0 0 auto;color:var(--accent)}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--well);border:1px solid var(--stroke);border-radius:9px;padding:3px;gap:2px}
+.seg button{background:transparent;border:0;color:var(--dim);border-radius:7px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.demo-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.demo-top b{font-size:18px;font-weight:400;color:var(--ink)}
+.demo-bot{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.demo-bot .hint{flex:1 1 260px}
+.cv{display:block;width:100%;border-radius:8px;background:var(--panel)}
+.cv.st{aspect-ratio:16/7}
+.cv.trkc{height:100%;background:transparent;border-radius:0}
+.trk{width:100%}
+.cv.wave{height:90px}
+.cv.lv{height:150px}
+.cv.bars{height:110px}
+.cv.sfw{height:38px;background:transparent}
+.playb{background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:10px 18px;font-weight:500;font-size:15px;white-space:nowrap}
+.playb:hover{filter:brightness(1.08)}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.tg{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);cursor:pointer}
+.tg input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
+.sl{display:flex;flex-direction:column;gap:2px;min-width:170px;flex:1 1 170px;font-size:13px;color:var(--dim)}
+.sl span{display:flex;justify-content:space-between;gap:8px}
+.sl output{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.rng{width:100%;accent-color:var(--accent)}
+.layers{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sfx{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.sfc{text-align:left;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;color:var(--dim);font-weight:400;min-width:0;transition:border-color .15s}
+.sfc:hover,.sfc.on{border-color:var(--accent)}
+.sfc-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sfc-h b{font-size:17px;font-weight:400;color:var(--ink)}
+.sfc-p{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:10px;flex:0 0 auto}
+.sfc-r{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.sfc-w{font-size:14px;line-height:1.35;color:var(--ink)}
+.sfc-t{font-size:13px;line-height:1.35}
+.mini{background:var(--accent);color:var(--accent-ink);border:0;border-radius:50%;width:30px;height:30px;font-size:11px;padding:0}
+table.combo td:last-child{width:40px;text-align:right}
+.bpm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.bpm button{text-align:left;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;color:var(--dim);font-weight:400;font-size:14px}
+.bpm button b{font-family:var(--display);font-size:22px;font-weight:400;color:var(--ink)}
+.bpm button::before{content:"▶ Послушать";font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--accent)}
+.bpm button.on{border-color:var(--accent)} .bpm button.on::before{content:"■ Играет"}
+.lib{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:start}
+.lib-tree{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:13px;color:var(--ink);white-space:pre}
+.lib-tree .a{color:var(--accent)}
+.lib-t{display:flex;flex-direction:column;gap:10px}
+.chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;counter-reset:c}
+.chain>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative;min-width:0}
+.chain>div:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:14px;color:var(--accent);font-size:14px;z-index:1}
+.chain i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--accent)}
+.chain b{font-size:16px;font-weight:400;color:var(--ink)} .chain span{font-size:13px;line-height:1.35}
+.errs{display:flex;flex-wrap:wrap;gap:6px}
+.errs span{border:1px solid var(--bad);border-radius:999px;padding:6px 12px;font-size:14px;color:var(--ink)}
+@media (max-width:860px){.layers{grid-template-columns:repeat(2,minmax(0,1fr))}.chain{grid-template-columns:minmax(0,1fr)}.chain>div::after{display:none}.bpm{grid-template-columns:minmax(0,1fr)}.lib{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){.cv.st{aspect-ratio:16/10}}
+/* нейронка */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+.tpl table{min-width:820px;font-size:14px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+ГАЙД ДЛЯ СТУДЕНТОВ</span><span>MISSION TO MOTION
+7 ЧАСТЕЙ, ЗАДАНИЕ И КВИЗ</span></div>
+  <h1>Саунд-дизайн и&nbsp;ритм</h1>
+  <p class="lead"><b>Как звук и монтаж делают ролик живым.</b> Слои звука, словарь эффектов, подводка к главной мысли, визуальный ритм и сведение. Все примеры звучат прямо на странице.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <div class="snd-note"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-4v12l-4-4H3z" fill="currentColor"/><path d="M13 7c1.3 1.6 1.3 4.4 0 6M15.5 5c2.6 3 2.6 7 0 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Включи звук, лучше в наушниках. Все звуки сгенерированы в браузере, поэтому они проще библиотечных, зато показывают суть.</span></div>
+  <nav aria-label="Разделы">
+    <a href="#start" data-n="00">Зачем звук</a><a href="#u1" data-n="01">Слои звука</a><a href="#u2" data-n="02">Словарь эффектов</a><a href="#u3" data-n="03">Подводка к мысли</a><a href="#u4" data-n="04">Визуальный ритм</a><a href="#u5" data-n="05">Сборка и библиотека</a><a href="#u6" data-n="06">Сведение и техника</a><a href="#u7" data-n="07">Нейронка и задание</a><a href="#quiz" data-n="08">Квиз</a>
+  </nav>
+</header>
+
+<section id="start">
+<div class="corner"><span>PERASPERADASTRA
+САУНД-ДИЗАЙН</span><span>ЗАЧЕМ ЗВУК</span></div>
+  <h2>Звук дорисовывает то, чего нет в кадре</h2>
+  <p class="quote">Анимация может быть отличной, но без звука она ощущается недоделанной.</p>
+  <p>Звук — не украшение поверх картинки, а такая же единица информации. Иногда он несёт действие, которого в кадре вообще нет. Картинка просто появляется склейкой, без анимации, и это скучно. Добавь в момент появления щелчок, и кажется, что её кто-то поставил: сработал механизм. Анимации не стало больше, а динамика появилась.</p>
+  <div class="demo" id="d-click">
+    <div class="demo-top"><b>Одна склейка, два варианта</b><div class="seg" role="group" aria-label="Вариант"><button type="button" data-v="0">Без звука</button><button type="button" data-v="1" aria-pressed="true">Со щелчком</button></div></div>
+    <canvas class="cv st" aria-label="Карточки появляются склейкой"></canvas>
+    <div class="demo-bot"><button class="playb" type="button" data-play>▶ Смотреть</button><span class="hint">Правильный звук вытягивает даже средненькое движение.</span></div>
+  </div>
+  <div class="three">
+    <div class="box"><span class="kind">Хорошая новость</span><p>Саунд-дизайн — навык довольно механический. Успех во многом зависит от того, знаешь ли ты, какие бывают звуки и как они называются.</p></div>
+    <div class="box"><span class="kind">Почему названия</span><p>Знаешь название — понимаешь, что вбить в поиск. Не знаешь — мучаешься, пытаясь описать словами то, что слышишь в голове.</p></div>
+    <div class="box"><span class="kind">Признак хорошей работы</span><p>Зритель не замечает звук отдельно от картинки. Он просто чувствует, что ролик живой.</p></div>
+  </div>
+</section>
+
+<section id="u1">
+<div class="corner"><span>PERASPERADASTRA
+САУНД-ДИЗАЙН</span><span>ЧАСТЬ 01
+СЛОИ ЗВУКА</span></div>
+  <div class="head"><h2>Из чего состоит звук ролика</h2></div>
+  <p class="quote">Звук ролика — не одна дорожка, а несколько слоёв.</p>
+  <p>Научись слышать слои по отдельности, и собирать станет сильно проще.</p>
+
+  <h3>Пять слоёв</h3>
+  <div class="layers">
+    <div class="box"><span class="kind">Речь</span><b>Смысл</b><p>Озвучка, диктор, реплики, интервью.</p></div>
+    <div class="box"><span class="kind">Музыка</span><b>Эмоция и ритм</b><p>Часто именно под неё подгоняется весь монтаж.</p></div>
+    <div class="box"><span class="kind">Эффекты</span><b>Акценты</b><p>Удар, появление объекта, переход, клик.</p></div>
+    <div class="box"><span class="kind">Атмосфера</span><b>Пространство</b><p>Гул города, шум комнаты, ветер. Без неё ролик звучит стерильно, как в вакууме.</p></div>
+    <div class="box hot"><span class="kind">Тишина</span><b>Контраст</b><p>Один из самых сильных слоёв. Пауза перед ударом делает удар сильнее.</p></div>
+  </div>
+
+  <h3>Микшер: собери сцену по слоям</h3>
+  <div class="demo" id="d-mix">
+    <div class="demo-top"><b>Восемь секунд ролика</b><span class="mono" data-t>0.0 с</span></div>
+    <canvas class="cv st" aria-label="Сцена: текст, карточка, логотип"></canvas>
+    <div class="trk" data-trk></div>
+    <div class="ctrls">
+      <label class="tg"><input type="checkbox" data-l="music" checked> Музыка</label>
+      <label class="tg"><input type="checkbox" data-l="sfx" checked> Эффекты</label>
+      <label class="tg"><input type="checkbox" data-l="amb" checked> Атмосфера</label>
+      <label class="tg"><input type="checkbox" data-l="silence" checked> Тишина перед ударом</label>
+    </div>
+    <div class="demo-bot"><button class="playb" type="button" data-play>▶ Играть</button><span class="hint">Выключай слои по одному. Без эффектов сцена плоская, без атмосферы пустая, без тишины удар логотипа слабее.</span></div>
+  </div>
+  <div class="note"><b>Про тишину</b><p>Прямая аналогия с композицией. В дизайне негативное пространство вокруг объекта делает объект заметным. В звуке так же: момент, где всё стихает, выделяется не хуже, чем момент, где всё гремит. Самый мощный приём — оборвать весь звук за несколько кадров до события. Тишина, а потом удар.</p></div>
+  <div class="pair">
+    <div class="bad"><i>Новички</i><span>Заполняют звуком каждую секунду: кажется, чем плотнее, тем богаче.</span><small>Когда звучит всё, не выделяется ничего.</small></div>
+    <div class="good"><i>Профи</i><span>Меньше звуков, но в нужных местах, с паузами между акцентами.</span><small>Слух отдыхает и замечает каждый акцент.</small></div>
+  </div>
+</section>
+
+<section id="u2">
+<div class="corner"><span>PERASPERADASTRA
+САУНД-ДИЗАЙН</span><span>ЧАСТЬ 02
+СЛОВАРЬ ЭФФЕКТОВ</span></div>
+  <div class="head"><h2>Словарь звуковых эффектов</h2></div>
+  <p class="quote">Знаешь, как называется звук, — знаешь, что искать.</p>
+  <p>Основные типы эффектов. Нажми на карточку, чтобы услышать. Под названием форма волны: по ней видно, как звук развивается во времени. Удар — резкий пик и хвост, райзер — растущий клин, вуш — плавный горб.</p>
+
+  <h3>Типы эффектов</h3>
+  <div class="sfx" id="sfx"></div>
+
+  <h3>Как сочетать</h3>
+  <div class="scroll"><table class="combo">
+    <thead><tr><th>Что в кадре</th><th>Звук</th><th>Зачем</th><th></th></tr></thead>
+    <tbody>
+      <tr><td>Переход сцены</td><td>Whoosh + Impact</td><td>Энергия, связка</td><td><button class="mini" type="button" data-combo="whoosh:0,impact:.45">▶</button></td></tr>
+      <tr><td>Текст появляется</td><td>Pop + короткий Riser</td><td>Акцент</td><td><button class="mini" type="button" data-combo="riser:0:.6,pop:.6">▶</button></td></tr>
+      <tr><td>Камера двигается</td><td>Spin + Whoosh</td><td>Пространство</td><td><button class="mini" type="button" data-combo="spin:0,whoosh:.3">▶</button></td></tr>
+      <tr><td>UI-анимация</td><td>Hover + Click + Confirm</td><td>Ощущение интерактива</td><td><button class="mini" type="button" data-combo="hover:0,click:.35,confirm:.5">▶</button></td></tr>
+      <tr><td>Кульминация</td><td>Riser + Impact</td><td>Пик эмоции</td><td><button class="mini" type="button" data-combo="riser:0:1.6,impact:1.6">▶</button></td></tr>
+      <tr><td>Коллаж, бумага</td><td>Paper + Ambience</td><td>Аналоговое ощущение</td><td><button class="mini" type="button" data-combo="ambience:0,paper:.6">▶</button></td></tr>
+      <tr><td>Сбой, глитч</td><td>Glitch + Sub</td><td>Неожиданность</td><td><button class="mini" type="button" data-combo="glitch:0,sub:.35">▶</button></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Из одного звука — другой</h3>
+  <div class="demo" id="d-bend">
+    <div class="demo-top"><b>Изменение и наслоение</b></div>
+    <div class="ctrls">
+      <div class="seg" role="group" aria-label="Исходный звук"><button type="button" data-src="whoosh" aria-pressed="true">Whoosh</button><button type="button" data-src="impact">Impact</button><button type="button" data-src="riser">Riser</button></div>
+      <label class="sl"><span>Питч <output data-o>1.0×</output></span><input class="rng" type="range" min="40" max="200" value="100" data-pitch></label>
+      <label class="tg"><input type="checkbox" data-rev> Задом наперёд</label>
+    </div>
+    <canvas class="cv wave" aria-label="Форма волны"></canvas>
+    <div class="demo-bot"><button class="playb" type="button" data-play>▶ Слушать</button><span class="hint" data-bh>Опусти питч — вуш станет тяжелее и мрачнее. Подними — лёгким и быстрым. Разверни удар задом наперёд — получится райзер.</span></div>
+  </div>
+  <div class="two">
+    <div class="box"><span class="kind">Наслоение</span><p>Мощные импакты почти никогда не один файл: кладут два-три звука друг на друга. Но два низких звука спорят и дают кашу. Бери один низкий и один высокий — разводи по частотам. Думай не «какие звуки прикольные», а «какие не мешают друг другу».</p></div>
+    <div class="box"><span class="kind">Вывод</span><p>Не нужна библиотека на десять тысяч файлов. Нужно полсотни хороших звуков и умение их крутить: питч, реверс, обрезка.</p></div>
+  </div>
+</section>
+
+<section id="u3">
+<div class="corner"><span>PERASPERADASTRA
+САУНД-ДИЗАЙН</span><span>ЧАСТЬ 03
+ПОДВОДКА К МЫСЛИ</span></div>
+  <div class="head"><h2>Подводка к главной мысли</h2></div>
+  <p class="quote">Зритель должен почувствовать, что сейчас будет важное, ещё до того, как это прозвучит.</p>
+  <p>Главная мысль ролика не должна появляться «просто так». Перед ней звук и картинка вместе нагнетают ожидание, а потом разряжаются в акцент. Сравни три версии одной сцены.</p>
+
+  <h3>Три версии одного акцента</h3>
+  <div class="demo" id="d-lead">
+    <div class="demo-top"><b>«Главное — смысл»</b><div class="seg" role="group" aria-label="Версия"><button type="button" data-v="0">Без подводки</button><button type="button" data-v="1">Райзер и удар</button><button type="button" data-v="2" aria-pressed="true">Райзер, тишина, удар</button></div></div>
+    <canvas class="cv st" aria-label="Сцена с ключевым словом"></canvas>
+    <div class="trk" data-trk></div>
+    <div class="demo-bot"><button class="playb" type="button" data-play>▶ Играть</button><span class="hint" data-lh></span></div>
+  </div>
+
+  <h3>Как подвести звуком</h3>
+  <ol class="steps">
+    <li><div><div class="t">Нагнетай райзером</div><div class="d">Нарастающий звук за 1–3 секунды до события создаёт напряжение. Хорошо работает с лёгким сабом снизу.</div></div></li>
+    <li><div><div class="t">Оборви всё перед ударом</div><div class="d">За несколько кадров до ключевого слова убери музыку и эффекты. Тишина — это вдох перед акцентом.</div></div></li>
+    <li><div><div class="t">Поставь акцент</div><div class="d">Impact или резкий возврат музыки ровно на ключевом слове, лучше на кадр раньше: ухо реагирует быстрее глаза.</div></div></li>
+    <li><div><div class="t">Дай выдохнуть</div><div class="d">После пика нужна пауза или спокойный кадр, чтобы мысль успела осесть.</div></div></li>
+  </ol>
+
+  <h3>Как подвести картинкой</h3>
+  <div class="four">
+    <div class="box"><span class="kind">Приближение</span><p>Медленный наезд камеры к центру кадра сужает внимание к будущему акценту.</p></div>
+    <div class="box"><span class="kind">Ускорение склеек</span><p>Кадры становятся короче к кульминации, как у Нолана в «Начале».</p></div>
+    <div class="box"><span class="kind">Пустой кадр</span><p>Чистый фон или одно слово перед главным. Визуальная тишина, как пауза в звуке.</p></div>
+    <div class="box"><span class="kind">Замирание</span><p>Движение замедляется или стопорится на долю секунды перед ударом.</p></div>
+  </div>
+  <div class="note"><b>Звук на кадр раньше события</b><p>Кажется, что звук должен точно совпадать с моментом в кадре. На практике лучше сдвинуть его на кадр назад: звук, поставленный ровно в кадр, часто ощущается опоздавшим. Проверь на своём ролике.</p></div>
+  <div class="pair">
+    <div class="bad"><i>Дублирует</i><span>Громкий whoosh под каждый объект, который и так двигается в кадре.</span><small>Звук повторяет картинку и утомляет.</small></div>
+    <div class="good"><i>Подчёркивает</i><span>Звук там, где зрителю нужна подсказка: смена сцены, важная фраза, эмоциональный переход.</span><small>Звук ведёт внимание к смыслу.</small></div>
+  </div>
+  <div class="task"><i>Задание</i><b>Подведи к одной мысли</b><p>Найди в своём ролике главную фразу. Собери перед ней подводку: райзер, обрыв звука за 4–6 кадров и акцент. Добавь визуальную подводку — наезд, ускорение склеек или пустой кадр. Сравни с версией без подводки.</p></div>
+</section>
+
+<section id="u4">
+<div class="corner"><span>PERASPERADASTRA
+САУНД-ДИЗАЙН</span><span>ЧАСТЬ 04
+ВИЗУАЛЬНЫЙ РИТМ</span></div>
+  <div class="head"><h2>Визуальный ритм</h2></div>
+  <p class="quote">Если сценарий — логика, то монтаж — пульс.</p>
+  <p>Визуальный ритм — закономерность чередования элементов во времени и в кадре. Ритм не равен скорости: медленный ролик тоже может быть живым. Важнее соотношение длинных и коротких фраз.</p>
+  <div class="three">
+    <div class="box"><span class="kind">01</span><b>Длительность кадров</b><p>Сколько держится каждый план.</p></div>
+    <div class="box"><span class="kind">02</span><b>Движение внутри</b><p>Даже статичный кадр ритмичен за счёт композиции, света, появления текста.</p></div>
+    <div class="box"><span class="kind">03</span><b>Паузы</b><p>Затишья между событиями дают зрителю осознать.</p></div>
+  </div>
+
+  <h3>Послушай ритм монтажа</h3>
+  <div class="demo" id="d-rhythm">
+    <div class="demo-top"><b>Восемь склеек</b><div class="seg" role="group" aria-label="Ритм"><button type="button" data-r="mono">Монотонно</button><button type="button" data-r="grow" aria-pressed="true">Нарастание</button><button type="button" data-r="breath">Дыхание</button></div></div>
+    <canvas class="cv st" aria-label="Смена кадров"></canvas>
+    <canvas class="cv bars" aria-label="Длительность кадров и кривая темпа"></canvas>
+    <div class="demo-bot"><button class="playb" type="button" data-play>▶ Играть</button><span class="hint" data-rh></span></div>
+  </div>
+
+  <h3>Граф темпа</h3>
+  <p>Разбей ролик по секундам и нарисуй кривую: от медленного начала к быстрому пику и мягкому завершению.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Этап</th><th>Время</th><th>Ритм</th><th>Задача</th></tr></thead>
+    <tbody>
+      <tr><td>Завязка</td><td>0:00–0:15</td><td>Медленный, стабильный</td><td>Ввод, знакомство</td></tr>
+      <tr><td>Развитие</td><td>0:15–0:45</td><td>Средний, нарастающий</td><td>Интерес</td></tr>
+      <tr><td>Кульминация</td><td>0:45–1:10</td><td>Быстрый, плотный</td><td>Энергия, драйв</td></tr>
+      <tr><td>Развязка</td><td>1:10–1:30</td><td>Замедление</td><td>Финал, акцент, тишина</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Темп музыки</h3>
+  <div class="bpm" id="d-bpm">
+    <button type="button" data-bpm="75"><b>до 80 bpm</b><span>Спокойный, медитативный</span></button>
+    <button type="button" data-bpm="110"><b>100–120 bpm</b><span>Динамичный, удобный для рассказа</span></button>
+    <button type="button" data-bpm="145"><b>140+ bpm</b><span>Драйв, спорт, экшен</span></button>
+  </div>
+  <p class="why">Потерял ощущение темпа — поставь трек и нарежь по биту, потом адаптируй визуал. Удары удобно ловить по форме аудиоволны на таймлайне.</p>
+
+  <h3>Принципы</h3>
+  <div class="three">
+    <div class="box"><span class="kind">Чередуй длину</span><p>После трёх коротких планов поставь один длинный. Это сбивает монотонность и даёт передохнуть.</p></div>
+    <div class="box"><span class="kind">Амплитуда</span><p>После яркого движения — тишина. После паузы — вспышка.</p></div>
+    <div class="box"><span class="kind">Дыши после пика</span><p>После кульминации дай зрителю время осознать.</p></div>
+  </div>
+  <dl>
+    <dt>Монтаж как музыка</dt><dd>Длинные кадры — бас, короткие — ударные, паузы — такт. Хороший ролик звучит даже без звука.</dd>
+    <dt>Как театр</dt><dd>Эмоциональные пики чередуются с тишиной. Без контраста зритель перестаёт чувствовать.</dd>
+    <dt>Как архитектура</dt><dd>Ритм строится из пропорций. Если всё одинаково, получается монотонная стена.</dd>
+  </dl>
+  <div class="task"><i>Задание</i><b>Три ритма и кривая</b><p>Собери видеоряд на 15–20 секунд в трёх ритмах: медленный и атмосферный, динамичный и резкий, сбалансированный с паузами и акцентами. Потом возьми минутный рекламный ролик и нарисуй его ритмическую кривую.</p></div>
+</section>
+
+<section id="u5">
+<div class="corner"><span>PERASPERADASTRA
+САУНД-ДИЗАЙН</span><span>ЧАСТЬ 05
+СБОРКА И БИБЛИОТЕКА</span></div>
+  <div class="head"><h2>Сборка по проходам и своя библиотека</h2></div>
+  <p class="quote">Одна категория за один проход.</p>
+  <p>Со словарём категорий саунд-дизайн становится механическим процессом. Вместо хаотичной сборки идёшь по ролику несколько раз, каждый раз с одной задачей в голове.</p>
+
+  <h3>Пять проходов</h3>
+  <ol class="steps">
+    <li><div><div class="t">Музыка и речь</div><div class="d">Сначала основа: озвучка и трек. Под них настраивается всё остальное.</div></div></li>
+    <li><div><div class="t">Вуши</div><div class="d">Смотришь только на движения и переходы и расставляешь пролёты.</div></div></li>
+    <li><div><div class="t">Импакты</div><div class="d">Только акценты и удары: появление логотипа, жёсткая смена кадра.</div></div></li>
+    <li><div><div class="t">Райзеры и тишина</div><div class="d">Ищешь места для нагнетания и обрывов перед акцентами.</div></div></li>
+    <li><div><div class="t">Атмосфера и мелочи</div><div class="d">Фон, клики, UI-звуки, текстуры.</div></div></li>
+  </ol>
+  <div class="note"><b>Своя дорожка на каждую категорию</b><p>Вуши, удары, музыка, атмосфера — на отдельных аудиодорожках. На таймлайне сразу видна структура, любой слой можно приглушить или отключить целиком.</p></div>
+
+  <h3>Где искать звуки</h3>
+  <dl>
+    <dt>Бесплатно</dt><dd>Freesound, наборы на YouTube, бесплатные паки по запросу «тип звука + pack», например на Zapsplat.</dd>
+    <dt>По подписке</dt><dd>Artlist — музыка и эффекты, Soundsnap — только эффекты.</dd>
+    <dt>Паки, которые любим</dt><dd>MotionPulse от Video Copilot: около двух тысяч звуков в пяти библиотеках, специально сведённых для наслоения. Hollywood Edge, серия Premiere Edition: классика киношного звука, фоли, комнатные тоны, шаги, ткань.</dd>
+    <dt>Нейросеть</dt><dd>Слышишь звук в голове, но не знаешь названия — опиши его нейросети подробно. Она подскажет термин для поиска. Промпт — в части 07.</dd>
+    <dt>Запиши сам</dt><dd>Почёсывание руки, предмет по столу, мышка по коврику ищутся двадцать минут, а записываются за минуту. И ни у кого больше таких нет.</dd>
+  </dl>
+
+  <h3>Своя библиотека</h3>
+  <div class="lib">
+    <div class="lib-tree mono-block">
+<span>Sound design/</span>
+<span>  01 MotionPulse/</span>
+<span>  02 Hollywood Edge/</span>
+<span>  03 Free packs/</span>
+<span class="a">  Whoosh/</span>
+<span class="a">  Impact/</span>
+<span class="a">  Riser/</span>
+<span class="a">  UI/</span>
+<span class="a">  Мои записи/</span></div>
+    <div class="lib-t"><p>Паки отсортированы по важности нумерацией в названии: то, чем пользуешься чаще всего, — 01. Рядом папки под конкретные типы. Звучит примитивно, но нужный звук находится за секунды.</p><p>Через год-два в коллекции появятся фавориты. Из них постепенно складывается твой собственный стиль саунд-дизайна.</p></div>
+  </div>
+</section>
+
+<section id="u6">
+<div class="corner"><span>PERASPERADASTRA
+САУНД-ДИЗАЙН</span><span>ЧАСТЬ 06
+СВЕДЕНИЕ И ТЕХНИКА</span></div>
+  <div class="head"><h2>Сведение и техника</h2></div>
+  <p class="quote">В каждый момент фокус должен быть на чём-то одном.</p>
+  <p>Сведение — это чтобы все слои звучали вместе и не мешали друг другу. Речь, музыка или эффекты: что-то одно главное. На двух вещах ещё можно, на трёх внимание рассеивается.</p>
+
+  <h3>Иерархия и ducking</h3>
+  <div class="demo" id="d-duck">
+    <div class="demo-top"><b>Речь поверх музыки</b><div class="seg" role="group" aria-label="Вариант"><button type="button" data-v="0">Всё одинаково громко</button><button type="button" data-v="1" aria-pressed="true">Музыка уходит под речь</button></div></div>
+    <canvas class="cv lv" aria-label="Уровни музыки и речи"></canvas>
+    <div class="demo-bot"><button class="playb" type="button" data-play>▶ Играть</button><span class="hint">Речь здесь сымитирована «бормотанием». Слушай, насколько проще её разобрать, когда музыка притихает.</span></div>
+  </div>
+  <div class="two">
+    <div class="box"><span class="kind">Уровни</span><p>Речь грузится в проект первой и настраивается первой: пики примерно от −12 до −1 дБ. Остальное — музыка, эффекты, атмосфера — на слух под речь. Здесь решают не децибелы, а частоты.</p></div>
+    <div class="box"><span class="kind">Ducking в Premiere</span><p>Essential Sound: дорожка с озвучкой — Dialogue, с музыкой — Music. У музыки включи Ducking и нажми Generate Keyframes. Premiere сам приглушит музыку там, где идёт речь.</p></div>
+  </div>
+
+  <h3>Эквалайзер</h3>
+  <div class="demo" id="d-eq">
+    <div class="demo-top"><b>Один трек, три фильтра</b><div class="seg" role="group" aria-label="Фильтр"><button type="button" data-f="none" aria-pressed="true">Без фильтра</button><button type="button" data-f="hp">High pass · телефон</button><button type="button" data-f="lp">Low pass · за стеной</button></div></div>
+    <canvas class="cv lv" aria-label="Частотная кривая"></canvas>
+    <div class="demo-bot"><button class="playb" type="button" data-play>▶ Играть</button><span class="hint">High pass срезает низы — звук как из телефона. Low pass срезает верха — как у соседей за стеной.</span></div>
+  </div>
+  <p class="why">В сведении за разборчивость голоса отвечает область 2–5 кГц: там согласные и артикуляция. Если музыка плотная в этих частотах, немного убавь их эквалайзером у музыки.</p>
+
+  <h3>Расстояние и фейды</h3>
+  <div class="two">
+    <div class="demo" id="d-verb">
+      <div class="demo-top"><b>Реверб</b></div>
+      <p class="hint">Близкие звуки сухие и чёткие, дальние — с хвостом реверберации. Крупные объекты — низкие частоты, лёгкие — высокие.</p>
+      <div class="ctrls"><button class="playb" type="button" data-d="0">▶ Близко</button><button class="playb" type="button" data-d="1">▶ Далеко</button></div>
+    </div>
+    <div class="demo" id="d-fade">
+      <div class="demo-top"><b>Фейды</b></div>
+      <p class="hint">Резкое начало или обрыв дают щелчок на стыке. Лечится фейдом в несколько кадров. В Premiere: выдели все клипы и нажми <span class="kbd">Ctrl+Shift+D</span>.</p>
+      <div class="ctrls"><button class="playb" type="button" data-f="0">▶ Без фейда</button><button class="playb" type="button" data-f="1">▶ С фейдом</button></div>
+    </div>
+  </div>
+
+  <h3>Эффекты обработки</h3>
+  <dl>
+    <dt>Эквалайзер</dt><dd>Управляет частотами. Самый нужный инструмент в сведении.</dd>
+    <dt>Компрессор</dt><dd>Подтягивает тихие места и приглушает громкие. Ролик смотрят с телефона в метро или на кухне, и всё тихое там просто не существует.</dd>
+    <dt>Реверб</dt><dd>Пространство и расстояние.</dd>
+    <dt>Delay</dt><dd>Эхо. Акцент на переходах; очень короткая задержка в несколько миллисекунд делает голос шире.</dd>
+    <dt>Сатурация</dt><dd>Плотность и характер, лёгкая грязь. Оживляет стерильные синтетические звуки.</dd>
+  </dl>
+  <p class="why">Встроенными эффектами Adobe удобно начинать. Если решишь заниматься звуком всерьёз, поставь пакет FabFilter: Pro-Q, Pro-C, Pro-DS.</p>
+
+  <h3>Цепочка обработки голоса</h3>
+  <div class="chain">
+    <div><i>1</i><b>Шумодав</b><span>Гул компьютера, кондиционер, улица. Например, Waves Clarity Vx на нейросети.</span></div>
+    <div><i>2</i><b>Гейт</b><span>Закрывает звук в паузах между фразами.</span></div>
+    <div><i>3</i><b>De-click и de-esser</b><span>Причмокивания, щелчки языком, резкие «с» и «ш».</span></div>
+    <div><i>4</i><b>Эквалайзер</b><span>High pass по самым низам, подчистка бубнящих и резких частот.</span></div>
+    <div><i>5</i><b>Компрессор</b><span>Ровная громкость речи.</span></div>
+  </div>
+  <p class="why">Собрал цепочку — сохрани пресет и накидывай на новую озвучку одним кликом. Без плагинов голос можно почистить в Adobe Podcast, функция Enhance Speech.</p>
+
+  <h3>Техническая база</h3>
+  <dl>
+    <dt>48 кГц</dt><dd>Стандарт частоты дискретизации для видео. Не конвертируй готовый материал из одной частоты в другую без причины.</dd>
+    <dt>24 бита</dt><dd>Записывай и работай в 24 битах: большой запас, промах с уровнем можно спасти.</dd>
+    <dt>Моно и стерео</dt><dd>Голос — моно и по центру. Эффекты и атмосфера живут в стерео.</dd>
+    <dt>Громкость</dt><dd>Ориентир для финального микса: около −14 LUFS для YouTube, −16 LUFS для соцсетей.</dd>
+    <dt>Экспорт</dt><dd>WAV или AIFF для мастера, MP3 для предпросмотра.</dd>
+    <dt>Проверка</dt><dd>Наушники, колонки и телефон. Смотреть будут с телефона, а там низов почти нет.</dd>
+  </dl>
+
+  <h3>Частые ошибки</h3>
+  <div class="errs">
+    <span>Музыка забивает речь</span><span>Эффекты ради эффектов</span><span>Нет пауз, сплошная стена</span><span>Всё на одной громкости</span><span>Резкие обрывы без фейдов</span><span>Перегруз, шкала упирается в потолок</span>
+  </div>
+</section>
+
+<section id="u7">
+<div class="corner"><span>PERASPERADASTRA
+САУНД-ДИЗАЙН</span><span>ЧАСТЬ 07
+НЕЙРОНКА И ЗАДАНИЕ</span></div>
+  <div class="head"><h2>В паре с нейронкой</h2></div>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Раскадровка, тайминг, жанр ролика. Без них ответ будет общим.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Нейронка уточняет и ждёт ответа, а не выдаёт готовую партитуру.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Звуки выбираешь и слушаешь сам. Нейронка помогает с названиями и проверкой.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Промпт · поиск звука</span><b>Найти название звука</b>
+<pre id="ai-1">Я моушн-дизайнер и ищу звуковой эффект, но не знаю, как он называется.
+Как он звучит: <em>[опиши звук как можно подробнее: на что похож, длина, высокий или низкий]</em>
+Где в ролике: <em>[что происходит в кадре в этот момент]</em>
+Задай мне 2–3 уточняющих вопроса по одному. Потом назови 3–5 терминов на английском, по которым его искать в библиотеках звуков, и чем они отличаются.</pre>
+      <button class="copy" type="button" data-copy="ai-1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> ищешь по терминам, слушаешь и выбираешь звук.</p>
+    </div>
+    <div class="prompt"><span class="kind">Промпт · партитура</span><b>Проверить план звука по сценам</b>
+<pre id="ai-2">Вот раскадровка моего ролика с таймингом: <em>[вставь таблицу: сцена, что в кадре, тайминг]</em>
+Вот мой план звука: <em>[для каждой сцены: что главное — речь, музыка или эффекты; какие эффекты ставлю]</em>
+Не предлагай свой план. Найди сцены, где одновременно главными оказываются три слоя, где нет пауз и где нет подводки к ключевой мысли. По каждой задай мне один вопрос и жди ответа.</pre>
+      <button class="copy" type="button" data-copy="ai-2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> решаешь, что убрать, где поставить тишину и подводку.</p>
+    </div>
+    <div class="prompt"><span class="kind">Промпт · ритм</span><b>Проверить ритм монтажа</b>
+<pre id="ai-3">Вот длительности кадров моего ролика по порядку, в секундах: <em>[например: 2.0, 1.5, 1.5, 1.5, 0.8…]</em>
+Где кульминация: <em>[секунда или номер кадра]</em>
+Найди участки, где ритм монотонный, где нет передышки после пика и где кадры не ускоряются к кульминации. Задавай вопросы по одному, решения не предлагай.</pre>
+      <button class="copy" type="button" data-copy="ai-3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь длительности и проверяешь ролик глазами.</p>
+    </div>
+  </div>
+
+  <div class="task"><i>Итоговое задание</i><b>Две версии звука для своего ролика</b><p>Возьми свой ролик без звука. Подбери 1–2 трека под настроение, 5–10 эффектов из разных категорий и хотя бы одно место тишины. Собери по проходам на отдельных дорожках. Сделай две версии: А — минималистичный звук, Б — насыщенный. Сравни, какая работает сильнее, и сдай обе вместе с графом темпа.</p></div>
+</section>
+
+<section id="quiz">
+<div class="corner"><span>PERASPERADASTRA
+САУНД-ДИЗАЙН</span><span>ПРОВЕРЬ СЕБЯ
+8 ВОПРОСОВ</span></div>
+  <h2>Квиз</h2>
+  <p>После ответа появится разбор и ссылка на часть гайда.</p>
+  <div class="quiz" id="quiz-list"></div>
+  <div class="score"><span class="big" id="quiz-score">0 / 8</span><span id="quiz-verdict">Ответь на все вопросы, чтобы увидеть результат.</span><button type="button" id="quiz-reset">Пройти заново</button></div>
+</section>
+
+<section id="check">
+<div class="corner"><span>PERASPERADASTRA
+САУНД-ДИЗАЙН</span><span>ЧЕК-ЛИСТ
+ПЕРЕД СДАЧЕЙ</span></div>
+  <h2>Чек-лист звука и ритма</h2>
+  <p>Отметки сохраняются в этом браузере.</p>
+  <div class="check">
+    <label><input type="checkbox" id="c1"><span>В ролике есть все нужные слои: музыка, эффекты, атмосфера, речь при необходимости</span></label>
+    <label><input type="checkbox" id="c2"><span>Есть хотя бы одно место тишины перед акцентом</span></label>
+    <label><input type="checkbox" id="c3"><span>К главной мысли ведёт подводка: звук и картинка</span></label>
+    <label><input type="checkbox" id="c4"><span>Эффекты стоят там, где нужна подсказка, а не под каждым движением</span></label>
+    <label><input type="checkbox" id="c5"><span>Акценты попадают в бит, звук стоит на кадр раньше события</span></label>
+    <label><input type="checkbox" id="c6"><span>Длина кадров чередуется, после кульминации есть передышка</span></label>
+    <label><input type="checkbox" id="c7"><span>В каждый момент понятно, что главное: речь, музыка или эффекты</span></label>
+    <label><input type="checkbox" id="c8"><span>Музыка уходит под речь, голос разборчив</span></label>
+    <label><input type="checkbox" id="c9"><span>На каждом клипе фейды, нет щелчков и перегруза</span></label>
+    <label><input type="checkbox" id="c10"><span>Проект в 48 кГц, громкость около −14…−16 LUFS</span></label>
+    <label><input type="checkbox" id="c11"><span>Проверено на наушниках, колонках и телефоне</span></label>
+  </div>
+</section>
+
+<footer>Perasperadastra · Mission to Motion · саунд-дизайн и ритм</footer>
+</div>
+
+<script>
+/* Звуковой движок гайда: все звуки синтезируются Web Audio API, файлов нет. */
+var A = (function(){
+  var ctx = null, master = null, verbIR = null, NOISE = {};
+  function get(){
+    if(!ctx){
+      var AC = window.AudioContext || window.webkitAudioContext; if(!AC) return null;
+      ctx = new AC(); master = ctx.createDynamicsCompressor(); master.threshold.value = -10; master.ratio.value = 4;
+      var g = ctx.createGain(); g.gain.value = .8; master.connect(g); g.connect(ctx.destination); master._out = g;
+    }
+    if(ctx.state === "suspended") ctx.resume();
+    return ctx;
+  }
+  function noise(c){
+    var len = c.sampleRate * 2, b = c.createBuffer(1, len, c.sampleRate), d = b.getChannelData(0);
+    for(var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    return b;
+  }
+  var nbuf = new WeakMap();
+  function nsrc(c, t, dur){ var b = nbuf.get(c); if(!b){ b = noise(c); nbuf.set(c, b); } var s = c.createBufferSource(); s.buffer = b; s.loop = true; s.start(t, Math.random()); s.stop(t + dur + .05); return s; }
+  function env(c, t, a, h, r, peak){ var g = c.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak || 1, t + a); g.gain.setValueAtTime(peak || 1, t + a + h); g.gain.exponentialRampToValueAtTime(0.0001, t + a + h + r); return g; }
+  function osc(c, type, f, t, dur){ var o = c.createOscillator(); o.type = type; o.frequency.setValueAtTime(f, t); o.start(t); o.stop(t + dur + .05); return o; }
+  function irFor(c){
+    if(c === ctx && verbIR) return verbIR;
+    var len = c.sampleRate * 2.4, b = c.createBuffer(2, len, c.sampleRate);
+    for(var ch = 0; ch < 2; ch++){ var d = b.getChannelData(ch); for(var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3); }
+    if(c === ctx) verbIR = b; return b;
+  }
+  function verb(c, dest, wet){ var cv = c.createConvolver(); cv.buffer = irFor(c); var g = c.createGain(); g.gain.value = wet; cv.connect(g); g.connect(dest); return cv; }
+  function pan(c, dest, from, to, t, dur){ if(!c.createStereoPanner) return dest; var p = c.createStereoPanner(); p.pan.setValueAtTime(from, t); p.pan.linearRampToValueAtTime(to, t + dur); p.connect(dest); return p; }
+
+  /* ---------- эффекты: fn(c, dest, t, o) ---------- */
+  var S = {
+    whoosh: function(c, d, t, o){ o = o || {}; var dur = o.dur || .7, lo = o.low ? .45 : 1;
+      var n = nsrc(c, t, dur), f = c.createBiquadFilter(); f.type = "bandpass"; f.Q.value = 1.1;
+      f.frequency.setValueAtTime(350 * lo, t); f.frequency.exponentialRampToValueAtTime(3200 * lo, t + dur * .55); f.frequency.exponentialRampToValueAtTime(500 * lo, t + dur);
+      var g = env(c, t, dur * .55, 0, dur * .45, .9); n.connect(f); f.connect(g); g.connect(pan(c, d, -.7, .7, t, dur)); },
+    impact: function(c, d, t){ var o1 = osc(c, "sine", 130, t, 1.2); o1.frequency.exponentialRampToValueAtTime(38, t + .45); var g1 = env(c, t, .005, .05, 1, 1); o1.connect(g1); g1.connect(d);
+      var n = nsrc(c, t, .3), f = c.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = 2400; var g2 = env(c, t, .002, .01, .22, .7); n.connect(f); f.connect(g2); g2.connect(d);
+      var v = verb(c, d, .35); g2.connect(v); g1.connect(v); },
+    riser: function(c, d, t, o){ var dur = (o && o.dur) || 2.2; var n = nsrc(c, t, dur), f = c.createBiquadFilter(); f.type = "bandpass"; f.Q.value = 2; f.frequency.setValueAtTime(300, t); f.frequency.exponentialRampToValueAtTime(7000, t + dur);
+      var g = c.createGain(); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.8, t + dur); g.gain.setValueAtTime(.0001, t + dur + .01);
+      var s = osc(c, "sawtooth", 180, t, dur); s.frequency.exponentialRampToValueAtTime(900, t + dur); var sf = c.createBiquadFilter(); sf.type = "lowpass"; sf.frequency.value = 1800; var sg = c.createGain(); sg.gain.setValueAtTime(.0001, t); sg.gain.exponentialRampToValueAtTime(.18, t + dur); sg.gain.setValueAtTime(.0001, t + dur + .01);
+      n.connect(f); f.connect(g); g.connect(d); s.connect(sf); sf.connect(sg); sg.connect(d); },
+    downer: function(c, d, t){ var dur = 1.8, n = nsrc(c, t, dur), f = c.createBiquadFilter(); f.type = "bandpass"; f.Q.value = 2; f.frequency.setValueAtTime(6000, t); f.frequency.exponentialRampToValueAtTime(250, t + dur);
+      var g = env(c, t, .01, 0, dur, .8); var s = osc(c, "sawtooth", 800, t, dur); s.frequency.exponentialRampToValueAtTime(120, t + dur); var sg = env(c, t, .01, 0, dur, .15);
+      n.connect(f); f.connect(g); g.connect(d); s.connect(sg); sg.connect(d); },
+    drone: function(c, d, t){ var dur = 3, f = c.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = 320; var g = env(c, t, 1, 1, 1, .45);
+      [55, 55.7, 82.5].forEach(function(fr){ var o = osc(c, "sawtooth", fr, t, dur); o.connect(f); }); f.connect(g); g.connect(d); },
+    braam: function(c, d, t){ var dur = 2.4, f = c.createBiquadFilter(); f.type = "lowpass"; f.Q.value = 6; f.frequency.setValueAtTime(150, t); f.frequency.exponentialRampToValueAtTime(1300, t + .5); f.frequency.exponentialRampToValueAtTime(220, t + dur);
+      var g = env(c, t, .08, .6, 1.7, .8); [49, 49.4, 98, 73.5].forEach(function(fr){ osc(c, "sawtooth", fr, t, dur).connect(f); }); f.connect(g); g.connect(d); g.connect(verb(c, d, .3)); },
+    sub: function(c, d, t){ var o = osc(c, "sine", 48, t, 1.6); o.frequency.exponentialRampToValueAtTime(36, t + 1.5); var g = env(c, t, .02, .4, 1.1, 1); o.connect(g); g.connect(d); },
+    click: function(c, d, t){ var o = osc(c, "square", 2400, t, .02), g = env(c, t, .001, .004, .02, .35); o.connect(g); g.connect(d);
+      var n = nsrc(c, t, .02), f = c.createBiquadFilter(); f.type = "highpass"; f.frequency.value = 3000; var g2 = env(c, t, .001, .002, .015, .5); n.connect(f); f.connect(g2); g2.connect(d); },
+    pop: function(c, d, t){ var o = osc(c, "sine", 520, t, .15); o.frequency.exponentialRampToValueAtTime(1250, t + .035); var g = env(c, t, .003, .01, .1, .7); o.connect(g); g.connect(d); },
+    glitch: function(c, d, t){ for(var i = 0; i < 12; i++){ var tt = t + i * .03 + Math.random() * .012, l = .01 + Math.random() * .025;
+      if(i % 3 === 2){ var n = nsrc(c, tt, l), g0 = env(c, tt, .001, l, .005, .5); n.connect(g0); g0.connect(d); }
+      else { var o = osc(c, "square", 120 + Math.random() * 1800, tt, l), g = env(c, tt, .001, l, .005, .22); o.connect(g); g.connect(d); } } },
+    hover: function(c, d, t){ var o = osc(c, "sine", 1700, t, .12), g = env(c, t, .01, .02, .08, .18); o.connect(g); g.connect(d); },
+    confirm: function(c, d, t){ [[880, 0], [1320, .09]].forEach(function(p){ var o = osc(c, "sine", p[0], t + p[1], .25), g = env(c, t + p[1], .005, .04, .18, .35); o.connect(g); g.connect(d); }); },
+    error: function(c, d, t){ [[330, 0], [233, .12]].forEach(function(p){ var o = osc(c, "square", p[0], t + p[1], .2), f = c.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = 1400; var g = env(c, t + p[1], .005, .06, .1, .25); o.connect(f); f.connect(g); g.connect(d); }); },
+    paper: function(c, d, t){ var dur = .9, n = nsrc(c, t, dur), f = c.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 3200; f.Q.value = .8; var g = c.createGain(); g.gain.setValueAtTime(0, t);
+      for(var k = 0; k < 26; k++){ var tt = t + k * dur / 26; g.gain.setValueAtTime(Math.random() * .7, tt); } g.gain.setValueAtTime(0, t + dur); n.connect(f); f.connect(g); g.connect(d); },
+    vhs: function(c, d, t){ var dur = 1.8, n = nsrc(c, t, dur), f = c.createBiquadFilter(); f.type = "highpass"; f.frequency.value = 4000; var g = env(c, t, .05, dur - .3, .2, .18); n.connect(f); f.connect(g); g.connect(d);
+      var o = osc(c, "sine", 880, t, dur), lfo = osc(c, "sine", 6, t, dur), lg = c.createGain(); lg.gain.value = 9; lfo.connect(lg); lg.connect(o.frequency); var og = env(c, t, .05, dur - .3, .2, .06); o.connect(og); og.connect(d);
+      for(var k = 0; k < 6; k++) S.click(c, d, t + .2 + k * .27); },
+    ambience: function(c, d, t){ var dur = 3.2, n = nsrc(c, t, dur), f = c.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = 700; var g = env(c, t, .8, 1.6, .8, .5);
+      var lfo = osc(c, "sine", .3, t, dur), lg = c.createGain(); lg.gain.value = 250; lfo.connect(lg); lg.connect(f.frequency); n.connect(f); f.connect(g); g.connect(d); },
+    spin: function(c, d, t){ var dur = 1.1, n = nsrc(c, t, dur), f = c.createBiquadFilter(); f.type = "bandpass"; f.Q.value = 4; f.frequency.setValueAtTime(600, t); f.frequency.exponentialRampToValueAtTime(2600, t + dur);
+      var lfo = osc(c, "sine", 14, t, dur), lg = c.createGain(); lg.gain.value = 500; lfo.connect(lg); lg.connect(f.frequency); var g = env(c, t, .2, .5, .4, .9); n.connect(f); f.connect(g); g.connect(pan(c, d, .8, -.8, t, dur)); },
+    drop: function(c, d, t){ var o = osc(c, "sine", 1500, t, .2); o.frequency.exponentialRampToValueAtTime(420, t + .07); var g = env(c, t, .002, .01, .12, .6); o.connect(g); g.connect(d); g.connect(verb(c, d, .25)); },
+    typewriter: function(c, d, t){ for(var i = 0; i < 7; i++){ var tt = t + i * .09 + Math.random() * .02; S.click(c, d, tt); } var o = osc(c, "sine", 2200, t + .7, .3), g = env(c, t + .7, .002, .05, .2, .2); o.connect(g); g.connect(d); }
+  };
+
+  function play(name, o){ var c = get(); if(!c) return; S[name](c, master, c.currentTime + .03, o); }
+  function at(name, t, dest, o){ var c = get(); if(!c) return; S[name](c, dest || master, t, o); }
+  /* рендер в буфер: для формы волны, питча и реверса */
+  function render(name, dur, o){
+    var OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext; if(!OAC) return Promise.reject();
+    var oc = new OAC(2, Math.ceil(44100 * dur), 44100); S[name](oc, oc.destination, 0, o);
+    return oc.startRendering ? new Promise(function(res){ var p = oc.startRendering(); if(p && p.then) p.then(res); else oc.oncomplete = function(e){ res(e.renderedBuffer); }; }) : Promise.reject();
+  }
+  function playBuf(buf, rate, reverse){
+    var c = get(); if(!c) return;
+    var b = buf;
+    if(reverse){ b = c.createBuffer(buf.numberOfChannels, buf.length, buf.sampleRate); for(var ch = 0; ch < buf.numberOfChannels; ch++){ var s = buf.getChannelData(ch), dd = b.getChannelData(ch), L = s.length; for(var i = 0; i < L; i++) dd[i] = s[L - 1 - i]; } }
+    var src = c.createBufferSource(); src.buffer = b; src.playbackRate.value = rate || 1; src.connect(master); src.start(c.currentTime + .02); return src;
+  }
+
+  /* музыкальная петля 110 bpm: бочка, хэт, аккорд; выход через gain, к которому подключаются фильтры */
+  function Music(bpm){
+    this.bpm = bpm || 110; this.on = false; this.out = null; this.timer = null;
+  }
+  Music.prototype.start = function(dest){
+    var c = get(); if(!c || this.on) return; this.on = true;
+    var self = this, spb = 60 / this.bpm, next = c.currentTime + .08, step = 0;
+    this.out = c.createGain(); this.out.gain.value = .55; this.out.connect(dest || master);
+    var chords = [[220, 261.6, 329.6], [196, 246.9, 293.7], [174.6, 220, 261.6], [196, 246.9, 329.6]];
+    function sched(){
+      while(next < c.currentTime + .25){
+        var s = step % 16, t = next;
+        if(s % 4 === 0){ var k = c.createOscillator(); k.frequency.setValueAtTime(150, t); k.frequency.exponentialRampToValueAtTime(45, t + .12); var kg = env(c, t, .002, .02, .25, .9); k.connect(kg); kg.connect(self.out); k.start(t); k.stop(t + .4); }
+        if(s % 2 === 1){ var n = nsrc(c, t, .06), hf = c.createBiquadFilter(); hf.type = "highpass"; hf.frequency.value = 7000; var hg = env(c, t, .001, .005, .04, .25); n.connect(hf); hf.connect(hg); hg.connect(self.out); }
+        if(s === 0 || s === 8){ var ch = chords[(Math.floor(step / 8)) % 4], lp = c.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1100; var pg = env(c, t, .08, spb * 3, spb * .9, .16);
+          ch.forEach(function(f){ var o = c.createOscillator(); o.type = "sawtooth"; o.frequency.value = f; o.connect(lp); o.start(t); o.stop(t + spb * 4.2); }); lp.connect(pg); pg.connect(self.out);
+          var b = c.createOscillator(); b.type = "triangle"; b.frequency.value = ch[0] / 2; var bg = env(c, t, .01, spb * 3, spb * .8, .35); b.connect(bg); bg.connect(self.out); b.start(t); b.stop(t + spb * 4.2); }
+        next += spb / 4; step++;
+      }
+    }
+    sched(); this.timer = setInterval(sched, 60);
+  };
+  Music.prototype.stop = function(){ if(!this.on) return; this.on = false; clearInterval(this.timer); var o = this.out, c = ctx; if(o){ o.gain.setTargetAtTime(0, c.currentTime, .05); setTimeout(function(){ try { o.disconnect(); } catch(e){} }, 400); } };
+
+  /* имитация речи: «бормотание» с формантами, для демо иерархии и ducking */
+  function speech(c, dest, t, dur){
+    var src = c.createOscillator(); src.type = "sawtooth"; src.frequency.setValueAtTime(125, t);
+    var vib = c.createOscillator(), vg = c.createGain(); vib.frequency.value = 5; vg.gain.value = 6; vib.connect(vg); vg.connect(src.frequency);
+    var f1 = c.createBiquadFilter(), f2 = c.createBiquadFilter(); f1.type = f2.type = "bandpass"; f1.Q.value = 6; f2.Q.value = 8;
+    var g = c.createGain(); g.gain.setValueAtTime(0, t);
+    var V = [[730, 1090], [530, 1840], [270, 2290], [570, 840], [300, 870]], tt = t;
+    while(tt < t + dur - .15){ var v = V[Math.floor(Math.random() * V.length)], l = .11 + Math.random() * .1;
+      f1.frequency.setValueAtTime(v[0], tt); f2.frequency.setValueAtTime(v[1], tt); src.frequency.setValueAtTime(110 + Math.random() * 40, tt);
+      g.gain.setTargetAtTime(.9, tt, .015); g.gain.setTargetAtTime(.05, tt + l * .7, .02); tt += l + (Math.random() < .15 ? .18 : .02); }
+    g.gain.setTargetAtTime(0, t + dur - .1, .03);
+    var mix = c.createGain(); mix.gain.value = .9; src.connect(f1); src.connect(f2); f1.connect(mix); f2.connect(mix); mix.connect(g); g.connect(dest);
+    src.start(t); vib.start(t); src.stop(t + dur + .1); vib.stop(t + dur + .1);
+  }
+  return { get: get, play: play, at: at, render: render, playBuf: playBuf, Music: Music, speech: speech, S: S, master: function(){ get(); return master; }, ctx: function(){ return ctx; }, verb: verb };
+})();
+
+(function(){
+  function el(t, c, x){ var n = document.createElement(t); if(c) n.className = c; if(x != null) n.textContent = x; return n; }
+  // раскладка разделов: номер части и подразделы «заголовок слева — содержимое справа»
+  var secs = document.querySelectorAll('section[id^="u"]');
+  for(var s = 0; s < secs.length; s++){
+    var sec = secs[s], head = sec.querySelector(".head"), h2 = head && head.querySelector("h2");
+    if(h2){ var left = el("div", "head-l"), num = el("div", "num", "0" + sec.id.slice(1)); num.setAttribute("aria-hidden", "true"); head.insertBefore(left, h2); left.appendChild(num); left.appendChild(h2); }
+    var kids = Array.prototype.slice.call(sec.children), cur = null;
+    kids.forEach(function(n){
+      if(n.tagName === "H3"){ cur = el("div", "sub"); var hd = el("div", "sub-h"), bd = el("div", "sub-b"); sec.insertBefore(cur, n); hd.appendChild(n); cur.appendChild(hd); cur.appendChild(bd); cur.body = bd; return; }
+      if(!cur) return;
+      if(n.classList.contains("task")){ cur = null; return; }
+      cur.body.appendChild(n);
+    });
+    var subs = sec.querySelectorAll(".sub");
+    for(var k = 0; k < subs.length; k++) if(subs[k].querySelector(".four,.three,table,.sfx,.demo,.layers,.ai,.pair,.two,.chain,.bpm,.lib,.errs")) subs[k].classList.add("wide");
+  }
+
+  // копирование
+  document.querySelectorAll("button.copy").forEach(function(b){
+    b.addEventListener("click", function(){
+      var n = document.getElementById(b.getAttribute("data-copy")), t = n.textContent, o = b.textContent;
+      function done(){ b.textContent = "Скопировано"; setTimeout(function(){ b.textContent = o; }, 1600); }
+      function sel(){ if(n.hidden){ b.textContent = "Не удалось скопировать"; return; } var r = document.createRange(); r.selectNodeContents(n); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Выделено, нажми Ctrl+C"; }
+      try { navigator.clipboard.writeText(t).then(done, sel); } catch(e){ sel(); }
+    });
+  });
+
+  // квиз
+  var QUIZ = [
+    { l: "Часть 02", h: "#u2", p: "Какой эффект нарастает и подводит к событию?", o: ["Impact", "Riser", "Click", "Ambience"], a: 1, e: "Райзер создаёт напряжение перед ударом, кульминацией или сменой ритма." },
+    { l: "Часть 03", h: "#u3", p: "Какой приём перед ударом работает сильнее всего?", o: ["Сделать музыку громче", "Оборвать весь звук за несколько кадров до события", "Добавить три вуша", "Ускорить анимацию"], a: 1, e: "Тишина перед ударом — как вдох. Удар после неё ощущается намного сильнее." },
+    { l: "Часть 03", h: "#u3", p: "Зачем ставить звук на кадр раньше события?", o: ["Так требует Premiere", "Ухо реагирует быстрее глаза, и звук ровно в кадр кажется опоздавшим", "Чтобы не было щелчка", "Чтобы звук был тише"], a: 1, e: "Сдвиг на кадр назад делает попадание идеальным." },
+    { l: "Часть 04", h: "#u4", p: "Что значит «ритм не равен скорости»?", o: ["Ритм нужен только в быстрых роликах", "Важно соотношение длинных и коротких кадров, медленный ролик тоже может быть живым", "Ритм задаёт только музыка", "Скорость важнее ритма"], a: 1, e: "Ритм — это чередование, а не постоянная динамика." },
+    { l: "Часть 04", h: "#u4", p: "После трёх коротких планов лучше поставить…", o: ["Ещё более короткий", "Один длинный", "Чёрный кадр на две секунды", "Тот же план повторно"], a: 1, e: "Длинный план сбивает монотонность и даёт зрителю передохнуть." },
+    { l: "Часть 06", h: "#u6", p: "Музыка забивает речь. Что сделать?", o: ["Сделать речь громче до перегруза", "Приглушить музыку под речь — ducking", "Убрать речь", "Добавить реверб на речь"], a: 1, e: "В каждый момент главное что-то одно. Когда говорит диктор, музыка уходит назад." },
+    { l: "Часть 02", h: "#u2", p: "Как наслаивать два звука, чтобы не было каши?", o: ["Два низких — так мощнее", "Один низкий и один высокий, развести по частотам", "Два одинаковых", "Как можно громче оба"], a: 1, e: "Звуки в одних частотах спорят. Разведи их по частотам, и они дополнят друг друга." },
+    { l: "Часть 06", h: "#u6", p: "Какая частота дискретизации — стандарт для видео?", o: ["44,1 кГц", "48 кГц", "96 кГц", "22 кГц"], a: 1, e: "На 48 кГц работают камеры и весь видеопродакшен." }
+  ];
+  var ql = document.getElementById("quiz-list"), scoreEl = document.getElementById("quiz-score"), verdict = document.getElementById("quiz-verdict"), answered = 0, right = 0;
+  function update(){ scoreEl.textContent = right + " / " + QUIZ.length; if(answered < QUIZ.length){ verdict.textContent = "Ответь на все вопросы, чтобы увидеть результат."; return; } verdict.textContent = right >= 7 ? "Отлично. Можно собирать звук." : right >= 5 ? "Хорошо. Перечитай части, где ошибся." : "Пройди гайд ещё раз и вернись к квизу."; }
+  function renderQ(){
+    ql.textContent = ""; answered = 0; right = 0;
+    QUIZ.forEach(function(q, i){
+      var card = el("div", "q"); card.appendChild(el("span", "n", "0" + (i + 1) + " · " + q.l)); card.appendChild(el("div", "p", q.p));
+      var opts = el("div", "opts"), exp = el("div", "exp"); exp.hidden = true;
+      q.o.forEach(function(t, j){ var b = el("button", null, t); b.type = "button"; b.addEventListener("click", function(){
+        var all = opts.querySelectorAll("button"); for(var k = 0; k < all.length; k++){ all[k].disabled = true; if(k === q.a) all[k].className = "right"; }
+        var ok = j === q.a; if(!ok) b.className = "wrong"; answered++; if(ok) right++;
+        exp.textContent = ""; exp.appendChild(el("b", null, ok ? "Верно. " : "Не совсем. ")); exp.appendChild(document.createTextNode(q.e + " ")); var a = el("a", null, "Открыть часть"); a.href = q.h; exp.appendChild(a); exp.hidden = false; update();
+      }); opts.appendChild(b); });
+      card.appendChild(opts); card.appendChild(exp); ql.appendChild(card);
+    }); update();
+  }
+  renderQ();
+  document.getElementById("quiz-reset").addEventListener("click", function(){ renderQ(); document.getElementById("quiz").scrollIntoView(); });
+
+  // чек-лист
+  var CK = "sound-check-v1", st = {};
+  try { st = JSON.parse(localStorage.getItem(CK) || "{}") || {}; } catch(e){ st = {}; }
+  document.querySelectorAll(".check input").forEach(function(box){ if(st[box.id]) box.checked = true; box.addEventListener("change", function(){ st[box.id] = box.checked; try { localStorage.setItem(CK, JSON.stringify(st)); } catch(e){} }); });
+})();
+
+(function(){
+  var CS = getComputedStyle(document.documentElement);
+  function cv(n){ return CS.getPropertyValue(n).trim(); }
+  var C = { ink: cv("--ink"), dim: cv("--dim"), faint: cv("--faint"), acc: cv("--accent"), stroke: cv("--stroke"), well: cv("--well"), panel: cv("--panel"), card: cv("--card"), blue: "#5b8def", good: cv("--good") };
+  var FONT = '-apple-system,"SF Pro Display","Onest",Arial,sans-serif', MONO = '"SF Mono","JetBrains Mono",ui-monospace,monospace';
+  function el(t, c, x){ var n = document.createElement(t); if(c) n.className = c; if(x != null) n.textContent = x; return n; }
+  function fit(c){ var r = c.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1), w = Math.max(1, Math.round(r.width)), h = Math.max(1, Math.round(r.height)); if(c.width !== w * d || c.height !== h * d){ c.width = w * d; c.height = h * d; } var x = c.getContext("2d"); x.setTransform(d, 0, 0, d, 0, 0); x.clearRect(0, 0, w, h); return { x: x, w: w, h: h }; }
+  function cl(v, a, b){ return v < a ? a : v > b ? b : v; }
+  function ease(x){ x = cl(x, 0, 1); return x * x * (3 - 2 * x); }
+  function back(x){ x = cl(x, 0, 1); var c1 = 2.2, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+  function rr(x, X, Y, w, h, r){ x.beginPath(); if(x.roundRect) x.roundRect(X, Y, w, h, r); else x.rect(X, Y, w, h); }
+  function label(x, t, px, py, col, al, sz){ x.font = "500 " + (sz || 10) + "px " + MONO; x.fillStyle = col || C.faint; x.textAlign = al || "left"; x.textBaseline = "middle"; x.fillText(t.toUpperCase(), px, py); }
+  function seg(root, attr, cb){ root.querySelectorAll("[" + attr + "]").forEach(function(b){ b.addEventListener("click", function(){ root.querySelectorAll("[" + attr + "]").forEach(function(o){ o.setAttribute("aria-pressed", o === b ? "true" : "false"); }); cb(b.getAttribute(attr)); }); }); }
+  function now(){ var c = A.ctx(); return c ? c.currentTime : 0; }
+
+  // все демо: одно играет за раз
+  var active = null;
+  function Demo(root, opt){
+    var self = this; this.root = root; this.opt = opt; this.btn = root.querySelector("[data-play]"); this.playing = false; this.t0 = 0; this.raf = 0;
+    if(this.btn){ this.label = this.btn.textContent; this.btn.addEventListener("click", function(){ self.playing ? self.stop() : self.start(); }); }
+    this.draw(opt.poster || 0);
+    if("ResizeObserver" in window) new ResizeObserver(function(){ if(!self.playing) self.draw(self.last || 0); }).observe(root);
+  }
+  Demo.prototype.start = function(){
+    if(active && active !== this) active.stop(); active = this;
+    var c = A.get(); if(!c) return;
+    this.playing = true; this.t0 = c.currentTime + .08; this.fired = {}; this.loopN = 0;
+    if(this.btn) this.btn.textContent = "■ Стоп";
+    if(this.opt.onStart) this.opt.onStart.call(this, this.t0);
+    var self = this;
+    (function tick(){ if(!self.playing) return; var t = now() - self.t0; self.frame(t); self.raf = requestAnimationFrame(tick); })();
+  };
+  Demo.prototype.stop = function(){ this.playing = false; if(this.opt.poster) this.draw(this.opt.poster); cancelAnimationFrame(this.raf); if(this.btn) this.btn.textContent = this.label; if(this.opt.onStop) this.opt.onStop.call(this); if(active === this) active = null; };
+  Demo.prototype.frame = function(t){
+    var L = this.opt.len, loop = this.opt.loop;
+    if(t >= L && !loop){ this.draw(L); this.stop(); return; }
+    var n = loop ? Math.floor(Math.max(0, t) / L) : 0, lt = loop ? t - n * L : t;
+    // планирование событий с опережением
+    var ev = this.opt.events ? this.opt.events.call(this) : [];
+    for(var k = 0; k <= 1; k++){
+      var nn = n + k; if(!loop && nn > 0) break;
+      for(var i = 0; i < ev.length; i++){
+        var e = ev[i], when = this.t0 + nn * L + e.t, key = nn + ":" + i;
+        if(!this.fired[key] && when - now() < .15 && when - now() > -.05){ this.fired[key] = 1; e.fn(when); }
+      }
+    }
+    this.draw(Math.max(0, lt));
+  };
+  Demo.prototype.draw = function(t){ this.last = t; if(this.opt.draw) this.opt.draw.call(this, t); };
+
+  /* ---------- 00: щелчок ---------- */
+  (function(){
+    var root = document.getElementById("d-click"); if(!root) return;
+    var v = 1, cvs = root.querySelector("canvas"), T = [.4, 1.1, 1.8, 2.5];
+    var D = new Demo(root, { len: 3.4, poster: 3.4,
+      events: function(){ return v ? T.map(function(t){ return { t: t, fn: function(w){ A.at("click", w); A.at("pop", w + .005); } }; }) : []; },
+      draw: function(t){ var g = fit(cvs), x = g.x, w = g.w, h = g.h; x.fillStyle = C.panel; x.fillRect(0, 0, w, h);
+        var cw = Math.min(w * .17, 150), ch = cw * 1.25, gap = cw * .18, x0 = w / 2 - (cw * 4 + gap * 3) / 2;
+        T.forEach(function(tt, i){ var on = t >= tt; x.strokeStyle = C.stroke; x.lineWidth = 1; rr(x, x0 + i * (cw + gap), h / 2 - ch / 2, cw, ch, 10); x.stroke();
+          if(on){ x.fillStyle = i === 3 ? C.acc : C.ink; rr(x, x0 + i * (cw + gap), h / 2 - ch / 2, cw, ch, 10); x.fill(); x.fillStyle = i === 3 ? C.panel : C.dim; rr(x, x0 + i * (cw + gap) + 12, h / 2 + ch / 2 - 28, cw * .55, 6, 3); x.fill(); } });
+        label(x, v ? "склейка + щелчок" : "склейка без звука", 14, 16); }
+    });
+    seg(root, "data-v", function(val){ v = +val; D.draw(3.4); });
+  })();
+
+  /* ---------- дорожка событий под сценой ---------- */
+  function track(holder, rows, len){
+    if(!holder) return function(){};
+    var c = el("canvas", "cv trkc"); holder.appendChild(c);
+    return function(t, on){
+      var g = fit(c), x = g.x, w = g.w, lx = 86, tw = w - lx - 10;
+      rows.forEach(function(r, i){
+        var y = 6 + i * 18, enabled = !on || on(r.k);
+        label(x, r.n, 6, y + 7, enabled ? C.dim : C.stroke);
+        x.fillStyle = C.well; x.fillRect(lx, y + 2, tw, 10);
+        (r.blocks || []).forEach(function(b){ x.fillStyle = enabled ? (b.c || r.c) : C.stroke; x.globalAlpha = b.a == null ? .9 : b.a; x.fillRect(lx + b[0] / len * tw, y + 2, Math.max(2, (b[1] - b[0]) / len * tw), 10); x.globalAlpha = 1; });
+      });
+      var px = lx + cl(t / len, 0, 1) * tw; x.strokeStyle = C.ink; x.lineWidth = 1.5; x.beginPath(); x.moveTo(px, 0); x.lineTo(px, g.h); x.stroke();
+    };
+  }
+
+  /* ---------- 01: микшер ---------- */
+  (function(){
+    var root = document.getElementById("d-mix"); if(!root) return;
+    var L = 8, on = { music: true, sfx: true, amb: true, silence: true }, music = null, tread = root.querySelector("[data-t]"), cvs = root.querySelector("canvas.st");
+    var trk = root.querySelector("[data-trk]"); trk.style.height = (6 + 4 * 18) + "px";
+    var draw = track(trk, [
+      { k: "music", n: "Музыка", c: C.blue, blocks: [[0, 4.75], [5, 8]] },
+      { k: "sfx", n: "Эффекты", c: C.acc, blocks: [[.3, .45], [1.3, 1.9], [2.6, 2.7], [2.8, 2.9], [3, 3.1], [3.2, 5], [5, 5.4], [6.4, 7]] },
+      { k: "amb", n: "Атмосфера", c: C.dim, blocks: [[0, 8]] },
+      { k: "silence", n: "Тишина", c: C.good, blocks: [[4.75, 5]] }
+    ], L);
+    function ev(){
+      var e = [];
+      if(on.sfx){ e.push({ t: .3, fn: function(w){ A.at("pop", w); } }, { t: 1.3, fn: function(w){ A.at("whoosh", w); } }, { t: 2.6, fn: function(w){ A.at("click", w); } }, { t: 2.8, fn: function(w){ A.at("click", w); } }, { t: 3.0, fn: function(w){ A.at("click", w); } },
+        { t: 3.2, fn: function(w){ A.at("riser", w, null, { dur: on.silence ? 1.55 : 1.8 }); } }, { t: 4.97, fn: function(w){ A.at("impact", w); } }, { t: 6.4, fn: function(w){ A.at("whoosh", w, null, { low: true }); } }); }
+      if(on.amb){ [0, 2.8, 5.6].forEach(function(tt){ e.push({ t: tt, fn: function(w){ A.at("ambience", w); } }); }); }
+      e.push({ t: 4.6, fn: function(w){ if(!music || !music.out) return; var g = music.out.gain; if(on.silence){ g.setTargetAtTime(0, w + .15, .01); } g.setTargetAtTime(on.music ? .55 : 0, w + .4, .01); } });
+      return e;
+    }
+    var D = new Demo(root, { len: L, loop: true, poster: 5.6, events: ev,
+      onStart: function(){ music = new A.Music(110); music.start(); if(!on.music) music.out.gain.value = 0; },
+      onStop: function(){ if(music) music.stop(); music = null; },
+      draw: function(t){ tread.textContent = t.toFixed(1) + " с"; scene(t); draw(t, function(k){ return on[k]; }); }
+    });
+    function scene(t){
+      var g = fit(cvs), x = g.x, w = g.w, h = g.h; x.fillStyle = C.panel; x.fillRect(0, 0, w, h);
+      var blank = on.silence && t > 4.75 && t < 5, z = t > 3.2 && t < 5 ? 1 + .12 * ease((t - 3.2) / 1.8) : 1;
+      x.save(); x.translate(w / 2, h / 2); x.scale(z, z); x.translate(-w / 2, -h / 2);
+      if(!blank && t < (on.silence ? 4.75 : 5)){
+        var s = back((t - .3) / .35); if(t > .3){ x.save(); x.translate(w * .3, h * .42); x.scale(s, s); x.fillStyle = C.ink; x.font = "700 " + h * .16 + "px " + FONT; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("ЗВУК", 0, 0); x.restore(); }
+        var cx = t < 1.4 ? w * 1.2 : t < 1.9 ? w * (1.2 - .5 * ease((t - 1.4) / .5)) : w * .7;
+        x.fillStyle = C.well; rr(x, cx - w * .12, h * .2, w * .24, h * .5, 12); x.fill();
+        [2.6, 2.8, 3].forEach(function(tt, i){ if(t > tt){ x.fillStyle = C.dim; x.beginPath(); x.arc(cx - w * .06 + i * w * .06, h * .6, 6, 0, 7); x.fill(); } });
+      }
+      if(t >= 5 && t < 7.4){ var k = back((t - 5) / .3), fl = cl(1 - (t - 5) / .25, 0, 1), lx = w / 2 + (t > 6.4 ? w * .8 * ease((t - 6.4) / .5) : 0); x.save(); x.translate(lx, h / 2); x.scale(.4 + .6 * k, .4 + .6 * k); x.fillStyle = C.acc; x.beginPath(); x.arc(0, 0, h * .2, 0, 7); x.fill(); x.fillStyle = C.panel; x.font = "800 " + h * .09 + "px " + FONT; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("LOGO", 0, 0); x.restore(); if(fl){ x.fillStyle = "rgba(255,255,255," + fl * .5 + ")"; x.fillRect(0, 0, w, h); } }
+      x.restore();
+      if(blank) label(x, "тишина", w / 2, h / 2, C.good, "center", 11);
+    }
+    root.querySelectorAll("[data-l]").forEach(function(i){ i.addEventListener("change", function(){ on[i.getAttribute("data-l")] = i.checked; if(i.getAttribute("data-l") === "music" && music && music.out) music.out.gain.setTargetAtTime(i.checked ? .55 : 0, now(), .05); if(!D.playing) D.draw(D.last || 0); }); });
+  })();
+
+  /* ---------- 02: словарь ---------- */
+  var SFX = [
+    ["whoosh", "Whoosh", "вуш", "Пролёт, свист воздуха", "Смена кадра, появление текста, движение камеры", "Не под каждый объект. Варьируй высоту и длину.", .8],
+    ["impact", "Impact / Hit", "импакт", "Короткий мощный удар", "Приземление, жёсткая склейка, логотип", "Добавь саб или реверб, чтобы был вес.", 1.4],
+    ["riser", "Riser", "райзер", "Нарастание, напряжение", "Перед ударом, кульминацией, сменой ритма", "Подрезай пики, чтобы не забить трек.", 2.4],
+    ["downer", "Downer", "даунер", "Затухание, спад", "Смена тона, выход из сцены", "Можно сделать из райзера реверсом.", 1.9],
+    ["drone", "Drone", "дрон", "Длинный ровный гул", "Подложка под сцену, тревога", "Почти не слышен, но держит напряжение.", 3.1],
+    ["braam", "Braam", "браам", "Мощный низкий гул из трейлеров", "Тяжесть, масштаб, раскрытие", "Одного раза на ролик обычно хватает.", 2.5],
+    ["sub", "Sub", "саб", "Низкочастотная подложка", "Под импакт, под кульминацию", "На телефоне почти не слышен, проверяй.", 1.7],
+    ["click", "Click", "клик", "Щелчок, нажатие", "Интерфейс, точки, маркеры", "Очень коротко и тихо.", .1],
+    ["pop", "Pop", "поп", "Лёгкое появление", "Текст, иконки, пузыри", "Хорошо в паре с коротким райзером.", .2],
+    ["glitch", "Glitch", "глитч", "Цифровые помехи", "Tech-визуал, обрыв фразы, сбой", "Встраивай в драматургию, а не просто так.", .45],
+    ["hover", "UI · Hover", "ховер", "Едва слышный сигнал наведения", "Презентации интерфейсов", "UI-звуки мягкие, −12…−18 дБ.", .2],
+    ["confirm", "UI · Confirm", "конфёрм", "Подтверждение, успех", "Отправка формы, готово", "Два восходящих тона.", .45],
+    ["error", "UI · Error", "эррор", "Ошибка, отказ", "Неверный ввод, сбой", "Нисходящие тоны, без резкости.", .45],
+    ["paper", "Paper / Texture", "текстура", "Шуршание бумаги, трение", "Коллаж, стоп-моушн, hand-drawn", "Смешивай с атмосферой для теплоты.", 1],
+    ["vhs", "VHS / Tape", "плёнка", "Шум плёнки, щелчки", "Ретро, lo-fi, 90-е", "Тихим слоем под музыку, около −20 дБ.", 1.9],
+    ["ambience", "Ambience", "эмбиенс", "Фоновая среда", "Город, комната, лес", "Очень тихо, около −24 дБ: связывает звуки в одну среду.", 3.3],
+    ["spin", "Spin / Longslide", "спин", "Вращение, пролёт камеры", "Скролл, pan, zoom, переходы", "Сочетай с motion blur.", 1.2],
+    ["drop", "Special · капля", "особый", "Стилизованный звук по ассоциации", "Капля, вдох, хруст, взмах", "Подбирай по ассоциации, а не буквально.", .3],
+    ["typewriter", "Typewriter", "печать", "Набор текста", "Текст печатается по буквам", "Подстраивай под реальную скорость появления букв.", 1.1]
+  ];
+  function drawWave(c, buf, rev, col){
+    var g = fit(c), x = g.x, w = g.w, h = g.h, d = buf.getChannelData(0), n = Math.floor(w), step = d.length / n;
+    x.fillStyle = col || C.acc;
+    for(var i = 0; i < n; i++){ var j = rev ? n - 1 - i : i, a = 0, s = Math.floor(j * step), e = Math.min(d.length, Math.floor((j + 1) * step)); for(var k = s; k < e; k += 4){ var v = Math.abs(d[k]); if(v > a) a = v; } var bh = Math.max(1, Math.min(1, a) * (h - 4)); x.fillRect(i, h / 2 - bh / 2, 1, bh); }
+  }
+  (function(){
+    var host = document.getElementById("sfx"); if(!host) return;
+    SFX.forEach(function(s){
+      var b = el("button", "sfc"); b.type = "button"; b.setAttribute("aria-label", "Послушать " + s[1]);
+      var hd = el("span", "sfc-h"); hd.appendChild(el("b", null, s[1])); hd.appendChild(el("span", "sfc-p", "▶")); b.appendChild(hd);
+      b.appendChild(el("span", "sfc-r", s[2] + " · " + s[3]));
+      var c = el("canvas", "cv sfw"); b.appendChild(c);
+      b.appendChild(el("span", "sfc-w", s[4])); b.appendChild(el("span", "sfc-t", s[5]));
+      b.addEventListener("click", function(){ if(active) active.stop(); A.play(s[0]); b.classList.add("on"); setTimeout(function(){ b.classList.remove("on"); }, Math.min(1500, s[6] * 1000)); });
+      host.appendChild(b);
+      A.render(s[0], s[6]).then(function(buf){ c._buf = buf; drawWave(c, buf); }).catch(function(){});
+    });
+    if("ResizeObserver" in window) new ResizeObserver(function(){ host.querySelectorAll("canvas").forEach(function(c){ if(c._buf) drawWave(c, c._buf); }); }).observe(host);
+    document.querySelectorAll("[data-combo]").forEach(function(b){ b.addEventListener("click", function(){ if(active) active.stop(); var c = A.get(); if(!c) return; var t = c.currentTime + .05;
+      b.getAttribute("data-combo").split(",").forEach(function(p){ var a = p.split(":"); A.at(a[0], t + parseFloat(a[1]), null, a[2] ? { dur: parseFloat(a[2]) } : null); }); }); });
+  })();
+
+  /* ---------- изменение звука ---------- */
+  (function(){
+    var root = document.getElementById("d-bend"); if(!root) return;
+    var src = "whoosh", rate = 1, rev = false, bufs = {}, c = root.querySelector("canvas"), out = root.querySelector("[data-o]"), DUR = { whoosh: .8, impact: 1.4, riser: 2.4 };
+    function get(cb){ if(bufs[src]) return cb(bufs[src]); A.render(src, DUR[src]).then(function(b){ bufs[src] = b; cb(b); }).catch(function(){}); }
+    function redraw(){ get(function(b){ drawWave(c, b, rev, rev ? C.blue : C.acc); }); }
+    seg(root, "data-src", function(v){ src = v; redraw(); });
+    root.querySelector("[data-pitch]").addEventListener("input", function(e){ rate = e.target.value / 100; out.textContent = rate.toFixed(2).replace(/0$/, "") + "×"; });
+    root.querySelector("[data-rev]").addEventListener("change", function(e){ rev = e.target.checked; redraw(); });
+    root.querySelector("[data-play]").addEventListener("click", function(){ if(active) active.stop(); get(function(b){ A.playBuf(b, rate, rev); }); });
+    redraw();
+    if("ResizeObserver" in window) new ResizeObserver(redraw).observe(root);
+  })();
+
+  /* ---------- 03: подводка ---------- */
+  (function(){
+    var root = document.getElementById("d-lead"); if(!root) return;
+    var v = 2, L = 6.2, KEY = 4, music = null, cvs = root.querySelector("canvas.st"), hint = root.querySelector("[data-lh]");
+    var H = ["Слово просто появляется под ровную музыку. Мысль проходит мимо.", "Райзер нагнетает, камера приближается, на слове удар. Уже акцент.", "Райзер обрывается, музыка и картинка замирают на четверть секунды, потом удар. Самый сильный вариант."];
+    var trk = root.querySelector("[data-trk]"); trk.style.height = (6 + 3 * 18) + "px";
+    var draws = [
+      track(trk, [{ n: "Музыка", c: C.blue, blocks: [[0, L]] }, { n: "Эффекты", c: C.acc, blocks: [] }, { n: "Тишина", c: C.good, blocks: [] }], L)
+    ];
+    function mk(){ trk.textContent = ""; var rows = [{ n: "Музыка", c: C.blue, blocks: v === 2 ? [[0, KEY - .25], [KEY, L]] : [[0, L]] }, { n: "Эффекты", c: C.acc, blocks: v === 0 ? [] : [[2, v === 2 ? KEY - .25 : KEY], [KEY, KEY + .4]] }, { n: "Тишина", c: C.good, blocks: v === 2 ? [[KEY - .25, KEY]] : [] }]; draws[0] = track(trk, rows, L); }
+    var D = new Demo(root, { len: L, poster: 4.6,
+      events: function(){ var e = []; if(v >= 1){ e.push({ t: 2, fn: function(w){ A.at("riser", w, null, { dur: v === 2 ? KEY - .25 - 2 : KEY - 2 }); } }); e.push({ t: KEY - .03, fn: function(w){ A.at("impact", w); A.at("sub", w); } }); }
+        if(v === 2) e.push({ t: KEY - .5, fn: function(w){ if(music && music.out){ music.out.gain.setTargetAtTime(0, w + .25, .008); music.out.gain.setTargetAtTime(.6, w + .5, .01); } } });
+        return e; },
+      onStart: function(){ music = new A.Music(100); music.start(); },
+      onStop: function(){ if(music) music.stop(); music = null; },
+      draw: function(t){ scene(t); draws[0](t); }
+    });
+    function scene(t){
+      var g = fit(cvs), x = g.x, w = g.w, h = g.h; x.fillStyle = C.panel; x.fillRect(0, 0, w, h);
+      var blank = v === 2 && t > KEY - .25 && t < KEY, z = v >= 1 && t > 2 && t < KEY ? 1 + .22 * ease((t - 2) / (KEY - 2)) : 1;
+      if(v >= 1 && t >= KEY) z = 1;
+      x.save(); x.translate(w / 2, h / 2); x.scale(z, z);
+      x.textAlign = "center"; x.textBaseline = "middle";
+      if(!blank && t > .5){ x.globalAlpha = cl((t - .5) / .4, 0, 1); x.fillStyle = C.dim; x.font = "500 " + h * .09 + "px " + FONT; x.fillText("Главное —", 0, t >= KEY ? -h * .17 : 0); x.globalAlpha = 1; }
+      if(t >= KEY){ var k = v === 0 ? 1 : back((t - KEY) / .3); x.save(); x.scale(k, k); x.fillStyle = v === 0 ? C.ink : C.acc; x.font = "800 " + h * .2 + "px " + FONT; x.fillText("СМЫСЛ", 0, h * .05); x.restore();
+        if(v > 0){ var fl = cl(1 - (t - KEY) / .2, 0, 1); if(fl){ x.fillStyle = "rgba(255,255,255," + fl * .45 + ")"; x.fillRect(-w, -h, w * 2, h * 2); } } }
+      x.restore();
+      if(blank) label(x, "тишина", w / 2, h - 18, C.good, "center", 11);
+    }
+    seg(root, "data-v", function(val){ v = +val; hint.textContent = H[v]; mk(); D.draw(4.6); });
+    hint.textContent = H[v]; mk(); D.draw(4.6);
+  })();
+
+  /* ---------- 04: ритм монтажа ---------- */
+  (function(){
+    var root = document.getElementById("d-rhythm"); if(!root) return;
+    var P = { mono: [1, 1, 1, 1, 1, 1, 1, 1], grow: [1.8, 1.4, 1.1, .8, .6, .45, .35, 2.2], breath: [1.2, .45, .45, .45, 1.8, .4, .4, 1.6] };
+    var HT = { mono: "Все кадры по секунде. Через пару склеек мозг перестаёт их замечать.", grow: "Кадры укорачиваются к кульминации, после неё длинная пауза. Так строят промо и трейлеры.", breath: "Серии коротких кадров перемежаются длинными. Ролик дышит и не утомляет." };
+    var key = "grow", seq = P[key], sc = root.querySelector("canvas.st"), bc = root.querySelector("canvas.bars"), hint = root.querySelector("[data-rh]");
+    var COLS = [C.acc, C.ink, C.well, C.blue, C.dim, C.acc, C.ink, C.well];
+    function total(){ return seq.reduce(function(a, b){ return a + b; }, 0); }
+    function idx(t){ var s = 0; for(var i = 0; i < seq.length; i++){ if(t < s + seq[i]) return [i, t - s]; s += seq[i]; } return [seq.length - 1, seq[seq.length - 1]]; }
+    var D = new Demo(root, { len: 0,
+      events: function(){ var e = [], s = 0; seq.forEach(function(d){ var tt = s; e.push({ t: tt, fn: function(w){ A.at("click", w); A.at("sub", w); } }); s += d; }); return e; },
+      draw: function(t){ var g = fit(sc), x = g.x, w = g.w, h = g.h, r = idx(t), i = r[0]; x.fillStyle = COLS[i]; x.fillRect(0, 0, w, h);
+        var dark = COLS[i] === C.ink; x.fillStyle = dark ? C.panel : C.ink; x.globalAlpha = dark ? 1 : .9; x.font = "800 " + h * .4 + "px " + FONT; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText(String(i + 1).padStart(2, "0"), w / 2, h / 2); x.globalAlpha = 1;
+        var gb = fit(bc), bx = gb.x, bw = gb.w, bh = gb.h, T = total(), xx = 0, mx = Math.max.apply(null, seq.map(function(d){ return 1 / d; }));
+        seq.forEach(function(d, j){ var ww = d / T * bw, hh = (1 / d) / mx * (bh - 22); bx.fillStyle = j === i && this.playing ? C.acc : C.well; bx.fillRect(xx + 1, bh - 14 - hh, ww - 2, hh); label(bx, d.toFixed(2).replace(/0$/, "") + "с", xx + ww / 2, bh - 6, C.faint, "center", 9); xx += ww; });
+        bx.strokeStyle = C.ink; bx.lineWidth = 1.5; var px = cl(t / T, 0, 1) * bw; bx.beginPath(); bx.moveTo(px, 0); bx.lineTo(px, bh - 12); bx.stroke(); label(bx, "темп = 1 / длительность", 4, 8, C.faint, "left", 9); }
+    });
+    D.opt.len = total();
+    seg(root, "data-r", function(v){ key = v; seq = P[v]; D.opt.len = total(); hint.textContent = HT[v]; if(D.playing) D.stop(); D.draw(0); });
+    hint.textContent = HT[key];
+  })();
+
+  /* ---------- темп музыки ---------- */
+  (function(){
+    var root = document.getElementById("d-bpm"); if(!root) return;
+    var m = null, cur = null;
+    root.querySelectorAll("[data-bpm]").forEach(function(b){ b.addEventListener("click", function(){
+      if(active) active.stop();
+      if(m){ m.stop(); m = null; } root.querySelectorAll("button").forEach(function(x){ x.classList.remove("on"); });
+      if(cur === b){ cur = null; return; }
+      cur = b; b.classList.add("on"); m = new A.Music(+b.getAttribute("data-bpm")); m.start();
+      var mm = m; setTimeout(function(){ if(m === mm){ m.stop(); m = null; b.classList.remove("on"); cur = null; } }, 6000);
+    }); });
+  })();
+
+  /* ---------- 06: ducking ---------- */
+  (function(){
+    var root = document.getElementById("d-duck"); if(!root) return;
+    var v = 1, L = 8, music = null, sg = null, cvs = root.querySelector("canvas"), SP = [[1, 3.3], [4.4, 6.9]];
+    function mlev(t){ if(!v) return .95; for(var i = 0; i < SP.length; i++) if(t > SP[i][0] - .2 && t < SP[i][1] + .2) return .22; return .8; }
+    var D = new Demo(root, { len: L,
+      onStart: function(t0){ var c = A.get(); music = new A.Music(110); var mg = c.createGain(); mg.connect(A.master()); music.start(mg);
+        var g = mg.gain; g.setValueAtTime(v ? .8 : 1.15, t0); SP.forEach(function(s){ if(v){ g.setTargetAtTime(.22, t0 + s[0] - .2, .06); g.setTargetAtTime(.8, t0 + s[1] + .1, .12); } }); music._mg = mg;
+        sg = c.createGain(); sg.gain.value = v ? 1 : .55; sg.connect(A.master()); SP.forEach(function(s){ A.speech(c, sg, t0 + s[0], s[1] - s[0]); }); },
+      onStop: function(){ if(music){ music.stop(); var mg = music._mg; setTimeout(function(){ try { mg.disconnect(); } catch(e){} }, 500); } music = null; if(sg){ var s = sg; s.gain.setTargetAtTime(0, now(), .03); setTimeout(function(){ try { s.disconnect(); } catch(e){} }, 300); } sg = null; },
+      draw: function(t){ var g = fit(cvs), x = g.x, w = g.w, h = g.h, lx = 80, tw = w - lx - 10;
+        label(x, "Речь", 6, h * .3); label(x, "Музыка", 6, h * .72);
+        x.fillStyle = C.well; x.fillRect(lx, h * .18, tw, h * .24); x.fillRect(lx, h * .58, tw, h * .3);
+        SP.forEach(function(s){ x.fillStyle = C.ink; x.fillRect(lx + s[0] / L * tw, h * .2, (s[1] - s[0]) / L * tw, h * .2); });
+        x.strokeStyle = C.blue; x.lineWidth = 2; x.beginPath(); for(var i = 0; i <= 200; i++){ var tt = i / 200 * L, yy = h * .88 - mlev(tt) * h * .28; if(i) x.lineTo(lx + i / 200 * tw, yy); else x.moveTo(lx, yy); } x.stroke();
+        var px = lx + cl(t / L, 0, 1) * tw; x.strokeStyle = C.acc; x.lineWidth = 1.5; x.beginPath(); x.moveTo(px, 0); x.lineTo(px, h); x.stroke(); }
+    });
+    seg(root, "data-v", function(val){ v = +val; if(D.playing) D.stop(); D.draw(0); });
+  })();
+
+  /* ---------- эквалайзер ---------- */
+  (function(){
+    var root = document.getElementById("d-eq"); if(!root) return;
+    var f = "none", music = null, filt = null, cvs = root.querySelector("canvas");
+    function set(fl){ fl.type = f === "lp" ? "lowpass" : "highpass"; fl.frequency.value = f === "lp" ? 380 : f === "hp" ? 1600 : 10; fl.Q.value = .9; }
+    function curve(){ var g = fit(cvs), x = g.x, w = g.w, h = g.h, OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext; if(!OAC) return;
+      var oc = new OAC(1, 64, 44100), fl = oc.createBiquadFilter(); set(fl); var N = 160, fr = new Float32Array(N), mag = new Float32Array(N), ph = new Float32Array(N);
+      for(var i = 0; i < N; i++) fr[i] = 20 * Math.pow(1000, i / (N - 1)); fl.getFrequencyResponse(fr, mag, ph);
+      [100, 1000, 10000].forEach(function(hz){ var xx = Math.log(hz / 20) / Math.log(1000) * w; x.strokeStyle = C.stroke; x.beginPath(); x.moveTo(xx, 0); x.lineTo(xx, h); x.stroke(); label(x, hz >= 1000 ? hz / 1000 + " кГц" : hz + " Гц", xx + 4, h - 8, C.faint, "left", 9); });
+      x.fillStyle = "rgba(235,117,64,.15)"; x.strokeStyle = C.acc; x.lineWidth = 2; x.beginPath(); x.moveTo(0, h);
+      for(i = 0; i < N; i++){ var db = 20 * Math.log10(Math.max(1e-4, mag[i])), yy = h * .2 + cl(-db, 0, 40) / 40 * h * .65; x.lineTo(i / (N - 1) * w, yy); } x.lineTo(w, h); x.closePath(); x.fill(); x.stroke();
+      label(x, "низкие", 6, 12); label(x, "высокие", w - 6, 12, C.faint, "right"); }
+    var D = new Demo(root, { len: 9999, loop: false,
+      onStart: function(){ var c = A.get(); filt = c.createBiquadFilter(); set(filt); filt.connect(A.master()); music = new A.Music(110); music.start(filt); },
+      onStop: function(){ if(music) music.stop(); music = null; var fl = filt; setTimeout(function(){ try { fl && fl.disconnect(); } catch(e){} }, 500); filt = null; },
+      draw: function(){ if(!this.drawn || !this.playing){ curve(); } this.drawn = true; }
+    });
+    D.frame = function(){};
+    seg(root, "data-f", function(v){ f = v; if(filt){ var c = A.ctx(); filt.type = f === "lp" ? "lowpass" : "highpass"; filt.frequency.setTargetAtTime(f === "lp" ? 380 : f === "hp" ? 1600 : 10, c.currentTime, .05); } curve(); });
+    curve();
+  })();
+
+  /* ---------- реверб и фейды ---------- */
+  (function(){
+    var r = document.getElementById("d-verb");
+    if(r) r.querySelectorAll("[data-d]").forEach(function(b){ b.addEventListener("click", function(){ if(active) active.stop(); var c = A.get(); if(!c) return; var t = c.currentTime + .03, far = b.getAttribute("data-d") === "1";
+      var dry = c.createGain(); dry.gain.value = far ? .35 : 1; var lp = c.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = far ? 2500 : 16000; lp.connect(dry); dry.connect(A.master());
+      if(far){ var cv = A.verb(c, A.master(), 1.1); lp.connect(cv); }
+      [0, .32, .64].forEach(function(o){ A.S.drop(c, lp, t + o); A.S.click(c, lp, t + o); }); }); });
+    var f = document.getElementById("d-fade");
+    if(f) f.querySelectorAll("[data-f]").forEach(function(b){ b.addEventListener("click", function(){ if(active) active.stop(); var c = A.get(); if(!c) return; var t = c.currentTime + .03, fade = b.getAttribute("data-f") === "1";
+      [0, .7].forEach(function(o){ var os = c.createOscillator(); os.type = "sine"; os.frequency.value = 180; var g = c.createGain(); var tt = t + o;
+        if(fade){ g.gain.setValueAtTime(0, tt); g.gain.linearRampToValueAtTime(.5, tt + .02); g.gain.setValueAtTime(.5, tt + .48); g.gain.linearRampToValueAtTime(0, tt + .5); }
+        else { g.gain.setValueAtTime(0, tt - .01); g.gain.setValueAtTime(.5, tt + .0013); g.gain.setValueAtTime(.5, tt + .4983); g.gain.setValueAtTime(0, tt + .5); }
+        os.connect(g); g.connect(A.master()); os.start(tt - .01); os.stop(tt + .55); }); }); });
+  })();
+})();
+
+</script>
+</body>
+</html>
