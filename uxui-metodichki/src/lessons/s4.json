@@ -1532,6 +1532,19 @@
      "type": "note",
      "title": "Про фразу в рамке",
      "text": "Это не команда запуска, а пример первого сообщения на «Ловись». Свою идею пишешь своими словами. Нейросеть поможет собрать текст, но знаний о людях она не добавит: их принесёт модуль «Исследования»."
+    },
+    {
+     "type": "files",
+     "items": [
+      {
+       "kind": "Архив · скилл",
+       "title": "Скилл uxui-diploma",
+       "text": "Если ещё не поставил: скачай ZIP, не распаковывай и загрузи в Claude: Customize → Skills → «+» → Create skill. Подробно — в уроке «Добро пожаловать».",
+       "href": "https://perasperadastranew.github.io/guides/uxui-metodichki/files/uxui-diploma.zip",
+       "btn": "Скачать скилл",
+       "download": true
+      }
+     ]
     }
    ]
   },

@@ -1583,6 +1583,19 @@
      "type": "note",
      "title": "Две строки промпта, ради которых он написан",
      "text": "«Опирайся только на то, что я прислал» — чтобы нейросеть не придумала тарифы, которых нет. «Модель для моего приложения не выбирай» — потому что выбирать тебе."
+    },
+    {
+     "type": "files",
+     "items": [
+      {
+       "kind": "Архив · скилл",
+       "title": "Скилл uxui-diploma",
+       "text": "Если ещё не поставил: скачай ZIP, не распаковывай и загрузи в Claude: Customize → Skills → «+» → Create skill. Подробно — в уроке «Добро пожаловать».",
+       "href": "https://perasperadastranew.github.io/guides/uxui-metodichki/files/uxui-diploma.zip",
+       "btn": "Скачать скилл",
+       "download": true
+      }
+     ]
     }
    ]
   },
