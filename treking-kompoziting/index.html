@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Трекинг, ротоскоп, композитинг</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-слайды на чуть более светлом поле, как в остальных методичках школы. Каждый урок собран по одному шаблону: идея, суть, сравнение, инструмент, задание. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e;
+  --line-e:#6a6a6e; --line-m:#47474b; --line-l:#303033;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em;margin-top:14px}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.mono,.corner,th,.kind,.cap,.slot,.lvl,.pair i,.say i,.task i,.q .n,.bars i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+/* светлые панели: уроки чередуются тёмный / светлый, чтобы длинная страница делилась на главы */
+section.light{
+  color-scheme:light;
+  --panel:#f3f3f1; --card:#ffffff; --stroke:#dededa; --well:#e8e8e5;
+  --ink:#121212; --dim:#5c5c59; --faint:#7d7d79;
+  --accent:#d2571f; --accent-ink:#ffffff;
+  --good:#1e9b45; --bad:#d9263a;
+  --line-e:#85857f; --line-m:#b0afa9; --line-l:#d4d3ce;
+  color:var(--dim);
+}
+
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-top:10px}
+nav a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 12px 14px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.2;display:flex;flex-direction:column;gap:22px;min-height:104px;justify-content:space-between}
+nav a::before{content:attr(data-n);font-family:var(--mono);font-size:12px;color:var(--dim);background:#262626;border-radius:6px;padding:5px 7px;align-self:flex-start}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+
+/* сравнения плохо / хорошо */
+.pairs{display:flex;flex-direction:column;gap:8px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+.pair small,.why{font-size:14px;line-height:1.4}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch}
+.why b{font-weight:400}
+
+/* воронка */
+.funnel{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.funnel a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;text-decoration:none}
+.funnel a:hover,.funnel a:focus-visible{border-color:var(--accent);outline:none}
+.funnel b{font-size:17px;font-weight:400}
+.funnel small{font-size:13px;line-height:1.3;color:var(--dim)}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+td .lvl{color:var(--accent);display:block;margin-bottom:3px}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul,.box ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+.bars{display:flex;flex-direction:column;gap:10px}
+.bars .row{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:14px;align-items:center}
+.bars .row span{color:var(--ink);font-size:16px;line-height:1.2}
+.bars .track{display:flex;align-items:center;gap:10px;min-width:0}
+.bars .bar{height:34px;border-radius:8px;background:var(--well);min-width:6px}
+.bars .row.on .bar{background:var(--accent)}
+.bars b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+dl{margin:0;display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);border-top:1px solid var(--stroke)}
+dt,dd{margin:0;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:16px}
+dt{color:var(--ink);padding-right:14px}
+
+/* готовая фраза */
+.say{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.say i{color:var(--accent)}
+.say span{color:var(--ink);font-size:17px;line-height:1.4;max-width:62ch}
+.says{display:flex;flex-direction:column;gap:8px}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.45;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* задание в конце урока */
+.task{border:1px solid var(--accent);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+.slot{border:1px dashed var(--faint);border-radius:8px;padding:10px 12px;line-height:1.5}
+
+
+
+
+
+
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden}
+.fig .stage{aspect-ratio:5/4;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+.micro{aspect-ratio:16/10;pointer-events:none;--hairline-plate:var(--card);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.micro svg{overflow:visible}
+.micro svg g.lift{transition:transform .7s cubic-bezier(.32,.72,0,1)}
+.funnel a:hover .micro g.lift,.funnel a:focus-visible .micro g.lift,.head:hover .micro g.lift{transform:translateY(-14px)}
+@media (prefers-reduced-motion:reduce){.micro svg g.lift{transition:none}}
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.2}
+.figtext p{font-size:16px}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.head h2{flex:1 1 0;min-width:0}
+.head .micro{flex:0 0 190px;width:190px;margin-top:-34px;--hairline-plate:var(--panel)}
+@media (max-width:760px){.head .micro{flex-basis:112px;width:112px;margin-top:0}}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+/* квиз */
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.q .exp b{font-weight:400}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:18px 16px 24px}
+  .pair,.two,.three,.four{grid-template-columns:minmax(0,1fr)}
+  .bars .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl{grid-template-columns:minmax(0,1fr)} dt{border-bottom:0;padding-bottom:0}
+}
+
+/* воздух: больше полей у панелей, пауза и тонкая линия перед каждым подразделом */
+.wrap{gap:20px}
+header,section{padding:34px 44px 60px;gap:24px}
+.corner{margin-bottom:60px}
+section h3{margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.head{padding-bottom:14px}
+.quote{margin-bottom:10px}
+.figrow{padding:20px;gap:32px}
+.task{margin-top:44px;padding:26px}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:36px}
+  section h3{margin-top:26px;padding-top:22px}
+  .task{margin-top:28px;padding:18px}
+}
+
+/* композиция: контурный номер урока, подзаголовок сбоку у узких блоков и сверху у широких, иллюстрации то слева, то справа */
+.head{align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .micro{flex:0 0 300px;width:300px;margin-top:0}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+section .sub h3{margin:0;padding:0;border:0;position:sticky;top:20px}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+.figrow.flip{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
+.figrow.flip .fig{order:2}
+@media (max-width:760px){
+  .head{align-items:flex-end;gap:14px}
+  .head .micro{flex-basis:118px;width:118px}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:26px;padding-top:22px}
+  section .sub h3{position:static}
+  .figrow.flip{grid-template-columns:minmax(0,1fr)}
+  .figrow.flip .fig{order:0}
+}
+</style>
+
+<style>
+
+:root{--line2:#5b8def}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--dim);max-width:70ch}
+.kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--stroke);border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--ink);white-space:nowrap}
+.snd-note{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.4;max-width:640px;color:var(--ink)}
+.snd-note svg{width:20px;height:20px;flex:0 0 auto;color:var(--accent)}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--well);border:1px solid var(--stroke);border-radius:9px;padding:3px;gap:2px}
+.seg button{background:transparent;border:0;color:var(--dim);border-radius:7px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.demo-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.demo-top b{font-size:18px;font-weight:400;color:var(--ink)}
+.demo-bot{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.demo-bot .hint{flex:1 1 260px}
+.cv{display:block;width:100%;border-radius:8px;background:var(--panel)}
+.cv.st{aspect-ratio:16/7}
+.cv.trkc{height:100%;background:transparent;border-radius:0}
+.trk{width:100%}
+.cv.wave{height:90px}
+.cv.lv{height:150px}
+.cv.bars{height:110px}
+.cv.sfw{height:38px;background:transparent}
+.playb{background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:10px 18px;font-weight:500;font-size:15px;white-space:nowrap}
+.playb:hover{filter:brightness(1.08)}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.tg{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);cursor:pointer}
+.tg input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
+.sl{display:flex;flex-direction:column;gap:2px;min-width:170px;flex:1 1 170px;font-size:13px;color:var(--dim)}
+.sl span{display:flex;justify-content:space-between;gap:8px}
+.sl output{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.rng{width:100%;accent-color:var(--accent)}
+.layers{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sfx{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.sfc{text-align:left;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;color:var(--dim);font-weight:400;min-width:0;transition:border-color .15s}
+.sfc:hover,.sfc.on{border-color:var(--accent)}
+.sfc-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sfc-h b{font-size:17px;font-weight:400;color:var(--ink)}
+.sfc-p{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:10px;flex:0 0 auto}
+.sfc-r{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.sfc-w{font-size:14px;line-height:1.35;color:var(--ink)}
+.sfc-t{font-size:13px;line-height:1.35}
+.mini{background:var(--accent);color:var(--accent-ink);border:0;border-radius:50%;width:30px;height:30px;font-size:11px;padding:0}
+table.combo td:last-child{width:40px;text-align:right}
+.bpm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.bpm button{text-align:left;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;color:var(--dim);font-weight:400;font-size:14px}
+.bpm button b{font-family:var(--display);font-size:22px;font-weight:400;color:var(--ink)}
+.bpm button::before{content:"▶ Послушать";font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--accent)}
+.bpm button.on{border-color:var(--accent)} .bpm button.on::before{content:"■ Играет"}
+.lib{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:start}
+.lib-tree{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:13px;color:var(--ink);white-space:pre}
+.lib-tree .a{color:var(--accent)}
+.lib-t{display:flex;flex-direction:column;gap:10px}
+.chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;counter-reset:c}
+.chain>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative;min-width:0}
+.chain>div:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:14px;color:var(--accent);font-size:14px;z-index:1}
+.chain i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--accent)}
+.chain b{font-size:16px;font-weight:400;color:var(--ink)} .chain span{font-size:13px;line-height:1.35}
+.errs{display:flex;flex-wrap:wrap;gap:6px}
+.errs span{border:1px solid var(--bad);border-radius:999px;padding:6px 12px;font-size:14px;color:var(--ink)}
+@media (max-width:860px){.layers{grid-template-columns:repeat(2,minmax(0,1fr))}.chain{grid-template-columns:minmax(0,1fr)}.chain>div::after{display:none}.bpm{grid-template-columns:minmax(0,1fr)}.lib{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){.cv.st{aspect-ratio:16/10}}
+/* нейронка */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+.tpl table{min-width:820px;font-size:14px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+
+
+:root{--line2:#5b8def}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--dim);max-width:70ch}
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.qs{display:flex;flex-wrap:wrap;gap:6px}
+.qs span{border:1px solid var(--stroke);background:var(--card);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink)}
+.tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.tr button{text-align:left;background:var(--card);border:1px solid var(--stroke);color:var(--ink);border-radius:10px;padding:14px;font-weight:400;font-size:15px}
+.tr button.on{border-color:var(--accent)}
+.tr-out{background:var(--well);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;border-left:3px solid var(--accent)}
+.tr-out p{color:var(--ink);font-size:18px;line-height:1.35}
+.boards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.boards>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:4px;aspect-ratio:1;justify-content:flex-end;background-image:linear-gradient(var(--well) 1px,transparent 1px),linear-gradient(90deg,var(--well) 1px,transparent 1px);background-size:14px 14px}
+.boards b{font-size:16px;font-weight:400;color:var(--ink)} .boards span{font-size:12px;line-height:1.3}
+.levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.rf{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.rf label{display:flex;flex-direction:column;gap:6px;min-width:0}
+.rf label:nth-child(n+3){grid-column:span 1}
+.rf label:last-of-type{grid-column:1/-1}
+.rf input,.rf textarea{font:400 15px var(--body);background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:10px 12px;resize:vertical;width:100%}
+.rf input:focus,.rf textarea:focus{outline:none;border-color:var(--accent)}
+.rf-bot{grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+button.ghost{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px;font-weight:400}
+.look{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.look figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.look img{width:100%;height:auto;border-radius:10px;display:block;background:var(--well)}
+.look figcaption{font-size:13px;color:var(--faint)}
+.look-t{display:flex;flex-direction:column;gap:12px}
+.look-t>p{color:var(--ink);font-size:16px}
+ul.see{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+ul.see li{font-size:15px;padding-left:20px;position:relative}
+ul.see li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height:2px;background:var(--accent)}
+.flips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.flip{position:relative;min-height:150px;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:0;text-align:left;font-weight:400;color:var(--ink);font-size:18px;line-height:1.3;overflow:hidden}
+.flip span{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;gap:10px;transition:opacity .25s,transform .25s}
+.flip i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.f-a i{color:var(--bad)} .f-b i{color:var(--good)}
+.f-b{opacity:0;transform:translateY(10px)}
+.flip.on{border-color:var(--good)} .flip.on .f-a{opacity:0;transform:translateY(-10px)} .flip.on .f-b{opacity:1;transform:none}
+.flip::after{content:"нажми ↻";position:absolute;right:14px;bottom:12px;font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.06em}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.flow>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative}
+.flow>div:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:14px;color:var(--accent);z-index:1}
+.flow i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--accent)} .flow b{font-size:16px;font-weight:400;color:var(--ink)} .flow span{font-size:13px;line-height:1.35}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:14px;line-height:1.6;color:var(--ink);background:var(--well);border-radius:8px;padding:14px}
+.tpl pre em{font-style:normal;color:var(--accent)}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+@media (max-width:980px){.five{grid-template-columns:repeat(2,minmax(0,1fr))}.boards{grid-template-columns:repeat(3,minmax(0,1fr))}.levels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.tr,.flips{grid-template-columns:minmax(0,1fr)}.flow{grid-template-columns:minmax(0,1fr)}.flow>div::after{display:none}.look{grid-template-columns:minmax(0,1fr)}.rf{grid-template-columns:minmax(0,1fr)}.levels{grid-template-columns:minmax(0,1fr)}}
+/* нейронка */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+.tpl table{min-width:820px;font-size:14px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+
+.tabs-b{display:flex;flex-wrap:wrap;gap:6px}
+.tabs-b button{background:var(--card);border:1px solid var(--stroke);color:var(--dim);border-radius:999px;padding:7px 13px;font-weight:400;font-size:14px}
+.tabs-b button[aria-selected="true"]{border-color:var(--ink);color:var(--ink)}
+.tab-p[hidden]{display:none}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.kv>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.kv b{font-size:15px;font-weight:400;color:var(--ink)} .kv span{font-size:13px;line-height:1.35}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+.fr{display:block;width:100%;height:auto;border-radius:8px}
+.fr .bg{fill:var(--well)} .fr .i{fill:var(--ink)} .fr .a{fill:var(--accent)} .fr .d{fill:var(--dim)} .fr .f{fill:var(--faint)} .fr .p{fill:var(--panel)}
+.fr .s{fill:none;stroke:var(--ink);stroke-width:1.5} .fr .sa{fill:none;stroke:var(--accent);stroke-width:1.5} .fr .sd{fill:none;stroke:var(--faint);stroke-width:1}
+.fr text{font-family:var(--display)} .fr text.mn{font-family:var(--mono);letter-spacing:.04em}
+.schemes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.schemes figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.schemes figcaption{display:flex;flex-direction:column;gap:4px;padding:0 4px 4px}
+.schemes figcaption b{font-size:16px;font-weight:400;color:var(--ink)} .schemes figcaption span{font-size:13px;line-height:1.38}
+.schemes .kind{color:var(--accent)}
+figure>img{max-width:100%;height:auto}
+figure.pic{margin:0;max-width:480px;display:flex;flex-direction:column;gap:8px}
+figure.pic>img{display:block;width:100%;border-radius:8px;background:#f3efe7}
+figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+</style>
+<style>
+.tr-cv,.cp-cv{display:block;width:100%;height:auto;border-radius:10px;background:#0b0d14}
+.cp-t{gap:6px 16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+ГАЙД ДЛЯ СТУДЕНТОВ</span><span>MISSION TO MOTION
+ТРЕКИНГ И КОМПОЗИТИНГ</span></div>
+  <h1>Трекинг, ротоскоп, композитинг</h1>
+  <p class="lead"><b>Графика должна жить внутри кадра, а не висеть поверх.</b> Как приклеить текст к объекту, вписать картинку в экран телефона, вырезать человека без хромакея и собрать кадр так, чтобы никто не заметил склейки.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav aria-label="Разделы">
+    <a href="#u1" data-n="01">Карта инструментов</a><a href="#u2" data-n="02">2D-трекинг</a><a href="#u3" data-n="03">3D, Mocha, стабилизация</a><a href="#u4" data-n="04">Ротоскоп</a><a href="#u5" data-n="05">Композитинг</a><a href="#u6" data-n="06">Задание</a><a href="#quiz" data-n="07">Квиз</a>
+  </nav>
+</header>
+
+<section id="u1">
+<div class="corner"><span>PERASPERADASTRA
+ТРЕКИНГ</span><span>ЧАСТЬ 01
+КАРТА ИНСТРУМЕНТОВ</span></div>
+  <div class="head"><h2>Карта инструментов</h2></div>
+  <p class="quote">Хороший трекинг не виден зрителю.</p>
+  <p>Трекинг — отслеживание движения. Он привязывает объект к точке в кадре, чтобы тот повторял движение камеры или другого объекта. Это и текст на стене дома, и замена экрана телефона, и билборд со своей рекламой, и стабилизация дрожащего футажа.</p>
+  <h3>Пять инструментов</h3>
+  <div class="kv">
+    <div><b>2D-трекер</b><span>Точки на плоском движении. Следящий текст, привязка графики к объекту.</span></div>
+    <div><b>3D Camera Tracker</b><span>Восстанавливает движение камеры в пространстве. Графика в 3D-сцене.</span></div>
+    <div><b>Mocha AE</b><span>Планарный трекинг плоскостей: экраны, стены, знаки.</span></div>
+    <div><b>Warp Stabilizer</b><span>Стабилизация дрожащего футажа.</span></div>
+    <div><b>Mask и Face Tracker</b><span>Маска едет за объектом или за частями лица.</span></div>
+  </div>
+  <h3>Какой инструмент взять</h3>
+  <div class="flips">
+    <button type="button" class="flip"><span class="f-a"><i>Задача</i>Подпись следует за бегущей собакой</span><span class="f-b"><i>Инструмент</i>2D-трекер, Transform, Position. Данные на Null.</span></button>
+    <button type="button" class="flip"><span class="f-a"><i>Задача</i>Заменить картинку на экране телефона в руке</span><span class="f-b"><i>Инструмент</i>Mocha AE с Perspective, экспорт Corner Pin.</span></button>
+    <button type="button" class="flip"><span class="f-a"><i>Задача</i>Камера идёт по улице, нужен 3D-текст на асфальте</span><span class="f-b"><i>Инструмент</i>3D Camera Tracker, Ground Plane и Origin.</span></button>
+    <button type="button" class="flip"><span class="f-a"><i>Задача</i>Видео с рук трясётся</span><span class="f-b"><i>Инструмент</i>Warp Stabilizer, Smooth Motion.</span></button>
+    <button type="button" class="flip"><span class="f-a"><i>Задача</i>Размыть номер проезжающей машины</span><span class="f-b"><i>Инструмент</i>Mask Tracker: правый клик по маске → Track Mask.</span></button>
+    <button type="button" class="flip"><span class="f-a"><i>Задача</i>Камера на штативе вращается на месте</span><span class="f-b"><i>Инструмент</i>Не 3D Camera Tracker — без параллакса он не справится. 2D-трекер или Mocha.</span></button>
+  </div>
+</section>
+
+<section id="u2">
+<div class="corner"><span>PERASPERADASTRA
+ТРЕКИНГ</span><span>ЧАСТЬ 02
+2D-ТРЕКИНГ</span></div>
+  <div class="head"><h2>2D-трекинг</h2></div>
+  <p class="quote">Трекинг применяй к Null, а не к графике.</p>
+  <p>Выбери слой с видео, открой Window → Tracker, нажми Track Motion — в окне Layer появится точка трекинга.</p>
+  <h3>Точка трекинга</h3>
+  <div class="three">
+    <div class="box"><span class="kind">Feature region</span><p>Внутренний прямоугольник. Плотно охватывает деталь, за которой следим.</p></div>
+    <div class="box"><span class="kind">Search region</span><p>Внешний. Где искать деталь на следующем кадре. Быстрое движение — увеличь.</p></div>
+    <div class="box"><span class="kind">Attach point</span><p>Крестик, к которому привяжется объект. Можно сдвинуть: трекаешь голову, а текст висит над ней.</p></div>
+  </div>
+  <h3>Симулятор трекера</h3>
+  <div class="demo" id="tr">
+    <div class="demo-top"><b>Выбери деталь и размер поиска</b><div class="seg" role="group" aria-label="Деталь"><button type="button" data-pt="0" aria-pressed="true">Угол окна</button><button type="button" data-pt="1">Однотонная стена</button><button type="button" data-pt="2">Блик на стекле</button></div></div>
+    <canvas class="tr-cv" width="960" height="460" aria-label="Кадр с трекингом"></canvas>
+    <div class="ctrls"><label class="sl"><span>Search region <output data-os>90</output></span><input class="rng" type="range" min="30" max="160" value="90" data-sr></label><label class="tg"><input type="checkbox" data-txt checked> Текст на Null</label></div>
+    <div class="demo-bot"><button class="playb" type="button" data-play>▶ Analyze Forward</button><span class="hint" data-th>Угол окна контрастный и не меняет форму — хорошая точка.</span></div>
+  </div>
+  <h3>Хорошая точка</h3>
+  <div class="two">
+    <div class="box"><span class="kind">Работает</span><p>Не уходит за кадр, чёткая, сохраняет форму и цвет, контрастирует с окружением. Углы предметов, контрастные детали.</p></div>
+    <div class="box"><span class="kind">Не работает</span><p>Однотонные поверхности, блики и отражения, объекты, которые меняются от освещения.</p></div>
+  </div>
+  <h3>Процесс</h3>
+  <ol class="steps">
+    <li><div><div class="t">Посмотри футаж целиком</div><div class="d">Реши, какую точку тречить, до нажатия Analyze.</div></div></li>
+    <li><div><div class="t">Track Type: Transform, галочка Position</div><div class="d">Для простого движения хватит. Scale или Rotation добавят вторую точку.</div></div></li>
+    <li><div><div class="t">Analyze Forward и следи</div><div class="d">Поехало — Stop. Alt + перетаскивание двигает регионы без attach point: перецепись и продолжай. Покадрово — Analyze 1 Frame.</div></div></li>
+    <li><div><div class="t">Edit Target → Null → Apply</div><div class="d">Графику привяжи к Null через Parent. Её можно двигать и масштабировать, анимация не сломается.</div></div></li>
+  </ol>
+  <h3>Track Type</h3>
+  <dl>
+    <dt>Transform</dt><dd>Привязка графики к объекту. Position, Scale, Rotation в любых сочетаниях.</dd>
+    <dt>Stabilize</dt><dd>Те же данные, применённые к самому слою с обратным знаком. Трекаешь то, что должно стоять.</dd>
+    <dt>Parallel Corner Pin</dt><dd>Три точки, четвёртая считается. Наклон без перспективы.</dd>
+    <dt>Perspective Corner Pin</dt><dd>Четыре точки с перспективой: открывающаяся дверь, бок автобуса, экран в наклоне.</dd>
+    <dt>Raw</dt><dd>Только записывает данные. Дальше копируешь ключи вручную или связываешь экспрешеном.</dd>
+  </dl>
+  <h3>Options, когда трек срывается</h3>
+  <dl>
+    <dt>Channel</dt><dd>RGB — деталь отличается цветом, Luminance — яркостью (свеча в темноте), Saturation — насыщенностью.</dd>
+    <dt>Enhance Before Match</dt><dd>Размытие 2–3 px перед сравнением спасает зернистый футаж. На видео не влияет.</dd>
+    <dt>Adapt Feature on Every Frame</dt><dd>Образец берётся с предыдущего кадра. Для объектов, которые постепенно меняют форму.</dd>
+    <dt>If Confidence Is Below</dt><dd>Что делать при низкой уверенности: продолжить, остановиться, экстраполировать или адаптировать.</dd>
+  </dl>
+</section>
+
+<section id="u3">
+<div class="corner"><span>PERASPERADASTRA
+ТРЕКИНГ</span><span>ЧАСТЬ 03
+3D, MOCHA, СТАБИЛИЗАЦИЯ</span></div>
+  <div class="head"><h2>3D Camera Tracker, Mocha, Warp Stabilizer</h2></div>
+  <p class="quote">Форма — это нюх Mocha, а не данные трека.</p>
+  <div class="tab-wrap demo" data-tabs>
+    <div class="tabs-b"><button type="button" aria-selected="true">3D Camera Tracker</button><button type="button" aria-selected="false">Mocha AE</button><button type="button" aria-selected="false">Warp Stabilizer</button></div>
+    <div class="tab-p">
+      <h3>Когда работает</h3>
+      <div class="two">
+        <div class="box"><span class="kind">Нужно</span><p>Движение камеры с параллаксом, статичные объекты в кадре, детали и контраст на поверхностях.</p></div>
+        <div class="box"><span class="kind">Не справится</span><p>Штатив с вращением на месте, только зум, сильный motion blur.</p></div>
+      </div>
+      <p>Снимаешь под трекинг — короткая выдержка, в кадре пол и стены, плавные движения.</p>
+      <ol class="steps">
+        <li><div><div class="t">Track Camera</div><div class="d">Сразу включи Detailed Analysis. Shot Type и Solve Method обычно на Auto.</div></div></li>
+        <li><div><div class="t">Почисти точки</div><div class="d">Не видно точек — View → Show Layer Controls. Удали точки на людях и машинах, следи, чтобы Average Error падал. Иногда помогает просто перетрекать.</div></div></li>
+        <li><div><div class="t">Origin и пол</div><div class="d">Три стабильные точки в одной плоскости → правый клик → Set Ground Plane and Origin.</div></div></li>
+        <li><div><div class="t">Solid and Camera + Grid</div><div class="d">Эффект Grid на solid показывает, плывёт ли плоскость относительно сцены.</div></div></li>
+        <li><div><div class="t">Графика в Pre-comp</div><div class="d">Скопируй Position и Orientation с solid на прекомп. Внутри меняй что угодно. Включи Motion Blur — блюр посчитается по данным камеры.</div></div></li>
+      </ol>
+    </div>
+    <div class="tab-p" hidden>
+      <p>Mocha трекает не точки, а плоскости. Ей не нужны контрастные углы — достаточно, чтобы в обведённой области всё двигалось согласованно.</p>
+      <ol class="steps">
+        <li><div><div class="t">Effect → Boris FX Mocha → Mocha AE</div><div class="d">Кнопка с логотипом в Effect Controls открывает интерфейс.</div></div></li>
+        <li><div><div class="t">X-Spline вокруг плоскости</div><div class="d">Исключи всё, что движется иначе: руку, растение, отражения. Немного фона по краю помогает.</div></div></li>
+        <li><div><div class="t">Вычитание и перекрытия</div><div class="d">Сплайн с плюсом в том же слое вычитает область. Отдельный слой сверху (например, Finger Track Matte) обрезает слои ниже. Называй слои сразу.</div></div></li>
+        <li><div><div class="t">Тип движения</div><div class="d">Translation, Rotation, Scale, Skew, Perspective — иерархичны. Экран в руках — Perspective.</div></div></li>
+        <li><div><div class="t">Track Forwards</div><div class="d">Синий на таймлайне — данные есть, красный — нет. Можно начинать с середины и трекать в обе стороны.</div></div></li>
+        <li><div><div class="t">Проверка: Surface, Grid, Insert Clip</div><div class="d">Сетка на поверхности показывает дрифт и рывки.</div></div></li>
+        <li><div><div class="t">Экспорт</div><div class="d">Create Track Data → Corner Pin (Support Motion Blur) для экранов или Transform → Apply Export. Графика для Corner Pin — в прекомпе размером с композицию, Fit to Comp.</div></div></li>
+      </ol>
+      <div class="note"><b>Главное правило</b><p>Трек съехал — не правь форму по ходу и не перетрекивай по паре кадров. Остановись, найди причину (отражение, перекрытие, мало фона), поправь форму до трека и перетрекай заново.</p></div>
+    </div>
+    <div class="tab-p" hidden>
+      <p>Effects → Distort → Warp Stabilizer. Анализ идёт в фоне.</p>
+      <dl>
+        <dt>Result</dt><dd>Smooth Motion — движение остаётся, но плавнее. No Motion — как со штатива.</dd>
+        <dt>Smoothness</dt><dd>Больше — плавнее, но больше кропа по краям.</dd>
+        <dt>Method</dt><dd>Position → Position, Scale, Rotation → Perspective → Subspace Warp. Кривит картинку — откатись на более простой.</dd>
+        <dt>Framing</dt><dd>Stabilize Only — посмотреть силу. Crop, Auto-scale — по умолчанию. Synthesize Edges — края из соседних кадров.</dd>
+        <dt>Если плохо</dt><dd>Rolling shutter — Advanced → Rolling Shutter Ripple. Detailed Analysis. Много кропа — снизь Smoothness.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="u4">
+<div class="corner"><span>PERASPERADASTRA
+ТРЕКИНГ</span><span>ЧАСТЬ 04
+РОТОСКОП</span></div>
+  <div class="head"><h2>Ротоскоп</h2></div>
+  <p class="quote">Разбивай силуэт на части — алгоритму проще следить за каждой.</p>
+  <div class="two">
+    <div class="box"><span class="kind">Хромакей</span><p>Снимаешь на зелёный или синий фон, удаляешь цвет одним эффектом. Быстро и чисто, если снято правильно.</p></div>
+    <div class="box"><span class="kind">Ротоскоп</span><p>Покадрово выделяешь объект на любом футаже. Медленнее. Часто их совмещают: кей вытаскивает основное, ротоскоп правит проблемные места.</p></div>
+  </div>
+  <h3>Roto Brush</h3>
+  <ol class="steps">
+    <li><div><div class="t">Посмотри футаж</div><div class="d">Найди сложные места заранее: волосы, размытые края, быстрое движение, выход за кадр.</div></div></li>
+    <li><div><div class="t">Открой слой в окне Layer</div><div class="d">Двойной клик. Roto Brush на панели, размер кисти — Ctrl/Cmd + перетаскивание.</div></div></li>
+    <li><div><div class="t">Грубо закрась внутри объекта</div><div class="d">Розовый контур достроится. Alt — убрать лишнее. Руки, голова, тело — отдельными частями.</div></div></li>
+    <li><div><div class="t">Проиграй и правь точечно</div><div class="d">Не ставь ключ на каждый кадр: найди, где поехало и где стабилизировалось, поправь там. Не хватает контраста — временно Curves. Быстрое движение — Propagation → Search Radius.</div></div></li>
+    <li><div><div class="t">Refine Edge на волосы</div><div class="d">Мягкие границы Roto Brush режет жёстко.</div></div></li>
+    <li><div><div class="t">Freeze</div><div class="d">Кнопка внизу окна Layer — фиксирует результат, без неё всё пересчитывается при каждом движении по таймлайну.</div></div></li>
+    <li><div><div class="t">Проверь на ярком Solid</div><div class="d">Подложи контрастный цвет: ореолы и дыры сразу видно. Feather, Contrast, Reduce Chatter — осторожно.</div></div></li>
+  </ol>
+  <dl>
+    <dt>Object Matte Tool</dt><dd>В новых версиях: кликаешь по объекту, программа сама находит и ведёт его. Логика та же, ручной работы меньше.</dd>
+    <dt>Pre-render</dt><dd>Тяжёлый проект тормозит даже после Freeze — Composition → Pre-render в Lossless with Alpha. Файл сам подставится вместо композиции.</dd>
+    <dt>Не подходит</dt><dd>Стекло, дым, вода, тонкая ткань, всплески. Там режимы наложения, хромакей или ручные маски.</dd>
+  </dl>
+</section>
+
+<section id="u5">
+<div class="corner"><span>PERASPERADASTRA
+ТРЕКИНГ</span><span>ЧАСТЬ 05
+КОМПОЗИТИНГ</span></div>
+  <div class="head"><h2>Композитинг</h2></div>
+  <p class="quote">Каждая правка по отдельности незаметна. Их сумма убирает ощущение склейки.</p>
+  <p>Вырезать объект — половина работы. Композитинг встраивает его в сцену. Сначала проверь очевидное: размер и ракурс. Фон снят сверху, а объект в анфас — не сработает ничего.</p>
+  <h3>Собери кадр по шагам</h3>
+  <div class="demo" id="cp">
+    <canvas class="cp-cv" width="960" height="540" aria-label="Композитинг"></canvas>
+    <div class="ctrls cp-t">
+      <label class="tg"><input type="checkbox" data-k="color"> Цвет · Lumetri</label>
+      <label class="tg"><input type="checkbox" data-k="black"> Уровень чёрного</label>
+      <label class="tg"><input type="checkbox" data-k="edge"> Края · Choker</label>
+      <label class="tg"><input type="checkbox" data-k="shadow"> Тень</label>
+      <label class="tg"><input type="checkbox" data-k="wrap"> Light Wrap</label>
+      <label class="tg"><input type="checkbox" data-k="grain"> Зерно</label>
+    </div>
+    <div class="demo-bot"><button class="playb" type="button" data-all>Включить всё</button><span class="hint" data-ch>Объект вырезан и положен на фон. Видно, что он из другой съёмки.</span></div>
+  </div>
+  <dl>
+    <dt>Цвет</dt><dd>Lumetri Color: температура, оттенок, контраст. Сверяйся объективно в Window → Lumetri Scopes.</dd>
+    <dt>Уровень чёрного</dt><dd>Тёмные участки объекта и фона должны совпадать по глубине, иначе объект выглядит из другой съёмки.</dd>
+    <dt>Края</dt><dd>Ореол исходного фона убирают Simple Choker и Matte Choker, после кея — Spill Suppressor.</dd>
+    <dt>Тени и свет</dt><dd>Без тени объект парит. Дублируй слой, залей чёрным, положи по направлению света, размой, убавь прозрачность. Свет на объекте и в сцене — с одной стороны.</dd>
+    <dt>Light Wrap</dt><dd>Layer Styles → Inner Shadow в режиме Screen цветом фона — Angle и Distance задают сторону. Для сложного фона: размытая копия фона + Set Matte по альфе объекта с инверсией. Тонко.</dd>
+    <dt>Зерно</dt><dd>Adjustment-слой с Add Grain или футаж зерна поверх в Overlay — легче для компьютера.</dd>
+  </dl>
+</section>
+
+<section id="u6">
+<div class="corner"><span>PERASPERADASTRA
+ТРЕКИНГ</span><span>ЧАСТЬ 06
+ЗАДАНИЕ</span></div>
+  <div class="head"><h2>Задание</h2></div>
+  <h3>В паре с нейронкой</h3>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Что в кадре, как движется камера, что хочешь вписать. Без этого ответ будет общим.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Нейронка уточняет и ждёт ответа, а не выдаёт инструкцию на всё сразу.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Инструмент и настройки выбираешь сам, проверяешь на превью.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Промпт · выбор инструмента</span><b>Понять, каким трекером решать задачу</b>
+<pre id="ai-1">Я в After Effects. Футаж: <em>[что в кадре, как движется камера, есть ли штатив, motion blur, перекрытия]</em>
+Что хочу вписать: <em>[текст, экран, 3D-объект, маску]</em>
+Задай мне 2–3 уточняющих вопроса по одному. Потом объясни, какой инструмент из 2D Tracker, 3D Camera Tracker, Mocha AE и Mask Tracker подходит и почему остальные хуже.</pre>
+      <button class="copy" type="button" data-copy="ai-1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> пробуешь выбранный инструмент и проверяешь трек сеткой.</p>
+    </div>
+    <div class="prompt"><span class="kind">Промпт · разбор композитинга</span><b>Найти, что выдаёт склейку</b>
+<pre id="ai-2">Я вписал объект в сцену. Вот что сделано: <em>[цвет, края, тень, light wrap, зерно — что из этого есть]</em>
+Свет в сцене: <em>[откуда, какой]</em>. Что меня смущает: <em>[опиши]</em>
+Не предлагай всё переделать. Задавай вопросы по одному и помоги найти одну главную причину, почему объект выглядит вклеенным.</pre>
+      <button class="copy" type="button" data-copy="ai-2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь одну вещь за раз и сравниваешь до и после.</p>
+    </div>
+  </div>
+  <div class="task"><i>Задание</i><b>Графика внутри живого кадра</b><p>Сними 5–10 секунд на телефон с движением камеры. Вариант А: впиши текст или графику трекингом (2D через Null, Mocha с Corner Pin или 3D Camera Tracker). Вариант Б: вырежи себя Roto Brush и перенеси на другой фон, доведи композитинг: цвет, чёрный, края, тень, зерно. Сдай .aep, исходник и .mp4.</p></div>
+</section>
+
+<section id="quiz">
+<div class="corner"><span>PERASPERADASTRA
+ТРЕКИНГ</span><span>ПРОВЕРЬ СЕБЯ</span></div>
+  <h2>Квиз</h2>
+  <p>После ответа появится разбор и ссылка на часть гайда.</p>
+  <div class="quiz" id="quiz-list"></div>
+  <div class="score"><span class="big" id="quiz-score">0</span><span id="quiz-verdict"></span><button type="button" id="quiz-reset">Пройти заново</button></div>
+</section>
+
+<section id="check" data-key="tracking-check-v1">
+<div class="corner"><span>PERASPERADASTRA
+ТРЕКИНГ</span><span>ЧЕК-ЛИСТ</span></div>
+  <h2>Чек-лист</h2>
+  <p>Отметки сохраняются в этом браузере.</p>
+  <div class="check">
+    <label><input type="checkbox" id="c1"><span>Инструмент выбран под задачу, а не «какой знаю»</span></label>
+    <label><input type="checkbox" id="c2"><span>Данные трека на Null или прекомпе, графика редактируется</span></label>
+    <label><input type="checkbox" id="c3"><span>Трек проверен сеткой или Grid — не плывёт</span></label>
+    <label><input type="checkbox" id="c4"><span>Ротоскоп заморожен Freeze и проверен на ярком Solid</span></label>
+    <label><input type="checkbox" id="c5"><span>Цвет и уровень чёрного объекта совпадают с фоном</span></label>
+    <label><input type="checkbox" id="c6"><span>Есть тень по направлению света, края без ореола</span></label>
+    <label><input type="checkbox" id="c7"><span>Motion Blur и зерно склеивают графику с футажом</span></label>
+  </div>
+</section>
+
+<footer>Perasperadastra · Mission to Motion · трекинг, ротоскоп, композитинг</footer>
+</div>
+
+<script type="application/json" id="quiz-data">[
+ {"l":"Часть 01","h":"#u1","p":"Нужно заменить картинку на экране телефона, который вертят в руке. Что взять?","o":["2D-трекер, Position","Mocha AE с Perspective и Corner Pin","Warp Stabilizer","Face Tracker"],"a":1,"e":"Планарный трекинг держит плоскость с перспективой, даже без контрастных углов."},
+ {"l":"Часть 02","h":"#u2","p":"Что делает Search region?","o":["Задаёт точку привязки","Определяет, где искать деталь на следующем кадре","Отслеживаемая деталь","Меняет канал сравнения"],"a":1,"e":"При быстром или тряском движении его увеличивают, иначе деталь выскочит за границу."},
+ {"l":"Часть 02","h":"#u2","p":"Почему трек применяют к Null, а не к графике?","o":["Так быстрее анализ","Графика остаётся редактируемой: её можно двигать и масштабировать","Null даёт Motion Blur","Иначе трек не сохранится"],"a":1,"e":"Ключи трека живут на Null, а графика привязана через Parent."},
+ {"l":"Часть 03","h":"#u3","p":"Когда 3D Camera Tracker не справится?","o":["Камера идёт по улице","Камера на штативе вращается на месте","В кадре есть пол и стены","Короткая выдержка"],"a":1,"e":"Ему нужен параллакс, а при вращении на месте его нет."},
+ {"l":"Часть 03","h":"#u3","p":"Трек в Mocha съехал. Что правильно?","o":["Поправить форму на этом кадре и трекать дальше","Остановиться, найти причину, поправить форму до трека и перетрекать","Удалить слой","Включить Grid и продолжить"],"a":1,"e":"Форма — не данные. Правки формы по ходу ломают трек."},
+ {"l":"Часть 04","h":"#u4","p":"Зачем нажимать Freeze после Roto Brush?","o":["Чтобы появилась альфа","Чтобы зафиксировать результат и не пересчитывать его","Чтобы убрать ореол","Чтобы смягчить край"],"a":1,"e":"Без Freeze выделение пересчитывается при каждом движении по таймлайну."},
+ {"l":"Часть 05","h":"#u5","p":"Объект выглядит выцветшим на фоне, хотя оттенок подобран. Что проверить?","o":["Зерно","Уровень чёрного","Light Wrap","Размер кисти"],"a":1,"e":"Если тёмные участки объекта светлее тёмных участков фона, слои читаются как разные съёмки."}
+]
+</script>
+<script>
+(function(){
+  function el(t, c, x){ var n = document.createElement(t); if(c) n.className = c; if(x != null) n.textContent = x; return n; }
+  // раскладка разделов: номер части и подразделы «заголовок слева — содержимое справа»
+  var secs = document.querySelectorAll('section[id^="u"]');
+  for(var s = 0; s < secs.length; s++){
+    var sec = secs[s], head = sec.querySelector(".head"), h2 = head && head.querySelector("h2");
+    if(h2){ var left = el("div", "head-l"), num = el("div", "num", "0" + sec.id.slice(1)); num.setAttribute("aria-hidden", "true"); head.insertBefore(left, h2); left.appendChild(num); left.appendChild(h2); }
+    var kids = Array.prototype.slice.call(sec.children), cur = null;
+    kids.forEach(function(n){
+      if(n.tagName === "H3"){ cur = el("div", "sub"); var hd = el("div", "sub-h"), bd = el("div", "sub-b"); sec.insertBefore(cur, n); hd.appendChild(n); cur.appendChild(hd); cur.appendChild(bd); cur.body = bd; return; }
+      if(!cur) return;
+      if(n.classList.contains("task")){ cur = null; return; }
+      cur.body.appendChild(n);
+    });
+    var subs = sec.querySelectorAll(".sub");
+    for(var k = 0; k < subs.length; k++) if(subs[k].querySelector(".four,.three,.five,table,.levels,.rf,.look,.flips,.flow,.boards,.ai,.pair,.two,.tpl,.tr,.qs,.demo,.chain,.kv,.schemes,.tab-wrap,.layers,.bpm,.lib,.errs,.wide-x")) subs[k].classList.add("wide");
+  }
+
+  // копирование
+  document.querySelectorAll("button.copy").forEach(function(b){
+    b.addEventListener("click", function(){
+      var n = document.getElementById(b.getAttribute("data-copy")), t = n.textContent, o = b.textContent;
+      function done(){ b.textContent = "Скопировано"; setTimeout(function(){ b.textContent = o; }, 1600); }
+      function sel(){ if(n.hidden){ b.textContent = "Не удалось скопировать"; return; } var r = document.createRange(); r.selectNodeContents(n); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Выделено, нажми Ctrl+C"; }
+      try { navigator.clipboard.writeText(t).then(done, sel); } catch(e){ sel(); }
+    });
+  });
+
+
+  // вкладки
+  document.querySelectorAll("[data-tabs]").forEach(function(w){ var bs = w.querySelectorAll(".tabs-b button"), ps = w.querySelectorAll(".tab-p");
+    bs.forEach(function(b, i){ b.addEventListener("click", function(){ bs.forEach(function(x, j){ x.setAttribute("aria-selected", j === i ? "true" : "false"); ps[j].hidden = j !== i; }); }); }); });
+  // перевёртыши
+  document.querySelectorAll(".flip").forEach(function(b){ b.addEventListener("click", function(){ b.classList.toggle("on"); }); });
+  // квиз
+  var QD = document.getElementById("quiz-data"); if(!QD) return; var QUIZ = JSON.parse(QD.textContent);
+  var ql = document.getElementById("quiz-list"), scoreEl = document.getElementById("quiz-score"), verdict = document.getElementById("quiz-verdict"), answered = 0, right = 0;
+  function update(){ scoreEl.textContent = right + " / " + QUIZ.length; if(answered < QUIZ.length){ verdict.textContent = "Ответь на все вопросы, чтобы увидеть результат."; return; } verdict.textContent = right >= QUIZ.length - 1 ? "Отлично. Тема разобрана." : right >= Math.ceil(QUIZ.length * .6) ? "Хорошо. Перечитай части, где ошибся." : "Пройди гайд ещё раз и вернись к квизу."; }
+  function renderQ(){
+    ql.textContent = ""; answered = 0; right = 0;
+    QUIZ.forEach(function(q, i){
+      var card = el("div", "q"); card.appendChild(el("span", "n", "0" + (i + 1) + " · " + q.l)); card.appendChild(el("div", "p", q.p));
+      var opts = el("div", "opts"), exp = el("div", "exp"); exp.hidden = true;
+      q.o.forEach(function(t, j){ var b = el("button", null, t); b.type = "button"; b.addEventListener("click", function(){
+        var all = opts.querySelectorAll("button"); for(var k = 0; k < all.length; k++){ all[k].disabled = true; if(k === q.a) all[k].className = "right"; }
+        var ok = j === q.a; if(!ok) b.className = "wrong"; answered++; if(ok) right++;
+        exp.textContent = ""; exp.appendChild(el("b", null, ok ? "Верно. " : "Не совсем. ")); exp.appendChild(document.createTextNode(q.e + " ")); var a = el("a", null, "Открыть часть"); a.href = q.h; exp.appendChild(a); exp.hidden = false; update();
+      }); opts.appendChild(b); });
+      card.appendChild(opts); card.appendChild(exp); ql.appendChild(card);
+    }); update();
+  }
+  renderQ();
+  document.getElementById("quiz-reset").addEventListener("click", function(){ renderQ(); document.getElementById("quiz").scrollIntoView(); });
+
+  // чек-лист
+  var CK = "sound-check-v1", st = {};
+  try { st = JSON.parse(localStorage.getItem(CK) || "{}") || {}; } catch(e){ st = {}; }
+  document.querySelectorAll(".check input").forEach(function(box){ if(st[box.id]) box.checked = true; box.addEventListener("change", function(){ st[box.id] = box.checked; try { localStorage.setItem(CK, JSON.stringify(st)); } catch(e){} }); });
+})();
+
+(function(){
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var ACC=(getComputedStyle(document.documentElement).getPropertyValue("--accent")||"").trim()||"#f26a2e";
+  var R=function(s){return function(){s=(s*16807)%2147483647;return s/2147483647}};
+
+  // ---------- tracker ----------
+  (function(){var tr=document.getElementById("tr");
+  if(tr){
+    var cv=tr.querySelector(".tr-cv"),c=cv.getContext("2d"),W=cv.width,H=cv.height,N=72;
+    var r=R(11),off=[];
+    for(var f=0;f<N;f++){var t=f/(N-1),sp=Math.sin(Math.PI*t);off.push([-150+300*(t-Math.sin(2*Math.PI*t)/(2*Math.PI))+(r()-.5)*22*sp,40*Math.sin(2*Math.PI*t*1.3)+(r()-.5)*18*sp])}
+    var P=[{l:[330,205],h:"Угол окна контрастный и не меняет форму — хорошая точка."},{l:[560,340],h:"На однотонной стене не за что зацепиться: трек медленно уплывает."},{l:[455,175],h:"Блик меняется от света: трекер перескакивает на другой и срывается."}];
+    var st={pt:0,sr:90,txt:true,f:0,track:null,lost:-1};
+    var compute=function(){
+      var p=P[st.pt],r2=R(5),e=[0,0],res=[],lost=-1,fs=24;
+      for(var f=0;f<N;f++){
+        var tp=[p.l[0]+off[f][0],p.l[1]+off[f][1]];
+        if(lost>=0){res.push(res[f-1]);continue}
+        if(f>0){var d=Math.hypot(off[f][0]-off[f-1][0],off[f][1]-off[f-1][1]);if(d>(st.sr-fs)/2){lost=f;res.push(res[f-1]);continue}}
+        if(st.pt===1){e[0]+=(r2()-.35)*4;e[1]+=(r2()-.3)*3}
+        if(st.pt===2&&f>=28){e=[-64,6];if(f>=40){lost=f;res.push(res[f-1]);continue}}
+        res.push([tp[0]+e[0],tp[1]+e[1]]);
+      }
+      st.track=res;st.lost=lost;
+    };
+    var scene=function(f){
+      var o=off[f];c.fillStyle="#0d1018";c.fillRect(0,0,W,H);
+      c.save();c.translate(o[0],o[1]);
+      c.fillStyle="#1b1f2b";c.fillRect(-300,300,1600,400);
+      c.fillStyle="#6b6458";c.fillRect(200,60,520,420);
+      c.fillStyle="#5c564c";c.fillRect(200,60,520,14);
+      for(var i=0;i<4;i++)for(var j=0;j<2;j++){var x=250+i*115,y=110+j*130;c.fillStyle="#1c2433";c.fillRect(x,y,80,95);c.strokeStyle="#d8d0c0";c.lineWidth=5;c.strokeRect(x,y,80,95)}
+      // glare
+      var gl=f<28?[455,175]:[391,190];c.fillStyle="rgba(255,255,255,"+(f<28?.85:.5)+")";c.beginPath();c.ellipse(gl[0],gl[1],9,5,-.5,0,7);c.fill();
+      if(f>=24&&f<40){c.fillStyle="rgba(255,255,255,.8)";c.beginPath();c.ellipse(391,190,8,5,-.5,0,7);c.fill()}
+      c.fillStyle="#2a2620";c.fillRect(-300,480,1600,40);
+      c.restore();
+    };
+    var draw=function(){
+      var f=st.f;scene(f);
+      if(!st.track)return;
+      var p=st.track[f];
+      c.strokeStyle="rgba(242,106,46,.35)";c.lineWidth=2;c.beginPath();for(var i=0;i<=f;i++){var q=st.track[i];i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1])}c.stroke();
+      c.strokeStyle="#ffd34d";c.lineWidth=1.5;c.setLineDash([6,4]);c.strokeRect(p[0]-st.sr/2,p[1]-st.sr/2,st.sr,st.sr);c.setLineDash([]);
+      c.strokeStyle="#ffd34d";c.lineWidth=2;c.strokeRect(p[0]-12,p[1]-12,24,24);
+      c.strokeStyle=ACC;c.beginPath();c.moveTo(p[0]-7,p[1]);c.lineTo(p[0]+7,p[1]);c.moveTo(p[0],p[1]-7);c.lineTo(p[0],p[1]+7);c.stroke();
+      if(st.txt){c.fillStyle=ACC;c.fillRect(p[0]-70,p[1]-74,140,36);c.fillStyle="#111";c.font="600 20px Onest, sans-serif";c.textAlign="center";c.fillText("ОКНО №3",p[0],p[1]-49);c.textAlign="left"}
+      var lost=st.lost>=0&&f>=st.lost;
+      c.fillStyle=lost?"#ff5a5a":"#9a9a9a";c.font="14px JetBrains Mono, monospace";c.fillText(lost?"ТРЕК СОРВАН НА КАДРЕ "+st.lost:"КАДР "+(f+1)+" / "+N,20,30);
+    };
+    var hint=tr.querySelector("[data-th]"),raf=null;
+    var setHint=function(){var h=P[st.pt].h;if(st.lost>=0&&st.pt===0)h="Деталь хорошая, но Search region меньше, чем смещение за кадр на тряске: увеличь внешний прямоугольник.";hint.textContent=h};
+    var reset=function(){if(raf)cancelAnimationFrame(raf);raf=null;st.f=0;compute();setHint();draw()};
+    tr.addEventListener("click",function(e){
+      var b=e.target.closest("[data-pt],[data-play]");if(!b)return;
+      if(b.dataset.pt){st.pt=+b.dataset.pt;tr.querySelectorAll("[data-pt]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});reset()}
+      if(b.hasAttribute("data-play")){reset();if(reduce){st.f=N-1;draw();return}var t0=performance.now();var s=function(n){st.f=Math.max(0,Math.min(N-1,Math.floor((n-t0)/(1000/24))));draw();if(st.f<N-1)raf=requestAnimationFrame(s);else raf=null};raf=requestAnimationFrame(s)}
+    });
+    tr.addEventListener("input",function(e){
+      if(e.target.hasAttribute("data-sr")){st.sr=+e.target.value;tr.querySelector("[data-os]").textContent=st.sr;var f=st.f;compute();st.f=f;setHint();draw()}
+      if(e.target.hasAttribute("data-txt")){st.txt=e.target.checked;draw()}
+    });
+    reset();
+  }
+
+  })();
+  // ---------- composite ----------
+  (function(){var cp=document.getElementById("cp");
+  if(cp){
+    var k=cp.querySelector(".cp-cv"),g=k.getContext("2d"),KW=k.width,KH=k.height;
+    var ob=document.createElement("canvas");ob.width=KW;ob.height=KH;var o=ob.getContext("2d");
+    var nz=document.createElement("canvas");nz.width=256;nz.height=256;var nc=nz.getContext("2d"),id=nc.createImageData(256,256),rr=R(3);
+    for(var i=0;i<id.data.length;i+=4){var v=rr()*255;id.data[i]=id.data[i+1]=id.data[i+2]=v;id.data[i+3]=60}nc.putImageData(id,0,0);
+    var S={},last="";
+    var H={color:"Lumetri подогнал температуру: объект стал тёплым, как закатный свет.",black:"Чёрный объекта опустился до чёрного фона — больше не выглядит выцветшим.",edge:"Зелёный ореол исходного фона снят — край чистый.",shadow:"Тень по направлению света — объект стоит на земле, а не парит.",wrap:"Свет фона заливает край со стороны солнца. Тонко, не бросается в глаза.",grain:"Общее зерно склеивает слои в одну картинку."};
+    var fig=function(x,y,ctx,jk,pt,sk){
+      ctx.fillStyle=sk;ctx.beginPath();ctx.arc(x,y-210,34,0,7);ctx.fill();
+      ctx.fillStyle=jk;ctx.beginPath();ctx.roundRect(x-52,y-172,104,150,26);ctx.fill();
+      ctx.beginPath();ctx.roundRect(x-74,y-160,26,120,13);ctx.fill();ctx.beginPath();ctx.roundRect(x+48,y-160,26,120,13);ctx.fill();
+      ctx.fillStyle=pt;ctx.beginPath();ctx.roundRect(x-46,y-30,40,140,12);ctx.fill();ctx.beginPath();ctx.roundRect(x+6,y-30,40,140,12);ctx.fill();
+      ctx.fillStyle="#0a0708";ctx.beginPath();ctx.roundRect(x-52,y+100,50,18,8);ctx.fill();ctx.beginPath();ctx.roundRect(x+2,y+100,50,18,8);ctx.fill();
+    };
+    var draw=function(t){
+      var sky=g.createLinearGradient(0,0,0,KH);sky.addColorStop(0,"#2b1840");sky.addColorStop(.55,"#d0603a");sky.addColorStop(.62,"#f0a050");sky.addColorStop(.63,"#6a3c2a");sky.addColorStop(1,"#2a1812");
+      g.fillStyle=sky;g.fillRect(0,0,KW,KH);
+      g.fillStyle="#ffd28a";g.beginPath();g.arc(800,300,46,0,7);g.fill();
+      g.fillStyle="#1c1014";g.beginPath();g.moveTo(0,340);g.lineTo(160,300);g.lineTo(300,335);g.lineTo(460,290);g.lineTo(620,338);g.lineTo(KW,320);g.lineTo(KW,345);g.lineTo(0,345);g.fill();
+      var X=420,Y=370;
+      if(S.shadow){g.save();g.fillStyle="rgba(10,4,6,.75)";g.filter="blur(8px)";g.beginPath();g.ellipse(X-150,Y+118,190,22,0,0,7);g.fill();g.restore()}
+      o.clearRect(0,0,KW,KH);
+      if(!S.edge){o.save();o.shadowColor="rgba(60,255,90,.95)";o.shadowBlur=0;for(var a=0;a<8;a++){o.save();o.translate(Math.cos(a*.785)*4,Math.sin(a*.785)*4);fig(X,Y,o,"#4cd964","#4cd964","#4cd964");o.restore()}o.restore()}
+      fig(X,Y,o,S.color?"#b8643c":"#5b78a8",S.black?"#1a1012":"#4a4d57",S.color?"#e0a27a":"#c9c4d0");
+      if(S.wrap){o.save();o.globalCompositeOperation="source-atop";var wg=o.createLinearGradient(X+80,0,X+30,0);wg.addColorStop(0,"rgba(255,190,110,.8)");wg.addColorStop(1,"rgba(255,190,110,0)");o.fillStyle=wg;o.fillRect(X,0,90,KH);o.restore()}
+      g.drawImage(ob,0,0);
+      if(S.grain){g.save();g.globalCompositeOperation="overlay";var p=g.createPattern(nz,"repeat");g.translate((t*37)%256,(t*53)%256);g.fillStyle=p;g.fillRect(-256,-256,KW+512,KH+512);g.restore()}
+    };
+    var gt=0,gr=null,loop=function(){gt++;draw(gt);gr=S.grain&&!reduce?setTimeout(function(){requestAnimationFrame(loop)},1000/12):null};
+    var upd=function(){if(gr){clearTimeout(gr);gr=null}cp.querySelector("[data-ch]").textContent=last?H[last]:"Объект вырезан и положен на фон. Видно, что он из другой съёмки.";if(S.grain)loop();else draw(0)};
+    cp.addEventListener("input",function(e){var kk=e.target.dataset.k;if(!kk)return;S[kk]=e.target.checked;last=e.target.checked?kk:"";upd()});
+    cp.querySelector("[data-all]").addEventListener("click",function(){var on=!Object.keys(H).every(function(x){return S[x]});cp.querySelectorAll("[data-k]").forEach(function(i){i.checked=on;S[i.dataset.k]=on});last="";cp.querySelector("[data-ch]").textContent=on?"Все правки вместе: цвет, чёрный, края, тень, светозалив, зерно. Сравни с исходником.":"";upd();if(!on)cp.querySelector("[data-ch]").textContent="Объект вырезан и положен на фон. Видно, что он из другой съёмки."});
+    draw(0);
+  }
+})();
+})();
+
+</script>
+</body>
+</html>

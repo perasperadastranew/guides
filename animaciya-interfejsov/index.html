@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Анимация интерфейсов</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-слайды на чуть более светлом поле, как в остальных методичках школы. Каждый урок собран по одному шаблону: идея, суть, сравнение, инструмент, задание. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e;
+  --line-e:#6a6a6e; --line-m:#47474b; --line-l:#303033;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em;margin-top:14px}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.mono,.corner,th,.kind,.cap,.slot,.lvl,.pair i,.say i,.task i,.q .n,.bars i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+/* светлые панели: уроки чередуются тёмный / светлый, чтобы длинная страница делилась на главы */
+section.light{
+  color-scheme:light;
+  --panel:#f3f3f1; --card:#ffffff; --stroke:#dededa; --well:#e8e8e5;
+  --ink:#121212; --dim:#5c5c59; --faint:#7d7d79;
+  --accent:#d2571f; --accent-ink:#ffffff;
+  --good:#1e9b45; --bad:#d9263a;
+  --line-e:#85857f; --line-m:#b0afa9; --line-l:#d4d3ce;
+  color:var(--dim);
+}
+
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-top:10px}
+nav a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 12px 14px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.2;display:flex;flex-direction:column;gap:22px;min-height:104px;justify-content:space-between}
+nav a::before{content:attr(data-n);font-family:var(--mono);font-size:12px;color:var(--dim);background:#262626;border-radius:6px;padding:5px 7px;align-self:flex-start}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+
+/* сравнения плохо / хорошо */
+.pairs{display:flex;flex-direction:column;gap:8px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+.pair small,.why{font-size:14px;line-height:1.4}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch}
+.why b{font-weight:400}
+
+/* воронка */
+.funnel{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.funnel a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;text-decoration:none}
+.funnel a:hover,.funnel a:focus-visible{border-color:var(--accent);outline:none}
+.funnel b{font-size:17px;font-weight:400}
+.funnel small{font-size:13px;line-height:1.3;color:var(--dim)}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+td .lvl{color:var(--accent);display:block;margin-bottom:3px}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul,.box ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+.bars{display:flex;flex-direction:column;gap:10px}
+.bars .row{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:14px;align-items:center}
+.bars .row span{color:var(--ink);font-size:16px;line-height:1.2}
+.bars .track{display:flex;align-items:center;gap:10px;min-width:0}
+.bars .bar{height:34px;border-radius:8px;background:var(--well);min-width:6px}
+.bars .row.on .bar{background:var(--accent)}
+.bars b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+dl{margin:0;display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);border-top:1px solid var(--stroke)}
+dt,dd{margin:0;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:16px}
+dt{color:var(--ink);padding-right:14px}
+
+/* готовая фраза */
+.say{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.say i{color:var(--accent)}
+.say span{color:var(--ink);font-size:17px;line-height:1.4;max-width:62ch}
+.says{display:flex;flex-direction:column;gap:8px}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.45;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* задание в конце урока */
+.task{border:1px solid var(--accent);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+.slot{border:1px dashed var(--faint);border-radius:8px;padding:10px 12px;line-height:1.5}
+
+
+
+
+
+
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden}
+.fig .stage{aspect-ratio:5/4;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+.micro{aspect-ratio:16/10;pointer-events:none;--hairline-plate:var(--card);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.micro svg{overflow:visible}
+.micro svg g.lift{transition:transform .7s cubic-bezier(.32,.72,0,1)}
+.funnel a:hover .micro g.lift,.funnel a:focus-visible .micro g.lift,.head:hover .micro g.lift{transform:translateY(-14px)}
+@media (prefers-reduced-motion:reduce){.micro svg g.lift{transition:none}}
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.2}
+.figtext p{font-size:16px}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.head h2{flex:1 1 0;min-width:0}
+.head .micro{flex:0 0 190px;width:190px;margin-top:-34px;--hairline-plate:var(--panel)}
+@media (max-width:760px){.head .micro{flex-basis:112px;width:112px;margin-top:0}}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+/* квиз */
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.q .exp b{font-weight:400}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:18px 16px 24px}
+  .pair,.two,.three,.four{grid-template-columns:minmax(0,1fr)}
+  .bars .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl{grid-template-columns:minmax(0,1fr)} dt{border-bottom:0;padding-bottom:0}
+}
+
+/* воздух: больше полей у панелей, пауза и тонкая линия перед каждым подразделом */
+.wrap{gap:20px}
+header,section{padding:34px 44px 60px;gap:24px}
+.corner{margin-bottom:60px}
+section h3{margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.head{padding-bottom:14px}
+.quote{margin-bottom:10px}
+.figrow{padding:20px;gap:32px}
+.task{margin-top:44px;padding:26px}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:36px}
+  section h3{margin-top:26px;padding-top:22px}
+  .task{margin-top:28px;padding:18px}
+}
+
+/* композиция: контурный номер урока, подзаголовок сбоку у узких блоков и сверху у широких, иллюстрации то слева, то справа */
+.head{align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .micro{flex:0 0 300px;width:300px;margin-top:0}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+section .sub h3{margin:0;padding:0;border:0;position:sticky;top:20px}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+.figrow.flip{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
+.figrow.flip .fig{order:2}
+@media (max-width:760px){
+  .head{align-items:flex-end;gap:14px}
+  .head .micro{flex-basis:118px;width:118px}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:26px;padding-top:22px}
+  section .sub h3{position:static}
+  .figrow.flip{grid-template-columns:minmax(0,1fr)}
+  .figrow.flip .fig{order:0}
+}
+</style>
+
+<style>
+
+:root{--line2:#5b8def}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--dim);max-width:70ch}
+.kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--stroke);border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--ink);white-space:nowrap}
+.snd-note{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.4;max-width:640px;color:var(--ink)}
+.snd-note svg{width:20px;height:20px;flex:0 0 auto;color:var(--accent)}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--well);border:1px solid var(--stroke);border-radius:9px;padding:3px;gap:2px}
+.seg button{background:transparent;border:0;color:var(--dim);border-radius:7px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.demo-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.demo-top b{font-size:18px;font-weight:400;color:var(--ink)}
+.demo-bot{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.demo-bot .hint{flex:1 1 260px}
+.cv{display:block;width:100%;border-radius:8px;background:var(--panel)}
+.cv.st{aspect-ratio:16/7}
+.cv.trkc{height:100%;background:transparent;border-radius:0}
+.trk{width:100%}
+.cv.wave{height:90px}
+.cv.lv{height:150px}
+.cv.bars{height:110px}
+.cv.sfw{height:38px;background:transparent}
+.playb{background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:10px 18px;font-weight:500;font-size:15px;white-space:nowrap}
+.playb:hover{filter:brightness(1.08)}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.tg{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);cursor:pointer}
+.tg input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
+.sl{display:flex;flex-direction:column;gap:2px;min-width:170px;flex:1 1 170px;font-size:13px;color:var(--dim)}
+.sl span{display:flex;justify-content:space-between;gap:8px}
+.sl output{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.rng{width:100%;accent-color:var(--accent)}
+.layers{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sfx{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.sfc{text-align:left;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;color:var(--dim);font-weight:400;min-width:0;transition:border-color .15s}
+.sfc:hover,.sfc.on{border-color:var(--accent)}
+.sfc-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sfc-h b{font-size:17px;font-weight:400;color:var(--ink)}
+.sfc-p{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:10px;flex:0 0 auto}
+.sfc-r{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.sfc-w{font-size:14px;line-height:1.35;color:var(--ink)}
+.sfc-t{font-size:13px;line-height:1.35}
+.mini{background:var(--accent);color:var(--accent-ink);border:0;border-radius:50%;width:30px;height:30px;font-size:11px;padding:0}
+table.combo td:last-child{width:40px;text-align:right}
+.bpm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.bpm button{text-align:left;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;color:var(--dim);font-weight:400;font-size:14px}
+.bpm button b{font-family:var(--display);font-size:22px;font-weight:400;color:var(--ink)}
+.bpm button::before{content:"▶ Послушать";font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--accent)}
+.bpm button.on{border-color:var(--accent)} .bpm button.on::before{content:"■ Играет"}
+.lib{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:start}
+.lib-tree{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:13px;color:var(--ink);white-space:pre}
+.lib-tree .a{color:var(--accent)}
+.lib-t{display:flex;flex-direction:column;gap:10px}
+.chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;counter-reset:c}
+.chain>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative;min-width:0}
+.chain>div:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:14px;color:var(--accent);font-size:14px;z-index:1}
+.chain i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--accent)}
+.chain b{font-size:16px;font-weight:400;color:var(--ink)} .chain span{font-size:13px;line-height:1.35}
+.errs{display:flex;flex-wrap:wrap;gap:6px}
+.errs span{border:1px solid var(--bad);border-radius:999px;padding:6px 12px;font-size:14px;color:var(--ink)}
+@media (max-width:860px){.layers{grid-template-columns:repeat(2,minmax(0,1fr))}.chain{grid-template-columns:minmax(0,1fr)}.chain>div::after{display:none}.bpm{grid-template-columns:minmax(0,1fr)}.lib{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){.cv.st{aspect-ratio:16/10}}
+/* нейронка */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+.tpl table{min-width:820px;font-size:14px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+
+
+:root{--line2:#5b8def}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--dim);max-width:70ch}
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.qs{display:flex;flex-wrap:wrap;gap:6px}
+.qs span{border:1px solid var(--stroke);background:var(--card);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink)}
+.tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.tr button{text-align:left;background:var(--card);border:1px solid var(--stroke);color:var(--ink);border-radius:10px;padding:14px;font-weight:400;font-size:15px}
+.tr button.on{border-color:var(--accent)}
+.tr-out{background:var(--well);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;border-left:3px solid var(--accent)}
+.tr-out p{color:var(--ink);font-size:18px;line-height:1.35}
+.boards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.boards>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:4px;aspect-ratio:1;justify-content:flex-end;background-image:linear-gradient(var(--well) 1px,transparent 1px),linear-gradient(90deg,var(--well) 1px,transparent 1px);background-size:14px 14px}
+.boards b{font-size:16px;font-weight:400;color:var(--ink)} .boards span{font-size:12px;line-height:1.3}
+.levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.rf{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.rf label{display:flex;flex-direction:column;gap:6px;min-width:0}
+.rf label:nth-child(n+3){grid-column:span 1}
+.rf label:last-of-type{grid-column:1/-1}
+.rf input,.rf textarea{font:400 15px var(--body);background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:10px 12px;resize:vertical;width:100%}
+.rf input:focus,.rf textarea:focus{outline:none;border-color:var(--accent)}
+.rf-bot{grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+button.ghost{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px;font-weight:400}
+.look{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.look figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.look img{width:100%;height:auto;border-radius:10px;display:block;background:var(--well)}
+.look figcaption{font-size:13px;color:var(--faint)}
+.look-t{display:flex;flex-direction:column;gap:12px}
+.look-t>p{color:var(--ink);font-size:16px}
+ul.see{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+ul.see li{font-size:15px;padding-left:20px;position:relative}
+ul.see li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height:2px;background:var(--accent)}
+.flips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.flip{position:relative;min-height:150px;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:0;text-align:left;font-weight:400;color:var(--ink);font-size:18px;line-height:1.3;overflow:hidden}
+.flip span{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;gap:10px;transition:opacity .25s,transform .25s}
+.flip i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.f-a i{color:var(--bad)} .f-b i{color:var(--good)}
+.f-b{opacity:0;transform:translateY(10px)}
+.flip.on{border-color:var(--good)} .flip.on .f-a{opacity:0;transform:translateY(-10px)} .flip.on .f-b{opacity:1;transform:none}
+.flip::after{content:"нажми ↻";position:absolute;right:14px;bottom:12px;font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.06em}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.flow>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative}
+.flow>div:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:14px;color:var(--accent);z-index:1}
+.flow i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--accent)} .flow b{font-size:16px;font-weight:400;color:var(--ink)} .flow span{font-size:13px;line-height:1.35}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:14px;line-height:1.6;color:var(--ink);background:var(--well);border-radius:8px;padding:14px}
+.tpl pre em{font-style:normal;color:var(--accent)}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+@media (max-width:980px){.five{grid-template-columns:repeat(2,minmax(0,1fr))}.boards{grid-template-columns:repeat(3,minmax(0,1fr))}.levels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.tr,.flips{grid-template-columns:minmax(0,1fr)}.flow{grid-template-columns:minmax(0,1fr)}.flow>div::after{display:none}.look{grid-template-columns:minmax(0,1fr)}.rf{grid-template-columns:minmax(0,1fr)}.levels{grid-template-columns:minmax(0,1fr)}}
+/* нейронка */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+.tpl table{min-width:820px;font-size:14px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+
+.tabs-b{display:flex;flex-wrap:wrap;gap:6px}
+.tabs-b button{background:var(--card);border:1px solid var(--stroke);color:var(--dim);border-radius:999px;padding:7px 13px;font-weight:400;font-size:14px}
+.tabs-b button[aria-selected="true"]{border-color:var(--ink);color:var(--ink)}
+.tab-p[hidden]{display:none}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.kv>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.kv b{font-size:15px;font-weight:400;color:var(--ink)} .kv span{font-size:13px;line-height:1.35}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+.fr{display:block;width:100%;height:auto;border-radius:8px}
+.fr .bg{fill:var(--well)} .fr .i{fill:var(--ink)} .fr .a{fill:var(--accent)} .fr .d{fill:var(--dim)} .fr .f{fill:var(--faint)} .fr .p{fill:var(--panel)}
+.fr .s{fill:none;stroke:var(--ink);stroke-width:1.5} .fr .sa{fill:none;stroke:var(--accent);stroke-width:1.5} .fr .sd{fill:none;stroke:var(--faint);stroke-width:1}
+.fr text{font-family:var(--display)} .fr text.mn{font-family:var(--mono);letter-spacing:.04em}
+.schemes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.schemes figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.schemes figcaption{display:flex;flex-direction:column;gap:4px;padding:0 4px 4px}
+.schemes figcaption b{font-size:16px;font-weight:400;color:var(--ink)} .schemes figcaption span{font-size:13px;line-height:1.38}
+.schemes .kind{color:var(--accent)}
+figure>img{max-width:100%;height:auto}
+figure.pic{margin:0;max-width:480px;display:flex;flex-direction:column;gap:8px}
+figure.pic>img{display:block;width:100%;border-radius:8px;background:#f3efe7}
+figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+</style>
+<style>
+/* component kit */
+#kit{--d:180ms}
+.ui-kit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ui-cell{background:#f4f2ee;border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;min-height:150px;color:#222}
+.ui-cell .mono{color:#8a8780}
+.ui-btn{position:relative;font:500 16px var(--body);color:#fff;background:#2d5bff;border:0;border-radius:10px;padding:12px 22px;min-width:150px;cursor:pointer;transition:transform var(--d) cubic-bezier(.2,.8,.2,1),background var(--d),box-shadow var(--d),opacity var(--d)}
+.ui-btn:hover{background:#4670ff;transform:translateY(-1px);box-shadow:0 6px 16px rgba(45,91,255,.3)}
+.ui-btn:active{transform:scale(.97);box-shadow:none}
+.ui-btn.loading{color:transparent;pointer-events:none}
+.ui-btn.loading::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-11px 0 0 -11px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+.ui-btn.success{background:#1fa463}
+.ui-btn.error{background:#e5484d;animation:shake var(--d) ease}
+.ui-btn.disabled{background:#c9c6bf;color:#f4f2ee;pointer-events:none;box-shadow:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.ui-states{flex-wrap:wrap}
+.ui-tg{width:56px;height:32px;border-radius:16px;border:0;background:#c9c6bf;position:relative;cursor:pointer;transition:background var(--d)}
+.ui-tg i{position:absolute;left:3px;top:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform var(--d) cubic-bezier(.3,.9,.3,1)}
+.ui-tg[aria-checked="true"]{background:#1fa463}
+.ui-tg[aria-checked="true"] i{transform:translateX(24px)}
+.ui-tabs{position:relative;display:flex;gap:4px;border-bottom:1px solid #dcd9d2}
+.ui-tabs button{background:none;border:0;padding:10px 12px;font:500 15px var(--body);color:#8a8780;cursor:pointer;transition:color var(--d)}
+.ui-tabs button.on{color:#222}
+.ui-tabs i{position:absolute;bottom:-1px;height:2px;background:#2d5bff;transition:left var(--d) cubic-bezier(.3,.9,.3,1),width var(--d) cubic-bezier(.3,.9,.3,1)}
+.ui-dd{position:relative}
+.ui-dd-b{background:#fff;border:1px solid #dcd9d2;border-radius:8px;padding:10px 14px;font:500 15px var(--body);color:#222;cursor:pointer}
+.ui-dd ul{position:absolute;left:0;top:calc(100% + 6px);margin:0;padding:6px;list-style:none;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.15);min-width:160px;transform-origin:top left;transform:scale(.96) translateY(-4px);opacity:0;pointer-events:none;transition:transform var(--d) cubic-bezier(.2,.8,.2,1),opacity var(--d);z-index:2}
+.ui-dd.open ul{transform:none;opacity:1;pointer-events:auto}
+.ui-dd li{padding:8px 10px;border-radius:6px;font-size:15px;cursor:pointer}
+.ui-dd li:hover{background:#f0eee9}
+@media (max-width:760px){.ui-kit{grid-template-columns:minmax(0,1fr)}}
+/* scenario */
+.sc-wrap{position:relative;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#efede8}
+.sc-stage{position:absolute;left:0;top:0;width:960px;height:540px;transform-origin:0 0;font-family:var(--body);color:#222}
+.sc-side{position:absolute;left:0;top:0;bottom:0;width:170px;background:#1f2330;padding:70px 22px;display:flex;flex-direction:column;gap:18px}
+.sc-side i{display:block;height:10px;border-radius:5px;background:#3a4052;width:80%}
+.sc-side i:first-child{background:#2d5bff;width:60%}
+.sc-h{position:absolute;left:210px;top:46px;font-size:30px;font-weight:600}
+.sc-create{position:absolute;left:740px;top:42px;width:180px;height:46px;border-radius:10px;background:#2d5bff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;transform-origin:50% 50%}
+.sc-card{position:absolute;left:0;top:0;width:210px;height:130px;background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);padding:18px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}
+.sc-card b{display:block;width:44px;height:44px;border-radius:12px;background:#dfe6ff}
+.sc-card i{display:block;height:9px;border-radius:5px;background:#e7e4de;width:80%}
+.sc-card i+i{width:50%}
+.sc-new b{background:#ffe1cf}
+.sc-new span{font-size:16px;font-weight:600}
+.sc-dim{position:absolute;inset:0;background:#000;opacity:0}
+.sc-modal{position:absolute;left:280px;top:130px;width:400px;height:250px;background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.25);padding:28px;box-sizing:border-box;opacity:0;display:flex;flex-direction:column;gap:20px}
+.sc-mt{font-size:22px;font-weight:600}
+.sc-in{height:48px;border:1.5px solid #dcd9d2;border-radius:10px;padding:0 14px;display:flex;align-items:center;font-size:17px}
+.sc-in em{display:inline-block;width:2px;height:22px;background:#2d5bff;margin-left:1px}
+.sc-ok{position:relative;align-self:flex-end;width:140px;height:46px;border-radius:10px;background:#2d5bff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500}
+.sc-ok svg{position:absolute;width:24px;height:24px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:40 100;opacity:0}
+.sc-toast{position:absolute;right:30px;bottom:30px;background:#1f2330;color:#fff;border-radius:12px;padding:16px 22px;font-size:16px;opacity:0}
+.sc-ring{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;border:2px solid #2d5bff;border-radius:50%;opacity:0}
+.sc-cur{position:absolute;width:30px;height:30px;left:0;top:0;fill:#111;stroke:#fff;stroke-width:1.3;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.sc-scrub{width:100%}
+.sc-ev{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.sc-ev div{background:var(--panel);border-radius:8px;padding:8px 10px;font-size:13px;line-height:1.3;color:var(--faint);transition:color .2s,background .2s;cursor:pointer}
+.sc-ev div i{display:block;font-family:var(--mono);font-size:10px;font-style:normal;margin-bottom:3px}
+.sc-ev div.on{color:var(--ink);background:var(--well)}
+.sc-ev div.on i{color:var(--accent)}
+@media (max-width:760px){.sc-ev{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.five .box{min-width:0}.five .box b{display:block;font-weight:400;color:var(--ink);hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere}
+.ui-cell:has(.ui-dd){min-height:200px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+ГАЙД ДЛЯ СТУДЕНТОВ</span><span>MISSION TO MOTION
+UI MOTION</span></div>
+  <h1>Анимация интерфейсов</h1>
+  <p class="lead"><b>Движение в интерфейсе объясняет, что происходит в системе.</b> Состояния компонентов, принципы и паттерны UI motion, подготовка макета, сценарий «создать проект» в After Effects и сборка SaaS-ролика со звуком.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav aria-label="Разделы">
+    <a href="#u1" data-n="01">Что такое UI motion</a><a href="#u2" data-n="02">Состояния и паттерны</a><a href="#u3" data-n="03">Подготовка макета</a><a href="#u4" data-n="04">Сценарий по шагам</a><a href="#u5" data-n="05">SaaS-ролик</a><a href="#u6" data-n="06">Задание</a><a href="#quiz" data-n="07">Квиз</a>
+  </nav>
+</header>
+
+<section id="u1">
+<div class="corner"><span>PERASPERADASTRA
+UI MOTION</span><span>ЧАСТЬ 01
+ТЕОРИЯ</span></div>
+  <div class="head"><h2>Что такое UI motion</h2></div>
+  <p class="quote">Правильный вопрос — не «какой эффект применить», а «что должен понять пользователь в этот момент».</p>
+  <p>Пользователь нажал «Отправить», а интерфейс промолчал — он не понимает, сработало ли, и жмёт ещё раз. Даже лёгкое сжатие кнопки или индикатор загрузки говорит: команда принята. Движение — часть разговора человека и продукта.</p>
+  <h3>Базовая модель</h3>
+  <div class="flow ui-model"><div><b>Состояние</b><span>Кнопка в покое</span></div><div><b>Действие</b><span>Наведение, клик</span></div><div><b>Переход</b><span>Открывается окно</span></div><div><b>Новое состояние</b><span>Карточка в списке</span></div><div><b>Обратная связь</b><span>«Проект создан»</span></div></div>
+  <h3>Что решает движение</h3>
+  <div class="kv">
+    <div><b>Обратная связь</b><span>Действие принято: цвет, сжатие, индикатор, сообщение.</span></div>
+    <div><b>Ориентация</b><span>Карточка увеличивается в страницу — понятно, откуда пришёл экран.</span></div>
+    <div><b>Непрерывность</b><span>Индикатор вкладки едет, а не исчезает. На этом построен Smart Animate в Figma.</span></div>
+    <div><b>Иерархия внимания</b><span>Модалка — фон затемняется. Главное сейчас — одно.</span></div>
+    <div><b>Причина и следствие</b><span>Нажал плюс — появилась карточка. Выбрал фильтр — список перестроился.</span></div>
+    <div><b>Состояние системы</b><span>Спиннер, прогресс, скелетон: процесс ещё идёт.</span></div>
+    <div><b>Характер бренда</b><span>Банк — собранно и предсказуемо, детский сервис — упруже. Но без шоу на каждое нажатие.</span></div>
+  </div>
+  <h3>Отличие от обычного моушна</h3>
+  <p>Инструменты те же: тайминг, изинг, композиция, иерархия. Но в ролике зритель смотрит, а в интерфейсе сам запускает события: жмёт раньше, отменяет, возвращается. Двухсекундное открытие меню красиво в рекламе и раздражает в приложении на двадцатый раз.</p>
+  <h3>Три разных результата</h3>
+  <div class="three">
+    <div class="box"><span class="kind">Рабочий продукт</span><p>Движение внутри сайта или приложения. Реализует браузер или движок. Lottie, Rive, код.</p></div>
+    <div class="box"><span class="kind">Прототип</span><p>Модель продукта для проверки сценария и тестирования. Figma, ProtoPie, Principle.</p></div>
+    <div class="box"><span class="kind">SaaS-ролик</span><p>Линейное видео о продукте: лендинг, реклама, онбординг. Jitter, After Effects.</p></div>
+  </div>
+  <h3>Инструменты по задаче</h3>
+  <dl>
+    <dt>Figma, Principle</dt><dd>Быстрые прототипы: экраны, варианты компонентов, hover, click, Smart Animate.</dd>
+    <dt>ProtoPie</dt><dd>Сложные сценарии: жесты, ввод, переменные, условия.</dd>
+    <dt>Jitter, After Effects</dt><dd>Линейные продуктовые ролики. Jitter быстрее освоить, After Effects даёт полный контроль.</dd>
+    <dt>Lottie, Rive</dt><dd>Анимация внутри продукта. Lottie — иконки и небольшие сцены, Rive — интерактивные компоненты с состояниями.</dd>
+    <dt>SVGator, Spline</dt><dd>SVG-анимации для веба и интерактивное 3D.</dd>
+  </dl>
+</section>
+
+<section id="u2">
+<div class="corner"><span>PERASPERADASTRA
+UI MOTION</span><span>ЧАСТЬ 02
+СОСТОЯНИЯ И ПАТТЕРНЫ</span></div>
+  <div class="head"><h2>Состояния и паттерны</h2></div>
+  <p class="quote">Мы не придумываем движение из пустоты — мы показываем переход между состояниями.</p>
+  <h3>Потрогай компоненты</h3>
+  <div class="demo" id="kit">
+    <div class="demo-top"><b>Тайминг реакции</b><div class="seg" role="group" aria-label="Тайминг"><button type="button" data-dur="0">Без анимации</button><button type="button" data-dur="180" aria-pressed="true">UI · 180 мс</button><button type="button" data-dur="900">Как в рекламе · 900 мс</button></div></div>
+    <div class="ui-kit">
+      <div class="ui-cell"><span class="mono">Button</span><button type="button" class="ui-btn" data-btn>Сохранить</button><div class="seg ui-states" role="group" aria-label="Состояние кнопки"><button type="button" data-st="default" aria-pressed="true">default</button><button type="button" data-st="loading">loading</button><button type="button" data-st="success">success</button><button type="button" data-st="error">error</button><button type="button" data-st="disabled">disabled</button></div></div>
+      <div class="ui-cell"><span class="mono">Toggle</span><button type="button" class="ui-tg" data-tg role="switch" aria-checked="false" aria-label="Переключатель"><i></i></button></div>
+      <div class="ui-cell"><span class="mono">Tabs</span><div class="ui-tabs" data-tabs-ui><button type="button" class="on">Обзор</button><button type="button">Задачи</button><button type="button">Файлы</button><i></i></div></div>
+      <div class="ui-cell"><span class="mono">Dropdown</span><div class="ui-dd" data-dd><button type="button" class="ui-dd-b">Сортировка ▾</button><ul><li>По дате</li><li>По имени</li><li>По размеру</li></ul></div></div>
+    </div>
+    <div class="demo-bot"><span class="hint">Наведи, нажми, переключи. Сравни 180 мс и 900 мс — какой интерфейс хочется использовать двадцать раз подряд?</span></div>
+  </div>
+  <h3>Состояния компонентов</h3>
+  <div class="three">
+    <div class="box"><span class="kind">Кнопка</span><p>default, hover, pressed, loading, disabled, success, error.</p></div>
+    <div class="box"><span class="kind">Выпадающий список</span><p>Закрыт, открыт, выбран пункт, пусто, ошибка загрузки.</p></div>
+    <div class="box"><span class="kind">Карточка</span><p>Обычная, выделенная, редактирование, удаление, загрузка, раскрытая.</p></div>
+  </div>
+  <h3>Пять принципов</h3>
+  <div class="five">
+    <div class="box"><span class="kind">01</span><b>Причина и следствие</b><p>Видно, какое действие привело к изменению.</p></div>
+    <div class="box"><span class="kind">02</span><b>Непрерывность</b><p>Элемент меняется, но остаётся тем же объектом.</p></div>
+    <div class="box"><span class="kind">03</span><b>Иерархия</b><p>Двигается главное, остальное служит опорой.</p></div>
+    <div class="box"><span class="kind">04</span><b>Последовательность</b><p>Одинаковые компоненты двигаются одинаково.</p></div>
+    <div class="box"><span class="kind">05</span><b>Уместный тайминг</b><p>Hover и click — быстро, окно и перестроение — чуть дольше.</p></div>
+  </div>
+  <h3>Паттерны</h3>
+  <dl>
+    <dt>Hover</dt><dd>Цвет, фон, обводка или лёгкий подъём: элемент интерактивный.</dd>
+    <dt>Click / tap</dt><dd>Короткое сжатие, смена яркости. Ощущение физического нажатия.</dd>
+    <dt>Toggle</dt><dd>Бегунок едет, фон меняет цвет. Два состояния.</dd>
+    <dt>Dropdown</dt><dd>Раскрывается из поля, которое его вызвало.</dd>
+    <dt>Модальное окно</dt><dd>Фон затемняется, окно проявляется с небольшим масштабом.</dd>
+    <dt>Вкладки</dt><dd>Индикатор едет, содержимое сдвигается в сторону выбора.</dd>
+    <dt>Loading</dt><dd>Текст кнопки меняется на индикатор, карточка — на скелетон.</dd>
+    <dt>Изменение структуры</dt><dd>Соседи плавно освобождают место, потом появляется новый элемент.</dd>
+  </dl>
+</section>
+
+<section id="u3">
+<div class="corner"><span>PERASPERADASTRA
+UI MOTION</span><span>ЧАСТЬ 03
+ПОДГОТОВКА</span></div>
+  <div class="head"><h2>Подготовка макета</h2></div>
+  <p class="quote">Хорошая интерфейсная анимация начинается не с ключей.</p>
+  <ol class="steps">
+    <li><div><div class="t">Собери все состояния</div><div class="d">До открытия окна и с открытым окном, список до и после добавления. Пройди сценарий в статике — если последовательность непонятна без движения, анимация её не спасёт.</div></div></li>
+    <li><div><div class="t">Раздели на слои</div><div class="d">Всё, что двигается независимо, — отдельно: фон кнопки, текст, иконка, индикатор. Что двигается вместе — в прекомп.</div></div></li>
+    <li><div><div class="t">Назови слои</div><div class="d">Button Create, Modal Background, Card New, Toast Success, Cursor вместо Rectangle 12.</div></div></li>
+    <li><div><div class="t">Проверь Anchor Point</div><div class="d">Кнопка — центр, боковое меню — левый край, dropdown — верх. У курсора — кончик стрелки.</div></div></li>
+    <li><div><div class="t">Отдели место от реакции</div><div class="d">Базовый Position — где компонент стоит. Появление — внутри прекомпа или на родителе. Так компонент двигается целиком без правки ключей.</div></div></li>
+    <li><div><div class="t">Текст — текстом, иконки — вектором</div><div class="d">Текст картинкой не поправить, вектор можно масштабировать и анимировать.</div></div></li>
+    <li><div><div class="t">Реши, как показывать крупно</div><div class="d">Двигать весь экран, прекомп с Scale и Position или отдельные крупные планы.</div></div></li>
+  </ol>
+</section>
+
+<section id="u4">
+<div class="corner"><span>PERASPERADASTRA
+UI MOTION</span><span>ЧАСТЬ 04
+СЦЕНАРИЙ</span></div>
+  <div class="head"><h2>Сценарий «Создать проект»</h2></div>
+  <p class="quote">В каждый момент двигается только то, что связано с текущим действием.</p>
+  <div class="demo" id="sc">
+    <div class="sc-wrap"><div class="sc-stage" data-stage>
+      <div class="sc-side"><i></i><i></i><i></i><i></i></div>
+      <div class="sc-h">Проекты</div>
+      <div class="sc-create" data-b1><span>+ Создать проект</span></div>
+      <div class="sc-card" data-c="0"><b></b><i></i><i></i></div>
+      <div class="sc-card" data-c="1"><b></b><i></i><i></i></div>
+      <div class="sc-card" data-c="2"><b></b><i></i><i></i></div>
+      <div class="sc-card sc-new" data-c="n"><b></b><span>Новый проект</span><i></i></div>
+      <div class="sc-dim" data-dim></div>
+      <div class="sc-modal" data-modal><div class="sc-mt">Новый проект</div><div class="sc-in"><span data-typed></span><em data-caret></em></div><div class="sc-ok" data-b2><span data-b2t>Создать</span><svg data-spin viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></div></div>
+      <div class="sc-toast" data-toast>✓ Проект создан</div>
+      <div class="sc-ring" data-ring></div>
+      <svg class="sc-cur" data-cur viewBox="0 0 24 24"><path d="M3 2l15 11-7 1.2 4 7.3-2.6 1.4-4-7.4L3 20z"/></svg>
+    </div></div>
+    <input class="rng sc-scrub" type="range" min="0" max="760" value="0" data-scrub aria-label="Время сценария">
+    <div class="sc-ev" data-ev></div>
+    <div class="demo-bot"><button class="playb" type="button" data-play>▶ Проиграть</button><label class="tg"><input type="checkbox" data-snd> Звук интерфейса</label><span class="hint" data-time>0.00 с</span></div>
+  </div>
+  <h3>Как собрать в After Effects</h3>
+  <ol class="steps">
+    <li><div><div class="t">Композиция и события</div><div class="d">Около 8 секунд. Сначала расставь события по таймлайну грубо: курсор, hover, click, окно, ввод, loading, карточка, уведомление. Плавность потом.</div></div></li>
+    <li><div><div class="t">Курсор</div><div class="d">Anchor на кончике. P, ключи, F9, Shift+F3: быстро проходит путь и мягко тормозит у цели — зритель заранее понимает, куда нажмут.</div></div></li>
+    <li><div><div class="t">Hover и click</div><div class="d">Scale 100 → 103 внутри прекомпа кнопки. Click — 97 и обратно, очень коротко. Круг-обводка в точке клика расширяется и гаснет.</div></div></li>
+    <li><div><div class="t">Модалка</div><div class="d">Затемнение 0 → 30–40%, окно Scale 96 → 100 и Opacity 0 → 100 почти одновременно. Без прилёта из глубины.</div></div></li>
+    <li><div><div class="t">Ввод текста</div><div class="d">Текстовый слой раскрывается прямоугольной маской фрагментами, мигающий курсор — Opacity с loopOut.</div></div></li>
+    <li><div><div class="t">Loading</div><div class="d">Окружность со Stroke, Add → Trim Paths, End меньше, Rotation с полными оборотами. Курсор стоит.</div></div></li>
+    <li><div><div class="t">Результат</div><div class="d">Окно закрывается быстрее, чем открылось. Соседи сдвигаются, затем новая карточка: снизу на несколько px, 97%, Opacity 0 → на место. Потом toast.</div></div></li>
+    <li><div><div class="t">Проверка</div><div class="d">Motion Blur только на том, что заметно перемещается. U — все ключи; одинаковые hover и click — одинаковый тайминг.</div></div></li>
+  </ol>
+</section>
+
+<section id="u5">
+<div class="corner"><span>PERASPERADASTRA
+UI MOTION</span><span>ЧАСТЬ 05
+SAAS-РОЛИК</span></div>
+  <div class="head"><h2>SaaS-ролик, звук и экспорт</h2></div>
+  <p class="quote">Интерфейсная анимация показывает, как работает действие. SaaS-ролик объясняет, зачем оно нужно.</p>
+  <h3>Структура на 10 секунд</h3>
+  <div class="three">
+    <div class="box"><span class="kind">~1 с · Обещание</span><p>Польза, а не название кнопки: «Создавайте проекты за несколько секунд». Position, Opacity, лёгкий блюр.</p></div>
+    <div class="box"><span class="kind">~6–7 с · Демонстрация</span><p>Сценарий. Приближение прекомпом через Scale и Position, второстепенное приглушено. Длинный ввод и загрузку можно сократить — ключевые состояния нельзя.</p></div>
+    <div class="box"><span class="kind">~1–2 с · Результат</span><p>Акцент на новой карточке и финальный текст: вывод, продукт или призыв.</p></div>
+  </div>
+  <h3>Звук</h3>
+  <dl>
+    <dt>Музыка</dt><dd>Понятный ритм, не плотная аранжировка. L — Audio Levels, держи фоном, под голосом ещё тише.</dd>
+    <dt>Hover</dt><dd>Очень короткий лёгкий сигнал.</dd>
+    <dt>Click</dt><dd>Собранный щелчок. Быстрому клику — не длинный тяжёлый эффект.</dd>
+    <dt>Окно</dt><dd>Мягкий воздушный звук на плавное открытие.</dd>
+    <dt>Успех</dt><dd>Короткий приятный сигнал на toast.</dd>
+    <dt>Синхрон</dt><dd>Начало волны точно на ключ. Один звук на все кнопки без вариаций звучит механически — меняй громкость или высоту. Проверь с Solo.</dd>
+  </dl>
+  <h3>Экспорт</h3>
+  <div class="kv">
+    <div><b>MP4 · H.264</b><span>Сайты, презентации, соцсети. Ctrl+Alt+M → Media Encoder. Мелкий текст размылся — подними битрейт.</span></div>
+    <div><b>Apple ProRes</b><span>Мастер-файл для дальнейшего монтажа.</span></div>
+    <div><b>ProRes 4444 · RGB + Alpha</b><span>Прозрачный фон. H.264 альфу не поддерживает.</span></div>
+    <div><b>Параметры</b><span>Разрешение и fps как в композиции. После рендера смотри файл отдельно от After Effects.</span></div>
+  </div>
+</section>
+
+<section id="u6">
+<div class="corner"><span>PERASPERADASTRA
+UI MOTION</span><span>ЧАСТЬ 06
+ЗАДАНИЕ</span></div>
+  <div class="head"><h2>Задание</h2></div>
+  <h3>В паре с нейронкой</h3>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Что за продукт, кто пользователь, какое действие показываешь.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Нейронка уточняет и ждёт ответа, а не выдаёт сценарий целиком.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Сценарий, тайминг и звук выбираешь сам.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Промпт · сценарий</span><b>Проверить цепочку состояний</b>
+<pre id="ai-1">Я анимирую интерфейсный сценарий для <em>[продукт и пользователь]</em>.
+Вот мои шаги: <em>[состояние → действие → переход → новое состояние → обратная связь, по пунктам]</em>
+Не предлагай свой сценарий. Найди места, где пропущено состояние, где непонятна причина изменения и где двигается лишнее. Задавай вопросы по одному.</pre>
+      <button class="copy" type="button" data-copy="ai-1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> дорабатываешь состояния в Figma и решаешь, что анимировать.</p>
+    </div>
+    <div class="prompt"><span class="kind">Промпт · SaaS-текст</span><b>Сформулировать обещание пользы</b>
+<pre id="ai-2">Функция продукта: <em>[что делает]</em>. Для кого: <em>[аудитория]</em>. Мой вариант заголовка: <em>[твой текст]</em>
+Задай мне 2–3 вопроса по одному о том, какую проблему пользователя решает функция. Потом скажи, где мой заголовок говорит о кнопке, а не о пользе. Свой вариант не пиши.</pre>
+      <button class="copy" type="button" data-copy="ai-2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> переписываешь заголовок сам и проверяешь, читается ли он за секунду.</p>
+    </div>
+  </div>
+  <div class="task"><i>Задание</i><b>SaaS-ролик на 10–15 секунд</b><p>Возьми интерфейс (свой макет или любой открытый UI-кит). Собери сценарий минимум из пяти состояний: hover, click, модалка или dropdown, loading, обратная связь. Оберни в структуру «обещание — демонстрация — результат», добавь музыку и интерфейсные звуки. Сдай .aep, исходный макет и .mp4 H.264.</p></div>
+</section>
+
+<section id="quiz">
+<div class="corner"><span>PERASPERADASTRA
+UI MOTION</span><span>ПРОВЕРЬ СЕБЯ</span></div>
+  <h2>Квиз</h2>
+  <p>После ответа появится разбор и ссылка на часть гайда.</p>
+  <div class="quiz" id="quiz-list"></div>
+  <div class="score"><span class="big" id="quiz-score">0</span><span id="quiz-verdict"></span><button type="button" id="quiz-reset">Пройти заново</button></div>
+</section>
+
+<section id="check" data-key="uimotion-check-v1">
+<div class="corner"><span>PERASPERADASTRA
+UI MOTION</span><span>ЧЕК-ЛИСТ</span></div>
+  <h2>Чек-лист</h2>
+  <p>Отметки сохраняются в этом браузере.</p>
+  <div class="check">
+    <label><input type="checkbox" id="c1"><span>Каждое движение связано с действием пользователя или реакцией системы</span></label>
+    <label><input type="checkbox" id="c2"><span>Все состояния собраны в макете заранее</span></label>
+    <label><input type="checkbox" id="c3"><span>Слои названы, Anchor Point настроены, курсор — на кончике</span></label>
+    <label><input type="checkbox" id="c4"><span>Hover и click короткие, одинаковые компоненты двигаются одинаково</span></label>
+    <label><input type="checkbox" id="c5"><span>Сначала перестраивается структура, потом появляется новый элемент</span></label>
+    <label><input type="checkbox" id="c6"><span>Есть обещание пользы в начале и акцент на результате в конце</span></label>
+    <label><input type="checkbox" id="c7"><span>Интерфейсные звуки стоят точно на ключах и не повторяются механически</span></label>
+  </div>
+</section>
+
+<footer>Perasperadastra · Mission to Motion · анимация интерфейсов</footer>
+</div>
+
+<script type="application/json" id="quiz-data">[
+ {"l":"Часть 01","h":"#u1","p":"Главная задача интерфейсной анимации?","o":["Сделать продукт эффектнее","Объяснить пользователю, что происходит в системе","Занять время загрузки","Показать навыки аниматора"],"a":1,"e":"Движение — часть коммуникации: действие, ответ, понятный результат."},
+ {"l":"Часть 01","h":"#u1","p":"Нужен линейный ролик о новой функции для лендинга. Что это?","o":["Рабочий продукт","Интерактивный прототип","SaaS- или продуктовая анимация","Lottie-иконка"],"a":2,"e":"Интерфейс становится материалом для моушна: крупные планы, текст, звук, монтаж."},
+ {"l":"Часть 02","h":"#u2","p":"Почему в интерфейсе hover и click делают короткими?","o":["Так проще анимировать","Пользователь повторяет действие много раз, долгая реакция делает интерфейс медленным","Так требует Figma","Иначе не работает Motion Blur"],"a":1,"e":"Небольшие реакции — быстро, открытие окна или перестроение — чуть дольше."},
+ {"l":"Часть 02","h":"#u2","p":"Индикатор вкладки плавно едет к новому пункту. Какой это принцип?","o":["Непрерывность","Характер бренда","Loading","Иерархия"],"a":0,"e":"Пользователь видит, что это тот же элемент, который сменил положение."},
+ {"l":"Часть 03","h":"#u3","p":"Где должен стоять Anchor Point курсора?","o":["В центре","На кончике стрелки","В левом нижнем углу","Неважно"],"a":1,"e":"Именно кончик указывает место клика."},
+ {"l":"Часть 04","h":"#u4","p":"В каком порядке показать добавление карточки?","o":["Карточка появляется поверх соседей, потом они разъезжаются","Соседи освобождают место, потом появляется карточка, потом уведомление","Сначала уведомление, потом карточка","Всё одновременно"],"a":1,"e":"Структура перестраивается, новый элемент занимает место, toast подтверждает уже случившийся результат."},
+ {"l":"Часть 05","h":"#u5","p":"Какой заголовок лучше для начала SaaS-ролика?","o":["«Create Project»","«Создавайте проекты за несколько секунд»","«Версия 2.4»","«Нажмите на кнопку»"],"a":1,"e":"Заголовок говорит о пользе, а не повторяет название кнопки."}
+]
+</script>
+<script>
+(function(){
+  function el(t, c, x){ var n = document.createElement(t); if(c) n.className = c; if(x != null) n.textContent = x; return n; }
+  // раскладка разделов: номер части и подразделы «заголовок слева — содержимое справа»
+  var secs = document.querySelectorAll('section[id^="u"]');
+  for(var s = 0; s < secs.length; s++){
+    var sec = secs[s], head = sec.querySelector(".head"), h2 = head && head.querySelector("h2");
+    if(h2){ var left = el("div", "head-l"), num = el("div", "num", "0" + sec.id.slice(1)); num.setAttribute("aria-hidden", "true"); head.insertBefore(left, h2); left.appendChild(num); left.appendChild(h2); }
+    var kids = Array.prototype.slice.call(sec.children), cur = null;
+    kids.forEach(function(n){
+      if(n.tagName === "H3"){ cur = el("div", "sub"); var hd = el("div", "sub-h"), bd = el("div", "sub-b"); sec.insertBefore(cur, n); hd.appendChild(n); cur.appendChild(hd); cur.appendChild(bd); cur.body = bd; return; }
+      if(!cur) return;
+      if(n.classList.contains("task")){ cur = null; return; }
+      cur.body.appendChild(n);
+    });
+    var subs = sec.querySelectorAll(".sub");
+    for(var k = 0; k < subs.length; k++) if(subs[k].querySelector(".four,.three,.five,table,.levels,.rf,.look,.flips,.flow,.boards,.ai,.pair,.two,.tpl,.tr,.qs,.demo,.chain,.kv,.schemes,.tab-wrap,.layers,.bpm,.lib,.errs,.wide-x")) subs[k].classList.add("wide");
+  }
+
+  // копирование
+  document.querySelectorAll("button.copy").forEach(function(b){
+    b.addEventListener("click", function(){
+      var n = document.getElementById(b.getAttribute("data-copy")), t = n.textContent, o = b.textContent;
+      function done(){ b.textContent = "Скопировано"; setTimeout(function(){ b.textContent = o; }, 1600); }
+      function sel(){ if(n.hidden){ b.textContent = "Не удалось скопировать"; return; } var r = document.createRange(); r.selectNodeContents(n); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Выделено, нажми Ctrl+C"; }
+      try { navigator.clipboard.writeText(t).then(done, sel); } catch(e){ sel(); }
+    });
+  });
+
+
+  // вкладки
+  document.querySelectorAll("[data-tabs]").forEach(function(w){ var bs = w.querySelectorAll(".tabs-b button"), ps = w.querySelectorAll(".tab-p");
+    bs.forEach(function(b, i){ b.addEventListener("click", function(){ bs.forEach(function(x, j){ x.setAttribute("aria-selected", j === i ? "true" : "false"); ps[j].hidden = j !== i; }); }); }); });
+  // перевёртыши
+  document.querySelectorAll(".flip").forEach(function(b){ b.addEventListener("click", function(){ b.classList.toggle("on"); }); });
+  // квиз
+  var QD = document.getElementById("quiz-data"); if(!QD) return; var QUIZ = JSON.parse(QD.textContent);
+  var ql = document.getElementById("quiz-list"), scoreEl = document.getElementById("quiz-score"), verdict = document.getElementById("quiz-verdict"), answered = 0, right = 0;
+  function update(){ scoreEl.textContent = right + " / " + QUIZ.length; if(answered < QUIZ.length){ verdict.textContent = "Ответь на все вопросы, чтобы увидеть результат."; return; } verdict.textContent = right >= QUIZ.length - 1 ? "Отлично. Тема разобрана." : right >= Math.ceil(QUIZ.length * .6) ? "Хорошо. Перечитай части, где ошибся." : "Пройди гайд ещё раз и вернись к квизу."; }
+  function renderQ(){
+    ql.textContent = ""; answered = 0; right = 0;
+    QUIZ.forEach(function(q, i){
+      var card = el("div", "q"); card.appendChild(el("span", "n", "0" + (i + 1) + " · " + q.l)); card.appendChild(el("div", "p", q.p));
+      var opts = el("div", "opts"), exp = el("div", "exp"); exp.hidden = true;
+      q.o.forEach(function(t, j){ var b = el("button", null, t); b.type = "button"; b.addEventListener("click", function(){
+        var all = opts.querySelectorAll("button"); for(var k = 0; k < all.length; k++){ all[k].disabled = true; if(k === q.a) all[k].className = "right"; }
+        var ok = j === q.a; if(!ok) b.className = "wrong"; answered++; if(ok) right++;
+        exp.textContent = ""; exp.appendChild(el("b", null, ok ? "Верно. " : "Не совсем. ")); exp.appendChild(document.createTextNode(q.e + " ")); var a = el("a", null, "Открыть часть"); a.href = q.h; exp.appendChild(a); exp.hidden = false; update();
+      }); opts.appendChild(b); });
+      card.appendChild(opts); card.appendChild(exp); ql.appendChild(card);
+    }); update();
+  }
+  renderQ();
+  document.getElementById("quiz-reset").addEventListener("click", function(){ renderQ(); document.getElementById("quiz").scrollIntoView(); });
+
+  // чек-лист
+  var CK = "sound-check-v1", st = {};
+  try { st = JSON.parse(localStorage.getItem(CK) || "{}") || {}; } catch(e){ st = {}; }
+  document.querySelectorAll(".check input").forEach(function(box){ if(st[box.id]) box.checked = true; box.addEventListener("change", function(){ st[box.id] = box.checked; try { localStorage.setItem(CK, JSON.stringify(st)); } catch(e){} }); });
+})();
+
+(function(){
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---------- component kit ----------
+  (function(){
+    var k=document.getElementById("kit");if(!k)return;
+    k.addEventListener("click",function(e){
+      var d=e.target.closest("[data-dur]");if(d){k.style.setProperty("--d",d.dataset.dur+"ms");k.querySelectorAll("[data-dur]").forEach(function(x){x.setAttribute("aria-pressed",x===d)});moveInd();return}
+      var s=e.target.closest("[data-st]");if(s){var b=k.querySelector("[data-btn]");b.className="ui-btn"+(s.dataset.st==="default"?"":" "+s.dataset.st);b.textContent=s.dataset.st==="success"?"Сохранено ✓":s.dataset.st==="error"?"Ошибка":"Сохранить";k.querySelectorAll("[data-st]").forEach(function(x){x.setAttribute("aria-pressed",x===s)});return}
+      var tg=e.target.closest("[data-tg]");if(tg){tg.setAttribute("aria-checked",tg.getAttribute("aria-checked")!=="true");return}
+      var tb=e.target.closest("[data-tabs-ui] button");if(tb){tb.parentNode.querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===tb)});moveInd();return}
+      var dd=k.querySelector("[data-dd]");if(e.target.closest(".ui-dd-b")){dd.classList.toggle("open");return}
+      if(e.target.closest(".ui-dd li")){dd.querySelector(".ui-dd-b").textContent=e.target.textContent+" ▾";dd.classList.remove("open");return}
+    });
+    document.addEventListener("click",function(e){if(!e.target.closest("[data-dd]")){var dd=k.querySelector("[data-dd]");dd&&dd.classList.remove("open")}});
+    k.querySelector("[data-btn]").addEventListener("click",function(){var b=this;if(b.className!=="ui-btn")return;b.classList.add("loading");setTimeout(function(){b.className="ui-btn success";b.textContent="Сохранено ✓";setTimeout(function(){b.className="ui-btn";b.textContent="Сохранить"},1400)},1100)});
+    var moveInd=function(){var w=k.querySelector("[data-tabs-ui]"),on=w.querySelector(".on"),i=w.querySelector("i");i.style.left=on.offsetLeft+"px";i.style.width=on.offsetWidth+"px"};
+    moveInd();addEventListener("resize",moveInd);
+  })();
+
+  // ---------- scenario ----------
+  (function(){
+    var sc=document.getElementById("sc");if(!sc)return;
+    var st=sc.querySelector("[data-stage]"),wrap=sc.querySelector(".sc-wrap");
+    var fit=function(){st.style.transform="scale("+(wrap.clientWidth/960)+")"};fit();addEventListener("resize",fit);
+    var $=function(s){return sc.querySelector(s)};
+    var cur=$("[data-cur]"),b1=$("[data-b1]"),ring=$("[data-ring]"),dim=$("[data-dim]"),modal=$("[data-modal]"),typed=$("[data-typed]"),caret=$("[data-caret]"),b2=$("[data-b2]"),b2t=$("[data-b2t]"),spin=$("[data-spin]"),toast=$("[data-toast]");
+    var cards=[0,1,2].map(function(i){return sc.querySelector('[data-c="'+i+'"]')}),nc=sc.querySelector('[data-c="n"]');
+    var C=function(x){return x<0?0:x>1?1:x};
+    var eo=function(x){x=C(x);return 1-Math.pow(1-x,3)};
+    var eio=function(x){x=C(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+    var seg=function(t,a,b){return C((t-a)/(b-a))};
+    var L=function(a,b,u){return a+(b-a)*u};
+    var path=[[1000,560,0],[1000,560,.4],[830,66,1.0],[830,66,2.0],[470,216,2.35],[470,216,3.3],[610,296,3.7],[610,296,9]];
+    var curAt=function(t){for(var i=0;i<path.length-1;i++){var a=path[i],b=path[i+1];if(t<=b[2]){var u=eio(seg(t,a[2],b[2]));return [L(a[0],b[0],u),L(a[1],b[1],u)]}}return path[path.length-1]};
+    var slots=[[210,120],[440,120],[670,120],[210,280]];
+    var TXT="Новый проект";
+    var render=function(t){
+      var p=curAt(t);cur.style.transform="translate("+(p[0]-4)+"px,"+(p[1]-2)+"px)";
+      // button 1 hover/click
+      var s1=1+.03*eo(seg(t,1.0,1.15))-.06*Math.sin(Math.PI*seg(t,1.4,1.52))*(t<1.6?1:0)-.03*seg(t,1.6,1.8);
+      b1.style.transform="scale("+s1+")";b1.style.filter="brightness("+(1+.12*eo(seg(t,1,1.15))*(t<1.8?1:0))+")";
+      // ring
+      var rt=t<3?seg(t,1.42,1.8):seg(t,3.9,4.25),rp=t<3?[830,66]:[610,296],rr=t>2.3&&t<3.75?seg(t,2.4,2.75):-1;
+      if(t>2.3&&t<3.75){rt=rr;rp=[470,216]}
+      ring.style.left=rp[0]+"px";ring.style.top=rp[1]+"px";ring.style.opacity=rt>0&&rt<1?(1-rt)*.8:0;ring.style.transform="scale("+L(.3,1.8,eo(rt))+")";
+      // modal open/close
+      var mo=eo(seg(t,1.55,1.85)),mc=eio(seg(t,5.0,5.2)),m=mo*(1-mc);
+      dim.style.opacity=.35*m;modal.style.opacity=m;modal.style.transform="scale("+(t<5?L(.96,1,mo):L(1,.97,mc))+")";
+      // typing
+      var n=Math.round(TXT.length*seg(t,2.5,3.2));typed.textContent=TXT.slice(0,n);caret.style.opacity=(t>2.4&&t<4)?(Math.floor(t*2.5)%2?0:1):0;
+      // button 2
+      var s2=1+.03*eo(seg(t,3.7,3.82))-.06*Math.sin(Math.PI*seg(t,3.9,4.02))*(t<4.1?1:0)-.03*seg(t,4.1,4.25);
+      b2.style.transform="scale("+s2+")";var ld=t>=4.0&&t<5.0;b2t.style.opacity=ld?0:1;spin.style.opacity=ld?1:0;spin.style.transform="rotate("+(t*400)+"deg)";
+      if(t>=5)b2t.textContent="✓";else b2t.textContent="Создать";
+      // cards shift
+      var sh=eio(seg(t,5.25,5.6));
+      cards.forEach(function(c,i){var a=slots[i],b=slots[i+1];c.style.transform="translate("+L(a[0],b[0],sh)+"px,"+L(a[1],b[1],sh)+"px)"});
+      var na=eo(seg(t,5.5,5.85));nc.style.opacity=na;nc.style.transform="translate("+slots[0][0]+"px,"+(slots[0][1]+10*(1-na))+"px) scale("+L(.97,1,na)+")";
+      // toast
+      var ti=eo(seg(t,6.0,6.3)),to=eio(seg(t,7.0,7.25)),tv=ti*(1-to);toast.style.opacity=tv;toast.style.transform="translateY("+(20*(1-ti)+10*to)+"px)";
+    };
+    var EV=[[.4,"Курсор подводит внимание"],[1.0,"Hover: элемент интерактивный"],[1.4,"Click: нажатие принято"],[1.55,"Модалка + затемнение"],[2.5,"Ввод текста"],[4.0,"Loading: система работает"],[5.0,"Закрытие быстрее открытия"],[5.25,"Соседи освобождают место"],[5.5,"Новая карточка"],[6.0,"Toast подтверждает результат"]];
+    var evBox=$("[data-ev]");EV.forEach(function(e){var d=document.createElement("div");d.innerHTML="<i>"+e[0].toFixed(2)+" с</i>"+e[1];d.dataset.t=e[0];evBox.appendChild(d)});
+    var evs=evBox.querySelectorAll("div");
+    var scrub=$("[data-scrub]"),tl=$("[data-time]"),T=0,raf=null;
+    var show=function(t){T=t;render(t);scrub.value=Math.round(t*100);tl.textContent=t.toFixed(2)+" с";var last=-1;EV.forEach(function(e,i){if(t>=e[0])last=i});evs.forEach(function(d,i){d.classList.toggle("on",i===last)})};
+    // sound
+    var ac=null,snd=false;
+    var A=function(){if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();return ac};
+    var tone=function(f,d,type,g,f2){var c=A(),o=c.createOscillator(),v=c.createGain();o.type=type||"sine";o.frequency.setValueAtTime(f,c.currentTime);if(f2)o.frequency.exponentialRampToValueAtTime(f2,c.currentTime+d);v.gain.setValueAtTime(g||.2,c.currentTime);v.gain.exponentialRampToValueAtTime(.0001,c.currentTime+d);o.connect(v).connect(c.destination);o.start();o.stop(c.currentTime+d+.02)};
+    var noise=function(d,f1,f2,g){var c=A(),len=c.sampleRate*d,b=c.createBuffer(1,len,c.sampleRate),x=b.getChannelData(0);for(var i=0;i<len;i++)x[i]=Math.random()*2-1;var s=c.createBufferSource();s.buffer=b;var bp=c.createBiquadFilter();bp.type="bandpass";bp.Q.value=1.2;bp.frequency.setValueAtTime(f1,c.currentTime);bp.frequency.exponentialRampToValueAtTime(f2,c.currentTime+d);var v=c.createGain();v.gain.setValueAtTime(.0001,c.currentTime);v.gain.exponentialRampToValueAtTime(g,c.currentTime+d*.4);v.gain.exponentialRampToValueAtTime(.0001,c.currentTime+d);s.connect(bp).connect(v).connect(c.destination);s.start()};
+    var SFX={hover:function(){tone(2400,.04,"sine",.05)},click:function(){tone(900,.05,"triangle",.18,300);noise(.03,3000,2000,.15)},open:function(){noise(.28,400,2400,.12)},type:function(){tone(1800+Math.random()*400,.02,"square",.02)},close:function(){noise(.18,2000,500,.08)},pop:function(){tone(500,.12,"sine",.18,900)},ok:function(){tone(880,.25,"sine",.12);setTimeout(function(){tone(1320,.35,"sine",.1)},90)}};
+    var CUES=[[1.0,"hover"],[1.4,"click"],[1.55,"open"],[2.4,"click"],[2.55,"type"],[2.7,"type"],[2.85,"type"],[3.0,"type"],[3.15,"type"],[3.7,"hover"],[3.9,"click"],[5.0,"close"],[5.5,"pop"],[6.0,"ok"]];
+    var stop=function(){if(raf)cancelAnimationFrame(raf);raf=null};
+    var play=function(){stop();if(reduce){show(7.6);return}var start=T>=7.5?0:T,t0=performance.now(),prev=start;
+      var f=function(n){var t=start+(n-t0)/1000;if(snd)CUES.forEach(function(c){if(c[0]>prev&&c[0]<=t)SFX[c[1]]()});prev=t;if(t>=7.6){show(7.6);raf=null;return}show(t);raf=requestAnimationFrame(f)};raf=requestAnimationFrame(f)};
+    $("[data-play]").addEventListener("click",function(){if(snd)A().resume();play()});
+    $("[data-snd]").addEventListener("change",function(e){snd=e.target.checked;if(snd)A().resume()});
+    scrub.addEventListener("input",function(){stop();show(scrub.value/100)});
+    evBox.addEventListener("click",function(e){var d=e.target.closest("div[data-t]");if(d){stop();show(+d.dataset.t+.25)}});
+    show(0);
+  })();
+})();
+
+</script>
+</body>
+</html>

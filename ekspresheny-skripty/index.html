@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Экспрешены, плагины и скрипты</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-слайды на чуть более светлом поле, как в остальных методичках школы. Каждый урок собран по одному шаблону: идея, суть, сравнение, инструмент, задание. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e;
+  --line-e:#6a6a6e; --line-m:#47474b; --line-l:#303033;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em;margin-top:14px}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.mono,.corner,th,.kind,.cap,.slot,.lvl,.pair i,.say i,.task i,.q .n,.bars i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+/* светлые панели: уроки чередуются тёмный / светлый, чтобы длинная страница делилась на главы */
+section.light{
+  color-scheme:light;
+  --panel:#f3f3f1; --card:#ffffff; --stroke:#dededa; --well:#e8e8e5;
+  --ink:#121212; --dim:#5c5c59; --faint:#7d7d79;
+  --accent:#d2571f; --accent-ink:#ffffff;
+  --good:#1e9b45; --bad:#d9263a;
+  --line-e:#85857f; --line-m:#b0afa9; --line-l:#d4d3ce;
+  color:var(--dim);
+}
+
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-top:10px}
+nav a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 12px 14px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.2;display:flex;flex-direction:column;gap:22px;min-height:104px;justify-content:space-between}
+nav a::before{content:attr(data-n);font-family:var(--mono);font-size:12px;color:var(--dim);background:#262626;border-radius:6px;padding:5px 7px;align-self:flex-start}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+
+/* сравнения плохо / хорошо */
+.pairs{display:flex;flex-direction:column;gap:8px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+.pair small,.why{font-size:14px;line-height:1.4}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch}
+.why b{font-weight:400}
+
+/* воронка */
+.funnel{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.funnel a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;text-decoration:none}
+.funnel a:hover,.funnel a:focus-visible{border-color:var(--accent);outline:none}
+.funnel b{font-size:17px;font-weight:400}
+.funnel small{font-size:13px;line-height:1.3;color:var(--dim)}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+td .lvl{color:var(--accent);display:block;margin-bottom:3px}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul,.box ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+.bars{display:flex;flex-direction:column;gap:10px}
+.bars .row{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:14px;align-items:center}
+.bars .row span{color:var(--ink);font-size:16px;line-height:1.2}
+.bars .track{display:flex;align-items:center;gap:10px;min-width:0}
+.bars .bar{height:34px;border-radius:8px;background:var(--well);min-width:6px}
+.bars .row.on .bar{background:var(--accent)}
+.bars b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+dl{margin:0;display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);border-top:1px solid var(--stroke)}
+dt,dd{margin:0;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:16px}
+dt{color:var(--ink);padding-right:14px}
+
+/* готовая фраза */
+.say{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.say i{color:var(--accent)}
+.say span{color:var(--ink);font-size:17px;line-height:1.4;max-width:62ch}
+.says{display:flex;flex-direction:column;gap:8px}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.45;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* задание в конце урока */
+.task{border:1px solid var(--accent);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+.slot{border:1px dashed var(--faint);border-radius:8px;padding:10px 12px;line-height:1.5}
+
+
+
+
+
+
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden}
+.fig .stage{aspect-ratio:5/4;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+.micro{aspect-ratio:16/10;pointer-events:none;--hairline-plate:var(--card);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.micro svg{overflow:visible}
+.micro svg g.lift{transition:transform .7s cubic-bezier(.32,.72,0,1)}
+.funnel a:hover .micro g.lift,.funnel a:focus-visible .micro g.lift,.head:hover .micro g.lift{transform:translateY(-14px)}
+@media (prefers-reduced-motion:reduce){.micro svg g.lift{transition:none}}
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.2}
+.figtext p{font-size:16px}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.head h2{flex:1 1 0;min-width:0}
+.head .micro{flex:0 0 190px;width:190px;margin-top:-34px;--hairline-plate:var(--panel)}
+@media (max-width:760px){.head .micro{flex-basis:112px;width:112px;margin-top:0}}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+/* квиз */
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.q .exp b{font-weight:400}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:18px 16px 24px}
+  .pair,.two,.three,.four{grid-template-columns:minmax(0,1fr)}
+  .bars .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl{grid-template-columns:minmax(0,1fr)} dt{border-bottom:0;padding-bottom:0}
+}
+
+/* воздух: больше полей у панелей, пауза и тонкая линия перед каждым подразделом */
+.wrap{gap:20px}
+header,section{padding:34px 44px 60px;gap:24px}
+.corner{margin-bottom:60px}
+section h3{margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.head{padding-bottom:14px}
+.quote{margin-bottom:10px}
+.figrow{padding:20px;gap:32px}
+.task{margin-top:44px;padding:26px}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:36px}
+  section h3{margin-top:26px;padding-top:22px}
+  .task{margin-top:28px;padding:18px}
+}
+
+/* композиция: контурный номер урока, подзаголовок сбоку у узких блоков и сверху у широких, иллюстрации то слева, то справа */
+.head{align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .micro{flex:0 0 300px;width:300px;margin-top:0}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+section .sub h3{margin:0;padding:0;border:0;position:sticky;top:20px}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+.figrow.flip{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
+.figrow.flip .fig{order:2}
+@media (max-width:760px){
+  .head{align-items:flex-end;gap:14px}
+  .head .micro{flex-basis:118px;width:118px}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:26px;padding-top:22px}
+  section .sub h3{position:static}
+  .figrow.flip{grid-template-columns:minmax(0,1fr)}
+  .figrow.flip .fig{order:0}
+}
+</style>
+
+<style>
+
+:root{--line2:#5b8def}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--dim);max-width:70ch}
+.kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--stroke);border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--ink);white-space:nowrap}
+.snd-note{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.4;max-width:640px;color:var(--ink)}
+.snd-note svg{width:20px;height:20px;flex:0 0 auto;color:var(--accent)}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--well);border:1px solid var(--stroke);border-radius:9px;padding:3px;gap:2px}
+.seg button{background:transparent;border:0;color:var(--dim);border-radius:7px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.demo-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.demo-top b{font-size:18px;font-weight:400;color:var(--ink)}
+.demo-bot{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.demo-bot .hint{flex:1 1 260px}
+.cv{display:block;width:100%;border-radius:8px;background:var(--panel)}
+.cv.st{aspect-ratio:16/7}
+.cv.trkc{height:100%;background:transparent;border-radius:0}
+.trk{width:100%}
+.cv.wave{height:90px}
+.cv.lv{height:150px}
+.cv.bars{height:110px}
+.cv.sfw{height:38px;background:transparent}
+.playb{background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:10px 18px;font-weight:500;font-size:15px;white-space:nowrap}
+.playb:hover{filter:brightness(1.08)}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.tg{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);cursor:pointer}
+.tg input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
+.sl{display:flex;flex-direction:column;gap:2px;min-width:170px;flex:1 1 170px;font-size:13px;color:var(--dim)}
+.sl span{display:flex;justify-content:space-between;gap:8px}
+.sl output{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.rng{width:100%;accent-color:var(--accent)}
+.layers{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sfx{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.sfc{text-align:left;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;color:var(--dim);font-weight:400;min-width:0;transition:border-color .15s}
+.sfc:hover,.sfc.on{border-color:var(--accent)}
+.sfc-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sfc-h b{font-size:17px;font-weight:400;color:var(--ink)}
+.sfc-p{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:10px;flex:0 0 auto}
+.sfc-r{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.sfc-w{font-size:14px;line-height:1.35;color:var(--ink)}
+.sfc-t{font-size:13px;line-height:1.35}
+.mini{background:var(--accent);color:var(--accent-ink);border:0;border-radius:50%;width:30px;height:30px;font-size:11px;padding:0}
+table.combo td:last-child{width:40px;text-align:right}
+.bpm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.bpm button{text-align:left;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;color:var(--dim);font-weight:400;font-size:14px}
+.bpm button b{font-family:var(--display);font-size:22px;font-weight:400;color:var(--ink)}
+.bpm button::before{content:"▶ Послушать";font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--accent)}
+.bpm button.on{border-color:var(--accent)} .bpm button.on::before{content:"■ Играет"}
+.lib{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:start}
+.lib-tree{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:13px;color:var(--ink);white-space:pre}
+.lib-tree .a{color:var(--accent)}
+.lib-t{display:flex;flex-direction:column;gap:10px}
+.chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;counter-reset:c}
+.chain>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative;min-width:0}
+.chain>div:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:14px;color:var(--accent);font-size:14px;z-index:1}
+.chain i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--accent)}
+.chain b{font-size:16px;font-weight:400;color:var(--ink)} .chain span{font-size:13px;line-height:1.35}
+.errs{display:flex;flex-wrap:wrap;gap:6px}
+.errs span{border:1px solid var(--bad);border-radius:999px;padding:6px 12px;font-size:14px;color:var(--ink)}
+@media (max-width:860px){.layers{grid-template-columns:repeat(2,minmax(0,1fr))}.chain{grid-template-columns:minmax(0,1fr)}.chain>div::after{display:none}.bpm{grid-template-columns:minmax(0,1fr)}.lib{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){.cv.st{aspect-ratio:16/10}}
+/* нейронка */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+.tpl table{min-width:820px;font-size:14px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+
+
+:root{--line2:#5b8def}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--dim);max-width:70ch}
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.qs{display:flex;flex-wrap:wrap;gap:6px}
+.qs span{border:1px solid var(--stroke);background:var(--card);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink)}
+.tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.tr button{text-align:left;background:var(--card);border:1px solid var(--stroke);color:var(--ink);border-radius:10px;padding:14px;font-weight:400;font-size:15px}
+.tr button.on{border-color:var(--accent)}
+.tr-out{background:var(--well);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;border-left:3px solid var(--accent)}
+.tr-out p{color:var(--ink);font-size:18px;line-height:1.35}
+.boards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.boards>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:4px;aspect-ratio:1;justify-content:flex-end;background-image:linear-gradient(var(--well) 1px,transparent 1px),linear-gradient(90deg,var(--well) 1px,transparent 1px);background-size:14px 14px}
+.boards b{font-size:16px;font-weight:400;color:var(--ink)} .boards span{font-size:12px;line-height:1.3}
+.levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.rf{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.rf label{display:flex;flex-direction:column;gap:6px;min-width:0}
+.rf label:nth-child(n+3){grid-column:span 1}
+.rf label:last-of-type{grid-column:1/-1}
+.rf input,.rf textarea{font:400 15px var(--body);background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:10px 12px;resize:vertical;width:100%}
+.rf input:focus,.rf textarea:focus{outline:none;border-color:var(--accent)}
+.rf-bot{grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+button.ghost{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px;font-weight:400}
+.look{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.look figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.look img{width:100%;height:auto;border-radius:10px;display:block;background:var(--well)}
+.look figcaption{font-size:13px;color:var(--faint)}
+.look-t{display:flex;flex-direction:column;gap:12px}
+.look-t>p{color:var(--ink);font-size:16px}
+ul.see{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+ul.see li{font-size:15px;padding-left:20px;position:relative}
+ul.see li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height:2px;background:var(--accent)}
+.flips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.flip{position:relative;min-height:150px;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:0;text-align:left;font-weight:400;color:var(--ink);font-size:18px;line-height:1.3;overflow:hidden}
+.flip span{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;gap:10px;transition:opacity .25s,transform .25s}
+.flip i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.f-a i{color:var(--bad)} .f-b i{color:var(--good)}
+.f-b{opacity:0;transform:translateY(10px)}
+.flip.on{border-color:var(--good)} .flip.on .f-a{opacity:0;transform:translateY(-10px)} .flip.on .f-b{opacity:1;transform:none}
+.flip::after{content:"нажми ↻";position:absolute;right:14px;bottom:12px;font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.06em}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.flow>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative}
+.flow>div:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:14px;color:var(--accent);z-index:1}
+.flow i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--accent)} .flow b{font-size:16px;font-weight:400;color:var(--ink)} .flow span{font-size:13px;line-height:1.35}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:14px;line-height:1.6;color:var(--ink);background:var(--well);border-radius:8px;padding:14px}
+.tpl pre em{font-style:normal;color:var(--accent)}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+@media (max-width:980px){.five{grid-template-columns:repeat(2,minmax(0,1fr))}.boards{grid-template-columns:repeat(3,minmax(0,1fr))}.levels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.tr,.flips{grid-template-columns:minmax(0,1fr)}.flow{grid-template-columns:minmax(0,1fr)}.flow>div::after{display:none}.look{grid-template-columns:minmax(0,1fr)}.rf{grid-template-columns:minmax(0,1fr)}.levels{grid-template-columns:minmax(0,1fr)}}
+/* нейронка */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+.tpl table{min-width:820px;font-size:14px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+
+.tabs-b{display:flex;flex-wrap:wrap;gap:6px}
+.tabs-b button{background:var(--card);border:1px solid var(--stroke);color:var(--dim);border-radius:999px;padding:7px 13px;font-weight:400;font-size:14px}
+.tabs-b button[aria-selected="true"]{border-color:var(--ink);color:var(--ink)}
+.tab-p[hidden]{display:none}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.kv>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.kv b{font-size:15px;font-weight:400;color:var(--ink)} .kv span{font-size:13px;line-height:1.35}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+.fr{display:block;width:100%;height:auto;border-radius:8px}
+.fr .bg{fill:var(--well)} .fr .i{fill:var(--ink)} .fr .a{fill:var(--accent)} .fr .d{fill:var(--dim)} .fr .f{fill:var(--faint)} .fr .p{fill:var(--panel)}
+.fr .s{fill:none;stroke:var(--ink);stroke-width:1.5} .fr .sa{fill:none;stroke:var(--accent);stroke-width:1.5} .fr .sd{fill:none;stroke:var(--faint);stroke-width:1}
+.fr text{font-family:var(--display)} .fr text.mn{font-family:var(--mono);letter-spacing:.04em}
+.schemes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.schemes figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.schemes figcaption{display:flex;flex-direction:column;gap:4px;padding:0 4px 4px}
+.schemes figcaption b{font-size:16px;font-weight:400;color:var(--ink)} .schemes figcaption span{font-size:13px;line-height:1.38}
+.schemes .kind{color:var(--accent)}
+figure>img{max-width:100%;height:auto}
+figure.pic{margin:0;max-width:480px;display:flex;flex-direction:column;gap:8px}
+figure.pic>img{display:block;width:100%;border-radius:8px;background:#f3efe7}
+figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+</style>
+<style>
+.ex-cv{display:block;width:100%;height:auto;border-radius:10px;background:var(--panel)}
+.ex-row{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.ex-pre{flex-wrap:wrap}
+.ex-ed{display:flex;flex-direction:column;gap:6px}
+.ex-ed textarea{width:100%;box-sizing:border-box;background:#0d0d0d;color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:12px;font-family:var(--mono);font-size:15px;line-height:1.5;resize:vertical}
+.ex-ed textarea.err{border-color:#ff5a5a;color:#ff9a9a}
+.ex-out{text-transform:none;letter-spacing:0;font-size:12px;overflow-wrap:anywhere}
+.ex-out.err{color:#ff7a7a}
+code{font-family:var(--mono);font-size:.88em;background:var(--well);border-radius:4px;padding:1px 5px;color:var(--ink)}
+#hk:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hk-q{background:var(--panel);border-radius:10px;padding:28px 20px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}
+.hk-q b{font-size:28px;font-weight:400;color:var(--ink);line-height:1.2}
+.hk-a{min-height:28px;text-align:center;font-family:var(--mono);font-size:15px;color:var(--dim)}
+.hk-a.ok{color:var(--good)}.hk-a.no{color:#ff7a7a}
+.hk-next{background:var(--well)!important;color:var(--ink)!important}
+.hk-list b{font-family:var(--mono);font-size:13px;font-weight:400}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+ГАЙД ДЛЯ СТУДЕНТОВ</span><span>MISSION TO MOTION
+АВТОМАТИЗАЦИЯ</span></div>
+  <h1>Экспрешены, плагины и скрипты</h1>
+  <p class="lead"><b>Сначала учимся делать руками, потом автоматизируем.</b> Экспрешены задают параметру правило, скрипты нажимают кнопки за тебя, плагины добавляют то, чего в программе нет. А свой скрипт теперь можно собрать вместе с нейросетью, не зная кода.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav aria-label="Разделы">
+    <a href="#u1" data-n="01">Что такое экспрешен</a><a href="#u2" data-n="02">Песочница</a><a href="#u3" data-n="03">Базовый набор</a><a href="#u4" data-n="04">Плагины</a><a href="#u5" data-n="05">Скрипты и свой скрипт</a><a href="#u6" data-n="06">Горячие клавиши</a><a href="#quiz" data-n="07">Квиз</a>
+  </nav>
+</header>
+
+<section id="u1">
+<div class="corner"><span>PERASPERADASTRA
+ЭКСПРЕШЕНЫ</span><span>ЧАСТЬ 01
+ПРИНЦИП</span></div>
+  <div class="head"><h2>Что такое экспрешен</h2></div>
+  <p class="quote">Ключи отвечают «что происходит в этой точке времени». Экспрешен — «по какому правилу параметр ведёт себя всегда».</p>
+  <p>Экспрешен — короткое выражение на JavaScript, которое After Effects пересчитывает на каждом кадре. Это не программирование приложений: в программе уже есть готовые функции для циклов, случайности, времени, связи параметров, и к ним можно добавлять обычную математику.</p>
+  <h3>Как добавить</h3>
+  <ol class="steps">
+    <li><div><div class="t">Открой параметр</div><div class="d">Position, Scale, Rotation, Opacity или любой параметр эффекта.</div></div></li>
+    <li><div><div class="t"><span class="kbd">Alt</span> / <span class="kbd">Option</span> + клик по секундомеру</div><div class="d">Обычный клик включает ключи, с Alt — поле экспрешена.</div></div></li>
+    <li><div><div class="t">Пиши или тяни pick whip</div><div class="d">Спиралька связывает параметры мышкой: After Effects сам пропишет ссылку на другой слой.</div></div></li>
+  </ol>
+  <h3>Три слова, которые нужно знать</h3>
+  <div class="three">
+    <div class="box"><span class="kind">value</span><p>Текущее значение параметра — то, что выставлено руками или ключами. Берёшь его за основу и добавляешь сверху.</p></div>
+    <div class="box"><span class="kind">time</span><p>Текущее время композиции в секундах. С ним параметр начинает меняться сам.</p></div>
+    <div class="box"><span class="kind">[x, y]</span><p>Position — массив из двух (в 3D трёх) чисел. Opacity и Rotation — одно число. Тип должен совпадать с параметром.</p></div>
+  </div>
+</section>
+
+<section id="u2">
+<div class="corner"><span>PERASPERADASTRA
+ЭКСПРЕШЕНЫ</span><span>ЧАСТЬ 02
+ПЕСОЧНИЦА</span></div>
+  <div class="head"><h2>Песочница экспрешенов</h2></div>
+  <p class="quote">Меняй числа в рабочих выражениях — так быстрее всего привыкаешь к синтаксису.</p>
+  <div class="demo" id="ex">
+    <div class="demo-top"><b>Готовые примеры</b><div class="seg ex-pre" role="group" aria-label="Пример"></div></div>
+    <canvas class="ex-cv" width="960" height="320" aria-label="Слои под действием экспрешена"></canvas>
+    <div class="ex-row">
+      <div class="seg" role="group" aria-label="Параметр"><button type="button" data-prop="position" aria-pressed="true">Position</button><button type="button" data-prop="rotation">Rotation</button><button type="button" data-prop="scale">Scale</button><button type="button" data-prop="opacity">Opacity</button></div>
+      <label class="tg"><input type="checkbox" data-keys> Ключи: 2 ключа за 1 с</label>
+      <label class="tg"><input type="checkbox" data-many checked> 5 копий (index 1–5)</label>
+    </div>
+    <label class="ex-ed"><span class="mono">Экспрешен</span><textarea data-code rows="3" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+    <div class="demo-bot"><span class="ex-out mono" data-out></span></div>
+  </div>
+  <p>Поддерживаются <code>value</code>, <code>time</code>, <code>index</code>, <code>wiggle</code>, <code>loopOut</code>, <code>valueAtTime</code>, <code>linear</code>, <code>ease</code>, <code>clamp</code>, <code>Math</code> и переменные через <code>;</code>. Ошибка подсвечивается красным — как в After Effects.</p>
+</section>
+
+<section id="u3">
+<div class="corner"><span>PERASPERADASTRA
+ЭКСПРЕШЕНЫ</span><span>ЧАСТЬ 03
+БАЗОВЫЙ НАБОР</span></div>
+  <div class="head"><h2>Базовый набор</h2></div>
+  <p class="quote">Сначала меньшие числа, потом постепенно усиливай.</p>
+  <h3>Минимум на старт</h3>
+  <div class="kv">
+    <div><b>loopOut()</b><span>Повторяет поставленные ключи дальше. Покачивание, пульсация, облака, иконки.</span></div>
+    <div><b>loopOut("pingpong")</b><span>Вперёд и назад. Дыхание, маятник — обратную фазу анимировать не нужно.</span></div>
+    <div><b>wiggle(частота, амплитуда)</b><span>Случайное колебание. Лёгкое покачивание 1,10, тряска камеры 5,20, мерцание 8,15.</span></div>
+    <div><b>time*50</b><span>На Rotation — 50 градусов в секунду без единого ключа.</span></div>
+    <div><b>value + [0, Math.sin(time*2)*20]</b><span>Объект стоит где поставил и плавно качается на 20 px.</span></div>
+    <div><b>pick whip</b><span>Один параметр повторяет другой. Сверху дописываешь смещение или множитель.</span></div>
+  </div>
+  <h3>Функции на вырост</h3>
+  <dl>
+    <dt>linear(t, tMin, tMax, a, b)</dt><dd>Переводит один диапазон в другой. Например, Opacity от позиции другого слоя.</dd>
+    <dt>ease(...)</dt><dd>То же, но с мягким разгоном и торможением.</dd>
+    <dt>clamp(v, min, max)</dt><dd>Не даёт значению выйти за пределы.</dd>
+    <dt>Math.sin / Math.cos</dt><dd>Циклические колебания. Косинус — тот же синус со сдвигом фазы.</dd>
+    <dt>Math.round / Math.abs</dt><dd>Округление и модуль. Счётчики, отражения.</dd>
+    <dt>valueAtTime(t)</dt><dd>Значение в другой момент. Задержки: каждая копия повторяет движение с отставанием.</dd>
+  </dl>
+  <div class="two">
+    <div class="box"><span class="kind">Когда экспрешен</span><p>Движение системное: десять иконок качаются, звёзды мерцают, всё управляется одним контроллером, шаблон с зависимыми плашками.</p></div>
+    <div class="box"><span class="kind">Когда ключи</span><p>Движение уникальное и авторское. Три хороших ключа лучше выражения ради выражения.</p></div>
+  </div>
+  <h3>Параметр покраснел</h3>
+  <p>В экспрешене ошибка: опечатка, лишняя или пропущенная скобка, забытая запятая, неправильный тип значения (число вместо массива), неверное имя функции. After Effects показывает строку. Не пиши длинное с нуля: pick whip, рабочие выражения, меняй числа.</p>
+</section>
+
+<section id="u4">
+<div class="corner"><span>PERASPERADASTRA
+АВТОМАТИЗАЦИЯ</span><span>ЧАСТЬ 04
+ПЛАГИНЫ</span></div>
+  <div class="head"><h2>Плагины</h2></div>
+  <p class="quote">Пресет запоминает, скрипт нажимает, плагин добавляет.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Пресет</span><p>Сохранённые настройки или ключи. Ничего нового в программу не добавляет.</p></div>
+    <div class="box"><span class="kind">Скрипт</span><p>Нажимает кнопки за тебя: переименовывает, расставляет, создаёт, раскладывает.</p></div>
+    <div class="box"><span class="kind">Плагин</span><p>Новая функциональность: эффект, панель, возможность, которой не было.</p></div>
+  </div>
+  <h3>Установка</h3>
+  <p>У больших плагинов свой установщик. Остальные — копированием файла <code>.aex</code> в папку After Effects → Support Files → Plug-ins. Многие сами появятся и в Premiere Pro.</p>
+  <h3>С чем стоит познакомиться</h3>
+  <dl>
+    <dt>Deep Glow</dt><dd>Красивое свечение одним эффектом вместо стопки стоковых Glow. Сначала собери свечение руками, чтобы понимать, что он делает.</dd>
+    <dt>Sapphire</dt><dd>Индустриальный стандарт большого продакшена. S_Shake — приятная тряска камеры. Новичку покупать ради неё не нужно: wiggle и стоковые эффекты справятся.</dd>
+    <dt>Magic Bullet Looks</dt><dd>Цветокоррекция с библиотекой пресетов. Пресет — стартовая точка, дальше подкручивай под кадр.</dd>
+    <dt>Overlord</dt><dd>Мост между Illustrator, Figma и After Effects в обе стороны, сразу шейпами. Бесплатная альтернатива для старта — AEUX.</dd>
+  </dl>
+  <h3>Карта на будущее</h3>
+  <div class="four">
+    <div class="box"><span class="kind">Персонажи</span><p>Duik (бесплатный, глубокий), Limber (проще, платный).</p></div>
+    <div class="box"><span class="kind">Частицы</span><p>Particular, Form, Stardust.</p></div>
+    <div class="box"><span class="kind">Физика</span><p>Newton: падения, столкновения, отскоки.</p></div>
+    <div class="box"><span class="kind">Библиотеки анимаций</span><p>Animation Composer, Motion Bro. Удобно, но работы становятся одинаковыми.</p></div>
+  </div>
+</section>
+
+<section id="u5">
+<div class="corner"><span>PERASPERADASTRA
+АВТОМАТИЗАЦИЯ</span><span>ЧАСТЬ 05
+СКРИПТЫ</span></div>
+  <div class="head"><h2>Скрипты и свой скрипт</h2></div>
+  <p class="quote">Скрипт под твою задачу не продаётся нигде — его можно собрать самому.</p>
+  <h3>Установка</h3>
+  <ol class="steps">
+    <li><div><div class="t">File → Scripts → Install ScriptUI Panel</div><div class="d">После перезапуска скрипт появится внизу меню Window. Или положи файл в Support Files → Scripts → ScriptUI Panels.</div></div></li>
+    <li><div><div class="t">Разреши скриптам работать</div><div class="d">Edit → Preferences → Scripting &amp; Expressions → Allow Scripts to Write Files and Access Network.</div></div></li>
+  </ol>
+  <h3>Бесплатный минимум и точечные скрипты</h3>
+  <div class="kv">
+    <div><b>FX Console</b><span>Ctrl+Space — поиск любого эффекта за секунду. Свои шорткаты, скриншот кадра.</span></div>
+    <div><b>EaseCopy</b><span>Копирует только изинг, значения остаются свои. Довёл кривую — раздал всем анимациям.</span></div>
+    <div><b>Flow</b><span>Библиотека кривых для ключей.</span></div>
+    <div><b>Text Exploder</b><span>Текст на слои по буквам, словам, строкам.</span></div>
+    <div><b>Explode Shape Layers</b><span>Шейп из Illustrator на слои по группам.</span></div>
+    <div><b>Reposition Anchor Point</b><span>Якорь в центр или угол объекта.</span></div>
+    <div><b>Rift</b><span>Раскидывает слои или ключи по времени с шагом.</span></div>
+    <div><b>Motion Tools</b><span>Бесплатный комбайн: изинги, якоря, распределение.</span></div>
+    <div><b>KBar</b><span>Весь арсенал на одной панели кнопок, включая свои скрипты.</span></div>
+  </div>
+  <p>Главная площадка — aescripts.com. Подход: маленькие точечные инструменты под регулярные задачи, а не комбайн, где из ста функций нужны три.</p>
+  <h3>Свой скрипт вместе с нейросетью</h3>
+  <p>Пример из нашей работы: в рилсах десятки текстовых слоёв с названиями «Text 14». Решили, что слой должен называться так же, как текст внутри. Сформулировали задачу, получили скрипт, развивали по шагам: сначала активная композиция, потом вложенные.</p>
+  <ol class="steps">
+    <li><div><div class="t">Сформулируй задачу сам</div><div class="d">Что делаешь руками, с какими слоями, что должно получиться, какие исключения.</div></div></li>
+    <li><div><div class="t">Получи код и сохрани как .jsx</div><div class="d">Обычный текстовый файл. File → Scripts → Run Script File.</div></div></li>
+    <li><div><div class="t">Ошибка — отправь текст ошибки как есть</div><div class="d">Без попыток разобраться в коде. «Скрипт не работает, After Effects пишет: …»</div></div></li>
+    <li><div><div class="t">Делает не то — разбей на шаги</div><div class="d">Задача слишком большая для одного захода. Сначала базовая версия, потом надстройки.</div></div></li>
+    <li><div><div class="t">Повесь на кнопку KBar</div><div class="d">Теперь это часть твоего инструментария.</div></div></li>
+  </ol>
+
+  <h3>В паре с нейронкой</h3>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Версия After Effects, что за слои, что делаешь руками сейчас и что должно получиться.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть нейронка уточнит граничные случаи до того, как писать код.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Ты придумываешь задачу и проверяешь результат на копии проекта.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Промпт · свой скрипт</span><b>Собрать скрипт под свою задачу</b>
+<pre id="ai-1">Выступи в роли эксперта по скриптам для Adobe After Effects <em>[версия]</em>.
+Что я делаю руками сейчас: <em>[опиши рутину по шагам]</em>
+Что должен делать скрипт: <em>[результат, с какими слоями и композициями работать]</em>
+Исключения: <em>[что не трогать]</em>
+Сначала задай мне уточняющие вопросы по одному. Когда всё ясно — напиши скрипт .jsx и коротко объясни, как запустить.</pre>
+      <button class="copy" type="button" data-copy="ai-1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> придумываешь задачу, запускаешь на копии проекта, возвращаешь ошибки и просишь следующий шаг.</p>
+    </div>
+    <div class="prompt"><span class="kind">Промпт · экспрешен</span><b>Разобраться в экспрешене</b>
+<pre id="ai-2">Вот экспрешен на параметре <em>[Position, Rotation…]</em> в After Effects: <em>[вставь код]</em>
+Что я хочу получить: <em>[опиши поведение]</em>. Что происходит: <em>[ошибка или что не так]</em>
+Объясни построчно, что делает каждая часть. Потом задай мне один вопрос, чтобы понять, что исправить, и подскажи, какое число или функцию поменять.</pre>
+      <button class="copy" type="button" data-copy="ai-2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь сам и проверяешь в песочнице или в проекте.</p>
+    </div>
+  </div>
+  <div class="task"><i>Задание</i><b>Свой скрипт</b><p>Найди действие, которое делаешь руками в After Effects и хочешь автоматизировать. Сформулируй задачу нейросети, получи скрипт, доведи до рабочего состояния. Пришли описание задачи своими словами, свой промпт и скриншот или запись работающего скрипта. Готовые скрипты из интернета не подходят.</p></div>
+</section>
+
+<section id="u6">
+<div class="corner"><span>PERASPERADASTRA
+АВТОМАТИЗАЦИЯ</span><span>ЧАСТЬ 06
+ГОРЯЧИЕ КЛАВИШИ</span></div>
+  <div class="head"><h2>Горячие клавиши</h2></div>
+  <p class="quote">Выучи сначала короткий список, остальное придёт само.</p>
+  <h3>Тренажёр</h3>
+  <div class="demo" id="hk" tabindex="0" aria-label="Тренажёр горячих клавиш: кликни и нажимай клавиши">
+    <div class="hk-q"><span class="mono">Нажми клавишу для действия</span><b data-q></b></div>
+    <div class="hk-a" data-a></div>
+    <div class="demo-bot"><button class="playb" type="button" data-show>Показать ответ</button><button class="playb hk-next" type="button" data-next>Дальше →</button><span class="hint" data-score>0 из 0</span></div>
+  </div>
+  <h3>Базовый набор</h3>
+  <div class="kv hk-list">
+    <div><b>V · Q · G · Ctrl+T</b><span>Выделение, фигуры, перо, текст</span></div>
+    <div><b>P · S · R · T · A</b><span>Position, Scale, Rotation, Opacity, Anchor Point. С Shift — добавить к открытым</span></div>
+    <div><b>U · UU</b><span>Анимированные параметры · все изменённые</span></div>
+    <div><b>E · EE · M · LL</b><span>Эффекты · экспрешены · маски · waveform звука</span></div>
+    <div><b>J · K</b><span>Предыдущий и следующий ключ</span></div>
+    <div><b>B · N</b><span>Начало и конец Work Area</span></div>
+    <div><b>F9 · Shift+F9 · Ctrl+Shift+F9</b><span>Easy Ease · Ease In · Ease Out</span></div>
+    <div><b>Alt+Shift+P/S/R/T</b><span>Поставить ключ параметра</span></div>
+    <div><b>Ctrl+D · Ctrl+Shift+D</b><span>Дубликат · разрезать слой</span></div>
+    <div><b>Alt+[ · Alt+]</b><span>Обрезать начало или конец слоя до playhead</span></div>
+    <div><b>[ · ]</b><span>Перенести начало или конец слоя к playhead</span></div>
+    <div><b>Ctrl+Shift+C</b><span>Pre-compose</span></div>
+    <div><b>Ctrl+K · Ctrl+N · Ctrl+Y</b><span>Настройки композиции · новая композиция · Solid</span></div>
+    <div><b>Ctrl+Alt+Shift+Y</b><span>Null Object</span></div>
+    <div><b>Ctrl+Alt+Home · Ctrl+Home</b><span>Якорь в центр слоя · слой в центр композиции</span></div>
+    <div><b>Shift+F3</b><span>Graph Editor</span></div>
+    <div><b>Ctrl+M</b><span>Render Queue</span></div>
+    <div><b>Caps Lock</b><span>Заморозить обновление превью на тяжёлой сцене</span></div>
+  </div>
+  <p>На Mac Ctrl — это Cmd, Alt — Option.</p>
+</section>
+
+<section id="quiz">
+<div class="corner"><span>PERASPERADASTRA
+АВТОМАТИЗАЦИЯ</span><span>ПРОВЕРЬ СЕБЯ</span></div>
+  <h2>Квиз</h2>
+  <p>После ответа появится разбор и ссылка на часть гайда.</p>
+  <div class="quiz" id="quiz-list"></div>
+  <div class="score"><span class="big" id="quiz-score">0</span><span id="quiz-verdict"></span><button type="button" id="quiz-reset">Пройти заново</button></div>
+</section>
+
+<section id="check" data-key="expr-check-v1">
+<div class="corner"><span>PERASPERADASTRA
+АВТОМАТИЗАЦИЯ</span><span>ЧЕК-ЛИСТ</span></div>
+  <h2>Чек-лист</h2>
+  <p>Отметки сохраняются в этом браузере.</p>
+  <div class="check">
+    <label><input type="checkbox" id="c1"><span>Умею добавить экспрешен через Alt + клик по секундомеру</span></label>
+    <label><input type="checkbox" id="c2"><span>Зацикливаю ключи loopOut и pingpong</span></label>
+    <label><input type="checkbox" id="c3"><span>Ставлю wiggle на умеренных значениях</span></label>
+    <label><input type="checkbox" id="c4"><span>Связываю параметры pick whip</span></label>
+    <label><input type="checkbox" id="c5"><span>Поставил FX Console и EaseCopy</span></label>
+    <label><input type="checkbox" id="c6"><span>Собрал свой скрипт с нейросетью и проверил на копии проекта</span></label>
+    <label><input type="checkbox" id="c7"><span>Выучил базовый набор горячих клавиш</span></label>
+  </div>
+</section>
+
+<footer>Perasperadastra · Mission to Motion · экспрешены, плагины и скрипты</footer>
+</div>
+
+<script type="application/json" id="quiz-data">[
+ {"l":"Часть 01","h":"#u1","p":"Как открыть поле экспрешена на параметре?","o":["Клик по секундомеру","Alt/Option + клик по секундомеру","Двойной клик по значению","Ctrl + E"],"a":1,"e":"Обычный клик включает ключи, с Alt — экспрешен."},
+ {"l":"Часть 01","h":"#u1","p":"Что такое value в экспрешене?","o":["Время композиции","Текущее значение параметра","Номер слоя","Случайное число"],"a":1,"e":"Берёшь то, что выставлено руками или ключами, и добавляешь сверху своё правило."},
+ {"l":"Часть 02","h":"#u2","p":"Почему на Position нельзя написать просто Math.sin(time)*20?","o":["sin не работает в After Effects","Position ждёт массив [x, y], а получится одно число","Нужен loopOut","Нужно включить ключи"],"a":1,"e":"Тип результата должен совпадать с параметром: value + [0, Math.sin(time)*20]."},
+ {"l":"Часть 03","h":"#u3","p":"Объект за секунду смещается влево. Как вернуть его вправо без новых ключей и повторять бесконечно?","o":["wiggle(1,10)","loopOut(\"pingpong\")","time*50","clamp()"],"a":1,"e":"Pingpong проигрывает ключи вперёд и назад."},
+ {"l":"Часть 03","h":"#u3","p":"Что значит wiggle(2, 30)?","o":["2 пикселя, 30 раз в секунду","2 раза в секунду с амплитудой 30","2 секунды задержки","30 копий слоя"],"a":1,"e":"Первое число — частота, второе — амплитуда. Начинай с меньших значений."},
+ {"l":"Часть 04","h":"#u4","p":"Чем скрипт отличается от плагина?","o":["Ничем","Скрипт автоматизирует действия, плагин добавляет новую функциональность","Скрипт платный","Плагин работает только в Premiere"],"a":1,"e":"Пресет запоминает, скрипт нажимает, плагин добавляет."},
+ {"l":"Часть 05","h":"#u5","p":"Скрипт от нейросети выдал ошибку в After Effects. Что делать?","o":["Переписать код самому","Отправить нейросети текст ошибки как есть","Скачать готовый скрипт","Переустановить After Effects"],"a":1,"e":"А если ошибки нет, но делает не то — разбей задачу на шаги."}
+]
+</script>
+<script>
+(function(){
+  function el(t, c, x){ var n = document.createElement(t); if(c) n.className = c; if(x != null) n.textContent = x; return n; }
+  // раскладка разделов: номер части и подразделы «заголовок слева — содержимое справа»
+  var secs = document.querySelectorAll('section[id^="u"]');
+  for(var s = 0; s < secs.length; s++){
+    var sec = secs[s], head = sec.querySelector(".head"), h2 = head && head.querySelector("h2");
+    if(h2){ var left = el("div", "head-l"), num = el("div", "num", "0" + sec.id.slice(1)); num.setAttribute("aria-hidden", "true"); head.insertBefore(left, h2); left.appendChild(num); left.appendChild(h2); }
+    var kids = Array.prototype.slice.call(sec.children), cur = null;
+    kids.forEach(function(n){
+      if(n.tagName === "H3"){ cur = el("div", "sub"); var hd = el("div", "sub-h"), bd = el("div", "sub-b"); sec.insertBefore(cur, n); hd.appendChild(n); cur.appendChild(hd); cur.appendChild(bd); cur.body = bd; return; }
+      if(!cur) return;
+      if(n.classList.contains("task")){ cur = null; return; }
+      cur.body.appendChild(n);
+    });
+    var subs = sec.querySelectorAll(".sub");
+    for(var k = 0; k < subs.length; k++) if(subs[k].querySelector(".four,.three,.five,table,.levels,.rf,.look,.flips,.flow,.boards,.ai,.pair,.two,.tpl,.tr,.qs,.demo,.chain,.kv,.schemes,.tab-wrap,.layers,.bpm,.lib,.errs,.wide-x")) subs[k].classList.add("wide");
+  }
+
+  // копирование
+  document.querySelectorAll("button.copy").forEach(function(b){
+    b.addEventListener("click", function(){
+      var n = document.getElementById(b.getAttribute("data-copy")), t = n.textContent, o = b.textContent;
+      function done(){ b.textContent = "Скопировано"; setTimeout(function(){ b.textContent = o; }, 1600); }
+      function sel(){ if(n.hidden){ b.textContent = "Не удалось скопировать"; return; } var r = document.createRange(); r.selectNodeContents(n); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Выделено, нажми Ctrl+C"; }
+      try { navigator.clipboard.writeText(t).then(done, sel); } catch(e){ sel(); }
+    });
+  });
+
+
+  // вкладки
+  document.querySelectorAll("[data-tabs]").forEach(function(w){ var bs = w.querySelectorAll(".tabs-b button"), ps = w.querySelectorAll(".tab-p");
+    bs.forEach(function(b, i){ b.addEventListener("click", function(){ bs.forEach(function(x, j){ x.setAttribute("aria-selected", j === i ? "true" : "false"); ps[j].hidden = j !== i; }); }); }); });
+  // перевёртыши
+  document.querySelectorAll(".flip").forEach(function(b){ b.addEventListener("click", function(){ b.classList.toggle("on"); }); });
+  // квиз
+  var QD = document.getElementById("quiz-data"); if(!QD) return; var QUIZ = JSON.parse(QD.textContent);
+  var ql = document.getElementById("quiz-list"), scoreEl = document.getElementById("quiz-score"), verdict = document.getElementById("quiz-verdict"), answered = 0, right = 0;
+  function update(){ scoreEl.textContent = right + " / " + QUIZ.length; if(answered < QUIZ.length){ verdict.textContent = "Ответь на все вопросы, чтобы увидеть результат."; return; } verdict.textContent = right >= QUIZ.length - 1 ? "Отлично. Тема разобрана." : right >= Math.ceil(QUIZ.length * .6) ? "Хорошо. Перечитай части, где ошибся." : "Пройди гайд ещё раз и вернись к квизу."; }
+  function renderQ(){
+    ql.textContent = ""; answered = 0; right = 0;
+    QUIZ.forEach(function(q, i){
+      var card = el("div", "q"); card.appendChild(el("span", "n", "0" + (i + 1) + " · " + q.l)); card.appendChild(el("div", "p", q.p));
+      var opts = el("div", "opts"), exp = el("div", "exp"); exp.hidden = true;
+      q.o.forEach(function(t, j){ var b = el("button", null, t); b.type = "button"; b.addEventListener("click", function(){
+        var all = opts.querySelectorAll("button"); for(var k = 0; k < all.length; k++){ all[k].disabled = true; if(k === q.a) all[k].className = "right"; }
+        var ok = j === q.a; if(!ok) b.className = "wrong"; answered++; if(ok) right++;
+        exp.textContent = ""; exp.appendChild(el("b", null, ok ? "Верно. " : "Не совсем. ")); exp.appendChild(document.createTextNode(q.e + " ")); var a = el("a", null, "Открыть часть"); a.href = q.h; exp.appendChild(a); exp.hidden = false; update();
+      }); opts.appendChild(b); });
+      card.appendChild(opts); card.appendChild(exp); ql.appendChild(card);
+    }); update();
+  }
+  renderQ();
+  document.getElementById("quiz-reset").addEventListener("click", function(){ renderQ(); document.getElementById("quiz").scrollIntoView(); });
+
+  // чек-лист
+  var CK = "sound-check-v1", st = {};
+  try { st = JSON.parse(localStorage.getItem(CK) || "{}") || {}; } catch(e){ st = {}; }
+  document.querySelectorAll(".check input").forEach(function(box){ if(st[box.id]) box.checked = true; box.addEventListener("change", function(){ st[box.id] = box.checked; try { localStorage.setItem(CK, JSON.stringify(st)); } catch(e){} }); });
+})();
+
+(function(){
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var ACC=(getComputedStyle(document.documentElement).getPropertyValue("--accent")||"").trim()||"#f26a2e";
+
+  // ---------- expression engine ----------
+  (function(){
+    var ex=document.getElementById("ex");if(!ex)return;
+    function tokenize(s){
+      var t=[],i=0,m;
+      while(i<s.length){
+        var ch=s[i];
+        if(ch==="\n"){t.push({t:";"});i++;continue}
+        if(/\s/.test(ch)){i++;continue}
+        if(ch==="/"&&s[i+1]==="/"){while(i<s.length&&s[i]!=="\n")i++;continue}
+        if((m=/^(\d+\.?\d*|\.\d+)(e[+-]?\d+)?/i.exec(s.slice(i)))){t.push({t:"n",v:parseFloat(m[0])});i+=m[0].length;continue}
+        if((m=/^[A-Za-z_$][\w$]*/.exec(s.slice(i)))){t.push({t:"id",v:m[0]});i+=m[0].length;continue}
+        if(ch==='"'||ch==="'"){var j=s.indexOf(ch,i+1);if(j<0)throw Error("Не закрыта кавычка");t.push({t:"s",v:s.slice(i+1,j)});i=j+1;continue}
+        if("()[],;=+-*/%.".indexOf(ch)>=0){t.push({t:ch});i++;continue}
+        throw Error("Непонятный символ «"+ch+"»");
+      }
+      return t;
+    }
+    function parse(src){
+      var T=tokenize(src),p=0;
+      var peek=function(){return T[p]||{t:"eof"}},eat=function(k){var x=peek();if(x.t!==k)throw Error(k==="eof"?"Лишний символ «"+(x.v!=null?x.v:x.t)+"»":"Ожидается «"+k+"»");p++;return x};
+      function primary(){
+        var x=peek();
+        if(x.t==="n"){p++;return{k:"n",v:x.v}}
+        if(x.t==="s"){p++;return{k:"n",v:x.v}}
+        if(x.t==="id"){p++;return{k:"id",v:x.v}}
+        if(x.t==="("){p++;var e=expr();eat(")");return e}
+        if(x.t==="["){p++;var items=[];if(peek().t!=="]"){items.push(expr());while(peek().t===","){p++;items.push(expr())}}eat("]");return{k:"arr",v:items}}
+        throw Error(x.t==="eof"?"Выражение оборвалось":"Неожиданное «"+(x.v!=null?x.v:x.t)+"»");
+      }
+      function postfix(){var e=primary();for(;;){var x=peek();
+        if(x.t==="("){p++;var a=[];if(peek().t!==")"){a.push(expr());while(peek().t===","){p++;a.push(expr())}}eat(")");e={k:"call",f:e,a:a}}
+        else if(x.t==="."){p++;e={k:"mem",o:e,n:eat("id").v}}
+        else if(x.t==="["){p++;var ix=expr();eat("]");e={k:"idx",o:e,i:ix}}
+        else return e}}
+      function unary(){var x=peek();if(x.t==="-"){p++;return{k:"neg",e:unary()}}if(x.t==="+"){p++;return unary()}return postfix()}
+      function term(){var e=unary();while(/^[*\/%]$/.test(peek().t)){var o=T[p++].t;e={k:"bin",o:o,a:e,b:unary()}}return e}
+      function expr(){var e=term();while(peek().t==="+"||peek().t==="-"){var o=T[p++].t;e={k:"bin",o:o,a:e,b:term()}}return e}
+      var st=[];
+      while(peek().t!=="eof"){
+        if(peek().t===";"){p++;continue}
+        var x=peek();
+        if(x.t==="id"&&/^(var|let|const)$/.test(x.v)){p++;x=peek()}
+        if(x.t==="id"&&T[p+1]&&T[p+1].t==="="){p+=2;st.push({k:"set",n:x.v,e:expr()})}
+        else st.push({k:"ex",e:expr()});
+        if(peek().t!==";"&&peek().t!=="eof")eat(";");
+      }
+      if(!st.length||st[st.length-1].k!=="ex")throw Error("Последняя строка должна вернуть значение");
+      return st;
+    }
+    var isA=Array.isArray;
+    function bin(o,a,b){
+      if(isA(a)||isA(b)){var A=isA(a)?a:null,B=isA(b)?b:null,n=Math.max(A?A.length:0,B?B.length:0),r=[];
+        for(var i=0;i<n;i++){var x=A?(A[i]||0):a,y=B?(B[i]||0):b;r.push(bin(o,x,y))}return r}
+      if(typeof a!=="number"||typeof b!=="number")throw Error("Нельзя посчитать «"+a+" "+o+" "+b+"»");
+      return o==="+"?a+b:o==="-"?a-b:o==="*"?a*b:o==="/"?a/b:a%b;
+    }
+    function ev(n,env){
+      switch(n.k){
+        case "n":return n.v;
+        case "id":if(!(n.v in env))throw Error("Не знаю «"+n.v+"»");return env[n.v];
+        case "arr":return n.v.map(function(x){return ev(x,env)});
+        case "neg":var v=ev(n.e,env);return isA(v)?v.map(function(q){return -q}):-v;
+        case "bin":return bin(n.o,ev(n.a,env),ev(n.b,env));
+        case "mem":var o=ev(n.o,env);if(o==null||!(n.n in Object(o)))throw Error("Нет свойства «"+n.n+"»");return o[n.n];
+        case "idx":var a=ev(n.o,env);return a[ev(n.i,env)];
+        case "call":var f=ev(n.f,env);if(typeof f!=="function")throw Error("Это не функция");return f.apply(null,n.a.map(function(x){return ev(x,env)}));
+      }
+    }
+    // noise
+    var hash=function(i){var x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)};
+    var noise=function(x){var i=Math.floor(x),f=x-i,u=f*f*(3-2*f);return (hash(i)*(1-u)+hash(i+1)*u)*2-1};
+    var PROPS={
+      position:{base:function(i,n){return [n>1?160+160*i:480,160]},k0:function(i,n){return [n>1?160+160*i:480,90]},k1:function(i,n){return [n>1?160+160*i:480,230]},arr:2},
+      rotation:{base:function(){return 0},k0:function(){return 0},k1:function(){return 90},arr:0},
+      scale:{base:function(){return [100,100]},k0:function(){return [60,60]},k1:function(){return [130,130]},arr:2},
+      opacity:{base:function(){return 100},k0:function(){return 0},k1:function(){return 100},arr:0}
+    };
+    var st={prop:"position",keys:false,many:true,ast:null,err:null};
+    var lerp=function(a,b,u){return isA(a)?a.map(function(x,i){return x+(b[i]-x)*u}):a+(b-a)*u};
+    var keyVal=function(P,i,n,t){if(!st.keys)return P.base(i,n);var u=Math.max(0,Math.min(1,t));u=u*u*(3-2*u);return lerp(P.k0(i,n),P.k1(i,n),u)};
+    var math={};Object.getOwnPropertyNames(Math).forEach(function(k){math[k]=Math[k]});
+    var lin=function(t,a,b,c,d,easef){if(arguments.length===3){c=a;d=b;a=0;b=1}var u=(t-a)/(b-a);u=Math.max(0,Math.min(1,u));if(easef)u=u*u*(3-2*u);return lerp(c,d,u)};
+    var evalLayer=function(i,n,t){
+      var P=PROPS[st.prop],val=keyVal(P,i,n,t),env={
+        value:val,time:t,index:i+1,Math:math,
+        wiggle:function(f,a){return isA(val)?val.map(function(x,d){return x+noise(t*f+i*17.3+d*91.7)*a}):val+noise(t*f+i*17.3)*a},
+        loopOut:function(type){if(!st.keys)return val;if(t<=1)return val;var ph=t%1;if(String(type||"cycle").toLowerCase()==="pingpong"&&Math.floor(t)%2===1)ph=1-ph;return keyVal(P,i,n,ph)},
+        valueAtTime:function(tt){return keyVal(P,i,n,tt)},
+        linear:function(){return lin.apply(null,arguments)},
+        ease:function(x,a,b,c,d){return arguments.length===3?lin(x,0,1,a,b,true):lin(x,a,b,c,d,true)},
+        clamp:function(v,a,b){return isA(v)?v.map(function(x,k){return Math.min(isA(b)?b[k]:b,Math.max(isA(a)?a[k]:a,x))}):Math.min(b,Math.max(a,v))},
+        thisComp:{width:960,height:320,frameDuration:1/24}
+      };
+      var r;for(var s=0;s<st.ast.length;s++){var S=st.ast[s];if(S.k==="set")env[S.n]=ev(S.e,env);else r=ev(S.e,env)}
+      if(P.arr){if(!isA(r))throw Error("Для "+st.prop+" нужен массив ["+(P.arr===2?"x, y":"")+"], а получилось число");r=r.slice(0,2);if(r.length<2||r.some(function(x){return typeof x!=="number"||isNaN(x)}))throw Error("В массиве должно быть два числа")}
+      else{if(isA(r))throw Error("Для "+st.prop+" нужно одно число, а получился массив");if(typeof r!=="number"||isNaN(r))throw Error("Результат не число")}
+      return r;
+    };
+    var cv=ex.querySelector(".ex-cv"),c=cv.getContext("2d"),W=cv.width,H=cv.height,ta=ex.querySelector("[data-code]"),out=ex.querySelector("[data-out]");
+    var compile=function(){try{st.ast=parse(ta.value);st.err=null}catch(e){st.ast=null;st.err=e.message}};
+    var fmt=function(v){return isA(v)?"["+v.map(function(x){return Math.round(x*10)/10}).join(", ")+"]":String(Math.round(v*10)/10)};
+    var t0=performance.now();
+    var frame=function(now){
+      var t=((now-t0)/1000)%8;
+      c.fillStyle=getComputedStyle(cv).backgroundColor||"#1a1a1a";c.clearRect(0,0,W,H);
+      c.strokeStyle="rgba(255,255,255,.06)";c.lineWidth=1;for(var gx=0;gx<W;gx+=40){c.beginPath();c.moveTo(gx,0);c.lineTo(gx,H);c.stroke()}for(var gy=0;gy<H;gy+=40){c.beginPath();c.moveTo(0,gy);c.lineTo(W,gy);c.stroke()}
+      var n=st.many?5:1,err=st.err,first=null;
+      for(var i=0;i<n;i++){
+        var P=PROPS[st.prop],pos=PROPS.position.base(i,n),rot=0,sc=[100,100],op=100,v=null;
+        if(!err&&st.ast){try{v=evalLayer(i,n,t)}catch(e){err=e.message}}
+        if(err)v=keyVal(P,i,n,t);
+        if(st.prop==="position")pos=v;else if(st.prop==="rotation")rot=v;else if(st.prop==="scale")sc=v;else op=v;
+        if(i===0)first=v;
+        var b=PROPS.position.base(i,n);c.strokeStyle="rgba(255,255,255,.25)";c.beginPath();c.moveTo(b[0]-6,b[1]);c.lineTo(b[0]+6,b[1]);c.moveTo(b[0],b[1]-6);c.lineTo(b[0],b[1]+6);c.stroke();
+        c.save();c.translate(pos[0],pos[1]);c.rotate(rot*Math.PI/180);c.scale(sc[0]/100,sc[1]/100);c.globalAlpha=Math.max(0,Math.min(1,op/100));
+        c.fillStyle=ACC;c.fillRect(-30,-30,60,60);c.fillStyle="#111";c.font="600 18px Onest, sans-serif";c.textAlign="center";c.textBaseline="middle";c.fillText(i+1,0,1);c.restore();
+      }
+      ta.classList.toggle("err",!!err);out.classList.toggle("err",!!err);
+      out.textContent=err?"Ошибка: "+err:"time "+t.toFixed(2)+" · "+st.prop+" слоя 1 = "+fmt(first);
+      if(!reduce)requestAnimationFrame(frame);
+    };
+    var PRE=[
+      ["wiggle","position",false,"wiggle(2, 30)"],
+      ["time","rotation",false,"time * 90"],
+      ["value + sin","position",false,"value + [0, Math.sin(time * 2) * 40]"],
+      ["loopOut","position",true,'loopOut("cycle")'],
+      ["pingpong","position",true,'loopOut("pingpong")'],
+      ["волна по index","position",false,"value + [0, Math.sin((time - index * 0.15) * 3) * 60]"],
+      ["мерцание","opacity",false,"wiggle(8, 40)"],
+      ["пульс","scale",false,"s = 100 + Math.sin(time * 4) * 15;\n[s, s]"],
+      ["linear","opacity",false,"linear(Math.sin(time * 2), -1, 1, 10, 100)"]
+    ];
+    var pre=ex.querySelector(".ex-pre");
+    PRE.forEach(function(p,i){var b=document.createElement("button");b.type="button";b.textContent=p[0];b.dataset.pre=i;pre.appendChild(b)});
+    var setProp=function(pr){st.prop=pr;ex.querySelectorAll("[data-prop]").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.prop===pr)})};
+    var apply=function(i){var p=PRE[i];setProp(p[1]);st.keys=p[2];ex.querySelector("[data-keys]").checked=p[2];ta.value=p[3];compile();t0=performance.now();
+      pre.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.pre==i)});if(reduce)frame(performance.now())};
+    ex.addEventListener("click",function(e){var b=e.target.closest("[data-pre],[data-prop]");if(!b)return;if(b.dataset.pre!=null)apply(+b.dataset.pre);else{setProp(b.dataset.prop);compile();if(reduce)frame(performance.now())}});
+    ex.addEventListener("input",function(e){
+      if(e.target===ta){compile();pre.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed","false")})}
+      if(e.target.hasAttribute("data-keys")){st.keys=e.target.checked;t0=performance.now()}
+      if(e.target.hasAttribute("data-many"))st.many=e.target.checked;
+      if(reduce)frame(performance.now());
+    });
+    apply(0);
+    if(!reduce)requestAnimationFrame(frame);
+  })();
+
+  // ---------- hotkeys ----------
+  (function(){
+    var hk=document.getElementById("hk");if(!hk)return;
+    var Q=[["Открыть Position","p","P"],["Открыть Scale","s","S"],["Открыть Rotation","r","R"],["Открыть Opacity","t","T"],["Открыть Anchor Point","a","A"],["Показать анимированные параметры","u","U"],["Selection Tool","v","V"],["Shape Tool, фигуры","q","Q"],["Pen Tool, перо","g","G"],["Следующий ключ","k","K"],["Предыдущий ключ","j","J"],["Начало Work Area","b","B"],["Конец Work Area","n","N"],["Easy Ease","f9","F9"],["Easy Ease In","shift+f9","Shift + F9"],["Дублировать слой","ctrl+d","Ctrl/Cmd + D"],["Разрезать слой","ctrl+shift+d","Ctrl/Cmd + Shift + D"],["Pre-compose","ctrl+shift+c","Ctrl/Cmd + Shift + C"],["Настройки композиции","ctrl+k","Ctrl/Cmd + K"],["Новый Solid","ctrl+y","Ctrl/Cmd + Y"],["Graph Editor","shift+f3","Shift + F3"],["Render Queue","ctrl+m","Ctrl/Cmd + M"],["Обрезать начало слоя до playhead","alt+[","Alt/Option + ["],["Перенести начало слоя к playhead","[","["]];
+    var order=Q.map(function(_,i){return i}).sort(function(){return Math.random()-.5}),pos=0,ok=0,tot=0,done=false;
+    var q=hk.querySelector("[data-q]"),a=hk.querySelector("[data-a]"),sc=hk.querySelector("[data-score]");
+    var show=function(){var it=Q[order[pos%order.length]];q.textContent=it[0];a.textContent="";a.className="hk-a";done=false};
+    var next=function(){pos++;show()};
+    hk.addEventListener("keydown",function(e){
+      if(["Shift","Control","Alt","Meta","Tab"].indexOf(e.key)>=0)return;
+      var k=e.key.toLowerCase();if(e.code&&/^Key[A-Z]$/.test(e.code))k=e.code.slice(3).toLowerCase();if(e.code==="BracketLeft")k="[";if(e.code==="BracketRight")k="]";
+      var combo=(e.ctrlKey||e.metaKey?"ctrl+":"")+(e.shiftKey&&k.length>1||e.shiftKey&&/[a-z]/.test(k)?"shift+":"")+(e.altKey?"alt+":"")+k;
+      e.preventDefault();if(done)return;
+      var it=Q[order[pos%order.length]];tot++;
+      if(combo===it[1]){ok++;done=true;a.textContent="✓ "+it[2];a.className="hk-a ok";setTimeout(next,700)}
+      else{a.textContent="Нет, это "+combo.toUpperCase()+". Попробуй ещё";a.className="hk-a no"}
+      sc.textContent=ok+" из "+tot;
+    });
+    hk.querySelector("[data-show]").addEventListener("click",function(){var it=Q[order[pos%order.length]];a.textContent=it[2];a.className="hk-a";done=true;hk.focus()});
+    hk.querySelector("[data-next]").addEventListener("click",function(){next();hk.focus()});
+    show();
+  })();
+})();
+
+</script>
+</body>
+</html>

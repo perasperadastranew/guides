@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Дипломный проект и портфолио</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-слайды на чуть более светлом поле, как в остальных методичках школы. Каждый урок собран по одному шаблону: идея, суть, сравнение, инструмент, задание. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e;
+  --line-e:#6a6a6e; --line-m:#47474b; --line-l:#303033;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em;margin-top:14px}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.mono,.corner,th,.kind,.cap,.slot,.lvl,.pair i,.say i,.task i,.q .n,.bars i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+/* светлые панели: уроки чередуются тёмный / светлый, чтобы длинная страница делилась на главы */
+section.light{
+  color-scheme:light;
+  --panel:#f3f3f1; --card:#ffffff; --stroke:#dededa; --well:#e8e8e5;
+  --ink:#121212; --dim:#5c5c59; --faint:#7d7d79;
+  --accent:#d2571f; --accent-ink:#ffffff;
+  --good:#1e9b45; --bad:#d9263a;
+  --line-e:#85857f; --line-m:#b0afa9; --line-l:#d4d3ce;
+  color:var(--dim);
+}
+
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-top:10px}
+nav a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 12px 14px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.2;display:flex;flex-direction:column;gap:22px;min-height:104px;justify-content:space-between}
+nav a::before{content:attr(data-n);font-family:var(--mono);font-size:12px;color:var(--dim);background:#262626;border-radius:6px;padding:5px 7px;align-self:flex-start}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+
+/* сравнения плохо / хорошо */
+.pairs{display:flex;flex-direction:column;gap:8px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+.pair small,.why{font-size:14px;line-height:1.4}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch}
+.why b{font-weight:400}
+
+/* воронка */
+.funnel{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.funnel a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;text-decoration:none}
+.funnel a:hover,.funnel a:focus-visible{border-color:var(--accent);outline:none}
+.funnel b{font-size:17px;font-weight:400}
+.funnel small{font-size:13px;line-height:1.3;color:var(--dim)}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+td .lvl{color:var(--accent);display:block;margin-bottom:3px}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul,.box ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+.bars{display:flex;flex-direction:column;gap:10px}
+.bars .row{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:14px;align-items:center}
+.bars .row span{color:var(--ink);font-size:16px;line-height:1.2}
+.bars .track{display:flex;align-items:center;gap:10px;min-width:0}
+.bars .bar{height:34px;border-radius:8px;background:var(--well);min-width:6px}
+.bars .row.on .bar{background:var(--accent)}
+.bars b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+dl{margin:0;display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);border-top:1px solid var(--stroke)}
+dt,dd{margin:0;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:16px}
+dt{color:var(--ink);padding-right:14px}
+
+/* готовая фраза */
+.say{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.say i{color:var(--accent)}
+.say span{color:var(--ink);font-size:17px;line-height:1.4;max-width:62ch}
+.says{display:flex;flex-direction:column;gap:8px}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.45;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* задание в конце урока */
+.task{border:1px solid var(--accent);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+.slot{border:1px dashed var(--faint);border-radius:8px;padding:10px 12px;line-height:1.5}
+
+
+
+
+
+
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden}
+.fig .stage{aspect-ratio:5/4;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+.micro{aspect-ratio:16/10;pointer-events:none;--hairline-plate:var(--card);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.micro svg{overflow:visible}
+.micro svg g.lift{transition:transform .7s cubic-bezier(.32,.72,0,1)}
+.funnel a:hover .micro g.lift,.funnel a:focus-visible .micro g.lift,.head:hover .micro g.lift{transform:translateY(-14px)}
+@media (prefers-reduced-motion:reduce){.micro svg g.lift{transition:none}}
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.2}
+.figtext p{font-size:16px}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.head h2{flex:1 1 0;min-width:0}
+.head .micro{flex:0 0 190px;width:190px;margin-top:-34px;--hairline-plate:var(--panel)}
+@media (max-width:760px){.head .micro{flex-basis:112px;width:112px;margin-top:0}}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+/* квиз */
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.q .exp b{font-weight:400}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:18px 16px 24px}
+  .pair,.two,.three,.four{grid-template-columns:minmax(0,1fr)}
+  .bars .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl{grid-template-columns:minmax(0,1fr)} dt{border-bottom:0;padding-bottom:0}
+}
+
+/* воздух: больше полей у панелей, пауза и тонкая линия перед каждым подразделом */
+.wrap{gap:20px}
+header,section{padding:34px 44px 60px;gap:24px}
+.corner{margin-bottom:60px}
+section h3{margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.head{padding-bottom:14px}
+.quote{margin-bottom:10px}
+.figrow{padding:20px;gap:32px}
+.task{margin-top:44px;padding:26px}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:36px}
+  section h3{margin-top:26px;padding-top:22px}
+  .task{margin-top:28px;padding:18px}
+}
+
+/* композиция: контурный номер урока, подзаголовок сбоку у узких блоков и сверху у широких, иллюстрации то слева, то справа */
+.head{align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .micro{flex:0 0 300px;width:300px;margin-top:0}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+section .sub h3{margin:0;padding:0;border:0;position:sticky;top:20px}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+.figrow.flip{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
+.figrow.flip .fig{order:2}
+@media (max-width:760px){
+  .head{align-items:flex-end;gap:14px}
+  .head .micro{flex-basis:118px;width:118px}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:26px;padding-top:22px}
+  section .sub h3{position:static}
+  .figrow.flip{grid-template-columns:minmax(0,1fr)}
+  .figrow.flip .fig{order:0}
+}
+</style>
+
+<style>
+
+:root{--line2:#5b8def}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--dim);max-width:70ch}
+.kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--stroke);border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--ink);white-space:nowrap}
+.snd-note{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.4;max-width:640px;color:var(--ink)}
+.snd-note svg{width:20px;height:20px;flex:0 0 auto;color:var(--accent)}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--well);border:1px solid var(--stroke);border-radius:9px;padding:3px;gap:2px}
+.seg button{background:transparent;border:0;color:var(--dim);border-radius:7px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.demo-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.demo-top b{font-size:18px;font-weight:400;color:var(--ink)}
+.demo-bot{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.demo-bot .hint{flex:1 1 260px}
+.cv{display:block;width:100%;border-radius:8px;background:var(--panel)}
+.cv.st{aspect-ratio:16/7}
+.cv.trkc{height:100%;background:transparent;border-radius:0}
+.trk{width:100%}
+.cv.wave{height:90px}
+.cv.lv{height:150px}
+.cv.bars{height:110px}
+.cv.sfw{height:38px;background:transparent}
+.playb{background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:10px 18px;font-weight:500;font-size:15px;white-space:nowrap}
+.playb:hover{filter:brightness(1.08)}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.tg{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);cursor:pointer}
+.tg input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
+.sl{display:flex;flex-direction:column;gap:2px;min-width:170px;flex:1 1 170px;font-size:13px;color:var(--dim)}
+.sl span{display:flex;justify-content:space-between;gap:8px}
+.sl output{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.rng{width:100%;accent-color:var(--accent)}
+.layers{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sfx{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.sfc{text-align:left;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;color:var(--dim);font-weight:400;min-width:0;transition:border-color .15s}
+.sfc:hover,.sfc.on{border-color:var(--accent)}
+.sfc-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sfc-h b{font-size:17px;font-weight:400;color:var(--ink)}
+.sfc-p{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:10px;flex:0 0 auto}
+.sfc-r{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.sfc-w{font-size:14px;line-height:1.35;color:var(--ink)}
+.sfc-t{font-size:13px;line-height:1.35}
+.mini{background:var(--accent);color:var(--accent-ink);border:0;border-radius:50%;width:30px;height:30px;font-size:11px;padding:0}
+table.combo td:last-child{width:40px;text-align:right}
+.bpm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.bpm button{text-align:left;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;color:var(--dim);font-weight:400;font-size:14px}
+.bpm button b{font-family:var(--display);font-size:22px;font-weight:400;color:var(--ink)}
+.bpm button::before{content:"▶ Послушать";font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--accent)}
+.bpm button.on{border-color:var(--accent)} .bpm button.on::before{content:"■ Играет"}
+.lib{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:start}
+.lib-tree{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:13px;color:var(--ink);white-space:pre}
+.lib-tree .a{color:var(--accent)}
+.lib-t{display:flex;flex-direction:column;gap:10px}
+.chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;counter-reset:c}
+.chain>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative;min-width:0}
+.chain>div:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:14px;color:var(--accent);font-size:14px;z-index:1}
+.chain i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--accent)}
+.chain b{font-size:16px;font-weight:400;color:var(--ink)} .chain span{font-size:13px;line-height:1.35}
+.errs{display:flex;flex-wrap:wrap;gap:6px}
+.errs span{border:1px solid var(--bad);border-radius:999px;padding:6px 12px;font-size:14px;color:var(--ink)}
+@media (max-width:860px){.layers{grid-template-columns:repeat(2,minmax(0,1fr))}.chain{grid-template-columns:minmax(0,1fr)}.chain>div::after{display:none}.bpm{grid-template-columns:minmax(0,1fr)}.lib{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){.cv.st{aspect-ratio:16/10}}
+/* нейронка */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+.tpl table{min-width:820px;font-size:14px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+
+
+:root{--line2:#5b8def}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--dim);max-width:70ch}
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.qs{display:flex;flex-wrap:wrap;gap:6px}
+.qs span{border:1px solid var(--stroke);background:var(--card);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink)}
+.tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.tr button{text-align:left;background:var(--card);border:1px solid var(--stroke);color:var(--ink);border-radius:10px;padding:14px;font-weight:400;font-size:15px}
+.tr button.on{border-color:var(--accent)}
+.tr-out{background:var(--well);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;border-left:3px solid var(--accent)}
+.tr-out p{color:var(--ink);font-size:18px;line-height:1.35}
+.boards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.boards>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:4px;aspect-ratio:1;justify-content:flex-end;background-image:linear-gradient(var(--well) 1px,transparent 1px),linear-gradient(90deg,var(--well) 1px,transparent 1px);background-size:14px 14px}
+.boards b{font-size:16px;font-weight:400;color:var(--ink)} .boards span{font-size:12px;line-height:1.3}
+.levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.rf{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.rf label{display:flex;flex-direction:column;gap:6px;min-width:0}
+.rf label:nth-child(n+3){grid-column:span 1}
+.rf label:last-of-type{grid-column:1/-1}
+.rf input,.rf textarea{font:400 15px var(--body);background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:10px 12px;resize:vertical;width:100%}
+.rf input:focus,.rf textarea:focus{outline:none;border-color:var(--accent)}
+.rf-bot{grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+button.ghost{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px;font-weight:400}
+.look{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.look figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.look img{width:100%;height:auto;border-radius:10px;display:block;background:var(--well)}
+.look figcaption{font-size:13px;color:var(--faint)}
+.look-t{display:flex;flex-direction:column;gap:12px}
+.look-t>p{color:var(--ink);font-size:16px}
+ul.see{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+ul.see li{font-size:15px;padding-left:20px;position:relative}
+ul.see li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height:2px;background:var(--accent)}
+.flips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.flip{position:relative;min-height:150px;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:0;text-align:left;font-weight:400;color:var(--ink);font-size:18px;line-height:1.3;overflow:hidden}
+.flip span{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;gap:10px;transition:opacity .25s,transform .25s}
+.flip i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.f-a i{color:var(--bad)} .f-b i{color:var(--good)}
+.f-b{opacity:0;transform:translateY(10px)}
+.flip.on{border-color:var(--good)} .flip.on .f-a{opacity:0;transform:translateY(-10px)} .flip.on .f-b{opacity:1;transform:none}
+.flip::after{content:"нажми ↻";position:absolute;right:14px;bottom:12px;font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.06em}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.flow>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative}
+.flow>div:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:14px;color:var(--accent);z-index:1}
+.flow i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--accent)} .flow b{font-size:16px;font-weight:400;color:var(--ink)} .flow span{font-size:13px;line-height:1.35}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:14px;line-height:1.6;color:var(--ink);background:var(--well);border-radius:8px;padding:14px}
+.tpl pre em{font-style:normal;color:var(--accent)}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+@media (max-width:980px){.five{grid-template-columns:repeat(2,minmax(0,1fr))}.boards{grid-template-columns:repeat(3,minmax(0,1fr))}.levels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.tr,.flips{grid-template-columns:minmax(0,1fr)}.flow{grid-template-columns:minmax(0,1fr)}.flow>div::after{display:none}.look{grid-template-columns:minmax(0,1fr)}.rf{grid-template-columns:minmax(0,1fr)}.levels{grid-template-columns:minmax(0,1fr)}}
+/* нейронка */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+.tpl table{min-width:820px;font-size:14px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+
+.tabs-b{display:flex;flex-wrap:wrap;gap:6px}
+.tabs-b button{background:var(--card);border:1px solid var(--stroke);color:var(--dim);border-radius:999px;padding:7px 13px;font-weight:400;font-size:14px}
+.tabs-b button[aria-selected="true"]{border-color:var(--ink);color:var(--ink)}
+.tab-p[hidden]{display:none}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.kv>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.kv b{font-size:15px;font-weight:400;color:var(--ink)} .kv span{font-size:13px;line-height:1.35}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+.fr{display:block;width:100%;height:auto;border-radius:8px}
+.fr .bg{fill:var(--well)} .fr .i{fill:var(--ink)} .fr .a{fill:var(--accent)} .fr .d{fill:var(--dim)} .fr .f{fill:var(--faint)} .fr .p{fill:var(--panel)}
+.fr .s{fill:none;stroke:var(--ink);stroke-width:1.5} .fr .sa{fill:none;stroke:var(--accent);stroke-width:1.5} .fr .sd{fill:none;stroke:var(--faint);stroke-width:1}
+.fr text{font-family:var(--display)} .fr text.mn{font-family:var(--mono);letter-spacing:.04em}
+.schemes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.schemes figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.schemes figcaption{display:flex;flex-direction:column;gap:4px;padding:0 4px 4px}
+.schemes figcaption b{font-size:16px;font-weight:400;color:var(--ink)} .schemes figcaption span{font-size:13px;line-height:1.38}
+.schemes .kind{color:var(--accent)}
+figure>img{max-width:100%;height:auto}
+figure.pic{margin:0;max-width:480px;display:flex;flex-direction:column;gap:8px}
+figure.pic>img{display:block;width:100%;border-radius:8px;background:#f3efe7}
+figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+</style>
+<style>
+.th-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.th-list button{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:12px;text-align:left;color:var(--dim);font:15px var(--body);cursor:pointer;display:flex;flex-direction:column;gap:4px}
+.th-list button i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--faint)}
+.th-list button[aria-selected="true"]{border-color:var(--accent);color:var(--ink)}
+.th-list button[aria-selected="true"] i{color:var(--accent)}
+.th-card{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:8px}
+.th-card>div{background:var(--panel);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.th-card p{margin:0;font-size:15px}
+.th-card b{font-weight:400;color:var(--ink);font-size:18px}
+.th-card ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.th-arc{display:flex;flex-wrap:wrap;gap:6px}
+.th-arc span{background:var(--well);border-radius:999px;padding:4px 10px;font-size:13px;color:var(--ink)}
+.pn-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:12px}
+.pn-l{display:flex;flex-direction:column;gap:8px}
+.pn-l input{background:#0d0d0d;color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:10px 12px;font:16px var(--body);color-scheme:dark}
+.pn-plan{display:flex;flex-direction:column;gap:6px}
+.pn-row{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;align-items:center}
+.pn-row .mono{text-transform:none}
+.pn-bar{position:relative;height:34px;background:var(--panel);border-radius:8px;overflow:hidden}
+.pn-bar i{position:absolute;top:0;bottom:0;background:var(--accent);opacity:.85;border-radius:6px}
+.pn-bar span{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--ink);white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+@media (max-width:760px){.th-list{grid-template-columns:repeat(2,minmax(0,1fr))}.th-card,.pn-top{grid-template-columns:minmax(0,1fr)}.pn-row{grid-template-columns:minmax(0,1fr);gap:4px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+ГАЙД ДЛЯ СТУДЕНТОВ</span><span>MISSION TO MOTION
+ФИНАЛ КУРСА</span></div>
+  <h1>Дипломный проект и портфолио</h1>
+  <p class="lead"><b>Диплом — законченный ролик, который объединяет всё, чему ты научился:</b> концепцию, сценарий, раскадровку, монтаж, типографику, звук и моушн-графику. Темы на выбор, требования, наш рабочий пайплайн, план по дням и упаковка кейса в портфолио.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav aria-label="Разделы">
+    <a href="#u1" data-n="01">Темы</a><a href="#u2" data-n="02">Требования</a><a href="#u3" data-n="03">Пайплайн</a><a href="#u4" data-n="04">План по дням</a><a href="#u5" data-n="05">Кейс и шоурил</a><a href="#u6" data-n="06">Сдача</a><a href="#quiz" data-n="07">Квиз</a>
+  </nav>
+</header>
+
+<section id="u1">
+<div class="corner"><span>PERASPERADASTRA
+ДИПЛОМ</span><span>ЧАСТЬ 01
+ТЕМЫ</span></div>
+  <div class="head"><h2>Темы на выбор</h2></div>
+  <p class="quote">Выбери тему — и преврати её в законченный ролик с собственной визуальной и эмоциональной концепцией.</p>
+  <div class="demo" id="th">
+    <div class="th-list" role="tablist" aria-label="Тема"></div>
+    <div class="th-card" data-card></div>
+  </div>
+</section>
+
+<section id="u2">
+<div class="corner"><span>PERASPERADASTRA
+ДИПЛОМ</span><span>ЧАСТЬ 02
+ТРЕБОВАНИЯ</span></div>
+  <div class="head"><h2>Требования</h2></div>
+  <p class="quote">Ролик — это половина диплома. Вторая половина — как ты покажешь процесс.</p>
+  <div class="kv">
+    <div><b>Длительность</b><span>Короткие форматы 30–60 секунд, промо и интервью — до 2 минут. Точную длину согласуй с куратором.</span></div>
+    <div><b>Формат</b><span>16×9 или 9×16 — под площадку, где ролик будет жить.</span></div>
+    <div><b>Сцены</b><span>Минимум 3 сцены и 1 переход через движение.</span></div>
+    <div><b>Звук</b><span>Синхронизация со звуком или речью, финальный микс.</span></div>
+    <div><b>Экспорт</b><span>Под нужную платформу: H.264, разрешение и fps композиции.</span></div>
+    <div><b>Кейс</b><span>Концепция, раскадровка, референсы, итоговый ролик.</span></div>
+  </div>
+  <h3>Что сдаёшь</h3>
+  <div class="three">
+    <div class="box"><span class="kind">Ролик</span><p>Эксплейнер, интервью, промо или нарезка — финальный .mp4.</p></div>
+    <div class="box"><span class="kind">Кейс</span><p>1–2 слайда процесса: идея → раскадровка → результат.</p></div>
+    <div class="box"><span class="kind">Питч</span><p>Мини-презентация проекта на 1 минуту.</p></div>
+  </div>
+</section>
+
+<section id="u3">
+<div class="corner"><span>PERASPERADASTRA
+ДИПЛОМ</span><span>ЧАСТЬ 03
+ПАЙПЛАЙН</span></div>
+  <div class="head"><h2>Пайплайн: как мы делаем ролики</h2></div>
+  <p class="quote">Генерировать можно бесконечно, если нет чётких критериев результата.</p>
+  <p>Так в студии собирается ролик до 30 секунд примерно за неделю. Для диплома масштабируй под свою длину.</p>
+  <ol class="steps">
+    <li><div><div class="t">Концепция</div><div class="d">Несколько акцентных образов, которые войдут в сценарий и раскадровку. Сразу пойми настроение — от него зависит музыка.</div></div></li>
+    <li><div><div class="t">Сценарий-манифест</div><div class="d">Яркие акценты, которые потом выделишь в раскадровке и монтаже. Заложи смысловые паузы под акцентную анимацию или слово.</div></div></li>
+    <li><div><div class="t">Раскадровка: сюжеты и акценты</div><div class="d">Разбей на сюжеты, отметь, где фокус внимания, а где кадры поддерживающие. Результат — шаблон с фразой на каждый сюжет.</div></div></li>
+    <li><div><div class="t">Раскадровка: текст одним шрифтом</div><div class="d">Перенеси текст на сюжеты одним шрифтом и посмотри, что интересно сверстать. Отсюда рождаются типографические приёмы.</div></div></li>
+    <li><div><div class="t">Раскадровка: метафоры</div><div class="d">Под каждым сюжетом — визуальные метафоры, вырезки из референсов.</div></div></li>
+    <li><div><div class="t">A-roll, B-roll и крупности</div><div class="d">Распредели типы кадров. Используй все планы, не повторяй одну крупность подряд.</div></div></li>
+    <li><div><div class="t">Референсы под сюжет</div><div class="d">Отдельно на композицию, анимацию и генерацию. Подстраивай референсы под свой стиль и ритм, а не наоборот.</div></div></li>
+    <li><div><div class="t">Генерация и доработка</div><div class="d">Графика в Higgsfield по референсам, потом исправление артефактов в Nano Banana: пластиковое, размытое или непохожее лицо.</div></div></li>
+    <li><div><div class="t">Дизайн макета</div><div class="d">Финальная графика и типографические приёмы в кадрах.</div></div></li>
+    <li><div><div class="t">Анимация и проверка на таймлайне</div><div class="d">Отдельные сюжеты оживляешь в Kling, собираешь в After Effects или Premiere и проверяешь динамику всего ролика.</div></div></li>
+  </ol>
+  <h3>Типы кадров</h3>
+  <div class="three">
+    <div class="box"><span class="kind">A-roll</span><p>Герой говорит в кадре.</p></div>
+    <div class="box"><span class="kind">B-roll</span><p>Кадр с героем или объектом с акцентом на сюжет.</p></div>
+    <div class="box"><span class="kind">Шаблон-ролл</span><p>Фирменные кадры и приёмы, которые переиспользуешь из ролика в ролик.</p></div>
+  </div>
+  <h3>Атрибуты стиля, которые держат динамику</h3>
+  <div class="three">
+    <div class="box"><span class="kind">Все планы</span><p>Крупный, средний и дальний с героем, можно в похожих локациях.</p></div>
+    <div class="box"><span class="kind">Анимация типографики</span><p>Разбавляет визуал между генерациями.</p></div>
+    <div class="box"><span class="kind">Акцент на слове</span><p>Несколько кадров с одним словом и искажением или деформацией.</p></div>
+  </div>
+  <h3>Советы и ошибки</h3>
+  <dl>
+    <dt>Не генерируй сразу в 4K</dt><dd>Это вдвое дольше. Пробуй в 1K или 2K, финал — в высоком разрешении.</dd>
+    <dt>Долго генерирует</dt><dd>Попробуй другую модель.</dd>
+    <dt>Перебор дизайна до основы</dt><dd>Шрифты и стиль, пока не готова раскадровка, съедают дни. Раздели в шаблоне этап смыслов и этап дизайна.</dd>
+    <dt>Весь текст или акценты</dt><dd>Визуализируй главные акценты, остальное — субтитрами или голосом. Ищи баланс читаемости.</dd>
+    <dt>Генерация из раскадровки как финал</dt><dd>Её почти всегда нужно дорабатывать. Спроси себя, какую эмоцию нужно показать, и ищи референсы под неё.</dd>
+  </dl>
+</section>
+
+<section id="u4">
+<div class="corner"><span>PERASPERADASTRA
+ДИПЛОМ</span><span>ЧАСТЬ 04
+ПЛАН</span></div>
+  <div class="head"><h2>План по дням</h2></div>
+  <p class="quote">Большая задача без дедлайнов по этапам всегда съезжает в последнюю ночь.</p>
+  <div class="demo" id="pn">
+    <div class="pn-top">
+      <label class="pn-l"><span class="mono">Дата сдачи</span><input type="date" data-end></label>
+      <div class="pn-l"><span class="mono">Сколько дней есть</span><div class="seg" role="group" aria-label="Дни"><button type="button" data-d="7">7</button><button type="button" data-d="14" aria-pressed="true">14</button><button type="button" data-d="21">21</button><button type="button" data-d="30">30</button></div></div>
+    </div>
+    <div class="pn-plan" data-plan></div>
+    <div class="demo-bot"><button class="copy" type="button" data-copy="pn-text">Скопировать план</button><span class="hint">Распределение — ориентир. Самое длинное — раскадровка и анимация, не ужимай их ради генераций.</span></div>
+    <pre id="pn-text" hidden></pre>
+  </div>
+</section>
+
+<section id="u5">
+<div class="corner"><span>PERASPERADASTRA
+ДИПЛОМ</span><span>ЧАСТЬ 05
+КЕЙС И ШОУРИЛ</span></div>
+  <div class="head"><h2>Кейс и шоурил</h2></div>
+  <p class="quote">Заказчик покупает не ролик, а то, как ты думаешь.</p>
+  <h3>Как упаковать кейс</h3>
+  <ol class="steps">
+    <li><div><div class="t">Задача и идея</div><div class="d">Одна строка о задаче и главная мысль ролика.</div></div></li>
+    <li><div><div class="t">Процесс</div><div class="d">Мудборд, раскадровка, 2–3 кадра «до и после» генерации или дизайна.</div></div></li>
+    <li><div><div class="t">Результат</div><div class="d">Ролик или превью с ссылкой, финальные кадры.</div></div></li>
+    <li><div><div class="t">Питч на минуту</div><div class="d">Что за ролик, для кого, какая идея, какое решение тобой гордишься.</div></div></li>
+  </ol>
+  <h3>Что собрать в шоурил</h3>
+  <div class="kv">
+    <div><b>Разные стили</b><span>Вектор, градиент, текстуры, коллаж</span></div>
+    <div><b>Реальный футаж</b><span>Трекинг, композитинг, графика в кадре</span></div>
+    <div><b>Иконки и акценты</b><span>Короткие точные анимации</span></div>
+    <div><b>UI</b><span>Сценарий интерфейса или SaaS-фрагмент</span></div>
+    <div><b>Абстракция и шейпы</b><span>Чистая моушн-графика</span></div>
+    <div><b>Параллакс и 3D-камера</b><span>Пространство из плоских слоёв</span></div>
+    <div><b>Кинетическая типографика</b><span>Текст под звук</span></div>
+    <div><b>Переходы</b><span>Склейки между работами на монтаже</span></div>
+  </div>
+  <p>Шоурил короткий: 30–60 секунд, лучшее в первые пять, под один трек. Где публиковать и как вести соцсети — в методичке «Личный бренд дизайнера».</p>
+</section>
+
+<section id="u6">
+<div class="corner"><span>PERASPERADASTRA
+ДИПЛОМ</span><span>ЧАСТЬ 06
+СДАЧА</span></div>
+  <div class="head"><h2>Сдача</h2></div>
+  <h3>В паре с нейронкой</h3>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Тема, формат, длительность, концепция и что уже готово.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Нейронка помогает думать, а не делает диплом за тебя.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Это твой диплом и твой кейс.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Промпт · ревью</span><b>Ревью диплома перед сдачей</b>
+<pre id="ai-1">Я сдаю диплом по моушн-дизайну. Тема: <em>[тема]</em>. Концепция: <em>[1–2 предложения]</em>. Длительность и формат: <em>[…]</em>.
+Вот раскадровка по сценам с таймингом: <em>[сцена — что в кадре — склейка — звук]</em>.
+Сыграй роль строгого арт-директора. Задавай вопросы по одному: где ролик теряет внимание, где не видно концепции, где нарушены требования (3 сцены, переход по движению, синхрон со звуком). Решения не предлагай.</pre>
+      <button class="copy" type="button" data-copy="ai-1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь, дорабатываешь и показываешь куратору.</p>
+    </div>
+    <div class="prompt"><span class="kind">Промпт · питч</span><b>Отрепетировать минутный питч</b>
+<pre id="ai-2">Вот мой питч диплома на минуту: <em>[текст]</em>.
+Задай мне 3 вопроса по одному, которые задал бы заказчик после такого питча. После моих ответов скажи, что из ответов стоит перенести в сам питч.</pre>
+      <button class="copy" type="button" data-copy="ai-2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> переписываешь питч и проговариваешь вслух с таймером.</p>
+    </div>
+  </div>
+  <div class="task"><i>Задание</i><b>Дипломный ролик</b><p>Выбери тему, собери концепцию, сценарий и раскадровку, согласуй с куратором. Сделай ролик по требованиям, оформи кейс из 1–2 слайдов и подготовь минутный питч. Сдай .mp4, кейс и ссылку на исходники.</p></div>
+</section>
+
+<section id="quiz">
+<div class="corner"><span>PERASPERADASTRA
+ДИПЛОМ</span><span>ПРОВЕРЬ СЕБЯ</span></div>
+  <h2>Квиз</h2>
+  <p>После ответа появится разбор и ссылка на часть гайда.</p>
+  <div class="quiz" id="quiz-list"></div>
+  <div class="score"><span class="big" id="quiz-score">0</span><span id="quiz-verdict"></span><button type="button" id="quiz-reset">Пройти заново</button></div>
+</section>
+
+<section id="check" data-key="diploma-check-v1">
+<div class="corner"><span>PERASPERADASTRA
+ДИПЛОМ</span><span>ЧЕК-ЛИСТ СДАЧИ</span></div>
+  <h2>Чек-лист сдачи</h2>
+  <p>Отметки сохраняются в этом браузере.</p>
+  <div class="check">
+    <label><input type="checkbox" id="c1"><span>Концепция в 1–2 предложениях, настроение и музыка определены</span></label>
+    <label><input type="checkbox" id="c2"><span>Сценарий и раскадровка согласованы с куратором</span></label>
+    <label><input type="checkbox" id="c3"><span>Минимум 3 сцены и переход через движение</span></label>
+    <label><input type="checkbox" id="c4"><span>Все крупности, одна и та же не повторяется подряд</span></label>
+    <label><input type="checkbox" id="c5"><span>Звук сведён, акценты попадают в музыку или речь</span></label>
+    <label><input type="checkbox" id="c6"><span>Экспорт под площадку проверен отдельно от программы</span></label>
+    <label><input type="checkbox" id="c7"><span>Кейс из 1–2 слайдов и минутный питч готовы</span></label>
+  </div>
+</section>
+
+<footer>Perasperadastra · Mission to Motion · дипломный проект</footer>
+</div>
+
+<script type="application/json" id="quiz-data">[
+ {"l":"Часть 02","h":"#u2","p":"Что входит в диплом кроме ролика?","o":["Только исходники","Кейс из 1–2 слайдов процесса и минутный питч","Отзыв куратора","Резюме"],"a":1,"e":"Заказчику важно видеть, как ты думаешь: идея → раскадровка → результат."},
+ {"l":"Часть 02","h":"#u2","p":"Какое минимальное требование к сценам?","o":["Одна сцена","Минимум 3 сцены и 1 переход через движение","10 сцен","Только прямые склейки"],"a":1,"e":"Плюс синхронизация со звуком или речью."},
+ {"l":"Часть 03","h":"#u3","p":"Зачем переносить текст на сюжеты одним шрифтом?","o":["Чтобы сэкономить на шрифтах","Чтобы увидеть, что интересно сверстать, до выбора дизайна","Так требует Higgsfield","Чтобы не было типографики"],"a":1,"e":"Смыслы и акценты сначала, дизайн потом."},
+ {"l":"Часть 03","h":"#u3","p":"Какое правило про крупности в пайплайне?","o":["Одна крупность на весь ролик","Все планы и не повторять одну крупность подряд","Только крупные планы","Неважно"],"a":1,"e":"Смена планов держит динамику."},
+ {"l":"Часть 03","h":"#u3","p":"Генерация выдала пластиковое или непохожее лицо. Что делать?","o":["Оставить","Исправить детали в Nano Banana перед анимацией","Сразу анимировать в Kling","Сделать 4K"],"a":1,"e":"Артефакты в исходном кадре усилятся в видео."},
+ {"l":"Часть 03","h":"#u3","p":"Частая ошибка на этапе раскадровки?","o":["Слишком мало сюжетов","Перебирать шрифты и дизайн, пока не готова основа","Подписывать референсы","Делать аниматик"],"a":1,"e":"Раздели этап смыслов и этап дизайна."},
+ {"l":"Часть 05","h":"#u5","p":"Какой шоурил работает лучше?","o":["5 минут всего подряд","30–60 секунд, лучшее в первые пять секунд","Только один стиль","Без музыки"],"a":1,"e":"Коротко, разнообразно, под один трек."}
+]
+</script>
+<script>
+(function(){
+  function el(t, c, x){ var n = document.createElement(t); if(c) n.className = c; if(x != null) n.textContent = x; return n; }
+  // раскладка разделов: номер части и подразделы «заголовок слева — содержимое справа»
+  var secs = document.querySelectorAll('section[id^="u"]');
+  for(var s = 0; s < secs.length; s++){
+    var sec = secs[s], head = sec.querySelector(".head"), h2 = head && head.querySelector("h2");
+    if(h2){ var left = el("div", "head-l"), num = el("div", "num", "0" + sec.id.slice(1)); num.setAttribute("aria-hidden", "true"); head.insertBefore(left, h2); left.appendChild(num); left.appendChild(h2); }
+    var kids = Array.prototype.slice.call(sec.children), cur = null;
+    kids.forEach(function(n){
+      if(n.tagName === "H3"){ cur = el("div", "sub"); var hd = el("div", "sub-h"), bd = el("div", "sub-b"); sec.insertBefore(cur, n); hd.appendChild(n); cur.appendChild(hd); cur.appendChild(bd); cur.body = bd; return; }
+      if(!cur) return;
+      if(n.classList.contains("task")){ cur = null; return; }
+      cur.body.appendChild(n);
+    });
+    var subs = sec.querySelectorAll(".sub");
+    for(var k = 0; k < subs.length; k++) if(subs[k].querySelector(".four,.three,.five,table,.levels,.rf,.look,.flips,.flow,.boards,.ai,.pair,.two,.tpl,.tr,.qs,.demo,.chain,.kv,.schemes,.tab-wrap,.layers,.bpm,.lib,.errs,.wide-x")) subs[k].classList.add("wide");
+  }
+
+  // копирование
+  document.querySelectorAll("button.copy").forEach(function(b){
+    b.addEventListener("click", function(){
+      var n = document.getElementById(b.getAttribute("data-copy")), t = n.textContent, o = b.textContent;
+      function done(){ b.textContent = "Скопировано"; setTimeout(function(){ b.textContent = o; }, 1600); }
+      function sel(){ if(n.hidden){ b.textContent = "Не удалось скопировать"; return; } var r = document.createRange(); r.selectNodeContents(n); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Выделено, нажми Ctrl+C"; }
+      try { navigator.clipboard.writeText(t).then(done, sel); } catch(e){ sel(); }
+    });
+  });
+
+
+  // вкладки
+  document.querySelectorAll("[data-tabs]").forEach(function(w){ var bs = w.querySelectorAll(".tabs-b button"), ps = w.querySelectorAll(".tab-p");
+    bs.forEach(function(b, i){ b.addEventListener("click", function(){ bs.forEach(function(x, j){ x.setAttribute("aria-selected", j === i ? "true" : "false"); ps[j].hidden = j !== i; }); }); }); });
+  // перевёртыши
+  document.querySelectorAll(".flip").forEach(function(b){ b.addEventListener("click", function(){ b.classList.toggle("on"); }); });
+  // квиз
+  var QD = document.getElementById("quiz-data"); if(!QD) return; var QUIZ = JSON.parse(QD.textContent);
+  var ql = document.getElementById("quiz-list"), scoreEl = document.getElementById("quiz-score"), verdict = document.getElementById("quiz-verdict"), answered = 0, right = 0;
+  function update(){ scoreEl.textContent = right + " / " + QUIZ.length; if(answered < QUIZ.length){ verdict.textContent = "Ответь на все вопросы, чтобы увидеть результат."; return; } verdict.textContent = right >= QUIZ.length - 1 ? "Отлично. Тема разобрана." : right >= Math.ceil(QUIZ.length * .6) ? "Хорошо. Перечитай части, где ошибся." : "Пройди гайд ещё раз и вернись к квизу."; }
+  function renderQ(){
+    ql.textContent = ""; answered = 0; right = 0;
+    QUIZ.forEach(function(q, i){
+      var card = el("div", "q"); card.appendChild(el("span", "n", "0" + (i + 1) + " · " + q.l)); card.appendChild(el("div", "p", q.p));
+      var opts = el("div", "opts"), exp = el("div", "exp"); exp.hidden = true;
+      q.o.forEach(function(t, j){ var b = el("button", null, t); b.type = "button"; b.addEventListener("click", function(){
+        var all = opts.querySelectorAll("button"); for(var k = 0; k < all.length; k++){ all[k].disabled = true; if(k === q.a) all[k].className = "right"; }
+        var ok = j === q.a; if(!ok) b.className = "wrong"; answered++; if(ok) right++;
+        exp.textContent = ""; exp.appendChild(el("b", null, ok ? "Верно. " : "Не совсем. ")); exp.appendChild(document.createTextNode(q.e + " ")); var a = el("a", null, "Открыть часть"); a.href = q.h; exp.appendChild(a); exp.hidden = false; update();
+      }); opts.appendChild(b); });
+      card.appendChild(opts); card.appendChild(exp); ql.appendChild(card);
+    }); update();
+  }
+  renderQ();
+  document.getElementById("quiz-reset").addEventListener("click", function(){ renderQ(); document.getElementById("quiz").scrollIntoView(); });
+
+  // чек-лист
+  var CK = "sound-check-v1", st = {};
+  try { st = JSON.parse(localStorage.getItem(CK) || "{}") || {}; } catch(e){ st = {}; }
+  document.querySelectorAll(".check input").forEach(function(box){ if(st[box.id]) box.checked = true; box.addEventListener("change", function(){ st[box.id] = box.checked; try { localStorage.setItem(CK, JSON.stringify(st)); } catch(e){} }); });
+})();
+
+(function(){
+  (function(){
+    var th=document.getElementById("th");if(!th)return;
+    var T=[
+      ["Нарезка из подкаста","Уровень 1","Передать характер спикеров и ритм разговора через типографику и графику.",["Работа с речью, интонацией, паузами","Текстовые акценты, реакции, эмодзи","Визуальные иллюстрации фраз, как у Vox и TED Shorts"],["Хук-цитата","Контекст","Мысль спикера","Иллюстрации фраз","Панчлайн"],"Динамичная нарезка, где каждое предложение сопровождается анимацией текста и графикой. Подробнее — методичка «Разговорное видео»."],
+      ["Документальное интервью","Уровень 1","Передать настроение и контекст героя.",["Монтаж по смыслу, плавные переходы","Титры, подложки, инфографика","Можно AI-озвучку и стоковые кадры"],["Кто герой","Его мир","Конфликт или вопрос","Мысль","Финальный образ"],"Интервью в духе «Portrait of a Designer»: герой рассказывает о профессии, на фоне — графика и сцены-метафоры."],
+      ["История компании","Уровень 2","Эксплейнер или промо-кейс, который пойдёт в портфолио.",["3D, шейпы, фото, лого, текстовые сцены","Начало: кто мы, проблема, миссия","Финал: результат, цифры, эмоция"],["Кто мы","Проблема","Процесс или продукт","Результат","Эмоция"],"Кейс-ролик в стиле Behance или Awwwards: визуал и звук рассказывают историю продукта."],
+      ["Ролик-совет","Уровень 2","Быстро и понятно объяснить 3–5 полезных идей.",["Быстрый темп, визуальные подсказки","Текстовые заголовки на каждый совет","Вертикаль или горизонталь"],["Хук-обещание","Совет 1","Совет 2–4","Самый сильный совет","Призыв"],"«5 советов начинающему дизайнеру» — лаконично, с анимацией и нарезкой примеров."],
+      ["Свободная тема","Уровень 2","Эксплейнер на тему, которая тебе близка: любимая вещь, персонаж, явление.",["Повествование как в наших лонгридах","Своя концепция и метафоры","Любой стиль из курса"],["Хук","Контекст","Развитие","Поворот","Вывод"],"Ролик-история про предмет или персонажа, где главная сила — идея и подача."],
+      ["Промо продукта","Уровень 3","Заинтересовать, показать ценность и атмосферу бренда.",["Сюжет: боль → решение → результат → призыв","Моушн-графика, 3D и звук на настроение","Существующий бренд или свой"],["Боль","Решение","Как работает","Результат","Призыв"],"Промо в духе Apple Event или Figma: минимализм, крупные тексты, движение, эмоция."]
+    ];
+    var L=th.querySelector(".th-list"),C=th.querySelector("[data-card]");
+    T.forEach(function(t,i){var b=document.createElement("button");b.type="button";b.setAttribute("role","tab");b.dataset.i=i;b.innerHTML="<i>"+t[1]+"</i>"+t[0];L.appendChild(b)});
+    var show=function(i){var t=T[i];L.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-selected",+b.dataset.i===i)});
+      C.innerHTML='<div><span class="mono">Цель</span><b>'+t[2]+'</b><span class="mono">Приёмы</span><ul>'+t[3].map(function(x){return"<li>"+x+"</li>"}).join("")+'</ul></div><div><span class="mono">Скелет сюжета</span><div class="th-arc">'+t[4].map(function(x,k){return"<span>"+(k+1)+" · "+x+"</span>"}).join("")+'</div><span class="mono">Пример</span><p>'+t[5]+'</p></div>'};
+    L.addEventListener("click",function(e){var b=e.target.closest("[data-i]");if(b)show(+b.dataset.i)});show(0);
+  })();
+  (function(){
+    var pn=document.getElementById("pn");if(!pn)return;
+    var S=[["Концепция и сценарий",.12],["Раскадровка",.2],["Референсы",.08],["Генерация и дизайн кадров",.2],["Анимация и монтаж",.25],["Звук и экспорт",.08],["Кейс и питч",.07]];
+    var days=14,end=pn.querySelector("[data-end]"),plan=pn.querySelector("[data-plan]"),pre=document.getElementById("pn-text");
+    var d0=new Date();d0.setDate(d0.getDate()+14);end.value=d0.toISOString().slice(0,10);
+    var fmt=function(d){return d.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})};
+    var draw=function(){
+      var e=new Date(end.value+"T12:00:00");if(isNaN(e))e=new Date();
+      var start=new Date(e);start.setDate(start.getDate()-days+1);
+      var acc=0,html="",txt=[];
+      var L=S.map(function(s){return Math.max(1,Math.floor(s[1]*days))}),sum=function(){return L.reduce(function(a,b){return a+b},0)};
+      while(sum()>days){var mi=-1;L.forEach(function(v,k){if(v>1&&(mi<0||v>L[mi]))mi=k});if(mi<0)break;L[mi]--}
+      var order=S.map(function(s,k){return k}).sort(function(a,b){return S[b][1]*days-L[b]-(S[a][1]*days-L[a])}),oi=0;
+      while(sum()<days){L[order[oi%order.length]]++;oi++}
+      S.forEach(function(s,i){var len=L[i];
+        var a=new Date(start);a.setDate(a.getDate()+acc);var b=new Date(start);b.setDate(b.getDate()+Math.min(days,acc+len)-1);
+        html+='<div class="pn-row"><span class="mono">'+fmt(a)+(len>1?" – "+fmt(b):"")+'</span><div class="pn-bar"><i style="left:'+(acc/days*100)+'%;width:'+(len/days*100)+'%"></i><span>'+s[0]+' · '+len+' дн.</span></div></div>';
+        txt.push(fmt(a)+(len>1?" – "+fmt(b):"")+" — "+s[0]);acc+=len});
+      plan.innerHTML=html;pre.textContent=txt.join("\n");
+    };
+    pn.addEventListener("click",function(e){var b=e.target.closest("[data-d]");if(!b)return;days=+b.dataset.d;pn.querySelectorAll("[data-d]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});draw()});
+    end.addEventListener("input",draw);draw();
+  })();
+})();
+
+</script>
+</body>
+</html>
