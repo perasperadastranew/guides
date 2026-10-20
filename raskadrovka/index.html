@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Раскадровка</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-слайды на чуть более светлом поле, как в остальных методичках школы. Каждый урок собран по одному шаблону: идея, суть, сравнение, инструмент, задание. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e;
+  --line-e:#6a6a6e; --line-m:#47474b; --line-l:#303033;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em;margin-top:14px}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.mono,.corner,th,.kind,.cap,.slot,.lvl,.pair i,.say i,.task i,.q .n,.bars i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+/* светлые панели: уроки чередуются тёмный / светлый, чтобы длинная страница делилась на главы */
+section.light{
+  color-scheme:light;
+  --panel:#f3f3f1; --card:#ffffff; --stroke:#dededa; --well:#e8e8e5;
+  --ink:#121212; --dim:#5c5c59; --faint:#7d7d79;
+  --accent:#d2571f; --accent-ink:#ffffff;
+  --good:#1e9b45; --bad:#d9263a;
+  --line-e:#85857f; --line-m:#b0afa9; --line-l:#d4d3ce;
+  color:var(--dim);
+}
+
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-top:10px}
+nav a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px 12px 14px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.2;display:flex;flex-direction:column;gap:22px;min-height:104px;justify-content:space-between}
+nav a::before{content:attr(data-n);font-family:var(--mono);font-size:12px;color:var(--dim);background:#262626;border-radius:6px;padding:5px 7px;align-self:flex-start}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+
+/* сравнения плохо / хорошо */
+.pairs{display:flex;flex-direction:column;gap:8px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+.pair small,.why{font-size:14px;line-height:1.4}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch}
+.why b{font-weight:400}
+
+/* воронка */
+.funnel{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.funnel a{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px 14px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;text-decoration:none}
+.funnel a:hover,.funnel a:focus-visible{border-color:var(--accent);outline:none}
+.funnel b{font-size:17px;font-weight:400}
+.funnel small{font-size:13px;line-height:1.3;color:var(--dim)}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+td .lvl{color:var(--accent);display:block;margin-bottom:3px}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul,.box ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+.bars{display:flex;flex-direction:column;gap:10px}
+.bars .row{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:14px;align-items:center}
+.bars .row span{color:var(--ink);font-size:16px;line-height:1.2}
+.bars .track{display:flex;align-items:center;gap:10px;min-width:0}
+.bars .bar{height:34px;border-radius:8px;background:var(--well);min-width:6px}
+.bars .row.on .bar{background:var(--accent)}
+.bars b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+dl{margin:0;display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);border-top:1px solid var(--stroke)}
+dt,dd{margin:0;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:16px}
+dt{color:var(--ink);padding-right:14px}
+
+/* готовая фраза */
+.say{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.say i{color:var(--accent)}
+.say span{color:var(--ink);font-size:17px;line-height:1.4;max-width:62ch}
+.says{display:flex;flex-direction:column;gap:8px}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.45;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* задание в конце урока */
+.task{border:1px solid var(--accent);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+.slot{border:1px dashed var(--faint);border-radius:8px;padding:10px 12px;line-height:1.5}
+
+
+
+
+
+
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden}
+.fig .stage{aspect-ratio:5/4;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+.micro{aspect-ratio:16/10;pointer-events:none;--hairline-plate:var(--card);--hairline-hi:var(--accent);--hairline-edge:var(--line-e);--hairline-mid:var(--line-m);--hairline-lo:var(--line-l)}
+.micro svg{overflow:visible}
+.micro svg g.lift{transition:transform .7s cubic-bezier(.32,.72,0,1)}
+.funnel a:hover .micro g.lift,.funnel a:focus-visible .micro g.lift,.head:hover .micro g.lift{transform:translateY(-14px)}
+@media (prefers-reduced-motion:reduce){.micro svg g.lift{transition:none}}
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.2}
+.figtext p{font-size:16px}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.head h2{flex:1 1 0;min-width:0}
+.head .micro{flex:0 0 190px;width:190px;margin-top:-34px;--hairline-plate:var(--panel)}
+@media (max-width:760px){.head .micro{flex-basis:112px;width:112px;margin-top:0}}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+/* квиз */
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.q .exp b{font-weight:400}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:18px 16px 24px}
+  .pair,.two,.three,.four{grid-template-columns:minmax(0,1fr)}
+  .bars .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl{grid-template-columns:minmax(0,1fr)} dt{border-bottom:0;padding-bottom:0}
+}
+
+/* воздух: больше полей у панелей, пауза и тонкая линия перед каждым подразделом */
+.wrap{gap:20px}
+header,section{padding:34px 44px 60px;gap:24px}
+.corner{margin-bottom:60px}
+section h3{margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.head{padding-bottom:14px}
+.quote{margin-bottom:10px}
+.figrow{padding:20px;gap:32px}
+.task{margin-top:44px;padding:26px}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:36px}
+  section h3{margin-top:26px;padding-top:22px}
+  .task{margin-top:28px;padding:18px}
+}
+
+/* композиция: контурный номер урока, подзаголовок сбоку у узких блоков и сверху у широких, иллюстрации то слева, то справа */
+.head{align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .micro{flex:0 0 300px;width:300px;margin-top:0}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:44px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+section .sub h3{margin:0;padding:0;border:0;position:sticky;top:20px}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+section .sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+.figrow.flip{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
+.figrow.flip .fig{order:2}
+@media (max-width:760px){
+  .head{align-items:flex-end;gap:14px}
+  .head .micro{flex-basis:118px;width:118px}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:26px;padding-top:22px}
+  section .sub h3{position:static}
+  .figrow.flip{grid-template-columns:minmax(0,1fr)}
+  .figrow.flip .fig{order:0}
+}
+</style>
+
+<style>
+:root{--g-direct:#f4f4f2;--g-image:#eb7540;--g-ref:#5b8def;--g-link:#8e8e8c;--line2:#5b8def}
+/* схемы кадров */
+.fr{display:block;width:100%;height:auto;border-radius:8px}
+.fr .bg{fill:var(--well)} .fr .i{fill:var(--ink)} .fr .a{fill:var(--accent)} .fr .d{fill:var(--dim)} .fr .f{fill:var(--faint)} .fr .bgt,.fr .panel{fill:var(--panel)} .fr .none{fill:none}
+.fr .s{fill:none;stroke:var(--ink);stroke-width:1.5} .fr .sa{fill:none;stroke:var(--accent);stroke-width:1.5} .fr .sd{fill:none;stroke:var(--faint);stroke-width:1}
+.fr text{font-family:var(--display)} .fr text.mn{font-family:var(--mono);letter-spacing:.04em}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--dim);max-width:70ch}
+/* группы */
+.g-direct{--gc:var(--g-direct)} .g-image{--gc:var(--g-image)} .g-ref{--gc:var(--g-ref)} .g-link{--gc:var(--g-link)}
+.kind.g-direct,.kind.g-image,.kind.g-ref,.kind.g-link{color:var(--gc)}
+.tag{display:inline-block;font-size:13px;border:1px solid var(--gc);color:var(--ink);border-radius:999px;padding:2px 9px;margin:1px 0;white-space:nowrap}
+/* драматургия */
+.arc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;align-items:end}
+.arc>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.arc>div:nth-child(1){min-height:110px}.arc>div:nth-child(2){min-height:140px}.arc>div:nth-child(3){min-height:180px}.arc>div:nth-child(4){min-height:125px}
+.arc i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--faint)} .arc b{font-size:18px;font-weight:400} .arc span{font-size:14px;line-height:1.35}
+.arc .on{border-color:var(--accent)} .arc .on i{color:var(--accent)}
+/* иерархия */
+.hier{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.hier .seg{align-self:flex-start}
+.hier-one{max-width:420px}
+.hier-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-width:640px}
+.hier-two>div{display:flex;flex-direction:column;gap:6px}
+.hier[data-mode="one"] .hier-two,.hier[data-mode="one"] [data-hint-two],.hier[data-mode="two"] .hier-one,.hier[data-mode="two"] [data-hint-one]{display:none}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--well);border:1px solid var(--stroke);border-radius:9px;padding:3px;gap:2px}
+.seg button{background:transparent;border:0;color:var(--dim);border-radius:7px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+/* одна фраза — разные подачи */
+.sw{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:12px;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:14px}
+.sw-ph{display:flex;flex-direction:column;gap:6px}
+.sw-ph button{text-align:left;background:var(--well);border:1px solid var(--stroke);color:var(--dim);border-radius:9px;padding:11px 12px;font-weight:400;font-size:15px;line-height:1.3}
+.sw-ph button[aria-selected="true"]{border-color:var(--accent);color:var(--ink)}
+.sw-main{display:flex;flex-direction:column;gap:12px;min-width:0}
+.sw-v{align-self:flex-start}
+.sw-v button i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gc);margin-right:7px;vertical-align:1px}
+.sw-fr{max-width:620px}
+.sw-d{color:var(--ink);font-size:16px;max-width:60ch}
+/* каталог */
+.chips-f{display:flex;flex-wrap:wrap;gap:6px}
+.chips-f button{background:var(--card);border:1px solid var(--stroke);color:var(--dim);border-radius:999px;padding:7px 13px;font-weight:400;font-size:14px}
+.chips-f button i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gc);margin-right:7px}
+.chips-f button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
+.cat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ct{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:12px;min-width:0;border-top:3px solid var(--gc)}
+.ct[data-g="direct"]{--gc:var(--g-direct)} .ct[data-g="image"]{--gc:var(--g-image)} .ct[data-g="ref"]{--gc:var(--g-ref)} .ct[data-g="link"]{--gc:var(--g-link)}
+.ct[hidden]{display:none}
+.ct-b{display:flex;flex-direction:column;gap:8px;padding:0 4px 4px}
+.ct-b>b{font-size:20px;font-weight:400;line-height:1.15}
+.ct-b p{font-size:15px;line-height:1.42}
+.ct-ex{color:var(--ink)} .ct-ex i{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint);margin-bottom:3px}
+.ct-dl{grid-template-columns:minmax(0,92px) minmax(0,1fr)}
+.ct-dl dt,.ct-dl dd{font-size:14px;padding:8px 0}
+/* типографика */
+.ty{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tyc,.jc{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.tyc figcaption,.jc figcaption{display:flex;flex-direction:column;gap:5px;padding:0 4px 4px}
+.tyc .kind,.jc .kind{color:var(--accent)}
+.tyc b,.jc b{font-size:17px;font-weight:400;line-height:1.2;color:var(--ink)}
+.tyc figcaption>span:last-child,.jc figcaption>span:not(.kind):not(.pod):not(.tr){font-size:14px;line-height:1.4}
+/* Джобс */
+.scroll-x{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,1fr);gap:10px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}
+.jc{scroll-snap-align:start}
+.jc .pod{align-self:flex-start;font-size:12px;border:1px solid var(--stroke);border-radius:999px;padding:2px 9px;color:var(--ink)}
+.jc .tr{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--faint)}
+.jc b{font-style:italic}
+.mood{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.mood>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:5px;border-top:6px solid var(--c);min-width:0}
+.mood i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--faint);letter-spacing:.06em;text-transform:uppercase}
+.mood b{font-size:17px;font-weight:400} .mood span{font-size:13px;line-height:1.35}
+/* ритм */
+.rb{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.rb-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rb-strip{display:flex;gap:4px;height:34px}
+.rb-strip span{flex:1 1 0;border-radius:6px;background:var(--gc);opacity:.9;position:relative;min-width:0}
+.rb-strip span.bad{outline:2px solid var(--bad);outline-offset:2px}
+.rb-strip span em{position:absolute;inset:auto 0 -18px;text-align:center;font-family:var(--mono);font-size:10px;font-style:normal;color:var(--faint)}
+.rb-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:10px}
+.rb-slots label{display:flex;flex-direction:column;gap:4px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.rb-slots select{font:400 14px var(--body);background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-left:4px solid var(--gc);border-radius:8px;padding:8px;min-width:0;width:100%}
+.rb-out{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rb-out li{font-size:15px;line-height:1.4;padding-left:22px;position:relative;color:var(--ink)}
+.rb-out li::before{content:"";position:absolute;left:4px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--good)}
+.rb-out li.warn::before{background:var(--bad)}
+/* нейронка */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+.tpl table{min-width:820px;font-size:14px}
+@media (max-width:860px){.cat,.ty{grid-template-columns:minmax(0,1fr)}.sw{grid-template-columns:minmax(0,1fr)}.sw-ph{flex-direction:row;overflow-x:auto}.sw-ph button{flex:0 0 220px}.mood{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.arc{grid-template-columns:repeat(2,minmax(0,1fr))}.arc>div{min-height:0!important}.rule{grid-template-columns:minmax(0,1fr)}.hier-two{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+ГАЙД ДЛЯ СТУДЕНТОВ</span><span>MISSION TO MOTION
+6 ЧАСТЕЙ, ЗАДАНИЕ И КВИЗ</span></div>
+  <h1>Раскадровка</h1>
+  <p class="lead"><b>Как превратить сценарий в план ролика.</b> На какие сюжеты делить текст, какой подачей раскрыть каждую мысль, как встроить типографику в кадр и проверить ритм ещё до анимации.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav aria-label="Разделы">
+    <a href="#start" data-n="00">Зачем</a><a href="#u1" data-n="01">От текста к кадрам</a><a href="#u2" data-n="02">Каталог подач</a><a href="#u3" data-n="03">Типографика в кадре</a><a href="#u4" data-n="04">Разборы</a><a href="#u5" data-n="05">Ритм</a><a href="#u6" data-n="06">Оформление и нейронка</a><a href="#quiz" data-n="07">Квиз</a>
+  </nav>
+</header>
+
+<section id="start">
+<div class="corner"><span>PERASPERADASTRA
+РАСКАДРОВКА</span><span>ЗАЧЕМ</span></div>
+  <h2>Мост между сценарием и анимацией</h2>
+  <p class="quote">Если при просмотре раскадровки ролик уже «слышится» и «движется», концепция живая.</p>
+  <p>Раскадровка — графическая схема будущего видео. Она соединяет сценарий, визуальную идею и монтаж в одну систему. Это инструмент мышления: на этом этапе видно, где провисает сюжет, где не хватает темпа и где сцена не считывается. Любой фильм, мультфильм и рекламный ролик сначала существовал как раскадровка.</p>
+  <div class="four">
+    <div class="box"><span class="kind">Проверка сценария</span><p>Всё ли визуализируется, нет ли пустых мест.</p></div>
+    <div class="box"><span class="kind">Контроль ритма</span><p>Видно, какие сцены слишком длинные или короткие.</p></div>
+    <div class="box"><span class="kind">Общий язык</span><p>Раскадровку понимают дизайнер, аниматор и заказчик.</p></div>
+    <div class="box"><span class="kind">Экономия</span><p>Ошибку проще исправить в эскизе, чем в After Effects.</p></div>
+  </div>
+  <ol class="steps">
+    <li><div><div class="t">Возьми свой сценарий</div><div class="d">Дипломный ролик, сниппет трека, стихотворение или текст на 1–2 минуты. Все задания гайда делаются на нём.</div></div></li>
+    <li><div><div class="t">Пройди части по порядку</div><div class="d">Процесс, каталог подач, типографика, разборы, ритм и оформление. В конце у тебя готовая раскадровка для сдачи.</div></div></li>
+    <li><div><div class="t">Перед сдачей — квиз и чек-лист</div><div class="d">Если пункт чек-листа не отмечается, вернись к части по ссылке.</div></div></li>
+  </ol>
+</section>
+
+<section id="u1">
+<div class="corner"><span>PERASPERADASTRA
+РАСКАДРОВКА</span><span>ЧАСТЬ 01
+ОТ ТЕКСТА К КАДРАМ</span></div>
+  <div class="head"><h2>От текста к кадрам</h2></div>
+  <p class="quote">Сначала структура и слова, потом образы, потом картинки.</p>
+  <p>Раскадровка растёт из сценария. Шесть шагов идут в одном порядке, и пропускать их не стоит: каждый следующий опирается на предыдущий.</p>
+
+  <h3>Шесть шагов</h3>
+  <ol class="steps">
+    <li><div><div class="t">Раздели сценарий на сюжеты</div><div class="d">Один сюжет — одна мысль или микросцена. Оптимально 8–12 сцен на минуту. Для каждой запиши, что происходит, что звучит голосом или текстом, какую эмоцию передаёт и зачем существует.</div></div></li>
+    <li><div><div class="t">Выстрой текстовую иерархию</div><div class="d">Внутри сцены реши, какие слова станут акцентом, и разложи фразы по кадрам. Пока без графики: так сразу видно, каким сценам понадобится сильное визуальное решение.</div></div></li>
+    <li><div><div class="t">Найди подачу</div><div class="d">Для каждой сцены 1–2 образа: метафора, отсылка, буквальная подача, типографика. Пробуй несколько вариантов на один сюжет, каталог подач — в части 02.</div></div></li>
+    <li><div><div class="t">Собери референсы</div><div class="d">2–3 на сцену, с подписью, что именно берёшь: цвет, движение, композицию, настроение.</div></div></li>
+    <li><div><div class="t">Нарисуй эскизы</div><div class="d">От руки, в Figma, Procreate или Miro. Цель — чтобы было понятно, красота не важна.</div></div></li>
+    <li><div><div class="t">Проверь ритм</div><div class="d">Собери кадры в линию и черновой аниматик с музыкой. Он сразу покажет, где скучно и где сбивается темп.</div></div></li>
+  </ol>
+
+  <h3>Драматургия ролика</h3>
+  <div class="arc">
+    <div><i>01</i><b>Завязка</b><span>Ввод в тему, хук в первые секунды</span></div>
+    <div><i>02</i><b>Развитие</b><span>Раскрытие идеи, нарастание</span></div>
+    <div class="on"><i>03</i><b>Кульминация</b><span>Главное действие, эмоциональный пик</span></div>
+    <div><i>04</i><b>Финал</b><span>Вывод или акцент</span></div>
+  </div>
+
+  <h3>Текстовая иерархия</h3>
+  <div class="hier" id="hier">
+    <div class="seg" role="group" aria-label="Вариант"><button type="button" data-h="one">Одним кадром</button><button type="button" data-h="two" aria-pressed="true">С иерархией</button></div>
+    <div class="hier-one"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Вся фраза одним кадром, без акцентов"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="40" font-size="8.5" font-weight="500" text-anchor="middle" class="i" >Изучили технические азы,</text><text x="80" y="54" font-size="8.5" font-weight="500" text-anchor="middle" class="i" >но не фундамент</text></svg></div>
+    <div class="hier-two"><div><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Кадр 1: технические азы"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="44" font-size="10" font-weight="500" text-anchor="middle" class="d" >Изучили</text><text x="80" y="58" font-size="12" font-weight="700" text-anchor="middle" class="i" >технические азы</text></svg><span class="mono">кадр 1</span></div><div><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Кадр 2: фундамент — акцент"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="40" font-size="9" font-weight="500" text-anchor="middle" class="d" >но не</text><text x="80" y="58" font-size="18" font-weight="800" text-anchor="middle" class="a" letter-spacing="-0.5" >ФУНДАМЕНТ</text></svg><span class="mono">кадр 2</span></div></div>
+    <p class="hint" data-hint-one>Фраза целиком, все слова одного размера. Глазу не за что зацепиться, акцент теряется.</p>
+    <p class="hint" data-hint-two>Фраза разбита на два кадра, «фундамент» выделен размером и цветом. Разбивка создаёт динамику и управляет вниманием, а крупное слово сразу просит сильного образа.</p>
+  </div>
+  <div class="three">
+    <div class="box"><span class="kind">Короткие фразы</span><p>Работают как резкий акцент и переход между сценами.</p></div>
+    <div class="box"><span class="kind">Крупная типографика</span><p>Усиливает ключевую мысль. Одно главное слово на кадр.</p></div>
+    <div class="box"><span class="kind">Разбивка на кадры</span><p>Создаёт динамику и ведёт внимание зрителя за голосом.</p></div>
+  </div>
+
+  <h3>Референсы</h3>
+  <div class="pair">
+    <div class="bad"><i>Плохо</i><span>Пять красивых картинок «в похожем стиле» без подписей.</span><small>Через неделю не вспомнишь, зачем их сохранил, а аниматор не поймёт, что взять.</small></div>
+    <div class="good"><i>Хорошо</i><span>«Композиция по центру», «свет из-за спины», «тип движения push-in».</span><small>Каждый референс подписан тем, что ты из него берёшь.</small></div>
+  </div>
+  <dl>
+    <dt>Где искать</dt><dd>Кадры из фильмов, рекламы и клипов, работы на Behance, Vimeo и Pinterest, моушн-ролики, UI-анимация, фото.</dd>
+    <dt>Сколько</dt><dd>3–5 на сюжет, чтобы определиться со стилем, и 2–3 в итоговой раскадровке.</dd>
+  </dl>
+
+  <h3>Что в кадре эскиза</h3>
+  <div class="four">
+    <div class="box"><span class="kind">01</span><b>Действие</b><p>Главное событие или персонаж.</p></div>
+    <div class="box"><span class="kind">02</span><b>Ключевой элемент</b><p>Текст, объект, логотип.</p></div>
+    <div class="box"><span class="kind">03</span><b>Направление</b><p>Куда движется объект или камера.</p></div>
+    <div class="box"><span class="kind">04</span><b>Подпись</b><p>Описание, тайминг, звук.</p></div>
+  </div>
+  <p class="why">Правило проверки: раскадровку должен понять человек, который не писал сценарий.</p>
+
+  <div class="task"><i>Задание</i><b>Разбей сценарий и выстрой иерархию</b><p>Раздели свой текст на 8–12 сюжетов. Для каждого запиши действие, текст, эмоцию и цель. Затем внутри каждого сюжета выдели слова-акценты и разложи фразы по кадрам.</p></div>
+</section>
+
+<section id="u2">
+<div class="corner"><span>PERASPERADASTRA
+РАСКАДРОВКА</span><span>ЧАСТЬ 02
+КАТАЛОГ ПОДАЧ</span></div>
+  <div class="head"><h2>Каталог подач: какими бывают сюжеты</h2></div>
+  <p class="quote">Один и тот же сюжет можно раскрыть совершенно разными способами.</p>
+  <p>Подача — способ перевести смысл фразы в картинку. Мы делим их на четыре группы. Прямые считываются быстрее всего. Образные дают глубину. Отсылки опираются на то, что зритель уже знает. Связки держат ритм и стиль ролика. В хорошей раскадровке подачи чередуются.</p>
+
+  <h3>Одна фраза — разные подачи</h3>
+  <div class="sw" id="phrases">
+    <div class="sw-ph" role="tablist" aria-label="Фраза"></div>
+    <div class="sw-main"><div class="sw-v seg" role="group" aria-label="Подача"></div><div class="sw-fr"></div><p class="sw-d"></p></div>
+  </div>
+  <p class="why">Фразы взяты из ролика Perasperadastra «Хватит сохранять туториалы по нейросетям». Во время работы над одной сценой мы почти всегда пробуем несколько решений.</p>
+
+  <h3>14 подач</h3>
+  <div class="chips-f" id="cat-f" role="group" aria-label="Фильтр по группе"><button type="button" data-f="all" aria-pressed="true">Все</button><button type="button" data-f="direct"><i class="g-direct"></i>Прямые</button><button type="button" data-f="image"><i class="g-image"></i>Образные</button><button type="button" data-f="ref"><i class="g-ref"></i>Отсылки</button><button type="button" data-f="link"><i class="g-link"></i>Связки</button></div>
+  <div class="cat" id="cat">
+<article class="ct" data-g="direct"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Буквальная подача: слово выложено клавишами"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="28" font-size="5.5" text-anchor="middle" class="d mn">НАУЧИЛИСЬ НАЖИМАТЬ НА</text><rect x="24" y="42" width="17" height="17" rx="3" class="f" /><rect x="24" y="40" width="17" height="17" rx="3" class="i" /><text x="32.5" y="52" font-size="9" font-weight="700" text-anchor="middle" class="bgt" >К</text><rect x="43" y="42" width="17" height="17" rx="3" class="f" /><rect x="43" y="40" width="17" height="17" rx="3" class="i" /><text x="51.5" y="52" font-size="9" font-weight="700" text-anchor="middle" class="bgt" >Н</text><rect x="62" y="42" width="17" height="17" rx="3" class="f" /><rect x="62" y="40" width="17" height="17" rx="3" class="i" /><text x="70.5" y="52" font-size="9" font-weight="700" text-anchor="middle" class="bgt" >О</text><rect x="81" y="42" width="17" height="17" rx="3" class="f" /><rect x="81" y="40" width="17" height="17" rx="3" class="i" /><text x="89.5" y="52" font-size="9" font-weight="700" text-anchor="middle" class="bgt" >П</text><rect x="100" y="42" width="17" height="17" rx="3" class="f" /><rect x="100" y="40" width="17" height="17" rx="3" class="i" /><text x="108.5" y="52" font-size="9" font-weight="700" text-anchor="middle" class="bgt" >К</text><rect x="119" y="42" width="17" height="17" rx="3" class="f" /><rect x="119" y="40" width="17" height="17" rx="3" class="i" /><text x="127.5" y="52" font-size="9" font-weight="700" text-anchor="middle" class="bgt" >И</text></svg></div><div class="ct-b"><span class="kind g-direct">Прямые</span><b>Буквальная подача</b><p>Показываешь ровно то, что сказано.</p><p class="ct-ex"><i>Пример</i>«Научились нажимать на кнопки»: фраза выложена клавишами клавиатуры.</p><dl class="ct-dl"><dt>Когда</dt><dd>Тема сложная, сцену надо считать за секунду.</dd><dt>Осторожно</dt><dd>Если весь ролик буквальный, он становится иллюстрацией к тексту и быстро надоедает.</dd></dl></div></article>
+<article class="ct" data-g="direct"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Игра слов: тренды как пережёванная жвачка"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="16" font-size="5" text-anchor="middle" class="d mn">99% НЕЙРОКОНТЕНТА — ПЕРЕЖЁВАННЫЕ</text><path d="M38 52c-6-14 10-24 24-18c8-10 30-8 34 4c14-2 24 8 20 18c6 10-6 20-18 16c-6 8-26 8-32 0c-14 4-30-6-28-20z" class="a" /><path d="M62 70c2 6 0 10-3 14M98 70c-1 6 2 9 5 12" class="sa" /><text x="80" y="57" font-size="13" font-weight="800" text-anchor="middle" class="bgt" letter-spacing="-0.5" >ТРЕНДЫ</text></svg></div><div class="ct-b"><span class="kind g-direct">Прямые</span><b>Игра слов</b><p>Берёшь образное выражение из фразы и показываешь его дословно.</p><p class="ct-ex"><i>Пример</i>«99% нейроконтента — пережёванные тренды»: жвачка, которая в анимации постепенно теряет форму.</p><dl class="ct-dl"><dt>Когда</dt><dd>Во фразе уже есть образное выражение.</dd><dt>Осторожно</dt><dd>Шутка должна поддерживать мысль, а не уводить от неё.</dd></dl></div></article>
+<article class="ct" data-g="direct"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Типографика: одно крупное слово-акцент"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="54" font-size="30" font-weight="800" text-anchor="middle" class="i" letter-spacing="-1" >СТОП</text><rect x="47" y="60" width="66" height="3" rx="1.5" class="a" /><text x="80" y="72" font-size="5.5" text-anchor="middle" class="d mn">ХВАТИТ СОХРАНЯТЬ ТУТОРИАЛЫ</text></svg></div><div class="ct-b"><span class="kind g-direct">Прямые</span><b>Типографическая сцена</b><p>Главный герой кадра — само слово: размер, цвет, разбивка по кадрам.</p><p class="ct-ex"><i>Пример</i>«Стоп. Хватит сохранять туториалы»: одно крупное слово работает как хук.</p><dl class="ct-dl"><dt>Когда</dt><dd>Хук, ключевая мысль, вывод.</dd><dt>Осторожно</dt><dd>Три типографических кадра подряд сливаются. Разбавляй образами.</dd></dl></div></article>
+<article class="ct" data-g="direct"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Инфографика: техника — малый сектор результата"><rect width="160" height="90" rx="6" class="bg"/><circle cx="56" cy="46" r="22" style="fill:none;stroke:var(--faint);stroke-width:9"/><path d="M56.0 24.0A22 22 0 0 1 74.6 34.2" style="fill:none;stroke:var(--accent);stroke-width:9"/><text x="100" y="32" font-size="6" text-anchor="start" class="a mn">ТЕХНИКА</text><text x="100" y="44" font-size="6" text-anchor="start" class="d mn">ИДЕЯ</text><text x="100" y="54" font-size="6" text-anchor="start" class="d mn">НАСМОТРЕННОСТЬ</text><text x="100" y="64" font-size="6" text-anchor="start" class="d mn">РИТМ, ДИЗАЙН</text></svg></div><div class="ct-b"><span class="kind g-direct">Прямые</span><b>Инфографика</b><p>Текст превращается в схему, диаграмму или цифру.</p><p class="ct-ex"><i>Пример</i>«Крутой результат — это не только техника»: надпись раскладывается в диаграмму, где техника — малый сектор.</p><dl class="ct-dl"><dt>Когда</dt><dd>Сравнения, доли, процессы, цифры.</dd><dt>Осторожно</dt><dd>Одна мысль на схему, без легенды и мелких подписей.</dd></dl></div></article>
+<article class="ct" data-g="image"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Метафора: голова переполнена сохранёнными роликами"><rect width="160" height="90" rx="6" class="bg"/><path d="M56 84v-12c-12-4-16-14-16-26c0-16 12-26 28-26c14 0 24 10 24 22l6 10l-6 3v8c0 5-4 7-9 7h-5v14z" class="d" /><rect x="54.9" y="7.1" width="12" height="8" rx="1.5" class="a" transform="rotate(0 61 11)"/><rect x="66.0" y="6.7" width="12" height="8" rx="1.5" class="i" transform="rotate(-24 72 11)"/><rect x="62.5" y="31.5" width="12" height="8" rx="1.5" class="i" transform="rotate(23 68 36)"/><rect x="46.7" y="19.6" width="12" height="8" rx="1.5" class="i" transform="rotate(-2 53 24)"/><rect x="56.7" y="9.2" width="12" height="8" rx="1.5" class="a" transform="rotate(-19 63 13)"/><rect x="56.0" y="32.3" width="12" height="8" rx="1.5" class="i" transform="rotate(-24 62 36)"/><rect x="82.1" y="28.2" width="12" height="8" rx="1.5" class="i" transform="rotate(-8 88 32)"/><rect x="52.9" y="13.3" width="12" height="8" rx="1.5" class="i" transform="rotate(15 59 17)"/><rect x="83.9" y="32.8" width="12" height="8" rx="1.5" class="a" transform="rotate(-2 90 37)"/><rect x="48.0" y="22.2" width="12" height="8" rx="1.5" class="i" transform="rotate(17 54 26)"/><rect x="61.8" y="11.5" width="12" height="8" rx="1.5" class="i" transform="rotate(-10 68 15)"/><rect x="65.8" y="6.7" width="12" height="8" rx="1.5" class="i" transform="rotate(10 72 11)"/><rect x="82.7" y="4.2" width="12" height="8" rx="1.5" class="a" transform="rotate(-7 89 8)"/><rect x="70.3" y="30.5" width="12" height="8" rx="1.5" class="i" transform="rotate(23 76 34)"/><rect x="67.4" y="16.4" width="12" height="8" rx="1.5" class="i" transform="rotate(13 73 20)"/><rect x="57.3" y="17.5" width="12" height="8" rx="1.5" class="i" transform="rotate(-11 63 22)"/><rect x="58.0" y="28.4" width="12" height="8" rx="1.5" class="a" transform="rotate(-23 64 32)"/><rect x="47.7" y="17.9" width="12" height="8" rx="1.5" class="i" transform="rotate(-8 54 22)"/></svg></div><div class="ct-b"><span class="kind g-image">Образные</span><b>Метафора</b><p>Абстрактную идею показываешь через объект или действие.</p><p class="ct-ex"><i>Пример</i>«Хватит сохранять туториалы»: голова, переполненная сохранёнными роликами. «Рост» — дерево, лестница, волна.</p><dl class="ct-dl"><dt>Когда</dt><dd>Мысль абстрактная, хочется глубины.</dd><dt>Осторожно</dt><dd>Метафора должна считываться без объяснения. Если нужна подпись, ищи проще.</dd></dl></div></article>
+<article class="ct" data-g="image"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Противопоставление: одиночество через переизбыток"><rect width="160" height="90" rx="6" class="bg"/><rect x="50.7" y="16.6" width="14" height="9" rx="1.5" class="f" /><rect x="52.7" y="19.1" width="7" height="1.4" rx="0" class="d" /><rect x="95.8" y="11.1" width="14" height="9" rx="1.5" class="f" /><rect x="97.8" y="13.6" width="7" height="1.4" rx="0" class="d" /><rect x="14.0" y="41.5" width="14" height="9" rx="1.5" class="f" /><rect x="16.0" y="44.0" width="7" height="1.4" rx="0" class="d" /><rect x="11.2" y="36.4" width="14" height="9" rx="1.5" class="f" /><rect x="13.2" y="38.9" width="7" height="1.4" rx="0" class="d" /><rect x="15.6" y="12.3" width="14" height="9" rx="1.5" class="f" /><rect x="17.6" y="14.8" width="7" height="1.4" rx="0" class="d" /><rect x="23.1" y="21.6" width="14" height="9" rx="1.5" class="f" /><rect x="25.1" y="24.1" width="7" height="1.4" rx="0" class="d" /><rect x="92.6" y="72.3" width="14" height="9" rx="1.5" class="f" /><rect x="94.6" y="74.8" width="7" height="1.4" rx="0" class="d" /><rect x="140.7" y="9.3" width="14" height="9" rx="1.5" class="f" /><rect x="142.7" y="11.8" width="7" height="1.4" rx="0" class="d" /><rect x="124.5" y="26.3" width="14" height="9" rx="1.5" class="f" /><rect x="126.5" y="28.8" width="7" height="1.4" rx="0" class="d" /><rect x="25.9" y="14.2" width="14" height="9" rx="1.5" class="f" /><rect x="27.9" y="16.7" width="7" height="1.4" rx="0" class="d" /><rect x="48.6" y="63.1" width="14" height="9" rx="1.5" class="f" /><rect x="50.6" y="65.6" width="7" height="1.4" rx="0" class="d" /><rect x="30.9" y="46.7" width="14" height="9" rx="1.5" class="f" /><rect x="32.9" y="49.2" width="7" height="1.4" rx="0" class="d" /><rect x="94.2" y="32.1" width="14" height="9" rx="1.5" class="f" /><rect x="96.2" y="34.6" width="7" height="1.4" rx="0" class="d" /><rect x="81.6" y="10.4" width="14" height="9" rx="1.5" class="f" /><rect x="83.6" y="12.9" width="7" height="1.4" rx="0" class="d" /><rect x="14.2" y="20.4" width="14" height="9" rx="1.5" class="f" /><rect x="16.2" y="22.9" width="7" height="1.4" rx="0" class="d" /><rect x="99.9" y="35.9" width="14" height="9" rx="1.5" class="f" /><rect x="101.9" y="38.4" width="7" height="1.4" rx="0" class="d" /><rect x="49.4" y="47.0" width="14" height="9" rx="1.5" class="f" /><rect x="51.4" y="49.5" width="7" height="1.4" rx="0" class="d" /><rect x="115.6" y="54.9" width="14" height="9" rx="1.5" class="f" /><rect x="117.6" y="57.4" width="7" height="1.4" rx="0" class="d" /><rect x="39.7" y="46.2" width="14" height="9" rx="1.5" class="f" /><rect x="41.7" y="48.7" width="7" height="1.4" rx="0" class="d" /><rect x="78.5" y="67.3" width="14" height="9" rx="1.5" class="f" /><rect x="80.5" y="69.8" width="7" height="1.4" rx="0" class="d" /><rect x="106.7" y="26.2" width="14" height="9" rx="1.5" class="f" /><rect x="108.7" y="28.7" width="7" height="1.4" rx="0" class="d" /><rect x="141.3" y="14.3" width="14" height="9" rx="1.5" class="f" /><rect x="143.3" y="16.8" width="7" height="1.4" rx="0" class="d" /><circle cx="80" cy="48.35" r="4.16" class="a" /><path d="M72.8 62q0 -8.1 7.2 -8.1q7.2 0 7.2 8.1z" class="a" /></svg></div><div class="ct-b"><span class="kind g-image">Образные</span><b>Противопоставление</b><p>Смысл раскрываешь через контраст или противоположность.</p><p class="ct-ex"><i>Пример</i>«Одиночество» показано не пустотой, а переизбытком экранов вокруг человека. Доверие — не рукопожатие, а мост между людьми.</p><dl class="ct-dl"><dt>Когда</dt><dd>Первым в голову приходит банальный образ.</dd><dt>Осторожно</dt><dd>Связь должна оставаться логичной, иначе зритель её не поймёт.</dd></dl></div></article>
+<article class="ct" data-g="image"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Объекты: колонны на стопке книг"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="14" font-size="6" text-anchor="middle" class="a mn">ФУНДАМЕНТ</text><rect x="43" y="74" width="74" height="6" rx="1" class="f" /><rect x="48" y="67" width="64" height="6" rx="1" class="d" /><rect x="45" y="60" width="70" height="6" rx="1" class="f" /><rect x="54" y="30" width="10" height="22" rx="0" class="i" /><rect x="52" y="28" width="14" height="3" rx="0" class="i" /><rect x="52" y="51" width="14" height="2" rx="0" class="i" /><rect x="75" y="30" width="10" height="22" rx="0" class="i" /><rect x="73" y="28" width="14" height="3" rx="0" class="i" /><rect x="73" y="51" width="14" height="2" rx="0" class="i" /><rect x="96" y="30" width="10" height="22" rx="0" class="i" /><rect x="94" y="28" width="14" height="3" rx="0" class="i" /><rect x="94" y="51" width="14" height="2" rx="0" class="i" /><rect x="50" y="21" width="60" height="6" rx="0" class="i" /></svg></div><div class="ct-b"><span class="kind g-image">Образные</span><b>Объекты и предметы</b><p>Смысл сцены несёт предмет-символ.</p><p class="ct-ex"><i>Пример</i>«Изучили технические азы, но не фундамент»: колонны на стопке книг.</p><dl class="ct-dl"><dt>Когда</dt><dd>У идеи есть узнаваемый предмет-символ.</dd><dt>Осторожно</dt><dd>Предмет должен быть понятен твоей аудитории.</dd></dl></div></article>
+<article class="ct" data-g="image"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Атмосфера: человек в сером кубе"><rect width="160" height="90" rx="6" class="bg"/><path d="M50 26h48v48h-48zM62 16h48v48h-12M50 26l12-10M98 26l12-10M98 74l12-10" class="sd" /><path d="M62 26v48M50 38h48" class="sd" style="opacity:.45"/><path d="M74 26v48M50 50h48" class="sd" style="opacity:.45"/><path d="M86 26v48M50 62h48" class="sd" style="opacity:.45"/><circle cx="74" cy="62.5" r="3.2" class="d" /><path d="M68.5 73q0 -6.2 5.5 -6.2q5.5 0 5.5 6.2z" class="d" /></svg></div><div class="ct-b"><span class="kind g-image">Образные</span><b>Атмосфера и среда</b><p>Эмоцию несут цвет, свет, материал и пространство.</p><p class="ct-ex"><i>Пример</i>В речи Джобса «мир, как он есть» — серый куб-сетка, в котором тесно. Материал тоже смысл: бумага — тепло, стекло — дистанция, экран — технологичность.</p><dl class="ct-dl"><dt>Когда</dt><dd>Настроение важнее факта.</dd><dt>Осторожно</dt><dd>Атмосферу держи на нескольких сценах подряд, на одной она не успеет сработать.</dd></dl></div></article>
+<article class="ct" data-g="ref"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Культурная отсылка: композиция «Тайной вечери»"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="12" font-size="5" text-anchor="middle" class="d mn">ЛУЧШИЕ НЕЙРОКРЕАТОРЫ — БЫВШИЕ ПРОФИ</text><circle cx="80" cy="38" r="11" class="f" style="opacity:.5"/><circle cx="28" cy="46.55" r="2.88" class="i" /><path d="M23.1 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z" class="i" /><circle cx="42" cy="46.55" r="2.88" class="i" /><path d="M37.0 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z" class="i" /><circle cx="56" cy="46.55" r="2.88" class="i" /><path d="M51.0 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z" class="i" /><circle cx="80" cy="44.45" r="3.52" class="a" /><path d="M74.0 56q0 -6.8 6.1 -6.8q6.1 0 6.1 6.8z" class="a" /><circle cx="104" cy="46.55" r="2.88" class="i" /><path d="M99.0 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z" class="i" /><circle cx="118" cy="46.55" r="2.88" class="i" /><path d="M113.0 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z" class="i" /><circle cx="132" cy="46.55" r="2.88" class="i" /><path d="M127.0 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z" class="i" /><rect x="16" y="56" width="128" height="6" rx="1" class="d" /><rect x="22" y="62" width="3" height="16" rx="0" class="f" /><rect x="135" y="62" width="3" height="16" rx="0" class="f" /></svg></div><div class="ct-b"><span class="kind g-ref">Отсылки</span><b>Культурная отсылка</b><p>Берёшь узнаваемую картину, фильм или сцену из культуры.</p><p class="ct-ex"><i>Пример</i>«Лучшие нейрокреаторы — бывшие профи»: композиция «Тайной вечери», вместо апостолов режиссёры, фотографы и дизайнеры. Ещё один вариант — «Сотворение Адама».</p><dl class="ct-dl"><dt>Когда</dt><dd>Нужны ирония и мгновенное узнавание.</dd><dt>Осторожно</dt><dd>Проверь, что аудитория знает оригинал.</dd></dl></div></article>
+<article class="ct" data-g="ref"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Игровая отсылка: рогатка и башня из блоков"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="12" font-size="5" text-anchor="middle" class="d mn">СЛОЖНОСТЬ ПРОЕКТОВ РАСТЁТ</text><path d="M30 80v-18M30 62l-7-12M30 62l7-12" class="s" style="stroke-width:3"/><circle cx="30" cy="50" r="4" class="a" /><path d="M34 48q30-30 64 4" class="sd" style="stroke-dasharray:2 3"/><rect x="104" y="70" width="10" height="10" rx="1" class="i" /><rect x="116" y="70" width="10" height="10" rx="1" class="d" /><rect x="128" y="70" width="10" height="10" rx="1" class="i" /><rect x="110" y="60" width="10" height="10" rx="1" class="d" /><rect x="122" y="60" width="10" height="10" rx="1" class="i" /><rect x="116" y="50" width="10" height="10" rx="1" class="d" /><rect x="106" y="46" width="32" height="3" rx="1" class="i" /><rect x="10" y="80" width="140" height="2" rx="0" class="f" /></svg></div><div class="ct-b"><span class="kind g-ref">Отсылки</span><b>Игровая отсылка</b><p>Объясняешь через механику игры, фильма или приложения.</p><p class="ct-ex"><i>Пример</i>«Сложность проектов растёт»: рогатка и башня из блоков, как в Angry Birds, и с каждым уровнем конструкция сложнее.</p><dl class="ct-dl"><dt>Когда</dt><dd>Нужно объяснить процесс через знакомые правила.</dd><dt>Осторожно</dt><dd>Бери механику, а не чужих персонажей и логотипы.</dd></dl></div></article>
+<article class="ct" data-g="ref"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Мемная подача: интерфейс с тысячами сохранёнок"><rect width="160" height="90" rx="6" class="bg"/><rect x="48" y="8" width="64" height="76" rx="6" class="panel" /><text x="55" y="21" font-size="5.6" font-weight="600" text-anchor="start" class="i" >Сохранённое</text><rect x="92" y="15" width="17" height="8" rx="4" class="a" /><text x="100.5" y="20.6" font-size="4.4" font-weight="700" text-anchor="middle" class="bgt" >9 999+</text><rect x="54" y="28" width="12" height="8" rx="1.5" class="f" /><path d="M58.5 30.2l4 1.8l-4 1.8z" class="i" /><rect x="70" y="29.5" width="30" height="2" rx="1" class="d" /><rect x="70" y="33" width="18" height="1.6" rx="1" class="f" /><rect x="54" y="39" width="12" height="8" rx="1.5" class="f" /><path d="M58.5 41.2l4 1.8l-4 1.8z" class="i" /><rect x="70" y="40.5" width="30" height="2" rx="1" class="d" /><rect x="70" y="44" width="18" height="1.6" rx="1" class="f" /><rect x="54" y="50" width="12" height="8" rx="1.5" class="f" /><path d="M58.5 52.2l4 1.8l-4 1.8z" class="i" /><rect x="70" y="51.5" width="30" height="2" rx="1" class="d" /><rect x="70" y="55" width="18" height="1.6" rx="1" class="f" /><rect x="54" y="61" width="12" height="8" rx="1.5" class="f" /><path d="M58.5 63.2l4 1.8l-4 1.8z" class="i" /><rect x="70" y="62.5" width="30" height="2" rx="1" class="d" /><rect x="70" y="66" width="18" height="1.6" rx="1" class="f" /><rect x="54" y="72" width="12" height="8" rx="1.5" class="f" /><path d="M58.5 74.2l4 1.8l-4 1.8z" class="i" /><rect x="70" y="73.5" width="30" height="2" rx="1" class="d" /><rect x="70" y="77" width="18" height="1.6" rx="1" class="f" /><path d="M104 66l8 4l-3.5 1.2l2.5 4.5l-2 1l-2.4-4.4l-2.6 2.2z" class="i" /></svg></div><div class="ct-b"><span class="kind g-ref">Отсылки</span><b>Мемная и интернет-подача</b><p>Говоришь языком интернета: интерфейсы, уведомления, мемы, digital-эстетика.</p><p class="ct-ex"><i>Пример</i>«Хватит сохранять туториалы»: экран «Сохранённое» с бейджем 9 999+.</p><dl class="ct-dl"><dt>Когда</dt><dd>Ролик для соцсетей, нужны скорость и ирония.</dd><dt>Осторожно</dt><dd>Конкретные мемы быстро стареют. Надёжнее строить на интерфейсах и форматах.</dd></dl></div></article>
+<article class="ct" data-g="link"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Персонаж: постоянный герой ролика за компьютером"><rect width="160" height="90" rx="6" class="bg"/><circle cx="64" cy="44.25" r="4.8" class="a" /><path d="M55.8 60q0 -9.3 8.2 -9.3q8.2 0 8.2 9.3z" class="a" /><circle cx="60" cy="41" r="1" class="bgt" /><circle cx="67" cy="41" r="1" class="bgt" /><rect x="40" y="60" width="84" height="4" rx="1" class="d" /><rect x="46" y="64" width="3" height="18" rx="0" class="f" /><rect x="115" y="64" width="3" height="18" rx="0" class="f" /><path d="M86 59l6-18h22l-6 18z" class="i" /><rect x="84" y="58" width="28" height="2" rx="0" class="i" /></svg></div><div class="ct-b"><span class="kind g-link">Связки</span><b>Персонаж</b><p>Постоянный герой появляется в разных сюжетах.</p><p class="ct-ex"><i>Пример</i>В ролике про туториалы герой за компьютером проходит через весь ролик и держит стиль.</p><dl class="ct-dl"><dt>Когда</dt><dd>Длинный ролик, серия, бренд со своим маскотом.</dd><dt>Осторожно</dt><dd>Продумай героя заранее, чтобы он не менялся от сцены к сцене.</dd></dl></div></article>
+<article class="ct" data-g="link"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Визуальная пауза: одно слово и воздух"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="50" font-size="14" font-weight="500" text-anchor="middle" class="i" >смысл</text><circle cx="108" cy="40" r="1.8" class="a" /></svg></div><div class="ct-b"><span class="kind g-link">Связки</span><b>Связка и пауза</b><p>Простая композиция между насыщенными сценами.</p><p class="ct-ex"><i>Пример</i>Сюжеты 6–7 в ролике про туториалы: герой и простая типографика без сложных образов.</p><dl class="ct-dl"><dt>Когда</dt><dd>После двух-трёх плотных сцен и перед кульминацией.</dd><dt>Осторожно</dt><dd>Пауза короткая, 1–2 секунды, иначе ритм провисает.</dd></dl></div></article>
+<article class="ct" data-g="link"><div class="ct-fr"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Исходник: архивное видео со спикером и подписью"><rect width="160" height="90" rx="6" class="bg"/><rect x="6" y="3" width="6" height="4" rx="1" class="f" /><rect x="6" y="83" width="6" height="4" rx="1" class="f" /><rect x="19" y="3" width="6" height="4" rx="1" class="f" /><rect x="19" y="83" width="6" height="4" rx="1" class="f" /><rect x="32" y="3" width="6" height="4" rx="1" class="f" /><rect x="32" y="83" width="6" height="4" rx="1" class="f" /><rect x="45" y="3" width="6" height="4" rx="1" class="f" /><rect x="45" y="83" width="6" height="4" rx="1" class="f" /><rect x="58" y="3" width="6" height="4" rx="1" class="f" /><rect x="58" y="83" width="6" height="4" rx="1" class="f" /><rect x="71" y="3" width="6" height="4" rx="1" class="f" /><rect x="71" y="83" width="6" height="4" rx="1" class="f" /><rect x="84" y="3" width="6" height="4" rx="1" class="f" /><rect x="84" y="83" width="6" height="4" rx="1" class="f" /><rect x="97" y="3" width="6" height="4" rx="1" class="f" /><rect x="97" y="83" width="6" height="4" rx="1" class="f" /><rect x="110" y="3" width="6" height="4" rx="1" class="f" /><rect x="110" y="83" width="6" height="4" rx="1" class="f" /><rect x="123" y="3" width="6" height="4" rx="1" class="f" /><rect x="123" y="83" width="6" height="4" rx="1" class="f" /><rect x="136" y="3" width="6" height="4" rx="1" class="f" /><rect x="136" y="83" width="6" height="4" rx="1" class="f" /><rect x="149" y="3" width="6" height="4" rx="1" class="f" /><rect x="149" y="83" width="6" height="4" rx="1" class="f" /><rect x="46" y="10" width="68" height="70" rx="2" class="f" /><circle cx="80" cy="38" r="14" class="d" /><path d="M56 80c0-16 10-24 24-24s24 8 24 24z" class="d" /><circle cx="111.0" cy="76.3" r="0.5" class="i" style="opacity:.25"/><circle cx="49.8" cy="15.9" r="0.5" class="i" style="opacity:.25"/><circle cx="102.8" cy="61.5" r="0.5" class="i" style="opacity:.25"/><circle cx="91.5" cy="31.6" r="0.5" class="i" style="opacity:.25"/><circle cx="87.2" cy="52.5" r="0.5" class="i" style="opacity:.25"/><circle cx="85.5" cy="21.1" r="0.5" class="i" style="opacity:.25"/><circle cx="75.3" cy="37.5" r="0.5" class="i" style="opacity:.25"/><circle cx="95.2" cy="79.6" r="0.5" class="i" style="opacity:.25"/><circle cx="110.6" cy="48.1" r="0.5" class="i" style="opacity:.25"/><circle cx="76.3" cy="28.8" r="0.5" class="i" style="opacity:.25"/><circle cx="48.4" cy="11.9" r="0.5" class="i" style="opacity:.25"/><circle cx="77.6" cy="32.3" r="0.5" class="i" style="opacity:.25"/><circle cx="71.8" cy="72.4" r="0.5" class="i" style="opacity:.25"/><circle cx="81.8" cy="49.2" r="0.5" class="i" style="opacity:.25"/><circle cx="62.1" cy="11.7" r="0.5" class="i" style="opacity:.25"/><circle cx="68.1" cy="19.6" r="0.5" class="i" style="opacity:.25"/><circle cx="80.7" cy="79.9" r="0.5" class="i" style="opacity:.25"/><circle cx="91.9" cy="22.7" r="0.5" class="i" style="opacity:.25"/><circle cx="106.8" cy="65.8" r="0.5" class="i" style="opacity:.25"/><circle cx="95.9" cy="73.5" r="0.5" class="i" style="opacity:.25"/><circle cx="97.9" cy="65.3" r="0.5" class="i" style="opacity:.25"/><circle cx="70.1" cy="78.7" r="0.5" class="i" style="opacity:.25"/><circle cx="111.4" cy="21.3" r="0.5" class="i" style="opacity:.25"/><circle cx="97.3" cy="60.1" r="0.5" class="i" style="opacity:.25"/><circle cx="77.4" cy="47.1" r="0.5" class="i" style="opacity:.25"/><circle cx="79.3" cy="74.7" r="0.5" class="i" style="opacity:.25"/><circle cx="80.1" cy="68.2" r="0.5" class="i" style="opacity:.25"/><circle cx="70.1" cy="71.8" r="0.5" class="i" style="opacity:.25"/><circle cx="107.2" cy="42.3" r="0.5" class="i" style="opacity:.25"/><circle cx="84.6" cy="74.4" r="0.5" class="i" style="opacity:.25"/><circle cx="95.2" cy="44.1" r="0.5" class="i" style="opacity:.25"/><circle cx="61.1" cy="32.7" r="0.5" class="i" style="opacity:.25"/><circle cx="93.6" cy="21.6" r="0.5" class="i" style="opacity:.25"/><circle cx="107.7" cy="28.8" r="0.5" class="i" style="opacity:.25"/><circle cx="108.0" cy="31.7" r="0.5" class="i" style="opacity:.25"/><circle cx="111.1" cy="59.4" r="0.5" class="i" style="opacity:.25"/><circle cx="80.3" cy="46.2" r="0.5" class="i" style="opacity:.25"/><circle cx="90.3" cy="51.2" r="0.5" class="i" style="opacity:.25"/><circle cx="67.2" cy="24.5" r="0.5" class="i" style="opacity:.25"/><circle cx="80.8" cy="75.4" r="0.5" class="i" style="opacity:.25"/><circle cx="88.4" cy="15.3" r="0.5" class="i" style="opacity:.25"/><circle cx="101.8" cy="60.8" r="0.5" class="i" style="opacity:.25"/><circle cx="107.7" cy="23.4" r="0.5" class="i" style="opacity:.25"/><circle cx="96.6" cy="14.1" r="0.5" class="i" style="opacity:.25"/><circle cx="90.4" cy="29.1" r="0.5" class="i" style="opacity:.25"/><circle cx="61.4" cy="71.3" r="0.5" class="i" style="opacity:.25"/><circle cx="53.2" cy="46.6" r="0.5" class="i" style="opacity:.25"/><circle cx="104.1" cy="27.1" r="0.5" class="i" style="opacity:.25"/><circle cx="60.3" cy="71.6" r="0.5" class="i" style="opacity:.25"/><circle cx="74.8" cy="60.2" r="0.5" class="i" style="opacity:.25"/><circle cx="48.2" cy="35.4" r="0.5" class="i" style="opacity:.25"/><circle cx="57.7" cy="57.1" r="0.5" class="i" style="opacity:.25"/><circle cx="51.6" cy="76.8" r="0.5" class="i" style="opacity:.25"/><circle cx="47.7" cy="61.1" r="0.5" class="i" style="opacity:.25"/><circle cx="47.4" cy="27.9" r="0.5" class="i" style="opacity:.25"/><circle cx="101.3" cy="21.0" r="0.5" class="i" style="opacity:.25"/><circle cx="58.5" cy="58.4" r="0.5" class="i" style="opacity:.25"/><circle cx="72.2" cy="13.0" r="0.5" class="i" style="opacity:.25"/><circle cx="113.3" cy="20.6" r="0.5" class="i" style="opacity:.25"/><circle cx="48.5" cy="34.1" r="0.5" class="i" style="opacity:.25"/><circle cx="87.8" cy="62.0" r="0.5" class="i" style="opacity:.25"/><circle cx="53.7" cy="33.6" r="0.5" class="i" style="opacity:.25"/><circle cx="48.1" cy="41.4" r="0.5" class="i" style="opacity:.25"/><circle cx="98.1" cy="61.8" r="0.5" class="i" style="opacity:.25"/><circle cx="107.3" cy="62.9" r="0.5" class="i" style="opacity:.25"/><circle cx="104.6" cy="59.4" r="0.5" class="i" style="opacity:.25"/><circle cx="78.1" cy="25.8" r="0.5" class="i" style="opacity:.25"/><circle cx="90.9" cy="32.1" r="0.5" class="i" style="opacity:.25"/><circle cx="52.9" cy="41.3" r="0.5" class="i" style="opacity:.25"/><circle cx="105.5" cy="18.9" r="0.5" class="i" style="opacity:.25"/><text x="80" y="74" font-size="6.5" font-weight="500" text-anchor="middle" class="i" >When you grow up…</text></svg></div><div class="ct-b"><span class="kind g-link">Связки</span><b>Исходник и архив</b><p>Основа сцены — оригинальное видео, фото или документ.</p><p class="ct-ex"><i>Пример</i>Ролик по речи Джобса начинается и заканчивается архивным фрагментом: зерно, приглушённый цвет, короткая подпись.</p><dl class="ct-dl"><dt>Когда</dt><dd>Есть спикер, реальное событие или документальная основа.</dd><dt>Осторожно</dt><dd>Исходник — базовый слой, между его фрагментами нужны графические вставки.</dd></dl></div></article>
+  </div>
+
+  <h3>Как придумать образ</h3>
+  <div class="four">
+    <div class="box"><span class="kind">Ассоциации</span><p>Выпиши ключевые слова и рядом всё, что с ними связано: предметы, запахи, фактуры, цвета. «Осознание» — зеркало, туман, отражения, вода, глаза.</p></div>
+    <div class="box"><span class="kind">Действие</span><p>Переведи смысл в действие или объект. «Скорость» — поток, стрелка, импульс. «Хаос» — коллаж, шум, резкие склейки.</p></div>
+    <div class="box"><span class="kind">Контраст</span><p>Противопоставь образу неожиданное. Если первая идея банальна, ищи её противоположность.</p></div>
+    <div class="box"><span class="kind">Тональность</span><p>Реши, как звучит сцена: серьёзно, иронично или вдохновляюще. От этого зависит, нужна метафора или мем.</p></div>
+  </div>
+  <p class="why">Принцип «1 + 1 = 3» по Эйзенштейну: когда сталкиваются два кадра или смысла, рождается третий. Пользуйся этим на стыках сцен.</p>
+
+  <div class="task"><i>Задание</i><b>Три подачи на один сюжет</b><p>Возьми самый важный сюжет своего сценария и придумай для него три подачи из разных групп. Нарисуй три быстрых эскиза и выбери один. Запиши, почему выбрал именно его.</p></div>
+</section>
+
+<section id="u3">
+<div class="corner"><span>PERASPERADASTRA
+РАСКАДРОВКА</span><span>ЧАСТЬ 03
+ТИПОГРАФИКА В КАДРЕ</span></div>
+  <div class="head"><h2>Типографика в кадре</h2></div>
+  <p class="quote">Текст и визуал должны работать как одна система.</p>
+  <p>В моушне текст редко висит поверх картинки. Он изгибается, прячется за объекты, ложится на плоскости и собирается из предметов. Вот приёмы, которые мы используем в своих раскадровках.</p>
+
+  <h3>Приёмы</h3>
+  <div class="ty">
+<figure class="tyc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Текст по форме объекта: надпись обнимает круг"><rect width="160" height="90" rx="6" class="bg"/><circle cx="80" cy="46" r="26" class="d" /><path id="c1" d="M80 46m-31 0a31 31 0 1 1 62 0a31 31 0 1 1-62 0" fill="none"/><text font-size="8" font-weight="700" class="a" letter-spacing="1.2"><textPath href="#c1">ИДЕЯ · ИДЕЯ · ИДЕЯ · ИДЕЯ · ИДЕЯ · ИДЕЯ ·</textPath></text></svg><figcaption><span class="kind">Деформация</span><b>Текст по форме объекта</b><span>Надпись повторяет форму предмета и становится частью композиции.</span></figcaption></figure>
+<figure class="tyc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Перспектива: текст лежит на плоскости пола"><rect width="160" height="90" rx="6" class="bg"/><rect x="0" y="44" width="160" height="46" rx="0" class="f" style="opacity:.35"/><rect x="0" y="44" width="160" height="0.8" rx="0" class="d" /><g transform="matrix(1 0 -.9 .45 52 34)"><text x="60" y="50" font-size="30" font-weight="800" text-anchor="middle" class="i" letter-spacing="-1" >ДОРОГА</text></g></svg><figcaption><span class="kind">Деформация</span><b>Перспективное искажение</b><span>Текст лежит на плоскости сцены: полу, стене, экране. Появляется глубина.</span></figcaption></figure>
+<figure class="tyc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Текст по направлению объекта: надпись едет по ленте"><rect width="160" height="90" rx="6" class="bg"/><path d="M-4 70C40 70 50 20 90 24S140 60 166 30" class="sd" style="stroke-width:12;opacity:.35;stroke-linecap:round"/><path id="p2" d="M4 68C42 68 52 18 92 22S140 58 166 28" fill="none"/><text font-size="9" font-weight="700" class="i"><textPath href="#p2" startOffset="8">ПО ТРАЕКТОРИИ ДВИЖЕНИЯ</textPath></text></svg><figcaption><span class="kind">Деформация</span><b>По направлению движения</b><span>Надпись едет по траектории объекта или линии кадра.</span></figcaption></figure>
+<figure class="tyc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Типографика как пространство: человек идёт между буквами"><rect width="160" height="90" rx="6" class="bg"/><text x="8" y="84" font-size="96" font-weight="800" text-anchor="start" class="d" >Т</text><text x="78" y="84" font-size="96" font-weight="800" text-anchor="start" class="f" >Е</text><circle cx="68" cy="73.6" r="2.56" class="a" /><path d="M63.6 82q0 -5.0 4.4 -5.0q4.4 0 4.4 5.0z" class="a" /></svg><figcaption><span class="kind">Деформация</span><b>Типографика как пространство</b><span>Буквы становятся стенами и улицами, внутри них строится сцена.</span></figcaption></figure>
+<figure class="tyc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Наслоение: горы перекрывают низ букв"><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="60" font-size="40" font-weight="800" text-anchor="middle" class="i" letter-spacing="-2" >ГОРЫ</text><path d="M0 90V62l28-20l18 14l26-30l30 32l18-12l40 24v20z" class="panel" /></svg><figcaption><span class="kind">Наслоение</span><b>Перекрытие объектом</b><span>Объект сцены закрывает часть букв, и текст встаёт внутрь кадра. Для баланса текст можно растянуть или увеличить.</span></figcaption></figure>
+<figure class="tyc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Подложка: плашка под текстом на пёстром фоне"><rect width="160" height="90" rx="6" class="bg"/><rect x="69.5" y="29.9" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="20.8" y="69.3" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="1.0" y="40.2" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="134.7" y="6.5" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="83.1" y="49.3" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="6.1" y="30.3" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="105.5" y="36.2" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="108.8" y="12.6" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="35.7" y="8.9" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="75.9" y="73.9" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="88.6" y="61.9" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="57.5" y="59.7" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="15.3" y="23.3" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="101.1" y="58.1" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="63.3" y="7.0" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="40.0" y="16.8" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="42.2" y="64.8" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="29.9" y="70.9" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="131.9" y="4.4" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="56.8" y="39.3" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="3.5" y="34.0" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="136.0" y="9.0" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="89.5" y="9.7" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="86.8" y="71.6" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="30.5" y="0.7" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="12.5" y="43.2" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="2.6" y="6.8" width="18" height="12" rx="2" class="d" style="opacity:.6"/><rect x="74.5" y="73.7" width="18" height="12" rx="2" class="f" style="opacity:.6"/><rect x="42" y="36" width="76" height="18" rx="3" class="a" /><text x="80" y="49" font-size="11" font-weight="800" text-anchor="middle" class="bgt" >АКЦЕНТ</text></svg><figcaption><span class="kind">Подложка</span><b>Плашка под текстом</b><span>Выделяет слово на пёстром фоне и усиливает акцент.</span></figcaption></figure>
+<figure class="tyc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Работа с фоном: локальное затемнение под текстом"><defs><radialGradient id="g3" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#000" stop-opacity=".85"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="160" height="90" rx="6" class="bg"/><rect x="0" y="0" width="160" height="3" rx="0" class="f" style="opacity:.8"/><rect x="0" y="6" width="160" height="3" rx="0" class="d" style="opacity:.8"/><rect x="0" y="12" width="160" height="3" rx="0" class="f" style="opacity:.8"/><rect x="0" y="18" width="160" height="3" rx="0" class="d" style="opacity:.8"/><rect x="0" y="24" width="160" height="3" rx="0" class="f" style="opacity:.8"/><rect x="0" y="30" width="160" height="3" rx="0" class="d" style="opacity:.8"/><rect x="0" y="36" width="160" height="3" rx="0" class="f" style="opacity:.8"/><rect x="0" y="42" width="160" height="3" rx="0" class="d" style="opacity:.8"/><rect x="0" y="48" width="160" height="3" rx="0" class="f" style="opacity:.8"/><rect x="0" y="54" width="160" height="3" rx="0" class="d" style="opacity:.8"/><rect x="0" y="60" width="160" height="3" rx="0" class="f" style="opacity:.8"/><rect x="0" y="66" width="160" height="3" rx="0" class="d" style="opacity:.8"/><rect x="0" y="72" width="160" height="3" rx="0" class="f" style="opacity:.8"/><rect x="0" y="78" width="160" height="3" rx="0" class="d" style="opacity:.8"/><rect x="0" y="84" width="160" height="3" rx="0" class="f" style="opacity:.8"/><ellipse cx="80" cy="46" rx="62" ry="26" fill="url(#g3)"/><text x="80" y="50" font-size="13" font-weight="800" text-anchor="middle" class="i" >ЧИТАЕМО</text></svg><figcaption><span class="kind">Работа с фоном</span><b>Локальное затемнение</b><span>Затемни или снизь контраст фона под текстом. Или поставь текст на спокойную часть изображения.</span></figcaption></figure>
+<figure class="tyc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Стилизация: шумное фото против упрощённого"><rect width="160" height="90" rx="6" class="bg"/><circle cx="19.0" cy="49.0" r="2.1" class="f" /><circle cx="48.3" cy="56.3" r="1.2" class="d" /><circle cx="1.1" cy="75.4" r="1.8" class="d" /><circle cx="18.7" cy="89.6" r="2.4" class="f" /><circle cx="66.9" cy="42.9" r="2.9" class="d" /><circle cx="12.0" cy="57.1" r="3.6" class="d" /><circle cx="41.9" cy="66.7" r="3.0" class="f" /><circle cx="5.1" cy="68.2" r="2.8" class="d" /><circle cx="24.1" cy="2.8" r="3.6" class="d" /><circle cx="37.8" cy="64.7" r="3.6" class="f" /><circle cx="57.1" cy="82.9" r="2.2" class="d" /><circle cx="64.1" cy="40.0" r="3.8" class="d" /><circle cx="70.3" cy="8.8" r="1.4" class="f" /><circle cx="17.4" cy="86.9" r="2.3" class="d" /><circle cx="50.1" cy="27.1" r="2.5" class="d" /><circle cx="30.9" cy="31.6" r="2.8" class="f" /><circle cx="46.7" cy="81.4" r="3.0" class="d" /><circle cx="74.3" cy="77.1" r="4.0" class="d" /><circle cx="53.7" cy="14.7" r="3.6" class="f" /><circle cx="77.2" cy="81.4" r="2.7" class="d" /><circle cx="57.1" cy="19.0" r="3.5" class="d" /><circle cx="45.9" cy="25.6" r="1.2" class="f" /><circle cx="68.3" cy="89.1" r="1.3" class="d" /><circle cx="64.0" cy="36.9" r="1.5" class="d" /><circle cx="23.5" cy="69.2" r="3.6" class="f" /><circle cx="3.5" cy="55.3" r="1.1" class="d" /><circle cx="57.5" cy="29.8" r="3.6" class="d" /><circle cx="78.5" cy="45.5" r="4.0" class="f" /><circle cx="24.8" cy="6.9" r="2.8" class="d" /><circle cx="2.5" cy="17.8" r="2.2" class="d" /><circle cx="48.8" cy="14.1" r="1.1" class="f" /><circle cx="69.4" cy="28.2" r="3.9" class="d" /><circle cx="71.7" cy="34.0" r="2.4" class="d" /><circle cx="41.6" cy="57.9" r="2.8" class="f" /><circle cx="44.7" cy="55.8" r="3.8" class="d" /><circle cx="40.6" cy="38.8" r="3.2" class="d" /><circle cx="19.0" cy="27.1" r="3.9" class="f" /><circle cx="41.7" cy="49.4" r="1.0" class="d" /><circle cx="33.2" cy="52.2" r="1.1" class="d" /><circle cx="49.3" cy="56.9" r="1.2" class="f" /><circle cx="50.2" cy="42.0" r="3.0" class="d" /><circle cx="28.2" cy="63.6" r="3.2" class="d" /><circle cx="1.8" cy="5.5" r="3.0" class="f" /><circle cx="77.1" cy="22.6" r="2.4" class="d" /><circle cx="47.4" cy="28.8" r="2.1" class="d" /><circle cx="25.0" cy="33.2" r="2.8" class="f" /><circle cx="24.0" cy="33.9" r="3.3" class="d" /><circle cx="2.2" cy="51.2" r="3.2" class="d" /><circle cx="24.8" cy="20.0" r="3.4" class="f" /><circle cx="19.1" cy="16.9" r="2.3" class="d" /><circle cx="55.8" cy="9.2" r="2.0" class="d" /><circle cx="26.7" cy="75.0" r="2.3" class="f" /><circle cx="68.4" cy="15.2" r="2.0" class="d" /><circle cx="52.0" cy="79.6" r="2.4" class="d" /><circle cx="18.0" cy="10.9" r="2.6" class="f" /><circle cx="15.3" cy="72.6" r="3.5" class="d" /><circle cx="14.7" cy="25.1" r="3.4" class="d" /><circle cx="51.4" cy="72.6" r="2.0" class="f" /><circle cx="10.4" cy="26.3" r="3.4" class="d" /><circle cx="21.7" cy="31.2" r="2.3" class="d" /><circle cx="33.6" cy="36.9" r="3.8" class="f" /><circle cx="12.5" cy="0.4" r="3.8" class="d" /><circle cx="70.4" cy="88.8" r="2.3" class="d" /><circle cx="76.0" cy="83.5" r="1.7" class="f" /><circle cx="59.6" cy="75.3" r="3.0" class="d" /><circle cx="41.5" cy="26.0" r="2.0" class="d" /><circle cx="18.2" cy="6.1" r="2.8" class="f" /><circle cx="23.0" cy="72.9" r="1.1" class="d" /><circle cx="72.3" cy="62.4" r="3.8" class="d" /><circle cx="71.7" cy="81.0" r="2.7" class="f" /><circle cx="1.1" cy="67.1" r="1.5" class="d" /><circle cx="24.0" cy="59.7" r="2.6" class="d" /><circle cx="33.1" cy="84.5" r="2.8" class="f" /><circle cx="27.3" cy="22.7" r="3.6" class="d" /><circle cx="38.2" cy="70.4" r="2.1" class="d" /><circle cx="15.8" cy="48.1" r="3.5" class="f" /><circle cx="13.7" cy="71.3" r="3.8" class="d" /><circle cx="64.5" cy="74.1" r="1.0" class="d" /><circle cx="50.3" cy="77.6" r="1.1" class="f" /><circle cx="21.7" cy="24.2" r="2.6" class="d" /><circle cx="33.8" cy="42.6" r="3.3" class="d" /><circle cx="0.1" cy="4.9" r="1.4" class="f" /><circle cx="10.0" cy="6.2" r="3.9" class="d" /><circle cx="68.4" cy="7.8" r="2.5" class="d" /><circle cx="25.3" cy="28.3" r="2.1" class="f" /><circle cx="51.8" cy="52.8" r="2.1" class="d" /><circle cx="15.3" cy="29.6" r="1.4" class="d" /><circle cx="44.4" cy="64.4" r="2.1" class="f" /><circle cx="6.4" cy="16.1" r="2.1" class="d" /><circle cx="48.4" cy="70.4" r="2.1" class="d" /><rect x="80" y="0" width="80" height="90" rx="0" class="f" /><circle cx="120" cy="40" r="18" class="d" /><rect x="80" y="62" width="80" height="28" rx="0" class="panel" /><text x="120" y="80" font-size="10" font-weight="800" text-anchor="middle" class="i" >ПРОЩЕ</text><text x="40" y="86" font-size="5" text-anchor="middle" class="i mn">ДО</text><rect x="79.5" y="0" width="1" height="90" rx="0" class="a" /></svg><figcaption><span class="kind">Стилизация</span><b>Упрощение изображения</b><span>Стилизованное или упрощённое изображение даёт меньше шума и больше контраста с типографикой.</span></figcaption></figure>
+<figure class="tyc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Тонировка: изображение окрашено в цвет ролика"><rect width="160" height="90" rx="6" class="bg"/><circle cx="52" cy="40" r="18" class="d" /><rect x="86" y="22" width="40" height="50" rx="3" class="f" /><path d="M0 90V70l40-14l40 18l40-10l40 8v18z" class="d" /><rect x="0" y="0" width="160" height="90" rx="6" class="a" style="opacity:.55;mix-blend-mode:multiply"/><text x="80" y="52" font-size="22" font-weight="800" text-anchor="middle" class="i" >ТОН</text></svg><figcaption><span class="kind">Тонировка</span><b>Цвет поверх изображения</b><span>Тонировка связывает фото, графику и текст в одну систему.</span></figcaption></figure>
+<figure class="tyc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Типографика из объектов: слово из деревьев"><defs><pattern id="t4" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M3 .5l2.6 4.6h-5.2z" style="fill:var(--accent)"/></pattern></defs><rect width="160" height="90" rx="6" class="bg"/><text x="80" y="62" font-size="44" font-weight="900" text-anchor="middle" fill="url(#t4)" letter-spacing="-1">ЛЕС</text></svg><figcaption><span class="kind">Из объектов</span><b>Текст из предметов</b><span>Слово собрано из объектов, связанных с идеей сцены.</span></figcaption></figure>
+  </div>
+
+  <h3>Читаемость</h3>
+  <div class="pair">
+    <div class="bad"><i>Плохо</i><span>Белый текст на пёстром фото, без подложки и затемнения.</span><small>Зритель тратит секунду на чтение и пропускает анимацию.</small></div>
+    <div class="good"><i>Хорошо</i><span>Подложка, локальное затемнение или спокойная часть изображения под текстом.</span><small>Слово считывается сразу, внимание остаётся на смысле.</small></div>
+  </div>
+
+  <div class="task"><i>Задание</i><b>Встрой текст в три кадра</b><p>Выбери три типографических кадра своей раскадровки и для каждого примени разный приём: деформацию, наслоение и подложку или работу с фоном.</p></div>
+</section>
+
+<section id="u4">
+<div class="corner"><span>PERASPERADASTRA
+РАСКАДРОВКА</span><span>ЧАСТЬ 04
+РАЗБОРЫ</span></div>
+  <div class="head"><h2>Разборы раскадровок</h2></div>
+  <p class="quote">Не все сцены должны строиться на сложных метафорах.</p>
+  <p>Два разбора: ролик по речи Стива Джобса и ролик Perasperadastra про туториалы. Смотри, как подачи сменяют друг друга и как это создаёт ритм.</p>
+
+  <h3>Речь Стива Джобса</h3>
+  <p>Текст речи: «When you grow up, you tend to get told that the world is the way it is…». Базовый слой — оригинальное видео, поверх него типографические вставки и графические сцены-метафоры между фрагментами.</p>
+  <div class="jobs scroll-x">
+<figure class="jc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Исходник: архивное видео со спикером и подписью"><rect width="160" height="90" rx="6" class="bg"/><rect x="6" y="3" width="6" height="4" rx="1" class="f" /><rect x="6" y="83" width="6" height="4" rx="1" class="f" /><rect x="19" y="3" width="6" height="4" rx="1" class="f" /><rect x="19" y="83" width="6" height="4" rx="1" class="f" /><rect x="32" y="3" width="6" height="4" rx="1" class="f" /><rect x="32" y="83" width="6" height="4" rx="1" class="f" /><rect x="45" y="3" width="6" height="4" rx="1" class="f" /><rect x="45" y="83" width="6" height="4" rx="1" class="f" /><rect x="58" y="3" width="6" height="4" rx="1" class="f" /><rect x="58" y="83" width="6" height="4" rx="1" class="f" /><rect x="71" y="3" width="6" height="4" rx="1" class="f" /><rect x="71" y="83" width="6" height="4" rx="1" class="f" /><rect x="84" y="3" width="6" height="4" rx="1" class="f" /><rect x="84" y="83" width="6" height="4" rx="1" class="f" /><rect x="97" y="3" width="6" height="4" rx="1" class="f" /><rect x="97" y="83" width="6" height="4" rx="1" class="f" /><rect x="110" y="3" width="6" height="4" rx="1" class="f" /><rect x="110" y="83" width="6" height="4" rx="1" class="f" /><rect x="123" y="3" width="6" height="4" rx="1" class="f" /><rect x="123" y="83" width="6" height="4" rx="1" class="f" /><rect x="136" y="3" width="6" height="4" rx="1" class="f" /><rect x="136" y="83" width="6" height="4" rx="1" class="f" /><rect x="149" y="3" width="6" height="4" rx="1" class="f" /><rect x="149" y="83" width="6" height="4" rx="1" class="f" /><rect x="46" y="10" width="68" height="70" rx="2" class="f" /><circle cx="80" cy="38" r="14" class="d" /><path d="M56 80c0-16 10-24 24-24s24 8 24 24z" class="d" /><circle cx="111.0" cy="76.3" r="0.5" class="i" style="opacity:.25"/><circle cx="49.8" cy="15.9" r="0.5" class="i" style="opacity:.25"/><circle cx="102.8" cy="61.5" r="0.5" class="i" style="opacity:.25"/><circle cx="91.5" cy="31.6" r="0.5" class="i" style="opacity:.25"/><circle cx="87.2" cy="52.5" r="0.5" class="i" style="opacity:.25"/><circle cx="85.5" cy="21.1" r="0.5" class="i" style="opacity:.25"/><circle cx="75.3" cy="37.5" r="0.5" class="i" style="opacity:.25"/><circle cx="95.2" cy="79.6" r="0.5" class="i" style="opacity:.25"/><circle cx="110.6" cy="48.1" r="0.5" class="i" style="opacity:.25"/><circle cx="76.3" cy="28.8" r="0.5" class="i" style="opacity:.25"/><circle cx="48.4" cy="11.9" r="0.5" class="i" style="opacity:.25"/><circle cx="77.6" cy="32.3" r="0.5" class="i" style="opacity:.25"/><circle cx="71.8" cy="72.4" r="0.5" class="i" style="opacity:.25"/><circle cx="81.8" cy="49.2" r="0.5" class="i" style="opacity:.25"/><circle cx="62.1" cy="11.7" r="0.5" class="i" style="opacity:.25"/><circle cx="68.1" cy="19.6" r="0.5" class="i" style="opacity:.25"/><circle cx="80.7" cy="79.9" r="0.5" class="i" style="opacity:.25"/><circle cx="91.9" cy="22.7" r="0.5" class="i" style="opacity:.25"/><circle cx="106.8" cy="65.8" r="0.5" class="i" style="opacity:.25"/><circle cx="95.9" cy="73.5" r="0.5" class="i" style="opacity:.25"/><circle cx="97.9" cy="65.3" r="0.5" class="i" style="opacity:.25"/><circle cx="70.1" cy="78.7" r="0.5" class="i" style="opacity:.25"/><circle cx="111.4" cy="21.3" r="0.5" class="i" style="opacity:.25"/><circle cx="97.3" cy="60.1" r="0.5" class="i" style="opacity:.25"/><circle cx="77.4" cy="47.1" r="0.5" class="i" style="opacity:.25"/><circle cx="79.3" cy="74.7" r="0.5" class="i" style="opacity:.25"/><circle cx="80.1" cy="68.2" r="0.5" class="i" style="opacity:.25"/><circle cx="70.1" cy="71.8" r="0.5" class="i" style="opacity:.25"/><circle cx="107.2" cy="42.3" r="0.5" class="i" style="opacity:.25"/><circle cx="84.6" cy="74.4" r="0.5" class="i" style="opacity:.25"/><circle cx="95.2" cy="44.1" r="0.5" class="i" style="opacity:.25"/><circle cx="61.1" cy="32.7" r="0.5" class="i" style="opacity:.25"/><circle cx="93.6" cy="21.6" r="0.5" class="i" style="opacity:.25"/><circle cx="107.7" cy="28.8" r="0.5" class="i" style="opacity:.25"/><circle cx="108.0" cy="31.7" r="0.5" class="i" style="opacity:.25"/><circle cx="111.1" cy="59.4" r="0.5" class="i" style="opacity:.25"/><circle cx="80.3" cy="46.2" r="0.5" class="i" style="opacity:.25"/><circle cx="90.3" cy="51.2" r="0.5" class="i" style="opacity:.25"/><circle cx="67.2" cy="24.5" r="0.5" class="i" style="opacity:.25"/><circle cx="80.8" cy="75.4" r="0.5" class="i" style="opacity:.25"/><circle cx="88.4" cy="15.3" r="0.5" class="i" style="opacity:.25"/><circle cx="101.8" cy="60.8" r="0.5" class="i" style="opacity:.25"/><circle cx="107.7" cy="23.4" r="0.5" class="i" style="opacity:.25"/><circle cx="96.6" cy="14.1" r="0.5" class="i" style="opacity:.25"/><circle cx="90.4" cy="29.1" r="0.5" class="i" style="opacity:.25"/><circle cx="61.4" cy="71.3" r="0.5" class="i" style="opacity:.25"/><circle cx="53.2" cy="46.6" r="0.5" class="i" style="opacity:.25"/><circle cx="104.1" cy="27.1" r="0.5" class="i" style="opacity:.25"/><circle cx="60.3" cy="71.6" r="0.5" class="i" style="opacity:.25"/><circle cx="74.8" cy="60.2" r="0.5" class="i" style="opacity:.25"/><circle cx="48.2" cy="35.4" r="0.5" class="i" style="opacity:.25"/><circle cx="57.7" cy="57.1" r="0.5" class="i" style="opacity:.25"/><circle cx="51.6" cy="76.8" r="0.5" class="i" style="opacity:.25"/><circle cx="47.7" cy="61.1" r="0.5" class="i" style="opacity:.25"/><circle cx="47.4" cy="27.9" r="0.5" class="i" style="opacity:.25"/><circle cx="101.3" cy="21.0" r="0.5" class="i" style="opacity:.25"/><circle cx="58.5" cy="58.4" r="0.5" class="i" style="opacity:.25"/><circle cx="72.2" cy="13.0" r="0.5" class="i" style="opacity:.25"/><circle cx="113.3" cy="20.6" r="0.5" class="i" style="opacity:.25"/><circle cx="48.5" cy="34.1" r="0.5" class="i" style="opacity:.25"/><circle cx="87.8" cy="62.0" r="0.5" class="i" style="opacity:.25"/><circle cx="53.7" cy="33.6" r="0.5" class="i" style="opacity:.25"/><circle cx="48.1" cy="41.4" r="0.5" class="i" style="opacity:.25"/><circle cx="98.1" cy="61.8" r="0.5" class="i" style="opacity:.25"/><circle cx="107.3" cy="62.9" r="0.5" class="i" style="opacity:.25"/><circle cx="104.6" cy="59.4" r="0.5" class="i" style="opacity:.25"/><circle cx="78.1" cy="25.8" r="0.5" class="i" style="opacity:.25"/><circle cx="90.9" cy="32.1" r="0.5" class="i" style="opacity:.25"/><circle cx="52.9" cy="41.3" r="0.5" class="i" style="opacity:.25"/><circle cx="105.5" cy="18.9" r="0.5" class="i" style="opacity:.25"/><text x="80" y="74" font-size="6.5" font-weight="500" text-anchor="middle" class="i" >When you grow up…</text></svg><figcaption><span class="kind">Сцена 01 · Завязка</span><b>When you grow up…</b><span class="pod">Исходник</span><span>Архивный фрагмент: крупный план, зерно, приглушённый цвет. Минималистичная надпись с лёгким дрожанием.</span><span class="tr">→ blur, dissolve</span></figcaption></figure>
+<figure class="jc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Атмосфера: человек в сером кубе"><rect width="160" height="90" rx="6" class="bg"/><path d="M50 26h48v48h-48zM62 16h48v48h-12M50 26l12-10M98 26l12-10M98 74l12-10" class="sd" /><path d="M62 26v48M50 38h48" class="sd" style="opacity:.45"/><path d="M74 26v48M50 50h48" class="sd" style="opacity:.45"/><path d="M86 26v48M50 62h48" class="sd" style="opacity:.45"/><circle cx="74" cy="62.5" r="3.2" class="d" /><path d="M68.5 73q0 -6.2 5.5 -6.2q5.5 0 5.5 6.2z" class="d" /></svg><figcaption><span class="kind">Сцена 02 · Рамки</span><b>…the world is the way it is</b><span class="pod">Атмосфера</span><span>Человек в кубе из wireframe-сетки упирается в невидимые стены. Серая палитра, лёгкое покачивание камеры.</span></figcaption></figure>
+<figure class="jc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Сетка бытовых иконок, всё движется ровно"><rect width="160" height="90" rx="6" class="bg"/><rect x="26" y="18" width="22" height="22" rx="3" class="f" /><rect x="54" y="18" width="22" height="22" rx="3" class="f" /><rect x="82" y="18" width="22" height="22" rx="3" class="f" /><rect x="110" y="18" width="22" height="22" rx="3" class="f" /><rect x="26" y="46" width="22" height="22" rx="3" class="f" /><rect x="54" y="46" width="22" height="22" rx="3" class="f" /><rect x="82" y="46" width="22" height="22" rx="3" class="f" /><rect x="110" y="46" width="22" height="22" rx="3" class="f" /><path d="M31 34l6-6l6 6v6h-12z" class="i" /><circle cx="65" cy="28.549999999999997" r="2.88" class="i" /><path d="M60.0 38q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z" class="i" /><circle cx="93" cy="29" r="5" class="i" /><path d="M117 31h12M117 35h12" class="s" /><circle cx="37" cy="57" r="5" class="i" /><rect x="58" y="54" width="14" height="6" rx="3" class="i" /><rect x="87" y="52" width="12" height="8" rx="1" class="i" /><rect x="115" y="55" width="16" height="3" rx="1" class="i" /><text x="80" y="84" font-size="5" text-anchor="middle" class="d mn">NICE FAMILY LIFE · SAVE MONEY</text></svg><figcaption><span class="kind">Сцена 03 · Быт</span><b>Try not to bash into the walls…</b><span class="pod">Буквальная</span><span>Бытовые иконки ходят ровно по сетке, как интерфейс без души. Слова «nice family life» появляются сухо.</span><span class="tr">→ пауза, тишина</span></figcaption></figure>
+<figure class="jc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Экран трескается, свет прорывается"><rect width="160" height="90" rx="6" class="bg"/><rect x="0" y="0" width="160" height="90" rx="6" class="d" style="opacity:.6"/><path d="M78 0l6 18l-8 10l10 14l-6 14l8 12l-4 22h6l4-22l-8-12l6-14l-10-14l8-10l-6-18z" class="i" /><text x="46" y="52" font-size="16" font-weight="800" text-anchor="middle" class="i" transform="rotate(-6 46 52)">LIMI</text><text x="118" y="50" font-size="16" font-weight="800" text-anchor="middle" class="i" transform="rotate(5 118 50)">TED</text></svg><figcaption><span class="kind">Сцена 04 · Разлом</span><b>That’s a very limited life.</b><span class="pod">Метафора</span><span>Экран трескается, белый свет прорывается сквозь трещину, типографика ломается.</span><span class="tr">→ hit + rise</span></figcaption></figure>
+<figure class="jc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Светлый мир и растущий росток"><rect width="160" height="90" rx="6" class="bg"/><rect x="0" y="0" width="160" height="90" rx="6" class="i" /><path d="M80 78V40" class="sa" style="stroke-width:2.4"/><path d="M80 52c-12-2-16-10-16-16c10 0 16 6 16 16zM80 46c10-2 14-10 14-16c-8 0-14 6-14 16z" class="a" /><rect x="60" y="78" width="40" height="3" rx="1.5" class="f" /></svg><figcaption><span class="kind">Сцена 05 · Освобождение</span><b>Life can be much broader…</b><span class="pod">Метафора</span><span>Камера проходит сквозь трещину в светлый мир. Раскрывается бумажный росток.</span><span class="tr">→ свет расширяется</span></figcaption></figure>
+<figure class="jc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Предметы разбираются на геометрию"><rect width="160" height="90" rx="6" class="bg"/><path d="M30 52l12-12l12 12v14h-24z" class="s" /><rect x="30" y="22" width="12" height="20" rx="2" class="s" style="fill:none;stroke:var(--ink);stroke-width:1.5"/><path d="M66 44h22M84 40l4 4l-4 4" class="sa" /><circle cx="108" cy="34" r="8" class="a" /><rect x="100" y="50" width="16" height="16" rx="1" class="d" /><path d="M124 66l10-18l10 18z" class="i" /></svg><figcaption><span class="kind">Сцена 06 · Понимание</span><b>Everything around you…</b><span class="pod">Объекты</span><span>Дом, машина, телефон разбираются на геометрию и собираются обратно. Палитра теплеет.</span><span class="tr">→ morphing</span></figcaption></figure>
+<figure class="jc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Прикосновение расходится волной"><rect width="160" height="90" rx="6" class="bg"/><circle cx="64" cy="48" r="8" class="none" style="fill:none;stroke:var(--accent);opacity:0.87"/><circle cx="64" cy="48" r="16" class="none" style="fill:none;stroke:var(--accent);opacity:0.73"/><circle cx="64" cy="48" r="24" class="none" style="fill:none;stroke:var(--accent);opacity:0.60"/><circle cx="64" cy="48" r="32" class="none" style="fill:none;stroke:var(--accent);opacity:0.47"/><circle cx="64" cy="48" r="40" class="none" style="fill:none;stroke:var(--accent);opacity:0.33"/><path d="M40 50c6-4 14-4 20-2l6 1" class="s" style="stroke-width:3;stroke-linecap:round"/><text x="118" y="40" font-size="9" font-weight="700" text-anchor="middle" class="i" >change it</text><text x="118" y="54" font-size="7" font-weight="600" text-anchor="middle" class="d" >influence it</text></svg><figcaption><span class="kind">Сцена 07 · Сила</span><b>You can change it…</b><span class="pod">Метафора</span><span>Рука толкает окружение, волна перестраивает объекты. «change it» в ритме фразы.</span><span class="tr">→ камера за волной</span></figcaption></figure>
+<figure class="jc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Нажатие на упругую сферу"><rect width="160" height="90" rx="6" class="bg"/><ellipse cx="80" cy="54" rx="30" ry="20" class="i"/><path d="M80 24v12" class="sa" style="stroke-width:3;stroke-linecap:round"/><ellipse cx="80" cy="78" rx="40" ry="5" style="fill:none;stroke:var(--faint)"/><text x="80" y="58" font-size="8" font-weight="800" text-anchor="middle" class="bgt" >poke life</text></svg><figcaption><span class="kind">Сцена 08 · Взаимодействие</span><b>You can poke life…</b><span class="pod">Метафора</span><span>Нажатие на белую сферу, рябь и деформация. Текст «poke life» сжимается и растягивается.</span><span class="tr">→ pop</span></figcaption></figure>
+<figure class="jc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Формы текут, как живая глина"><rect width="160" height="90" rx="6" class="bg"/><path d="M30 50c0-14 22-18 28-6s-4 24-16 22s-12-6-12-16z" class="a" /><path d="M70 40c10-10 26-4 26 8s-14 18-22 12s-10-12-4-20z" class="d" /><path d="M106 52c4-12 22-14 26-2s-8 18-16 16s-12-6-10-14z" class="i" /><text x="80" y="82" font-size="5" text-anchor="middle" class="d mn">YOU CAN MOLD IT</text></svg><figcaption><span class="kind">Сцена 09 · Пластичность</span><b>You can mold it.</b><span class="pod">Атмосфера</span><span>Формы текут, как живая глина, цветовые пятна переходят в пиктограммы.</span></figcaption></figure>
+<figure class="jc"><svg class="fr" viewBox="0 0 160 90" role="img" aria-label="Зум на глаза и финальная фраза"><rect width="160" height="90" rx="6" class="bg"/><rect x="0" y="0" width="160" height="90" rx="6" class="d" /><ellipse cx="58" cy="40" rx="14" ry="7" class="i"/><ellipse cx="102" cy="40" rx="14" ry="7" class="i"/><circle cx="58" cy="40" r="4" class="bgt" /><circle cx="102" cy="40" r="4" class="bgt" /><text x="80" y="72" font-size="7" font-weight="600" text-anchor="middle" class="i" >You’ll never be the same again.</text></svg><figcaption><span class="kind">Сцена 10 · Финал</span><b>…you’ll never be the same again.</b><span class="pod">Исходник</span><span>Возврат к лицу Джобса, зум на глаза, цветок распускается, свет заполняет экран.</span><span class="tr">→ rise, затем тишина</span></figcaption></figure>
+  </div>
+  <div class="mood">
+    <div style="--c:#6a6a6a"><i>Сцены 1–3</i><b>Ограничение</b><span>Серый, нейтральный · куб, стена, система · медленно</span></div>
+    <div style="--c:#e9e9e6"><i>Сцены 4–5</i><b>Прорыв</b><span>Белый, светлый · разлом, свет · средне</span></div>
+    <div style="--c:var(--accent)"><i>Сцены 6–8</i><b>Творчество</b><span>Цвет и пластика · волна, росток, форма · быстрее</span></div>
+    <div style="--c:#f2c9a8"><i>Сцены 9–10</i><b>Свобода</b><span>Светлый, тёплый · распускание, взгляд · спокойный финал</span></div>
+  </div>
+  <ol class="steps">
+    <li><div><div class="t">Базовый слой</div><div class="d">Оригинальное видео Джобса.</div></div></li>
+    <li><div><div class="t">Текстовые акценты</div><div class="d">Фразы из речи типографическими вставками.</div></div></li>
+    <li><div><div class="t">Визуальные метафоры</div><div class="d">2D- и 3D-сцены между фрагментами, отражающие смысл.</div></div></li>
+    <li><div><div class="t">Звук</div><div class="d">Минималистичный эмбиент и лёгкие whoosh, pop, rise.</div></div></li>
+    <li><div><div class="t">Темп</div><div class="d">По драматургической дуге: от ограниченности к свободе.</div></div></li>
+  </ol>
+
+  <h3>«Хватит сохранять туториалы»</h3>
+  <p>Девять сюжетов ролика и подача, которую выбрали для каждого. Насыщенные сцены перемежаются связками и простыми образами.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Сюжет</th><th>Фраза</th><th>Подача</th><th>Зачем так</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>«Стоп. Хватит сохранять туториалы по AI»</td><td><span class="tag g-image">Метафора</span></td><td>Перегруженная голова: ощущение потребления вместо практики. Запасные варианты — буквальный и мемный.</td></tr>
+      <tr><td>2</td><td>«Это тебя никак не прокачает»</td><td><span class="tag g-image">Метафора</span></td><td>Обратная эволюция. Пробовали также гантелю, мем и иллюстрацию.</td></tr>
+      <tr><td>3</td><td>«99% нейроконтента — пережёванные тренды»</td><td><span class="tag g-direct">Игра слов</span></td><td>Жвачка теряет форму в анимации.</td></tr>
+      <tr><td>4</td><td>«Изучили технические азы, но не фундамент»</td><td><span class="tag g-link">Персонаж</span> <span class="tag g-image">Объекты</span></td><td>Герой за компьютером, клавиатура, колонны и книги.</td></tr>
+      <tr><td>5</td><td>«Крутой результат — это не только техника»</td><td><span class="tag g-direct">Инфографика</span></td><td>Типографика превращается в диаграмму.</td></tr>
+      <tr><td>6–7</td><td>Связки между блоками</td><td><span class="tag g-link">Связка</span></td><td>Герой и простая типографика держат динамику монтажа.</td></tr>
+      <tr><td>8</td><td>«Лучшие нейрокреаторы — бывшие профи»</td><td><span class="tag g-ref">Культурная отсылка</span></td><td>«Тайная вечеря» с режиссёрами, фотографами и дизайнерами.</td></tr>
+      <tr><td>9</td><td>«ИИ не имеет смысла без естественного»</td><td><span class="tag g-link">Пауза</span></td><td>Простая ассоциация с мозгом, сцена держится на композиции и типографике.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="why">Простые решения в нужном месте — тоже решение. Они дают паузу между насыщенными сценами и фокусируют внимание на мысли.</p>
+</section>
+
+<section id="u5">
+<div class="corner"><span>PERASPERADASTRA
+РАСКАДРОВКА</span><span>ЧАСТЬ 05
+РИТМ</span></div>
+  <div class="head"><h2>Ритм раскадровки</h2></div>
+  <p class="quote">Соседние кадры должны отличаться хотя бы чем-то одним.</p>
+  <p>Ритм — это чередование. Подач, крупностей, композиций, цветов и темпа. Когда мы делаем раскадровку, думаем о нём в первую очередь: отсюда разные композиции, цвета и визуальные сюжеты.</p>
+
+  <h3>Проверь свою ленту</h3>
+  <div class="rb" id="rb">
+    <div class="rb-top"><span class="mono">Пресет</span><div class="seg" role="group" aria-label="Пресет"><button type="button" data-preset="tut" aria-pressed="true">Ролик про туториалы</button><button type="button" data-preset="flat">Всё типографикой</button><button type="button" data-preset="mine">Своя</button></div></div>
+    <div class="rb-strip" aria-label="Лента сцен"></div>
+    <div class="rb-slots"></div>
+    <ul class="rb-out" aria-live="polite"></ul>
+  </div>
+  <p class="why">Выбери подачу для каждой сцены своей раскадровки. Проверка ловит три одинаковые группы подряд, ролик без пауз и слабое начало.</p>
+
+  <h3>Принципы</h3>
+  <div class="three">
+    <div class="box"><span class="kind">01</span><b>Одна мысль — одна сцена</b><p>Если в сцене две мысли, раздели её.</p></div>
+    <div class="box"><span class="kind">02</span><b>Динамика внутри</b><p>Даже статичный кадр несёт импульс: взгляд, линию, направление.</p></div>
+    <div class="box"><span class="kind">03</span><b>Ритм крупностей</b><p>Чередуй общий, средний и крупный планы, чтобы ролик дышал.</p></div>
+    <div class="box"><span class="kind">04</span><b>Паузы</b><p>Не бойся пустого кадра: это момент восприятия.</p></div>
+    <div class="box"><span class="kind">05</span><b>Фокус</b><p>В каждом кадре понятно, что главное.</p></div>
+    <div class="box"><span class="kind">06</span><b>Последовательность</b><p>Движения, цвета и формы логично переходят из кадра в кадр.</p></div>
+  </div>
+
+  <h3>Чем отличаются соседние кадры</h3>
+  <dl>
+    <dt>Размер</dt><dd>Мелкие элементы сменяются одним крупным.</dd>
+    <dt>Расположение</dt><dd>Центр, край, верх, низ кадра.</dd>
+    <dt>Цвет</dt><dd>Тёмный и светлый кадр, нейтральный и акцентный.</dd>
+    <dt>Форма</dt><dd>Круг и прямоугольник, органика и геометрия.</dd>
+    <dt>Крупность и ракурс</dt><dd>Общий, средний, крупный план, деталь; вид сверху или снизу.</dd>
+    <dt>Подача</dt><dd>После метафоры — типографика, после отсылки — пауза.</dd>
+  </dl>
+  <div class="note"><b>Аниматик</b><p>Собери кадры в монтажке с примерным таймингом и музыкой. Пять минут работы, и ты видишь, где сцена висит слишком долго, а где ритм сбивается.</p></div>
+</section>
+
+<section id="u6">
+<div class="corner"><span>PERASPERADASTRA
+РАСКАДРОВКА</span><span>ЧАСТЬ 06
+ОФОРМЛЕНИЕ И НЕЙРОНКА</span></div>
+  <div class="head"><h2>Оформление и работа с нейронкой</h2></div>
+  <p>Раскадровку собирай в Figma, Miro или Notion. Для длинных проектов делай отдельную доску на каждый акт. Рядом с кадрами — таблица.</p>
+
+  <h3>Шаблон таблицы</h3>
+  <div class="tpl">
+    <div class="scroll"><table id="tpl-table">
+      <thead><tr><th>№</th><th>Сюжет</th><th>Подача</th><th>Визуальный образ</th><th>Текст / голос</th><th>Тайминг</th><th>Референсы</th><th>Звук и переход</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Хук</td><td>Метафора</td><td>Голова, переполненная сохранёнными роликами</td><td>«Стоп. Хватит сохранять туториалы по AI»</td><td>0:00–0:03</td><td>2–3 ссылки с подписью</td><td>hit на «стоп», whoosh в сцену 2</td></tr>
+        <tr><td>2</td><td>Развитие</td><td>Метафора</td><td>Обратная эволюция</td><td>«Это тебя никак не прокачает»</td><td>0:03–0:06</td><td>…</td><td>…</td></tr>
+      </tbody>
+    </table></div>
+    <pre id="tpl-tsv" hidden>№	Сюжет	Подача	Визуальный образ	Текст / голос	Тайминг	Референсы	Звук и переход
+1							
+2							
+3							
+4							
+5							
+6							
+7							
+8							
+9							
+10							
+11							
+12							</pre>
+    <button class="copy" type="button" data-copy="tpl-tsv">Скопировать шаблон</button>
+    <p class="hint">Шаблон копируется с табуляцией: вставь его в Notion, Google Таблицы или в таблицу в Figma.</p>
+  </div>
+
+  <h3>В паре с нейронкой</h3>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Сценарий, цель ролика и твои заметки. Без них нейронка придумает картинки для любого ролика.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Нейронка спрашивает и ждёт ответа, а не выдаёт готовую раскадровку.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Подачу, образ и формулировку выбираешь сам. Нейронка помогает думать.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Промпт · шаг 1</span><b>Проверить разбиение на сюжеты</b>
+<pre id="ai-1">Ты — режиссёр моушн-роликов. Помоги мне проверить раскадровку на уровне структуры.
+Цель ролика: <em>[для кого ролик и что зритель должен понять]</em>
+Сценарий: <em>[вставь сценарий]</em>
+Как я разбил его на сюжеты: <em>[вставь список сюжетов]</em>
+Не переписывай текст и не предлагай картинки. Задавай мне по одному вопросу о каждом сюжете: какая у него цель, какая эмоция, не стоит ли объединить или разделить его с соседним. Жди моего ответа после каждого вопроса.</pre>
+      <button class="copy" type="button" data-copy="ai-1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь, решаешь, какие сюжеты объединить или разделить, и формулируешь цель каждого.</p>
+    </div>
+    <div class="prompt"><span class="kind">Промпт · шаг 3</span><b>Расшатать образ для сцены</b>
+<pre id="ai-2">Я ищу образ для сцены моушн-ролика. Не предлагай готовых идей.
+Фраза сцены: <em>[вставь фразу]</em>
+Её смысл своими словами: <em>[вставь]</em>
+Тон ролика: <em>[серьёзный, ироничный, вдохновляющий]</em>
+Задавай мне вопросы по одному: какие предметы, места и жесты связаны с этим смыслом; что ему противоположно; где это встречается в культуре, играх и интернете. Когда я отвечу на 5–6 вопросов, разложи мои же ассоциации по группам: буквальная подача, метафора, отсылка, типографика.</pre>
+      <button class="copy" type="button" data-copy="ai-2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь своими ассоциациями, выбираешь подачу и рисуешь эскиз.</p>
+    </div>
+    <div class="prompt"><span class="kind">Промпт · шаг 6</span><b>Проверить ритм</b>
+<pre id="ai-3">Вот моя раскадровка таблицей: <em>[вставь таблицу: сюжет, подача, крупность, тайминг]</em>
+Проверь ритм. Найди места, где подряд идут одинаковые подачи или крупности, где нет паузы, где сцена сильно длиннее соседних. Не предлагай новых образов. По каждой проблеме задай мне один вопрос и жди ответа.</pre>
+      <button class="copy" type="button" data-copy="ai-3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> решаешь, какие сцены поменять местами, сократить или переделать.</p>
+    </div>
+  </div>
+
+  <div class="task"><i>Итоговое задание</i><b>Раскадровка ролика на 1–2 минуты</b><p>Разбей сценарий на 8–12 сцен. Для каждой выбери подачу, 1–2 образа и 2–3 референса с подписями. Нарисуй эскизы в Figma, собери их в линию и заполни таблицу по шаблону. Проверь ленту в части 05 и собери черновой аниматик. Сдай ссылку на Figma и таблицу.</p></div>
+</section>
+
+<section id="quiz">
+<div class="corner"><span>PERASPERADASTRA
+РАСКАДРОВКА</span><span>ПРОВЕРЬ СЕБЯ
+7 ВОПРОСОВ</span></div>
+  <h2>Квиз</h2>
+  <p>После ответа появится разбор и ссылка на часть гайда.</p>
+  <div class="quiz" id="quiz-list"></div>
+  <div class="score"><span class="big" id="quiz-score">0 / 7</span><span id="quiz-verdict">Ответь на все вопросы, чтобы увидеть результат.</span><button type="button" id="quiz-reset">Пройти заново</button></div>
+</section>
+
+<section id="check">
+<div class="corner"><span>PERASPERADASTRA
+РАСКАДРОВКА</span><span>ЧЕК-ЛИСТ
+ПЕРЕД СДАЧЕЙ</span></div>
+  <h2>Чек-лист раскадровки</h2>
+  <p>Отметки сохраняются в этом браузере.</p>
+  <div class="check">
+    <label><input type="checkbox" id="c1"><span>Сценарий разбит на сюжеты, 8–12 на минуту, у каждого есть цель</span></label>
+    <label><input type="checkbox" id="c2"><span>Внутри сцен выстроена текстовая иерархия, акценты выделены</span></label>
+    <label><input type="checkbox" id="c3"><span>Для каждой сцены выбрана подача, рядом записана запасная</span></label>
+    <label><input type="checkbox" id="c4"><span>В ролике минимум три разные подачи, нет трёх сцен одной группы подряд</span></label>
+    <label><input type="checkbox" id="c5"><span>Есть хук в первые секунды и хотя бы одна визуальная пауза</span></label>
+    <label><input type="checkbox" id="c6"><span>У каждой сцены 2–3 референса с подписью, что берёшь</span></label>
+    <label><input type="checkbox" id="c7"><span>Типографика читается: подложка, фон или контраст</span></label>
+    <label><input type="checkbox" id="c8"><span>В каждом кадре понятно, что главное</span></label>
+    <label><input type="checkbox" id="c9"><span>У кадров есть подписи: тайминг, текст, звук, переход</span></label>
+    <label><input type="checkbox" id="c10"><span>Раскадровку понял человек, который не читал сценарий</span></label>
+    <label><input type="checkbox" id="c11"><span>Собран черновой аниматик под музыку</span></label>
+  </div>
+</section>
+
+<footer>Perasperadastra · Mission to Motion · раскадровка</footer>
+</div>
+<script type="application/json" id="sb-data">{"types": [{"k": "literal", "g": "direct", "n": "Буквальная подача"}, {"k": "wordplay", "g": "direct", "n": "Игра слов"}, {"k": "typo", "g": "direct", "n": "Типографическая сцена"}, {"k": "info", "g": "direct", "n": "Инфографика"}, {"k": "metaphor", "g": "image", "n": "Метафора"}, {"k": "contrast", "g": "image", "n": "Противопоставление"}, {"k": "objects", "g": "image", "n": "Объекты и предметы"}, {"k": "atmos", "g": "image", "n": "Атмосфера и среда"}, {"k": "cultural", "g": "ref", "n": "Культурная отсылка"}, {"k": "game", "g": "ref", "n": "Игровая отсылка"}, {"k": "meme", "g": "ref", "n": "Мемная и интернет-подача"}, {"k": "character", "g": "link", "n": "Персонаж"}, {"k": "pause", "g": "link", "n": "Связка и пауза"}, {"k": "archive", "g": "link", "n": "Исходник и архив"}], "groups": {"direct": "Прямые", "image": "Образные", "ref": "Отсылки", "link": "Связки"}, "phrases": [{"p": "Хватит сохранять туториалы по AI", "v": [{"k": "metaphor", "n": "Метафора", "g": "image", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Метафора: голова переполнена сохранёнными роликами\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><path d=\"M56 84v-12c-12-4-16-14-16-26c0-16 12-26 28-26c14 0 24 10 24 22l6 10l-6 3v8c0 5-4 7-9 7h-5v14z\" class=\"d\" /><rect x=\"54.9\" y=\"7.1\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"a\" transform=\"rotate(0 61 11)\"/><rect x=\"66.0\" y=\"6.7\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(-24 72 11)\"/><rect x=\"62.5\" y=\"31.5\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(23 68 36)\"/><rect x=\"46.7\" y=\"19.6\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(-2 53 24)\"/><rect x=\"56.7\" y=\"9.2\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"a\" transform=\"rotate(-19 63 13)\"/><rect x=\"56.0\" y=\"32.3\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(-24 62 36)\"/><rect x=\"82.1\" y=\"28.2\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(-8 88 32)\"/><rect x=\"52.9\" y=\"13.3\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(15 59 17)\"/><rect x=\"83.9\" y=\"32.8\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"a\" transform=\"rotate(-2 90 37)\"/><rect x=\"48.0\" y=\"22.2\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(17 54 26)\"/><rect x=\"61.8\" y=\"11.5\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(-10 68 15)\"/><rect x=\"65.8\" y=\"6.7\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(10 72 11)\"/><rect x=\"82.7\" y=\"4.2\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"a\" transform=\"rotate(-7 89 8)\"/><rect x=\"70.3\" y=\"30.5\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(23 76 34)\"/><rect x=\"67.4\" y=\"16.4\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(13 73 20)\"/><rect x=\"57.3\" y=\"17.5\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(-11 63 22)\"/><rect x=\"58.0\" y=\"28.4\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"a\" transform=\"rotate(-23 64 32)\"/><rect x=\"47.7\" y=\"17.9\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"i\" transform=\"rotate(-8 54 22)\"/><\/svg>", "d": "Голова, переполненная сохранённым AI-контентом. Образ передаёт не сам процесс сохранения, а ощущение бесконечного потребления вместо практики."}, {"k": "literal", "n": "Буквальная подача", "g": "direct", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Буквальная подача: кнопка «Сохранить» и стопка закладок\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><path d=\"M40 22h18v28l-9-6l-9 6z\" class=\"f\" /><path d=\"M49 26h18v28l-9-6l-9 6z\" class=\"f\" /><path d=\"M58 30h18v28l-9-6l-9 6z\" class=\"f\" /><path d=\"M67 34h18v28l-9-6l-9 6z\" class=\"i\" /><rect x=\"86\" y=\"44\" width=\"40\" height=\"14\" rx=\"7\" class=\"a\" /><text x=\"106\" y=\"53.5\" font-size=\"5.5\" font-weight=\"700\" text-anchor=\"middle\" class=\"bgt\" >Сохранить<\/text><path d=\"M118 54l8 4l-3.5 1.2l2.5 4.5l-2 1l-2.4-4.4l-2.6 2.2z\" class=\"i\" /><\/svg>", "d": "Кнопка «Сохранить» и растущая стопка закладок. Без скрытых смыслов: понятно и быстро."}, {"k": "meme", "n": "Мемная и интернет-подача", "g": "ref", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Мемная подача: интерфейс с тысячами сохранёнок\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><rect x=\"48\" y=\"8\" width=\"64\" height=\"76\" rx=\"6\" class=\"panel\" /><text x=\"55\" y=\"21\" font-size=\"5.6\" font-weight=\"600\" text-anchor=\"start\" class=\"i\" >Сохранённое<\/text><rect x=\"92\" y=\"15\" width=\"17\" height=\"8\" rx=\"4\" class=\"a\" /><text x=\"100.5\" y=\"20.6\" font-size=\"4.4\" font-weight=\"700\" text-anchor=\"middle\" class=\"bgt\" >9 999+<\/text><rect x=\"54\" y=\"28\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"f\" /><path d=\"M58.5 30.2l4 1.8l-4 1.8z\" class=\"i\" /><rect x=\"70\" y=\"29.5\" width=\"30\" height=\"2\" rx=\"1\" class=\"d\" /><rect x=\"70\" y=\"33\" width=\"18\" height=\"1.6\" rx=\"1\" class=\"f\" /><rect x=\"54\" y=\"39\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"f\" /><path d=\"M58.5 41.2l4 1.8l-4 1.8z\" class=\"i\" /><rect x=\"70\" y=\"40.5\" width=\"30\" height=\"2\" rx=\"1\" class=\"d\" /><rect x=\"70\" y=\"44\" width=\"18\" height=\"1.6\" rx=\"1\" class=\"f\" /><rect x=\"54\" y=\"50\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"f\" /><path d=\"M58.5 52.2l4 1.8l-4 1.8z\" class=\"i\" /><rect x=\"70\" y=\"51.5\" width=\"30\" height=\"2\" rx=\"1\" class=\"d\" /><rect x=\"70\" y=\"55\" width=\"18\" height=\"1.6\" rx=\"1\" class=\"f\" /><rect x=\"54\" y=\"61\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"f\" /><path d=\"M58.5 63.2l4 1.8l-4 1.8z\" class=\"i\" /><rect x=\"70\" y=\"62.5\" width=\"30\" height=\"2\" rx=\"1\" class=\"d\" /><rect x=\"70\" y=\"66\" width=\"18\" height=\"1.6\" rx=\"1\" class=\"f\" /><rect x=\"54\" y=\"72\" width=\"12\" height=\"8\" rx=\"1.5\" class=\"f\" /><path d=\"M58.5 74.2l4 1.8l-4 1.8z\" class=\"i\" /><rect x=\"70\" y=\"73.5\" width=\"30\" height=\"2\" rx=\"1\" class=\"d\" /><rect x=\"70\" y=\"77\" width=\"18\" height=\"1.6\" rx=\"1\" class=\"f\" /><path d=\"M104 66l8 4l-3.5 1.2l2.5 4.5l-2 1l-2.4-4.4l-2.6 2.2z\" class=\"i\" /><\/svg>", "d": "Экран «Сохранённое» с бейджем 9 999+. Узнаваемо и близко к языку соцсетей."}]}, {"p": "Это тебя никак не прокачает", "v": [{"k": "metaphor", "n": "Метафора", "g": "image", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Метафора: обратная эволюция\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><text x=\"80\" y=\"12\" font-size=\"5\" text-anchor=\"middle\" class=\"d mn\">ЭТО ТЕБЯ НИКАК НЕ ПРОКАЧАЕТ<\/text><path d=\"M132 34l-8-4l8-4\" class=\"sa\" /><rect x=\"118\" y=\"29.4\" width=\"14\" height=\"1.2\" rx=\"0\" class=\"a\" /><g transform=\"rotate(0 124 76)\"><circle cx=\"124\" cy=\"61.3\" r=\"4.48\" class=\"i\" /><path d=\"M116.3 76q0 -8.7 7.7 -8.7q7.7 0 7.7 8.7z\" class=\"i\" /><\/g><g transform=\"rotate(10 98 76)\"><circle cx=\"98\" cy=\"62.35\" r=\"4.16\" class=\"d\" /><path d=\"M90.8 76q0 -8.1 7.2 -8.1q7.2 0 7.2 8.1z\" class=\"d\" /><\/g><g transform=\"rotate(22 72 76)\"><circle cx=\"72\" cy=\"63.4\" r=\"3.84\" class=\"d\" /><path d=\"M65.4 76q0 -7.4 6.6 -7.4q6.6 0 6.6 7.4z\" class=\"d\" /><\/g><g transform=\"rotate(36 46 76)\"><circle cx=\"46\" cy=\"65.5\" r=\"3.2\" class=\"f\" /><path d=\"M40.5 76q0 -6.2 5.5 -6.2q5.5 0 5.5 6.2z\" class=\"f\" /><\/g><rect x=\"14\" y=\"76\" width=\"132\" height=\"2\" rx=\"0\" class=\"f\" /><\/svg>", "d": "Обратная эволюция: потребление без практики не ведёт к развитию, а отбрасывает назад."}, {"k": "literal", "n": "Буквальная подача", "g": "direct", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Буквальная подача: гантеля «0 кг»\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><rect x=\"44\" y=\"44\" width=\"72\" height=\"4\" rx=\"2\" class=\"i\" /><rect x=\"36\" y=\"32\" width=\"8\" height=\"28\" rx=\"2\" class=\"d\" /><rect x=\"28\" y=\"36\" width=\"8\" height=\"20\" rx=\"2\" class=\"f\" /><rect x=\"116\" y=\"32\" width=\"8\" height=\"28\" rx=\"2\" class=\"d\" /><rect x=\"124\" y=\"36\" width=\"8\" height=\"20\" rx=\"2\" class=\"f\" /><text x=\"80\" y=\"70\" font-size=\"9\" font-weight=\"700\" text-anchor=\"middle\" class=\"a\" >0 кг<\/text><\/svg>", "d": "Прокачка мышц напрямую: гантеля на ноль килограммов."}, {"k": "meme", "n": "Мемная и интернет-подача", "g": "ref", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Мемная подача: шкала опыта на нуле\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><text x=\"30\" y=\"34\" font-size=\"9\" font-weight=\"800\" text-anchor=\"start\" class=\"i\" >LVL 1<\/text><text x=\"130\" y=\"34\" font-size=\"6\" text-anchor=\"end\" class=\"d mn\">НАВЫК<\/text><rect x=\"30\" y=\"42\" width=\"100\" height=\"10\" rx=\"5\" class=\"panel\" /><rect x=\"32\" y=\"44\" width=\"3\" height=\"6\" rx=\"3\" class=\"a\" /><text x=\"80\" y=\"64\" font-size=\"4.6\" text-anchor=\"middle\" class=\"d mn\">XP 0 / 9 999 · СОХРАНЕНО 412 ТУТОРИАЛОВ<\/text><\/svg>", "d": "Шкала опыта из игры застыла на нуле, хотя сохранено 412 туториалов. Абсурдный интернет-юмор."}, {"k": "character", "n": "Персонаж", "g": "link", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Персонаж: герой лежит на диване с телефоном\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><rect x=\"30\" y=\"58\" width=\"100\" height=\"14\" rx=\"6\" class=\"d\" /><rect x=\"30\" y=\"48\" width=\"14\" height=\"24\" rx=\"6\" class=\"d\" /><rect x=\"116\" y=\"48\" width=\"14\" height=\"24\" rx=\"6\" class=\"d\" /><circle cx=\"52\" cy=\"50\" r=\"6\" class=\"a\" /><rect x=\"56\" y=\"50\" width=\"52\" height=\"9\" rx=\"4.5\" class=\"a\" /><rect x=\"70\" y=\"34\" width=\"10\" height=\"16\" rx=\"2\" class=\"i\" /><rect x=\"72\" y=\"36\" width=\"6\" height=\"10\" rx=\"1\" class=\"f\" /><\/svg>", "d": "Иллюстрация в стиле ролика: герой лежит на диване с телефоном. Простой, быстро считываемый образ."}]}, {"p": "Изучили технические азы, но не фундамент", "v": [{"k": "character", "n": "Персонаж", "g": "link", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Персонаж: постоянный герой ролика за компьютером\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><circle cx=\"64\" cy=\"44.25\" r=\"4.8\" class=\"a\" /><path d=\"M55.8 60q0 -9.3 8.2 -9.3q8.2 0 8.2 9.3z\" class=\"a\" /><circle cx=\"60\" cy=\"41\" r=\"1\" class=\"bgt\" /><circle cx=\"67\" cy=\"41\" r=\"1\" class=\"bgt\" /><rect x=\"40\" y=\"60\" width=\"84\" height=\"4\" rx=\"1\" class=\"d\" /><rect x=\"46\" y=\"64\" width=\"3\" height=\"18\" rx=\"0\" class=\"f\" /><rect x=\"115\" y=\"64\" width=\"3\" height=\"18\" rx=\"0\" class=\"f\" /><path d=\"M86 59l6-18h22l-6 18z\" class=\"i\" /><rect x=\"84\" y=\"58\" width=\"28\" height=\"2\" rx=\"0\" class=\"i\" /><\/svg>", "d": "Постоянный герой за компьютером передаёт изучение технических основ и держит стиль ролика."}, {"k": "literal", "n": "Буквальная подача", "g": "direct", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Буквальная подача: слово выложено клавишами\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><text x=\"80\" y=\"28\" font-size=\"5.5\" text-anchor=\"middle\" class=\"d mn\">НАУЧИЛИСЬ НАЖИМАТЬ НА<\/text><rect x=\"24\" y=\"42\" width=\"17\" height=\"17\" rx=\"3\" class=\"f\" /><rect x=\"24\" y=\"40\" width=\"17\" height=\"17\" rx=\"3\" class=\"i\" /><text x=\"32.5\" y=\"52\" font-size=\"9\" font-weight=\"700\" text-anchor=\"middle\" class=\"bgt\" >К<\/text><rect x=\"43\" y=\"42\" width=\"17\" height=\"17\" rx=\"3\" class=\"f\" /><rect x=\"43\" y=\"40\" width=\"17\" height=\"17\" rx=\"3\" class=\"i\" /><text x=\"51.5\" y=\"52\" font-size=\"9\" font-weight=\"700\" text-anchor=\"middle\" class=\"bgt\" >Н<\/text><rect x=\"62\" y=\"42\" width=\"17\" height=\"17\" rx=\"3\" class=\"f\" /><rect x=\"62\" y=\"40\" width=\"17\" height=\"17\" rx=\"3\" class=\"i\" /><text x=\"70.5\" y=\"52\" font-size=\"9\" font-weight=\"700\" text-anchor=\"middle\" class=\"bgt\" >О<\/text><rect x=\"81\" y=\"42\" width=\"17\" height=\"17\" rx=\"3\" class=\"f\" /><rect x=\"81\" y=\"40\" width=\"17\" height=\"17\" rx=\"3\" class=\"i\" /><text x=\"89.5\" y=\"52\" font-size=\"9\" font-weight=\"700\" text-anchor=\"middle\" class=\"bgt\" >П<\/text><rect x=\"100\" y=\"42\" width=\"17\" height=\"17\" rx=\"3\" class=\"f\" /><rect x=\"100\" y=\"40\" width=\"17\" height=\"17\" rx=\"3\" class=\"i\" /><text x=\"108.5\" y=\"52\" font-size=\"9\" font-weight=\"700\" text-anchor=\"middle\" class=\"bgt\" >К<\/text><rect x=\"119\" y=\"42\" width=\"17\" height=\"17\" rx=\"3\" class=\"f\" /><rect x=\"119\" y=\"40\" width=\"17\" height=\"17\" rx=\"3\" class=\"i\" /><text x=\"127.5\" y=\"52\" font-size=\"9\" font-weight=\"700\" text-anchor=\"middle\" class=\"bgt\" >И<\/text><\/svg>", "d": "«Научились нажимать на кнопки» выложено клавишами: интерфейс плюс типографика."}, {"k": "objects", "n": "Объекты и предметы", "g": "image", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Объекты: колонны на стопке книг\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><text x=\"80\" y=\"14\" font-size=\"6\" text-anchor=\"middle\" class=\"a mn\">ФУНДАМЕНТ<\/text><rect x=\"43\" y=\"74\" width=\"74\" height=\"6\" rx=\"1\" class=\"f\" /><rect x=\"48\" y=\"67\" width=\"64\" height=\"6\" rx=\"1\" class=\"d\" /><rect x=\"45\" y=\"60\" width=\"70\" height=\"6\" rx=\"1\" class=\"f\" /><rect x=\"54\" y=\"30\" width=\"10\" height=\"22\" rx=\"0\" class=\"i\" /><rect x=\"52\" y=\"28\" width=\"14\" height=\"3\" rx=\"0\" class=\"i\" /><rect x=\"52\" y=\"51\" width=\"14\" height=\"2\" rx=\"0\" class=\"i\" /><rect x=\"75\" y=\"30\" width=\"10\" height=\"22\" rx=\"0\" class=\"i\" /><rect x=\"73\" y=\"28\" width=\"14\" height=\"3\" rx=\"0\" class=\"i\" /><rect x=\"73\" y=\"51\" width=\"14\" height=\"2\" rx=\"0\" class=\"i\" /><rect x=\"96\" y=\"30\" width=\"10\" height=\"22\" rx=\"0\" class=\"i\" /><rect x=\"94\" y=\"28\" width=\"14\" height=\"3\" rx=\"0\" class=\"i\" /><rect x=\"94\" y=\"51\" width=\"14\" height=\"2\" rx=\"0\" class=\"i\" /><rect x=\"50\" y=\"21\" width=\"60\" height=\"6\" rx=\"0\" class=\"i\" /><\/svg>", "d": "Колонны на книгах подчёркивают идею фундамента."}]}, {"p": "Лучшие нейрокреаторы — бывшие профи", "v": [{"k": "cultural", "n": "Культурная отсылка", "g": "ref", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Культурная отсылка: композиция «Тайной вечери»\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><text x=\"80\" y=\"12\" font-size=\"5\" text-anchor=\"middle\" class=\"d mn\">ЛУЧШИЕ НЕЙРОКРЕАТОРЫ — БЫВШИЕ ПРОФИ<\/text><circle cx=\"80\" cy=\"38\" r=\"11\" class=\"f\" style=\"opacity:.5\"/><circle cx=\"28\" cy=\"46.55\" r=\"2.88\" class=\"i\" /><path d=\"M23.1 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z\" class=\"i\" /><circle cx=\"42\" cy=\"46.55\" r=\"2.88\" class=\"i\" /><path d=\"M37.0 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z\" class=\"i\" /><circle cx=\"56\" cy=\"46.55\" r=\"2.88\" class=\"i\" /><path d=\"M51.0 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z\" class=\"i\" /><circle cx=\"80\" cy=\"44.45\" r=\"3.52\" class=\"a\" /><path d=\"M74.0 56q0 -6.8 6.1 -6.8q6.1 0 6.1 6.8z\" class=\"a\" /><circle cx=\"104\" cy=\"46.55\" r=\"2.88\" class=\"i\" /><path d=\"M99.0 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z\" class=\"i\" /><circle cx=\"118\" cy=\"46.55\" r=\"2.88\" class=\"i\" /><path d=\"M113.0 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z\" class=\"i\" /><circle cx=\"132\" cy=\"46.55\" r=\"2.88\" class=\"i\" /><path d=\"M127.0 56q0 -5.6 5.0 -5.6q5.0 0 5.0 5.6z\" class=\"i\" /><rect x=\"16\" y=\"56\" width=\"128\" height=\"6\" rx=\"1\" class=\"d\" /><rect x=\"22\" y=\"62\" width=\"3\" height=\"16\" rx=\"0\" class=\"f\" /><rect x=\"135\" y=\"62\" width=\"3\" height=\"16\" rx=\"0\" class=\"f\" /><\/svg>", "d": "Композиция «Тайной вечери»: вместо апостолов режиссёры, фотографы и дизайнеры."}, {"k": "typo", "n": "Типографическая сцена", "g": "direct", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Типографика: слово ПРОФИ крупно\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><text x=\"80\" y=\"44\" font-size=\"10\" font-weight=\"500\" text-anchor=\"middle\" class=\"d\" >бывшие<\/text><text x=\"80\" y=\"62\" font-size=\"22\" font-weight=\"800\" text-anchor=\"middle\" class=\"a\" >ПРОФИ<\/text><\/svg>", "d": "Запасной вариант: короткая типографическая сцена, если отсылка не подходит аудитории."}]}, {"p": "ИИ не имеет смысла без естественного", "v": [{"k": "pause", "n": "Связка и пауза", "g": "link", "f": "<svg class=\"fr\" viewBox=\"0 0 160 90\" role=\"img\" aria-label=\"Простая ассоциация: мозг и типографика\"><rect width=\"160\" height=\"90\" rx=\"6\" class=\"bg\"/><path d=\"M58 62c-12 0-16-12-10-18c-6-10 4-20 12-16c2-10 18-12 22-4c8-6 20 0 18 10c10 2 10 16 2 20c2 10-12 14-18 8c-6 6-20 6-26 0z\" class=\"sa\" style=\"stroke-width:2\"/><path d=\"M80 30v34M66 40c6 2 8 8 6 14M94 40c-6 2-8 8-6 14\" class=\"sa\" /><text x=\"80\" y=\"80\" font-size=\"4.8\" text-anchor=\"middle\" class=\"d mn\">ИИ НЕ ИМЕЕТ СМЫСЛА БЕЗ ЕСТЕСТВЕННОГО<\/text><\/svg>", "d": "Прямая ассоциация с мозгом. Сцена работает за счёт композиции и типографики и даёт паузу после насыщенных сюжетов."}]}]}</script>
+
+<script>
+(function(){
+  var DATA = JSON.parse(document.getElementById("sb-data").textContent);
+  function el(t, c, x){ var n = document.createElement(t); if(c) n.className = c; if(x != null) n.textContent = x; return n; }
+
+  // раскладка разделов: номер части и подразделы «заголовок слева — содержимое справа»
+  var secs = document.querySelectorAll('section[id^="u"]');
+  for(var s = 0; s < secs.length; s++){
+    var sec = secs[s], head = sec.querySelector(".head"), h2 = head && head.querySelector("h2");
+    if(h2){ var left = el("div", "head-l"), num = el("div", "num", "0" + sec.id.slice(1)); num.setAttribute("aria-hidden", "true"); head.insertBefore(left, h2); left.appendChild(num); left.appendChild(h2); }
+    var kids = Array.prototype.slice.call(sec.children), cur = null;
+    kids.forEach(function(n){
+      if(n.tagName === "H3"){ cur = el("div", "sub"); var hd = el("div", "sub-h"), bd = el("div", "sub-b"); sec.insertBefore(cur, n); hd.appendChild(n); cur.appendChild(hd); cur.appendChild(bd); cur.body = bd; return; }
+      if(!cur) return;
+      if(n.classList.contains("task")){ cur = null; return; }
+      cur.body.appendChild(n);
+    });
+    var subs = sec.querySelectorAll(".sub");
+    for(var k = 0; k < subs.length; k++) if(subs[k].querySelector(".four,.three,table,.cat,.ty,.jobs,.sw,.rb,.arc,.hier,.ai,.pair")) subs[k].classList.add("wide");
+  }
+
+  // иерархия текста
+  var hier = document.getElementById("hier");
+  if(hier){ hier.setAttribute("data-mode", "two"); hier.querySelectorAll("[data-h]").forEach(function(b){ b.addEventListener("click", function(){ hier.setAttribute("data-mode", b.getAttribute("data-h")); hier.querySelectorAll("[data-h]").forEach(function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); }); }); }); }
+
+  // одна фраза — разные подачи
+  var ph = document.getElementById("phrases");
+  if(ph){
+    var list = ph.querySelector(".sw-ph"), vbox = ph.querySelector(".sw-v"), fr = ph.querySelector(".sw-fr"), d = ph.querySelector(".sw-d"), pi = 0, vi = 0;
+    DATA.phrases.forEach(function(p, i){ var b = el("button", null, "«" + p.p + "»"); b.type = "button"; b.setAttribute("role", "tab"); b.addEventListener("click", function(){ pi = i; vi = 0; draw(); }); list.appendChild(b); });
+    function draw(){
+      list.querySelectorAll("button").forEach(function(b, i){ b.setAttribute("aria-selected", i === pi ? "true" : "false"); });
+      var p = DATA.phrases[pi]; vbox.textContent = "";
+      p.v.forEach(function(v, i){ var b = el("button"); b.type = "button"; b.className = "g-" + v.g; var dot = el("i"); b.appendChild(dot); b.appendChild(document.createTextNode(v.n)); b.setAttribute("aria-pressed", i === vi ? "true" : "false"); b.addEventListener("click", function(){ vi = i; draw(); }); vbox.appendChild(b); });
+      var v = p.v[vi]; fr.innerHTML = v.f; d.textContent = v.d;
+    }
+    draw();
+  }
+
+  // фильтр каталога
+  var cf = document.getElementById("cat-f");
+  if(cf) cf.querySelectorAll("button").forEach(function(b){ b.addEventListener("click", function(){
+    var f = b.getAttribute("data-f");
+    cf.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+    document.querySelectorAll("#cat .ct").forEach(function(c){ c.hidden = f !== "all" && c.getAttribute("data-g") !== f; });
+  }); });
+
+  // проверка ритма
+  var rb = document.getElementById("rb");
+  if(rb){
+    var T = {}; DATA.types.forEach(function(t){ T[t.k] = t; });
+    var PRE = { tut: ["metaphor", "metaphor", "wordplay", "character", "info", "pause", "pause", "cultural", "pause"], flat: ["typo", "typo", "typo", "info", "typo", "typo", "literal", "typo", "typo"] };
+    var KEY = "sb-rhythm-v1", mine = null;
+    try { mine = JSON.parse(localStorage.getItem(KEY) || "null"); } catch(e){}
+    var seq = PRE.tut.slice(), mode = "tut";
+    var strip = rb.querySelector(".rb-strip"), slots = rb.querySelector(".rb-slots"), out = rb.querySelector(".rb-out");
+    function check(){
+      var w = [], bad = {}, n = seq.length;
+      for(var i = 2; i < n; i++){ var g = T[seq[i]].g; if(T[seq[i - 1]].g === g && T[seq[i - 2]].g === g){ bad[i] = bad[i - 1] = bad[i - 2] = 1; } }
+      var runs = Object.keys(bad).length;
+      if(runs) w.push([1, "Три сцены одной группы подряд (отмечены красным). Разбавь их подачей из другой группы."]);
+      var pauses = seq.filter(function(k){ return T[k].g === "link"; }).length;
+      if(!pauses) w.push([1, "Нет ни одной связки или паузы. Зритель устанет от плотных сцен."]);
+      if(T[seq[0]].g === "link") w.push([1, "Ролик начинается со связки. Первая сцена — хук: типографика, метафора или мем."]);
+      var cnt = {}; seq.forEach(function(k){ var g = T[k].g; cnt[g] = (cnt[g] || 0) + 1; });
+      var groups = Object.keys(cnt).length;
+      Object.keys(cnt).forEach(function(g){ if(cnt[g] / n > .6) w.push([1, "Больше половины сцен из группы «" + DATA.groups[g] + "». Ролику не хватает контраста."]); });
+      var types = {}; seq.forEach(function(k){ types[k] = 1; });
+      if(Object.keys(types).length < 3) w.push([1, "Меньше трёх разных подач на весь ролик."]);
+      if(!w.length) w.push([0, "Ритм в порядке: " + Object.keys(types).length + " подач, " + groups + " группы, есть пауза и сильное начало."]);
+      return { w: w, bad: bad };
+    }
+    function render(){
+      var r = check();
+      strip.textContent = ""; slots.textContent = ""; out.textContent = "";
+      seq.forEach(function(k, i){
+        var t = T[k], sp = el("span", "g-" + t.g + (r.bad[i] ? " bad" : "")); sp.title = (i + 1) + ". " + t.n; var em = el("em", null, String(i + 1)); sp.appendChild(em); strip.appendChild(sp);
+        var lab = el("label", "g-" + t.g); lab.appendChild(document.createTextNode("Сцена " + (i + 1)));
+        var sel = el("select"); sel.className = "g-" + t.g;
+        DATA.types.forEach(function(o){ var op = el("option", null, o.n); op.value = o.k; if(o.k === k) op.selected = true; sel.appendChild(op); });
+        sel.addEventListener("change", function(){ seq[i] = sel.value; if(mode !== "mine"){ mode = "mine"; syncP(); } mine = seq.slice(); try { localStorage.setItem(KEY, JSON.stringify(mine)); } catch(e){} render(); });
+        lab.appendChild(sel); slots.appendChild(lab);
+      });
+      r.w.forEach(function(x){ out.appendChild(el("li", x[0] ? "warn" : "", x[1])); });
+    }
+    function syncP(){ rb.querySelectorAll("[data-preset]").forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-preset") === mode ? "true" : "false"); }); }
+    rb.querySelectorAll("[data-preset]").forEach(function(b){ b.addEventListener("click", function(){ mode = b.getAttribute("data-preset"); seq = mode === "mine" ? (mine || PRE.tut).slice() : PRE[mode].slice(); syncP(); render(); }); });
+    render();
+  }
+
+  // копирование
+  document.querySelectorAll("button.copy").forEach(function(b){
+    b.addEventListener("click", function(){
+      var n = document.getElementById(b.getAttribute("data-copy")), t = n.textContent, o = b.textContent;
+      function done(){ b.textContent = "Скопировано"; setTimeout(function(){ b.textContent = o; }, 1600); }
+      function sel(){ if(n.hidden){ b.textContent = "Не удалось скопировать"; return; } var r = document.createRange(); r.selectNodeContents(n); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Выделено, нажми Ctrl+C"; }
+      try { navigator.clipboard.writeText(t).then(done, sel); } catch(e){ sel(); }
+    });
+  });
+
+  // квиз
+  var QUIZ = [
+    { l: "Часть 01", h: "#u1", p: "Сколько сцен оптимально закладывать на минуту ролика?", o: ["2–3", "8–12", "20–30", "Сколько получится"], a: 1, e: "Мельче дробить не стоит, и у каждой сцены должна быть своя цель." },
+    { l: "Часть 01", h: "#u1", p: "С чего начинать работу внутри сцены?", o: ["С поиска референсов", "С текстовой иерархии: акценты и разбивка фраз по кадрам", "С выбора шрифта", "С анимации"], a: 1, e: "Сначала структура и слова. Иерархия сразу показывает, каким сценам нужно сильное визуальное решение." },
+    { l: "Часть 02", h: "#u2", p: "«Пережёванные тренды» показаны жвачкой, которая теряет форму. Какая это подача?", o: ["Культурная отсылка", "Игра слов", "Атмосфера", "Связка"], a: 1, e: "Образное выражение из фразы показано дословно." },
+    { l: "Часть 02", h: "#u2", p: "Режиссёры и дизайнеры сидят композицией «Тайной вечери». Что это?", o: ["Метафора", "Культурная отсылка", "Мемная подача", "Инфографика"], a: 1, e: "Узнаваемая картина даёт иронию и мгновенное узнавание. Главное, чтобы аудитория знала оригинал." },
+    { l: "Часть 05", h: "#u5", p: "В раскадровке подряд три типографических кадра. Что делать?", o: ["Ничего, это стиль", "Сделать шрифт крупнее", "Разбавить сценой из другой группы: образом или отсылкой", "Ускорить анимацию"], a: 2, e: "Одинаковые подачи подряд сливаются. Соседние сцены должны отличаться." },
+    { l: "Часть 01", h: "#u1", p: "Как правильно подписать референс?", o: ["«Красиво»", "Ссылкой без подписи", "Тем, что берёшь: «композиция по центру, свет из-за спины»", "Именем автора"], a: 2, e: "Подпись объясняет тебе и аниматору, что именно взять из референса." },
+    { l: "Часть 03", h: "#u3", p: "Текст плохо читается на пёстром фото. Какой приём поможет?", o: ["Наслоение", "Подложка или локальное затемнение фона", "Перспективное искажение", "Тонкий шрифт"], a: 1, e: "Подложка или затемнение под текстом делают слово читаемым, не убирая фон." }
+  ];
+  var ql = document.getElementById("quiz-list"), scoreEl = document.getElementById("quiz-score"), verdict = document.getElementById("quiz-verdict"), answered = 0, right = 0;
+  function update(){ scoreEl.textContent = right + " / " + QUIZ.length; if(answered < QUIZ.length){ verdict.textContent = "Ответь на все вопросы, чтобы увидеть результат."; return; } verdict.textContent = right >= 6 ? "Отлично. Можно садиться за раскадровку." : right >= 4 ? "Хорошо. Перечитай части, где ошибся." : "Пройди гайд ещё раз и вернись к квизу."; }
+  function renderQ(){
+    ql.textContent = ""; answered = 0; right = 0;
+    QUIZ.forEach(function(q, i){
+      var card = el("div", "q"); card.appendChild(el("span", "n", "0" + (i + 1) + " · " + q.l)); card.appendChild(el("div", "p", q.p));
+      var opts = el("div", "opts"), exp = el("div", "exp"); exp.hidden = true;
+      q.o.forEach(function(t, j){ var b = el("button", null, t); b.type = "button"; b.addEventListener("click", function(){
+        var all = opts.querySelectorAll("button"); for(var k = 0; k < all.length; k++){ all[k].disabled = true; if(k === q.a) all[k].className = "right"; }
+        var ok = j === q.a; if(!ok) b.className = "wrong"; answered++; if(ok) right++;
+        exp.textContent = ""; exp.appendChild(el("b", null, ok ? "Верно. " : "Не совсем. ")); exp.appendChild(document.createTextNode(q.e + " ")); var a = el("a", null, "Открыть часть"); a.href = q.h; exp.appendChild(a); exp.hidden = false; update();
+      }); opts.appendChild(b); });
+      card.appendChild(opts); card.appendChild(exp); ql.appendChild(card);
+    }); update();
+  }
+  renderQ();
+  document.getElementById("quiz-reset").addEventListener("click", function(){ renderQ(); document.getElementById("quiz").scrollIntoView(); });
+
+  // чек-лист
+  var CK = "storyboard-check-v1", st = {};
+  try { st = JSON.parse(localStorage.getItem(CK) || "{}") || {}; } catch(e){ st = {}; }
+  document.querySelectorAll(".check input").forEach(function(box){ if(st[box.id]) box.checked = true; box.addEventListener("change", function(){ st[box.id] = box.checked; try { localStorage.setItem(CK, JSON.stringify(st)); } catch(e){} }); });
+})();
+
+</script>
+</body>
+</html>
