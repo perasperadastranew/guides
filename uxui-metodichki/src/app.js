@@ -148,7 +148,9 @@ function zadanie(id){
   var L=D.lessons[id], m=modOf(id); if(!L)return home();
   var T=null; L.sections.forEach(function(s){s.blocks.forEach(function(b){if(b.type==='task'&&!T)T=b})}); if(!T)return lesson(id);
   var k=ORDER.indexOf(id)+(ORDER[0]==='s0'?0:1), num=('0'+k).slice(-2), st=(L.stage&&L.stage.n)||m.stage;
-  var h='<header class="zone">'+corner('ЗАДАНИЕ К УРОКУ','МОДУЛЬ «'+m.name.toUpperCase()+'»')+
+  var sd=0;for(var q=0;q<id.length;q++)sd=(sd*31+id.charCodeAt(q))%997;var rn=function(a,b){sd=(sd*73+41)%997;return Math.round(a+(b-a)*sd/997)};
+  var zs='--x1:'+rn(55,95)+'%;--y1:'+rn(0,12)+'%;--x2:'+rn(0,40)+'%;--y2:'+rn(30,55)+'%;--x3:'+rn(50,100)+'%;--y3:'+rn(70,95)+'%';
+  var h='<header class="zone" style="'+zs+'">'+corner('ЗАДАНИЕ К УРОКУ','МОДУЛЬ «'+m.name.toUpperCase()+'»')+
     '<div class="hrow"><div class="ztitle"><span class="zkick">Домашнее задание · урок '+num+'</span><h1>'+t(L.title)+'</h1></div><span class="lnum" aria-hidden="true">'+num+'</span></div>'+
     '<div class="zres"><i>Что должно получиться</i><p>'+t(T.result)+'</p></div>';
   if(T.parts&&T.parts.length){var n=T.parts.length;

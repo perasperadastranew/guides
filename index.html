@@ -619,6 +619,15 @@ section>h2+h3,section>h2+p+h3{margin-top:12px;padding-top:0;border-top:0}
 .zpart h2{font-size:clamp(24px,3.4vw,34px)}
 .zmore{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);max-width:none}
 
+/* фон карточки задания: точки уходят под градиент, плотные островки в разных местах */
+.zone{background-image:none;overflow:hidden;isolation:isolate}
+.zone::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(#3a3a3a 1.3px,transparent 1.4px);background-size:18px 18px;
+  -webkit-mask-image:radial-gradient(ellipse 48% 22% at var(--x1,85%) var(--y1,4%),#000 0,rgba(0,0,0,.55) 45%,transparent 100%),radial-gradient(ellipse 38% 16% at var(--x2,15%) var(--y2,42%),rgba(0,0,0,.8) 0,transparent 100%),radial-gradient(ellipse 45% 18% at var(--x3,80%) var(--y3,85%),rgba(0,0,0,.7) 0,transparent 100%);
+  mask-image:radial-gradient(ellipse 48% 22% at var(--x1,85%) var(--y1,4%),#000 0,rgba(0,0,0,.55) 45%,transparent 100%),radial-gradient(ellipse 38% 16% at var(--x2,15%) var(--y2,42%),rgba(0,0,0,.8) 0,transparent 100%),radial-gradient(ellipse 45% 18% at var(--x3,80%) var(--y3,85%),rgba(0,0,0,.7) 0,transparent 100%)}
+.zone::after{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(ellipse 60% 26% at var(--x1,85%) var(--y1,4%),rgba(235,117,64,.07),transparent 70%),linear-gradient(180deg,transparent 40%,rgba(0,0,0,.25))}
+
 .embed .top,.embed .pager{display:none}.embed .where a.pill{pointer-events:none}html,body{margin:0}
 :root.embed-root{color-scheme:normal;background:transparent}body.embed{background:transparent;padding:0}
 </style></head><body>
@@ -5527,7 +5536,9 @@ function zadanie(id){
   var L=D.lessons[id], m=modOf(id); if(!L)return home();
   var T=null; L.sections.forEach(function(s){s.blocks.forEach(function(b){if(b.type==='task'&&!T)T=b})}); if(!T)return lesson(id);
   var k=ORDER.indexOf(id)+(ORDER[0]==='s0'?0:1), num=('0'+k).slice(-2), st=(L.stage&&L.stage.n)||m.stage;
-  var h='<header class="zone">'+corner('ЗАДАНИЕ К УРОКУ','МОДУЛЬ «'+m.name.toUpperCase()+'»')+
+  var sd=0;for(var q=0;q<id.length;q++)sd=(sd*31+id.charCodeAt(q))%997;var rn=function(a,b){sd=(sd*73+41)%997;return Math.round(a+(b-a)*sd/997)};
+  var zs='--x1:'+rn(55,95)+'%;--y1:'+rn(0,12)+'%;--x2:'+rn(0,40)+'%;--y2:'+rn(30,55)+'%;--x3:'+rn(50,100)+'%;--y3:'+rn(70,95)+'%';
+  var h='<header class="zone" style="'+zs+'">'+corner('ЗАДАНИЕ К УРОКУ','МОДУЛЬ «'+m.name.toUpperCase()+'»')+
     '<div class="hrow"><div class="ztitle"><span class="zkick">Домашнее задание · урок '+num+'</span><h1>'+t(L.title)+'</h1></div><span class="lnum" aria-hidden="true">'+num+'</span></div>'+
     '<div class="zres"><i>Что должно получиться</i><p>'+t(T.result)+'</p></div>';
   if(T.parts&&T.parts.length){var n=T.parts.length;
