@@ -301,33 +301,82 @@ td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
   .bar{grid-template-columns:minmax(0,1fr)}
 }
 
+
+/* табло, подборщик */
+.score-t td.dot{font-family:var(--mono);letter-spacing:.1em;font-size:14px;white-space:nowrap}
+.score-t .d3{color:var(--accent)} .score-t .d2{color:var(--ink)} .score-t .d1{color:var(--dim)} .score-t .d0{color:var(--faint)}
+.score-t th{color:var(--ink)}
+.picker{display:flex;flex-direction:column;gap:14px}
+.pq{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.pq .n{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.pq .p{color:var(--ink);font-size:19px;line-height:1.3}
+.pq .opts{display:flex;flex-wrap:wrap;gap:8px}
+.pq .opts button{background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:999px;padding:10px 16px;font-weight:400;font-size:15px}
+.pq .opts button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.verdict{border:1px solid var(--accent);border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:10px;animation:pop .35s ease}
+.verdict i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--accent)}
+.verdict b{font-family:var(--display);font-weight:400;font-size:clamp(32px,5vw,52px);line-height:1;color:var(--ink);letter-spacing:-.03em}
+.verdict .for{font-size:15px;color:var(--ink);border-left:1px solid var(--accent);padding-left:10px}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.verdict{animation:none}}
 </style>
 <div class="wrap">
 <header>
   <div class="corner"><span>PERASPERADASTRA
 МЕТОДИЧКА ДЛЯ СТУДЕНТОВ</span><span>НЕЙРОСЕТИ В РАБОТЕ
 ЦЕНЫ НА 20 ОКТЯБРЯ 2026</span></div>
-  <h1>Claude, ChatGPT и&nbsp;Grok в&nbsp;нашем процессе</h1>
+  <h1>В&nbsp;какой нейросети делать диплом</h1>
   <p class="lead"><b>Какую нейросеть взять, как встроить её в&nbsp;проект, как оплатить из&nbsp;России и&nbsp;сколько это стоит.</b> Всё в&nbsp;одном месте, чтобы ты не&nbsp;потерял неделю и&nbsp;деньги на&nbsp;поиски.</p>
   <span class="save">Сохрани, чтобы не потерять</span>
-  <nav class="toc" aria-label="Разделы"><a href="#who">Кто есть кто</a><a href="#process">Как встроить</a><a href="#time">С нейросетью и без</a><a href="#plans">Тарифы</a><a href="#pay">Как оплатить</a><a href="#safe">Как не потерять деньги</a><a href="#budget">Бюджет</a><a href="#ai">Промпты</a><a href="#practice">Задание и квиз</a></nav>
+  <nav class="toc" aria-label="Разделы"><a href="#who">Кто есть кто</a><a href="#pick">Подбери свою</a><a href="#free">Без подписки</a><a href="#process">Как встроить</a><a href="#time">С нейросетью и без</a><a href="#plans">Тарифы</a><a href="#pay">Как оплатить</a><a href="#safe">Как не потерять деньги</a><a href="#budget">Бюджет</a><a href="#ai">Промпты</a><a href="#practice">Задание и квиз</a></nav>
 </header>
 
 <section id="who">
-  <div class="head"><div class="head-l"><span class="num">01</span><h2>Кто есть кто</h2></div></div>
-  <p>Три большие модели умеют примерно одно и то же: читать, писать, разбирать файлы и картинки, рассуждать. Разница в том, что вокруг модели: проекты, скиллы, генерация картинок, интеграции. Для нашего процесса это и решает.</p>
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Кто есть кто</h2><span class="tag">Кастинг на&nbsp;роль напарника</span></div></div>
+  <p>Мы устроили нейросетям собеседование на&nbsp;роль твоего напарника по&nbsp;диплому. Умные они все: читают, пишут, разбирают файлы. Решает другое — <b>что вокруг модели</b>: держит ли она наши инструкции и&nbsp;паспорт проекта между чатами, открывается&nbsp;ли из&nbsp;России и&nbsp;сколько стоит.</p>
   <div class="three">
     <div class="box hot"><span class="kind">Основная · Anthropic</span><b>Claude</b>
-      <ul><li>Сильнее всех в текстах, структуре, разборе интервью и длинных документах.</li><li>Проекты, скиллы и паспорт проекта: на нём собран наш скилл <b>uxui-diploma</b>.</li><li>Claude Design, связка с Figma, сборка сайтов и прототипов кодом.</li><li>Картинки и видео не генерирует, только понимает.</li></ul>
-      <p class="ask">Бери, если оплачиваешь одну подписку.</p></div>
-    <div class="box"><span class="kind">Запасная · OpenAI</span><b>ChatGPT</b>
-      <ul><li>Универсал: тексты, голос, поиск, генерация изображений прямо в чате.</li><li>Наши инструкции агентов работают и здесь: есть версия скилла для проекта ChatGPT.</li><li>Удобен для мокапов, черновых картинок и быстрых вопросов.</li></ul>
-      <p class="ask">Бери вторым, если нужны картинки в том же окне, или вместо Claude, если с ним не получилось.</p></div>
-    <div class="box"><span class="kind">По желанию · xAI</span><b>Grok</b>
-      <ul><li>Генерация картинок и видео (Grok Imagine), свежие данные из X.</li><li>Мягче ограничения, но и выше риск получить неточный ответ.</li><li>Подписка дороже остальных, наших скиллов под него нет.</li></ul>
-      <p class="ask">Для курса не обязателен. Пробуй бесплатный тариф.</p></div>
+      <ul><li>Сильнее всех в&nbsp;текстах, структуре, разборе интервью и&nbsp;длинных документах.</li><li>Наш скилл <b>uxui-diploma</b> ставится как есть, паспорт живёт в&nbsp;проекте.</li><li>Claude Design, связка с&nbsp;Figma, сборка сайтов и&nbsp;прототипов кодом.</li><li>Картинки и&nbsp;видео не&nbsp;генерирует, только понимает.</li></ul>
+      <p class="ask">Роль: главный напарник. Бери, если оплачиваешь одну подписку.</p></div>
+    <div class="box"><span class="kind">Вторая · OpenAI</span><b>ChatGPT</b>
+      <ul><li>Универсал: тексты, голос, поиск, картинки прямо в&nbsp;чате.</li><li>Есть <b>версия скилла для&nbsp;проекта ChatGPT</b>: работает даже на&nbsp;бесплатном тарифе.</li><li>Удобен для&nbsp;мокапов и&nbsp;черновых картинок.</li></ul>
+      <p class="ask">Роль: второй пилот с&nbsp;кисточкой. Или замена Claude, если с&nbsp;ним не&nbsp;сложилось.</p></div>
+    <div class="box"><span class="kind">Бесплатная · без VPN</span><b>DeepSeek</b>
+      <ul><li>Бесплатно и&nbsp;без лимита сообщений, открывается из&nbsp;России напрямую.</li><li>Читает PDF, docx и&nbsp;txt, хорошо держит длинный текст.</li><li>Нет проектов и&nbsp;постоянных инструкций, нет картинок. Данные хранятся в&nbsp;Китае, сервис иногда падает на&nbsp;пару часов.</li></ul>
+      <p class="ask">Роль: запасной игрок. Если ничего не&nbsp;оплатил, <a href="#free">вот как с&nbsp;ним работать</a>.</p></div>
   </div>
-  <div class="note"><b>Главное</b>Одной подписки на&nbsp;$20 хватает на&nbsp;весь курс. Midjourney и&nbsp;Nano Banana для графики — отдельная история, про них в&nbsp;модуле по&nbsp;генерации.</div>
+  <div class="sub wide">
+    <h3>Ещё на&nbsp;слуху</h3>
+    <div class="four">
+      <div class="box"><span class="kind">Google</span><b>Gemini</b><p>Сильная модель, свои «навыки» обещают и&nbsp;на&nbsp;бесплатном тарифе. Но&nbsp;официально в&nbsp;России не&nbsp;работает: доступ то&nbsp;появляется, то&nbsp;пропадает.</p><p class="ask">Пробуй, если открывается. Не&nbsp;строй на&nbsp;нём диплом.</p></div>
+      <div class="box"><span class="kind">Яндекс</span><b>Алиса</b><p>Без VPN, оплата в&nbsp;рублях, бесплатно около 20 запросов в&nbsp;день. Нормально пишет короткие тексты, на&nbsp;длинных задачах и&nbsp;файлах слабее.</p><p class="ask">Для мелочей: переформулировать, придумать заголовок.</p></div>
+      <div class="box"><span class="kind">Сбер</span><b>GigaChat</b><p>Без VPN и&nbsp;бесплатно. Та&nbsp;же история: на&nbsp;разборе интервью и&nbsp;длинных брифах теряет нить.</p><p class="ask">Для мелочей, когда остальное недоступно.</p></div>
+      <div class="box"><span class="kind">xAI</span><b>Grok</b><p>Генерирует картинки и&nbsp;видео, но&nbsp;подписка дороже всех, а&nbsp;наши инструкции под&nbsp;него не&nbsp;собраны.</p><p class="ask">Для курса не&nbsp;нужен.</p></div>
+    </div>
+  </div>
+  <div class="sub wide">
+    <h3>Табло сравнения</h3>
+    <div class="scroll"><table class="score-t">
+      <thead><tr><th></th><th>Claude</th><th>ChatGPT</th><th>DeepSeek</th><th>Gemini</th><th>Алиса, GigaChat</th></tr></thead>
+      <tbody>
+        <tr><td>Скилл курса</td><td class="dot d3" title="ставится как есть">●●●</td><td class="dot d2" title="через проект">●●○</td><td class="dot d1" title="вставляешь в каждый чат">●○○</td><td class="dot d1">●○○</td><td class="dot d0">○○○</td></tr>
+        <tr><td>Паспорт между чатами</td><td class="dot d3">●●●</td><td class="dot d3">●●●</td><td class="dot d1">●○○</td><td class="dot d2">●●○</td><td class="dot d0">○○○</td></tr>
+        <tr><td>Длинные тексты и&nbsp;интервью</td><td class="dot d3">●●●</td><td class="dot d3">●●●</td><td class="dot d2">●●○</td><td class="dot d3">●●●</td><td class="dot d1">●○○</td></tr>
+        <tr><td>Картинки в&nbsp;чате</td><td class="dot d0">○○○</td><td class="dot d3">●●●</td><td class="dot d0">○○○</td><td class="dot d3">●●●</td><td class="dot d2">●●○</td></tr>
+        <tr><td>Открывается из&nbsp;России</td><td class="dot d1">●○○</td><td class="dot d1">●○○</td><td class="dot d3">●●●</td><td class="dot d1">●○○</td><td class="dot d3">●●●</td></tr>
+        <tr><td>Бесплатно хватит на&nbsp;диплом</td><td class="dot d0">○○○</td><td class="dot d1">●○○</td><td class="dot d3">●●●</td><td class="dot d2">●●○</td><td class="dot d1">●○○</td></tr>
+      </tbody>
+    </table></div>
+    <p class="why">Оценки наши, по&nbsp;задачам курса. Наведи на&nbsp;точки в&nbsp;строке «Скилл курса», чтобы увидеть, как именно он работает.</p>
+  </div>
+  <div class="note"><b>Главное</b>Одной подписки на&nbsp;Claude хватает на&nbsp;весь курс. Нет подписки — бери DeepSeek, диплом всё равно получится. Midjourney и&nbsp;Nano Banana для&nbsp;графики — отдельная история, про них в&nbsp;модуле по&nbsp;генерации.</div>
+</section>
+
+<section id="pick">
+  <div class="head"><div class="head-l"><span class="num">✦</span><h2>Подбери свою за&nbsp;20&nbsp;секунд</h2></div></div>
+  <p>Три вопроса — и&nbsp;мы скажем, с&nbsp;кем тебе работать.</p>
+  <div class="picker" id="picker"></div>
+  <div class="verdict" id="verdict" hidden><i>Твой напарник</i><b id="v-name"></b><p id="v-text"></p><p class="for" id="v-next"></p></div>
 </section>
 
 <section id="process">
@@ -338,7 +387,7 @@ td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
     <h3>Настройка один раз</h3>
     <div class="sub-b">
       <ol class="steps">
-        <li><div><div class="t">Проект «Диплом: название»</div><div class="d">В Claude или ChatGPT создай проект под свою работу. Всё, что лежит в проекте, видно во всех его чатах.</div></div></li>
+        <li><div><div class="t">Проект «Диплом: название»</div><div class="d">В&nbsp;Claude или ChatGPT создай проект под свою работу. Всё, что лежит в&nbsp;проекте, видно во&nbsp;всех его чатах. В&nbsp;DeepSeek проектов нет — <a href="#free">там свой способ</a>.</div></div></li>
         <li><div><div class="t">Паспорт проекта</div><div class="d">Один файл с фактами о проекте: продукт одной строкой, аудитория, ограничения, выводы этапов. У каждого утверждения пометка «данные» или «гипотеза». Положи его в проект.</div></div></li>
         <li><div><div class="t">Скилл курса</div><div class="d">В Claude загрузи <a href="https://perasperadastranew.github.io/guides/uxui-metodichki/files/uxui-diploma.zip" download>наш скилл</a>: Customize → Skills → «+» → Create skill. В ChatGPT поставь в&nbsp;проект <a href="https://perasperadastranew.github.io/guides/uxui-metodichki/files/uxui-diploma-chatgpt.zip" download>версию для&nbsp;ChatGPT</a>, инструкция внутри архива. Скилл сам понимает, на каком ты этапе.</div></div></li>
       </ol>
@@ -351,6 +400,28 @@ td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
         <div class="box"><span class="kind">Один этап — один чат</span><p>Новый чат, когда меняется артефакт: «02 Исследование — разбор интервью», «03 Проектирование — карта ценности». Весь диплом в одном чате не веди: к третьему этапу модель путает старые версии с новыми.</p></div>
         <div class="box"><span class="kind">Паспорт — мост между чатами</span><p>В конце этапа попроси блок «Обновление паспорта», замени файл в проекте и открой новый чат. Вернуться к прошлому этапу — тоже новый чат с актуальным паспортом.</p></div>
       </div>
+    </div>
+  </div>
+  <div class="sub" id="free">
+    <h3>Если ничего не&nbsp;оплатил: DeepSeek</h3>
+    <div class="sub-b">
+      <p>Проектов у&nbsp;DeepSeek нет, поэтому «проект» собираешь сам: <b>каждый новый чат начинаешь с&nbsp;одного и&nbsp;того&nbsp;же стартового сообщения</b>. Звучит скучно, на&nbsp;деле — 30 секунд.</p>
+      <ol class="steps">
+        <li><div><div class="t">Скачай версию для&nbsp;ChatGPT</div><div class="d"><a href="https://perasperadastranew.github.io/guides/uxui-metodichki/files/uxui-diploma-chatgpt.zip" download>Архив</a> подходит и&nbsp;сюда: внутри инструкция, этапы диплома, самопроверка и&nbsp;пустой паспорт.</div></div></li>
+        <li><div><div class="t">Открой новый чат и&nbsp;прикрепи файлы</div><div class="d">1_instrukciya_proekta.txt, uxui-diploma-etapy.md и&nbsp;свой паспорт. Если файл .md не&nbsp;прикрепляется, переименуй его в&nbsp;.txt.</div></div></li>
+        <li><div><div class="t">Отправь стартовое сообщение</div><div class="d">Текст ниже. Дальше работаешь как обычно: один чат на&nbsp;этап, в&nbsp;конце — «Обновление паспорта».</div></div></li>
+      </ol>
+      <div class="prompt"><span class="kind">Стартовое сообщение</span><b>Каждый новый чат в&nbsp;DeepSeek</b>
+        <pre id="p0">Работай по инструкции из файла 1_instrukciya_proekta.txt — это твоя роль на весь чат.
+Этапы диплома и их режимы — в файле uxui-diploma-etapy.md.
+Мой паспорт проекта — в приложенном файле.
+
+Сейчас этап: <em>[например, 02 Исследование]</em>
+Задача: <em>[что нужно сделать сегодня]</em>
+
+Сначала коротко подтверди, на каком я этапе и что ты понял из паспорта. Потом задай первый вопрос.</pre>
+        <button type="button" class="copy" data-copy="p0">Скопировать</button>
+        <p class="you"><b>Что делаешь ты:</b> держишь паспорт у&nbsp;себя и&nbsp;прикладываешь свежую версию в&nbsp;каждый новый чат. Памяти между чатами у&nbsp;DeepSeek нет — паспорт и&nbsp;есть его память.</p></div>
     </div>
   </div>
   <div class="sub">
@@ -390,13 +461,13 @@ td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
 
 <section id="plans">
   <div class="head"><div class="head-l"><span class="num">04</span><h2>Тарифы</h2><span class="tag">Официальные цены в долларах, без налога</span></div></div>
-  <p>У всех трёх есть бесплатный тариф с жёсткими лимитами: попробовать хватит, вести диплом — нет. Тарифы за&nbsp;$100 и&nbsp;дороже нужны тем, кто работает с нейросетью целый день, студенту они не нужны.</p>
+  <p>У&nbsp;Claude и&nbsp;ChatGPT есть бесплатный тариф с&nbsp;жёсткими лимитами: попробовать хватит, вести диплом — нет. DeepSeek бесплатен целиком. Тарифы за&nbsp;$100 и&nbsp;дороже нужны тем, кто работает с нейросетью целый день, студенту они не нужны.</p>
   <div class="scroll"><table>
     <thead><tr><th>Сервис</th><th>Бесплатно</th><th>Начальный</th><th>Основной</th><th>Для тяжёлой работы</th></tr></thead>
     <tbody>
       <tr><td>Claude</td><td>Free: лимиты, базовые модели</td><td>—</td><td class="hl">Pro — $20/мес<br><small>или $200 за год</small></td><td>Max 5x — $100<br>Max 20x — $200</td></tr>
       <tr><td>ChatGPT</td><td>Free: с рекламой</td><td>Go — $8/мес<br><small>с рекламой, без старших моделей</small></td><td class="hl">Plus — $20/мес</td><td>Pro — $100 или $200</td></tr>
-      <tr><td>Grok</td><td>Free: около 10 запросов за 2 часа</td><td>SuperGrok Lite — $10</td><td>SuperGrok — $30/мес</td><td>SuperGrok Heavy — $300</td></tr>
+      <tr><td>DeepSeek</td><td class="hl">Бесплатно, без лимита сообщений</td><td>—</td><td>—</td><td>—</td></tr>
     </tbody>
   </table></div>
   <div class="two">
@@ -407,7 +478,7 @@ td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
 
 <section id="pay">
   <div class="head"><div class="head-l"><span class="num">05</span><h2>Как оплатить из&nbsp;России</h2></div></div>
-  <div class="warn"><i>Сначала прочитай</i><p>Claude, ChatGPT и Grok не&nbsp;принимают карты российских банков, включая «Мир». Anthropic и OpenAI официально не&nbsp;работают в&nbsp;России, и&nbsp;их правила запрещают пользоваться сервисом из&nbsp;неподдерживаемых стран. Аккаунт могут закрыть в&nbsp;любой момент, при любом способе оплаты, вместе с&nbsp;историей чатов. Это не&nbsp;повод отказаться, но повод платить помесячно и&nbsp;хранить важное у&nbsp;себя.</p></div>
+  <div class="warn"><i>Сначала прочитай</i><p>Claude и&nbsp;ChatGPT не&nbsp;принимают карты российских банков, включая «Мир». DeepSeek, Алиса и&nbsp;GigaChat работают без&nbsp;этого, платить не&nbsp;нужно. Anthropic и OpenAI официально не&nbsp;работают в&nbsp;России, и&nbsp;их правила запрещают пользоваться сервисом из&nbsp;неподдерживаемых стран. Аккаунт могут закрыть в&nbsp;любой момент, при любом способе оплаты, вместе с&nbsp;историей чатов. Это не&nbsp;повод отказаться, но повод платить помесячно и&nbsp;хранить важное у&nbsp;себя.</p></div>
   <p>Ниже все способы, которыми пользуются студенты. Цены — среднее по&nbsp;площадкам в&nbsp;сентябре–октябре 2026, курс ЦБ около 84&nbsp;₽ за&nbsp;доллар.</p>
   <div class="ways" id="ways"></div>
 </section>
@@ -438,7 +509,7 @@ td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
       <tr><td>Claude Pro</td><td>$20</td><td class="t">≈ 1 680 ₽</td><td class="t">1 900–2 400 ₽</td></tr>
       <tr><td>ChatGPT Go</td><td>$8</td><td class="t">≈ 670 ₽</td><td class="t">520–570 ₽</td></tr>
       <tr><td>ChatGPT Plus</td><td>$20</td><td class="t">≈ 1 680 ₽</td><td class="t">1 770–2 400 ₽</td></tr>
-      <tr><td>SuperGrok</td><td>$30</td><td class="t">≈ 2 510 ₽</td><td class="t">от 2 800 ₽</td></tr>
+      <tr><td>DeepSeek</td><td>$0</td><td class="t">0 ₽</td><td class="t">0 ₽</td></tr>
       <tr><td>Claude Max 5x</td><td>$100</td><td class="t">≈ 8 400 ₽</td><td class="t">12 000–14 000 ₽</td></tr>
     </tbody>
   </table></div>
@@ -503,7 +574,8 @@ td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
 </div>
 
 <script type="application/json" id="quiz-data">[
-{"p":"Ты оплачиваешь одну подписку на весь курс. Что взять?","o":["Claude Pro","Claude Max 20x","SuperGrok Heavy","Только бесплатные тарифы"],"a":0,"e":"Pro за $20 закрывает весь курс, на нём работают проекты и скилл. Max и Heavy рассчитаны на работу целый день, бесплатных лимитов на диплом не хватит."},
+{"p":"Ты оплачиваешь одну подписку на весь курс. Что взять?","o":["Claude Pro","Claude Max 20x","Две подписки сразу, на всякий случай","Только бесплатные тарифы"],"a":0,"e":"Pro за $20 закрывает весь курс, на нём работают проекты и скилл. Max рассчитан на работу целый день, а вторая подписка нужна, только если хочешь картинки в том же окне."},
+{"p":"Денег на подписку нет, VPN не работает. Как вести диплом?","o":["Никак, без Claude не получится","В DeepSeek: каждый чат начинать со стартового сообщения и прикладывать паспорт","В Алисе, она помнит все прошлые чаты","Попросить у одногруппника его аккаунт"],"a":1,"e":"DeepSeek бесплатен и открывается без VPN. Проектов у него нет, поэтому инструкцию и паспорт прикладываешь в начале каждого чата — и всё работает."},
 {"p":"Продавец на площадке просит логин и пароль от Claude, чтобы оформить подписку. Как поступить?","o":["Дать, но потом сменить пароль","Отказаться и найти продавца, которому хватает почты или подарочной ссылки","Дать, если у него высокий рейтинг","Купить у него готовый аккаунт"],"a":1,"e":"Пароль и коды не отдаём никому. Нормальной услуге хватает почты аккаунта, а подарочная подписка вообще активируется по ссылке."},
 {"p":"Почему из России лучше платить помесячно?","o":["Годовой тариф недоступен","Помесячно дешевле","Аккаунт могут заблокировать, и сгорит всё, что оплачено вперёд","Помесячно больше лимитов"],"a":2,"e":"Сервисы не работают в России официально и могут закрыть аккаунт в любой момент. При помесячной оплате теряешь максимум месяц."},
 {"p":"Что даёт агрегатор вроде BotHub и чего в нём нет?","o":["Даёт всё то же, что официальный Claude","Оплата в рублях без своего аккаунта у Anthropic, но нет проектов, скиллов и Claude Design","Только картинки","Бесплатный безлимит"],"a":1,"e":"Агрегатор удобен для оплаты и не банит, но фирменных функций оригинала в нём нет: промпты из методички работают, скилл курса — нет."},
@@ -580,7 +652,7 @@ td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
   });
 
   const K=[
-    {n:"Минимум",d:"Бесплатные тарифы и\u00a0ChatGPT Go или\u00a0агрегатор",lo:300,hi:600,s:"Хватит на\u00a0промпты и\u00a0черновики. Скилл курса и\u00a0проекты Claude будут недоступны."},
+    {n:"Ноль рублей",d:"DeepSeek без\u00a0подписок",lo:0,hi:0,s:"Хватит на\u00a0весь диплом, если не\u00a0лень начинать каждый чат со\u00a0стартового сообщения. Картинок не\u00a0будет."},
     {n:"Оптимум",d:"Claude Pro",lo:1900,hi:2400,s:"Весь пайплайн курса: проект, паспорт, скилл, Claude Design."},
     {n:"С\u00a0картинками",d:"Claude Pro и\u00a0ChatGPT Plus",lo:3670,hi:4800,s:"Claude для\u00a0процесса, ChatGPT для\u00a0мокапов и\u00a0черновых изображений."}
   ];
@@ -589,14 +661,47 @@ td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
   function render(){
     const k=K[ki],n=+m.value;mo.textContent=n;
     kits.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-checked',i===ki));
-    document.getElementById('sum').textContent=sp(rub(k.lo*n))+'–'+sp(rub(k.hi*n))+' ₽';
+    document.getElementById('sum').textContent=k.hi?sp(rub(k.lo*n))+'–'+sp(rub(k.hi*n))+' ₽':'0 ₽';
     document.getElementById('sumt').textContent=k.s+' Расчёт по ценам маркетплейсов, за '+n+' мес.';
   }
   K.forEach((k,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','radio');
-    b.innerHTML='<b></b><span></span>';b.querySelector('b').textContent=k.n;b.querySelector('span').textContent=k.d+' · '+sp(k.lo)+'–'+sp(k.hi)+' ₽/мес';
+    b.innerHTML='<b></b><span></span>';b.querySelector('b').textContent=k.n;b.querySelector('span').textContent=k.d+' · '+(k.hi?sp(k.lo)+'–'+sp(k.hi)+' ₽/мес':'бесплатно');
     b.addEventListener('click',()=>{ki=i;render()});kits.append(b);});
   m.addEventListener('input',render);render();
 })();
 </script>
 
+<script>(function(){
+  const box=document.getElementById('picker');if(!box)return;
+  const Q=[
+    {p:"Готов платить за подписку?",o:[["yes","Да, около 2 000 ₽ в месяц"],["no","Нет, только бесплатно"]]},
+    {p:"Открываются ли у тебя зарубежные сервисы?",o:[["yes","Да, есть VPN"],["no","Нет или нестабильно"]]},
+    {p:"Нужны картинки прямо в чате — мокапы, черновики?",o:[["yes","Да, часто"],["no","Нет, картинки делаю отдельно"]]}
+  ];
+  const A=[null,null,null];
+  const V={
+    claude:["Claude Pro","Главный напарник курса: скилл ставится как есть, паспорт живёт в проекте, связка с Figma под рукой.","Скачай скилл в уроке «Добро пожаловать» и ставь: Customize → Skills → «+» → Create skill."],
+    duo:["Claude Pro + ChatGPT","Claude ведёт диплом, ChatGPT рисует мокапы и черновики. Две подписки — около 4 000 ₽ в месяц, это максимум, который имеет смысл.","Скилл ставишь в Claude, версию для ChatGPT — в проект «Диплом» в ChatGPT. Обе ссылки — в уроке «Добро пожаловать»."],
+    gpt:["ChatGPT в проекте","Без оплаты, но с картинками. Наша версия скилла работает в бесплатном проекте: инструкция, этапы, паспорт.","Нужен стабильный доступ к сервису. Скачай версию для ChatGPT в уроке «Добро пожаловать»."],
+    ds:["DeepSeek","Бесплатно и без VPN. Проектов нет, поэтому каждый чат начинаешь со стартового сообщения — 30 секунд, и дальше всё как у всех.","Смотри блок «Если ничего не оплатил» чуть выше. Картинки для мокапов — в модуле по генерации."]
+  };
+  function decide(){
+    const [pay,vpn,img]=A;
+    if(vpn==='no') return 'ds';
+    if(pay==='yes') return img==='yes'?'duo':'claude';
+    return img==='yes'?'gpt':'ds';
+  }
+  Q.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='pq';
+    d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div>';
+    d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;d.querySelector('.p').textContent=q.p;
+    const o=d.querySelector('.opts');
+    q.o.forEach(([v,l])=>{const b=document.createElement('button');b.type='button';b.textContent=l;b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',()=>{A[i]=v;o.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
+        if(A.every(x=>x)){const r=V[decide()];const el=document.getElementById('verdict');el.hidden=true;void el.offsetWidth;
+          document.getElementById('v-name').textContent=r[0];document.getElementById('v-text').textContent=r[1];document.getElementById('v-next').textContent=r[2];el.hidden=false;}
+      });o.append(b);});
+    box.append(d);
+  });
+})();</script>
 </body></html>
