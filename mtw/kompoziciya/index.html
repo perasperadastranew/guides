@@ -380,6 +380,28 @@ figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
 }
 @media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
 
+/* Обложка: точки тише и растворяются, сверху мягкие круги градиента */
+header{background-image:none;overflow:hidden;isolation:isolate}
+header::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(#2c2c2c 1.1px,transparent 1.2px);background-size:18px 18px;
+  -webkit-mask-image:radial-gradient(120% 90% at 0% 0%,#000 0%,rgba(0,0,0,.55) 35%,transparent 75%);
+  mask-image:radial-gradient(120% 90% at 0% 0%,#000 0%,rgba(0,0,0,.55) 35%,transparent 75%)}
+header::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:900px;height:900px;right:-360px;top:-420px;border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(235,117,64,.30) 0,rgba(235,117,64,.10) 22%,transparent 46%),
+    radial-gradient(circle at 30% 72%,rgba(196,72,110,.16) 0,transparent 32%),
+    repeating-radial-gradient(circle at 50% 50%,transparent 0 58px,rgba(244,244,242,.035) 59px 60px);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 30%,transparent 68%);
+  mask-image:radial-gradient(circle at 50% 50%,#000 30%,transparent 68%);
+  animation:hdrift 22s ease-in-out infinite alternate}
+@keyframes hdrift{from{transform:translate(0,0) scale(1)}to{transform:translate(-60px,40px) scale(1.08)}}
+@media (max-width:700px){header::after{width:560px;height:560px;right:-260px;top:-260px}}
+@media (prefers-reduced-motion:reduce){header::after{animation:none}}
+
+/* Внутри урока ZenClass: фон прозрачный, без боковых отступов, прокручивает сама страница урока */
+html.embed body{background:transparent;padding:0 0 8px}
+html.embed .wrap{max-width:none}
+
 /* ===== Интерактив только для методички «Композиция» ===== */
 button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
 button.ghost:hover{border-color:var(--accent)}
@@ -1184,6 +1206,7 @@ button.ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)
 })();
 </script>
 <script>
+(function(){var e=false;try{e=window.self!==window.top;if(e&&window.parent.document.getElementById('view'))e=false}catch(x){e=true}if(e)document.documentElement.classList.add('embed')})();
 // Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
 document.querySelectorAll('.demo[data-states]').forEach(demo => {
   const btns = demo.querySelectorAll('.seg button');
