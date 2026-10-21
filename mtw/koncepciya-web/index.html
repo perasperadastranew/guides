@@ -1,0 +1,1274 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Концепция в веб-дизайне</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив только для методички «Концепция в веб-дизайне» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px}
+button.ghost:hover{border-color:var(--accent)}
+button.solid{background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:10px 16px}
+button.solid:disabled{opacity:.4;cursor:default}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.4}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px;color:var(--faint)}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)}
+.verdict b{color:var(--ink);font-weight:400}
+.cfg-row{display:flex;flex-direction:column;gap:6px}
+.cfg-acts{display:flex;flex-wrap:wrap;gap:8px}
+.cfg-v{color:var(--ink);font-size:16px;line-height:1.4;border-left:2px solid var(--accent);padding-left:12px;max-width:70ch}
+.cfg-v.bad{border-color:var(--bad)} .cfg-v.good{border-color:var(--good)}
+
+/* схема первого экрана */
+.wf{background:#f4f4f2;border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:16px;color:#8e8e8c}
+.wf span,.wf i{display:block;background:#dcdcd8;border-radius:4px}
+.wf-nav{display:flex;align-items:center;gap:10px;position:relative}
+.wf-nav i{width:44px;height:14px;background:#101010;margin-right:auto}
+.wf-nav span{width:52px;height:8px}
+.wf-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:center}
+.wf-copy{display:flex;flex-direction:column;gap:12px}
+.wf-h{display:flex;flex-direction:column;gap:6px;position:relative}
+.wf-h span{height:22px;background:#101010}.wf-h span:last-child{width:70%}
+.wf-p{display:flex;flex-direction:column;gap:5px}.wf-p span{height:8px}.wf-p span:last-child{width:80%}
+.wf-btn{width:130px;height:38px;border-radius:999px;background:#eb7540;position:relative}
+.wf-art{position:relative;background:#e8e8e5;border-radius:8px;aspect-ratio:10/7;display:grid;place-items:center;color:#6d6d6a}
+.wf-art svg{width:80%;height:auto}
+.wf-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;position:relative}
+.wf-cards span{height:46px;border-radius:8px;background:#e1e1dd}
+.wf .pin{position:absolute;width:26px;height:26px;border-radius:50%;background:var(--panel);color:var(--accent);border:2px solid var(--accent);display:grid;place-items:center;font:500 12px var(--mono);z-index:1}
+.wf-nav .pin{right:-6px;top:-18px}
+.wf-h .pin{right:-8px;top:-10px}
+.wf-btn .pin{right:-10px;top:-12px}
+.wf-art .p4{left:-8px;top:-10px}.wf-art .p5{right:-8px;bottom:-10px}
+.wf-cards .pin{left:-8px;top:-12px}
+
+/* вложенные уровни метафоры */
+.nest-l{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.nest-l>b{font-size:19px;font-weight:400}
+.nest-l>p{font-size:15px;line-height:1.45;max-width:70ch}
+.nest-l .kind{color:var(--accent)}
+.nest-l.n2{background:var(--well);margin-top:8px}
+.nest-l.n3{background:var(--panel);border-color:var(--accent);margin-top:8px}
+
+/* посадочный талон */
+.pass-stage{padding:28px 16px}
+.pass{display:flex;width:min(580px,100%);background:#fff;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.08);overflow:hidden;color:#101010;font-family:var(--body);transition:background .3s}
+.pass-main{flex:1 1 auto;min-width:0;padding:22px;display:flex;flex-direction:column;gap:14px}
+.pass-top{display:none;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pass-k{font:500 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#7a7a77}
+.pass-h{font-size:22px;font-weight:600;line-height:1.1;letter-spacing:-.01em;color:#101010}
+.pass-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pass-f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.pass-f .lb{font-size:12px;color:#5a5a58}
+.pass-f .in{height:44px;border:1px solid #c9c9c6;border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pass-btn{align-self:flex-start;background:#101010;color:#fff;border-radius:8px;padding:12px 20px;font-size:14px;font-weight:500}
+.pass-stub{display:none;flex:0 0 130px;flex-direction:column;gap:4px;padding:22px 18px;border-left:2px dashed #c9c9c6;position:relative;background:#f7f8fc}
+.pass-stub b{font-size:22px;font-weight:600;color:#1f3a93;margin-bottom:6px}
+.pass-code{display:block;height:34px;margin-top:auto;background:repeating-linear-gradient(90deg,#101010 0 2px,transparent 2px 4px,#101010 4px 5px,transparent 5px 8px)}
+.t-pass{display:none}
+.pass.is-pass .t-plain{display:none}.pass.is-pass .t-pass{display:inline}
+.pass.is-pass .pass-top{display:flex}
+.pass.is-pass .pass-stub{display:flex}
+.pass.is-pass .pass-h{color:#1f3a93;text-transform:uppercase;font-size:20px;letter-spacing:.02em}
+.pass.is-pass .pass-f .lb{font:500 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#7a7a77}
+.pass.is-pass .pass-f .in{border:0;border-bottom:1.5px solid #1f3a93;border-radius:0;padding:0 2px;font-weight:500}
+.pass.is-pass .pass-btn{background:#1f3a93;border-radius:999px}
+.pass.is-pass{-webkit-mask:radial-gradient(circle 11px at calc(100% - 130px) 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 11px at calc(100% - 130px) 100%,#0000 98%,#000) bottom/100% 51% no-repeat;mask:radial-gradient(circle 11px at calc(100% - 130px) 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 11px at calc(100% - 130px) 100%,#0000 98%,#000) bottom/100% 51% no-repeat}
+
+/* микроуровень: три характера одной кнопки */
+.micro{gap:20px 28px;align-items:flex-start}
+.mc{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;width:150px}
+.mc small{font-size:12px;line-height:1.35;color:#5a5a58}
+.mb{display:inline-flex;align-items:center;justify-content:center;height:46px;padding:0 22px;font:500 15px var(--body);cursor:pointer;user-select:none;position:relative;overflow:hidden;outline:none}
+.mb-tech{border:1.5px solid #101010;border-radius:0;font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#101010;transition:background .08s linear,color .08s linear}
+.mb-tech:hover,.mb-tech:focus-visible{background:#101010;color:#f4f4f2}
+.mb-prem{border-radius:10px;background:linear-gradient(180deg,#2c2c2c,#0d0d0d);color:#efe2c4;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 6px 18px rgba(0,0,0,.25);letter-spacing:.02em}
+.mb-prem::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,240,210,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .9s ease}
+.mb-prem:hover::after,.mb-prem:focus-visible::after{transform:translateX(120%)}
+.mb-friend{border-radius:999px;background:#ffcf3d;color:#101010;font-weight:600;transition:transform .35s cubic-bezier(.34,1.8,.64,1)}
+.mb-friend:hover,.mb-friend:focus-visible{transform:scale(1.08) rotate(-2deg)}
+.mb:focus-visible{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+
+/* мини-лендинг «Код» */
+.ml-stage{padding:18px;display:block}
+.ml{--m-bg:#fff;--m-ink:#101010;--m-mut:#6d6d6a;--m-ac:#3b6ef0;--m-ac-ink:#fff;--m-line:#e1e1dd;--m-art:#9a9a96;--m-sh:#101010;background:var(--m-bg);color:var(--m-ink);border-radius:12px;overflow:hidden;font-family:var(--body);box-shadow:0 4px 20px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:18px;padding:16px 20px 20px;transition:background-color .3s,color .3s}
+.ml-nav{display:flex;align-items:center;gap:14px;justify-content:space-between;border-bottom:1px solid var(--m-line);padding-bottom:12px}
+.ml-logo{color:var(--m-ink);font-weight:700;font-size:16px}
+.ml-links{font-size:12px;color:var(--m-mut);text-align:right}
+.ml-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:center}
+.ml-copy{display:flex;flex-direction:column;gap:10px;min-width:0}
+.ml-kick{font-size:12px;color:var(--m-mut)}
+.ml-h{font-size:clamp(23px,3.1vw,34px);line-height:1.05;font-weight:600;letter-spacing:-.02em;color:var(--m-ink)}
+.ml-p{font-size:14px;line-height:1.4;color:var(--m-mut);max-width:36ch}
+.ml-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.ml-btn,.ml-btn2{display:inline-flex;align-items:center;height:40px;padding:0 16px;font-size:13px;font-weight:500;border-radius:8px;position:relative;transition:transform .25s,box-shadow .25s,background .25s}
+.ml-btn{background:var(--m-ac);color:var(--m-ac-ink)}
+.ml-btn2{border:1px solid var(--m-line);color:var(--m-ink)}
+.ml-art{position:relative;aspect-ratio:22/17;min-width:0}
+.art{display:none;width:100%;height:100%}
+.art-none{background:repeating-linear-gradient(45deg,#ececea 0 10px,#e4e4e1 10px 20px);border-radius:8px;place-items:center}
+.art-none span{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#9a9a96;background:#f4f4f2;padding:4px 8px;border-radius:4px}
+.ml[data-art=none] .art-none{display:grid}
+.ml[data-art=space] .art-space,.ml[data-art=game] .art-game,.ml[data-art=lego] .art-lego,.ml[data-art=lab] .art-lab{display:block}
+.ml-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ml-card{border:1px solid var(--m-line);border-radius:8px;padding:12px;font-size:13px;color:var(--m-ink);min-height:54px;display:flex;align-items:flex-end;position:relative;transition:transform .25s}
+
+/* цвет */
+.ml[data-color=space]{--m-bg:#0b1030;--m-ink:#eef2ff;--m-mut:#9aa6d6;--m-ac:#ffcc4d;--m-ac-ink:#0b1030;--m-line:#2a356b;--m-art:#7cf0ff;--m-sh:#7cf0ff}
+.ml[data-color=game]{--m-bg:#0d0d0d;--m-ink:#e9ffe0;--m-mut:#7fbf73;--m-ac:#39ff14;--m-ac-ink:#0d0d0d;--m-line:#2f2f2f;--m-art:#ff3df2;--m-sh:#ff3df2}
+.ml[data-color=lego]{--m-bg:#fff4d6;--m-ink:#1d1d1d;--m-mut:#6b5d3a;--m-ac:#e5383b;--m-ac-ink:#fff;--m-line:#f2b33d;--m-art:#3b6ef0;--m-sh:#1d1d1d}
+.ml[data-color=lab]{--m-bg:#fbfcff;--m-ink:#1b2a4a;--m-mut:#5b6b8c;--m-ac:#2fa84f;--m-ac-ink:#fff;--m-line:#c4d2ef;--m-art:#1b2a4a;--m-sh:#1b2a4a;background-image:linear-gradient(#e6edfb 1px,transparent 1px),linear-gradient(90deg,#e6edfb 1px,transparent 1px);background-size:16px 16px}
+
+/* типографика */
+.ml[data-font=space] .ml-h{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-weight:500;font-size:clamp(20px,2.6vw,29px);line-height:1.12}
+.ml[data-font=space] .ml-kick,.ml[data-font=space] .ml-logo{text-transform:uppercase;letter-spacing:.2em;font-size:11px}
+.ml[data-font=game] .ml-h{font-family:var(--mono);text-transform:uppercase;font-weight:500;letter-spacing:0;font-size:clamp(20px,2.6vw,28px);line-height:1.15}
+.ml[data-font=game] .ml-kick,.ml[data-font=game] .ml-logo,.ml[data-font=game] .ml-card{font-family:var(--mono);text-transform:uppercase;font-size:11px}
+.ml[data-font=lego] .ml-h{font-weight:800;letter-spacing:-.035em;font-size:clamp(25px,3.4vw,37px);line-height:.98}
+.ml[data-font=lego] .ml-logo,.ml[data-font=lego] .ml-card{font-weight:800}
+.ml[data-font=lab] .ml-h{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.01em}
+.ml[data-font=lab] .ml-kick,.ml[data-font=lab] .ml-card{font-family:var(--mono);font-size:11px;letter-spacing:.04em}
+.ml[data-font=lab] .ml-logo{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-style:italic}
+
+/* форма UI */
+.ml[data-ui=space] .ml-btn,.ml[data-ui=space] .ml-btn2{border-radius:999px}
+.ml[data-ui=space] .ml-btn{box-shadow:0 0 0 1px var(--m-ac),0 0 18px color-mix(in srgb,var(--m-ac) 55%,transparent)}
+.ml[data-ui=space] .ml-btn2{border-color:var(--m-sh)}
+.ml[data-ui=space] .ml-card{border-radius:18px;border-color:var(--m-sh);box-shadow:inset 0 0 14px color-mix(in srgb,var(--m-sh) 25%,transparent)}
+.ml[data-ui=game] .ml-btn,.ml[data-ui=game] .ml-btn2,.ml[data-ui=game] .ml-card{border-radius:0}
+.ml[data-ui=game] .ml-btn{box-shadow:4px 4px 0 var(--m-sh)}
+.ml[data-ui=game] .ml-btn2{border-width:2px;border-color:var(--m-ink)}
+.ml[data-ui=game] .ml-card{border:2px solid var(--m-ink);box-shadow:3px 3px 0 var(--m-sh)}
+.ml[data-ui=lego] .ml-btn,.ml[data-ui=lego] .ml-btn2{border-radius:8px;border:3px solid color-mix(in srgb,var(--m-ink) 22%,transparent);margin-top:8px}
+.ml[data-ui=lego] .ml-btn::before,.ml[data-ui=lego] .ml-card::before{content:"";position:absolute;top:-9px;left:12px;width:14px;height:7px;border-radius:4px 4px 0 0;background:var(--m-ac);box-shadow:22px 0 0 var(--m-ac)}
+.ml[data-ui=lego] .ml-btn2::before{content:"";position:absolute;top:-9px;left:12px;width:14px;height:7px;border-radius:4px 4px 0 0;background:var(--m-line)}
+.ml[data-ui=lego] .ml-card{border:3px solid var(--m-line);border-radius:8px;margin-top:8px;background:color-mix(in srgb,var(--m-bg) 70%,#fff)}
+.ml[data-ui=lego] .ml-card::before{background:var(--m-line);box-shadow:22px 0 0 var(--m-line)}
+.ml[data-ui=lab] .ml-btn,.ml[data-ui=lab] .ml-btn2{border-radius:2px;height:36px}
+.ml[data-ui=lab] .ml-btn2{border-color:var(--m-ink)}
+.ml[data-ui=lab] .ml-card{border-radius:0;border:0;border-top:1px solid var(--m-ink);border-bottom:1px dashed var(--m-line);padding:8px 2px}
+
+/* графика */
+.art-space .stars circle{fill:var(--m-ink)}
+.art-space .planet{fill:var(--m-art);opacity:.9}
+.art-space .orbit{fill:none;stroke:var(--m-ac);stroke-width:1.2;stroke-dasharray:3 4}
+.art-space .ship{fill:var(--m-ac);transform:translate(196px,88px)}
+.art-game .px rect{fill:var(--m-art)}
+.art-game .lvl rect:first-child{fill:none;stroke:var(--m-ink);stroke-width:2}
+.art-game .lvl-f{fill:var(--m-ac)}
+.art-game text{font:500 11px var(--mono);fill:var(--m-ink);letter-spacing:.08em}
+.art-lego .b1 rect,.art-lego .b1 circle{fill:var(--m-ac)}
+.art-lego .b2 rect,.art-lego .b2 circle{fill:var(--m-art)}
+.art-lego .b3 rect,.art-lego .b3 circle{fill:var(--m-line)}
+.art-lego rect{stroke:rgba(0,0,0,.18);stroke-width:2}
+.art-lab .flask{fill:none;stroke:var(--m-ink);stroke-width:2;stroke-linejoin:round}
+.art-lab .liquid{fill:var(--m-ac);opacity:.85}
+.art-lab .bub circle{fill:var(--m-bg)}
+.art-lab .chart{fill:none;stroke:var(--m-ac);stroke-width:2.5;stroke-linejoin:round;stroke-dasharray:120;stroke-dashoffset:0}
+.art-lab text{font:500 10px var(--mono);fill:var(--m-mut)}
+
+/* анимация: включается только инструментом «Анимация» */
+@keyframes tw{50%{opacity:.15}}
+@keyframes orbit{to{offset-distance:100%}}
+@keyframes blinkS{50%{opacity:0}}
+@keyframes fill{0%{width:6px}100%{width:66px}}
+@keyframes drop{0%,12%{transform:translateY(-60px);opacity:0}24%{transform:translateY(0);opacity:1}30%{transform:translateY(-6px)}36%,100%{transform:translateY(0)}}
+@keyframes bub{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-34px);opacity:0}}
+@keyframes draw{0%{stroke-dashoffset:120}60%,100%{stroke-dashoffset:0}}
+.ml[data-motion=space] .stars circle{animation:tw 2.4s ease-in-out infinite}
+.ml[data-motion=space] .stars circle:nth-child(2n){animation-delay:-1.2s}
+.ml[data-motion=space] .stars circle:nth-child(3n){animation-duration:3.4s}
+.ml[data-motion=space] .ship{offset-path:path('M24 88 A86 22 0 1 0 196 88 A86 22 0 1 0 24 88');offset-rotate:auto 90deg;transform:none;animation:orbit 9s linear infinite}
+.ml[data-motion=space] .ml-btn:hover{transform:translateY(-3px);box-shadow:0 10px 24px color-mix(in srgb,var(--m-ac) 45%,transparent)}
+.ml[data-motion=game] .blink{animation:blinkS 1s steps(1) infinite}
+.ml[data-motion=game] .lvl-f{animation:fill 3s steps(5) infinite}
+.ml[data-motion=game] .ml-btn:hover{transform:translate(2px,2px);transition:transform 0s}
+.ml[data-motion=lego] .br{animation:drop 3.6s cubic-bezier(.3,1.4,.6,1) infinite}
+.ml[data-motion=lego] .b2{animation-delay:.3s}.ml[data-motion=lego] .b3{animation-delay:.6s}
+.ml[data-motion=lego] .ml-btn:hover{transform:scale(1.06);transition:transform .35s cubic-bezier(.34,1.8,.64,1)}
+.ml[data-motion=lab] .bub circle{animation:bub 2.2s ease-in infinite}
+.ml[data-motion=lab] .bub circle:nth-child(2){animation-delay:-.8s}.ml[data-motion=lab] .bub circle:nth-child(3){animation-delay:-1.5s}
+.ml[data-motion=lab] .chart{animation:draw 3.2s ease-out infinite}
+.ml[data-motion=lab] .ml-btn:hover{box-shadow:0 0 0 4px color-mix(in srgb,var(--m-ac) 25%,transparent)}
+.ml[data-motion]:not([data-motion=none]) .ml-card:hover{transform:translateY(-3px)}
+
+/* тренажёр «громко или тихо» */
+.sorter-q{color:var(--ink);font-size:16px;max-width:64ch}
+.sorter-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.sorter-top .cap{color:var(--accent)}
+.sorter-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sorter-list li{background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.sorter-list li>b{font-weight:400;font-size:16px;line-height:1.3}
+.sorter-list .acts{display:flex;gap:6px;flex-wrap:wrap}
+.sorter-list .acts button{background:var(--card);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 14px;font-weight:400;font-size:14px}
+.sorter-list .acts button:hover:not(:disabled){border-color:var(--accent);color:var(--ink)}
+.sorter-list .acts button:disabled{cursor:default}
+.sorter-list .acts button.pick-ok{border-color:var(--good);color:var(--ink)}
+.sorter-list .acts button.pick-bad{border-color:var(--bad);color:var(--ink)}
+.sorter-list li.ok{border-color:color-mix(in srgb,var(--good) 45%,var(--stroke))}
+.sorter-list li.bad{border-color:color-mix(in srgb,var(--bad) 45%,var(--stroke))}
+.sorter-list .fb{font-size:14px;line-height:1.4}
+.sorter-list .fb b{font-weight:400}
+.sorter-list li.ok .fb b{color:var(--good)} .sorter-list li.bad .fb b{color:var(--bad)}
+
+/* лесенка */
+.ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:end}
+.ladder>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ladder>div:nth-child(1){min-height:150px}.ladder>div:nth-child(2){min-height:180px}.ladder>div:nth-child(3){min-height:210px}.ladder>div:nth-child(4){min-height:240px}
+.ladder>div.hot{border-color:var(--accent)}
+.ladder>div.trap{border-style:dashed;border-color:var(--bad);min-height:240px}
+.ladder .lvl{color:var(--accent)} .ladder .trap .lvl{color:var(--bad)}
+.ladder b{font-size:18px;font-weight:400}
+.ladder p{font-size:14px;line-height:1.4}
+.ladder>div{justify-content:flex-end}
+
+/* игра «расставь по силе» */
+.order-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ord{position:relative;text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:16px 16px 16px 58px;font-weight:400;font-size:15px;line-height:1.4;min-height:92px}
+.ord:hover:not(:disabled){border-color:var(--accent)}
+.ord:disabled{cursor:default}
+.ord .no{position:absolute;left:14px;top:14px;width:30px;height:30px;border-radius:50%;border:1px dashed var(--faint);display:grid;place-items:center;font:500 13px var(--mono);color:var(--faint)}
+.ord.sel .no{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink)}
+.ord.right{border-color:var(--good)} .ord.right .no{background:var(--good);border-color:var(--good)}
+.ord.wrong{border-color:var(--bad)} .ord.wrong .no{background:var(--bad);border-color:var(--bad);color:#fff}
+
+/* тренажёр формулы */
+.fx-res{display:flex;flex-direction:column;gap:14px}
+.fx-line{font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+.fx-line u{text-decoration:none;color:var(--accent)}
+.fx-sug{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:15px}
+.fx-sug button{background:var(--well);color:var(--ink);border:1px solid var(--accent);border-radius:999px;padding:6px 12px;font-weight:400;font-size:14px}
+
+@media (max-width:760px){
+  .wf-hero,.ml-hero,.sorter-list,.order-grid{grid-template-columns:minmax(0,1fr)}
+  .ml-art{max-width:300px;width:100%;justify-self:center}
+  .ml-links{display:none}
+  .ml-cards{grid-template-columns:minmax(0,1fr)}
+  .ml-card{min-height:0}
+  .ml-stage{padding:10px}
+  .ml{padding:14px}
+  .ladder{grid-template-columns:minmax(0,1fr)}
+  .ladder>div,.ladder>div:nth-child(n){min-height:0}
+  .pass{flex-direction:column}
+  .pass-fields{grid-template-columns:minmax(0,1fr)}
+  .pass-stub{flex:none;flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 14px;border-left:0;border-top:2px dashed #c9c9c6;padding:16px 22px}
+  .pass-stub b{margin:0}
+  .pass-code{width:100%;margin-top:4px}
+  .pass.is-pass{-webkit-mask:none;mask:none}
+  .mc{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  .ml *,.mb,.mb::after{animation:none!important;transition:none!important}
+  .ml[data-motion=space] .ship{offset-path:none;transform:translate(196px,88px)}
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 4 · UI</span></div>
+  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 UI-элементы</span><span>03 UI-кит</span><b>04 Концепция в веб-дизайне</b><span>05 Композиция</span><span>06 Типографика</span><span>07 Иконки</span><span>08 Адаптив</span><span>09 Цвет</span></div>
+  <h1>Концепция в веб-дизайне</h1>
+  <p class="lead"><b>Идея проекта придумана — теперь её нужно перенести на сайт.</b> Разбираем, через какие инструменты концепция появляется в интерфейсе, на каком масштабе она работает и где графику лучше приглушить.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#what">Где живёт концепция</a><a href="#pobeda">Бренд, проект, блок</a><a href="#levels">Пять масштабов</a><a href="#tools">Шесть инструментов</a><a href="#real">Брендбук и сайт</a><a href="#strength">Слабая и сильная</a><a href="#formula">Тренажёр формулы</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="what">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Где живёт концепция на сайте</h2></div></div>
+  <p>Концепция сайта — это набор решений, которые делают интерфейс цельным и узнаваемым. Как придумать саму идею и метафору, мы разбирали в методичке «Концепция проекта». Здесь — следующий шаг: как эта идея становится шрифтом, цветом, кнопкой, графикой, движением и текстом.</p>
+  <p class="quote">Концепция должна быть видимой, повторяемой и поддерживать смысл продукта.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Видимая</span><b>Её замечают без объяснений</b><p>Человек открыл сайт и за 3–5 секунд почувствовал образ. Если концепцию нужно рассказывать на защите, на сайте её нет.</p></div>
+    <div class="box"><span class="kind">Повторяемая</span><b>Она живёт дальше первого экрана</b><p>Один приём встречается в кнопках, карточках, анимации и текстах. Идея из одного баннера — это декорация.</p></div>
+    <div class="box"><span class="kind">Со смыслом</span><b>Она объясняет продукт</b><p>Образ связан с тем, что продукт делает или чем он отличается. Красивая картинка «для настроения» в эту проверку не проходит.</p></div>
+  </div>
+
+  <div class="sub">
+    <h3>Шесть инструментов</h3>
+    <div class="sub-b">
+      <p>У веб-дизайнера шесть инструментов, через которые концепция попадает на экран. Первый экран — место, где они встречаются все сразу, поэтому его рисуют первым и по нему судят обо всём сайте.</p>
+      <div class="wf" role="img" aria-label="Схема первого экрана: на нём отмечены шесть мест, где проявляется концепция">
+        <div class="wf-nav"><i></i><span></span><span></span><span></span><b class="pin">6</b></div>
+        <div class="wf-hero">
+          <div class="wf-copy"><div class="wf-h"><span></span><span></span><b class="pin">1</b></div><div class="wf-p"><span></span><span></span></div><div class="wf-btn"><b class="pin">3</b></div></div>
+          <div class="wf-art"><svg viewBox="0 0 200 140" aria-hidden="true"><circle cx="100" cy="70" r="38" fill="none" stroke="currentColor" stroke-width="1.5"/><ellipse cx="100" cy="70" rx="80" ry="22" fill="none" stroke="currentColor" stroke-dasharray="4 5"/><circle cx="176" cy="62" r="5" fill="currentColor"/></svg><b class="pin p4">4</b><b class="pin p5">5</b></div>
+        </div>
+        <div class="wf-cards"><span></span><span></span><span></span><b class="pin">2</b></div>
+      </div>
+      <div class="lv">
+        <div><span>1 · Типографика</span><span>Гарнитура, размер, капс, плотность. Самый быстрый способ задать характер: один и тот же заголовок в гротеске и в антикве звучит по-разному.</span></div>
+        <div><span>2 · Цвет</span><span>Палитра, контраст, роль акцента. Цвет повторяется на всех экранах, поэтому держит концепцию даже там, где графики нет.</span></div>
+        <div><span>3 · Форма UI</span><span>Кнопки, поля, карточки: скругления, вырезы, обводки, тени, состояния. Это микроуровень концепции.</span></div>
+        <div><span>4 · Графика</span><span>Иллюстрации, 3D, фото, паттерны. Самый громкий инструмент — и самый опасный: легко перегрузить экран.</span></div>
+        <div><span>5 · Анимация</span><span>Как элементы появляются, реагируют на курсор и скролл. Упругость, инерция, скорость — у движения тоже есть характер.</span></div>
+        <div><span>6 · Тексты</span><span>Заголовки, названия разделов, кнопки, ошибки. Тексты продолжают метафору словами: «Начать миссию» вместо «Подробнее».</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pobeda">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Бренд, проект, блок</h2></div></div>
+  <p>Частая проблема: у компании уже есть сильный узнаваемый бренд, и кажется, что придумать что-то своё нельзя. Выход в том, что метафора работает на трёх уровнях — бренда, проекта и блока. Бренд задан заранее, а внутри проекта ты можешь построить свою историю, которая с ним не спорит. Разберём на лонгриде, который наша студия сделала для авиакомпании «Победа».</p>
+  <div class="nest" aria-label="Три вложенных уровня метафоры">
+    <div class="nest-l n1"><span class="kind">Бренд</span><b>Метафора диалога</b><p>В 2021 году айдентику «Победы» обновило агентство Repina Branding. Низкая цена билетов связана с жёсткими правилами, поэтому бренд построили на открытом разговоре с пассажиром. Три точки в логотипе — это статус «печатает…» из мессенджера. Приём повторяется на всех носителях.</p>
+      <div class="nest-l n2"><span class="kind">Проект</span><b>Метафора полёта</b><p>Задача лонгрида — рассказать историю компании: как она набирала высоту и через что прошла. Историю мы рассказали как полёт: запуск компании — предполётная подготовка, первые успехи — взлёт.</p>
+        <div class="nest-l n3"><span class="kind">Блок</span><b>Билет, чемодан, взлётная полоса</b><p>Внутри каждого блока метафора полёта получает свой предмет: форма — посадочный талон, структура компании — город с её главными центрами, в других блоках — чемодан и взлётная полоса.</p></div>
+      </div>
+    </div>
+  </div>
+  <p class="why">Все предметы — билет, чемодан, полоса — из одного мира путешествия по воздуху. Они вызывают правильные ассоциации, помогают проникнуться историей и не спорят с главной идеей бренда — открытым диалогом.</p>
+
+  <div class="demo" data-states id="pass-demo">
+    <span class="cap">Блок-метафора · переключи форму</span>
+    <div class="seg">
+      <button type="button" data-state="default" data-desc="<b>Обычная форма.</b> Работает, но ничего не говорит об истории, которую рассказывает лонгрид. Такую форму можно поставить на любой сайт.">Обычная форма</button>
+      <button type="button" data-state="pass" data-desc="<b>Посадочный талон.</b> Поля и кнопка те же, порядок тот же. Изменились подписи, перфорация, корешок и текст кнопки. Метафора считывается, а форма по-прежнему делает свою работу.">Посадочный талон</button>
+    </div>
+    <div class="stage pass-stage">
+      <div class="pass" data-target>
+        <div class="pass-main">
+          <span class="pass-top"><span class="pass-k">Посадочный талон</span><span class="pass-k">Рейс · история компании</span></span>
+          <b class="pass-h"><span class="t-plain">Узнавай новости первым</span><span class="t-pass">Забронируй место на борту</span></b>
+          <div class="pass-fields">
+            <div class="pass-f"><span class="lb"><span class="t-plain">Имя</span><span class="t-pass">Пассажир</span></span><span class="in">Анна Смирнова</span></div>
+            <div class="pass-f"><span class="lb"><span class="t-plain">Почта</span><span class="t-pass">Куда прислать билет</span></span><span class="in">anna@mail.ru</span></div>
+          </div>
+          <span class="pass-btn"><span class="t-plain">Подписаться</span><span class="t-pass">Получить посадочный</span></span>
+        </div>
+        <div class="pass-stub" aria-hidden="true"><span class="pass-k">Место</span><b>12A</b><span class="pass-k">Выход</span><b>04</b><span class="pass-code"></span></div>
+      </div>
+    </div>
+    <output></output>
+  </div>
+  <p>Главное правило блока-метафоры: <b>графика не перетягивает внимание</b>. В талоне поместилась вся нужная информация, человек видит поля, понимает, что вводить, и нажимает кнопку. Метафора — эмоциональный бонус для пользователя, а читаемость и функция остаются на первом месте.</p>
+</section>
+
+<section id="levels">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Пять масштабов концепции</h2></div></div>
+  <p>Концепция бывает маленькой — в одной кнопке — и огромной, на весь сайт. Чем крупнее масштаб, тем сильнее эффект и тем больше работы. Посмотри на пять уровней от меньшего к большему и открой примеры.</p>
+
+  <div class="sub">
+    <h3>1 · Микроуровень</h3>
+    <div class="sub-b">
+      <p>Приём внутри одного UI-элемента: форма (скругления, вырезы, капсула), свет и тень (блик, стекло, «пластик»), движение (упругость, инерция, «магнит» к курсору). Добавляет характер и ощущение качества, структура продукта при этом не меняется.</p>
+      <div class="stage micro">
+        <div class="mc"><span class="mb mb-tech" tabindex="0">Подключить</span><small>Техничная · чёткий контур, прямые углы</small></div>
+        <div class="mc"><span class="mb mb-prem" tabindex="0">Подключить</span><small>Премиальная · тонкий блик, тёмная глубина</small></div>
+        <div class="mc"><span class="mb mb-friend" tabindex="0">Подключить</span><small>Дружелюбная · мягкая форма, яркий акцент</small></div>
+      </div>
+      <span class="cap">Наведи курсор на кнопки: движение у каждой своё</span>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>2 · Компоненты и паттерны</h3>
+    <div class="sub-b">
+      <p>Концепция становится единым языком компонентов: карточек, полей, модалок, навигации. Одни правила контраста и акцентов, одна логика отступов и сетки, общий «почерк» в иконках. Без этого уровня интерфейс выглядит собранным из разных сайтов.</p>
+      <div class="pair">
+        <div class="bad"><i>Каждый блок сам по себе</i><span>Кнопки капсулой, карточки с острыми углами, поля со скруглением 4 px, иконки из трёх наборов.</span></div>
+        <div class="good"><i>Один язык</i><span>Вырез в углу кнопки повторяется у карточек и модалок, у всех один радиус и одна толщина линии.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>3 · Типографика</h3>
+    <div class="sub-b">
+      <p>Концепцию можно построить на шрифте, даже если остальной интерфейс минимальный. Работают выбор гарнитуры (строгая, гуманистическая, технологичная), ритм (интерлиньяж, длина строки, плотность), иерархия (контраст размеров и начертаний) и фирменный приём (капс, узкие заголовки, необычные цифры).</p>
+      <div class="links"><a href="https://madamspeaker.org.au/" target="_blank" rel="noopener"><span>madamspeaker.org.au</span><span>Сайт с главной мыслью «Let’s reshape the idea of leadership and authority». Характер здесь держат шрифт и набор: посмотри, как крупность заголовков и ритм строк работают на тему лидерства.</span></a></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>4 · Фотостиль и арт-дирекшн</h3>
+    <div class="sub-b">
+      <p>Когда важно показать продукт или атмосферу, концепция живёт в изображениях. Решают свет (студийный, дневной, контровой), окружение (стерильное, домашнее, индустриальное), цветокор и зерно, композиция кадра (каталог, репортаж, кино). Картинка объясняет ценность продукта без лишних слов.</p>
+      <div class="links">
+        <a href="https://ayocin.com/" target="_blank" rel="noopener"><span>ayocin.com</span><span>Рендеры продукта разбавлены метафорой свежести и кадрами зелени. Так выглядят сильные сайты продуктов.</span></a>
+        <a href="https://www.farmminerals.com/" target="_blank" rel="noopener"><span>farmminerals.com</span><span>Анимация показывает, как работает удобрение, а профессиональные фото урожая — результат.</span></a>
+        <a href="https://week.wild.plus/athens-26" target="_blank" rel="noopener"><span>week.wild.plus/athens-26</span><span>Фестиваль для IT-специалистов в Афинах. В основе — греческий фольклор.</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>5 · Макроуровень</h3>
+    <div class="sub-b">
+      <p>Метафора становится сквозной идеей, которая связывает все экраны. У неё есть мир и правила («путешествие», «мастерская», «оркестр»), набор символов и повторяющиеся сцены. Этот уровень помогает запомниться и объяснить сложное простым образом.</p>
+      <div class="links">
+        <a href="https://hashgraphvc.com/" target="_blank" rel="noopener"><span>hashgraphvc.com</span><span>Венчурный фонд выбрал метафору фридайвинга — погружения на задержке дыхания. Она показывает и риск, и эйфорию от результата.</span></a>
+        <a href="https://perasperadastra.ru/mission-to-ai" target="_blank" rel="noopener"><span>perasperadastra.ru/mission-to-ai</span><span>Наш сайт: космическое путешествие перекликается с названием школы, а курсор превращён в шаттл — твой личный корабль в веб-пространстве.</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Одна концепция — шесть инструментов</h2></div></div>
+  <p>Возьмём один продукт — онлайн-школу программирования для подростков «Код» — и четыре разные концепции. Выбери концепцию, потом выключай инструменты по одному и смотри, когда образ пропадает. Кнопка «Смешать» раздаёт инструментам разные концепции — посмотри, что получится.</p>
+  <div class="demo" id="cfg">
+    <span class="cap">Конструктор · собери первый экран</span>
+    <div class="cfg-row"><span class="cap">Концепция</span><div class="seg" id="cfg-c">
+      <button type="button" data-c="space">Космическая миссия</button>
+      <button type="button" data-c="game">Ретро-игра</button>
+      <button type="button" data-c="lego">Конструктор</button>
+      <button type="button" data-c="lab">Лаборатория</button>
+    </div></div>
+    <div class="cfg-row"><span class="cap">Инструменты</span><div class="seg" id="cfg-t">
+      <button type="button" data-t="font">Типографика</button>
+      <button type="button" data-t="color">Цвет</button>
+      <button type="button" data-t="ui">Форма UI</button>
+      <button type="button" data-t="art">Графика</button>
+      <button type="button" data-t="motion">Анимация</button>
+      <button type="button" data-t="text">Тексты</button>
+    </div></div>
+    <div class="cfg-acts"><button type="button" class="ghost" id="cfg-all">Включить все</button><button type="button" class="ghost" id="cfg-none">Выключить все</button><button type="button" class="ghost" id="cfg-mix">Смешать</button></div>
+    <div class="stage ml-stage">
+      <div class="ml" id="ml" data-font="none" data-color="none" data-ui="none" data-art="none" data-motion="none" data-text="none">
+        <div class="ml-nav"><b class="ml-logo">Код</b><span class="ml-links" data-k="nav"></span></div>
+        <div class="ml-hero">
+          <div class="ml-copy">
+            <span class="ml-kick" data-k="kick"></span>
+            <b class="ml-h" data-k="h"></b>
+            <span class="ml-p" data-k="p"></span>
+            <div class="ml-btns"><span class="ml-btn" data-k="cta"></span><span class="ml-btn2" data-k="cta2"></span></div>
+          </div>
+          <div class="ml-art" aria-hidden="true">
+            <div class="art art-none"><span>изображение</span></div>
+            <svg class="art art-space" viewBox="0 0 220 170"><g class="stars"><circle cx="20" cy="22" r="1.6"/><circle cx="190" cy="30" r="1.2"/><circle cx="60" cy="150" r="1.4"/><circle cx="200" cy="140" r="1.8"/><circle cx="120" cy="12" r="1"/><circle cx="30" cy="100" r="1.1"/></g><circle cx="110" cy="88" r="40" class="planet"/><ellipse cx="110" cy="88" rx="86" ry="22" class="orbit"/><g class="ship"><path d="M0 -10 L6 6 L0 3 L-6 6 Z"/></g></svg>
+            <svg class="art art-game" viewBox="0 0 220 170"><g class="px"><rect x="40" y="40" width="12" height="12"/><rect x="52" y="40" width="12" height="12"/><rect x="76" y="40" width="12" height="12"/><rect x="88" y="40" width="12" height="12"/><rect x="28" y="52" width="84" height="12"/><rect x="28" y="64" width="84" height="12"/><rect x="40" y="76" width="60" height="12"/><rect x="52" y="88" width="36" height="12"/><rect x="64" y="100" width="12" height="12"/></g><g class="lvl"><rect x="130" y="56" width="70" height="14"/><rect x="132" y="58" width="44" height="10" class="lvl-f"/></g><text x="130" y="48">LVL 01</text><text x="130" y="96" class="blink">PRESS START</text></svg>
+            <svg class="art art-lego" viewBox="0 0 220 170"><g class="bricks"><g class="br b1"><rect x="40" y="118" width="120" height="30" rx="4"/><circle cx="62" cy="114" r="7"/><circle cx="100" cy="114" r="7"/><circle cx="138" cy="114" r="7"/></g><g class="br b2"><rect x="60" y="80" width="80" height="30" rx="4"/><circle cx="80" cy="76" r="7"/><circle cx="120" cy="76" r="7"/></g><g class="br b3"><rect x="80" y="42" width="40" height="30" rx="4"/><circle cx="100" cy="38" r="7"/></g></g></svg>
+            <svg class="art art-lab" viewBox="0 0 220 170"><path class="flask" d="M80 30 h30 M86 30 v40 l-30 60 a8 8 0 0 0 7 12 h64 a8 8 0 0 0 7 -12 l-30 -60 v-40"/><path class="liquid" d="M64 116 h62 l11 22 a4 4 0 0 1 -4 6 h-76 a4 4 0 0 1 -4 -6 z"/><g class="bub"><circle cx="90" cy="126" r="3"/><circle cx="104" cy="132" r="2"/><circle cx="96" cy="110" r="2.5"/></g><polyline class="chart" points="140,130 156,112 170,118 186,86 204,70"/><text x="140" y="150">exp. 01</text></svg>
+          </div>
+        </div>
+        <div class="ml-cards"><span class="ml-card" data-k="c1"></span><span class="ml-card" data-k="c2"></span><span class="ml-card" data-k="c3"></span></div>
+      </div>
+    </div>
+    <ul class="verdict" id="cfg-out"></ul>
+    <p class="cfg-v" id="cfg-v"></p>
+  </div>
+  <p class="why">Обрати внимание: шрифт, цвет и тексты почти не занимают места, но держат концепцию на каждом экране. Графика и анимация дают самый сильный эффект, их обычно берут дозированно — на первом экране и в паре ключевых блоков.</p>
+</section>
+
+<section id="real">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Брендбук и живой сайт</h2></div></div>
+  <p>Открой брендбук крупной компании, а потом её сайт — графики на сайте будет в разы меньше. Так получается специально: у сайта и у рекламной кампании разные задачи. Разберём на двух примерах.</p>
+  <div class="two">
+    <div class="box"><span class="kind">hh.ru</span><b>Метафора света, спокойный интерфейс</b><p>В брендбуке hh.ru графика построена вокруг света: сервис помогает человеку ориентироваться в сложном поиске работы или сотрудника. Там есть световой луч, градиенты, сюжетные фото, предметные сцены и портреты.</p><p>На главной странице hh.ru нет и 10% этих кейвижуалов. Человек пришёл искать вакансию или кандидата, поэтому первый экран отдан поиску, выбору города и переключателю «Ищу работу / Ищу сотрудника». Дальше — списки профессий, вакансий и компаний: много названий и чисел, которые нужно быстро сравнить.</p><p>Концепция в продукте осталась в том, что работает постоянно: фирменный цвет, типографика, узнаваемые акценты и ясная навигация. Яркая графика живёт в рекламе, спецпроектах, на карьерных страницах и в статьях.</p></div>
+    <div class="box"><span class="kind">Банк «Точка»</span><b>Характер виден, сценарии на первом месте</b><p>На сайте «Точки» стиль виден не только в логотипе: крупная типографика, контрастные акценты, скруглённые формы, иллюстрации и разговорная подача текстов. Это отличает банк от строгих финансовых сервисов и поддерживает образ «своего» банка для предпринимателей.</p><p>При этом сайт не превращается в презентацию брендбука. Человек пришёл открыть счёт, узнать условия или решить вопрос с платежом. Заголовок объясняет услугу, кнопка ведёт к действию, условия читаются быстро.</p><p>Иллюстрации появляются там, где нужно привлечь внимание или объяснить идею продукта. В формах, тарифах и таблицах декора меньше: важнее не потерять цену, срок и кнопку.</p></div>
+  </div>
+  <p class="quote">Брендбук задаёт набор приёмов и правила их применения. Громкость на каждой странице выбираешь ты.</p>
+  <p>Вывод для твоих проектов. На учебном проекте можно позволить себе больше креатива, чем в реальной продуктовой задаче. Следи, чтобы дизайн не превратился в «мультик»: иллюстрации ради того, что «так красивее», мешают блоку работать. Смелые решения нужны — просто каждый раз задавай себе вопрос, уместны ли они здесь.</p>
+
+  <div class="demo sorter" id="loud">
+    <span class="cap">Тренажёр · громко или тихо</span>
+    <p class="sorter-q">Где графика и метафора могут звучать в полную силу, а где их лучше приглушить до цвета, шрифта и акцентов? Реши для каждого блока.</p>
+    <div class="sorter-top"><span class="cap" id="loud-n">Отвечено 0 из 10</span><button type="button" class="ghost" id="loud-reset">Заново</button></div>
+    <ol class="sorter-list" id="loud-list"></ol>
+    <p class="cfg-v" id="loud-v" hidden></p>
+  </div>
+</section>
+
+<section id="strength">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>От слабой концепции к сильной</h2></div></div>
+  <p>Концепцию на сайте можно оценить по тому, сколько инструментов она захватила и мешает ли она работе. Получается лесенка из четырёх ступеней. Плюс одна ловушка сбоку — перегруз.</p>
+  <div class="ladder">
+    <div><span class="lvl">Ступень 1</span><b>Шаблон</b><p>Концепции нет. Сайт подойдёт любой компании из той же ниши.</p></div>
+    <div><span class="lvl">Ступень 2</span><b>Декор</b><p>Образ есть только в одной картинке на первом экране. Ниже — обычный шаблон.</p></div>
+    <div><span class="lvl">Ступень 3</span><b>Тема</b><p>Образ есть в графике и цвете по всему сайту. Кнопки, тексты и движение стандартные.</p></div>
+    <div class="hot"><span class="lvl">Ступень 4</span><b>Система</b><p>Идея прошита в шрифт, UI, анимацию и тексты. Графика дозирована, всё читается.</p></div>
+    <div class="trap"><span class="lvl">Ловушка</span><b>Перегруз</b><p>Метафора везде, даже в форме оплаты. Красиво, но человек не находит кнопку и цену.</p></div>
+  </div>
+
+  <div class="demo" id="order">
+    <span class="cap">Игра · расставь по силе</span>
+    <p class="sorter-q">Проект — сайт фестиваля уличной еды «Жар». Студенты сделали четыре версии. Нажимай на карточки по порядку: от самой слабой концепции к самой сильной.</p>
+    <div class="order-grid" id="order-grid"></div>
+    <div class="cfg-acts"><button type="button" class="solid" id="order-check" disabled>Проверить</button><button type="button" class="ghost" id="order-reset">Сбросить</button></div>
+    <ul class="verdict" id="order-out"></ul>
+  </div>
+
+  <div class="sub">
+    <h3>Какой масштаб нужен твоему проекту</h3>
+    <div class="sub-b">
+      <p>Глубокая концепция нужна не везде: бывают просто хорошие сайты, которые выполняют задачу. В проектах курса мы всегда просим делать на ней акцент — это то, что отличает твоё портфолио. Подбирай масштаб под продукт.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Ситуация</th><th>Где держать концепцию</th><th>Пример</th></tr></thead>
+        <tbody>
+          <tr><td>Продукт простой, важно ощущение качества</td><td>Микроуровень и типографика</td><td>Лендинг приложения-трекера привычек</td></tr>
+          <tr><td>Интерфейс большой и растёт</td><td>Компоненты и правила UI-кита</td><td>Личный кабинет, маркетплейс, сервис бронирования</td></tr>
+          <tr><td>Продаёшь эмоцию и образ жизни</td><td>Фотостиль и арт-дирекшн</td><td>Отель, одежда, косметика, ресторан</td></tr>
+          <tr><td>Нужно объяснить сложное или рассказать историю бренда</td><td>Метафора, иллюстрации, 3D, персонажи</td><td>Лонгрид, финтех, венчурный фонд, онлайн-школа</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<section id="formula">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Тренажёр формулы концепции</h2></div></div>
+  <p>Формула метафоры из урока «Концепция проекта» — это мост к сайту. Качество в середине формулы подсказывает, какой образ выбрать, а образ подсказывает решения для каждого инструмента. Собери формулу из трёх частей: тренажёр проверит, держится ли связь, и разложит образ на решения для сайта.</p>
+  <div class="formula" aria-hidden="true"><span>[что]</span><span>[какое]</span><em>как</em><span class="m">[образ]</span></div>
+  <div class="demo" id="fx">
+    <span class="cap">Тренажёр · собери формулу</span>
+    <div class="cfg-row"><span class="cap">Что</span><div class="seg" id="fx-p"></div></div>
+    <div class="cfg-row"><span class="cap">Какое</span><div class="seg" id="fx-q"></div></div>
+    <div class="cfg-row"><span class="cap">Как</span><div class="seg" id="fx-i"></div></div>
+    <div class="cfg-acts"><button type="button" class="ghost" id="fx-rand">Случайная формула</button></div>
+    <div class="fx-res" id="fx-res" aria-live="polite"></div>
+  </div>
+  <p class="why">Тренажёр знает только восемь образов. В своём проекте ты придумываешь образ сам, а проверка та же: качество из формулы должно читаться в образе, и образ должен раскладываться хотя бы на четыре инструмента из шести.</p>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Концепция сайта вместе с нейронкой</h2></div></div>
+  <p>Нейронка хорошо помогает разложить образ на решения и найти, где ты переборщил. Сама идея и выбор остаются за тобой: концепция, придуманная без твоего контекста, подойдёт любому бренду.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Продукт, аудитория, формула концепции, задача сайта.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не рисует сайт за тебя.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Нейронка предлагает варианты, выбираешь и рисуешь ты.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Раскладка</span><b>Образ — в шесть инструментов</b>
+<pre id="p1">Я делаю сайт для <em>[продукт и аудитория]</em>. Задача сайта: <em>[что должен сделать посетитель]</em>.
+Моя формула концепции: <em>[что] [какое] как [образ]</em>.
+Помоги разложить образ на решения для шести инструментов: типографика, цвет, форма UI, графика, анимация, тексты.
+Не предлагай готовые решения. Задавай мне по одному вопросу на каждый инструмент и жди ответа. В конце собери мои ответы в таблицу.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь на вопросы и сам формулируешь решение для каждого инструмента.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Громкость</span><b>Где метафору приглушить</b>
+<pre id="p2">Вот список блоков моего сайта: <em>[первый экран, о продукте, тарифы, форма, отзывы, FAQ…]</em>. Концепция: <em>[формула]</em>.
+Для каждого блока спроси меня, какая у него главная задача и что человек должен в нём быстро найти. Потом вместе решим, где графика может быть громкой, а где оставить только цвет и шрифт.
+Спрашивай по одному блоку.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> размечаешь блоки «громко» и «тихо» и объясняешь почему.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Ревью</span><b>Видимая, повторяемая, со смыслом</b>
+<pre id="p3">Опишу свой первый экран и один рабочий блок: <em>[что на экране: шрифты, цвета, кнопки, графика, анимация, тексты]</em>. Могу приложить скриншот.
+Проверь концепцию по трём критериям: видна ли она без объяснений, повторяется ли за пределами первого экрана, связана ли со смыслом продукта. Отдельно отметь места, где графика мешает прочитать цену, кнопку или данные.
+По каждому замечанию задай мне вопрос, как я хочу это решить.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь макет и решаешь, с какими замечаниями согласен.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Карта концепции и первый экран</b><p>Возьми концепцию своего лендинга и запиши её формулой «[что] [какое] как [образ]». Под формулой заполни таблицу из шести строк: типографика, цвет, форма UI, графика, анимация, тексты — в каждой одно конкретное решение. Затем нарисуй в Figma первый экран и один рабочий блок (форму, тарифы или каталог), где концепция видна минимум в четырёх инструментах. Отметь на списке блоков сайта, где графика громкая, а где тихая. Сдай один фрейм: формула, таблица, разметка блоков и два экрана.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>Формула записана, качество из неё читается в образе</span></label>
+    <label><input type="checkbox"><span>В таблице шесть инструментов, в каждом конкретное решение</span></label>
+    <label><input type="checkbox"><span>Концепция видна на первом экране без объяснений</span></label>
+    <label><input type="checkbox"><span>В рабочем блоке концепция есть, а цена, поля и кнопка читаются сразу</span></label>
+    <label><input type="checkbox"><span>Тексты кнопок и заголовков продолжают метафору</span></label>
+    <label><input type="checkbox"><span>Все приёмы из одного мира: ни один не спорит с брендом</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Композиция: как расставить элементы на экране, чтобы взгляд шёл по нужному маршруту.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 4 · Концепция в веб-дизайне</footer>
+
+</div>
+<script type="application/json" id="quiz-data">[
+{"p":"Какие три признака отличают концепцию сайта от случайного украшения?","o":["Яркая, дорогая, трёхмерная","Видимая, повторяемая, поддерживает смысл продукта","Есть в брендбуке, в логотипе и в рекламе"],"a":1,"e":"Концепцию замечают без объяснений, она живёт дальше первого экрана и связана с тем, что делает продукт."},
+{"p":"У компании уже есть сильный бренд с метафорой диалога. Тебе нужно сделать лонгрид об истории компании. Что делать?","o":["Повторить метафору диалога во всех блоках, ничего своего не добавлять","Придумать метафору проекта, которая не спорит с брендом, и развить её по блокам","Отказаться от бренда, чтобы проект запомнился"],"a":1,"e":"Метафора работает на уровнях бренда, проекта и блока. В «Победе» полёт стал метафорой проекта, а билет, чемодан и полоса — метафорами блоков."},
+{"p":"Почему на главной hh.ru почти нет графики из брендбука?","o":["Брендбук устарел","Главная решает задачу поиска: на экране много данных, и графика конкурировала бы с поиском и фильтрами","Графика плохо выглядит на сайтах"],"a":1,"e":"В продукте остались цвет, типографика и акценты, а яркая графика живёт в рекламе, спецпроектах и карьерных страницах."},
+{"p":"Какой инструмент держит концепцию даже в таблице тарифов, где графики быть не должно?","o":["Иллюстрации и 3D","Фоновое видео","Цвет, шрифт, форма UI и тексты"],"a":2,"e":"Они почти не занимают места и не мешают читать цену, поэтому работают на всех экранах."},
+{"p":"Огромная 3D-иллюстрация есть только на первом экране, ниже — обычный шаблон. На какой ступени эта концепция?","o":["Декор","Система","Тема"],"a":0,"e":"Образ живёт в одной картинке и нигде не повторяется. Чтобы дорасти до системы, идея должна попасть в шрифт, UI, анимацию и тексты."},
+{"p":"Формула: «Банк для бизнеса надёжный как часовой механизм». Какое решение лучше всего её продолжает?","o":["Мультяшные персонажи и прыгающие кнопки","Точная сетка, тонкие линии, ровная анимация без отскоков, цифры моноширинным шрифтом","Розовые градиенты и рукописный шрифт"],"a":1,"e":"Качество из формулы — надёжность и точность — должно читаться в каждом инструменте."}
+]</script>
+<script type="application/json" id="cfg-data">{
+"base":{"nav":"Курсы · О школе · Контакты","kick":"Онлайн-школа","h":"Курсы программирования для подростков","p":"Обучение для детей 12–17 лет. Python, веб-разработка и создание игр.","cta":"Подробнее","cta2":"Программа","c1":"Python","c2":"Веб","c3":"Игры"},
+"space":{"name":"Космическая миссия","nav":"Маршрут · Экипаж · Стыковка","kick":"Миссия 01 · старт 1 ноября","h":"Стартуй на орбиту кода","p":"12 недель полёта: от первой строчки до своей игры.","cta":"Начать миссию","cta2":"Маршрут полёта","c1":"Взлёт · Python","c2":"Орбита · Веб","c3":"Посадка · Игра",
+ "tools":{"font":"Широкий гротеск капсом с разрядкой — как надписи на борту корабля.","color":"Глубокий тёмно-синий космос и один яркий акцент — свет бортовых огней.","ui":"Кнопки-капсулы со свечением по контуру, как приборная панель.","art":"Планета и орбита с кораблём. Корабль можно сделать курсором.","motion":"Звёзды мерцают, корабль медленно летит по орбите — плавно, с инерцией.","text":"Старт, маршрут, экипаж, стыковка: весь словарь сайта из мира полётов."}},
+"game":{"name":"Ретро-игра","nav":"Уровни · Игроки · Сохранения","kick":"Новая игра · 12 уровней","h":"Пройди первый уровень","p":"Каждая неделя — новый уровень. Босс в конце — твоя собственная игра.","cta":"Нажми старт","cta2":"Карта уровней","c1":"LVL 1 · Python","c2":"LVL 2 · Веб","c3":"BOSS · Игра",
+ "tools":{"font":"Моноширинный шрифт капсом — экран старой приставки.","color":"Чёрный экран, кислотный зелёный и пурпурный, как на мониторе 80-х.","ui":"Прямые углы и жёсткая пиксельная тень без размытия.","art":"Пиксельное сердце и шкала уровня.","motion":"Пошаговая анимация без плавности, мигающий «PRESS START».","text":"Уровни, игроки, сохранения, босс: учёба описана как прохождение игры."}},
+"lego":{"name":"Конструктор","nav":"Детали · Сборки · Мастера","kick":"Собираем с нуля","h":"Собери свою игру по кирпичику","p":"Каждое занятие — новая деталь. К концу курса из них сложится твой проект.","cta":"Взять первый блок","cta2":"Все детали","c1":"Блок 1 · Python","c2":"Блок 2 · Веб","c3":"Сборка · Игра",
+ "tools":{"font":"Плотный жирный гротеск с крупными буквами — как надписи на коробке конструктора.","color":"Чистые красный, синий и жёлтый на светлом фоне.","ui":"Кнопки и карточки как детали: скругление, толстая обводка, «шипы» сверху.","art":"Кирпичики, которые складываются в башню.","motion":"Детали падают и защёлкиваются с небольшим отскоком.","text":"Детали, блоки, сборка, мастера: учёба как сборка конструктора."}},
+"lab":{"name":"Лаборатория","nav":"Опыты · Журнал · Команда","kick":"Опыт № 01","h":"Проведи первый эксперимент с кодом","p":"Гипотеза, проверка, результат — так работают настоящие программисты.","cta":"Начать опыт","cta2":"Журнал опытов","c1":"exp. 01 · Python","c2":"exp. 02 · Веб","c3":"exp. 03 · Игра",
+ "tools":{"font":"Строгая антиква в заголовке и моноширинный шрифт в подписях — научный журнал.","color":"Белый лист в синюю клетку, тёмно-синие чернила и зелёный «реактив».","ui":"Тонкие линии 1 px, маленький радиус и подписи-номера, как в лабораторном журнале.","art":"Колба с пузырьками и график результата.","motion":"Пузырьки поднимаются, линия графика прорисовывается.","text":"Опыт, журнал, гипотеза, результат: язык исследователя."}}
+}</script>
+<script type="application/json" id="loud-data">[
+{"t":"Первый экран промостраницы нового тарифа","a":"loud","e":"Задача — привлечь внимание и задать образ. Здесь графике можно всё."},
+{"t":"Поиск вакансий с фильтрами","a":"quiet","e":"Человек сравнивает должности, зарплаты и даты. Графика заняла бы место данных."},
+{"t":"Карьерная страница компании","a":"loud","e":"Здесь бренд рассказывает о себе и продаёт атмосферу. Это место для метафоры и сюжетных фото."},
+{"t":"Таблица тарифов","a":"quiet","e":"Главное — цена, условия и кнопка. Оставь цвет, шрифт и акценты, иллюстрации убери."},
+{"t":"Страница 404","a":"loud","e":"Человеку нечего делать на этой странице, кроме как вернуться. Метафора здесь сглаживает неприятный момент."},
+{"t":"Форма оплаты","a":"quiet","e":"Любой лишний элемент рядом с номером карты снижает доверие и конверсию."},
+{"t":"Спецпроект к годовщине компании","a":"loud","e":"Лонгрид рассказывает историю — как лонгрид «Победы». Метафора в каждом блоке тут уместна."},
+{"t":"Личный кабинет со списком платежей","a":"quiet","e":"Человек проверяет суммы и даты, часто с телефона. Нужны ясные строки, характер — в цвете и шрифте."},
+{"t":"Пустое состояние: «Откликов пока нет»","a":"loud","e":"Экран пустой, и иллюстрация с подсказкой помогает не расстроиться и сделать следующий шаг."},
+{"t":"Страница с условиями кредита","a":"quiet","e":"Ставки, сроки и сноски должны читаться без помех. Иллюстрация отвлечёт от важного."}
+]</script>
+<script type="application/json" id="order-data">[
+{"r":1,"t":"Готовый шаблон: фото бургера на первом экране, синие кнопки, разделы «О фестивале», «Программа», «Купить билет».","e":"Шаблон. Такой сайт подойдёт любому фестивалю еды."},
+{"r":3,"t":"Огонь и дым в иллюстрации каждого блока, тёплая палитра по всему сайту. Кнопки, тексты и анимации стандартные.","e":"Тема. Образ повторяется в графике и цвете, но UI, движение и тексты о нём не знают."},
+{"r":2,"t":"Первый экран — огромная 3D-шаурма в языках пламени. Ниже обычный шаблон, огня больше нигде нет.","e":"Декор. Сильная картинка, но идея живёт только в одном месте."},
+{"r":4,"t":"Идея «гриль»: заголовки выжжены как клеймо на дереве, кнопки с подпалиной по краю, программа оформлена как меню на доске, при наведении карточка «разогревается». Расписание и цены читаются сразу.","e":"Система. Одна идея прошита в шрифт, UI, анимацию и тексты, и при этом всё работает."}
+]</script>
+<script type="application/json" id="fx-data">{
+"products":["Онлайн-школа программирования","Кофейня","Платёжная система для бизнеса","Служба доставки продуктов","Студия танцев"],
+"qualities":["точная","тёплая","смелая","надёжная","быстрая","игривая"],
+"images":[
+{"n":"часовой механизм","q":["точная","надёжная"],"m":["Крупный циферблат или шестерёнки, которые двигаются от скролла","Тонкие линии, гравировка, металлический блеск","Ровное вращение без отскоков, секундная стрелка как прогресс","Кнопки с тонким контуром, цифры моноширинным шрифтом","«Всё по расписанию», «Точно в срок», шаги как часы"]},
+{"n":"костёр","q":["тёплая"],"m":["Пламя или тёплый свет в центре экрана, вокруг — люди","Тёплые оранжевые градиенты, искры, мягкое зерно","Мерцание огня, искры поднимаются от курсора","Скругления и мягкое свечение у кнопок","«Собираемся вместе», «Подсаживайся ближе»"]},
+{"n":"ракета","q":["смелая","быстрая"],"m":["Старт ракеты с обратным отсчётом","Дым, траектории, звёзды, контрастный акцент","Быстрый взлёт при скролле, кнопка «вылетает» при нажатии","Капсулы с выхлопным следом на hover","«Старт», «Взлетаем», «Набираем высоту»"]},
+{"n":"сейф","q":["надёжная"],"m":["Массивная дверь сейфа, которая открывается при входе на сайт","Тяжёлый металл, глубокие тени, ровная сетка","Медленный уверенный поворот ручки, щелчок при успехе","Толстые обводки, утопленные поля как ячейки","«Под защитой», «Открыть доступ», «Всё на месте»"]},
+{"n":"конструктор","q":["игривая"],"m":["Детали складываются в продукт прямо на первом экране","Чистые яркие цвета, крупные простые формы","Детали падают и защёлкиваются с отскоком","Кнопки и карточки как детали с «шипами»","«Собери своё», «Добавь деталь», «Сборка готова»"]},
+{"n":"гоночный болид","q":["быстрая","смелая"],"m":["Болид или трасса с размытием скорости","Наклонные линии, шашечный флаг, контрастные номера","Резкие выезды блоков сбоку, спидометр как прогресс","Скошенные углы кнопок, как у гоночных номеров","«На старт», «Пит-стоп», «Финиш за 30 минут»"]},
+{"n":"компас","q":["точная","надёжная"],"m":["Компас, стрелка которого следит за курсором","Карты, топографические линии, сдержанная палитра","Стрелка мягко доворачивает к цели","Навигация как стороны света, тонкие линии","«Твой маршрут», «Ориентир», «Точка назначения»"]},
+{"n":"фейерверк","q":["игривая","смелая"],"m":["Залп над первым экраном по клику","Яркие вспышки на тёмном фоне, искры, конфетти","Вспышка при успешном действии, искры от кнопки","Яркие капсулы с искрой на hover","«Зажигаем», «Праздник начинается»"]}
+]}</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Концепция в веб-дизайне» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const data = id => { const el = document.getElementById(id); return el ? JSON.parse(el.textContent) : null; };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  // --- 1. Конструктор «Одна концепция — шесть инструментов» ---
+  const D = data('cfg-data'), ml = $('#ml');
+  if (D && ml) {
+    const TOOLS = ['font', 'color', 'ui', 'art', 'motion', 'text'];
+    const TN = { font: 'Типографика', color: 'Цвет', ui: 'Форма UI', art: 'Графика', motion: 'Анимация', text: 'Тексты' };
+    const OFF = {
+      font: 'Системный шрифт без приёмов. Заголовок звучит как у любого сайта.',
+      color: 'Белый фон и синяя кнопка по умолчанию. Палитра ничего не говорит о продукте.',
+      ui: 'Стандартные кнопки и карточки со скруглением 8 px.',
+      art: 'Вместо графики — место под картинку из фотостока.',
+      motion: 'Ничего не двигается и не реагирует на курсор.',
+      text: '«Подробнее», «Программа», «Курсы программирования» — тексты подходят любой школе.'
+    };
+    const CON = ['space', 'game', 'lego', 'lab'];
+    let cur = 'space';
+    const st = {}; TOOLS.forEach(t => st[t] = cur);
+
+    function render() {
+      TOOLS.forEach(t => ml.dataset[t] = st[t] || 'none');
+      const txt = st.text ? D[st.text] : D.base;
+      $$('[data-k]', ml).forEach(el => { el.textContent = txt[el.dataset.k] || D.base[el.dataset.k]; });
+      $$('#cfg-t button').forEach(b => b.setAttribute('aria-pressed', String(!!st[b.dataset.t])));
+      const used = [...new Set(TOOLS.map(t => st[t]).filter(Boolean))];
+      $$('#cfg-c button').forEach(b => b.setAttribute('aria-pressed', String(used.length === 1 && used[0] === b.dataset.c)));
+      const mixed = used.length > 1;
+      $('#cfg-out').innerHTML = TOOLS.map(t => {
+        if (!st[t]) return '<li class="bad"><span><b>' + TN[t] + ' ' + (t === 'color' ? 'выключен' : t === 'text' ? 'выключены' : 'выключена') + '.</b> ' + OFF[t] + '</span></li>';
+        const tag = mixed ? ' <span class="cap">(' + esc(D[st[t]].name) + ')</span>' : '';
+        return '<li class="ok"><span><b>' + TN[t] + tag + '.</b> ' + esc(D[st[t]].tools[t]) + '</span></li>';
+      }).join('');
+      const n = TOOLS.filter(t => st[t]).length, v = $('#cfg-v');
+      let msg, cls = '';
+      if (mixed) { msg = '<b>Солянка.</b> Каждый инструмент рассказывает свою историю: ' + used.map(c => '«' + D[c].name + '»').join(', ') + '. Отдельные приёмы хорошие, а вместе концепции нет. Все инструменты должны говорить об одной идее.'; cls = 'bad'; }
+      else if (n === 0) { msg = '<b>Шаблон.</b> Этот первый экран подойдёт любой школе программирования. Концепции нет.'; cls = 'bad'; }
+      else if (n <= 2) { msg = '<b>Намёк.</b> Включено ' + n + ' из 6. Концепцию заметит только тот, кто о ней знает. Добавь цвет, тексты или графику.'; }
+      else if (n <= 4) { msg = '<b>Концепция читается.</b> Включено ' + n + ' из 6. Образ узнаётся, но отдельные элементы выглядят шаблонно. Посмотри, какие инструменты ещё можно подключить без ущерба для читаемости.'; }
+      else { msg = '<b>Цельная система.</b> Включено ' + n + ' из 6, все говорят об одной идее. Теперь проверь обратное: не мешает ли графика прочитать заголовок и кнопку.'; cls = 'good'; }
+      v.className = 'cfg-v ' + cls; v.innerHTML = msg;
+    }
+    $$('#cfg-c button').forEach(b => b.addEventListener('click', () => { cur = b.dataset.c; TOOLS.forEach(t => st[t] = cur); render(); }));
+    $$('#cfg-t button').forEach(b => b.addEventListener('click', () => {
+      const t = b.dataset.t;
+      if (st[t]) st[t] = null;
+      else { const used = TOOLS.map(x => st[x]).filter(Boolean); st[t] = used.length ? used[0] : cur; }
+      render();
+    }));
+    $('#cfg-all').addEventListener('click', () => { const used = TOOLS.map(x => st[x]).filter(Boolean); const c = used.length && new Set(used).size === 1 ? used[0] : cur; TOOLS.forEach(t => st[t] = c); render(); });
+    $('#cfg-none').addEventListener('click', () => { TOOLS.forEach(t => st[t] = null); render(); });
+    $('#cfg-mix').addEventListener('click', () => {
+      let order;
+      do { order = TOOLS.map(() => CON[Math.floor(Math.random() * CON.length)]); } while (new Set(order).size < 3);
+      TOOLS.forEach((t, i) => st[t] = order[i]); render();
+    });
+    render();
+  }
+
+  // --- 2. Тренажёр «Громко или тихо» ---
+  const L = data('loud-data'), lst = $('#loud-list');
+  if (L && lst) {
+    let got = 0, done = 0;
+    function build() {
+      got = 0; done = 0; lst.innerHTML = ''; $('#loud-v').hidden = true;
+      shuffle(L).forEach(item => {
+        const li = document.createElement('li');
+        const b = document.createElement('b'); b.textContent = item.t;
+        const acts = document.createElement('div'); acts.className = 'acts';
+        const fb = document.createElement('p'); fb.className = 'fb'; fb.hidden = true;
+        [['loud', 'Громко'], ['quiet', 'Тихо']].forEach(([k, lbl]) => {
+          const btn = document.createElement('button'); btn.type = 'button'; btn.textContent = lbl;
+          btn.addEventListener('click', () => {
+            const ok = k === item.a;
+            acts.querySelectorAll('button').forEach(x => x.disabled = true);
+            btn.classList.add(ok ? 'pick-ok' : 'pick-bad');
+            li.classList.add(ok ? 'ok' : 'bad');
+            fb.innerHTML = '<b>' + (ok ? 'Верно. ' : (item.a === 'loud' ? 'Здесь можно громко. ' : 'Здесь лучше тихо. ')) + '</b>' + esc(item.e);
+            fb.hidden = false;
+            if (ok) got++; done++;
+            $('#loud-n').textContent = 'Отвечено ' + done + ' из ' + L.length + ' · верно ' + got;
+            if (done === L.length) {
+              const v = $('#loud-v'); v.hidden = false;
+              v.className = 'cfg-v ' + (got >= 8 ? 'good' : 'bad');
+              v.innerHTML = '<b>' + got + ' из ' + L.length + '.</b> ' + (got >= 8 ? 'Ты чувствуешь уместность. Громко — там, где нужно привлечь внимание или рассказать историю. Тихо — там, где человек читает данные, сравнивает и платит.' : 'Запомни правило: если в блоке есть цена, данные, поля или таблица — графику приглушаем до цвета, шрифта и акцентов. Попробуй ещё раз.');
+            }
+          });
+          acts.append(btn);
+        });
+        li.append(b, acts, fb); lst.append(li);
+      });
+      $('#loud-n').textContent = 'Отвечено 0 из ' + L.length;
+    }
+    $('#loud-reset').addEventListener('click', build);
+    build();
+  }
+
+  // --- 3. Игра «Расставь по силе» ---
+  const O = data('order-data'), grid = $('#order-grid');
+  if (O && grid) {
+    let picks = [];
+    const chk = $('#order-check'), out = $('#order-out');
+    function draw() {
+      $$('.ord', grid).forEach(b => {
+        const i = picks.indexOf(+b.dataset.i);
+        b.classList.toggle('sel', i >= 0);
+        b.querySelector('.no').textContent = i >= 0 ? i + 1 : '?';
+        b.setAttribute('aria-pressed', String(i >= 0));
+      });
+      chk.disabled = picks.length !== O.length;
+    }
+    function build() {
+      picks = []; grid.innerHTML = ''; out.innerHTML = '';
+      shuffle(O.map((c, i) => i)).forEach(i => {
+        const c = O[i];
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'ord'; b.dataset.i = i;
+        const no = document.createElement('span'); no.className = 'no'; no.setAttribute('aria-hidden', 'true');
+        b.append(no, document.createTextNode(c.t));
+        b.addEventListener('click', () => {
+          const k = picks.indexOf(i);
+          if (k >= 0) picks.splice(k); else picks.push(i);
+          draw();
+        });
+        grid.append(b);
+      });
+      draw();
+    }
+    chk.addEventListener('click', () => {
+      let right = 0;
+      $$('.ord', grid).forEach(b => {
+        const i = +b.dataset.i, pos = picks.indexOf(i) + 1, ok = pos === O[i].r;
+        if (ok) right++;
+        b.classList.add(ok ? 'right' : 'wrong'); b.disabled = true;
+      });
+      chk.disabled = true;
+      const sorted = O.map((c, i) => ({ c, i })).sort((a, b) => a.c.r - b.c.r);
+      out.innerHTML = sorted.map(({ c, i }) => {
+        const pos = picks.indexOf(i) + 1, ok = pos === c.r;
+        return '<li class="' + (ok ? 'ok' : 'bad') + '"><span><b>Место ' + c.r + (ok ? '' : ' (у тебя ' + pos + ')') + '.</b> ' + esc(c.e) + '</span></li>';
+      }).join('') + '<li class="' + (right === O.length ? 'ok' : 'bad') + '"><span><b>' + right + ' из ' + O.length + ' на своём месте.</b> ' + (right === O.length ? 'Ты видишь разницу между картинкой и системой.' : 'Главный признак силы — сколько инструментов захватила идея и мешает ли она прочитать расписание и цены.') + '</span></li>';
+    });
+    $('#order-reset').addEventListener('click', build);
+    build();
+  }
+
+  // --- 4. Тренажёр формулы ---
+  const F = data('fx-data'), res = $('#fx-res');
+  if (F && res) {
+    const st = { p: 0, q: 0, i: 0 };
+    const SEC = ['Первый экран', 'Графика', 'Анимация', 'UI', 'Тексты'];
+    function seg(id, list, key) {
+      const box = $(id); box.innerHTML = '';
+      list.forEach((t, i) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = t;
+        b.addEventListener('click', () => { st[key] = i; render(); });
+        box.append(b);
+      });
+    }
+    seg('#fx-p', F.products, 'p'); seg('#fx-q', F.qualities, 'q'); seg('#fx-i', F.images.map(x => x.n), 'i');
+    function render() {
+      [['#fx-p', 'p'], ['#fx-q', 'q'], ['#fx-i', 'i']].forEach(([id, k]) => $$(id + ' button').forEach((b, i) => b.setAttribute('aria-pressed', String(i === st[k]))));
+      const p = F.products[st.p], q = F.qualities[st.q], im = F.images[st.i];
+      const ok = im.q.includes(q);
+      let h = '<p class="fx-line">' + esc(p) + ' — <u>' + esc(q) + '</u>, как <u>' + esc(im.n) + '</u></p>';
+      if (ok) {
+        h += '<p class="cfg-v good"><b>Связь держится.</b> Качество «' + esc(q) + '» читается в образе «' + esc(im.n) + '». Вот как он раскладывается на сайт:</p>';
+        h += '<div class="lv">' + im.m.map((m, i) => '<div><span>' + SEC[i] + '</span><span>' + esc(m) + '</span></div>').join('') + '</div>';
+      } else {
+        const alt = F.images.map((x, i) => ({ x, i })).filter(o => o.x.q.includes(q));
+        h += '<p class="cfg-v bad"><b>Связь не считывается.</b> Образ «' + esc(im.n) + '» передаёт другие качества: ' + im.q.map(x => '«' + esc(x) + '»').join(' и ') + '. Посетитель увидит его и не почувствует, что ' + esc(p.charAt(0).toLowerCase() + p.slice(1)) + ' ' + esc(q) + '. Поменяй образ или качество.</p>';
+        h += '<div class="fx-sug"><span>Образы, в которых читается «' + esc(q) + '»:</span>' + alt.map(o => '<button type="button" data-fi="' + o.i + '">' + esc(o.x.n) + '</button>').join('') + '</div>';
+      }
+      res.innerHTML = h;
+      $$('[data-fi]', res).forEach(b => b.addEventListener('click', () => { st.i = +b.dataset.fi; render(); }));
+    }
+    $('#fx-rand').addEventListener('click', () => {
+      const r = n => Math.floor(Math.random() * n);
+      st.p = r(F.products.length); st.q = r(F.qualities.length); st.i = r(F.images.length); render();
+    });
+    st.p = 0; st.q = 0; st.i = 0; render();
+  }
+})();
+
+</script>
+</body></html>

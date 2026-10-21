@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>UI-кит и консистентность</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 4 · UI</span></div>
+  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 UI-элементы</span><b>03 UI-кит</b><span>04 Концепция в веб-дизайне</span><span>05 Композиция</span><span>06 Типографика</span><span>07 Иконки</span><span>08 Адаптив</span><span>09 Цвет</span></div>
+  <h1>UI-кит и консистентность</h1>
+  <p class="lead"><b>Система правил, по которой собирается интерфейс.</b> Шрифты, цвета, компоненты и отступы в одном месте — чтобы каждый новый экран не рисовать с нуля.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#why">Зачем</a><a href="#system">Кит и дизайн-система</a><a href="#type">Типографика</a><a href="#color">Цвет</a><a href="#components">Компоненты</a><a href="#space">Отступы и сетка</a><a href="#how">Как собрать</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="why">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Хороший дизайн единообразен</h2></div></div>
+  <p>В любом интерфейсе повторяются одни и те же вещи: шрифты, цвета, кнопки, отступы, тени. Когда мы начинаем проект, мы договариваемся о правилах, по которым всё это работает. Набор таких правил в Figma и называется UI-китом.</p>
+  <p class="quote">Одинаковые по функции кнопки не бывают разного цвета. Одинаковые по уровню заголовки не бывают разного размера.</p>
+  <p>Человеку нравятся системные вещи: если правила понятны, интерфейс кажется аккуратным, даже когда он простой. Сравни два интернет-магазина — сразу видно, где есть проработанный кит, а где каждый элемент нарисован отдельно.</p>
+  <div class="hier">
+    <div class="bad"><i>Без кита</i><div class="stage" style="flex-direction:column;align-items:flex-start;gap:10px"><span style="font-size:22px;font-weight:700">Новинки</span><span style="font-size:18px;font-weight:500;font-family:Georgia,serif">Скидки недели</span><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="u-btn u-primary" style="border-radius:4px;padding:10px 16px">Купить</span><span class="u-btn" style="background:#3b6ef0;color:#fff;border-radius:999px;padding:14px 22px">В корзину</span><span class="u-btn" style="background:#2fa84f;color:#fff;border-radius:12px;padding:8px 12px;font-size:13px">Заказать</span></div></div><p>Три кнопки с одной функцией — три цвета, три радиуса и три размера. Заголовки одного уровня разными шрифтами.</p></div>
+    <div class="good"><i>С китом</i><div class="stage" style="flex-direction:column;align-items:flex-start;gap:10px"><span style="font-size:22px;font-weight:600">Новинки</span><span style="font-size:22px;font-weight:600">Скидки недели</span><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="u-btn u-primary" style="padding:12px 20px">В корзину</span><span class="u-btn u-primary" style="padding:12px 20px">В корзину</span><span class="u-btn u-secondary" style="padding:12px 20px">Подробнее</span></div></div><p>Одна функция — один вид. Новый экран собирается из готовых деталей.</p></div>
+  </div>
+  <div class="three">
+    <div class="box"><span class="kind">Скорость</span><p>Новый экран собирается из готовых деталей, а не рисуется с нуля.</p></div>
+    <div class="box"><span class="kind">Правки за минуту</span><p>Поменял цвет акцента в одном месте — он обновился на всех экранах.</p></div>
+    <div class="box"><span class="kind">Команда и разработка</span><p>Второй дизайнер и верстальщик берут размеры и цвета из кита, а не угадывают по макету.</p></div>
+  </div>
+</section>
+
+<section id="system">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Кит, дизайн-система, брендбук</h2></div></div>
+  <p>Эти слова часто путают. UI-кит — это часть большой системы, а не вся она. Он напрямую связан с айдентикой бренда: шрифты и цвета кита приходят из брендбука.</p>
+  <div class="layers">
+    <div><b>Дизайн-система</b><span>Всё вместе: суть бренда и его философия, правила для разных носителей, UI-кит, принципы, документация. Пример — Material Design у Google или Gravity UI у Яндекса.</span></div>
+    <div class="hot"><b>UI-кит</b><span>Набор визуальных правил и компонентов интерфейса в Figma: типографика, палитра, кнопки, поля, карточки, отступы. С ним мы работаем в этом уроке.</span></div>
+    <div><b>Брендбук</b><span>Правила айдентики: логотип, фирменные цвета, шрифты, графика. Источник, из которого кит берёт базу.</span></div>
+  </div>
+  <p class="why">На небольшом проекте — лендинг, сайт студии — достаточно UI-кита. Полноценная дизайн-система нужна, когда у продукта десятки экранов и несколько дизайнеров.</p>
+</section>
+
+<section id="type">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Типографика</h2></div></div>
+  <p>Каждый вариант текста — заголовки, основной текст, подписи — сохраняем как <b>стиль текста</b> в Figma. Стиль хранит гарнитуру, начертание, кегль, межстрочный интервал и трекинг. Поменял стиль — поменялся весь текст этого уровня во всём файле.</p>
+  <div class="typescale">
+    <div><span class="cap">H1 · 64/64</span><span style="font-size:clamp(34px,5vw,56px);line-height:1;letter-spacing:-.03em">Заголовок</span></div>
+    <div><span class="cap">H2 · 40/44</span><span style="font-size:clamp(26px,3.6vw,40px);line-height:1.1;letter-spacing:-.02em">Заголовок раздела</span></div>
+    <div><span class="cap">H3 · 24/30</span><span style="font-size:24px;line-height:1.25">Подзаголовок блока</span></div>
+    <div><span class="cap">Body · 17/26</span><span style="font-size:17px">Основной текст, который читают абзацами</span></div>
+    <div><span class="cap">Caption · 13/18</span><span style="font-size:13px">Подписи, даты, вспомогательный текст</span></div>
+    <div><span class="cap">Button · 16/20</span><span style="font-size:16px;font-weight:500">Текст на кнопке</span></div>
+  </div>
+  <ul class="box" style="padding-left:34px">
+    <li>Для большинства сайтов хватает 5–7 стилей. Если их 20, системы уже нет.</li>
+    <li>Называй стили по роли, а не по размеру: «H2», «Body», «Caption», а не «Inter 40».</li>
+    <li>Сделай мобильную версию шкалы: заголовки на телефоне меньше, основной текст почти тот же.</li>
+    <li>Длина строки основного текста — примерно 45–75 знаков.</li>
+  </ul>
+</section>
+
+<section id="color">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Цветовая палитра</h2></div></div>
+  <p>Здесь мы систематизируем цвета интерфейса. Важно не просто собрать красивые плашки, а дать каждому цвету роль: фон, текст, акцент, статус.</p>
+  <div class="swatches">
+    <div class="sw"><i style="background:#ffffff"></i><span><b>Фон</b>bg / #FFFFFF</span></div>
+    <div class="sw"><i style="background:#101010"></i><span><b>Текст</b>text / #101010</span></div>
+    <div class="sw"><i style="background:#8e8e8c"></i><span><b>Второстепенный</b>text-muted / #8E8E8C</span></div>
+    <div class="sw"><i style="background:#eb7540"></i><span><b>Акцент</b>primary / #EB7540</span></div>
+    <div class="sw"><i style="background:#e4e4e1"></i><span><b>Линии</b>stroke / #E4E4E1</span></div>
+    <div class="sw"><i style="background:#2fa84f"></i><span><b>Успех</b>success</span></div>
+    <div class="sw"><i style="background:#f2b33d"></i><span><b>Внимание</b>warning</span></div>
+    <div class="sw"><i style="background:#e5383b"></i><span><b>Ошибка</b>error</span></div>
+    <div class="sw"><i style="background:#3b6ef0"></i><span><b>Фокус</b>focus</span></div>
+    <div class="sw"><i style="background:#f4f4f2"></i><span><b>Подложка</b>surface</span></div>
+  </div>
+  <div class="two">
+    <div class="box"><b>Роли вместо названий</b><p>Цвет «primary» можно перекрасить из оранжевого в синий, и кнопки поменяются везде. Цвет «оранжевый-2» перекрасить нельзя — он станет враньём.</p></div>
+    <div class="box"><b>Без радуги</b><p>Нейтральная база, один основной акцент и статусы: успех, предупреждение, ошибка. Остальное — по необходимости.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Тёмная тема</h3>
+    <div class="sub-b">
+      <p>Иногда нужна тёмная версия: чаще в приложениях, но бывает и на сайтах — например, у агентства DWARF. В современной Figma это делается через <b>переменные (Variables) с режимами</b>: у переменной «bg» есть значение для светлого режима и для тёмного. Переключаешь режим у фрейма — и весь макет перекрашивается. Переключи сам:</p>
+      <div class="demo" data-theme-demo>
+        <div class="seg"><button type="button" data-mode="light">Light</button><button type="button" data-mode="dark">Dark</button></div>
+        <div class="theme-demo"><b>Курс по UI-дизайну</b><p>Те же компоненты, другие значения переменных.</p><div class="row"><span class="u-btn u-primary">Записаться</span><span class="u-btn u-secondary">Программа</span></div></div>
+      </div>
+      <p class="why">Тёмная тема — это не инверсия. Фон не чисто чёрный, а тёмно-серый, акцент часто чуть светлее, а тени заменяются светлыми подложками.</p>
+    </div>
+  </div>
+</section>
+
+<section id="components">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Компоненты и варианты</h2></div></div>
+  <p>Кнопки, чекбоксы, поля, карточки в UI-ките — это <b>компоненты</b>. В кит кладём только главные, родительские компоненты. В макетах используем их копии (instances): поменял родителя — поменялись все копии.</p>
+  <div class="sub">
+    <h3>Показываем все состояния</h3>
+    <div class="sub-b">
+      <p>В ките видны все состояния элемента: default, hover, focus, pressed, disabled. Чтобы не плодить отдельные компоненты, объединяем их в <b>набор вариантов</b>: выделяешь компоненты, нажимаешь «Combine as variants» — и они собираются в одну группу с переключателями свойств справа.</p>
+      <div class="varwrap"><div class="variants">
+        <span class="cap">Type \ State</span><span class="cap">Default</span><span class="cap">Hover</span><span class="cap">Focus</span><span class="cap">Disabled</span>
+        <span class="cap">Primary</span><span class="u-btn u-primary">Купить</span><span class="u-btn u-primary is-hover">Купить</span><span class="u-btn u-primary is-focus">Купить</span><span class="u-btn u-primary is-disabled">Купить</span>
+        <span class="cap">Secondary</span><span class="u-btn u-secondary">Купить</span><span class="u-btn u-secondary is-hover">Купить</span><span class="u-btn u-secondary is-focus">Купить</span><span class="u-btn u-secondary is-disabled">Купить</span>
+      </div></div>
+      <p>Здесь у набора два свойства: <b>Type</b> и <b>State</b>. Нужен размер? Нажимаешь плюс в панели свойств набора и добавляешь третье — <b>Size</b>: L, M, S.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Свойства компонента</h3>
+    <div class="sub-b">
+      <div class="three">
+        <div class="box"><span class="kind">Variant</span><p>Переключает вид: тип, состояние, размер.</p></div>
+        <div class="box"><span class="kind">Boolean</span><p>Включает и выключает часть: иконку в кнопке, бейдж на карточке.</p></div>
+        <div class="box"><span class="kind">Text и Instance swap</span><p>Меняют текст и вложенную иконку прямо в панели, без захода внутрь компонента.</p></div>
+      </div>
+      <p class="why">Чем больше свойств вместо отдельных вариантов, тем меньше компонентов в ките. Кнопка «с иконкой» и «без иконки» — это одно Boolean-свойство, а не два варианта.</p>
+    </div>
+  </div>
+</section>
+
+<section id="space">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Отступы и сетка</h2></div></div>
+  <p>Этот блок в ките делают реже остальных, но в начале мы советуем всем его добавлять: он дисциплинирует. Между элементами есть иерархия, и подчёркиваем мы её расстояниями. Внутри компонента отступы меньше и стабильные, между компонентами — больше, между секциями — ещё больше.</p>
+  <div class="demo">
+    <span class="cap">Пример системы для лендинга</span>
+    <div class="space">
+      <div><i style="width:120px;height:120px"></i><span>120 · между блоками</span></div>
+      <div><i style="width:60px;height:60px"></i><span>60 · между группами</span></div>
+      <div><i style="width:30px;height:30px"></i><span>30 · заголовок → текст</span></div>
+      <div><i style="width:16px;height:16px"></i><span>16</span></div>
+      <div><i style="width:8px;height:8px"></i><span>8</span></div>
+    </div>
+  </div>
+  <ul class="box" style="padding-left:34px">
+    <li>Внутри компонентов используй шаги, кратные 4 или 8: 4, 8, 12, 16, 24, 32.</li>
+    <li>Сохрани значения как числовые переменные (spacing/8, spacing/16) и подставляй их в Auto Layout — тогда верстальщик увидит токен, а не случайное 23 px.</li>
+    <li>Для удобства вёрстки можно держать в ките квадраты-шаблоны 120, 60, 30 и прикладывать их между блоками, чтобы не запутаться в логике.</li>
+    <li>Сюда же добавь <b>стили сетки</b>: например, 12 колонок с полями 40 px на десктопе и 4 колонки с полями 16 px на телефоне.</li>
+  </ul>
+</section>
+
+<section id="how">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Как собрать UI-кит</h2></div></div>
+  <p>Кит редко рисуют до макета. Обычно сначала появляются один-два экрана, а потом из них вытаскиваются правила. UI-кит связан с библиотеками, о которых мы говорили в модуле про Figma: опубликованный кит подключается в любой файл проекта.</p>
+  <ol class="steps">
+    <li><div><div class="t">Собери всё с первых экранов</div><div class="d">Выпиши все шрифты, цвета, кнопки и отступы, которые уже есть в макете.</div></div></li>
+    <li><div><div class="t">Сократи</div><div class="d">Три похожих серых — в один. Кегли 15, 16 и 17 — в один. Здесь и появляется система.</div></div></li>
+    <li><div><div class="t">Оформи стили и переменные</div><div class="d">Стили текста, цветовые и числовые переменные с понятными именами по ролям.</div></div></li>
+    <li><div><div class="t">Сделай компоненты с вариантами</div><div class="d">Кнопки, поля, чекбоксы, карточки — со всеми состояниями. Внутри только стили и переменные кита, никаких «ручных» значений.</div></div></li>
+    <li><div><div class="t">Пересобери экраны из кита</div><div class="d">Замени нарисованные руками элементы на копии компонентов. Если элемента нет в ките — сначала добавь его в кит.</div></div></li>
+    <li><div><div class="t">Опубликуй библиотеку</div><div class="d">Publish в панели Assets — и кит доступен во всех файлах проекта и у команды.</div></div></li>
+  </ol>
+  <p>Чтобы не начинать с пустого листа, возьми шаблон UI-кита школы и добавляй стили в него.</p>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>UI-кит вместе с нейронкой</h2></div></div>
+  <p>Нейронка хороша там, где нужна дотошность: найти дубли, проверить контраст, придумать понятные имена. Решения о том, какой будет система, принимаешь ты.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Проект, стиль сайта, что уже есть в макете.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Нейронка подсвечивает хаос, порядок наводишь сам.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Аудит</span><b>Найти хаос в макете</b>
+<pre id="p1">Вот все значения из моего макета: <em>[кегли и начертания, HEX-цвета, отступы, радиусы]</em>.
+Сгруппируй похожие значения и покажи, где у меня, скорее всего, дубли и случайности. Ничего не объединяй сам: по каждой группе спроси, какое значение я хочу оставить.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> решаешь, какие значения остаются в ките.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Имена</span><b>Назвать по ролям</b>
+<pre id="p2">Мои цвета и стили текста: <em>[список]</em>. Где они используются: <em>[кнопки, фон, подписи…]</em>.
+Помоги придумать систему имён по ролям (bg, text, primary, H1, Body и т.п.). Сначала задай мне 2–3 вопроса о проекте и темах, потом предложи 2 варианта системы имён на выбор.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> выбираешь систему и переименовываешь стили в Figma.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Проверка</span><b>Контраст и тёмная тема</b>
+<pre id="p3">Пары «текст / фон» в моём ките: <em>[HEX-пары]</em>. Если есть тёмная тема — <em>[её пары]</em>.
+Посчитай контраст по WCAG для каждой пары и отметь, какие не проходят 4.5:1 для текста. Не предлагай новые цвета, просто спроси, в какую сторону я хочу исправить.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь цвета так, чтобы они оставались в характере бренда.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>UI-кит по чужому лендингу</b><p>Возьми два лендинга из разных стилей (например, с Land-book). Для каждого собери UI-кит в Figma: стили текста, цветовые переменные, кнопки и поле ввода с вариантами состояний, систему отступов. Затем пересобери из кита первый экран сайта. Сдай файл с двумя китами и двумя пересобранными экранами.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>Стили текста названы по ролям, их не больше 7</span></label>
+    <label><input type="checkbox"><span>Цвета — переменные с ролями: фон, текст, акцент, статусы</span></label>
+    <label><input type="checkbox"><span>Кнопка и поле — наборы вариантов со всеми состояниями</span></label>
+    <label><input type="checkbox"><span>В компонентах нет «ручных» значений вне кита</span></label>
+    <label><input type="checkbox"><span>Экран собран из копий компонентов</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — концепция в веб-дизайне.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 4 · UI-кит</footer>
+
+</div>
+<script type="application/json" id="quiz-data">[
+{"p":"Чем UI-кит отличается от дизайн-системы?","o":["Это одно и то же","UI-кит — часть дизайн-системы: визуальные правила и компоненты интерфейса","Дизайн-система — это только набор кнопок"],"a":1,"e":"Дизайн-система включает ещё философию бренда, принципы, правила для носителей и документацию."},
+{"p":"Как лучше назвать цвет главной кнопки в ките?","o":["Оранжевый-2","primary","#EB7540"],"a":1,"e":"Имя по роли переживёт смену цвета: primary можно перекрасить, и он останется правдой."},
+{"p":"Как в Figma удобнее всего сделать светлую и тёмную тему?","o":["Нарисовать второй макет вручную","Переменные с двумя режимами","Инвертировать цвета фильтром"],"a":1,"e":"У переменной есть значение для каждого режима, и макет перекрашивается переключением режима."},
+{"p":"Кнопка бывает с иконкой и без. Как это сделать в компоненте?","o":["Два отдельных компонента","Boolean-свойство, которое включает иконку","Рисовать иконку поверх копии"],"a":1,"e":"Свойства вместо лишних вариантов делают кит компактнее."},
+{"p":"Какие отступы удобно использовать внутри компонентов?","o":["Кратные 4 или 8","Любые, на глаз","Только 120 и 60"],"a":0,"e":"Шаги 4, 8, 12, 16, 24, 32 дают ритм и легко переносятся в вёрстку."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+
+</script>
+</body></html>

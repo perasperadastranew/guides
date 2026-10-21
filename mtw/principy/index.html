@@ -1,0 +1,1531 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Принципы веб-дизайна</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив методички «Принципы веб-дизайна» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+.sliders{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.sliders label{display:block;font-size:14px;color:var(--dim)}
+.sliders b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.sliders input{display:block;width:100%;margin:8px 0 0;accent-color:var(--accent)}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)} .verdict li.mid::before{color:var(--accent)}
+.verdict b{color:var(--ink);font-weight:400}
+.game-acts{display:flex;gap:8px;flex-wrap:wrap}
+
+/* треугольник */
+.tri-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center}
+.tri-ctrls{display:flex;flex-direction:column;gap:14px;min-width:0}
+.tri-view{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.tri-view svg{width:100%;max-width:340px;height:auto;display:block}
+.tri-ring{fill:none;stroke:var(--stroke);stroke-width:1}
+.tri-axis{stroke:var(--stroke);stroke-width:1}
+.tri-poly{fill:color-mix(in srgb,var(--accent) 28%,transparent);stroke:var(--accent);stroke-width:2;stroke-linejoin:round;transition:all .25s}
+.tri-dot{fill:var(--accent)}
+.tri-dot.weak{fill:var(--bad)}
+.tri-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;fill:var(--dim)}
+.tri-score{display:flex;align-items:baseline;gap:10px;font-size:14px}
+.tri-score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+/* обещание или факт */
+.srt-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.srt-n{color:var(--accent)!important}
+.srt-intro,.occ-intro{font-size:15px}
+.srt-list{display:flex;flex-direction:column;gap:6px}
+.srt-it{background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 14px;align-items:center}
+.srt-it>span{color:var(--ink);font-size:16px;line-height:1.35}
+.srt-b{display:flex;gap:6px}
+.srt-b button{background:var(--panel);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.srt-b button:hover:not(:disabled){border-color:var(--accent);color:var(--ink)}
+.srt-b button:disabled{cursor:default}
+.srt-b button.right{border-color:var(--good);color:var(--ink)}
+.srt-b button.wrong{border-color:var(--bad);color:var(--ink)}
+.srt-e{grid-column:1/-1;font-size:14px;line-height:1.4;color:var(--dim)}
+.srt-e b{font-weight:400}
+.srt-e b.y{color:var(--good)} .srt-e b.n{color:var(--bad)}
+.srt-e u{text-decoration:none;color:var(--ink)}
+.srt-it.done{border-color:color-mix(in srgb,var(--good) 40%,var(--stroke))}
+.srt-it.miss{border-color:color-mix(in srgb,var(--bad) 45%,var(--stroke))}
+.srt-win{border:1px solid var(--good);border-radius:10px;padding:12px 14px;color:var(--ink);font-size:15px}
+
+/* до / после */
+.ba{display:flex;flex-direction:column;gap:8px}
+.ba-view{display:grid;position:relative;border-radius:8px;overflow:hidden;--x:50%;user-select:none;-webkit-user-select:none}
+.ba-pane{grid-area:1/1;min-width:0;display:flex}
+.ba-pane>*{flex:1;min-width:0}
+.ba-after{clip-path:inset(0 0 0 var(--x))}
+.ba-line{position:absolute;top:0;bottom:0;left:var(--x);width:0;pointer-events:none;z-index:2}
+.ba-line::before{content:"";position:absolute;top:0;bottom:0;left:-1px;width:2px;background:var(--accent)}
+.ba-line i{position:absolute;top:50%;left:-17px;width:34px;height:34px;margin-top:-17px;border-radius:50%;background:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.ba-line i::before,.ba-line i::after{content:"";position:absolute;top:12px;border:5px solid transparent}
+.ba-line i::before{left:4px;border-right-color:#101010}
+.ba-line i::after{right:4px;border-left-color:#101010}
+.ba-range{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;z-index:3;touch-action:pan-y}
+.ba-view:has(.ba-range:focus-visible) .ba-line i{outline:2px solid #fff;outline-offset:2px}
+.ba-lbl{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.ba-lbl span:last-child{text-align:right}
+.ba-demo .ba-out{min-height:0}
+
+.raw{background:#fff;color:#3a3a38;padding:24px;display:flex;flex-direction:column;gap:12px;font-family:"Times New Roman",Georgia,serif;font-size:15px;line-height:1.45}
+.raw p{max-width:none}
+.raw-h{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:#8e8e8c}
+.raw-ph{border:1px dashed #c9c9c6;padding:18px;text-align:center;font-size:13px;color:#8e8e8c;font-family:var(--body)}
+.pk{background:#f4f4f2;color:#101010;padding:24px;display:flex;flex-direction:column;gap:14px;font-family:var(--body)}
+.pk em,.pk-s{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:#5b8def;border-radius:4px;padding:2px 6px;align-self:flex-start;white-space:nowrap}
+.pk-tag{font-size:13px;color:#5a5a58;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pk-h{font-size:clamp(20px,2.6vw,28px);font-weight:600;line-height:1.08;letter-spacing:-.02em;color:#101010;max-width:24ch}
+.pk-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;position:relative}
+.pk-facts>div{background:#fff;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.pk-facts b{font-size:22px;font-weight:600;color:#eb7540;letter-spacing:-.02em;line-height:1.1}
+.pk-facts span{font-size:12px;color:#5a5a58;line-height:1.3}
+.pk-facts em{grid-column:1/-1}
+.pk-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.house{width:150px;height:auto;border-radius:8px;display:block}
+.pk-cta{padding:12px 18px;font-size:15px}
+
+.mtr{display:block;width:100%;height:auto}
+.hc{background:#fff;color:#101010;padding:22px;display:flex;flex-direction:column;gap:8px;font-family:var(--body)}
+.hc-bad span{font-size:15px;font-weight:600;text-align:center;color:#101010}
+.hc-bad span:first-child{color:#e5383b}
+.hc-bad .u-btn{padding:9px 12px;font-size:13px}
+.hc-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:6px}
+.hc-good{gap:6px}
+.hc-good .hc-btns{justify-content:flex-start}
+.hc-k{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#eb7540}
+.hc-good b{font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.05;color:#101010}
+.hc-p{font-size:20px;font-weight:600;color:#101010}
+.hc-p small{font-size:13px;font-weight:400;color:#5a5a58;margin-left:6px}
+.hc-d{font-size:14px;color:#5a5a58}
+.hc-good .u-btn{padding:11px 16px;font-size:14px}
+
+/* сценарий */
+.flow svg{min-width:640px}
+.fl-n rect{fill:var(--well);stroke:var(--stroke)}
+.fl-end{fill:var(--accent)}
+.fl-a path{stroke:var(--accent);stroke-width:2;fill:none;marker-end:none}
+.fl-t text{font-size:14px;fill:var(--ink)}
+.fl-t .fl-dk{fill:#101010}
+
+/* бритва Оккама */
+.occ-stage{display:block;padding:20px}
+.occ-form{background:#fff;border-radius:12px;padding:18px;max-width:440px;margin-inline:auto;display:flex;flex-direction:column;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.occ-form>b{font-size:18px;font-weight:600;color:#101010;margin-bottom:4px}
+.occ-f{display:grid;grid-template-columns:minmax(0,1fr) 40px;gap:6px;align-items:center;transition:opacity .2s}
+.occ-f span{height:44px;border:1px solid #c9c9c6;border-radius:10px;display:flex;align-items:center;padding:0 14px;font-size:15px;color:#8e8e8c;background:#fff}
+.occ-f button{width:40px;height:44px;border-radius:10px;border:1px solid #e4e4e1;background:#f4f4f2;color:#5a5a58;font-size:18px;font-weight:400;line-height:1}
+.occ-f button:hover{border-color:#e5383b;color:#e5383b}
+.occ-f.gone span{text-decoration:line-through;color:#c9c9c6;border-style:dashed;background:transparent}
+.occ-f.gone button{color:#2fa84f;font-size:15px}
+.occ-f.gone button:hover{border-color:#2fa84f;color:#2fa84f}
+.occ-f.bad span{border-color:#e5383b}
+.occ-send{margin-top:6px;width:100%;text-align:center}
+.occ-meter{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim);flex-wrap:wrap}
+.occ-bar{flex:1 1 160px;height:8px;border-radius:4px;background:var(--well);overflow:hidden}
+.occ-bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s,background .25s}
+.occ-bar i.ok{background:var(--good)}
+.occ-bar i.bad{background:var(--bad)}
+.demo output .warn{color:var(--bad)} .demo output .okv{color:var(--good)}
+
+/* принципы на одном блоке */
+.lab-stage{display:block;padding:16px}
+.lab-mock{background:#fff;border-radius:12px;overflow:hidden;color:#101010;font-family:var(--body);box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.lm-ad{background:#e5383b;color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:14px;font-weight:600}
+.lm-ad small{font-weight:400;font-size:10px;opacity:.6}
+.lm-nav{display:flex;align-items:center;gap:16px;padding:14px 18px;border-bottom:1px solid #ececea;font-size:13px;color:#5a5a58;flex-wrap:wrap}
+.lm-nav b{color:#101010;font-size:16px;font-weight:600;margin-right:auto}
+.lm-body{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;padding:24px 20px;align-items:center}
+.lm-copy{display:flex;flex-direction:column;gap:12px;min-width:0}
+.lm-h{font-size:16px;font-weight:600;line-height:1.3;color:#101010}
+.lm-sub{font-size:15px;font-weight:600;color:#101010;line-height:1.4}
+.lab-mock.on-hier .lm-h{font-size:clamp(24px,3.2vw,34px);line-height:1.05;letter-spacing:-.02em}
+.lab-mock.on-hier .lm-sub{font-weight:400;color:#5a5a58}
+.lm-badges{display:flex;flex-wrap:wrap;gap:4px}
+.lm-badges span{font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px;background:#ffd23f;color:#101010}
+.lm-badges span:nth-child(2n){background:#e5383b;color:#fff}
+.lm-badges span:nth-child(3n){background:#2fa84f;color:#fff}
+.lm-btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lm-btns .u-btn{padding:11px 16px;font-size:14px}
+.lm-plain{font-size:13px;color:#8e8e8c}
+.lm-x1{background:#3b6ef0;color:#fff;border-radius:0;font-family:Georgia,serif}
+.lm-x2{background:#2fa84f;color:#fff;border-radius:999px;font-weight:700}
+.lm-x3{background:transparent;border:2px dashed #7b61ff;color:#7b61ff;border-radius:4px;font-family:var(--mono);font-size:12px!important;text-transform:uppercase}
+.lm-x4{background:#ffd23f;color:#101010;border-radius:16px 0;font-style:italic}
+.lm-tick{display:flex;align-items:center;gap:8px;font-size:12px;color:#8e8e8c}
+.lm-tick .chk{width:18px;height:18px;font-size:11px}
+.lm-note{font-size:12px;color:#5a5a58}
+.lm-vis{display:flex;flex-direction:column;gap:6px;min-width:0}
+.lm-icons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lm-icons div{background:#f4f4f2;border-radius:10px;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:#5a5a58}
+.lm-icons svg{width:30px;height:30px}
+.lm-vis .house{width:100%}
+.lm-vis small{font-size:11px;color:#8e8e8c}
+.lab-seg button{position:relative}
+.lab-seg button[aria-pressed="true"]{background:color-mix(in srgb,var(--accent) 16%,var(--well))}
+
+/* найди и назови */
+.game{display:flex;flex-direction:column;gap:12px}
+.game-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.game-top .cap{color:var(--accent)}
+.game-stage{padding:16px;display:block}
+.fd-mock{background:#fff;border-radius:12px;overflow:hidden;color:#101010;font-family:var(--body);box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.fd-nav{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid #ececea;font-size:13px;color:#5a5a58;flex-wrap:wrap}
+.fd-nav b{color:#101010;font-weight:700;font-size:16px;margin-right:auto}
+.fd-cart{background:#101010;color:#fff;border-radius:999px;padding:4px 10px;font-size:12px}
+.fd-body{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;padding:20px}
+.fd-copy,.fd-side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.fd-hier{display:flex;flex-direction:column;gap:2px;padding:4px}
+.fd-shout{font-size:clamp(40px,6vw,64px);line-height:.95;font-weight:800;letter-spacing:-.02em;background:linear-gradient(90deg,#e5383b,#ffb703,#7b61ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fd-tiny{font-size:10px;color:#c8c8c4}
+.fd-vague{font-size:14px;color:#3a3a38;margin:0;padding:4px;max-width:none}
+.fd-btns{display:flex;flex-wrap:wrap;gap:8px;padding:4px;align-self:flex-start}
+.fd-btns span{padding:10px 16px;font-size:14px}
+.fb1{background:#eb7540;color:#101010;border-radius:999px;font-weight:600}
+.fb2{background:#3b6ef0;color:#fff;border-radius:0;font-family:Georgia,serif}
+.fb3{border:2px solid #2fa84f;color:#2fa84f;border-radius:6px;font-family:var(--mono);font-size:12px!important}
+.fd-stock{display:flex;flex-direction:column;gap:4px;padding:4px}
+.fd-stock svg{width:100%;height:auto;display:block;border-radius:8px}
+.fd-stock small,.fd-phone small{font-size:11px;color:#8e8e8c}
+.fd-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:6px}
+.fd-form b{grid-column:1/-1;font-size:14px;font-weight:600;margin-bottom:2px}
+.fd-form span{height:30px;border:1px solid #d6d6d3;border-radius:6px;font-size:11px;color:#a3a3a0;display:flex;align-items:center;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd-form span:last-child{grid-column:1/-1}
+.fd-tick{display:flex;align-items:center;gap:8px;padding:6px}
+.fd-tick .chk{width:18px;height:18px;font-size:11px}
+.fd-tick small{font-size:12px;color:#5a5a58}
+.fd-phone{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:6px}
+.fd-ph{width:96px;height:120px;border:3px solid #101010;border-radius:14px;padding:10px 6px;display:flex;flex-direction:column;gap:8px;overflow:visible;position:relative;background:#fff}
+.fd-ph b{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;color:#e5383b;line-height:1.1}
+.fd-ph-btn{background:#eb7540;color:#101010;font-size:11px;padding:6px 10px;border-radius:999px;white-space:nowrap;width:max-content;margin-left:22px}
+.bug{cursor:pointer;border-radius:8px;transition:box-shadow .2s}
+.bug:hover{box-shadow:0 0 0 2px rgba(59,110,240,.35)}
+.bug:focus-visible{outline:2px solid #3b6ef0;outline-offset:2px}
+.bug.asking{box-shadow:0 0 0 3px #3b6ef0}
+.bug.found,.bug.found:hover{box-shadow:0 0 0 3px #e5383b}
+.fd-ask{background:var(--well);border:1px solid var(--line2);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.fd-ask .cap{color:var(--line2)}
+.fd-ask output{font-size:15px;color:var(--dim);min-height:0}
+.fd-ask output .warn{color:var(--bad)}
+.game-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.game-list li{background:var(--card);border:1px solid var(--stroke);border-left:2px solid var(--bad);border-radius:10px;padding:12px 14px;font-size:15px;display:flex;flex-direction:column;gap:4px}
+.game-list li b{color:var(--ink);font-weight:400}
+.game-list li i{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.game-list li.game-win{border:1px solid var(--good);color:var(--ink)}
+
+@media (max-width:760px){
+  .tri-grid,.lm-body,.fd-body{grid-template-columns:minmax(0,1fr)}
+  .tri-view{order:-1}
+  .srt-it{grid-template-columns:minmax(0,1fr)}
+  .pk,.raw{padding:16px}
+  .pk-facts{grid-template-columns:minmax(0,1fr)}
+  .raw{font-size:14px}
+  .house{width:120px}
+  .lm-nav span{display:none}
+  .fd-nav span:not(.fd-cart){display:none}
+  .lab-stage,.game-stage,.occ-stage{padding:10px}
+}
+@media (prefers-reduced-motion:reduce){.tri-poly,.occ-bar i,.occ-f,.bug{transition:none}}
+.fd-form b{color:#101010}
+.pk-facts em{justify-self:start}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 3 · ВЕБ-ДИЗАЙН</span></div>
+  <div class="series"><span>01 Веб-дизайн и бизнес</span><span>02 Метрики сайта</span><b>03 Принципы веб-дизайна</b><span>04 Типы проектов</span><span>05 Типы страниц</span><span>06 Типы блоков</span><span>07 Конкурентный анализ</span></div>
+  <h1>Принципы веб-дизайна</h1>
+  <p class="lead"><b>Сайт работает на трёх уровнях: смысл, удобство и визуал.</b> Разбираем принципы каждого уровня, чтобы ты видел, почему один сайт продаёт, а другой просто красивый.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#levels">Три уровня</a><a href="#meaning">Смысл</a><a href="#proof">Наглядность и конкретика</a><a href="#content">Обработка контента</a><a href="#ux">UX-уровень</a><a href="#ui">Визуальный уровень</a><a href="#lab">Практикум</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="levels">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Три уровня дизайна</h2></div></div>
+  <p>Многие дизайнеры думают, что сайт — это прежде всего красивый интерфейс. Но красота — только верхний слой. Под ним лежит логика взаимодействия (UX), а ещё глубже — смысл: что компания предлагает, кому и почему ей можно верить.</p>
+  <p>Наверняка ты видел сайты, которые выглядят так себе, а по метрикам работают отлично. Так бывает, когда со смыслом всё в порядке: человек быстро понимает, что ему предлагают, и визуал уже не так сильно влияет на результат.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Уровень 1 · Смысл</span><b>Выгодно показать бизнес</b><ul><li>что именно предлагаем</li><li>чем лучше альтернатив</li><li>почему нам можно верить: факты, кейсы, цифры</li></ul><p><b>Если слабый:</b> сайт красивый и удобный, но человек не понял, зачем ему это.</p></div>
+    <div class="box"><span class="kind">Уровень 2 · UX</span><b>Сделать удобно</b><ul><li>структура и порядок блоков</li><li>навигация и сценарии</li><li>формы и обратная связь</li></ul><p><b>Если слабый:</b> человек понял ценность, но не может быстро сделать шаг и уходит.</p></div>
+    <div class="box"><span class="kind">Уровень 3 · UI</span><b>Сделать привлекательно</b><ul><li>иерархия, типографика, сетка</li><li>контраст и акценты</li><li>стиль, который вызывает доверие</li></ul><p><b>Если слабый:</b> даже хороший продукт выглядит сомнительно и тяжело читается.</p></div>
+  </div>
+  <p class="quote">Как выгодно показать бизнес, как сделать это удобно для человека и как сделать это красиво.</p>
+  <p>Это ключевой вопрос для дизайнера. Ответил на все три части — получил сайт, который работает. Главная задача дизайна — эффективная коммуникация, а внешний вид — один из её инструментов.</p>
+  <div class="note"><b>Из практики</b><p>В начале карьеры автор курса делал сайт для оптового поставщика. Навыки дизайна тогда были слабее, и визуал получился средним. Зато информацию и смыслы упаковали очень грамотно. Сайт проработал 5–6 лет без редизайна и продолжал приводить клиентов.</p></div>
+
+  <div class="sub">
+    <h3>Правило треугольника</h3>
+    <div class="sub-b">
+      <p>Представь любой проект как треугольник с тремя опорами: смысл, UX и UI. Если проваливается любая вершина, падает весь результат. Поэтому прокачка дизайна — это подтягивать слабую сторону. Бесконечно полировать сильную почти бесполезно.</p>
+      <div class="demo" id="tri">
+        <span class="cap">Треугольник · оцени проект от 0 до 10</span>
+        <div class="tri-grid">
+          <div class="tri-ctrls">
+            <div class="sliders tri-sl">
+              <label>Смысл <b id="tv-m">3</b> / 10<input type="range" id="tr-m" min="0" max="10" value="3"></label>
+              <label>UX <b id="tv-x">6</b> / 10<input type="range" id="tr-x" min="0" max="10" value="6"></label>
+              <label>UI <b id="tv-u">9</b> / 10<input type="range" id="tr-u" min="0" max="10" value="9"></label>
+            </div>
+            <span class="cap">Готовые случаи</span>
+            <div class="seg" id="tri-presets"><button type="button" data-p="3,6,9">Красивый и пустой</button><button type="button" data-p="9,7,4">Сайт оптовика</button><button type="button" data-p="8,2,8">Неудобный</button><button type="button" data-p="9,8,8">Сильный сайт</button></div>
+          </div>
+          <div class="tri-view">
+            <svg viewBox="0 0 320 250" role="img" aria-label="Треугольник коммуникации: вершины Смысл, UX и UI" id="tri-svg">
+              <g id="tri-grid-l"></g>
+              <polygon id="tri-poly" class="tri-poly" points=""/>
+              <g id="tri-dots"></g>
+              <text x="160" y="24" text-anchor="middle" class="tri-lbl">СМЫСЛ</text>
+              <text x="262" y="232" text-anchor="middle" class="tri-lbl">UX</text>
+              <text x="58" y="232" text-anchor="middle" class="tri-lbl">UI</text>
+            </svg>
+            <div class="tri-score"><span class="big" id="tri-res">0</span><span>итог проекта из 10</span></div>
+          </div>
+        </div>
+        <ul class="verdict" id="tri-out"></ul>
+      </div>
+      <span class="cap">Двигай ползунки. Посмотри, как мало растёт итог, если тянуть сильную вершину, и как сильно — если слабую.</span>
+      <p class="why"><b>Практика:</b> когда разбираешь любой сайт, ставь оценку каждой вершине от 0 до 10. Сразу видно, что именно улучшать в первую очередь.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Порядок работы</h3>
+    <div class="sub-b">
+      <div class="formula"><span class="m">Смысл</span><em>→</em><span>UX</span><em>→</em><span>UI</span></div>
+      <p>Сначала решаем, <b>что мы говорим</b>, потом — <b>как человек проходит путь</b>, и только затем — <b>как это выглядит</b>. Так каждый уровень опирается на предыдущий. Вот как это раскладывается у разных бизнесов:</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Бизнес</th><th>Смысл</th><th>UX</th><th>UI</th></tr></thead>
+        <tbody>
+          <tr><td>Доставка еды</td><td>Фото блюд, состав, время доставки, рейтинги, акции</td><td>Поиск и фильтры, избранное, «Повторить заказ», прозрачная корзина, минимум шагов до оплаты</td><td>Аппетитные фото, крупные карточки, понятные цены и бейджи</td></tr>
+          <tr><td>Онлайн-школа</td><td>Программа, кто преподаёт, работы выпускников, сколько стоит и сколько длится</td><td>Понятный путь: узнать о курсе → посмотреть программу → оставить заявку</td><td>Работы студентов крупно, спокойная типографика, одна главная кнопка</td></tr>
+          <tr><td>Производитель домов</td><td>Площадь, сроки, цена под ключ, гарантия, построенные объекты</td><td>Каталог проектов, калькулятор стоимости, короткая заявка на замер</td><td>Дома в реальном окружении, характеристики в одной системе, без визуального шума</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<section id="meaning">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Смысловой уровень</h2></div></div>
+  <p>Это фундамент сайта. Здесь решается главный вопрос: что именно мы показываем человеку, почему ему это интересно и как мы закроем его сомнения. Если этот уровень не продуман, сайт может быть красивым, но работать не будет. Поэтому хороший дизайн начинается со смысла, а кнопки и цвета появляются позже.</p>
+  <p>Вместе с бизнесом дизайнер отвечает на три вопроса: <b>какую проблему решает продукт</b>, <b>чем он отличается от конкурентов</b> и <b>почему выбрать именно его</b>.</p>
+
+  <div class="sub">
+    <h3>Платформа бренда</h3>
+    <div class="sub-b">
+      <p>Воспринимай компанию глубже, чем «название и чем занимается». Перед любым проектом на курсе и в коммерческой работе заполни пять пунктов — тогда у тебя будет полное представление о бизнесе.</p>
+      <div class="lv">
+        <div><span>Продукт</span><span>Описание деятельности. Сначала оно может быть общим: «производим модульные дома». На следующих пунктах мы его уточним.</span></div>
+        <div><span>Аудитория</span><span>Демография, профессия, увлечения, образ жизни, город. Помогает сузить продукт под конкретных людей: «семьи из Москвы и Петербурга, которые хотят жить за городом круглый год».</span></div>
+        <div><span>Атрибуты</span><span>Конкретные характеристики именно этого бизнеса: сколько филиалов, какие технологии в производстве, как отбирают сотрудников, на какие рынки продают. У каждой компании они свои.</span></div>
+        <div><span>Преимущества</span><span>Вырастают из атрибутов и почти всегда сводятся к одним и тем же словам: быстрый, доступный, качественный, аутентичный, комфортный, увлекательный, технологичный, профессиональный, масштабный.</span></div>
+        <div><span>Характер</span><span>Как мы чувствуем компанию: корпоративная или человечная, дружелюбная или серьёзная. Эти прилагательные становятся визуальными критериями — по ним подбираешь шрифт, графику, референсы и палитру.</span></div>
+      </div>
+      <p class="why">Преимущества звучат одинаково у всех. Отличают компанию именно атрибуты — запомни это, в следующем разделе это станет главным принципом.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Контент — основа</h3>
+    <div class="sub-b">
+      <p>Можно сделать идеальную композицию, подобрать шрифты и палитру, но если ты не показал компанию, всё было зря. Контент на сайте бывает всего четырёх типов:</p>
+      <div class="four">
+        <div class="box"><span class="kind">Тип 1</span><b>Текст</b><p>Заголовки, факты, описания, отзывы. Есть на любом сайте и чаще всего требует обработки.</p></div>
+        <div class="box"><span class="kind">Тип 2</span><b>Иллюстрация 2D/3D</b><p>Когда продукт нельзя сфотографировать: сервис, процесс, абстрактная услуга.</p></div>
+        <div class="box"><span class="kind">Тип 3</span><b>Продуктовая съёмка и рендер</b><p>Сам товар крупно: детали, материалы, варианты. Рендер — когда товара ещё нет или он огромный.</p></div>
+        <div class="box"><span class="kind">Тип 4</span><b>Фотография</b><p>Люди, команда, процесс, продукт в жизни. Лучше всего вызывает доверие, если она реальная.</p></div>
+      </div>
+      <p>Например, производителю металлоконструкций можно долго рассказывать о технологиях, но продаёт вид продукта: цех, сварка, готовый ангар. Иногда процесс показывают через 3D прямо в браузере (WebGL): модель вращается при скролле, детали разлетаются и собираются. Это дорогие проекты с отдельной командой разработки. Большинству сайтов хватает хорошей съёмки и пары рендеров.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Ценностное предложение</h3>
+    <div class="sub-b">
+      <p>Ты должен чётко понимать, что хочешь сказать и кому. За 5–10 секунд на первом экране человек должен понять: что это, для кого и какой результат он получит.</p>
+      <div class="formula"><span>Что</span><em>+</em><span>для кого</span><em>+</em><span class="m">результат</span><em>+</em><span>чем докажем</span></div>
+      <div class="pair">
+        <div class="bad"><i>Размыто</i><span>«Инновационные решения для вашего комфорта»</span></div>
+        <div class="good"><i>Ценностное предложение</i><span>«Модульный дом для жизни за городом круглый год. Сдаём под ключ за 45 дней, гарантия 10 лет»</span></div>
+      </div>
+      <p>Дизайн должен отражать ценности компании. Если бизнес обещает скорость, первый экран не может быть медленным и перегруженным. Если обещает заботу, формы не могут быть холодными и обвиняющими.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Мир пользователя</h3>
+    <div class="sub-b">
+      <p>Рассказывай о преимуществах на языке аудитории и показывай продукт в её жизни.</p>
+      <div class="two">
+        <div class="box"><span class="kind">Реальные сценарии</span><b>Apple</b><p>На сайтах Apple почти никогда нет абстрактного «красивого продукта». Человек пишет заметку на Mac, снимает на iPhone на улице, тренируется с Apple Watch. Продукт сразу отвечает на вопрос: «в какой момент жизни это поможет и что я получу?»</p></div>
+        <div class="box"><span class="kind">Мы похожи</span><b>Банк «Точка»</b><p>В коммуникации банка — предприниматели, реальные клиенты бренда. Это работает как доказательство: «этим уже пользуются такие же люди, как я». Реальные лица и узнаваемые ситуации вызывают больше доверия, чем стоковые «пластиковые улыбки».</p></div>
+      </div>
+      <div class="dodont">
+        <div class="bad"><i>Не работает</i><ul><li>Дом для жизни снят в пустой студии на белом фоне</li><li>Стоковые люди в костюмах пожимают руки</li><li>Команда — фото из фотобанка</li></ul></div>
+        <div class="good"><i>Работает</i><ul><li>Дом в лесу, зимой, с дымом из трубы и светом в окнах</li><li>Реальные клиенты на своём участке</li><li>Настоящая команда в цеху, как она выглядит на самом деле</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Работа с возражениями</h3>
+    <div class="sub-b">
+      <p>Заранее пойми, где у человека появятся сомнения, и закрой их контентом: фактами, примерами, условиями. Каждое возражение — это вопрос, на который сайт должен ответить раньше, чем человек его задаст.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Сомнение</th><th>Что думает человек</th><th>Чем закрываем</th></tr></thead>
+        <tbody>
+          <tr><td>Цена</td><td>«Наверное, дорого и потом добавят»</td><td>Цена «от» на первом экране, калькулятор, «цена фиксируется в договоре»</td></tr>
+          <tr><td>Доверие</td><td>«А они вообще существуют?»</td><td>Годы на рынке, реальные объекты с адресами, отзывы с фото, документы</td></tr>
+          <tr><td>Сроки</td><td>«Растянут на год»</td><td>Этапы по неделям, штраф за просрочку в договоре</td></tr>
+          <tr><td>Подойдёт ли мне</td><td>«Это не для моего случая»</td><td>Кейсы похожих клиентов, разные варианты, бесплатная консультация</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Наглядность и конкретика</h2></div></div>
+  <p>Два главных принципа смыслового уровня. Наглядность отвечает за то, как мы показываем. Конкретика — за то, что мы говорим.</p>
+
+  <div class="sub">
+    <h3>Наглядность</h3>
+    <div class="sub-b">
+      <p>Понимание должно возникать быстрее, чем человек дочитает длинный текст. Одно и то же можно показать разными способами — выбирай тот, что объясняет без слов.</p>
+      <ol class="steps">
+        <li><div><div class="t">Сначала покажи, потом расскажи</div><div class="d">Вместо «удобный и классный» — короткий показ результата: схема, «до/после», интерфейс, цифры, видео процесса.</div></div></li>
+        <li><div><div class="t">Контекст использования</div><div class="d">Продукт в руках человека, сценарий «я делаю X → получаю Y». Если продаёшь цифровой продукт — покажи его интерфейс.</div></div></li>
+        <li><div><div class="t">Один экран — одна мысль</div><div class="d">Выделяем главное, второстепенное прячем. Иерархия важнее объёма.</div></div></li>
+        <li><div><div class="t">Без стоков</div><div class="d">Стоковые картинки создают ощущение «как у всех» и ничего не говорят о компании. Лучше реальные фото: продукт, команда, процесс, результаты.</div></div></li>
+        <li><div><div class="t">Честность важнее глянца</div><div class="d">Люди ценят, когда показываешь продукт таким, какой он есть, с нюансами и ограничениями. Это вызывает больше доверия, чем вылизанная картинка.</div></div></li>
+      </ol>
+      <div class="note"><b>Быстрая проверка</b><p>Убери с экрана весь текст. Остаётся ли понятным, что это, как работает и какую пользу даёт? Если нет — визуал декоративный, и его стоит заменить.</p></div>
+      <p class="why">Пробуй несколько вариантов подачи. Когда студия Perasperadastra делала лонгрид для «Победы», авиапарк показали двумя способами и выбрали тот, что считывался быстрее.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Конкретика</h3>
+    <div class="sub-b">
+      <p>Сайт опирается на факты и характеристики. Самая частая ошибка — говорить на языке преимуществ вместо атрибутов. Любая компания может назвать себя надёжной и удобной, а выберут ту, что докажет это фактами.</p>
+      <p class="quote">Главный вопрос к каждому преимуществу: «А чем докажем?»</p>
+      <div class="pair">
+        <div class="bad"><i>Обещания</i><span>«Надёжная компания», «высокое качество», «профессиональная команда»</span></div>
+        <div class="good"><i>Факты</i><span>«12 лет на рынке», «480 построенных домов», «собственное производство»</span></div>
+      </div>
+
+      <div class="demo" id="srt">
+        <div class="srt-top"><span class="cap">Тренажёр · обещание или факт?</span><span class="cap srt-n" id="srt-n">Верно 0 из 8</span></div>
+        <p class="srt-intro">Это фразы с сайта производителя модульных домов. Разложи каждую: пустое обещание или проверяемый факт.</p>
+        <div class="srt-list" id="srt-list"></div>
+        <button type="button" class="ghost" id="srt-reset">Начать заново</button>
+      </div>
+      <span class="cap">Нажимай «Обещание» или «Факт» у каждой фразы. Для обещаний покажем, как переписать их фактом.</span>
+
+      <div class="note"><b>Тест подмены логотипа</b><p>Убери логотип, фирменные цвета и поменяй название в левом верхнем углу. Понятно ли, что текст про эту компанию? Или его мог написать любой бренд? Если подходит любому — это обезличенный текст.</p></div>
+      <p class="why">В реальной работе проведи подробный бриф с клиентом и вытащи все детали: цифры, сроки, технологии, условия. Без этого не уйти от абстрактных формулировок.</p>
+    </div>
+  </div>
+</section>
+
+<section id="content">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Обработка контента</h2></div></div>
+  <p>Контент, который дал клиент, почти никогда нельзя сразу красиво сверстать. Это нормально. Упаковка информации — важная задача дизайнера: превратить сырой текст в понятную, доказательную и удобную для чтения коммуникацию. Многие новички пропускают этот этап и пытаются спасти слабый текст визуалом.</p>
+  <div class="formula"><span>Смысл</span><em>→</em><span>Структура</span><em>→</em><span>Доказательства</span><em>→</em><span class="m">Формат</span></div>
+  <div class="four">
+    <div class="box"><span class="kind">1 · Смысл</span><p>Что главное для человека? Вытаскиваем из текста ценностное предложение.</p></div>
+    <div class="box"><span class="kind">2 · Структура</span><p>Делим на смысловые куски: заголовок, факты, действие. Убираем повторы и воду.</p></div>
+    <div class="box"><span class="kind">3 · Доказательства</span><p>Каждое обещание подкрепляем цифрой, примером или условием.</p></div>
+    <div class="box"><span class="kind">4 · Формат</span><p>Выбираем подачу: крупная цифра, список, фото, карточки. Только тут подключается UI.</p></div>
+  </div>
+
+  <div class="demo ba-demo">
+    <span class="cap">До и после · двигай разделитель</span>
+    <div class="ba" data-ba>
+      <div class="ba-view">
+        <div class="ba-pane ba-before">
+          <div class="raw">
+            <span class="raw-h">Текст от клиента.docx</span>
+            <p>Компания «Опушка» была основана в 2013 году группой единомышленников и с тех пор занимается производством модульных домов высокого качества. Мы используем только лучшие материалы и современные технологии, у нас работает профессиональная команда. За это время мы построили более 480 домов в 23 регионах России. Наши дома можно использовать круглый год, они тёплые и надёжные. Срок производства от 45 дней. Мы даём гарантию 10 лет. Звоните!</p>
+            <span class="raw-ph">Фото: логотип на белом фоне</span>
+          </div>
+        </div>
+        <div class="ba-pane ba-after">
+          <div class="pk">
+            <span class="pk-tag">Модульные дома · с 2013 года <em>смысл</em></span>
+            <b class="pk-h">Тёплый дом для жизни круглый год — под ключ за 45 дней</b>
+            <div class="pk-facts"><div><b>480</b><span>домов в 23 регионах</span></div><div><b>10 лет</b><span>гарантия по договору</span></div><div><b>45 дней</b><span>от замера до сдачи</span></div><em>доказательства</em></div>
+            <div class="pk-row"><svg class="house" viewBox="0 0 200 90" aria-hidden="true"><rect width="200" height="90" fill="#cfe3d2"/><path d="M0 70 L30 30 L50 70Z M150 70 L175 25 L200 70Z M20 70 L40 40 L60 70Z" fill="#5f8f6a"/><rect y="70" width="200" height="20" fill="#e9efe4"/><rect x="72" y="42" width="66" height="30" fill="#8a6a4f"/><path d="M66 44 L105 24 L144 44Z" fill="#3a3a3a"/><rect x="82" y="50" width="14" height="12" fill="#ffd27a"/><rect x="114" y="50" width="14" height="12" fill="#ffd27a"/></svg><span class="u-btn u-primary pk-cta">Рассчитать стоимость</span><em>формат</em></div>
+            <em class="pk-s">структура: заголовок → факты → действие</em>
+          </div>
+        </div>
+        <div class="ba-line" aria-hidden="true"><i></i></div>
+        <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Сравнение: до и после обработки контента">
+      </div>
+      <div class="ba-lbl"><span>До: сырой текст</span><span>После: упакованный блок</span></div>
+    </div>
+    <output class="ba-out">Те же факты, что у клиента. Мы ничего не придумали: вытащили цифры из абзаца, сделали из них доказательства и убрали «лучшие материалы» и «профессиональную команду».</output>
+  </div>
+  <span class="cap">Тяни разделитель пальцем или мышкой. С клавиатуры — стрелками после Tab.</span>
+
+  <div class="sub">
+    <h3>Задача блока</h3>
+    <div class="sub-b">
+      <p>Каждый блок на странице должен иметь одну понятную цель.</p>
+      <ul class="box" style="padding-left:34px">
+        <li>Блок отвечает на конкретный вопрос человека или снимает конкретное сомнение.</li>
+        <li>У блока есть следующий шаг: что человек должен понять, почувствовать или сделать после него.</li>
+        <li>Если цель блока не формулируется одним предложением, он расплывчатый. Дроби его или упрощай.</li>
+      </ul>
+      <p class="why">В реальном проекте весь контент приходит из брифа. В учебном концепте его можно сгенерировать с нейронкой — но всё равно по формуле: смысл, структура, доказательства, формат. Подробнее про блоки — в уроке «Типы блоков».</p>
+    </div>
+  </div>
+</section>
+
+<section id="ux">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>UX-уровень</h2></div></div>
+  <p>Следующий уровень отвечает на вопрос: как человек будет взаимодействовать с сайтом. Дизайнер проектирует структуру страниц, сценарии, навигацию и порядок блоков. Человек должен быстро понимать, где он находится, куда нажать и как выполнить нужное действие.</p>
+  <p class="quote">Юзабилити — уровень удобства интерфейса. Хороший UX незаметен: человек просто без усилий доходит до цели.</p>
+  <p>Вспомни, как ты зашёл в интернет-магазин, а там не найти кнопку «Купить». Ты злишься и уходишь: потребность не решена, бизнес не заработал. На этом уровне не нужно выделяться. Наоборот, делай понятно, как у всех.</p>
+
+  <div class="sub">
+    <h3>1. Сценарная логика</h3>
+    <div class="sub-b">
+      <p>У каждого человека в интерфейсе есть цель: в Booking — снять жильё, в магазине кофе — купить пачку зерна. Путь к этой цели называют <b>пользовательским сценарием</b> (user flow). Как в хорошем фильме, у сценария есть начало, развитие и финал. Лишние шаги, тупики и непредсказуемые элементы ломают его.</p>
+      <div class="map flow"><svg viewBox="0 0 760 150" role="img" aria-label="Сценарий интернет-магазина: точка входа главная, каталог, карточка товара, корзина, оформление, точка выхода заказ оформлен">
+        <g class="fl-n"><rect x="6" y="40" width="104" height="56" rx="10"/><rect x="134" y="40" width="104" height="56" rx="10"/><rect x="262" y="40" width="104" height="56" rx="10"/><rect x="390" y="40" width="104" height="56" rx="10"/><rect x="518" y="40" width="104" height="56" rx="10"/></g>
+        <rect class="fl-end" x="646" y="40" width="108" height="56" rx="10"/>
+        <g class="fl-a"><path d="M112 68 H130"/><path d="M240 68 H258"/><path d="M368 68 H386"/><path d="M496 68 H514"/><path d="M624 68 H642"/></g>
+        <g class="fl-t"><text x="58" y="73" text-anchor="middle">Главная</text><text x="186" y="73" text-anchor="middle">Каталог</text><text x="314" y="73" text-anchor="middle">Товар</text><text x="442" y="73" text-anchor="middle">Корзина</text><text x="570" y="73" text-anchor="middle">Оформление</text><text x="700" y="73" text-anchor="middle" class="fl-dk">Заказ готов</text></g>
+        <text class="lbl" x="58" y="28" text-anchor="middle">ТОЧКА ВХОДА</text><text class="lbl" x="700" y="28" text-anchor="middle">ТОЧКА ВЫХОДА</text>
+        <text class="lbl" x="314" y="122" text-anchor="middle">«В КОРЗИНУ» — ЦЕЛЕВОЕ ДЕЙСТВИЕ</text>
+      </svg></div>
+      <p>У любого интерфейса есть точки входа и выхода. Подошёл к лифту и нажал кнопку — сценарий начался. Доехал, вышел, двери закрылись — точка выхода. Основной сценарий всегда ведёт к целевому действию.</p>
+      <div class="three">
+        <div class="box"><span class="kind">Одно действие</span><b>Aviasales</b><p>Главная страница — сразу точка входа и целевое действие: форма «найти билеты». Ничего не отвлекает.</p></div>
+        <div class="box"><span class="kind">Действие рядом с товаром</span><b>Магазин кофе</b><p>С первого экрана видно «Добавить в корзину». Оформление заказа — точка выхода.</p></div>
+        <div class="box"><span class="kind">Неявное действие</span><b>Портфолио</b><p>Яркого призыва может не быть. Задача сайта — показать уровень работ, а заинтересованный клиент сам найдёт контакты.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>2. Предсказуемость</h3>
+    <div class="sub-b">
+      <p>Человек воспринимает интерфейс через прошлый опыт. Устоявшиеся схемы называют <b>паттернами</b>. В приложении знакомств мы ждём свайпа — этот паттерн задал Tinder. Три полоски в углу — меню. Логотип ведёт на главную. Кнопка выглядит как кнопка. Попади в ожидания — и человеку не придётся переучиваться.</p>
+      <p>Чтобы почувствовать, как выглядит интерфейс без паттернов, открой <a href="https://userinyerface.com" target="_blank" rel="noopener">User Inyerface</a>: этот сайт специально сделан с нарушением всех привычных правил. Ссылка не нажимается, кнопка оказывается текстом, а галочка значит противоположное.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>3. Осознанность</h3>
+    <div class="sub-b">
+      <p>Любое решение в макете должно быть обоснованным. «Поставил кнопку тут, потому что захотелось» — плохой подход. Спрашивай себя: какую задачу человек сейчас решает и как ему помочь? Клиент часто приходит с готовым решением, и это сужает выбор. Формулируй дизайн-задачу от проблемы.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Проблема</th><th>Решение</th><th>Влияние на бизнес</th></tr></thead>
+        <tbody>
+          <tr><td>Человек не находит, как оплатить</td><td>Показать все способы оплаты прямо в форме заказа</td><td>Меньше брошенных корзин, больше оплат</td></tr>
+          <tr><td>Звонят с одним и тем же вопросом о доставке</td><td>Блок «Сроки и стоимость доставки» рядом с ценой</td><td>Меньше нагрузки на менеджеров</td></tr>
+          <tr><td>Уходят с длинной формы заявки</td><td>Оставить два поля: имя и телефон</td><td>Больше заявок с того же трафика</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>4. Минимализм</h3>
+    <div class="sub-b">
+      <p>У мозга ограниченный ресурс. Минимализм здесь — базовый принцип, который работает в любом стиле: используй только необходимое. Бритва Оккама: «не следует множить сущности без необходимости». Любой сценарий должен быть как можно короче. Длинная анкета оправдана для открытия банковского счёта, но не для заявки в обычном магазине.</p>
+      <div class="demo" id="occ">
+        <span class="cap">Бритва Оккама · убери лишние поля</span>
+        <p class="occ-intro">Форма заявки на замер участка для модульного дома. Цель — получить заявку, детали менеджер уточнит на звонке. Нажимай «×» у полей, которые здесь не нужны.</p>
+        <div class="stage occ-stage"><div class="occ-form" id="occ-form"></div></div>
+        <div class="occ-meter"><div class="occ-bar"><i id="occ-bar"></i></div><span id="occ-n"></span></div>
+        <output id="occ-out"></output>
+        <button type="button" class="ghost" id="occ-reset">Вернуть все поля</button>
+      </div>
+      <span class="cap">Каждое поле — это ещё одна причина бросить форму. Убери всё, без чего менеджер может перезвонить.</span>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>5–7. Отзывчивость, этика, адаптивность</h3>
+    <div class="sub-b">
+      <div class="three">
+        <div class="box"><span class="kind">5 · Отзывчивость</span><b>Покажи, что происходит</b><p>Отправил заявку — увидел «Готово, перезвоним за 15 минут». Навёл на кнопку — она откликнулась. У каждого функционального элемента есть состояния, даже у больших сервисов они продуманы не везде.</p></div>
+        <div class="box"><span class="kind">6 · Этика</span><b>Не обманывай</b><p>Тёмные паттерны: окно без крестика, галочка подписки, которая уже стоит, скрытые условия мелким шрифтом, «Купить» на каждом шаге пять раз подряд. Сработает один раз, а лояльность потеряешь надолго. Честные сервисы показывают все условия на одном экране.</p></div>
+        <div class="box"><span class="kind">7 · Адаптивность</span><b>Удобно на любом экране</b><p>У многих сайтов больше половины посетителей приходят с телефона. На маленьком экране оставь главное, второстепенное сверни. Проверь макет на 320, 768 и 1440 px: можно ли быстро прочитать, нажать и выполнить целевое действие.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ui">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Визуальный уровень</h2></div></div>
+  <p>Только после смысла и UX появляется визуальный слой: стиль, типографика, цвет, композиция, графика. UI привлекает внимание, направляет взгляд и создаёт впечатление. Но сам по себе он не работает — он усиливает предыдущие уровни. Красивый интерфейс не спасёт сайт, если непонятно, что продаётся, и человек теряется в структуре.</p>
+  <p class="why">Подробно про UI и визуальные приёмы — в отдельном модуле. Здесь только главные принципы.</p>
+
+  <div class="sub">
+    <h3>Иерархия</h3>
+    <div class="sub-b">
+      <p>Речь про весь визуал, включая текстовые стили, графику и фото. Текст не должен спорить с графикой. Если в проекте уже есть сильная доминанта — иллюстрации или 3D, — вокруг неё достаточно простого спокойного дизайна. Сайт с иллюстрациями не должен превращаться в мультик целиком.</p>
+      <p>Тематику проекта тоже не нужно выражать каждым элементом. Азиатскую тему, например, почти никогда удачно не раскрывают «каллиграфическим» шрифтом — её передают композицией, цветом и графикой.</p>
+      <div class="note"><b>Овердизайн</b><p>Ситуация, когда пересидел над макетом и добавил кучу визуального шума: градиенты, тени, бейджи, анимации везде. Особенно этим страдают новички, которые хотят удивить. Зритель теряется и не находит главного.</p></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Визуальный баланс</h3>
+    <div class="sub-b">
+      <p>Держи баланс между графикой, UI-элементами и пространством. Чем больше в проекте графики, тем важнее уравновесить её спокойными техническими блоками. Например, на сайте агентства <a href="https://mindmarket.com" target="_blank" rel="noopener">Mindmarket</a> много иллюстраций, но они сбалансированы фотоконтентом и воздушными блоками. На лендинге курса Mission to AI композиция и нагруженность блоков постоянно чередуются: насыщенный экран — спокойный экран.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Упрощение</h3>
+    <div class="sub-b">
+      <p>Дизайн снижает сложность: делает путь понятным, коротким и предсказуемым. Упрощение — это оставить главное и правильно его организовать. Как упрощают: группируют по категориям и шагам, выстраивают иерархию, уменьшают выбор и шум, используют знакомые паттерны.</p>
+      <p>Лучший пример — <b>схема метро</b>. Её задача — помочь построить маршрут, точный город ей показывать не нужно. Поэтому она искажает расстояния, выпрямляет линии, кодирует их цветом и делает акцент на пересадках. Человек быстрее отвечает на главный вопрос: как доехать из А в Б.</p>
+      <div class="demo ba-demo">
+        <span class="cap">До и после · выбери принцип и двигай разделитель</span>
+        <div class="seg ba-cases" id="ba-cases"><button type="button" data-case="metro">Упрощение</button><button type="button" data-case="hier">Иерархия</button></div>
+        <div class="ba" data-ba data-case="metro">
+          <div class="ba-view">
+            <div class="ba-pane ba-before"><svg class="mtr" viewBox="0 0 400 230" role="img" aria-label="Реальная карта: извилистые линии, улицы и река">
+              <rect width="400" height="230" fill="#eeeae1"/>
+              <g stroke="#d9d3c4" stroke-width="1.2" fill="none"><path d="M0 40 L400 52 M0 90 L400 80 M0 140 L400 150 M0 190 L400 178 M40 0 L52 230 M110 0 L96 230 M170 0 L182 230 M240 0 L228 230 M300 0 L316 230 M360 0 L350 230"/></g>
+              <path d="M0 120 C60 100 90 160 150 140 S250 90 300 120 S370 170 400 150" stroke="#a9c6dd" stroke-width="12" fill="none"/>
+              <path d="M20 30 C80 60 70 110 140 120 S220 170 260 210 S340 220 390 200" stroke="#c97b74" stroke-width="3" fill="none"/>
+              <path d="M30 200 C70 160 130 180 170 130 S210 60 260 70 S330 30 380 40" stroke="#7fa37c" stroke-width="3" fill="none"/>
+              <path d="M200 10 C180 60 230 90 205 140 S190 200 215 225" stroke="#8f88b8" stroke-width="3" fill="none"/>
+              <g fill="#8a857a" font-size="7"><text x="60" y="48">ул. Садовая</text><text x="250" y="60">пр. Мира</text><text x="120" y="98">наб. реки</text><text x="300" y="190">пер. Тихий</text><text x="30" y="160">ул. Лесная</text><text x="320" y="96">бул. Цветной</text><text x="150" y="215">ул. 2-я Заводская</text><text x="230" y="30">пл. Вокзальная</text></g>
+              <g fill="#fff" stroke="#6b665c" stroke-width="1"><circle cx="140" cy="120" r="3"/><circle cx="205" cy="140" r="3"/><circle cx="170" cy="130" r="3"/><circle cx="260" cy="70" r="3"/><circle cx="260" cy="210" r="3"/></g>
+              <text x="200" y="226" text-anchor="middle" font-size="9" fill="#6b665c">Где пересадка? Куда ехать?</text>
+            </svg></div>
+            <div class="ba-pane ba-after"><svg class="mtr" viewBox="0 0 400 230" role="img" aria-label="Схема метро: прямые цветные линии и понятные пересадки">
+              <rect width="400" height="230" fill="#ffffff"/>
+              <g fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M30 40 L140 150 L370 150" stroke="#e5383b"/><path d="M40 190 L140 190 L200 130 L200 40" stroke="#2fa84f"/><path d="M250 30 L250 200" stroke="#7b61ff"/></g>
+              <g fill="#fff" stroke="#101010" stroke-width="2"><circle cx="30" cy="40" r="6"/><circle cx="85" cy="95" r="6"/><circle cx="310" cy="150" r="6"/><circle cx="370" cy="150" r="6"/><circle cx="40" cy="190" r="6"/><circle cx="200" cy="40" r="6"/><circle cx="250" cy="30" r="6"/><circle cx="250" cy="200" r="6"/></g>
+              <g fill="#fff" stroke="#101010" stroke-width="2.5"><rect x="180" y="138" width="80" height="24" rx="12"/><circle cx="140" cy="190" r="7"/></g>
+              <g font-size="11" fill="#101010"><text x="40" y="36">Лесная</text><text x="96" y="92">Садовая</text><text x="300" y="172">Мира</text><text x="340" y="140">Цветной</text><text x="20" y="212">Заводская</text><text x="210" y="44">Вокзальная</text><text x="258" y="26">Тихая</text><text x="258" y="218">Набережная</text><text x="180" y="178" font-weight="600">Пересадка</text></g>
+            </svg></div>
+            <div class="ba-line" aria-hidden="true"><i></i></div>
+            <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Сравнение: реальная карта и схема метро">
+          </div>
+          <div class="ba-lbl"><span>До: как в жизни</span><span>После: как удобно</span></div>
+        </div>
+        <div class="ba" data-ba data-case="hier" hidden>
+          <div class="ba-view">
+            <div class="ba-pane ba-before"><div class="hc hc-bad">
+              <span>НОВИНКА! ХИТ! ЭКО!</span><span>Дом «Сосна 36»</span><span>Площадь 36 м², 2 спальни, кухня-гостиная, терраса 12 м²</span><span>от 3 200 000 ₽</span><span>Сдаём за 45 дней</span>
+              <div class="hc-btns"><span class="u-btn u-primary">Подробнее</span><span class="u-btn u-primary">Рассчитать</span><span class="u-btn u-primary">В избранное</span></div>
+            </div></div>
+            <div class="ba-pane ba-after"><div class="hc hc-good">
+              <span class="hc-k">Новинка</span><b>Дом «Сосна 36»</b><span class="hc-p">от 3,2 млн ₽ <small>под ключ за 45 дней</small></span><span class="hc-d">36 м² · 2 спальни · терраса 12 м²</span>
+              <div class="hc-btns"><span class="u-btn u-primary">Рассчитать стоимость</span><span class="u-btn u-tertiary">Подробнее</span></div>
+            </div></div>
+            <div class="ba-line" aria-hidden="true"><i></i></div>
+            <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Сравнение: карточка без иерархии и с иерархией">
+          </div>
+          <div class="ba-lbl"><span>До: всё одинаково громко</span><span>После: главное видно сразу</span></div>
+        </div>
+        <output class="ba-out" id="ba-case-out"></output>
+      </div>
+      <span class="cap">Переключай принцип сверху и тяни разделитель, чтобы сравнить.</span>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Консистентность</h3>
+    <div class="sub-b">
+      <p>Одинаковые вещи выглядят и работают одинаково. Своим дизайном ты создаёшь паттерн: человек привыкает, что заголовки 32 px, текст 16 px, а у кнопок именно такое скругление. Нелогично делать одинаковые по функции кнопки разного цвета или с разными радиусами.</p>
+      <ul class="box" style="padding-left:34px">
+        <li><b>Единые компоненты:</b> кнопки, формы, карточки, отступы, типографика.</li>
+        <li><b>Одни термины:</b> не «заявка», «запрос» и «обращение» вперемешку.</li>
+        <li><b>Одни правила:</b> одинаковые состояния и одинаковое поведение.</li>
+      </ul>
+      <p>На консистентности держатся и визуальные стили: у технологичного — характерные скругления и мягкие тени, у индустриального — обилие линий и сеток, у playful — яркие формы и иллюстрации. Чтобы не путать человека, создают дизайн-системы: наборы готовых элементов с правилами. Про них — в модуле по UI.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Целостность</h3>
+    <div class="sub-b">
+      <p>Дизайн сайта — продолжение позиционирования. Если бренд обещает одно, а сайт выглядит и ведёт себя иначе, человек считывает несоответствие, и доверие падает. Думай, какое впечатление компания хочет создать, и подбирай визуальные приёмы под него.</p>
+      <div class="pair">
+        <div class="bad"><i>Разрыв</i><span>Бренд про премиум и спокойствие, а сайт кричит скидками, яркими бейджами и агрессивными поп-апами.</span></div>
+        <div class="bad"><i>Разрыв</i><span>Сервис про заботу, а формы холодные, ошибки непонятные, а тексты обвиняют человека.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lab">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Практикум</h2></div></div>
+  <p>Теперь соберём всё на одном экране. Сначала включай принципы по одному и смотри, как меняется блок. Потом найди нарушения на чужом макете и назови принцип.</p>
+
+  <div class="sub wide">
+    <h3>Включай принципы по одному</h3>
+    <div class="sub-b">
+      <div class="demo" id="lab">
+        <span class="cap">Первый экран «Опушки» · все принципы выключены</span>
+        <div class="seg lab-seg" id="lab-seg">
+          <button type="button" data-k="konk" aria-pressed="false">Конкретика</button>
+          <button type="button" data-k="vis" aria-pressed="false">Наглядность</button>
+          <button type="button" data-k="hier" aria-pressed="false">Иерархия</button>
+          <button type="button" data-k="pred" aria-pressed="false">Предсказуемость</button>
+          <button type="button" data-k="min" aria-pressed="false">Минимализм</button>
+          <button type="button" data-k="cons" aria-pressed="false">Консистентность</button>
+          <button type="button" data-k="eth" aria-pressed="false">Этика</button>
+        </div>
+        <div class="stage lab-stage"><div class="lab-mock" id="lab-mock"></div></div>
+        <div class="occ-meter"><div class="occ-bar"><i id="lab-bar"></i></div><span id="lab-n">Работает 0 из 7</span></div>
+        <output id="lab-out"><b>Сейчас блок нарушает все семь принципов.</b> Включи любой переключатель, и увидишь, что поменяется и почему.</output>
+        <div class="game-acts"><button type="button" class="ghost" id="lab-all">Включить все</button><button type="button" class="ghost" id="lab-none">Выключить все</button></div>
+      </div>
+      <span class="cap">Нажимай на названия принципов. Каждый меняет только свою часть экрана, а описание объясняет, что именно.</span>
+    </div>
+  </div>
+
+  <div class="sub wide">
+    <h3>Найди и назови нарушение</h3>
+    <div class="sub-b">
+      <p>На макете доставки еды семь нарушений. Нажми на подозрительное место, а потом выбери, какой принцип здесь нарушен. Промах не считается — ищи спокойно.</p>
+      <div class="game" id="fd">
+        <div class="game-top"><span class="cap" id="fd-n">Найдено 0 из 7</span><div class="game-acts"><button type="button" class="ghost" id="fd-all">Показать все</button><button type="button" class="ghost" id="fd-reset">Заново</button></div></div>
+        <div class="stage game-stage">
+          <div class="fd-mock">
+            <div class="fd-nav"><b>ВкусДом</b><span>Меню</span><span>Акции</span><span>Доставка</span><span class="fd-cart">Корзина · 0</span></div>
+            <div class="fd-body">
+              <div class="fd-copy">
+                <div class="bug fd-hier" data-bug="0" role="button" tabindex="0"><b class="fd-shout">ВКУСНО!!!</b><span class="fd-tiny">Доставка 0 ₽ от 1000 ₽ · привезём за 35 минут</span></div>
+                <p class="bug fd-vague" data-bug="1" role="button" tabindex="0">Мы — команда профессионалов. Высокое качество, надёжность и индивидуальный подход к каждому.</p>
+                <div class="bug fd-btns" data-bug="2" role="button" tabindex="0"><span class="fb1">Заказать</span><span class="fb2">Меню</span><span class="fb3">АКЦИИ</span></div>
+                <div class="bug fd-stock" data-bug="3" role="button" tabindex="0"><svg viewBox="0 0 240 110" aria-hidden="true"><rect width="240" height="110" fill="#dfe6ee"/><g fill="#9fb0c4"><circle cx="60" cy="40" r="14"/><rect x="40" y="58" width="40" height="52" rx="8"/><circle cx="120" cy="36" r="14"/><rect x="100" y="54" width="40" height="56" rx="8"/><circle cx="180" cy="40" r="14"/><rect x="160" y="58" width="40" height="52" rx="8"/></g><text x="120" y="66" text-anchor="middle" font-size="22" fill="#fff" opacity=".85" font-weight="700" letter-spacing="3">STOCK</text></svg><small>Довольные клиенты в офисе показывают большой палец</small></div>
+              </div>
+              <div class="fd-side">
+                <div class="bug fd-form" data-bug="4" role="button" tabindex="0"><b>Узнать о доставке</b><span>Фамилия</span><span>Имя</span><span>Отчество</span><span>Дата рождения</span><span>Пол</span><span>Почта</span><span>Телефон</span><span>Как вы о нас узнали?</span></div>
+                <div class="bug fd-tick" data-bug="5" role="button" tabindex="0"><span class="chk">✓</span><small>Хочу получать SMS с акциями 5 раз в день</small></div>
+                <div class="bug fd-phone" data-bug="6" role="button" tabindex="0"><div class="fd-ph"><b>ВКУСНО!!! Доставка за 35 мин</b><span class="fd-ph-btn">Заказать сейчас</span></div><small>Версия для телефона</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fd-ask" id="fd-ask" hidden><span class="cap" id="fd-ask-t">Что здесь нарушено?</span><div class="seg" id="fd-opts"></div><output id="fd-msg"></output></div>
+        <ol class="game-list" id="fd-list"></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Принципы вместе с нейронкой</h2></div></div>
+  <p>Нейронка хорошо задаёт неудобные вопросы и замечает пустые фразы. Используй её как придирчивого собеседника: она спрашивает и проверяет. Смыслы, структуру и макет делаешь ты.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Что за бизнес, кто аудитория, какая цель у страницы.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа. Текст сайта пишешь ты.</div>
+    <div><i>Правило 3</i><b>Факты — от клиента</b>Цифры не выдумываем. Нет факта — это вопрос к брифу.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Смысл</span><b>Заполнить платформу бренда</b>
+<pre id="p1">Я делаю сайт для компании: <em>[чем занимается компания]</em>. Помоги мне заполнить платформу бренда из пяти пунктов: продукт, аудитория, атрибуты, преимущества, характер.
+Задавай мне вопросы по одному и жди ответа. Начни с продукта. Если мой ответ общий, переспроси и попроси конкретику.
+Не придумывай факты о компании и не пиши за меня итоговый текст.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь, сверяешься с брифом и сам собираешь платформу в Figma или Notion.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Конкретика</span><b>«А чем докажем?»</b>
+<pre id="p2">Вот тексты первого экрана и блока преимуществ: <em>[вставь тексты]</em>.
+Найди фразы-обещания, которые подошли бы любой компании. Для каждой спроси меня: «Чем это можно доказать?» — по одной фразе за раз.
+Не переписывай тексты сам. Если я не знаю ответа, подскажи, какой вопрос задать клиенту.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> находишь факты или пишешь вопросы клиенту и сам переписываешь формулировки.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Аудит</span><b>Разбор по трём уровням</b>
+<pre id="p3">Опишу свою страницу: <em>[цель страницы, блоки по порядку, главная кнопка]</em>. Можешь посмотреть скриншот.
+Оцени её по трём уровням — смысл, UX, UI — от 0 до 10 и объясни каждую оценку двумя предложениями.
+Потом задай мне по одному вопросу о самой слабой вершине и подожди ответа. Решения не предлагай, пока я сам не предложу свой вариант.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> сравниваешь её оценки со своими и правишь слабую вершину в макете.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Разбор и редизайн первого экрана по трём уровням</b><p>Выбери сайт реального небольшого бизнеса: студии, производства, кафе, школы. Оцени его по треугольнику: смысл, UX и UI от 0 до 10. Найди пять нарушений принципов из этой методички и подпиши каждое. Затем перерисуй первый экран: сформулируй ценностное предложение, замени обещания фактами, оставь одно главное действие и выстрои иерархию. Сдай фрейм в Figma: слева скриншот «до» с подписанными нарушениями, справа твой вариант «после», сверху — три оценки.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>За 5–10 секунд понятно, что это, для кого и какой результат</span></label>
+    <label><input type="checkbox"><span>Каждое преимущество подкреплено фактом: цифрой, сроком, условием</span></label>
+    <label><input type="checkbox"><span>Визуал показывает реальный продукт или процесс, без стоков</span></label>
+    <label><input type="checkbox"><span>На экране одно главное действие, и оно выглядит как кнопка</span></label>
+    <label><input type="checkbox"><span>Заголовок, факты и кнопка читаются по иерархии, элементы в одной системе</span></label>
+    <label><input type="checkbox"><span>Нет тёмных паттернов: выбранных галочек, окон без крестика, скрытых условий</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Типы проектов: лендинг, корпоративный сайт, интернет-магазин и чем они отличаются.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 3 · Принципы веб-дизайна</footer>
+
+</div>
+<script type="application/json" id="srt-data">[
+{"t":"Надёжная компания с многолетним опытом","a":0,"f":"12 лет на рынке, 480 построенных домов в 23 регионах"},
+{"t":"Каркас из сухой камерной сосны влажностью до 18%","a":1,"e":"Материал и цифра, которые можно проверить. Так говорит производство, которое знает свой продукт."},
+{"t":"Высокое качество и лучшие материалы","a":0,"f":"Утеплитель 200 мм, дом держит +20 °C внутри при −35 °C снаружи"},
+{"t":"Гарантия 10 лет на каркас — прописана в договоре","a":1,"e":"Срок и документ. Это закрывает возражение «а вдруг развалится»."},
+{"t":"Профессиональная команда","a":0,"f":"Каждый объект ведёт один прораб, у всех прорабов стаж от 7 лет"},
+{"t":"Индивидуальный подход к каждому клиенту","a":0,"f":"12 планировок на выбор, любую можно изменить, замер участка бесплатно"},
+{"t":"Собственный цех 2400 м² в Твери, можно приехать на экскурсию","a":1,"e":"К тому же он приглашает приехать и проверить. Это сильнее любых слов о надёжности."},
+{"t":"Лучшие цены на рынке","a":0,"f":"Цена фиксируется в договоре и не меняется до сдачи дома"}
+]</script>
+<script type="application/json" id="fd-data">[
+{"t":"Крик вместо условий","o":["Иерархия","Адаптивность","Этика"],"a":0,"e":"Самое громкое слово на экране ничего не сообщает, а главное — бесплатная доставка и 35 минут — набрано мелким бледным текстом. Акцент должен падать на то, что важно для решения.","h":"Посмотри, что здесь самое крупное и что самое важное. Это одно и то же?"},
+{"t":"Пустые обещания","o":["Консистентность","Конкретика","Минимализм"],"a":1,"e":"«Профессионалы», «качество», «надёжность» подходят любой компании. Замени фактами: «Готовим из охлаждённого мяса, повара с опытом от 5 лет, рейтинг 4,9 из 12 000 отзывов».","h":"Пройди тест подмены логотипа: подойдёт ли этот текст любой доставке?"},
+{"t":"Кнопки из разных систем","o":["Сценарная логика","Наглядность","Консистентность"],"a":2,"e":"Три кнопки с разными радиусами, шрифтами и цветами выглядят как куски с разных сайтов. Одинаковые по функции элементы оформляем по одним правилам: одна главная, остальные — второстепенные в том же стиле.","h":"Сравни форму, шрифт и цвет трёх кнопок."},
+{"t":"Стоковое фото вместо еды","o":["Наглядность","Иерархия","Предсказуемость"],"a":0,"e":"Доставка еды продаёт еду, а на главном фото — офисные люди со стока. Покажи блюда крупно, курьера, кухню: человек должен захотеть есть.","h":"Что продаёт этот бизнес и что показано на картинке?"},
+{"t":"Анкета на восемь полей","o":["Минимализм","Целостность","Конкретика"],"a":0,"e":"Чтобы узнать о доставке, хватит адреса или телефона. Дата рождения, пол и отчество — лишнее трение, с каждым полем форму бросает всё больше людей.","h":"Какие из этих полей реально нужны, чтобы рассказать о доставке?"},
+{"t":"Галочка уже стоит","o":["Отзывчивость","Этика","Иерархия"],"a":1,"e":"Заранее выбранная подписка на SMS — тёмный паттерн. Человек не заметит и будет злиться на бренд. Галочка согласия на рассылку по умолчанию пустая.","h":"Кто выбрал эту галочку — человек или сайт?"},
+{"t":"Мобильная версия сломана","o":["Предсказуемость","Адаптивность","Консистентность"],"a":1,"e":"На телефоне заголовок обрезан, а кнопка вылезает за экран. Больше половины заказов еды делают с телефона — мобильный макет проверяем первым.","h":"Посмотри на маленький экран справа: всё ли там помещается?"}
+]</script>
+<script type="application/json" id="quiz-data">[
+{"p":"У сайта красивый визуал и удобная навигация, но заявок почти нет. Какой уровень, скорее всего, провален?","o":["UI — нужно добавить анимаций","Смысл — непонятно, что предлагают и почему стоит выбрать именно их","UX — нужно больше кнопок"],"a":1,"e":"Если человек не понял ценность, удобство и визуал не помогут. Начинай разбор со смыслового уровня."},
+{"p":"По правилу треугольника что даст больше пользы проекту с оценками смысл 3, UX 7, UI 9?","o":["Довести UI до 10","Подтянуть смысл","Переделать навигацию"],"a":1,"e":"Результат держится на самой слабой опоре. Полировка сильной вершины почти ничего не меняет."},
+{"p":"Какая фраза — проверяемый факт?","o":["Высокое качество обслуживания","Индивидуальный подход","Сдаём дом под ключ за 45 дней, срок — в договоре"],"a":2,"e":"Факт можно проверить: срок, цифра, документ. Остальные фразы подходят любой компании."},
+{"p":"Что такое пользовательский сценарий?","o":["Текст, который читает диктор в видео на сайте","Цепочка шагов от точки входа до цели человека","Список всех страниц сайта"],"a":1,"e":"User flow — путь человека к цели: от главной до оформленного заказа. Чем он короче и понятнее, тем удобнее интерфейс."},
+{"p":"Галочка «Подписаться на рассылку» в форме стоит по умолчанию. Какой принцип нарушен?","o":["Этика","Консистентность","Адаптивность"],"a":0,"e":"Это тёмный паттерн: решение за человека. Работает один раз и подрывает доверие к бренду."},
+{"p":"В каком порядке правильно прорабатывать сайт?","o":["UI → UX → смысл","Смысл → UX → UI","UX → UI → смысл"],"a":1,"e":"Сначала решаем, что говорим, потом — как человек проходит путь, и только затем — как это выглядит."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Принципы веб-дизайна» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const NS = 'http://www.w3.org/2000/svg';
+
+  // --- Треугольник коммуникации ---
+  const tri = $('#tri');
+  if (tri) {
+    const C = [160, 140], R = 100, ANG = [-90, 30, 150];
+    const pt = (k, v) => { const a = ANG[k] * Math.PI / 180; return [C[0] + Math.cos(a) * R * v / 10, C[1] + Math.sin(a) * R * v / 10]; };
+    const grid = $('#tri-grid-l');
+    [2.5, 5, 7.5, 10].forEach(v => {
+      const pg = document.createElementNS(NS, 'polygon');
+      pg.setAttribute('points', [0, 1, 2].map(k => pt(k, v).join(',')).join(' '));
+      pg.setAttribute('class', 'tri-ring'); grid.append(pg);
+    });
+    [0, 1, 2].forEach(k => {
+      const l = document.createElementNS(NS, 'line'), e = pt(k, 10);
+      l.setAttribute('x1', C[0]); l.setAttribute('y1', C[1]); l.setAttribute('x2', e[0]); l.setAttribute('y2', e[1]);
+      l.setAttribute('class', 'tri-axis'); grid.append(l);
+    });
+    const dots = $('#tri-dots');
+    const D = [0, 1, 2].map(() => { const c = document.createElementNS(NS, 'circle'); c.setAttribute('r', 5); c.setAttribute('class', 'tri-dot'); dots.append(c); return c; });
+    const I = [$('#tr-m'), $('#tr-x'), $('#tr-u')], V = [$('#tv-m'), $('#tv-x'), $('#tv-u')];
+    const names = ['Смысл', 'UX', 'UI'];
+    const advice = [
+      'Подтяни смысл: сформулируй ценностное предложение, замени обещания фактами, покажи реальный продукт. Визуал без смысла не продаёт.',
+      'Подтяни UX: сократи путь до целевого действия, сделай одну главную кнопку, убери лишние поля и тупики.',
+      'Подтяни UI: выстрой иерархию, приведи элементы к одной системе, убери визуальный шум. Хороший смысл должен легко читаться.'
+    ];
+    const score = v => { const mn = Math.min(...v), avg = (v[0] + v[1] + v[2]) / 3; return Math.round((mn + (avg - mn) * 0.3) * 10) / 10; };
+    const fmt = n => String(n).replace('.', ',');
+    function upd() {
+      const v = I.map(i => +i.value);
+      V.forEach((el, k) => el.textContent = v[k]);
+      $('#tri-poly').setAttribute('points', v.map((x, k) => pt(k, Math.max(x, 0.3)).join(',')).join(' '));
+      const mn = Math.min(...v), mx = Math.max(...v), wk = v.indexOf(mn), st = v.indexOf(mx);
+      D.forEach((c, k) => { const p = pt(k, Math.max(v[k], 0.3)); c.setAttribute('cx', p[0]); c.setAttribute('cy', p[1]); c.classList.toggle('weak', v[k] === mn && mn < mx); });
+      const res = score(v);
+      $('#tri-res').textContent = fmt(res);
+      const items = [];
+      if (mn >= 7) items.push(['ok', '<b>Сбалансированный проект.</b> Все три опоры крепкие — такой сайт работает. Дальше улучшаешь точечно по метрикам.']);
+      else if (mn === mx) items.push(['mid', '<b>Все вершины одинаковые, ' + mn + ' из 10.</b> Начни со смысла: он задаёт, что потом показывать в UX и UI.']);
+      else items.push(['bad', '<b>Слабое место — ' + names[wk] + ' (' + mn + ').</b> ' + advice[wk]]);
+      if (mx < 10 && mn < mx) {
+        const a = v.slice(); a[st] = 10;
+        const b = v.slice(); b[wk] = Math.min(10, b[wk] + 3);
+        items.push(['mid', '<b>Сравни:</b> довести ' + names[st] + ' до 10 — итог ' + fmt(score(a)) + '. Поднять ' + names[wk] + ' на 3 балла — итог ' + fmt(score(b)) + '.']);
+      }
+      $('#tri-out').innerHTML = items.map(([c, t]) => '<li class="' + c + '"><span>' + t + '</span></li>').join('');
+      $$('#tri-presets button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p === v.join(','))));
+    }
+    I.forEach(i => i.addEventListener('input', upd));
+    $$('#tri-presets button').forEach(b => b.addEventListener('click', () => { b.dataset.p.split(',').forEach((x, k) => I[k].value = x); upd(); }));
+    upd();
+  }
+
+  // --- Обещание или факт ---
+  const srt = $('#srt'), srtSrc = $('#srt-data');
+  if (srt && srtSrc) {
+    const S = JSON.parse(srtSrc.textContent), list = $('#srt-list'), n = $('#srt-n');
+    let got = 0, ans = 0;
+    function build() {
+      got = 0; ans = 0; list.innerHTML = ''; n.textContent = 'Верно 0 из ' + S.length;
+      S.forEach(item => {
+        const d = document.createElement('div'); d.className = 'srt-it';
+        d.innerHTML = '<span>' + esc(item.t) + '</span><div class="srt-b"><button type="button">Обещание</button><button type="button">Факт</button></div><div class="srt-e" hidden></div>';
+        const bs = $$('button', d), e = $('.srt-e', d);
+        bs.forEach((b, j) => b.addEventListener('click', () => {
+          bs.forEach((x, k) => { x.disabled = true; if (k === item.a) x.classList.add('right'); });
+          const ok = j === item.a; if (ok) got++; else b.classList.add('wrong');
+          d.classList.add(ok ? 'done' : 'miss');
+          const head = '<b class="' + (ok ? 'y' : 'n') + '">' + (ok ? 'Верно. ' : 'Не совсем. ') + '</b>';
+          e.innerHTML = head + (item.a === 0 ? 'Это обещание: так может сказать любая компания. Фактом звучит так: <u>«' + esc(item.f) + '»</u>' : 'Это факт. ' + esc(item.e));
+          e.hidden = false; ans++;
+          n.textContent = 'Верно ' + got + ' из ' + S.length;
+          if (ans === S.length) {
+            const w = document.createElement('div'); w.className = 'srt-win';
+            w.textContent = got === S.length ? 'Все восемь верно. Теперь проверь так же тексты своего проекта.' : 'Готово: ' + got + ' из ' + S.length + '. Обрати внимание на ошибки — у обещаний нет цифр, сроков и условий.';
+            list.append(w);
+          }
+        }));
+        list.append(d);
+      });
+    }
+    $('#srt-reset').addEventListener('click', build);
+    build();
+  }
+
+  // --- До / после ---
+  $$('[data-ba] .ba-view').forEach(view => {
+    const r = $('.ba-range', view);
+    const set = () => view.style.setProperty('--x', r.value + '%');
+    r.addEventListener('input', set); set();
+  });
+  const cases = $('#ba-cases');
+  if (cases) {
+    const box = cases.closest('.demo'), out = $('#ba-case-out');
+    const txt = {
+      metro: '<b>Упрощение.</b> Схема искажает расстояния и форму линий, зато за секунду видно, где пересадка и сколько станций ехать. Убрали всё, что не помогает построить маршрут.',
+      hier: '<b>Иерархия.</b> Слева всё одного размера и веса, три одинаковые кнопки и крик в начале. Справа название крупно, цена — акцентом, одна главная кнопка. Информация та же.'
+    };
+    function show(c) {
+      $$('.ba[data-case]', box).forEach(b => b.hidden = b.dataset.case !== c);
+      $$('button', cases).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.case === c)));
+      out.innerHTML = txt[c];
+    }
+    $$('button', cases).forEach(b => b.addEventListener('click', () => show(b.dataset.case)));
+    show('metro');
+  }
+
+  // --- Бритва Оккама ---
+  const occ = $('#occ');
+  if (occ) {
+    const F = [
+      ['Имя', 2, 'Без имени менеджеру неловко начинать разговор. Это поле оставляем.'],
+      ['Телефон', 2, 'Без телефона менеджер не перезвонит — заявка бесполезна. Верни поле.'],
+      ['Регион участка', 1, 'Можно оставить: регион сразу подскажет, есть ли доставка. Можно и спросить на звонке.'],
+      ['Отчество', 0, 'Для замера отчество не нужно. Лишнее поле — лишняя причина закрыть форму.'],
+      ['Дата рождения', 0, 'Никак не помогает посчитать дом. Такие поля вызывают вопрос «зачем им это?».'],
+      ['Электронная почта', 1, 'Пригодится, чтобы прислать смету, но её можно взять позже. Решай сам.'],
+      ['Серия и номер паспорта', 0, 'Паспорт на этапе заявки пугает. Многие просто уйдут, не желая вводить такие данные на сайте.'],
+      ['Пол', 0, 'Пол не влияет на дом. Убрали — форма стала короче.'],
+      ['Площадь участка, соток', 1, 'Полезно, но человек может не знать точно. Менеджер уточнит.'],
+      ['Как вы о нас узнали?', 0, 'Это нужно маркетингу, а не человеку. Источник заявки считают метрики сайта.'],
+      ['Комментарий к заявке', 0, 'Большое пустое поле тормозит: человек думает, что написать. Убрали.']
+    ];
+    const gone = new Set(), form = $('#occ-form'), out = $('#occ-out');
+    let last = '';
+    function draw() {
+      form.innerHTML = '<b>Заявка на замер участка</b>';
+      F.forEach(([name, need], i) => {
+        const row = document.createElement('div'); row.className = 'occ-f' + (gone.has(i) ? ' gone' : '') + (gone.has(i) && need === 2 ? ' bad' : '');
+        const sp = document.createElement('span'); sp.textContent = name;
+        const b = document.createElement('button'); b.type = 'button';
+        b.textContent = gone.has(i) ? '↺' : '×';
+        b.setAttribute('aria-label', (gone.has(i) ? 'Вернуть поле ' : 'Убрать поле ') + name);
+        b.addEventListener('click', () => {
+          if (gone.has(i)) { gone.delete(i); last = '<b>' + name + '</b> вернули в форму.'; }
+          else { gone.add(i); last = (need === 2 ? '<span class="warn"><b>' + name + '.</b> ' : '<b>' + name + '.</b> ') + F[i][2] + (need === 2 ? '</span>' : ''); }
+          draw();
+          const btn = form.querySelectorAll('.occ-f button')[i]; if (btn) btn.focus();
+        });
+        row.append(sp, b); form.append(row);
+      });
+      const send = document.createElement('span'); send.className = 'u-btn u-primary occ-send'; send.textContent = 'Отправить заявку'; form.append(send);
+      const left = F.length - gone.size, junk = F.filter((f, i) => f[1] === 0 && !gone.has(i)).length, lostNeed = F.some((f, i) => f[1] === 2 && gone.has(i));
+      const bar = $('#occ-bar'); bar.style.width = Math.round(left / F.length * 100) + '%';
+      bar.className = lostNeed ? 'bad' : junk === 0 ? 'ok' : '';
+      $('#occ-n').textContent = 'Полей: ' + left + ' · лишних осталось: ' + junk;
+      let sum;
+      if (lostNeed) sum = '<span class="warn">Без имени или телефона заявка не работает.</span>';
+      else if (junk === 0) sum = '<span class="okv">Готово: ' + left + ' ' + (left < 5 ? 'поля' : 'полей') + '. Всё остальное менеджер спросит на звонке, когда человек уже заинтересован.</span>';
+      else sum = 'Лишних полей: ' + junk + '. Убирай дальше.';
+      out.innerHTML = (last ? last + ' ' : '') + sum;
+    }
+    $('#occ-reset').addEventListener('click', () => { gone.clear(); last = ''; draw(); });
+    draw();
+  }
+
+  // --- Принципы на одном блоке ---
+  const lab = $('#lab');
+  if (lab) {
+    const K = ['konk', 'vis', 'hier', 'pred', 'min', 'cons', 'eth'];
+    const st = {}; K.forEach(k => st[k] = false);
+    const D = {
+      konk: ['Конкретика', 'Заголовок «Надёжные дома высокого качества» заменили на площадь, срок и цену. Подзаголовок теперь доказывает фактами: гарантия, число домов, регионы.', 'Вернулись пустые обещания: «надёжные», «качество», «профессиональная команда» подходят любой компании.'],
+      vis: ['Наглядность', 'Вместо трёх абстрактных иконок — дом в реальном окружении. Человек сразу видит, что покупает и где будет жить.', 'Снова абстрактные иконки «качество, надёжность, комфорт». Они ничего не показывают о продукте.'],
+      hier: ['Иерархия', 'Заголовок стал главным: крупный и плотный. Подзаголовок спокойнее. Глаз идёт по порядку: что это → доказательства → действие.', 'Заголовок и подзаголовок снова одного размера и веса — непонятно, с чего начинать читать.'],
+      pred: ['Предсказуемость', 'Главное действие теперь выглядит как кнопка. Раньше это была серая строчка, которую легко принять за подпись.', 'Главное действие снова выглядит как серый текст — человек не поймёт, что сюда можно нажать.'],
+      min: ['Минимализм', 'Убрали шесть бейджей и лишние кнопки. Осталось одно главное действие и одно второстепенное — выбор стал простым.', 'Снова шесть бейджей и четыре кнопки: всё кричит, и выбрать трудно.'],
+      cons: ['Консистентность', 'Все кнопки собраны по одним правилам: один радиус, один шрифт. Главная — акцентом, второстепенная — обводкой.', 'Кнопки снова из разных систем: разные цвета, радиусы и шрифты.'],
+      eth: ['Этика', 'Убрали поп-ап с таймером и заранее выбранную галочку подписки. Вместо давления — честное условие: цена фиксируется в договоре.', 'Вернулись тёмные паттерны: таймер «скидка сгорит» и галочка подписки, которую поставили за человека.']
+    };
+    const mock = $('#lab-mock');
+    const iconSvg = [
+      '<svg viewBox="0 0 30 30"><path d="M15 3l3.6 7.4 8.1 1.2-5.9 5.7 1.4 8.1L15 21.6l-7.2 3.8 1.4-8.1-5.9-5.7 8.1-1.2z" fill="none" stroke="#8e8e8c" stroke-width="1.6"/></svg>',
+      '<svg viewBox="0 0 30 30"><path d="M15 3l10 4v7c0 6-4.5 10.5-10 13C9.5 24.5 5 20 5 14V7z" fill="none" stroke="#8e8e8c" stroke-width="1.6"/></svg>',
+      '<svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="11" fill="none" stroke="#8e8e8c" stroke-width="1.6"/><path d="M10 15.5l3.5 3.5 7-7" fill="none" stroke="#8e8e8c" stroke-width="1.6"/></svg>'
+    ];
+    const house = '<svg class="house" viewBox="0 0 200 110" aria-hidden="true"><rect width="200" height="110" fill="#cfe3d2"/><path d="M0 84 L28 30 L52 84Z M148 84 L174 22 L200 84Z M22 84 L44 44 L66 84Z M120 84 L138 48 L156 84Z" fill="#5f8f6a"/><rect y="84" width="200" height="26" fill="#e9efe4"/><rect x="62" y="50" width="76" height="36" fill="#8a6a4f"/><path d="M56 52 L100 28 L144 52Z" fill="#3a3a3a"/><rect x="74" y="60" width="16" height="14" fill="#ffd27a"/><rect x="110" y="60" width="16" height="14" fill="#ffd27a"/><rect x="128" y="20" width="6" height="14" fill="#3a3a3a"/></svg>';
+    function render() {
+      mock.className = 'lab-mock' + K.filter(k => st[k]).map(k => ' on-' + k).join('');
+      let h = '';
+      if (!st.eth) h += '<div class="lm-ad"><span>Подождите! Скидка 30% сгорит через 04:59</span><small>нет, мне не нужны скидки</small></div>';
+      h += '<div class="lm-nav"><b>Опушка</b><span>Проекты</span><span>Цены</span><span>Отзывы</span><span>Контакты</span></div>';
+      h += '<div class="lm-body"><div class="lm-copy">';
+      if (!st.min) h += '<div class="lm-badges"><span>ХИТ</span><span>−30%</span><span>НОВИНКА</span><span>ЛУЧШАЯ ЦЕНА</span><span>ЭКО</span><span>ГАРАНТИЯ</span></div>';
+      h += '<div class="lm-h">' + (st.konk ? 'Тёплый модульный дом 36 м² под ключ за 45 дней' : 'Надёжные дома высокого качества') + '</div>';
+      h += '<div class="lm-sub">' + (st.konk ? 'От 3,2 млн ₽. Гарантия 10 лет по договору. 480 домов в 23 регионах.' : 'Мы профессиональная команда, которая использует современные технологии и индивидуальный подход.') + '</div>';
+      const labels = st.min ? ['Рассчитать стоимость', 'Проекты домов'] : ['Рассчитать стоимость', 'Каталог', 'Акции', 'Скачать PDF'];
+      h += '<div class="lm-btns">' + labels.map((t, i) => {
+        if (i === 0 && !st.pred) return '<span class="lm-plain">' + t.toLowerCase() + '</span>';
+        if (!st.cons) return '<span class="u-btn lm-x' + (i + 1) + '">' + t + '</span>';
+        return '<span class="u-btn ' + (i === 0 ? 'u-primary' : 'u-secondary') + '">' + t + '</span>';
+      }).join('') + '</div>';
+      h += st.eth ? '<span class="lm-note">Цена фиксируется в договоре и не меняется до сдачи</span>' : '<span class="lm-tick"><span class="chk">✓</span>Подписаться на рассылку и SMS-акции</span>';
+      h += '</div><div class="lm-vis">';
+      h += st.vis ? house + '<small>Дом «Сосна 36» · Карелия, построен в 2025 году</small>' : '<div class="lm-icons">' + ['Качество', 'Надёжность', 'Комфорт'].map((t, i) => '<div>' + iconSvg[i] + t + '</div>').join('') + '</div>';
+      h += '</div></div>';
+      mock.innerHTML = h;
+      const on = K.filter(k => st[k]).length;
+      $('#lab-n').textContent = 'Работает ' + on + ' из ' + K.length;
+      const bar = $('#lab-bar'); bar.style.width = Math.round(on / K.length * 100) + '%'; bar.className = on === K.length ? 'ok' : '';
+      $('.cap', lab).textContent = 'Первый экран «Опушки» · ' + (on === 0 ? 'все принципы выключены' : on === K.length ? 'все принципы включены' : 'включено ' + on + ' из ' + K.length);
+      $$('#lab-seg button').forEach(b => b.setAttribute('aria-pressed', String(st[b.dataset.k])));
+    }
+    $$('#lab-seg button').forEach(b => b.addEventListener('click', () => {
+      const k = b.dataset.k; st[k] = !st[k]; render();
+      const on = K.filter(x => st[x]).length;
+      $('#lab-out').innerHTML = '<b>' + D[k][0] + (st[k] ? ' включена.' : ' выключена.') + '</b> ' + (st[k] ? D[k][1] : D[k][2]) + (on === K.length ? ' <span class="okv">Все семь принципов работают — сравни с тем, что было в начале.</span>' : '');
+    }));
+    $('#lab-all').addEventListener('click', () => { K.forEach(k => st[k] = true); render(); $('#lab-out').innerHTML = '<b>Все семь принципов включены.</b> Блок говорит фактами, показывает продукт и ведёт к одному действию. Выключай по одному, чтобы увидеть, что ломается.'; });
+    $('#lab-none').addEventListener('click', () => { K.forEach(k => st[k] = false); render(); $('#lab-out').innerHTML = '<b>Сейчас блок нарушает все семь принципов.</b> Включи любой переключатель, и увидишь, что поменяется и почему.'; });
+    render();
+  }
+
+  // --- Найди и назови нарушение ---
+  const fd = $('#fd'), fdSrc = $('#fd-data');
+  if (fd && fdSrc) {
+    const G = JSON.parse(fdSrc.textContent), found = new Set();
+    const ask = $('#fd-ask'), opts = $('#fd-opts'), msg = $('#fd-msg'), list = $('#fd-list');
+    let cur = -1;
+    function draw() {
+      $('#fd-n').textContent = 'Найдено ' + found.size + ' из ' + G.length;
+      list.innerHTML = '';
+      [...found].sort((a, b) => a - b).forEach(i => {
+        const li = document.createElement('li');
+        const p = document.createElement('i'); p.textContent = G[i].o[G[i].a];
+        const b = document.createElement('b'); b.textContent = G[i].t;
+        li.append(p, b, document.createTextNode(G[i].e)); list.append(li);
+      });
+      if (found.size === G.length) { const w = document.createElement('li'); w.className = 'game-win'; w.textContent = 'Все семь нарушений найдены и названы. Теперь проверь так же свой первый экран.'; list.append(w); }
+      $$('.bug', fd).forEach(el => { el.classList.toggle('found', found.has(+el.dataset.bug)); el.classList.toggle('asking', +el.dataset.bug === cur); });
+    }
+    function open(i) {
+      cur = i; ask.hidden = false; msg.innerHTML = '';
+      if (found.has(i)) {
+        $('#fd-ask-t').textContent = 'Уже найдено';
+        opts.innerHTML = ''; msg.innerHTML = '<b>' + esc(G[i].t) + '</b> — ' + esc(G[i].o[G[i].a]) + '.';
+      } else {
+        $('#fd-ask-t').textContent = 'Какой принцип здесь нарушен?';
+        opts.innerHTML = '';
+        G[i].o.forEach((t, j) => {
+          const b = document.createElement('button'); b.type = 'button'; b.textContent = t;
+          b.addEventListener('click', () => {
+            if (j === G[i].a) { found.add(i); cur = -1; ask.hidden = true; draw(); }
+            else { b.disabled = true; b.setAttribute('aria-pressed', 'false'); msg.innerHTML = '<span class="warn">Не то.</span> Подсказка: ' + esc(G[i].h); }
+          });
+          opts.append(b);
+        });
+      }
+      draw();
+      if (ask.getBoundingClientRect().bottom > window.innerHeight) ask.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      const first = opts.querySelector('button'); if (first) first.focus({ preventScroll: true });
+    }
+    $$('.bug', fd).forEach(el => {
+      const hit = e => { e.stopPropagation(); open(+el.dataset.bug); };
+      el.addEventListener('click', hit);
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hit(e); } });
+    });
+    $('#fd-all').addEventListener('click', () => { G.forEach((_, i) => found.add(i)); cur = -1; ask.hidden = true; draw(); });
+    $('#fd-reset').addEventListener('click', () => { found.clear(); cur = -1; ask.hidden = true; draw(); });
+    draw();
+  }
+})();
+
+</script>
+</body></html>

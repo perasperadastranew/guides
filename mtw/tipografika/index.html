@@ -1,0 +1,1333 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Типографика</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив только для методички «Типографика» ===== */
+:root{--ty-serif:Georgia,"Times New Roman",Times,serif;--ty-sans:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--ty-onest:"Onest",-apple-system,Arial,sans-serif;--ty-mono:ui-monospace,Menlo,Consolas,"Courier New",monospace}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+code{font-family:var(--mono);font-size:.88em;background:var(--well);border-radius:4px;padding:1px 5px;color:var(--ink)}
+.ty-capline{max-width:70ch;line-height:1.5;margin-top:-12px}
+
+/* слайдеры и вердикт (как в песочнице UI-элементов) */
+.sliders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+.sliders.ty-one{grid-template-columns:minmax(0,1fr);max-width:420px}
+.sliders label{display:block;font-size:14px;color:var(--dim)}
+.sliders b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.sliders input{display:block;width:100%;margin:8px 0 0;accent-color:var(--accent)}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.4}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)} .verdict li.mid::before{color:#f2b33d}
+.verdict b{color:var(--ink);font-weight:400}
+.ty-row{display:flex;flex-direction:column;gap:6px}
+#ty-scale .ty-row{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px 14px}
+#ty-scale .ty-row .cap{min-width:130px}
+.demo .warn{color:var(--bad)} .demo .okv{color:var(--good)}
+
+/* 01 до/после */
+.ty-raw>div,.ty-done>div{width:100%;display:flex;flex-direction:column;gap:10px;text-align:left}
+.ty-raw p{font:14px/1.25 var(--ty-sans);color:#101010;text-align:justify;max-width:none}
+.ty-done{justify-content:flex-start}
+.ty-done>div{align-items:flex-start;gap:12px}
+.ty-tag{font:500 11px var(--ty-mono);letter-spacing:.06em;text-transform:uppercase;color:#8a4b2c;background:#f7dccd;border-radius:999px;padding:5px 10px}
+.ty-h{font:600 26px/1.05 var(--ty-onest);letter-spacing:-.02em;color:#101010;max-width:16ch}
+.ty-t{font:16px/1.5 var(--ty-onest);color:#5a5a58;max-width:34ch}
+.ty-done .u-btn{padding:12px 18px;font-size:15px}
+
+/* 02 анатомия */
+.ty-anat svg{min-width:600px;overflow:visible}
+.ty-anat .l{stroke:#3a3a3a;stroke-width:1}
+.ty-anat .l.base{stroke:#eb7540;stroke-width:1.5}
+.ty-anat .glyph{font-family:var(--ty-serif);font-size:140px;fill:var(--ink);letter-spacing:0}
+.ty-anat .lb{font-family:var(--mono);font-size:11px;fill:var(--dim);letter-spacing:.06em}
+.ty-anat .lb.acc{fill:#eb7540}
+.ty-anat .mark{fill:none;stroke:#5b8def;stroke-width:1.5}
+.ty-anat .ptr{stroke:#5b8def;stroke-width:1}
+.ty-kern{font:400 clamp(30px,6vw,60px)/1.1 var(--ty-serif);color:#101010;font-kerning:normal;transition:letter-spacing .25s;text-align:center}
+.ty-kern.is-nokern{font-kerning:none;font-feature-settings:"kern" 0}
+.ty-kern.is-track{letter-spacing:.2em}
+.ty-kern.is-tight{letter-spacing:-.05em}
+.ty-weights{gap:10px 22px;font:26px/1.2 var(--ty-onest);color:#101010}
+
+/* 03 классы */
+.ty-classes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ty-spec{font-size:clamp(26px,2.6vw,34px);line-height:1;min-height:110px;color:#101010;white-space:nowrap;overflow:hidden;padding-inline:10px}
+.ty-accid{font-family:var(--ty-sans);font-weight:900;letter-spacing:-.06em;transform:scaleY(1.25);font-style:italic}
+
+/* 04 песочница */
+.ty-sand-stage{display:block;padding:28px 20px;overflow:hidden}
+.ty-sand-txt{margin:0 auto;color:#101010;font-family:var(--ty-sans)}
+.ty-sand-txt p{max-width:none;margin:0 0 .9em}
+.ty-sand-txt p:last-child{margin-bottom:0}
+.ty-align{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ty-align p{font-size:15px;line-height:1.45;color:var(--ink)}
+/* пластика */
+.ty-plastic-stage{display:block;padding:28px 20px}
+.ty-plastic{max-width:460px;margin:0 auto;font-family:var(--ty-sans);color:#101010;display:flex;flex-direction:column;gap:14px;transition:all .25s}
+.ty-plastic .pp{display:flex;flex-direction:column;gap:4px;transition:margin .25s,padding .25s}
+.ty-plastic p{font-size:15px;line-height:1.45;max-width:none;transition:text-indent .25s}
+.ty-plastic i,.ty-plastic b{display:none}
+.ty-plastic i{font:500 12px var(--ty-mono);font-style:normal;color:#eb7540}
+.ty-plastic b{font:600 13px var(--ty-sans);text-transform:uppercase;letter-spacing:.06em;color:#101010}
+.ty-plastic{gap:0}
+.ty-plastic .pp+.pp{margin-top:.6em}
+.ty-plastic.is-indent{gap:0}
+.ty-plastic.is-indent .pp+.pp{margin-top:0}
+.ty-plastic.is-indent p{text-indent:28%}
+.ty-plastic.is-hang{padding-left:48px}
+.ty-plastic.is-hang p{text-indent:-48px}
+.ty-plastic.is-heads .pp+.pp{margin-top:1.2em}
+.ty-plastic.is-heads b{display:block}
+.ty-plastic.is-heads p{text-indent:24%}
+.ty-plastic.is-shift .pp{max-width:64%}
+.ty-plastic.is-shift .pp:nth-child(2){margin-left:36%}
+.ty-plastic.is-shift .pp:nth-child(3){margin-left:18%}
+.ty-plastic.is-nums .pp{display:grid;grid-template-columns:40px minmax(0,1fr);gap:0 10px}
+.ty-plastic.is-nums .pp+.pp{margin-top:1em}
+.ty-plastic.is-nums i{display:block;padding-top:3px}
+
+/* 05 шкала */
+.ty-scale-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:start}
+.ty-scale-stage{display:block;padding:24px 20px;overflow:hidden}
+.ty-scale-prev{margin:0 auto;color:#101010;font-family:var(--ty-onest);overflow-wrap:anywhere;transition:max-width .25s}
+.ty-scale-prev>*{display:block;margin:0;max-width:none}
+.ty-scale-prev .hd{white-space:nowrap;overflow:hidden}
+.ty-scale-prev .c{color:#5a5a58}
+.ty-scale-side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.ty-scale-list{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.ty-scale-list>div{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:10px;padding:8px 0;border-bottom:1px solid var(--stroke);font-size:14px;align-items:baseline}
+.ty-scale-list span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--accent)}
+.ty-scale-list b{font-weight:400;font-variant-numeric:tabular-nums}
+.ty-scale-list i{font-style:normal;color:var(--faint);font-family:var(--mono);font-size:11px;text-align:right}
+.ty-code{margin:0;white-space:pre;font-family:var(--mono);font-size:12.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+
+/* заголовки */
+.hier .stage .ty-hx,.ty-hx{font:500 24px/1.15 var(--ty-onest);color:#101010;letter-spacing:-.01em;max-width:none}
+.ty-hx em{font-family:var(--ty-serif);font-style:italic;font-weight:400}
+.ty-mess span{color:#3b6ef0}
+.hier .stage .ty-mess em{font-family:var(--ty-mono);font-style:normal;font-size:20px}
+.hier .stage .ty-mess u{text-transform:uppercase;color:#e5383b;font-size:30px;font-family:var(--ty-serif)}
+.ty-comp{justify-content:flex-start;min-height:130px}
+.ty-comp>div{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.ty-ch{font:600 24px/1.05 var(--ty-onest);letter-spacing:-.02em;color:#101010;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ty-cs{font:13px/1.35 var(--ty-onest);color:#5a5a58;max-width:26ch}
+.ty-ctag{font:500 11px var(--ty-mono);letter-spacing:.06em;text-transform:uppercase;color:#eb7540}
+.ty-blob{display:inline-block;width:46px;height:26px;border-radius:999px;background:linear-gradient(120deg,#f2b33d,#eb7540)}
+
+/* 06 пары */
+.bld-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}
+.bld-ctrls{display:flex;flex-direction:column;gap:14px;min-width:0}
+.bld-view{display:flex;flex-direction:column;gap:12px;min-width:0;position:sticky;top:16px}
+.ty-pair-stage{min-height:220px;justify-content:flex-start}
+.ty-pair-card{background:#fff;border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:10px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.ty-pair-tag{font:500 11px var(--ty-mono);letter-spacing:.06em;text-transform:uppercase;color:#8e8e8c}
+.ty-pair-h{font-size:30px;line-height:1.05;letter-spacing:-.01em;color:#101010;font-weight:600}
+.ty-pair-t{font-size:15px;line-height:1.5;color:#3a3a38;max-width:none}
+.ty-lvl{min-height:96px;font:500 22px/1.15 var(--ty-onest);color:#101010;text-align:center}
+.ty-lvl em{font-family:var(--ty-serif);font-style:italic;font-weight:400;color:#eb7540}
+.ty-lvl-p{flex-direction:column;gap:6px}
+.ty-lvl-p b{font:400 26px/1 var(--ty-serif);color:#101010}
+.ty-lvl-p span{font:14px var(--ty-onest);color:#5a5a58}
+
+/* 07 тренажёр */
+.ty-news{background:#fff;border-radius:12px;padding:24px 22px;max-width:560px;margin:0 auto;font:17px/1.55 var(--ty-onest);color:#101010;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.ty-news p{margin:0 0 .8em;max-width:none}
+.ty-news p:last-child{margin:0}
+.tg{cursor:pointer;border-radius:4px;transition:background .15s,box-shadow .15s}
+.tg:hover{background:rgba(59,110,240,.1)}
+.tg:focus-visible{outline:2px solid #3b6ef0;outline-offset:2px}
+.tg.fixed{background:rgba(52,199,89,.18);box-shadow:0 0 0 2px rgba(47,168,79,.55);cursor:default}
+.tg.nope{animation:tyshake .35s}
+@keyframes tyshake{25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+.tg{display:inline}
+.ty-game-out{font-size:15px;line-height:1.4;color:var(--dim);min-height:1.4em}
+.ty-game-out b{color:var(--ink);font-weight:400}
+#tg-n{color:var(--accent);font-size:12px}
+.game{display:flex;flex-direction:column;gap:12px}
+.game-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.game-acts{display:flex;gap:8px}
+.game-stage{padding:16px;display:block}
+.game-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.game-list li{background:var(--card);border:1px solid var(--stroke);border-left:2px solid var(--good);border-radius:10px;padding:12px 14px;font-size:15px;display:flex;flex-direction:column;gap:4px}
+.game-list li b{color:var(--ink);font-weight:400}
+.game-win{border:1px solid var(--good);border-radius:10px;padding:14px 16px;color:var(--ink)}
+
+/* текст в UI */
+.ty-ui{align-items:stretch;flex-wrap:nowrap}
+.ty-ui-card{background:#fff;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;flex:1 1 150px;min-width:0;max-width:100%}
+.ty-ui-card .cap{color:#8e8e8c}
+.ty-ui-card b{font:600 15px/1.35 var(--ty-onest);color:#101010}
+.ty-ui-card small{font:11px var(--ty-mono);color:#8e8e8c}
+.ty-cut1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ty-cut2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ty-num{display:flex;flex-direction:column;align-items:flex-end;font-variant-numeric:tabular-nums}
+
+@media (max-width:860px){.ty-classes,.ty-align{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  .sliders,.bld-grid,.ty-scale-grid{grid-template-columns:minmax(0,1fr)}
+  .bld-view{position:static}
+  .ty-classes,.ty-align{grid-template-columns:minmax(0,1fr)}
+  #ty-scale .ty-row .cap{min-width:0;width:100%}
+  .ty-news{padding:18px 16px;font-size:16px}
+  .ty-ui{flex-wrap:wrap}.ty-ui-card{flex-basis:100%}
+  .ty-plastic.is-hang{padding-left:32px}
+  .ty-plastic.is-hang p{text-indent:-32px}
+}
+@media (prefers-reduced-motion:reduce){.ty-kern,.ty-plastic,.ty-plastic .pp,.ty-plastic p,.ty-scale-prev,.tg{transition:none;animation:none}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 4 · UI</span></div>
+  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 UI-элементы</span><span>03 UI-кит</span><span>04 Концепция в веб-дизайне</span><span>05 Композиция</span><b>06 Типографика</b><span>07 Иконки</span><span>08 Адаптив</span><span>09 Цвет</span></div>
+  <h1>Типографика</h1>
+  <p class="lead"><b>Типографика — это то, как буквы выглядят на экране и как они работают вместе.</b> Разбираем шрифт по частям, настраиваем текст под чтение, собираем шкалу заголовков и шрифтовую пару, а в конце чистим текст от типографских ошибок.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#what">Зачем</a><a href="#anatomy">Анатомия шрифта</a><a href="#classes">Классы шрифтов</a><a href="#body">Наборный текст</a><a href="#hier">Иерархия и заголовки</a><a href="#pairs">Шрифтовые пары</a><a href="#micro">Микротипографика</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="what">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Зачем дизайнеру типографика</h2></div></div>
+  <p>Типографика превращает набор букв в рабочий инструмент. Она включает всё: от выбора шрифта до расстояния между строками. На сайте текст — это 80–90% содержимого, поэтому даже без картинок по одним буквам видно, сделал ли дизайнер работу.</p>
+  <div class="hier">
+    <div class="bad"><i>Текст просто вставили</i><div class="stage ty-raw"><div><p>КУРС ПО ВЕБ-ДИЗАЙНУ ОТ НУЛЯ ДО ПЕРВОГО ЗАКАЗА</p><p>Старт 3 ноября. 12 недель практики. Ты соберёшь 3 проекта в портфолио, научишься работать в Figma и Tilda, а наставник разберёт каждую домашку. В конце — защита диплома перед арт-директорами студии.</p><p>Записаться</p></div></div><p>Один кегль, капс на весь заголовок, текст выключен по ширине. Глазу не за что зацепиться.</p></div>
+    <div class="good"><i>Над текстом поработали</i><div class="stage ty-done"><div><span class="ty-tag">Старт 3 ноября · 12 недель</span><p class="ty-h">Веб-дизайн от нуля до первого заказа</p><p class="ty-t">3 проекта в портфолио, Figma и Tilda, разбор каждой домашки с наставником.</p><span class="u-btn u-primary">Записаться на курс</span></div></div><p>Заголовок, лид и тег разведены по размеру и цвету. Факты вынесены в тег, а длинный текст сокращён.</p></div>
+  </div>
+  <div class="four">
+    <div class="box"><span class="kind">Задача 1</span><b>Читабельность</b><p>Буквы легко различить, а текст читается без усталости. Отвечают кегль, интерлиньяж, длина строки и контраст.</p></div>
+    <div class="box"><span class="kind">Задача 2</span><b>Иерархия</b><p>Человек сначала видит главное, потом второстепенное. Три базовых уровня: заголовок, подзаголовок, текст.</p></div>
+    <div class="box"><span class="kind">Задача 3</span><b>Внимание</b><p>Форма текстового блока, близость и пустое место ведут взгляд по странице.</p></div>
+    <div class="box"><span class="kind">Задача 4</span><b>Характер бренда</b><p>Шрифт — «голос» бренда. Одна и та же фраза в антикве и в гротеске звучит по-разному.</p></div>
+  </div>
+  <p class="why">Главный маркер иерархии в вебе — контраст. Его создают размер, цвет, начертание, пустое пространство и группировка. Цветов для текста хватит двух основных и двух вспомогательных.</p>
+</section>
+
+<section id="anatomy">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Анатомия шрифта</h2></div></div>
+  <p>Одну и ту же букву можно нарисовать сотней способов, и мы всё равно её узнаем. Узнаём по <b>графеме</b> — характерному скелету буквы. Конкретный рисунок буквы в конкретном шрифте называется <b>глифом</b>. Чтобы говорить со шрифтом на одном языке, запомни его части.</p>
+  <div class="anat ty-anat" id="ty-anat"><svg viewBox="0 0 720 300" role="img" aria-label="Анатомия шрифта на слове Шрифт: линия прописных, линия строчных, базовая линия, нижние выносные, засечка, основной штрих, кегль">
+    <line x1="60" x2="540" data-y="cap" class="l"/>
+    <line x1="60" x2="540" data-y="x" class="l" stroke-dasharray="4 4"/>
+    <line x1="60" x2="540" data-y="base" class="l base"/>
+    <line x1="60" x2="540" data-y="desc" class="l" stroke-dasharray="4 4"/>
+    <text x="110" data-y="base" class="glyph" id="an-g">Шрифт</text>
+    <text x="552" data-y="cap" dy="4" class="lb">ПРОПИСНЫЕ</text>
+    <text x="552" data-y="x" dy="4" class="lb">СТРОЧНЫЕ (X)</text>
+    <text x="552" data-y="base" dy="4" class="lb acc">БАЗОВАЯ ЛИНИЯ</text>
+    <text x="552" data-y="desc" dy="4" class="lb">ВЫНОСНЫЕ ВНИЗ</text>
+    <line x1="30" x2="30" id="an-k" stroke="#eb7540" stroke-width="2"/>
+    <text id="an-kt" class="lb acc" text-anchor="middle">КЕГЛЬ</text>
+    <line x1="88" x2="88" id="an-x" stroke="#5b8def" stroke-width="2"/>
+    <circle r="15" class="mark" id="an-s"/><line class="ptr" id="an-sp"/><text class="lb" text-anchor="middle" id="an-st" y="292">ЗАСЕЧКА</text>
+    <circle r="15" class="mark" id="an-d"/><line class="ptr" id="an-dp"/><text class="lb" text-anchor="middle" id="an-dt" y="292">ВЫНОСНОЙ ЭЛЕМЕНТ</text>
+    <circle r="15" class="mark" id="an-m"/><line class="ptr" id="an-mp"/><text class="lb" text-anchor="middle" id="an-mt" y="22">ОСНОВНОЙ ШТРИХ</text>
+  </svg></div>
+  <div class="two">
+    <div class="box"><b>Части буквы</b><ul>
+      <li><b>Базовая линия</b> — на ней «стоят» все буквы.</li>
+      <li><b>Высота строчных (x-height)</b> — высота «х», «о», «и». Чем она больше, тем крупнее выглядит шрифт при том же кегле.</li>
+      <li><b>Основной штрих</b> — вертикальная «стойка», как в «Н» и «Т». <b>Соединительный</b> — тонкая линия между ними.</li>
+      <li><b>Контраст штрихов</b> — разница толщины основных и соединительных. У гротеска почти нет, у антиквы Didot — огромный.</li>
+      <li><b>Засечка</b> — короткий штрих на концах. Шрифты без засечек — гротески.</li>
+      <li><b>Выносные элементы</b> — части выше строчных («б», «ф») и ниже базовой линии («р», «у»).</li>
+      <li><b>Апертура</b> — просвет внутри «с», «е». Чем шире, тем лучше шрифт читается мелко.</li>
+      <li><b>Капля</b> — круглое окончание штриха у «а», «з». <b>Ухо</b> — маленький штрих сверху строчной.</li>
+    </ul></div>
+    <div class="box"><b>Размеры</b><ul>
+      <li><b>Кегль</b> — высота площадки, в которую вписан знак: от верха верхнего выносного до низа нижнего плюс технические отступы. В вебе это <code>font-size</code> в px или rem.</li>
+      <li><b>Интерлиньяж</b> — расстояние между базовыми линиями соседних строк. В CSS — <code>line-height</code>. Авто в Figma — около 120% кегля.</li>
+      <li><b>Кернинг</b> — расстояние в конкретной паре букв: «AV», «То», «Гл». Его настраивает автор шрифта.</li>
+      <li><b>Трекинг</b> — равномерная разрядка всех букв в слове или строке. В CSS — <code>letter-spacing</code>.</li>
+    </ul></div>
+  </div>
+  <div class="demo" data-states>
+    <span class="cap">Кернинг и трекинг · переключай</span>
+    <div class="seg">
+      <button type="button" data-state="default" data-desc="<b>Кернинг включён.</b> Шрифт сам сдвигает пары «AV», «To», «Гл» ближе друг к другу. Так слово выглядит цельным.">Кернинг</button>
+      <button type="button" data-state="nokern" data-desc="<b>Кернинг выключен.</b> Посмотри на «AV» и «To»: между ними появились дыры. Буквы стоят на одинаковом техническом расстоянии, а глазу кажется, что слово разваливается.">Без кернинга</button>
+      <button type="button" data-state="track" data-desc="<b>Трекинг +20%.</b> Разрядка меняет расстояние везде одинаково. Для капса и мелких подписей это помогает, для основного текста — замедляет чтение.">Трекинг +20%</button>
+      <button type="button" data-state="tight" data-desc="<b>Трекинг −5%.</b> Плотнее и напряжённее. Так часто делают в крупных заголовках: на большом кегле буквы кажутся слишком далеко друг от друга.">Трекинг −5%</button>
+    </div>
+    <div class="stage"><span class="ty-kern" data-target>AVATAR · Torvo · Глагол</span></div>
+    <output></output>
+  </div>
+  <div class="sub">
+    <h3>Гарнитура, начертание, шрифт</h3>
+    <div class="sub-b">
+      <p><b>Гарнитура</b> — семья шрифтов с общим рисунком, например Helvetica или Onest. <b>Начертание</b> — вариант внутри семьи. <b>Шрифт</b> — конкретный набор: Onest Medium 16 px. Когда говорят «фирменный шрифт бренда», обычно имеют в виду гарнитуру целиком.</p>
+      <div class="stage ty-weights">
+        <span style="font-weight:300">Light 300</span><span style="font-weight:400">Regular 400</span><span style="font-weight:500">Medium 500</span><span style="font-weight:600">SemiBold 600</span><span style="font-weight:800">Black 800</span><span style="font-family:Georgia,'Times New Roman',serif;font-style:italic">Italic</span>
+      </div>
+      <div class="three">
+        <div class="box"><span class="kind">Насыщенность</span><p>Thin, Light, Regular, Medium, SemiBold, Bold, Black. Bold — для заголовков, Regular — для чтения.</p></div>
+        <div class="box"><span class="kind">Наклон</span><p><b>Italic</b> — буквы наклонены и меняют форму, как в почерке. <b>Oblique</b> — механический наклон без изменения формы. Курсив — для цитат и логических ударений.</p></div>
+        <div class="box"><span class="kind">Ширина</span><p><b>Condensed</b> — узкое, экономит место. <b>Extended</b> — широкое, выглядит монументально.</p></div>
+      </div>
+      <p class="why">В вебе каждое начертание — отдельный файл, который грузится вместе с сайтом. Держи проект в пределах 2 гарнитур и 3–4 начертаний. Вариативный шрифт (variable font) содержит все веса в одном файле — это экономит загрузку.</p>
+    </div>
+  </div>
+</section>
+
+<section id="classes">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Классы шрифтов</h2></div></div>
+  <p>Форму букв мозг считывает раньше смысла. Поэтому у каждого класса шрифтов есть свой контекст: один уместен в банке, другой — в магазине игрушек. Сначала научись различать основные классы.</p>
+  <div class="ty-classes">
+    <div class="box"><span class="kind">Антиква</span><div class="stage ty-spec" style="font-family:Georgia,'Times New Roman',serif">Аа Шрифт</div><p>С засечками и контрастом штрихов. Пришла из римских надписей и книг Возрождения. Ассоциации: надёжность, традиция, премиальность, мода.</p></div>
+    <div class="box"><span class="kind">Гротеск</span><div class="stage ty-spec" style="font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-weight:500">Аа Шрифт</div><p>Без засечек, низкий контраст. Самый универсальный класс: интерфейсы, сервисы, техника. С него и стоит начинать.</p></div>
+    <div class="box"><span class="kind">Моноширинный</span><div class="stage ty-spec" style="font-family:ui-monospace,Menlo,Consolas,'Courier New',monospace">Аа Шрифт</div><p>Все знаки одной ширины, как на печатной машинке. Код, цифры, теги, технологичный характер. Длинный текст им читать тяжело.</p></div>
+    <div class="box"><span class="kind">Акцидентный</span><div class="stage ty-spec ty-accid">Аа Шрифт</div><p>Шрифт для заголовков и обложек: рукописные, граффити, сверхжирные, вытянутые. «Бомба» проекта — хороша в малых дозах.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Виды антиквы</h3>
+    <div class="sub-b">
+      <div class="scroll"><table>
+        <thead><tr><th>Вид</th><th>Как узнать</th><th>Примеры</th><th>Характер</th></tr></thead>
+        <tbody>
+          <tr><td>Старостильная</td><td>Мягкий контраст, наклонная ось овалов, каплевидные окончания</td><td>Garamond, Palatino</td><td>Книжная, тёплая, классическая</td></tr>
+          <tr><td>Переходная</td><td>Контраст выше, засечки чётче, ось почти вертикальная</td><td>Times New Roman, Baskerville, Georgia</td><td>Строгая, деловая, газетная</td></tr>
+          <tr><td>Новая (дидона)</td><td>Экстремальный контраст: волосные линии и толстые штрихи, вертикальная ось</td><td>Didot, Bodoni</td><td>Мода, глянец, роскошь</td></tr>
+          <tr><td>Брусковая</td><td>Толстые прямоугольные засечки, почти без контраста</td><td>Rockwell, Courier, Roboto Slab</td><td>Надёжная, индустриальная, «фундамент»</td></tr>
+        </tbody>
+      </table></div>
+      <p>Антиква давно живёт не только в книгах. На сайте премиальной стоматологии <a href="https://aventuradentalarts.com/" target="_blank" rel="noopener">aventuradentalarts.com</a> она отвечает за ощущение роскоши и доверия, а на <a href="https://wisprflow.ai/" target="_blank" rel="noopener">wisprflow.ai</a> — делает цифровой продукт человечнее. Высококонтрастную антикву в крупных заголовках посмотри на <a href="https://string-tune.fiddle.digital/" target="_blank" rel="noopener">string-tune.fiddle.digital</a>.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Виды гротеска</h3>
+    <div class="sub-b">
+      <div class="scroll"><table>
+        <thead><tr><th>Вид</th><th>Как узнать</th><th>Примеры</th><th>Характер</th></tr></thead>
+        <tbody>
+          <tr><td>Старый</td><td>XIX век, неровный ритм, немного грубый</td><td>Akzidenz-Grotesk, Franklin Gothic</td><td>Технический, плакатный</td></tr>
+          <tr><td>Неогротеск</td><td>Ровный, закрытая апертура, максимум нейтральности</td><td>Helvetica, Arial, Inter, SF Pro</td><td>Чистый, объективный, «никакой»</td></tr>
+          <tr><td>Геометрический</td><td>Буквы из круга, квадрата и треугольника</td><td>Futura, Gotham, Montserrat</td><td>Современный, модный, конструктивный</td></tr>
+          <tr><td>Гуманистический</td><td>Пропорции антиквы и почерка, открытая апертура</td><td>Gill Sans, Open Sans, Segoe UI</td><td>Живой, мягкий, дружелюбный</td></tr>
+        </tbody>
+      </table></div>
+      <p>Технологичная компания почти всегда выбирает гротеск. У <a href="https://shift5.io/" target="_blank" rel="noopener">shift5.io</a>, которые делают системы для военного и авиатранспорта, строгий гротеск поддерживает образ надёжной инженерии.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Акцидентный и наборный</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><span class="kind">Акцидентный</span><b>Чтобы заметили</b><p>Заголовки, обложки, первые экраны. Выражает характер формой самих букв. Посмотри, как это сделано на <a href="https://www.aupalevodka.com/en/" target="_blank" rel="noopener">aupalevodka.com</a> и <a href="https://www.frantoiocavalli.com/" target="_blank" rel="noopener">frantoiocavalli.com</a>.</p></div>
+        <div class="box"><span class="kind">Наборный</span><b>Чтобы прочитали</b><p>Длинные тексты, описания, интерфейс. Привычные пропорции, буквы не слипаются в мелком кегле, характер нейтральный. Лучшие примеры — медиа и блоги.</p></div>
+      </div>
+      <p class="why">Всё акцидентное — невозможно читать. Всё наборное — трудно остаться заметным. Поэтому чаще всего проект собирают из пары: выразительный шрифт для заголовков и спокойный для текста.</p>
+    </div>
+  </div>
+</section>
+
+<section id="body">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Наборный текст</h2></div></div>
+  <p>Наборный текст — самый большой объём на странице: описания, статьи, условия. Его верстка должна быть «невидимой»: человек читает смысл и не спотыкается о форму. На удобство чтения влияют семь параметров: кегль, интерлиньяж, длина строки, трекинг, начертание, выключка и деление на абзацы.</p>
+  <div class="demo" id="ty-sand">
+    <span class="cap">Песочница абзаца · настрой текст под чтение</span>
+    <div class="sliders">
+      <label>Кегль <b id="sv-f">17</b> px<input type="range" id="s-f" min="11" max="26" value="17"></label>
+      <label>Интерлиньяж <b id="sv-l">1.5</b><input type="range" id="s-l" min="100" max="220" step="5" value="150"></label>
+      <label>Длина строки <b id="sv-w">640</b> px<input type="range" id="s-w" min="200" max="1000" step="10" value="640"></label>
+      <label>Трекинг <b id="sv-t">0</b>%<input type="range" id="s-t" min="-6" max="20" value="0"></label>
+    </div>
+    <div class="ty-row"><span class="cap">Гарнитура</span><div class="seg" id="s-face"><button type="button" data-v="sans">Гротеск</button><button type="button" data-v="serif">Антиква</button><button type="button" data-v="mono">Моно</button></div></div>
+    <div class="ty-row"><span class="cap">Выключка</span><div class="seg" id="s-align"><button type="button" data-v="left">По левому</button><button type="button" data-v="center">По центру</button><button type="button" data-v="right">По правому</button><button type="button" data-v="justify">По ширине</button></div></div>
+    <div class="stage ty-sand-stage"><div class="ty-sand-txt" id="s-txt"><p>Мы читаем не по буквам, а прыжками: глаз хватает несколько слов, останавливается и прыгает дальше. В конце строки он возвращается к началу следующей. Если строка слишком длинная, глаз теряет нужную строку и перечитывает. Если слишком короткая, прыжков становится так много, что ритм ломается.</p><p>Хорошо набранный абзац никто не замечает. Человек просто дочитывает до конца и не устаёт.</p></div></div>
+    <ul class="verdict" id="s-out"></ul>
+    <div class="seg"><button type="button" data-preset="18,155,680,0,sans,left">Статья</button><button type="button" data-preset="16,150,343,0,sans,left">Телефон</button><button type="button" data-preset="12,115,1000,0,serif,justify">Как в Word</button><button type="button" data-preset="13,200,900,10,mono,center">Модный разрежённый</button></div>
+  </div>
+  <p class="cap ty-capline">Двигай ползунки или жми готовые наборы. Под абзацем — живой разбор: что мешает читать и почему. Длину строки считаем по факту, на твоём экране.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Кегль</span><p>Основной текст на сайте — 16–20 px. Подписи и мелочь — от 12 px. Меньше 16 px в поле ввода iPhone приближает страницу при касании.</p></div>
+    <div class="box"><span class="kind">Интерлиньяж</span><p>Для текста — 1.4–1.6 от кегля. Чем длиннее строка, тем больше воздуха нужно между строк. Плотный набор кажется строгим, свободный — спокойным.</p></div>
+    <div class="box"><span class="kind">Длина строки</span><p>45–75 знаков, примерно 500–700 px на десктопе. Шире — глаз теряет начало следующей строки, уже — ломается ритм.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Выключка</h3>
+    <div class="sub-b">
+      <div class="ty-align">
+        <div class="box"><span class="kind">По левому · стандарт</span><p style="text-align:left">Глаз всегда находит начало строки в одном месте. Для веба и длинных текстов это лучший вариант.</p></div>
+        <div class="box"><span class="kind">По центру</span><p style="text-align:center">Торжественно и симметрично. Подходит заголовкам и коротким подписям до трёх строк.</p></div>
+        <div class="box"><span class="kind">По правому</span><p style="text-align:right">Редко и только для коротких фраз. Глаз каждый раз ищет начало строки.</p></div>
+        <div class="box"><span class="kind">По ширине · не надо</span><p style="text-align:justify">Без ручных переносов браузер растягивает пробелы, и внутри строк появляются дыры и «реки».</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Абзацы и пластика</h3>
+    <div class="sub-b">
+      <p>Абзацы — островки внимания, по которым человек идёт через текст. Когда дизайнер управляет формой абзацев, получается <b>пластичная верстка</b>: текстовый блок сам становится частью композиции. Переключай приёмы.</p>
+      <div class="demo" data-states>
+        <span class="cap">Приёмы пластичной верстки</span>
+        <div class="seg">
+          <button type="button" data-state="default" data-desc="<b>Обычные абзацы.</b> Отбивка между абзацами примерно равна интерлиньяжу. Спокойно и читаемо.">Обычно</button>
+          <button type="button" data-state="indent" data-desc="<b>Втяжка.</b> Первая строка сдвинута вправо. Сдвиг около 20–30% ширины блока, больше — и текст рассыпается.">Втяжка</button>
+          <button type="button" data-state="hang" data-desc="<b>Вылет.</b> Первая строка выходит влево за край блока. Взгляд цепляется за неё, как за перекладину.">Вылет</button>
+          <button type="button" data-state="heads" data-desc="<b>Подзаголовки.</b> Короткий подзаголовок над каждым абзацем объясняет суть без чтения. Хорошо сочетается с втяжкой.">Подзаголовки</button>
+          <button type="button" data-state="shift" data-desc="<b>Смещение абзацев.</b> Сдвигается весь абзац, а не строка. Выглядит сложно и стильно, но требует сетки, иначе это будет похоже на ошибку.">Смещение</button>
+          <button type="button" data-state="nums" data-desc="<b>Нумерация.</b> Номера работают как навигация по большому тексту, особенно в инструкциях и манифестах.">Нумерация</button>
+        </div>
+        <div class="stage ty-plastic-stage"><div class="ty-plastic" data-target>
+          <div class="pp"><i>01</i><b>Идея</b><p>Сначала мы ищем, что сайт должен сказать. Слова и смысл важнее шрифта, сетки и цвета.</p></div>
+          <div class="pp"><i>02</i><b>Форма</b><p>Потом подбираем шрифт и ритм. Текстовый блок держит композицию так же, как фото.</p></div>
+          <div class="pp"><i>03</i><b>Проверка</b><p>В конце читаем страницу на телефоне. Если глаз спотыкается, упрощаем.</p></div>
+        </div></div>
+        <output></output>
+      </div>
+      <div class="dodont">
+        <div class="good"><i>Где пластика уместна</i><ul><li>Портфолио, студии, фестивали, медиа</li><li>Короткие тексты-манифесты</li><li>Наборный шрифт: форму даёт блок, а не буквы</li></ul></div>
+        <div class="bad"><i>Где лучше обойтись</i><ul><li>Консервативные сферы: бухгалтерия, юристы, медицина</li><li>Премиум и спокойные темы: йога, психология — им ближе статичная композиция</li><li>Акцидентный шрифт: он уже выразителен, вторая «пластика» перегрузит</li><li>Хаотичный ритм без сетки</li></ul></div>
+      </div>
+      <p class="why">Следи за правым, рваным краем текста. Слишком ровный — нет живости, слишком рваный — читать неудобно. Если одна строка торчит далеко вперёд или проваливается, поправь перенос или перефразируй.</p>
+    </div>
+  </div>
+</section>
+
+<section id="hier">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Иерархия и заголовки</h2></div></div>
+  <p>Иерархия текста — это путеводитель по странице. Основа — три уровня. <b>1 уровень</b> — заголовок экрана или блока, его видят первым. <b>2 уровень</b> — подзаголовки, например в карточках. <b>3 уровень</b> — основной текст: его замечают последним, но его больше всего, поэтому он должен быть удобным. Отдельные стили бывают у подписей, цитат и тегов.</p>
+  <p class="quote">Умножай на два. Если H1 — 64 px, сделай H2 32 px. Разница сразу видна, иерархия читается даже краем глаза.</p>
+  <p>Правило ×2 — самый простой способ получить контраст. В системах дизайна чаще используют <b>модульную шкалу</b>: берёшь базовый кегль текста и умножаешь на один коэффициент. Так все размеры связаны между собой, а не взяты «на глаз».</p>
+  <div class="demo" id="ty-scale">
+    <span class="cap">Генератор модульной шкалы</span>
+    <div class="sliders ty-one"><label>Базовый кегль текста <b id="sc-bv">16</b> px<input type="range" id="sc-b" min="12" max="20" value="16"></label></div>
+    <div class="ty-row"><span class="cap">Коэффициент</span><div class="seg" id="sc-r"><button type="button" data-v="1.125">1.125</button><button type="button" data-v="1.2">1.2</button><button type="button" data-v="1.25">1.25</button><button type="button" data-v="1.333">1.333</button><button type="button" data-v="1.5">1.5</button><button type="button" data-v="1.618">1.618</button><button type="button" data-v="2">×2</button></div></div>
+    <div class="ty-row"><span class="cap">Шрифт заголовков</span><div class="seg" id="sc-f"><button type="button" data-v="sans">Гротеск</button><button type="button" data-v="serif">Антиква</button></div><div class="seg" id="sc-d"><button type="button" data-v="desk">Десктоп</button><button type="button" data-v="mob">Телефон 375</button></div></div>
+    <div class="ty-scale-grid">
+      <div class="stage ty-scale-stage"><div class="ty-scale-prev" id="sc-prev"></div></div>
+      <div class="ty-scale-side">
+        <div class="ty-scale-list" id="sc-list"></div>
+        <ul class="verdict" id="sc-out"></ul>
+      </div>
+    </div>
+    <pre class="ty-code" id="sc-css"></pre>
+    <button class="copy" type="button" data-copy="sc-css">Скопировать стили</button>
+  </div>
+  <p class="cap ty-capline">Меняй базу и коэффициент, переключай телефон. Генератор считает H1…Caption, подбирает интерлиньяж и говорит, где шкала ломается. Готовые стили можно скопировать в Figma или CSS.</p>
+  <div class="sub">
+    <h3>Принципы заголовков</h3>
+    <div class="sub-b">
+      <ol class="steps">
+        <li><div><div class="t">Явная разница уровней</div><div class="d">H1 и H2 различаются сразу: размером (коэффициент от 1.25) и начертанием — Bold или SemiBold против Regular.</div></div></li>
+        <li><div><div class="t">Внутреннее меньше внешнего</div><div class="d">От заголовка до его текста — меньше, чем до предыдущего блока. Например, 16 px вниз и 64 px вверх. Мозг группирует то, что ближе.</div></div></li>
+        <li><div><div class="t">Плотный интерлиньяж</div><div class="d">Чем крупнее кегль, тем меньше относительный интерлиньяж. Текст — 1.4–1.6, H1 — 1.0–1.15. Иначе заголовок разваливается на отдельные строки.</div></div></li>
+        <li><div><div class="t">Не на всю ширину</div><div class="d">Длинный заголовок — не шире 2/3 контейнера, если растяжка не художественный приём. Выключка — по левому краю, по центру — для коротких фраз в 2–3 строки.</div></div></li>
+        <li><div><div class="t">Не больше двух стилей в одном заголовке</div><div class="d">Выделить слово курсивом или другим шрифтом — сильный приём. Но если поменять сразу цвет, шрифт и размер, получится хаос. Все слова стоят на одной базовой линии.</div></div></li>
+      </ol>
+      <div class="hier">
+        <div class="bad"><i>Четыре стиля в строке</i><div class="stage"><p class="ty-hx ty-mess">Мы делаем <span>сайты</span>, <em>которые</em> <u>продают</u></p></div><p>Цвет, курсив, капс и подчёркивание спорят друг с другом. Непонятно, какое слово главное.</p></div>
+        <div class="good"><i>Один акцент</i><div class="stage"><p class="ty-hx">Мы делаем сайты, которые <em>продают</em></p></div><p>Одно слово набрано курсивной антиквой. Акцент на результате, строка цельная.</p></div>
+      </div>
+      <p>Так выделяют главное в УТП: на <a href="https://s-2k.webflow.io/" target="_blank" rel="noopener">s-2k.webflow.io</a> курсивом отмечена модель автомобиля, в лукбуке <a href="https://quechua-lookbook.com/ss25/" target="_blank" rel="noopener">Quechua SS25</a> — слово «new». Если два начертания почти одинаковые, например Regular и Medium, разница выглядит как ошибка верстки.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Составные заголовки</h3>
+    <div class="sub-b">
+      <p>Составной заголовок — несколько связанных элементов: надзаголовок, заголовок, подзаголовок, тег или графика. Он позволяет держать главный заголовок коротким и крупным, а пояснения вынести рядом.</p>
+      <div class="three">
+        <div class="box"><span class="kind">Заголовок + подзаголовок</span><div class="stage ty-comp"><div><b class="ty-ch">Сайты для B2B</b><span class="ty-cs">Делаем лендинги, которые понятны инвестору за 10 секунд</span></div></div><p>Крупная короткая фраза и мелкое пояснение создают контрастную пару. Пример — <a href="https://serious.business/" target="_blank" rel="noopener">serious.business</a>.</p></div>
+        <div class="box"><span class="kind">Заголовок + тег</span><div class="stage ty-comp"><div><span class="ty-ctag">(02) Услуги</span><b class="ty-ch">Брендинг и сайты</b></div></div><p>Тег поясняет раздел и работает как маячок навигации внутри страницы.</p></div>
+        <div class="box"><span class="kind">Заголовок + графика</span><div class="stage ty-comp"><div><b class="ty-ch">Свежий <i class="ty-blob" aria-hidden="true"></i> хлеб</b><span class="ty-cs">к восьми утра</span></div></div><p>Картинка внутри строки добавляет эмоцию и разбивает тяжёлый текст. Пример — <a href="https://mew.xyz/" target="_blank" rel="noopener">mew.xyz</a>.</p></div>
+      </div>
+      <div class="note"><b>«Фантомный» стиль</b><span>Иногда в проекте есть заголовок с особым стилем, который встречается один раз: гигантское слово на первом экране или в конце страницы. Он не входит в систему стилей и работает как графика, как доминанта на постере. Такой приём хорош, если он один и поддерживает смысл всей страницы.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="pairs">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Шрифтовые пары и выбор шрифта</h2></div></div>
+  <p>Шрифтовая пара — два шрифта, которые вместе создают контраст и иерархию. Чаще всего это шрифт заголовков и шрифт текста. Но сначала проверь, нужна ли пара вообще: часто хватает разных начертаний одной гарнитуры.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Display · заголовки</span><p>Самый выразительный: акцидентная антиква, жирный геометрический гротеск, кастомный шрифт. Делает бренд узнаваемым.</p></div>
+    <div class="box"><span class="kind">Text · наборный</span><p>Нейтральный и читабельный: гуманистический гротеск или спокойная текстовая антиква.</p></div>
+    <div class="box"><span class="kind">UI · технический</span><p>Меню, кнопки, теги, цифры. Обычно тот же текстовый шрифт в Medium или капсом, иногда моноширинный.</p></div>
+  </div>
+  <div class="demo" id="ty-pair">
+    <span class="cap">Конструктор пары · собери и получи разбор</span>
+    <div class="bld-grid">
+      <div class="bld-ctrls">
+        <div class="ty-row"><span class="cap">Заголовок · шрифт</span><div class="seg" data-k="hf"><button type="button" data-v="sans">Гротеск</button><button type="button" data-v="onest">Onest</button><button type="button" data-v="serif">Антиква</button><button type="button" data-v="serifi">Антиква курсив</button><button type="button" data-v="mono">Моно</button></div></div>
+        <div class="ty-row"><span class="cap">Заголовок · насыщенность</span><div class="seg" data-k="hw"><button type="button" data-v="300">Light</button><button type="button" data-v="400">Regular</button><button type="button" data-v="600">SemiBold</button><button type="button" data-v="800">Black</button></div></div>
+        <div class="ty-row"><span class="cap">Текст · шрифт</span><div class="seg" data-k="bf"><button type="button" data-v="sans">Гротеск</button><button type="button" data-v="onest">Onest</button><button type="button" data-v="serif">Антиква</button><button type="button" data-v="mono">Моно</button></div></div>
+      </div>
+      <div class="bld-view">
+        <div class="stage ty-pair-stage"><div class="ty-pair-card" id="pr-card"><span class="ty-pair-tag">Пекарня · Арзамас</span><b class="ty-pair-h" id="pr-h">Свежий хлеб к восьми утра</b><p class="ty-pair-t" id="pr-t">Печём на закваске каждую ночь. Закажи до 22:00 — утром курьер привезёт батон, пока он ещё тёплый.</p></div></div>
+        <output id="pr-out"></output>
+        <button type="button" class="ghost" id="pr-rand">Случайная пара</button>
+      </div>
+    </div>
+  </div>
+  <p class="cap ty-capline">Выбирай шрифт и насыщенность заголовка и шрифт текста. Разбор скажет, есть ли контраст и для какого проекта подходит такая пара.</p>
+  <div class="sub">
+    <h3>Родство или контраст</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><span class="kind">На подобии</span><p>Общие пропорции и почерк. Самый безопасный вариант — одна гарнитура в разных ролях. Следующий — <b>супергарнитура</b>: одна семья, где есть и антиква, и гротеск, например IBM Plex Sans и Plex Serif.</p></div>
+        <div class="box"><span class="kind">На контрасте</span><p>Шрифты из разных классов: антиква + гротеск, акцидентный + гротеск, жирный + тонкий. Самый популярный приём, он даёт динамику. Один шрифт главный, второй — тихий.</p></div>
+      </div>
+      <p class="why">Правило: либо явное родство, либо явный контраст. Два разных гротеска с похожей шириной, высотой строчных и окончаниями выглядят как случайность.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Тип пары</th><th>Заголовки</th><th>Текст и UI</th><th>Почему работает</th></tr></thead>
+        <tbody>
+          <tr><td>Универсальная UI</td><td>Inter SemiBold</td><td>Inter Regular</td><td>Одна семья, предсказуемый ритм, удобно для компонентов</td></tr>
+          <tr><td>Редакционная</td><td>Playfair Display</td><td>Source Sans 3, Inter</td><td>Контраст формы и настроения, текст остаётся нейтральным</td></tr>
+          <tr><td>Технологичная</td><td>Manrope, Unbounded</td><td>Inter, IBM Plex Sans</td><td>Геометрия в заголовках, ровный ритм текста</td></tr>
+          <tr><td>Slab + Sans</td><td>Roboto Slab</td><td>Roboto</td><td>Брусковая даёт «фундамент», гротеск держит интерфейс</td></tr>
+        </tbody>
+      </table></div>
+      <p>Все шрифты из таблицы есть в Google Fonts с кириллицей. Перед работой всё равно проверь нужные начертания: у некоторых гарнитур кириллица есть не во всех весах.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Уровни пары</h3>
+    <div class="sub-b">
+      <div class="three">
+        <div class="box"><span class="kind">Слово</span><div class="stage ty-lvl"><span>Design<em>ai</em></span></div><p>Шрифты работают как коллаж внутри одного слова. Осторожно: если не понимаешь, зачем так сделано в референсе, не повторяй.</p></div>
+        <div class="box"><span class="kind">Предложение</span><div class="stage ty-lvl"><span>Ломаем <em>правила</em> маркетинга</span></div><p>Главное слово набрано характерным шрифтом, остальное — нейтральным. Или цитата антиквой, а вводная — гротеском.</p></div>
+        <div class="box"><span class="kind">Проект</span><div class="stage ty-lvl ty-lvl-p"><b>Заголовок</b><span>Наборный текст и кнопки</span></div><p>Пара становится системой стилей на весь сайт и частью бренда.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Как выбрать шрифт</h3>
+    <div class="sub-b">
+      <div class="four">
+        <div class="box"><span class="kind">От ассоциации</span><p>Эффект «буба — кики»: 95% людей называют округлую фигуру «буба», а острую — «кики». Круглые формы кажутся дружелюбными, острые и вытянутые — тревожными, геометричные — строгими.</p></div>
+        <div class="box"><span class="kind">От позиционирования</span><p>Что бренд обещает и чем отличается от конкурентов. Спортивный бренд про движение вперёд — динамичный плотный гротеск.</p></div>
+        <div class="box"><span class="kind">От контента</span><p>Лонгрид — максимально нейтральный текстовый шрифт. Короткое промо — можно усилить заголовок. В приложениях акцидентных шрифтов минимум.</p></div>
+        <div class="box"><span class="kind">От ограничений</span><p>Есть ли кириллица, какая лицензия, сколько весят файлы, можно ли заменить шрифт для слабовидящих.</p></div>
+      </div>
+      <ol class="steps">
+        <li><div><div class="t">Выпиши 3 прилагательных о проекте</div><div class="d">Например: быстрый, дерзкий, молодой. Если шрифт кажется медленным, он не подходит, даже если красивый.</div></div></li>
+        <li><div><div class="t">Найди точку на шрифтовой оси</div><div class="d">По горизонтали — от традиционных к современным, по вертикали — от минималистичных к акцидентным. Мастерская ваз ручной работы для массового рынка — середина между традицией и современностью, чуть ближе к акцидентным.</div></div></li>
+        <li><div><div class="t">Проверь ограничения</div><div class="d">Кириллица во всех нужных начертаниях, лицензия, максимум 2 шрифта и 3–4 начертания. Для брендбука РГГУ главным требованием была открытая лицензия, и подошла Lora.</div></div></li>
+        <li><div><div class="t">Напиши название бренда</div><div class="d">Набери его выбранным шрифтом, закрой глаза, открой и запомни первое ощущение до чтения.</div></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="micro">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Микротипографика и текст в UI</h2></div></div>
+  <p>Микротипографика — это мелочи: кавычки, тире, пробелы, переносы. По отдельности их не видно, но вместе они отличают аккуратный макет от «собранного на коленке». Заказчик может не знать правил, но почувствует, что что-то не так.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Знак</th><th>Где</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td>- дефис</td><td>Внутри слов, без пробелов</td><td>UI-кит, кто-то, веб-дизайн</td></tr>
+      <tr><td>– короткое тире</td><td>Диапазоны чисел, без пробелов</td><td>10–12 занятий, 2025–2026</td></tr>
+      <tr><td>— длинное тире</td><td>Между словами в предложении, с пробелами; перед тире — неразрывный</td><td>Дизайн — это навык</td></tr>
+      <tr><td>« » ёлочки</td><td>Основные кавычки в русском тексте</td><td>курс «Mission to Web»</td></tr>
+      <tr><td>„ “ лапки</td><td>Кавычки внутри кавычек</td><td>«Курс „Mission to Web“ стартует»</td></tr>
+      <tr><td>неразрывный пробел</td><td>Число и единица, разряды, короткий предлог и следующее слово</td><td>30 000 ₽, 18 px, в понедельник</td></tr>
+      <tr><td>… многоточие</td><td>Один знак вместо трёх точек</td><td>Загрузка…</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="box"><b>Висячие предлоги</b><p>Короткое слово в конце строки («в», «и», «на») отрывается от своего слова, и строка читается с запинкой. Лечится неразрывным пробелом: в Figma — Option + Space на Mac, в HTML — <code>&amp;nbsp;</code>.</p></div>
+    <div class="box"><b>Вдовы и сироты</b><p>Вдова — одно короткое слово на последней строке абзаца. Сирота — строка, оторванная от абзаца на другую колонку или страницу. В заголовке вдова особенно заметна.</p></div>
+  </div>
+  <div class="note"><b>Приём перефразировки</b><span>Если абзац заканчивается одиноким словом или заголовок ломается некрасиво, не ужимай трекинг и не меняй ширину блока. Перефразируй: замени слово на короче, переставь части, убери лишнее. «Мы поможем вам создать сайт вашей мечты» → «Сделаем сайт мечты». Текст становится лучше, а верстка — ровнее. В вебе ещё помогает CSS <code>text-wrap: balance</code> для заголовков.</span></div>
+
+  <div class="game" id="ty-game">
+    <div class="game-top"><span class="cap" id="tg-n">Исправлено 0 из 6</span><div class="game-acts"><button type="button" class="ghost" id="tg-all">Показать все</button><button type="button" class="ghost" id="tg-reset">Заново</button></div></div>
+    <div class="stage game-stage"><div class="ty-news" id="tg-text"></div></div>
+    <output class="ty-game-out" id="tg-out" aria-live="polite"></output>
+    <ol class="game-list" id="tg-list"></ol>
+  </div>
+  <p class="cap ty-capline">Тренажёр: в анонсе 6 типографских ошибок. Нажми на ошибку — она исправится, а ниже появится объяснение. Осторожно: кое-что только выглядит подозрительно, а на самом деле набрано верно.</p>
+
+  <div class="sub">
+    <h3>Текст в интерфейсе</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><b>Минимальные размеры</b><ul><li>Основной текст на телефоне — от 16 px.</li><li>Подписи, теги, даты — от 12 px.</li><li>Текст в полях ввода — 16 px, иначе iOS приблизит страницу при касании.</li></ul></div>
+        <div class="box"><b>Контраст по WCAG</b><ul><li>Обычный текст — контраст с фоном не ниже 4.5:1.</li><li>Крупный (от 24 px или от 18.7 px жирным) — от 3:1.</li><li>Текст на фото — только с подложкой или затемнением.</li></ul></div>
+      </div>
+      <p>В интерфейсе текст приходит из базы данных, и дизайнер не знает его длину заранее. Поэтому сразу рисуй, что будет с длинным именем, ценой в 7 знаков или названием на три строки.</p>
+      <div class="stage ty-ui">
+        <div class="ty-ui-card"><span class="cap">Обрезка в одну строку</span><b class="ty-cut1">Константин Константинопольский-Задунайский</b><small>text-overflow: ellipsis</small></div>
+        <div class="ty-ui-card"><span class="cap">Две строки и многоточие</span><b class="ty-cut2">Кроссовки беговые мужские с амортизацией и сетчатым верхом, серия 2026</b><small>line-clamp: 2</small></div>
+        <div class="ty-ui-card"><span class="cap">Цифры в столбик</span><b class="ty-num"><span>1 290 ₽</span><span>18 990 ₽</span><span>990 ₽</span></b><small>tabular-nums: цифры одной ширины</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Типографика вместе с нейронкой</h2></div></div>
+  <p>Нейронка не видит шрифт так, как ты, но хорошо проверяет системы и правила: считает шкалу, находит дефисы вместо тире, напоминает про кириллицу. Используй её как придирчивого редактора, а выбор шрифта оставь себе.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Проект, аудитория, 3 прилагательных о характере и где будут читать.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не выдаёт готовую пару.</div>
+    <div><i>Правило 3</i><b>Проверяй глазами</b>Название шрифта от нейронки ещё ничего не значит. Набери текст и посмотри сам.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Направление</span><b>Какой класс шрифта нужен проекту</b>
+<pre id="tp1">Я делаю сайт для <em>[что за проект и для кого]</em>. Характер бренда в 3 словах: <em>[прилагательные]</em>. Основной контент: <em>[лонгриды / короткое промо / интерфейс]</em>.
+Помоги мне выбрать направление для шрифтовой пары: какие классы шрифтов подходят и почему, а какие точно нет.
+Не называй сразу конкретные шрифты. Задавай вопросы по одному и жди моего ответа. В конце напомни, что проверить: кириллица, лицензия, количество начертаний.</pre>
+      <button class="copy" type="button" data-copy="tp1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь на вопросы, сам находишь 3–5 шрифтов в Google Fonts или Paratype и набираешь ими свой заголовок.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Шкала</span><b>Проверка текстовых стилей</b>
+<pre id="tp2">Вот текстовые стили моего макета: <em>[название стиля, кегль, интерлиньяж, насыщенность, трекинг — для десктопа и телефона]</em>.
+Проверь: какой коэффициент шкалы у меня получается, где соседние уровни слишком похожи, где интерлиньяж не подходит размеру, что не поместится на экране 375 px.
+По каждому пункту: ок или проблема. Для проблемы задай мне вопрос, как я хочу её решить, и не переписывай всю шкалу за меня.</pre>
+      <button class="copy" type="button" data-copy="tp2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь стили в Figma и решаешь, с какими замечаниями согласен.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Вычитка</span><b>Микротипографика в текстах</b>
+<pre id="tp3">Вот тексты с моего макета: <em>[вставь тексты]</em>.
+Найди типографские ошибки: дефис вместо тире, кавычки не «ёлочки», диапазоны без короткого тире, числа и единицы без неразрывного пробела, три точки вместо многоточия.
+Выдай списком: где ошибка и как правильно. Если фраза слишком длинная для заголовка, задай мне вопрос, как её сократить, но не сокращай сам.</pre>
+      <button class="copy" type="button" data-copy="tp3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> исправляешь знаки в макете и сам перефразируешь длинные заголовки.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Типосистема для своего лендинга</b><p>Подбери шрифтовую пару для своего проекта и объясни выбор тремя прилагательными. В Figma собери текстовые стили по модульной шкале: H1, H2, H3, Body, Caption и стиль кнопок — отдельно для десктопа и для телефона 375 px. Сверстай этими стилями первый экран и один блок с наборным текстом. Сдай фрейм со стилями, оба экрана и строку: какой коэффициент шкалы ты выбрал и почему.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>Не больше 2 гарнитур и 4 начертаний, у всех есть кириллица</span></label>
+    <label><input type="checkbox"><span>Стили связаны одним коэффициентом, соседние уровни явно различаются</span></label>
+    <label><input type="checkbox"><span>Основной текст 16–20 px, интерлиньяж 1.4–1.6, строка 45–75 знаков</span></label>
+    <label><input type="checkbox"><span>У заголовков интерлиньяж 1.0–1.2, отступ до своего текста меньше, чем до прошлого блока</span></label>
+    <label><input type="checkbox"><span>Выключка по левому краю, нет текста по ширине</span></label>
+    <label><input type="checkbox"><span>Тире, кавычки и неразрывные пробелы на месте, нет висячих предлогов и вдов</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Иконки: стили, сетка и как собрать набор, который выглядит как одна семья.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 4 · Типографика</footer>
+
+</div>
+<script type="application/json" id="tg-data">[
+"<p>",
+"Набор на курс ",
+{"t":"\"Mission to Web\"","f":"«Mission to&nbsp;Web»","h":"Прямые кавычки вместо «ёлочек»","e":"Прямые кавычки \"…\" — знак дюйма с клавиатуры. В русском тексте основные кавычки — «ёлочки», а внутри них — „лапки“."},
+" открыт. Первое занятие пройдёт ",
+{"t":"в<br>","f":"<br>в&nbsp;","h":"Висячий предлог «в»","e":"Предлог остался в конце строки и оторвался от слова «понедельник». Ставь неразрывный пробел после коротких предлогов и союзов."},
+"понедельник, а за 12 недель будет ",
+{"t":"10-12","f":"10–12","h":"Дефис в диапазоне","e":"Диапазон чисел пишут через короткое тире без пробелов: 10–12. Дефис — только внутри слов."},
+" живых разборов.</p><p>",
+{"t":"Дизайн - это","f":"Дизайн&nbsp;— это","h":"Дефис вместо тире","e":"Между словами в предложении ставят длинное тире с пробелами. Пробел перед тире — неразрывный, чтобы тире не перескочило в начало строки."},
+" навык, а не талант. ",
+{"t":"«Пиши, сокращай»","ok":1,"e":"Тут всё верно: русские кавычки-«ёлочки»."},
+"&nbsp;— главное правило для текстов на&nbsp;кнопках, а&nbsp;",
+{"t":"UI-кит","ok":1,"e":"Тут всё верно: дефис внутри составного слова пишется без пробелов."},
+"&nbsp;— главный инструмент. Минимальный кегль текста&nbsp;— ",
+{"t":"16&nbsp;px","ok":1,"e":"Тут всё верно: число и единица связаны неразрывным пробелом."},
+".</p><p>Стоимость курса&nbsp;— ",
+{"t":"30<br>000 ₽","f":"<br>30&nbsp;000&nbsp;₽","h":"Число разорвано на две строки","e":"Разряды числа и знак валюты связывают неразрывными пробелами. Иначе «30» остаётся на одной строке, а «000 ₽» уезжает на другую."},
+". Через три месяца у&nbsp;тебя будет сайт, который не&nbsp;стыдно ",
+{"t":"показать<br>всем.","f":"показать.","h":"Вдова в конце абзаца","e":"На последней строке осталось одно короткое слово «всем». Сработал приём перефразировки: лишнее слово убрали, и абзац закончился ровно."},
+"</p>"
+]</script>
+<script type="application/json" id="quiz-data">[
+{"p":"Чем кернинг отличается от трекинга?","o":["Кернинг — расстояние в конкретной паре букв, трекинг — равномерная разрядка всех букв","Кернинг — расстояние между строками, трекинг — между словами","Это одно и то же, просто разные названия в Figma и CSS"],"a":0,"e":"Кернинг настраивает пары вроде «AV» и «То», трекинг (letter-spacing) меняет расстояние везде одинаково."},
+{"p":"Какая длина строки удобнее всего для основного текста?","o":["20–30 знаков","45–75 знаков","120–150 знаков, чтобы меньше прокручивать"],"a":1,"e":"При 45–75 знаках глаз легко находит начало следующей строки и не сбивается с ритма."},
+{"p":"Основной текст — 16 px. Какой интерлиньяж ему подойдёт?","o":["16 px (100%)","24 px (150%)","40 px (250%)"],"a":1,"e":"Для текста — 1.4–1.6 от кегля. 100% слепляет строки, 250% разваливает абзац."},
+{"p":"Почему в вебе не стоит выключать текст по ширине?","o":["Браузер не поддерживает такую выключку","Без ручных переносов между словами появляются дыры и «реки»","Так текст выглядит слишком строго"],"a":1,"e":"Браузер растягивает пробелы, чтобы заполнить строку, и ритм чтения ломается. Стандарт для веба — по левому краю."},
+{"p":"Ты подобрал два разных гротеска с похожей шириной и высотой строчных. Что не так?","o":["Всё хорошо, это пара на подобии","Нет ни явного родства, ни явного контраста — выглядит как случайность","Гротески вообще нельзя сочетать"],"a":1,"e":"Либо одна гарнитура (супергарнитура), либо явный контраст классов. Середина выглядит как ошибка."},
+{"p":"Как правильно написать диапазон?","o":["10-12 занятий","10 — 12 занятий","10–12 занятий"],"a":2,"e":"Для диапазонов чисел — короткое тире без пробелов. Длинное тире с пробелами — между словами в предложении."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Типографика» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const FACES = {
+    sans: '-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    onest: '"Onest",-apple-system,Arial,sans-serif',
+    serif: 'Georgia,"Times New Roman",Times,serif',
+    serifi: 'Georgia,"Times New Roman",Times,serif',
+    mono: 'ui-monospace,Menlo,Consolas,"Courier New",monospace'
+  };
+  const li = (cls, html) => '<li class="' + cls + '"><span>' + html + '</span></li>';
+  function segPick(seg, val) { $$('button', seg).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === String(val)))); }
+
+  // --- 0. Анатомия: линии по реальным метрикам шрифта ---
+  const an = $('#ty-anat');
+  if (an) {
+    const set = (el, a) => Object.entries(a).forEach(([k, v]) => el.setAttribute(k, Math.round(v)));
+    function lay() {
+      const g = $('#an-g'), fs = 140, x0 = 110, base = 200;
+      const cx = document.createElement('canvas').getContext('2d');
+      cx.font = fs + 'px ' + FACES.serif;
+      const m = t => cx.measureText(t);
+      const cap = m('Ш').actualBoundingBoxAscent || fs * .68, xh = m('и').actualBoundingBoxAscent || fs * .46, de = m('р').actualBoundingBoxDescent || fs * .22;
+      const Y = { cap: base - cap, x: base - xh, base, desc: base + de };
+      $$('[data-y]', an).forEach(el => { const y = Y[el.dataset.y]; if (el.tagName === 'line') { el.setAttribute('y1', y); el.setAttribute('y2', y); } else el.setAttribute('y', y); });
+      const wSh = m('Ш').width, wR = m('р').width;
+      set($('#an-k'), { y1: base - fs * .8, y2: base + fs * .22 });
+      const kt = $('#an-kt'); set(kt, { x: 20, y: base - fs * .3 }); kt.setAttribute('transform', 'rotate(-90 20 ' + Math.round(base - fs * .3) + ')');
+      set($('#an-x'), { y1: Y.x, y2: base });
+      const sxs = x0 + fs * .07; set($('#an-s'), { cx: sxs, cy: base - 3 }); set($('#an-sp'), { x1: sxs, x2: sxs, y1: base + 12, y2: 276 }); set($('#an-st'), { x: sxs });
+      const dx = x0 + wSh + wR * .2;
+      set($('#an-d'), { cx: dx, cy: base + de * .55 }); set($('#an-dp'), { x1: dx, x2: dx, y1: base + de * .55 + 15, y2: 276 }); set($('#an-dt'), { x: dx });
+      const sx = x0 + fs * .13, sy = base - cap * .5;
+      set($('#an-m'), { cx: sx, cy: sy }); set($('#an-mp'), { x1: sx + 6, x2: 230, y1: sy - 14, y2: 30 }); set($('#an-mt'), { x: 260 });
+      g.setAttribute('x', x0);
+    }
+    lay();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(lay);
+  }
+
+  // --- 1. Песочница абзаца ---
+  const sand = $('#ty-sand');
+  if (sand) {
+    const F = $('#s-f'), L = $('#s-l'), W = $('#s-w'), T = $('#s-t'), txt = $('#s-txt'), out = $('#s-out');
+    const st = { face: 'sans', align: 'left' };
+    const cv = document.createElement('canvas').getContext('2d');
+    const sample = txt.textContent.replace(/\s+/g, ' ').trim();
+    function upd() {
+      const f = +F.value, l = +L.value / 100, w = +W.value, t = +T.value;
+      $('#sv-f').textContent = f; $('#sv-l').textContent = l.toFixed(2).replace(/0$/, ''); $('#sv-w').textContent = w; $('#sv-t').textContent = (t > 0 ? '+' : '') + t;
+      Object.assign(txt.style, { fontSize: f + 'px', lineHeight: String(l), maxWidth: w + 'px', letterSpacing: (t / 100) + 'em', fontFamily: FACES[st.face], textAlign: st.align });
+      segPick($('#s-face'), st.face); segPick($('#s-align'), st.align);
+      const real = Math.round(txt.getBoundingClientRect().width);
+      cv.font = f + 'px ' + FACES[st.face];
+      const avg = cv.measureText(sample).width / sample.length + f * t / 100;
+      const cpl = Math.round(real / avg);
+      const it = [];
+      if (f < 14) it.push(li('bad', '<b>Кегль ' + f + ' px — мелко.</b> Для основного текста на сайте бери 16–20 px. Такой размер подходит только подписям.'));
+      else if (f < 16) it.push(li('mid', '<b>Кегль ' + f + ' px</b> — нормально для интерфейса и подписей, для статьи маловато.'));
+      else if (f <= 21) it.push(li('ok', '<b>Кегль ' + f + ' px</b> — удобный размер для чтения с экрана.'));
+      else it.push(li('mid', '<b>Кегль ' + f + ' px</b> — это уже лид или подзаголовок. Длинный текст таким размером читать тяжело: в строку помещается мало слов.'));
+      if (l < 1.25) it.push(li('bad', '<b>Интерлиньяж ' + l.toFixed(2) + ' — строки слипаются.</b> Выносные элементы почти касаются друг друга, глаз путает строки. Нужно 1.4–1.6.'));
+      else if (l < 1.38) it.push(li('mid', '<b>Интерлиньяж ' + l.toFixed(2) + '</b> — плотно. Сойдёт для коротких подписей и карточек, для абзаца добавь воздуха.'));
+      else if (l <= 1.7) it.push(li('ok', '<b>Интерлиньяж ' + l.toFixed(2) + '</b> — в норме для основного текста.'));
+      else it.push(li('bad', '<b>Интерлиньяж ' + l.toFixed(2) + ' — абзац распадается на отдельные строки.</b> Между строками больше места, чем между абзацами.'));
+      const wnote = real < w - 4 ? ' На твоём экране блок сузился до ' + real + ' px.' : '';
+      if (cpl < 35) it.push(li('bad', '<b>Знаков в строке: ≈' + cpl + ' — коротко.</b> Слишком много переносов, ритм рвётся.' + wnote));
+      else if (cpl < 45) it.push(li('mid', '<b>Знаков в строке: ≈' + cpl + '.</b> Нормально для телефона, на десктопе можно шире.' + wnote));
+      else if (cpl <= 75) it.push(li('ok', '<b>Знаков в строке: ≈' + cpl + '</b> — идеальная длина: глаз легко находит следующую строку.' + wnote));
+      else if (cpl <= 90) it.push(li('mid', '<b>Знаков в строке: ≈' + cpl + ' — длинновато.</b> ' + (l < 1.5 ? 'При такой длине увеличь интерлиньяж до 1.5–1.6 или сузь блок.' : 'Интерлиньяж выручает, но лучше сузить блок до 45–75 знаков.') + wnote));
+      else it.push(li('bad', '<b>Знаков в строке: ≈' + cpl + ' — слишком длинно.</b> Глаз теряет начало следующей строки и перечитывает. Сузь блок до 500–700 px.' + wnote));
+      if (t < -2) it.push(li('bad', '<b>Трекинг ' + t + '% — буквы слипаются.</b> Сжимать можно крупные заголовки, а не текст.'));
+      else if (t > 3) it.push(li(t > 8 ? 'bad' : 'mid', '<b>Трекинг +' + t + '% — разрежённый текст читается медленнее.</b> Разрядку используют в капсе и мелких подписях, а в абзаце оставь 0.'));
+      else it.push(li('ok', '<b>Трекинг ' + (t > 0 ? '+' : '') + t + '%</b> — для текста почти всегда нужен 0, и это он.'));
+      if (st.align === 'justify') it.push(li('bad', '<b>Выключка по ширине.</b> Браузер растягивает пробелы, и в строках появляются дыры. Особенно заметно на узких блоках.'));
+      else if (st.align === 'center') it.push(li('mid', '<b>Выключка по центру.</b> Каждая строка начинается в новом месте — для двух абзацев это уже утомительно.'));
+      else if (st.align === 'right') it.push(li('bad', '<b>Выключка по правому.</b> Для длинного текста — худший вариант: глаз каждый раз ищет начало строки.'));
+      else it.push(li('ok', '<b>Выключка по левому</b> — стандарт для веба.'));
+      if (st.face === 'mono') it.push(li('mid', '<b>Моноширинный шрифт</b> в длинном тексте читается тяжелее: узкие и широкие буквы занимают одно место. Оставь его для цифр, тегов и кода.'));
+      if (st.face === 'serif' && f < 15) it.push(li('mid', '<b>Антиква в мелком кегле</b> теряет тонкие штрихи на обычных экранах. Для неё лучше от 17 px.'));
+      out.innerHTML = it.join('');
+    }
+    [F, L, W, T].forEach(i => i.addEventListener('input', upd));
+    $$('#s-face button').forEach(b => b.addEventListener('click', () => { st.face = b.dataset.v; upd(); }));
+    $$('#s-align button').forEach(b => b.addEventListener('click', () => { st.align = b.dataset.v; upd(); }));
+    $$('[data-preset]', sand).forEach(b => b.addEventListener('click', () => {
+      const p = b.dataset.preset.split(','); F.value = p[0]; L.value = p[1]; W.value = p[2]; T.value = p[3]; st.face = p[4]; st.align = p[5]; upd();
+    }));
+    window.addEventListener('resize', upd);
+    upd();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(upd);
+  }
+
+  // --- 2. Генератор модульной шкалы ---
+  const sc = $('#ty-scale');
+  if (sc) {
+    const B = $('#sc-b'), prev = $('#sc-prev'), list = $('#sc-list'), out = $('#sc-out'), css = $('#sc-css');
+    const st = { r: 1.25, f: 'sans', d: 'desk' };
+    const names = { 1.125: 'большая секунда', 1.2: 'малая терция', 1.25: 'большая терция', 1.333: 'кварта', 1.5: 'квинта', 1.618: 'золотое сечение', 2: 'правило ×2' };
+    function lh(px) { return px >= 40 ? 1.1 : px >= 28 ? 1.15 : px >= 20 ? 1.3 : px >= 15 ? 1.5 : 1.4; }
+    function upd() {
+      const b = +B.value, r = st.r; $('#sc-bv').textContent = b;
+      segPick($('#sc-r'), r); segPick($('#sc-f'), st.f); segPick($('#sc-d'), st.d);
+      const lv = [
+        ['H1', b * r ** 4, 600], ['H2', b * r ** 3, 600], ['H3', b * r ** 2, 600], ['H4', b * r, 600], ['Body', b, 400], ['Caption', b / r, 400]
+      ].map(([n, px, w]) => ({ n, px: Math.round(px), w, lh: lh(Math.round(px)) }));
+      const hf = st.f === 'serif' ? FACES.serif : FACES.onest;
+      const hw = st.f === 'serif' ? 400 : 600;
+      const txt = { H1: 'Типографика', H2: 'Шкала шрифтов', H3: 'Один коэффициент', H4: 'Связанные размеры', Body: 'Каждый следующий размер — предыдущий, умноженный на коэффициент. Так стили связаны между собой.', Caption: 'Подпись к рисунку · 2 минуты' };
+      prev.style.maxWidth = st.d === 'mob' ? '335px' : '100%';
+      prev.innerHTML = lv.map(x => {
+        const h = x.n[0] === 'H';
+        return '<span class="' + (x.n === 'Caption' ? 'c' : h ? 'hd' : '') + '" style="font-size:' + x.px + 'px;line-height:' + x.lh + ';font-family:' + (h ? hf : FACES.onest) + ';font-weight:' + (h ? hw : 400) + ';letter-spacing:' + (x.px >= 40 ? '-0.02em' : '0') + ';margin-bottom:' + (h ? Math.round(x.px * .35) : 10) + 'px">' + txt[x.n] + '</span>';
+      }).join('');
+      list.innerHTML = lv.map(x => '<div><span>' + x.n + '</span><b>' + x.px + ' px / ' + Math.round(x.px * x.lh) + ' px</b><i>lh ' + x.lh + '</i></div>').join('');
+      css.textContent = ':root {\n  /* шкала ' + r + ' (' + names[r] + '), база ' + b + ' px */\n' + lv.map(x => '  --fs-' + x.n.toLowerCase() + ': ' + (x.px / 16).toFixed(3).replace(/\.?0+$/, '') + 'rem; /* ' + x.px + 'px, line-height ' + x.lh + ' */').join('\n') + '\n}';
+      const it = [], h1 = lv[0].px, cap = lv[5].px;
+      if (r < 1.2) it.push(li('mid', '<b>' + r + ' — ' + names[r] + '.</b> Соседние уровни почти не отличаются: H4 и текст сливаются. Подходит плотным интерфейсам и дашбордам, где 3–4 уровня.'));
+      else if (r <= 1.333) it.push(li('ok', '<b>' + r + ' — ' + names[r] + '.</b> Спокойная шкала для сервисов, интерфейсов и сайтов, где много текста.'));
+      else if (r < 2) it.push(li('ok', '<b>' + r + ' — ' + names[r] + '.</b> Выразительная шкала для лендингов и промо: заголовки работают как графика.'));
+      else it.push(li('mid', '<b>×2 — максимум контраста.</b> Отлично для пары H1 и H2, но если умножать на 2 всю шкалу, H1 быстро улетает в сотни пикселей. Используй ×2 точечно, а шкалу строй на 1.25–1.5.'));
+      if (st.d === 'mob') {
+        if (h1 > 48) it.push(li('bad', '<b>H1 ' + h1 + ' px на экране 375 px — слишком крупно.</b> В строку влезет одно-два слова. Для телефона возьми коэффициент поменьше: 1.2–1.25, и H1 будет 32–40 px.'));
+        else it.push(li('ok', '<b>H1 ' + h1 + ' px</b> нормально помещается на телефоне.'));
+      } else if (h1 > 120) it.push(li('bad', '<b>H1 ' + h1 + ' px</b> — уже «фантомный» стиль, а не системный заголовок. Для мобильной версии обязательно своя шкала поменьше.'));
+      else if (h1 > 72) it.push(li('mid', '<b>H1 ' + h1 + ' px</b> — эффектно на десктопе. Проверь режим «Телефон 375»: для мобильной версии нужна шкала поменьше.'));
+      if (cap < 12) it.push(li('bad', '<b>Caption ' + cap + ' px — мельче 12 px</b> читать неудобно. Возьми подпись не по шкале, а фиксированно 12–13 px, или подними базу.'));
+      if (b < 16) it.push(li('mid', '<b>База ' + b + ' px.</b> Для основного текста на сайте лучше 16–18 px. 14–15 px — норма для плотного интерфейса.'));
+      else if (b > 18) it.push(li('mid', '<b>База ' + b + ' px</b> — крупный текст для лонгридов и медиа. Для интерфейса много.'));
+      it.push(li('ok', 'Интерлиньяж уменьшается с ростом кегля: у текста 1.5, у H1 — ' + lv[0].lh + '. Так крупные строки держатся вместе.'));
+      out.innerHTML = it.join('');
+    }
+    B.addEventListener('input', upd);
+    $$('#sc-r button').forEach(x => x.addEventListener('click', () => { st.r = +x.dataset.v; upd(); }));
+    $$('#sc-f button').forEach(x => x.addEventListener('click', () => { st.f = x.dataset.v; upd(); }));
+    $$('#sc-d button').forEach(x => x.addEventListener('click', () => { st.d = x.dataset.v; upd(); }));
+    upd();
+  }
+
+  // --- 3. Конструктор шрифтовой пары ---
+  const pr = $('#ty-pair');
+  if (pr) {
+    const H = $('#pr-h'), T = $('#pr-t'), out = $('#pr-out');
+    const st = { hf: 'serif', hw: '400', bf: 'sans' };
+    const cls = { sans: 'sans', onest: 'sans', serif: 'serif', serifi: 'serif', mono: 'mono' };
+    const nm = { sans: 'системный гротеск', onest: 'Onest', serif: 'антиква', serifi: 'курсивная антиква', mono: 'моноширинный' };
+    function verdict() {
+      const { hf, bf } = st, hw = +st.hw, hc = cls[hf], bc = cls[bf];
+      const same = (hf === bf) || (hf === 'serifi' && bf === 'serif');
+      if (bf === 'mono') return '<span class="warn">Моноширинный шрифт для наборного текста — тяжело читать абзацы.</span> Оставь моно для тегов, цифр и подписей, а текст набери гротеском.';
+      if (same && hf !== 'serifi' && hw < 600) return '<span class="warn">Похожи, но не одинаковы.</span> Один шрифт и почти одна насыщенность: заголовок не отделяется от текста. Дай заголовку SemiBold или Black — и это станет самой надёжной парой «одна гарнитура, разные роли».';
+      if (same) return '<span class="okv">Одна гарнитура, разные роли.</span> Самый безопасный вариант: ' + (hf === 'serifi' ? 'курсив и прямое начертание одной антиквы дают контраст без второго шрифта.' : 'контраст делает насыщенность. Так устроены интерфейсы на Inter или SF Pro.');
+      if (hc === bc) return '<span class="warn">Разные гарнитуры одного класса.</span> ' + nm[hf] + ' и ' + nm[bf] + ' — оба гротески с похожими пропорциями. Разница слишком мала, чтобы быть приёмом, и слишком заметна, чтобы не мешать. Либо одна гарнитура, либо явный контраст классов.';
+      if (hc === 'mono') return '<span class="okv">Моно + ' + nm[bf] + '.</span> Технологичный характер: IT-продукты, студии, сервисы. Держи заголовок коротким — моноширинный шрифт быстро становится широким.' + (hw >= 800 ? ' Black в моно выглядит тяжело, попробуй Regular.' : '');
+      if (hc === 'serif' && bc === 'sans') return '<span class="okv">Антиква + гротеск — классическая контрастная пара.</span> Заголовок даёт характер и премиальность, гротеск держит чтение. Так выглядят редакционные сайты, бутики, рестораны.' + (hw >= 800 ? ' <span class="warn">Но жирная антиква теряет изящество — для неё лучше Regular.</span>' : '');
+      if (hc === 'sans' && bc === 'serif') return '<span class="okv">Гротеск + антиква в тексте.</span> Подходит лонгридам и медиа: строгий заголовок и «книжный» текст. Текст в антикве набирай от 17 px.' + (hw < 600 ? ' <span class="warn">Тонкий гротеск рядом с антиквой теряется — дай заголовку SemiBold или Black.</span>' : '');
+      return 'Необычное сочетание. Проверь, что один шрифт главный, а второй тихий.';
+    }
+    function upd() {
+      H.style.fontFamily = FACES[st.hf]; H.style.fontStyle = st.hf === 'serifi' ? 'italic' : 'normal'; H.style.fontWeight = st.hw;
+      H.style.letterSpacing = st.hf === 'mono' ? '-.03em' : (+st.hw >= 600 ? '-.02em' : '0');
+      T.style.fontFamily = FACES[st.bf]; T.style.fontSize = st.bf === 'serif' ? '16px' : '15px';
+      $$('.seg', pr).forEach(s => segPick(s, st[s.dataset.k]));
+      out.innerHTML = '<b>Пара:</b> заголовок — ' + nm[st.hf] + ' ' + ({ 300: 'Light', 400: 'Regular', 600: 'SemiBold', 800: 'Black' })[st.hw] + ', текст — ' + nm[st.bf] + '. ' + verdict();
+    }
+    $$('.seg', pr).forEach(s => $$('button', s).forEach(b => b.addEventListener('click', () => { st[s.dataset.k] = b.dataset.v; upd(); })));
+    $('#pr-rand').addEventListener('click', () => {
+      const pick = a => a[Math.floor(Math.random() * a.length)];
+      st.hf = pick(['sans', 'onest', 'serif', 'serifi', 'mono']); st.hw = pick(['300', '400', '600', '800']); st.bf = pick(['sans', 'onest', 'serif', 'mono']); upd();
+    });
+    upd();
+  }
+
+  // --- 4. Тренажёр микротипографики ---
+  const game = $('#ty-game'), dataEl = $('#tg-data');
+  if (game && dataEl) {
+    const data = JSON.parse(dataEl.textContent);
+    const box = $('#tg-text'), list = $('#tg-list'), n = $('#tg-n'), out = $('#tg-out');
+    const bugs = data.filter(x => typeof x === 'object' && x.f).length;
+    let done = 0;
+    function render() {
+      done = 0; list.innerHTML = ''; out.textContent = '';
+      let html = '', i = 0;
+      data.forEach(x => {
+        if (typeof x === 'string') { html += x; return; }
+        html += '<span class="tg" role="button" tabindex="0" data-i="' + (i++) + '">' + x.t + '</span>';
+      });
+      box.innerHTML = html;
+      const toks = data.filter(x => typeof x === 'object');
+      $$('.tg', box).forEach(el => {
+        const x = toks[+el.dataset.i];
+        const act = () => {
+          if (el.classList.contains('fixed')) return;
+          if (x.ok) {
+            out.innerHTML = '<b>Мимо.</b> ' + x.e;
+            el.classList.remove('nope'); void el.offsetWidth; el.classList.add('nope');
+            return;
+          }
+          fix(el, x);
+          out.innerHTML = '<b>Исправлено: ' + x.h.toLowerCase() + '.</b>';
+        };
+        el.addEventListener('click', act);
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); act(); } });
+      });
+      count();
+    }
+    function fix(el, x) {
+      el.innerHTML = x.f; el.classList.add('fixed'); el.removeAttribute('tabindex'); el.setAttribute('aria-disabled', 'true');
+      done++;
+      const item = document.createElement('li'); item.innerHTML = '<b>' + x.h + '</b>' + x.e; list.appendChild(item);
+      count();
+    }
+    function count() {
+      n.textContent = 'Исправлено ' + done + ' из ' + bugs;
+      const w = $('.game-win', game); if (w) w.remove();
+      if (done === bugs) {
+        const d = document.createElement('div'); d.className = 'game-win';
+        d.textContent = 'Все 6 ошибок исправлены. Перечитай анонс: он стал ровнее, хотя ни одно слово по смыслу не изменилось.';
+        list.after(d);
+      }
+    }
+    $('#tg-all').addEventListener('click', () => {
+      const toks = data.filter(x => typeof x === 'object');
+      $$('.tg', box).forEach(el => { const x = toks[+el.dataset.i]; if (x.f && !el.classList.contains('fixed')) fix(el, x); });
+      out.textContent = '';
+    });
+    $('#tg-reset').addEventListener('click', render);
+    render();
+  }
+})();
+
+</script>
+</body></html>

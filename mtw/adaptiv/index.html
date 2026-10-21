@@ -1,0 +1,1304 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Адаптив</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив только для методички «Адаптив» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+button.ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.bld-row{display:flex;flex-direction:column;gap:6px;min-width:0}
+.demo .warn{color:var(--bad)}
+.demo .okv{color:var(--good)}
+
+/* общие: ползунок, вердикт, инфо */
+.ad-range{display:block;font-size:14px;color:var(--dim)}
+.ad-range b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.ad-range input{display:block;width:100%;margin:8px 0 0;accent-color:var(--accent)}
+.sliders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+.sliders label{display:block;font-size:14px;color:var(--dim)}
+.sliders b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.sliders input{display:block;width:100%;margin:8px 0 0;accent-color:var(--accent)}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{position:relative;padding-left:24px}
+.verdict li::before{content:"●";font-size:10px;position:absolute;left:2px;top:4px;color:var(--faint)}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)} .verdict li.info::before{color:var(--line2)}
+.verdict b{color:var(--ink);font-weight:400}
+.ad-info{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink);max-width:none;line-height:1.5}
+.ad-info span{color:var(--accent)}
+.ad-chk{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;font-size:14px;cursor:pointer;align-items:start}
+.ad-chk input{width:18px;height:18px;margin:1px 0 0;accent-color:var(--accent)}
+
+/* пиксели */
+.ad-px{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ad-px-row{display:flex;gap:18px;flex-wrap:wrap;background:#f4f4f2;border-radius:8px;padding:18px;justify-content:center}
+.ad-px-cell{display:flex;flex-direction:column;align-items:center;gap:8px}
+.ad-px-cell i{--n:1;width:54px;height:54px;display:block;border:1px solid #101010;background:
+  linear-gradient(90deg,transparent calc(100% - 1px),#101010 0) 0 0/calc(100%/var(--n)) 100%,
+  linear-gradient(transparent calc(100% - 1px),#101010 0) 0 0/100% calc(100%/var(--n)),#eb7540}
+.ad-px-cell span{font-family:var(--mono);font-size:11px;color:#5a5a58}
+.ad-px-dev{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;background:#f4f4f2;border-radius:8px;padding:18px;color:#101010}
+.ad-px-dev div{display:flex;flex-direction:column;align-items:center;gap:2px}
+.ad-px-dev b{color:#101010;font-size:20px;font-weight:500;font-variant-numeric:tabular-nums}
+.ad-px-dev span{font-size:12px;color:#5a5a58}
+.ad-px-dev em{font-style:normal;color:#eb7540;font-family:var(--mono)}
+
+/* шкала брейкпоинтов */
+.ad-bar{position:relative;display:grid;grid-template-columns:448fr 512fr 161fr;height:30px;border-radius:8px;overflow:visible;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.ad-bar span{display:flex;align-items:center;padding:0 8px;color:var(--dim);border:1px solid var(--stroke);background:var(--well);min-width:0;overflow:hidden;white-space:nowrap}
+.ad-bar span:first-child{border-radius:8px 0 0 8px}.ad-bar span:nth-child(3){border-radius:0 8px 8px 0}
+.ad-bar span.on{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+.ad-bar i{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);border-radius:1px;left:0;transform:translateX(-1px);pointer-events:none}
+.ad-modes{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+
+/* симулятор экрана */
+.fl-view{position:relative;background:var(--well);border-radius:10px;padding:14px;overflow:hidden}
+.fl-frame{width:390px;transform-origin:0 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 0 0 1px #3a3a3a}
+.fl-cut{position:absolute;top:14px;bottom:14px;right:14px;width:40px;background:linear-gradient(90deg,transparent,rgba(255,59,78,.55));pointer-events:none;border-right:3px solid var(--bad)}
+.fl-screen{--pad:16px;--gap:16px;--cols:4;--max:100%;position:relative;color:#101010;font-family:var(--body);background:#fbfaf6;width:390px}
+.s-in{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:var(--pad);box-sizing:border-box}
+.s-gridwrap{position:absolute;inset:0;pointer-events:none;z-index:3}
+.s-grid{height:100%;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:var(--gap)}
+.s-grid i{background:rgba(235,64,64,.07);border-inline:1px solid rgba(235,64,64,.22)}
+.fl-screen.nogrid .s-gridwrap{display:none}
+.s-nav{border-bottom:1px solid #e6e4dc;background:#fff}
+.s-nav .s-in{display:flex;align-items:center;gap:20px;height:72px}
+.s-logo{font-weight:600;font-size:18px;color:#1f5c3a;white-space:nowrap}
+.s-menu{display:flex;gap:22px;font-size:15px;color:#3a3a38;white-space:nowrap;flex:1}
+.s-navcta{background:#1f5c3a;color:#fff;border-radius:999px;padding:10px 18px;font-size:14px;white-space:nowrap;margin-left:auto}
+.s-burger{width:44px;height:44px;display:none;flex-direction:column;justify-content:center;gap:5px;align-items:center;margin-left:auto;flex:none}
+.s-burger i{display:block;width:22px;height:2px;background:#101010;border-radius:1px}
+.s-hero .s-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--gap);padding-block:56px;align-items:center}
+.s-copy{display:flex;flex-direction:column;gap:18px;min-width:0}
+.s-h{font-size:48px;line-height:1.1;font-weight:600;letter-spacing:-.02em;color:#101010;overflow-wrap:normal}
+.s-p{font-size:18px;line-height:1.55;color:#4a4a48;max-width:34em}
+.s-btn{align-self:flex-start;background:#eb7540;color:#101010;border-radius:12px;height:56px;padding:0 28px;display:inline-flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;white-space:nowrap}
+.s-pic{aspect-ratio:4/3;border-radius:16px;background:radial-gradient(circle at 35% 40%,#7fb48a 0 18%,transparent 19%),radial-gradient(circle at 62% 55%,#4f8f60 0 22%,transparent 23%),linear-gradient(160deg,#e9efe1,#cfdcc5)}
+.s-sec .s-in{display:flex;flex-direction:column;gap:20px;padding-block:8px 56px}
+.s-h2{font-size:32px;font-weight:600;letter-spacing:-.01em;color:#101010}
+.s-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.s-card{background:#fff;border:1px solid #e6e4dc;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.s-card i{display:block;aspect-ratio:1;border-radius:10px;background:linear-gradient(160deg,#dfe9d6,#b9cfb0)}
+.s-card b{font-size:16px;font-weight:500;color:#101010;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-card span{font-size:14px;color:#5a5a58}
+.s-foot{background:#1f2a22;color:#cfd6cf;font-size:13px}
+.s-foot .s-in{display:flex;justify-content:space-between;gap:12px;padding-block:22px;flex-wrap:wrap}
+
+/* tablet */
+.fl-screen.bp-t .s-menu{display:none}
+.fl-screen.bp-t .s-burger{display:flex;margin-left:0}
+.fl-screen.bp-t .s-nav .s-in{height:64px}
+.fl-screen.bp-t .s-h{font-size:36px}
+.fl-screen.bp-t .s-p{font-size:16px}
+.fl-screen.bp-t .s-hero .s-in{padding-block:40px}
+.fl-screen.bp-t .s-h2{font-size:28px}
+.fl-screen.bp-t .s-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fl-screen.bp-t .s-btn{height:52px}
+/* mobile */
+.fl-screen.bp-m .s-menu,.fl-screen.bp-m .s-navcta{display:none}
+.fl-screen.bp-m .s-burger{display:flex}
+.fl-screen.bp-m .s-nav .s-in{height:56px}
+.fl-screen.bp-m .s-hero .s-in{grid-template-columns:minmax(0,1fr);padding-block:28px 32px;gap:24px}
+.fl-screen.bp-m .s-h{font-size:28px;line-height:1.2}
+.fl-screen.bp-m .s-p{font-size:16px;line-height:1.5}
+.fl-screen.bp-m .s-btn{align-self:stretch;height:48px}
+.fl-screen.bp-m .s-h2{font-size:22px}
+.fl-screen.bp-m .s-sec .s-in{gap:16px;padding-block:0 32px}
+.fl-screen.bp-m .s-cards{display:flex;overflow:hidden;margin-right:calc(var(--pad) * -1)}
+.fl-screen.bp-m .s-card{flex:0 0 72%}
+/* только резина: проценты, без перестроек */
+.fl-screen.fluid .s-menu{gap:2.2%}
+.fl-screen.fluid .s-nav .s-in{gap:2%}
+
+/* палец */
+.tap-stage{padding:24px 16px}
+.tap-row{display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:12px 14px;width:min(360px,100%);box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.tap-txt{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.tap-txt b{color:#101010;font-weight:500;font-size:15px}
+.tap-txt span{color:#5a5a58;font-size:13px}
+.tap-btns{display:flex;position:relative;flex:none}
+.tap-b{display:grid;place-items:center;border-radius:10px;background:#efeeea;color:#101010;flex:none}
+.tap-b.danger{color:#e5383b}
+.tap-b svg{width:60%;height:60%;max-width:28px;max-height:28px}
+.tap-b.hit{background:transparent;outline:1.5px dashed #9a9a96;outline-offset:-1.5px}
+.tap-b.hit svg{width:24px;height:24px}
+.tap-finger{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(235,117,64,.35);border:2px solid #eb7540;pointer-events:none;transform:translate(-50%,-50%);transition:left .15s,top .15s}
+.tap-finger.hitdel{background:rgba(229,56,59,.32);border-color:#e5383b}
+
+/* приёмы адаптации */
+.ad-patterns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ad-patterns .box>b{font-size:16px}
+
+/* тренажёр */
+.mob-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.mob-top .cap{color:var(--accent)}
+.mob-q{font-size:19px;font-weight:400;line-height:1.3;color:var(--ink)}
+.mob-desk{display:flex;flex-direction:column;gap:8px;background:#f4f4f2;border-radius:8px;padding:14px;align-items:center}
+.mob-desk .cap{color:#5a5a58;align-self:flex-start}
+.mob-opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.mob-opt{background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--ink);font:400 15px/1.35 var(--body);text-align:center;min-width:0}
+.mob-opt:hover:not(:disabled){border-color:var(--accent)}
+.mob-opt:disabled{cursor:default}
+.mob-opt.right{border-color:var(--good)}
+.mob-opt.wrong{border-color:var(--bad)}
+.mob-opt.dim{opacity:.55}
+.mob-opt .lt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--faint)}
+.mob-acts{display:flex;gap:8px;flex-wrap:wrap}
+#mob output{min-height:0}
+#mob output .okv,#mob output .warn{display:block;margin-bottom:4px}
+.mob-done{border:1px solid var(--good);border-radius:10px;padding:14px 16px;color:var(--ink)}
+
+/* схемы-скетчи */
+.sk{background:#fff;border-radius:8px;display:flex;flex-direction:column;gap:5px;padding:8px;position:relative;overflow:hidden;box-shadow:0 0 0 1px #dcdad4}
+.sk-desk{width:min(440px,100%);min-height:120px;padding:12px;gap:7px}
+.sk-desk .k-card::before{height:34px}
+.sk-desk .k-h{height:11px;flex-basis:40%!important}
+.sk-desk .k-t{height:30px}
+.sk-desk .k-tbl,.sk-desk .k-th{height:9px}
+.sk-desk .k-grid{gap:6px}
+.sk-desk .k-side{min-height:120px}
+.sk-desk .k-nav{height:22px}
+.sk-ph{width:112px;height:200px;border-radius:14px;padding:14px 7px 7px;gap:4px;box-shadow:0 0 0 3px #101010}
+.sk-ph::before{content:"";position:absolute;top:5px;left:50%;width:28px;height:4px;border-radius:2px;background:#101010;transform:translateX(-50%)}
+.sk-row{display:flex;gap:5px;min-width:0;flex:none}
+.sk-row>*{flex:1 1 0;min-width:0}
+.sk-row.rail{overflow:hidden}
+.sk-row.rail>*{flex:0 0 74%}
+.k-h{height:9px;flex:0 0 55%!important;background:#101010;border-radius:2px}
+.k-t{height:22px;background:repeating-linear-gradient(#cfcdc7 0 3px,transparent 3px 7px)}
+.k-card{border:1px solid #dcdad4;border-radius:5px;padding:4px;display:flex;flex-direction:column;gap:3px}
+.k-card::before{content:"";height:18px;border-radius:3px;background:#f2b33d}
+.k-card::after{content:"";height:10px;background:repeating-linear-gradient(#cfcdc7 0 2px,transparent 2px 5px)}
+.sk-ph .k-card::before{height:30px}
+.k-th{height:7px;background:repeating-linear-gradient(90deg,#101010 0 14%,transparent 14% 20%)}
+.k-tbl{height:7px;background:repeating-linear-gradient(90deg,#cfcdc7 0 14%,transparent 14% 20%);border-bottom:1px solid #eee}
+.sk-ph .k-th,.sk-ph .k-tbl{height:4px}
+.k-tbl2{height:10px;background:linear-gradient(90deg,#cfcdc7 0 40%,transparent 40% 60%,#cfcdc7 60% 100%)}
+.k-kv{border:1px solid #dcdad4;border-radius:5px;padding:6px;height:60px;background-image:linear-gradient(90deg,rgba(255,255,255,0) 38%,#fff 38% 48%,rgba(255,255,255,0) 48%),repeating-linear-gradient(#9a9a96 0 3px,transparent 3px 9px);background-origin:content-box;background-clip:content-box}
+.k-kvrow{height:5px;background:linear-gradient(90deg,#9a9a96 0 35%,transparent 35% 50%,#cfcdc7 50% 100%)}
+.sk-ph .k-kvrow{height:4px;margin-bottom:3px}
+.sk-desk .k-kvrow{height:6px;margin-bottom:6px}
+.k-side{background:#efeeea;border-radius:4px;min-height:96px;position:relative}
+.k-side::before{content:"";position:absolute;inset:6px;background:repeating-linear-gradient(#bdbbb5 0 3px,transparent 3px 9px)}
+.sk-desk .k-side{flex:1 1 0}
+.k-grid,.k-grid2{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.k-grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.k-grid i,.k-grid2 i{aspect-ratio:1;border-radius:3px;background:#f2b33d;display:block}
+.k-chipbar{height:10px;background:linear-gradient(90deg,#101010 0 30%,transparent 30% 35%,#cfcdc7 35% 55%,transparent 55% 60%,#cfcdc7 60% 80%,transparent 80%);border-radius:5px}
+.k-sheet{position:absolute;left:0;right:0;bottom:0;height:46%;background:#fff;border-radius:10px 10px 0 0;box-shadow:0 -4px 12px rgba(0,0,0,.18);padding:8px}
+.k-sheet::before{content:"";display:block;width:24px;height:3px;border-radius:2px;background:#cfcdc7;margin:0 auto 6px}
+.k-sheet::after{content:"";position:absolute;inset:18px 8px 8px;background:repeating-linear-gradient(#bdbbb5 0 3px,transparent 3px 9px)}
+.k-nav{height:16px;display:flex;align-items:center;gap:6%;padding:0 4px;border-bottom:1px solid #eee}
+.k-nav::before{content:"";width:14%;height:6px;background:#1f5c3a;border-radius:2px;flex:none}
+.k-nav::after{content:"";flex:1;height:4px;background:repeating-linear-gradient(90deg,#9a9a96 0 9%,transparent 9% 14%);margin-right:18%;box-shadow:none}
+.sk-desk .k-nav{position:relative}
+.sk-desk .k-nav{background:linear-gradient(#eb7540,#eb7540) right 4px center/14% 8px no-repeat}
+.k-burger{height:16px;border-bottom:1px solid #eee;background:linear-gradient(#1f5c3a,#1f5c3a) 2px center/30% 5px no-repeat,linear-gradient(#101010,#101010) right 3px top 4px/12px 2px no-repeat,linear-gradient(#101010,#101010) right 3px top 7px/12px 2px no-repeat,linear-gradient(#101010,#101010) right 3px top 10px/12px 2px no-repeat}
+.k-navwrap{display:flex;flex-wrap:wrap;gap:4px;padding:3px 0;border-bottom:1px solid #eee}
+.k-navwrap i{display:block;height:8px;width:30%;flex:none;background:#cfcdc7;border-radius:4px}
+.k-navwrap i:first-child{background:#1f5c3a}
+.k-navtiny{height:12px;border-bottom:1px solid #eee;background:linear-gradient(#1f5c3a,#1f5c3a) 2px center/16% 4px no-repeat,repeating-linear-gradient(90deg,transparent 0 22%,#9a9a96 22% 30%,transparent 30% 34%) center/100% 2px no-repeat}
+.k-btnw{height:14px;background:#eb7540;border-radius:3px}
+.k-buy{border:1.5px solid #eb7540;border-radius:5px;padding:4px;display:flex;flex-direction:column;gap:4px;min-height:34px}
+.k-buy::before{content:"";height:6px;width:60%;background:#101010;border-radius:2px}
+.k-buy::after{content:"";height:10px;background:#eb7540;border-radius:3px}
+.k-fab{position:absolute;right:8px;bottom:10px;width:26px;height:26px;border-radius:50%;background:#eb7540;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.k-sticky{position:absolute;left:0;right:0;bottom:0;height:30px;background:#fff;box-shadow:0 -3px 10px rgba(0,0,0,.14);display:flex;align-items:center;gap:6px;padding:0 6px}
+.k-sticky::before{content:"";width:30%;height:6px;background:#101010;border-radius:2px}
+.k-sticky::after{content:"";flex:1;height:16px;background:#eb7540;border-radius:4px}
+.k-dots{height:6px;background:radial-gradient(circle,#101010 2px,transparent 2.5px) calc(50% - 8px) 50%/6px 6px no-repeat,radial-gradient(circle,#cfcdc7 2px,transparent 2.5px) 50% 50%/6px 6px no-repeat,radial-gradient(circle,#cfcdc7 2px,transparent 2.5px) calc(50% + 8px) 50%/6px 6px no-repeat}
+.k-acc{height:16px;border-bottom:1px solid #dcdad4;background:linear-gradient(#9a9a96,#9a9a96) 2px center/50% 4px no-repeat,linear-gradient(#101010,#101010) right 3px center/7px 1.5px no-repeat,linear-gradient(#101010,#101010) right 6px center/1.5px 7px no-repeat}
+
+/* Auto Layout */
+.al-ctrls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 16px}
+.al-stage{display:block;padding:34px 16px 24px;overflow:hidden}
+.al-frame{position:relative;display:flex;gap:12px;padding:16px;background:#fff;border-radius:12px;outline:1.5px solid #3b82f6;width:520px;max-width:none;align-items:center;margin-inline:auto;box-sizing:border-box}
+.al-frame.col{flex-direction:column;align-items:flex-start}
+.al-tag{position:absolute;top:-22px;left:0;font-family:var(--mono);font-size:11px;color:#3b82f6;white-space:nowrap;letter-spacing:.02em}
+.al-ic{width:44px;height:44px;border-radius:10px;background:#e5efe6;color:#1f5c3a;display:grid;place-items:center;flex:none}
+.al-ic svg{width:24px;height:24px}
+.al-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.al-tx b{color:#101010;font-weight:500;font-size:16px}
+.al-tx span{color:#5a5a58;font-size:14px}
+.al-bt{background:#eb7540;color:#101010;border-radius:10px;height:44px;padding:0 20px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;white-space:nowrap;flex:none;box-sizing:border-box}
+.al-frame [data-n]{outline:1px dashed transparent;transition:outline-color .2s}
+.al-frame [data-n].over{outline-color:#e5383b;background-color:rgba(229,56,59,.08)}
+.al-frame.al-over{outline-color:#e5383b}
+
+@media (max-width:860px){.ad-patterns{grid-template-columns:repeat(2,minmax(0,1fr))}.al-ctrls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  .ad-px,.sliders,.mob-opts{grid-template-columns:minmax(0,1fr)}
+  .mob-opt{flex-direction:row;text-align:left;align-items:center}
+  .mob-opt .sk-ph{flex:none}
+  .al-ctrls{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:420px){.ad-patterns{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.tap-finger,.al-frame [data-n]{transition:none}}
+button.ad-next{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 4 · UI</span></div>
+  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 UI-элементы</span><span>03 UI-кит</span><span>04 Концепция в веб-дизайне</span><span>05 Композиция</span><span>06 Типографика</span><span>07 Иконки</span><b>08 Адаптив</b><span>09 Цвет</span></div>
+  <h1>Адаптив</h1>
+  <p class="lead"><b>Один сайт — сотни разных экранов.</b> Разбираем, как выбрать брейкпоинты, настроить сетку, перестроить блоки под телефон и собрать всё это в Figma так, чтобы разработчик понял тебя без созвона.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#what">Что такое адаптив</a><a href="#screens">Экраны и пиксели</a><a href="#bp">Брейкпоинты</a><a href="#grid">Сетка и размеры</a><a href="#reflow">Перестройка блоков</a><a href="#figma">Адаптив в Figma</a><a href="#handoff">Передача в разработку</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="what">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Что такое адаптив</h2></div></div>
+  <p>Больше половины людей открывают сайты с телефона. Это легко проверить в открытой статистике: <a href="https://radar.yandex.ru" target="_blank" rel="noopener">Яндекс Радар</a> показывает долю устройств в рунете, <a href="https://gs.statcounter.com" target="_blank" rel="noopener">StatCounter</a> — по всему миру. Человек читает «на бегу»: в метро, в очереди, одной рукой. Если на телефоне сайт мелкий и неудобный, он просто закроет вкладку.</p>
+  <p class="quote">Адаптив — это когда сайт перестраивается под экран, а не уменьшается до нечитаемого.</p>
+  <p>Есть три способа сделать так, чтобы макет жил на разных ширинах. На практике их смешивают.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Фиксированная вёрстка</span><b>Размеры в пикселях</b><p>Макет нарисован под одну ширину, например 1440. На экране меньше появляется горизонтальный скролл, на экране больше — пустые поля. Сам по себе такой подход устарел, но внутри брейкпоинта фиксированными часто остаются кнопки, иконки и максимальная ширина контейнера.</p></div>
+    <div class="box"><span class="kind">Резиновая (fluid)</span><b>Размеры в процентах</b><p>Блоки тянутся вместе с окном, как резина. На ноутбуке и мониторе выглядит хорошо. Но на телефоне четыре колонки сжимаются до 60 px каждая, и пользоваться этим невозможно: резина не меняет структуру.</p></div>
+    <div class="box hot"><span class="kind">Адаптивная</span><b>Резина + брейкпоинты</b><p>Между брейкпоинтами макет тянется, а на брейкпоинте меняется структура: колонок становится меньше, меню уходит в бургер, кнопка растягивается на всю ширину. Так сейчас делают почти все сайты.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Responsive и adaptive</h3>
+    <div class="sub-b">
+      <p>В англоязычных статьях эти слова различают. <b>Responsive</b> — один макет плавно тянется и перестраивается по брейкпоинтам. <b>Adaptive</b> — несколько отдельных фиксированных макетов, сервер или браузер выбирает подходящий. В русской практике всё это называют одним словом «адаптив», и в макете ты в любом случае рисуешь несколько ширин и описываешь, что происходит между ними.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>С чего начинать</h3>
+    <div class="sub-b">
+      <div class="pair">
+        <div class="good"><i>Mobile-first</i><span>Сначала телефон: в 360 px помещается только главное, и ты честно решаешь, что важно. Потом добавляешь на планшет и десктоп колонки, картинки, детали. Хорошо для сервисов, магазинов и всего, куда приходят с телефона.</span></div>
+        <div class="good"><i>Desktop-first</i><span>Сначала десктоп, потом упрощаешь. Уместно для B2B, дашбордов и сложных инструментов, где основная работа идёт за компьютером. Риск — на телефоне захочется ужать всё подряд вместо того, чтобы выбрать главное.</span></div>
+      </div>
+      <p class="why">Какой бы подход ты ни выбрал, начинай с контента: что человек должен увидеть первым, что вторым, что можно спрятать. Сетка и брейкпоинты подстраиваются под смысл.</p>
+    </div>
+  </div>
+</section>
+
+<section id="screens">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Экраны и пиксели</h2></div></div>
+  <p>У экрана две ширины: физическая и логическая. Например, iPhone X имеет экран 1125×2436 физических пикселей, но браузер и Figma считают его как 375×812. Каждая логическая точка состоит из 3×3 физических пикселей — это и есть плотность @3x. Дизайн рисуют в логических точках: так текст 16 px выглядит одинаково на старом и новом телефоне.</p>
+  <div class="ad-px">
+    <div class="box"><span class="kind">Логическая точка · 1 pt</span><div class="ad-px-row"><div class="ad-px-cell"><i style="--n:1"></i><span>@1x · 1×1</span></div><div class="ad-px-cell"><i style="--n:2"></i><span>@2x · 2×2</span></div><div class="ad-px-cell"><i style="--n:3"></i><span>@3x · 3×3</span></div></div><p>Одна точка макета на разных экранах состоит из 1, 4 или 9 физических пикселей. Поэтому картинки и иконки экспортируют в @2x и @3x, а лучше в SVG.</p></div>
+    <div class="box"><span class="kind">Что видит браузер</span><div class="ad-px-dev"><div><b>375 × 812</b><span>логические точки</span></div><em>× 3</em><div><b>1125 × 2436</b><span>физические пиксели</span></div></div><p>Когда говорят «экран 375» или «мобилка 360» — речь всегда о логической ширине.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Популярные ширины</h3>
+    <div class="sub-b">
+      <p>Самые частые ширины телефонов лежат между 320 и 430 px. В статистике StatCounter обычно лидирует <b>360×800</b> — середина этого диапазона и база большинства Android. Второе место — 375–393 px, это iPhone. Если у заказчика нет своей аналитики, рисуй мобильную версию в 360 или 375 и проверяй на 320 и 430.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Устройство</th><th>Ширина, pt</th><th>Плотность</th><th>Что с этим делать</th></tr></thead>
+        <tbody>
+          <tr><td>Маленький Android, старые iPhone SE</td><td>320</td><td>@2x</td><td>Самый узкий экран, на котором всё должно работать. Проверочная ширина</td></tr>
+          <tr><td>Большинство Android</td><td>360</td><td>@3x</td><td>Основной макет мобильной версии</td></tr>
+          <tr><td>iPhone 12–15</td><td>390–393</td><td>@3x</td><td>Второй по популярности, тоже частая база</td></tr>
+          <tr><td>iPhone Pro Max, Plus</td><td>428–430</td><td>@3x</td><td>Верх мобильного диапазона, проверочная ширина</td></tr>
+          <tr><td>iPad, планшеты вертикально</td><td>768–834</td><td>@2x</td><td>Планшетный брейкпоинт</td></tr>
+          <tr><td>Ноутбуки</td><td>1280–1536</td><td>@1x–@2x</td><td>Десктоп. Самая частая ширина ноутбука — около 1366–1536</td></tr>
+          <tr><td>Мониторы</td><td>1920 и шире</td><td>@1x</td><td>Контейнер упирается в максимум, растут поля</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<section id="bp">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Брейкпоинты</h2></div></div>
+  <p>Брейкпоинт — ширина экрана, на которой макет меняет структуру. Ставь их не «под айфон и айпад», а там, где контент начинает ломаться: меню перестаёт влезать в строку, карточки становятся слишком узкими, строка текста — слишком длинной. Практичное ядро — три брейкпоинта.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Mobile · 360–767</span><b>4 колонки</b><p>Поля 16 px, одна колонка контента, бургер, кнопка на всю ширину.</p></div>
+    <div class="box"><span class="kind">Tablet · 768–1279</span><b>8 колонок</b><p>Поля 24 px, карточки в 2 колонки, часть меню можно вернуть в шапку.</p></div>
+    <div class="box"><span class="kind">Desktop · 1280+</span><b>12 колонок</b><p>Контейнер до 1200 px по центру, полное меню, 3–4 карточки в ряд.</p></div>
+  </div>
+  <p>Для сложных проектов брейкпоинтов больше: 1920, 1600, 1440, 1024, 768, 480, 360. Чем их больше, тем точнее адаптив, но тем больше макетов нужно нарисовать и поддерживать. Начинай с трёх и добавляй, только если видишь, что на какой-то ширине ломается.</p>
+
+  <div class="demo" id="fluid">
+    <span class="cap">Симулятор · тяни ширину экрана и смотри, что меняется</span>
+    <label class="ad-range">Ширина экрана <b id="fl-w">390</b> px<input type="range" id="fl-r" min="320" max="1440" value="390" aria-label="Ширина экрана в пикселях"></label>
+    <div class="ad-bar" aria-hidden="true"><span class="m">Mobile</span><span class="t">Tablet</span><span class="d">Desktop</span><i id="fl-mark"></i></div>
+    <div class="seg" id="fl-dev"><button type="button" data-w="320">320 · маленький</button><button type="button" data-w="360">360 · Android</button><button type="button" data-w="393">393 · iPhone</button><button type="button" data-w="768">768 · iPad</button><button type="button" data-w="1024">1024 · планшет боком</button><button type="button" data-w="1280">1280 · ноутбук</button><button type="button" data-w="1440">1440 · десктоп</button></div>
+    <div class="ad-modes"><div class="seg" id="fl-mode"><button type="button" data-m="adaptive">Адаптивная</button><button type="button" data-m="fluid">Только резина</button><button type="button" data-m="fixed">Фиксированная 1440</button></div><button type="button" class="ghost" id="fl-grid" aria-pressed="true">Сетка</button></div>
+    <div class="fl-view" id="fl-view">
+      <div class="fl-frame" id="fl-frame">
+        <div class="fl-screen bp-m" id="fl-screen">
+          <div class="s-gridwrap" aria-hidden="true"><div class="s-in s-grid" id="fl-cols"></div></div>
+          <div class="s-nav"><div class="s-in"><b class="s-logo">Ботаника</b><span class="s-menu"><span>Каталог</span><span>Уход</span><span>Доставка</span><span>Блог</span><span>Контакты</span></span><span class="s-navcta">Подобрать растение</span><span class="s-burger" aria-hidden="true"><i></i><i></i><i></i></span></div></div>
+          <div class="s-hero"><div class="s-in"><div class="s-copy"><b class="s-h">Растения, которые выживут у тебя дома</b><p class="s-p" id="fl-p">Подберём цветок под свет в квартире, твой режим и опыт. Доставим по Москве за два часа и расскажем, как ухаживать.</p><span class="s-btn">Пройти тест за минуту</span></div><div class="s-pic"></div></div></div>
+          <div class="s-sec"><div class="s-in"><b class="s-h2">Хиты недели</b><div class="s-cards" id="fl-cards"><div class="s-card"><i></i><b>Монстера</b><span>2 490 ₽</span></div><div class="s-card"><i></i><b>Замиокулькас</b><span>1 890 ₽</span></div><div class="s-card"><i></i><b>Фикус Бенджамина</b><span>2 190 ₽</span></div><div class="s-card"><i></i><b>Сансевиерия</b><span>1 290 ₽</span></div></div></div></div>
+          <div class="s-foot"><div class="s-in"><span>© Ботаника</span><span>+7 900 000-00-00</span></div></div>
+        </div>
+      </div>
+      <div class="fl-cut" id="fl-cut" hidden></div>
+    </div>
+    <p class="ad-info" id="fl-info"></p>
+    <ul class="verdict" id="fl-out"></ul>
+  </div>
+  <p class="why">Обрати внимание: на 1280 и шире контейнер упирается в 1200 px, и дальше растут только поля по бокам. Без максимальной ширины абзац на мониторе 1920 растянется до 150 символов в строке, и читать его будет тяжело.</p>
+</section>
+
+<section id="grid">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Сетка, текст и размеры</h2></div></div>
+  <p>Сетка задаёт три вещи: сколько колонок, какие поля от края экрана (margins) и какие промежутки между колонками (gutters). На каждом брейкпоинте свои значения. Все отступы бери из шкалы, кратной 4 или 8: 4, 8, 12, 16, 24, 32, 40, 48, 64. Тогда ритм страницы будет ровным, а разработчику не придётся гадать, где 17, а где 19 px.</p>
+  <p>Ниже — стартовая спецификация. Её можно брать как основу и подстраивать под бренд и контент.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Параметр</th><th>Mobile 360–767</th><th>Tablet 768–1279</th><th>Desktop 1280+</th></tr></thead>
+    <tbody>
+      <tr><td>Контейнер</td><td>100% ширины</td><td>100% ширины</td><td>max 1200 px по центру</td></tr>
+      <tr><td>Колонки</td><td>4</td><td>8</td><td>12</td></tr>
+      <tr><td>Поля от края</td><td>16 px</td><td>24 px</td><td>32–40 px</td></tr>
+      <tr><td>Gutter</td><td>16 px</td><td>16–24 px</td><td>24 px</td></tr>
+      <tr><td>H1</td><td>28 / 34</td><td>36 / 44</td><td>48 / 56</td></tr>
+      <tr><td>H2</td><td>22 / 28</td><td>28 / 36</td><td>32 / 40</td></tr>
+      <tr><td>H3</td><td>18 / 24</td><td>20 / 26</td><td>22 / 28</td></tr>
+      <tr><td>Основной текст</td><td>16 / 24</td><td>16 / 24</td><td>18 / 28</td></tr>
+      <tr><td>Подписи</td><td>12 / 16</td><td>12–13 / 16–18</td><td>14 / 20</td></tr>
+      <tr><td>Между блоками</td><td>24–32 px</td><td>32–48 px</td><td>48–80 px</td></tr>
+      <tr><td>Padding карточки</td><td>16 px</td><td>20–24 px</td><td>24–32 px</td></tr>
+      <tr><td>Кнопка, поле</td><td>высота 48</td><td>48–52</td><td>48–56</td></tr>
+      <tr><td>Хедер</td><td>56 px, бургер</td><td>64 px, часть меню + «Ещё»</td><td>72–80 px, всё меню</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="box"><b>Текст</b><ul><li>Основной текст на телефоне не меньше 16 px. Если в поле ввода шрифт меньше 16, iPhone приближает страницу, когда человек тапает в поле.</li><li>Длина строки — 60–75 символов. На десктопе ограничивай ширину абзаца, а не только контейнер.</li><li>Заголовки уменьшаются сильнее, чем текст: H1 с 48 до 28, а основной — с 18 до 16.</li></ul></div>
+    <div class="box"><b>Отступы</b><ul><li>На телефоне поля 16 px. На экранах шире 375 можно 20–24.</li><li>Расстояние между блоками сокращается, но не до нуля: блоки должны отделяться друг от друга.</li><li>Отступ внутри карточки меньше, чем между карточками, иначе группы не читаются.</li></ul></div>
+  </div>
+
+  <div class="sub">
+    <h3>Размер под палец</h3>
+    <div class="sub-b">
+      <p>Подушечка пальца касается экрана пятном около сантиметра — это примерно 45–60 px. Поэтому зона нажатия должна быть не меньше <b>44×44</b> (гайдлайны Apple) или <b>48×48</b> (Material Design у Google), а между соседними кнопками — 8–12 px. Курсор мыши точный, палец нет: то, что удобно на десктопе, на телефоне становится лотереей.</p>
+      <div class="demo" id="tap">
+        <span class="cap">Проверка · попадёт ли палец в «Изменить» и не заденет ли «Удалить»</span>
+        <div class="sliders">
+          <label>Зона нажатия <b id="tap-sv">32</b> px<input type="range" id="tap-s" min="24" max="64" value="32"></label>
+          <label>Зазор между кнопками <b id="tap-gv">4</b> px<input type="range" id="tap-g" min="0" max="24" value="4"></label>
+        </div>
+        <label class="ad-chk"><input type="checkbox" id="tap-hit"><span>Иконка остаётся 24 px, а невидимая зона нажатия — по ползунку</span></label>
+        <div class="stage tap-stage">
+          <div class="tap-row">
+            <div class="tap-txt"><b>Заказ №1042</b><span>Монстера · 2 490 ₽</span></div>
+            <div class="tap-btns" id="tap-btns">
+              <span class="tap-b" id="tap-edit" aria-label="Изменить"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+              <span class="tap-b danger" id="tap-del" aria-label="Удалить"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+              <i class="tap-finger" id="tap-finger" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+        <ul class="verdict" id="tap-out"></ul>
+        <div class="seg"><button type="button" data-tap="32,4,0">Как на десктопе</button><button type="button" data-tap="48,8,0">По гайдлайнам</button><button type="button" data-tap="48,8,1">Маленькая иконка, большая зона</button></div>
+      </div>
+      <p class="why">Оранжевый круг — примерный след пальца, который целится в центр «Изменить». Если он заходит на «Удалить», рано или поздно человек удалит заказ, который хотел поправить.</p>
+    </div>
+  </div>
+</section>
+
+<section id="reflow">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Как перестраивать блоки</h2></div></div>
+  <p>Главная ошибка адаптива — уменьшить десктоп целиком. Правильно менять структуру: текст выше, картинка ниже, три колонки в одну, второстепенное — под кнопку «Ещё». Для каждого блока есть типовые приёмы. Выбирай по задаче: если важна скорость чтения — одна колонка, если элемент требует точности (таблица, график, карта) — горизонтальный скролл или отдельный экран.</p>
+  <div class="ad-patterns">
+    <div class="box"><span class="kind">01 · Stack</span><b>В одну колонку</b><p>2–3 колонки становятся одной. Сверху самое важное: заголовок, выгода, кнопка.</p></div>
+    <div class="box"><span class="kind">02 · Лента</span><b>Слайдер с подглядыванием</b><p>Отзывы, товары, кейсы. На экране 1,2–1,5 карточки, чтобы было видно, что можно листать.</p></div>
+    <div class="box"><span class="kind">03 · Rail</span><b>Горизонтальный скролл</b><p>Чипсы фильтров, превью, широкая таблица. Край обрезан — это и есть подсказка.</p></div>
+    <div class="box"><span class="kind">04 · Аккордеон</span><b>Свернуть детали</b><p>FAQ, характеристики, условия доставки. Видны заголовки, детали по тапу.</p></div>
+    <div class="box"><span class="kind">05 · Табы → select</span><b>Выпадающий список</b><p>Когда табов больше трёх или у них длинные названия.</p></div>
+    <div class="box"><span class="kind">06 · Таблица → карточки</span><b>Строка становится карточкой</b><p>Внутри пары «название — значение» вертикально.</p></div>
+    <div class="box"><span class="kind">07 · Медиа</span><b>Сетка → лента</b><p>Галерея 4 в ряд становится 1–2 в ряд. Подписи — под картинкой.</p></div>
+    <div class="box"><span class="kind">08 · Sidebar → шторка</span><b>Bottom sheet</b><p>Фильтры и настройки открываются снизу по кнопке или отдельным экраном.</p></div>
+    <div class="box"><span class="kind">09 · Показать ещё</span><b>Меньше на первом экране</b><p>6 карточек из 12 и кнопка «Показать все».</p></div>
+    <div class="box"><span class="kind">10 · Reflow</span><b>Перекомпоновка</b><p>Не уменьшать всё подряд, а менять порядок: текст → визуал → действие.</p></div>
+    <div class="box"><span class="kind">11 · Sticky CTA</span><b>Кнопка закреплена</b><p>«Купить», «Записаться» прилипают к низу экрана и не теряются в скролле.</p></div>
+    <div class="box"><span class="kind">12 · Stepper</span><b>Форма по шагам</b><p>Длинная анкета делится на экраны по 1–3 поля с прогрессом.</p></div>
+  </div>
+
+  <div class="sub wide">
+    <h3>Тренажёр: как этот блок должен выглядеть на телефоне</h3>
+    <div class="sub-b">
+      <p>Сверху — блок на десктопе. Снизу — три варианта мобильной версии. Выбери тот, который ты бы отдал в разработку. После ответа увидишь разбор.</p>
+      <div class="demo" id="mob">
+        <div class="mob-top"><span class="cap" id="mob-n">Задача 1 из 7</span><span class="cap" id="mob-s">Верно 0</span></div>
+        <b class="mob-q" id="mob-q"></b>
+        <div class="mob-desk"><span class="cap">Десктоп</span><div class="sk sk-desk" id="mob-d"></div></div>
+        <div class="mob-opts" id="mob-o"></div>
+        <output id="mob-e"></output>
+        <div class="mob-acts"><button type="button" class="ad-next" id="mob-next" hidden>Следующая задача</button></div>
+      </div>
+      <span class="cap">Нажми на телефон с вариантом. Работает с клавиатуры: Tab и Enter.</span>
+    </div>
+  </div>
+</section>
+
+<section id="figma">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Адаптив в Figma</h2></div></div>
+  <p>В Figma адаптив держится на трёх инструментах. Layout Grid показывает колонки. Constraints говорят, к чему привязан элемент, когда фрейм меняет ширину. Auto Layout решает, кто тянется, кто подстраивается под содержимое, а кто стоит на месте. Если всё настроено, ты тянешь фрейм с 360 до 767 — и макет живёт сам, без ручного двигания слоёв.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Layout Grid</span><b>Колонки</b><p>Тип Columns, Stretch для mobile и tablet, Center с шириной колонки для десктопа. Count 4 / 8 / 12, Margin 16 / 24 / 32, Gutter 16 / 20 / 24.</p></div>
+    <div class="box"><span class="kind">Constraints</span><b>Привязки</b><p>Left — держится за левый край. Right — за правый. Left &amp; Right — тянется вместе с фреймом. Center — остаётся по центру. Scale — масштабируется, для адаптива почти не нужен.</p></div>
+    <div class="box hot"><span class="kind">Auto Layout</span><b>Fixed, Hug, Fill</b><p>Fixed — ширина задана руками. Hug — по содержимому. Fill — занимает всё свободное место. Попробуй ниже, как они ведут себя при изменении ширины.</p></div>
+  </div>
+
+  <div class="demo" id="al">
+    <span class="cap">Песочница Auto Layout · раздай слоям поведение и потяни фрейм</span>
+    <div class="al-ctrls">
+      <div class="bld-row"><span class="cap">Направление</span><div class="seg" data-al="dir"><button type="button" data-v="row">Горизонтально</button><button type="button" data-v="col">Вертикально</button></div></div>
+      <div class="bld-row"><span class="cap">Иконка</span><div class="seg" data-al="ic"><button type="button" data-v="fixed">Fixed</button><button type="button" data-v="hug">Hug</button><button type="button" data-v="fill">Fill</button></div></div>
+      <div class="bld-row"><span class="cap">Текст</span><div class="seg" data-al="tx"><button type="button" data-v="fixed">Fixed</button><button type="button" data-v="hug">Hug</button><button type="button" data-v="fill">Fill</button></div></div>
+      <div class="bld-row"><span class="cap">Кнопка</span><div class="seg" data-al="bt"><button type="button" data-v="fixed">Fixed</button><button type="button" data-v="hug">Hug</button><button type="button" data-v="fill">Fill</button></div></div>
+    </div>
+    <label class="ad-range">Ширина фрейма <b id="al-wv">520</b> px<input type="range" id="al-w" min="220" max="680" value="520" aria-label="Ширина фрейма"></label>
+    <div class="stage al-stage" id="al-stage">
+      <div class="al-frame" id="al-frame">
+        <span class="al-tag" id="al-tag">Card · Auto layout</span>
+        <div class="al-ic" data-n="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-4 3-6 6-6 10a6 6 0 0 0 12 0c0-4-2-7-6-10z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></div>
+        <div class="al-tx" data-n="tx"><b>Курс по веб-дизайну</b><span>12 недель · старт 1 ноября</span></div>
+        <span class="al-bt" data-n="bt">Записаться</span>
+      </div>
+    </div>
+    <p class="ad-info" id="al-sizes"></p>
+    <ul class="verdict" id="al-out"></ul>
+    <div class="seg"><button type="button" data-alp="row,fixed,fill,hug,520">Строка списка</button><button type="button" data-alp="col,fixed,fill,fill,320">Мобильная карточка</button><button type="button" data-alp="row,fill,hug,fixed,300">Всё сломать</button></div>
+  </div>
+
+  <div class="sub">
+    <h3>Практика по шагам</h3>
+    <div class="sub-b">
+      <ol class="steps">
+        <li><div><div class="t">Три фрейма</div><div class="d">Mobile 360, Tablet 768, Desktop 1440. Высоту не фиксируй: Auto Layout по вертикали, Hug contents.</div></div></li>
+        <li><div><div class="t">Сетка на каждый</div><div class="d">Layout Grid по таблице из раздела 04. Сохрани её как стиль, чтобы не настраивать заново.</div></div></li>
+        <li><div><div class="t">Блоки на Auto Layout</div><div class="d">Хедер, hero и карточки собери через Auto Layout. Секции — Fill по ширине, тексты — Fill, кнопки — Hug, на мобильном главная — Fill.</div></div></li>
+        <li><div><div class="t">Компоненты с вариантами</div><div class="d">Карточка и хедер — компоненты с вариантами mobile, tablet, desktop. Правишь один раз — меняется везде.</div></div></li>
+        <li><div><div class="t">Проверка резины</div><div class="d">Потяни каждый фрейм до края его диапазона: mobile до 767, tablet до 1279. Где поехало — там нужен Fill, Constraint или ещё один брейкпоинт.</div></div></li>
+        <li><div><div class="t">Минимум и максимум</div><div class="d">У слоёв на Auto Layout есть Min width и Max width. Абзацу поставь Max width 640–720, чтобы строка не растягивалась.</div></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="handoff">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Передача в разработку</h2></div></div>
+  <p>Разработчик видит в Figma три картинки и должен догадаться, что происходит на 500 px или на 1100 px. Чтобы он не гадал, приложи к макету короткую спецификацию. Это одна страница в файле, а экономит она недели переписки.</p>
+  <div class="two">
+    <div class="box"><span class="kind">Что передаёшь</span><ul><li>Брейкпоинты и диапазоны: 360–767, 768–1279, 1280+.</li><li>Сетка на каждом: колонки, поля, gutter, max-width контейнера.</li><li>Типографика по брейкпоинтам: кегль, интерлиньяж.</li><li>Шкала отступов: 4, 8, 12, 16, 24, 32, 48, 64.</li><li>Поведение компонентов: «карточки 4 → 2 → лента», «меню → бургер с 1279».</li><li>Состояния: default, hover, pressed, focus, disabled.</li><li>Что тянется, а что фиксировано: «картинка hero 100% ширины, кнопка по содержимому».</li></ul></div>
+    <div class="box"><span class="kind">Проверка перед сдачей</span><ul><li>Текст читается, строка не длиннее 75 символов.</li><li>Кликабельные зоны не меньше 44×44.</li><li>Иерархия одинаковая на всех ширинах: главное остаётся главным.</li><li>Нет висячих слов, переполнений и обрезанных заголовков.</li><li>Длинные слова и названия проверены на 320.</li><li>Отступы из одной шкалы.</li><li>Ничего важного не спрятано только в hover — на телефоне его нет.</li></ul></div>
+  </div>
+  <div class="pair">
+    <div class="bad"><i>Размыто</i><span>«Ну тут на мобилке как-нибудь в столбик».</span></div>
+    <div class="good"><i>Понятно</i><span>«Карточки: 4 в ряд от 1280, 2 в ряд 768–1279, горизонтальная лента до 767, видно 1,3 карточки, gutter 16».</span></div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Адаптив вместе с нейронкой</h2></div></div>
+  <p>Нейронка хорошо помогает разложить блоки по брейкпоинтам и найти места, которые сломаются. Используй её как напарника, который задаёт неудобные вопросы. Макет рисуешь и решения принимаешь ты.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Что за сайт, кто аудитория, с каких устройств заходят.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не выдаёт готовую спеку.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Нейронка предлагает варианты, выбираешь и рисуешь сам.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Брейкпоинты</span><b>Ядро брейкпоинтов и сетка</b>
+<pre id="p1">Я проектирую сайт: <em>[что за сайт и для кого]</em>. Доля мобильного трафика: <em>[цифра из аналитики или «не знаю»]</em>.
+Помоги выбрать брейкпоинты и сетку для каждого: колонки, поля, gutter, ширину контейнера.
+Не давай готовую таблицу сразу. Задавай вопросы по одному и жди моего ответа, а в конце объясни, почему предлагаешь именно эти значения.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь, сверяешься с таблицей из урока и сам фиксируешь значения в Layout Grid.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Перестройка</span><b>Как адаптировать каждый блок</b>
+<pre id="p2">Вот блоки моей десктопной страницы по порядку: <em>[список блоков и что в каждом]</em>.
+По одному блоку за раз: спроси, что в нём главное для человека с телефона, и предложи два способа адаптации (в одну колонку, лента, аккордеон, таблица в карточки, шторка, sticky-кнопка, «показать ещё») с плюсами и минусами.
+Жди, пока я выберу, и только потом переходи к следующему блоку.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> выбираешь вариант для каждого блока и рисуешь мобильную версию.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Ревью</span><b>Найти, где сломается</b>
+<pre id="p3">Опишу мобильную и десктопную версии экрана: <em>[блоки, размеры шрифтов, кнопок и отступов]</em>. Можешь посмотреть скриншоты.
+Проверь по списку: текст от 16 px, зоны нажатия от 44 px, зазор между кнопками от 8 px, строка до 75 символов, иерархия одна и та же, ничего важного не спрятано в hover, что будет на 320 и на 1920.
+По каждому пункту: ок или проблема. Для проблем спроси меня, как я хочу её решить.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь макет и решаешь, с какими замечаниями согласен.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Адаптив одной страницы и мини-спека</b><p>Возьми свой лендинг и выбери три блока: хедер, первый экран и блок с карточками. Нарисуй их в Figma в трёх фреймах — 360, 768 и 1440 — с настроенной Layout Grid и Auto Layout. Рядом положи мини-спеку: брейкпоинты, сетку на каждом, типографику и пять правил поведения компонентов. Сдай ссылку на фрейм со всеми тремя версиями и спекой.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>У каждого фрейма своя Layout Grid: 4, 8 и 12 колонок</span></label>
+    <label><input type="checkbox"><span>Фрейм тянется до края диапазона и ничего не ломается</span></label>
+    <label><input type="checkbox"><span>На мобильном текст от 16 px, кнопки и иконки от 44 px</span></label>
+    <label><input type="checkbox"><span>Блоки перестроены, а не уменьшены: проверь меню, карточки и hero</span></label>
+    <label><input type="checkbox"><span>На десктопе контейнер ограничен, абзац не длиннее 75 символов</span></label>
+    <label><input type="checkbox"><span>В спеке описано, что происходит между брейкпоинтами</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Цвет: как собрать палитру и проверить контраст.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 4 · Адаптив</footer>
+
+</div>
+<script type="application/json" id="mob-data">[
+{"q":"Блок «Почему мы»: три карточки с иконкой и текстом в ряд","d":["h","card card card"],"o":[
+ {"t":"Оставить три в ряд, просто уменьшить","s":["h","card card card"],"e":"Каждая карточка станет шириной около 100 px: по два слова в строке и кегль меньше 12. Структуру нужно менять, а не масштабировать."},
+ {"t":"Карточки друг под другом","s":["h","card","card","card"],"ok":true,"e":"Stack — самый надёжный вариант для коротких однотипных блоков. Порядок сохраняется, текст читается, вертикальный скролл на телефоне привычен."},
+ {"t":"Оставить одну карточку","s":["h","card"],"e":"Контент на телефоне не должен беднеть. Если блок важен на десктопе, он важен и в кармане."}]},
+{"q":"История заказов: таблица с колонками дата, номер, состав, сумма, статус","d":["h","th","tbl","tbl","tbl"],"o":[
+ {"t":"Каждая строка — карточка с парами «название — значение»","s":["h","kv","kv"],"ok":true,"e":"Таблица → карточки. Все данные на месте, кегль нормальный, а статус и сумму можно вынести наверх карточки как главное."},
+ {"t":"Таблица целиком, шрифт 10 px","s":["h","th","tbl","tbl","tbl"],"e":"Пять колонок в 328 px — это по 60 px на колонку. Текст 10 px не читается, а попасть пальцем в строку почти нереально."},
+ {"t":"Оставить колонки дата и сумма","s":["h","tbl2","tbl2","tbl2"],"e":"Человек ищет заказ по статусу и составу — их как раз спрятали. Скрывать можно только второстепенное и с доступом к деталям."}]},
+{"q":"Каталог: фильтры в левой колонке, справа сетка товаров","d":["side:1 grid:3"],"o":[
+ {"t":"Все фильтры над товарами","s":["side","grid2"],"e":"Чтобы увидеть первый товар, придётся пролистать два экрана фильтров. Большинство до товаров не доберётся."},
+ {"t":"Убрать фильтры на телефоне","s":["grid2"],"e":"В каталоге на 500 товаров без фильтров не найти нужное. Мобильный человек фильтрует даже чаще, потому что листать дольше."},
+ {"t":"Кнопка «Фильтры» открывает шторку снизу","s":["chipbar","grid2","sheet"],"ok":true,"e":"Sidebar → bottom sheet. Товары видно сразу, фильтры под рукой, а активные можно показать чипсами над сеткой."}]},
+{"q":"Шапка: логотип, шесть пунктов меню и кнопка «Записаться»","d":["nav"],"o":[
+ {"t":"Логотип и бургер, главная кнопка — в первом экране","s":["burger","h","t","btnw"],"ok":true,"e":"Бургер прячет навигацию, а главное действие остаётся на виду. Кнопку можно оставить и в шапке, если она короткая."},
+ {"t":"Меню в несколько строк над контентом","s":["navwrap","h","t"],"e":"Шапка займёт треть экрана, а до первого экрана человек доберётся только после скролла."},
+ {"t":"Пункты меню по 10 px, чтобы влезли в строку","s":["navtiny","h","t"],"e":"Мелкий текст не читается, а пункты шириной 30 px — не попасть пальцем. Минимальная зона нажатия 44 px."}]},
+{"q":"Отзывы: шесть карточек сеткой 3×2","d":["h","card card card","card card card"],"o":[
+ {"t":"Одна карточка во всю ширину, без точек","s":["h","card"],"e":"Не видно, что можно листать. Человек решит, что отзыв один, и пойдёт дальше."},
+ {"t":"Лента: видно 1,3 карточки и точки","s":["h","~card card","dots"],"ok":true,"e":"Обрезанный край следующей карточки — лучшая подсказка, что ленту можно свайпнуть. Точки показывают, сколько всего."},
+ {"t":"Сетка 3×2 как есть","s":["h","card card card","card card card"],"e":"Шесть карточек по 100 px — мелкий текст и аватарки размером с ноготь. Это уменьшение, а не адаптив."}]},
+{"q":"Страница курса: длинное описание, справа колонка с ценой и кнопкой «Купить»","d":["h","t:2 buy:1","t:2","t:2"],"o":[
+ {"t":"Колонку с ценой — в самый низ","s":["h","t","t","t","buy"],"e":"Пока человек читает, кнопки нет. Решился купить — ищи её в конце страницы."},
+ {"t":"Круглая плавающая кнопка с иконкой","s":["h","t","t","t","fab"],"e":"Иконка без подписи не объясняет действие и цену. Плавающие круглые кнопки привычны в приложениях для «создать», а не для покупки."},
+ {"t":"Цена и кнопка закреплены внизу экрана","s":["h","t","t","t","!sticky"],"ok":true,"e":"Sticky CTA: человек читает описание, а цена и кнопка всегда под пальцем. Так делают маркетплейсы и школы."}]},
+{"q":"Характеристики товара: 20 строк «параметр — значение» и раздел «Доставка и возврат»","d":["h","kvrow kvrow","kvrow kvrow","kvrow kvrow","kvrow kvrow"],"o":[
+ {"t":"Горизонтальный скролл таблицы","s":["h","~kvrow kvrow","~kvrow kvrow","~kvrow kvrow"],"e":"Пары «параметр — значение» и так помещаются в ширину. Скролл вбок тут лишний: его используют для широких таблиц с цифрами."},
+ {"t":"Всё раскрыто одним длинным списком","s":["h","kvrow","kvrow","kvrow","kvrow","kvrow","kvrow"],"e":"Работает, но чтобы добраться до отзывов, придётся пролистать четыре экрана характеристик."},
+ {"t":"Аккордеон: заголовки разделов, детали по тапу","s":["h","acc","acc","acc","acc"],"ok":true,"e":"Видно, какие разделы есть, а открыть можно только нужный. Ключевые 3–4 характеристики можно показать раскрытыми."}]}
+]</script>
+<script type="application/json" id="quiz-data">[
+{"p":"Чем адаптивная вёрстка отличается от просто резиновой?","o":["На брейкпоинтах меняется структура: колонки, меню, порядок блоков","Ничем, это синонимы","Адаптивная всегда шире 1440 px"],"a":0,"e":"Резина только растягивает блоки. Адаптив добавляет брейкпоинты, на которых макет перестраивается."},
+{"p":"В какой ширине обычно рисуют мобильную версию, если у заказчика нет своей аналитики?","o":["1125 px","360 или 375 px","600 px"],"a":1,"e":"360 — база большинства Android, 375–393 — iPhone. 1125 — физические пиксели iPhone X, макет рисуют в логических."},
+{"p":"Как правильно выбирать брейкпоинты?","o":["Под каждую модель телефона","Чем больше, тем лучше, минимум десять","Там, где контент начинает ломаться, начиная с ядра 360 / 768 / 1280"],"a":2,"e":"Брейкпоинт ставят там, где меняется структура. Три — практичное ядро, остальные добавляют при необходимости."},
+{"p":"Какой минимальный размер зоны нажатия на телефоне?","o":["44×44 по Apple, 48×48 по Google","24×24","16×16, если иконка понятная"],"a":0,"e":"Палец оставляет пятно около сантиметра. Иконка может быть 24 px, но зона нажатия — от 44."},
+{"p":"Десктопная таблица заказов на 5 колонок. Что лучше сделать на телефоне?","o":["Уменьшить шрифт до 10 px","Убрать таблицу","Превратить строки в карточки с парами «название — значение»"],"a":2,"e":"Таблица → карточки сохраняет все данные и читается. Горизонтальный скролл оставляют для широких таблиц с цифрами."},
+{"p":"Что значит Fill у слоя в Auto Layout?","o":["Слой залит цветом","Слой занимает всё свободное место во фрейме","Слой подстраивается под своё содержимое"],"a":1,"e":"Fill тянется, Hug обнимает содержимое, Fixed держит заданный размер."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Адаптив» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const press = (btns, fn) => btns.forEach(b => b.setAttribute('aria-pressed', String(fn(b))));
+
+  // --- Симулятор ширины экрана ---
+  const fl = $('#fluid');
+  if (fl) {
+    const R = $('#fl-r'), view = $('#fl-view'), frame = $('#fl-frame'), scr = $('#fl-screen'), cut = $('#fl-cut');
+    const cols = $('#fl-cols'), info = $('#fl-info'), out = $('#fl-out'), mark = $('#fl-mark');
+    const bars = $$('.ad-bar span', fl), devs = $$('#fl-dev button'), modes = $$('#fl-mode button'), gbtn = $('#fl-grid');
+    let W = 390, mode = 'adaptive', grid = true;
+    const BP = {
+      m: { name: 'Mobile 360–767', pad: 16, gap: 16, cols: 4, max: 'none' },
+      t: { name: 'Tablet 768–1279', pad: 24, gap: 20, cols: 8, max: 'none' },
+      d: { name: 'Desktop 1280+', pad: 32, gap: 24, cols: 12, max: '1264px' }
+    };
+    const bpOf = w => (w < 768 ? 'm' : w < 1280 ? 't' : 'd');
+    const li = (cls, html) => '<li class="' + cls + '">' + html + '</li>';
+
+    function render() {
+      const avail = Math.max(200, view.clientWidth - 28);
+      const bp = mode === 'adaptive' ? bpOf(W) : 'd';
+      const c = BP[bp];
+      const screenW = mode === 'fixed' ? 1440 : W;
+      scr.className = 'fl-screen bp-' + bp + (mode === 'fluid' ? ' fluid' : '') + (grid ? '' : ' nogrid');
+      let pad = c.pad, gap = c.gap, max = c.max;
+      if (mode === 'fluid') { pad = Math.round(W * 0.03); gap = Math.round(W * 0.02); max = 'none'; }
+      scr.style.setProperty('--pad', pad + 'px'); scr.style.setProperty('--gap', gap + 'px');
+      scr.style.setProperty('--cols', c.cols); scr.style.setProperty('--max', max);
+      scr.style.width = screenW + 'px';
+      if (cols.children.length !== c.cols) cols.innerHTML = '<i></i>'.repeat(c.cols);
+      frame.style.width = W + 'px';
+      const s = Math.min(1, avail / W);
+      frame.style.transform = 'scale(' + s + ')';
+      frame.style.marginLeft = s === 1 ? Math.round((avail - W) / 2) + 'px' : '0';
+      view.style.height = Math.ceil(frame.offsetHeight * s + 28) + 'px';
+      cut.hidden = !(mode === 'fixed' && W < 1440);
+      if (!cut.hidden) cut.style.left = (14 + (s === 1 ? Math.round((avail - W) / 2) : 0) + W * s - 40) + 'px';
+
+      $('#fl-w').textContent = W; R.value = W;
+      mark.style.left = ((W - 320) / 1120 * 100) + '%';
+      const cur = bpOf(W);
+      bars.forEach(b => b.classList.toggle('on', b.classList.contains(cur)));
+      press(devs, b => +b.dataset.w === W);
+      press(modes, b => b.dataset.m === mode);
+      gbtn.setAttribute('aria-pressed', String(grid));
+
+      const scale = Math.round(s * 100);
+      info.innerHTML = W + ' px · <span>' + (mode === 'adaptive' ? c.name : mode === 'fluid' ? 'резина без брейкпоинтов' : 'макет 1440 без адаптива') + '</span> · ' +
+        c.cols + ' колонок · поля ' + pad + ' · gutter ' + gap + (scale < 100 ? ' · превью ' + scale + '%' : '');
+
+      // разбор
+      const p = $('#fl-p'), fs = parseFloat(getComputedStyle(p).fontSize);
+      const chars = Math.round(p.clientWidth / (fs * 0.52));
+      const card = $('.s-card', scr), cw = card.offsetWidth;
+      const menu = $('.s-menu', scr), h = $('.s-h', scr);
+      const items = [];
+      if (mode === 'adaptive') {
+        if (bp === 'm') {
+          items.push(li('ok', '<b>Меню ушло в бургер.</b> Пять пунктов и кнопка в строку на ' + W + ' px не помещаются.'));
+          items.push(li('ok', '<b>Заголовок 28 px вместо 48,</b> текст 16 px. Hero в одну колонку: текст, кнопка, картинка.'));
+          items.push(li('ok', '<b>Кнопка на всю ширину,</b> высота 48 px — легко попасть большим пальцем.'));
+          items.push(li('ok', '<b>Карточки ушли в ленту:</b> видно 1,3 карточки, поэтому понятно, что её можно листать.'));
+          if (W < 360) items.push(li('info', '<b>Меньше 360 — редкие маленькие экраны.</b> Отдельный макет не нужен, но проверь, что длинные слова и кнопки не вылезают.'));
+        } else if (bp === 't') {
+          items.push(li('ok', '<b>Меню всё ещё в бургере,</b> но кнопка «Подобрать растение» вернулась в шапку: место есть.'));
+          items.push(li('ok', '<b>Hero снова в две колонки,</b> заголовок 36 px.'));
+          items.push(li('ok', '<b>Карточки в 2 колонки,</b> каждая ' + cw + ' px.'));
+          if (W >= 1100) items.push(li('info', '<b>Ближе к 1280 карточки становятся широкими.</b> Если тебе не нравится, как это выглядит, — это повод для брейкпоинта 1024.'));
+        } else {
+          items.push(li('ok', '<b>Полное меню в шапке</b> и 4 карточки в ряд.'));
+          if (W > 1264) items.push(li('ok', '<b>Контейнер упёрся в 1200 px.</b> Дальше растут только поля по бокам, строки не становятся бесконечными.'));
+          else items.push(li('info', '<b>До 1264 px контейнер тянется,</b> поля 32 px. С 1264 он перестаёт расти.'));
+        }
+        items.push(li(chars > 80 ? 'bad' : 'ok', '<b>Строка абзаца ≈ ' + chars + ' символов.</b> ' + (chars > 80 ? 'Длинновато, ограничь ширину текста.' : chars < 30 ? 'Коротко, но для телефона это нормально.' : 'Читается комфортно.')));
+      } else if (mode === 'fluid') {
+        if (menu.scrollWidth > menu.clientWidth + 1) items.push(li('bad', '<b>Пункты меню налезают друг на друга и на кнопку.</b> Резина сжимает расстояния, а текст сжаться не может.'));
+        items.push(li(cw < 140 ? 'bad' : 'ok', '<b>Карточка ' + cw + ' px.</b> ' + (cw < 140 ? 'Четыре колонки в узком окне — названия обрезаются, картинки с ноготь.' : 'Пока помещается.')));
+        if (h.scrollWidth > h.clientWidth + 1 || (W < 700)) items.push(li('bad', '<b>Заголовок 48 px в узкой колонке</b> — по одному слову в строке, слова вылезают за край.'));
+        items.push(li(chars > 80 ? 'bad' : 'info', '<b>Строка абзаца ≈ ' + chars + ' символов.</b> ' + (chars > 80 ? 'Без max-width на широком экране текст растягивается, читать тяжело.' : 'Здесь нормально, но на 1920 будет за 100.')));
+        if (W >= 1100) items.push(li('info', '<b>На широком экране резина выглядит прилично.</b> Проблемы начинаются ниже 1000 px. Потяни ползунок влево.'));
+      } else {
+        const pct = Math.round(W / 1440 * 100);
+        if (W < 1440) {
+          items.push(li('bad', '<b>Видно ' + pct + '% ширины макета.</b> Остальные ' + (1440 - W) + ' px уехали вправо — горизонтальный скролл. Красная полоса — край экрана.'));
+          items.push(li('bad', '<b>Браузер на телефоне может уменьшить страницу целиком,</b> но тогда текст 18 px превратится в ' + Math.max(4, Math.round(18 * W / 1440)) + ' px.'));
+        } else items.push(li('ok', '<b>На 1440 всё идеально — но только на нём.</b> Потяни ширину влево.'));
+      }
+      out.innerHTML = items.join('');
+    }
+    R.addEventListener('input', () => { W = +R.value; render(); });
+    devs.forEach(b => b.addEventListener('click', () => { W = +b.dataset.w; render(); }));
+    modes.forEach(b => b.addEventListener('click', () => { mode = b.dataset.m; render(); }));
+    gbtn.addEventListener('click', () => { grid = !grid; render(); });
+    let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(render, 80); });
+    render();
+  }
+
+  // --- Палец и зона нажатия ---
+  const tap = $('#tap');
+  if (tap) {
+    const S = $('#tap-s'), G = $('#tap-g'), H = $('#tap-hit'), ed = $('#tap-edit'), del = $('#tap-del'), fin = $('#tap-finger'), out = $('#tap-out');
+    const FR = 26;
+    function upd() {
+      const s = +S.value, g = +G.value, hit = H.checked;
+      $('#tap-sv').textContent = s; $('#tap-gv').textContent = g;
+      [ed, del].forEach(b => { b.style.width = b.style.height = s + 'px'; b.classList.toggle('hit', hit); });
+      del.style.marginLeft = g + 'px';
+      fin.style.left = s / 2 + 'px'; fin.style.top = s / 2 + 'px';
+      const over = FR - (s / 2 + g);
+      fin.classList.toggle('hitdel', over > 0);
+      const it = [];
+      if (s < 44) it.push(['bad', '<b>Зона ' + s + ' px меньше 44.</b> Палец промахивается, человек тапает по два-три раза и злится.']);
+      else if (s < 48) it.push(['ok', '<b>Зона ' + s + ' px.</b> Минимум по гайдлайнам Apple.']);
+      else if (s <= 60) it.push(['ok', '<b>Зона ' + s + ' px.</b> Как в Material Design у Google — удобно.']);
+      else it.push(['info', '<b>Зона ' + s + ' px.</b> Крупно. Для главного действия нормально, но строка списка раздувается.']);
+      if (over > 0) it.push(['bad', '<b>След пальца заходит на «Удалить» на ' + Math.round(over) + ' px.</b> Хотел поправить заказ — удалил его.']);
+      else if (g < 8) it.push(['info', '<b>Палец не задевает соседа, но зазор ' + g + ' px.</b> Визуально кнопки слипаются, лучше 8–12 px.']);
+      else it.push(['ok', '<b>Зазор ' + g + ' px.</b> Соседнюю кнопку не задеть.']);
+      if (hit && s >= 44) it.push(['ok', '<b>Иконка 24 px, а зона нажатия ' + s + '.</b> Так делают почти все приложения: выглядит легко, нажимается уверенно.']);
+      else if (!hit && s >= 48) it.push(['info', '<b>Плашки ' + s + ' px в строке выглядят тяжело.</b> Включи галочку: картинку можно оставить маленькой, если зона большая.']);
+      else if (hit && s < 44) it.push(['bad', '<b>Невидимая зона тоже маленькая.</b> Дело не в картинке, а в области, куда можно попасть.']);
+      out.innerHTML = it.map(([c, h]) => '<li class="' + c + '">' + h + '</li>').join('');
+    }
+    [S, G].forEach(x => x.addEventListener('input', upd)); H.addEventListener('change', upd);
+    $$('[data-tap]', tap).forEach(b => b.addEventListener('click', () => {
+      const [s, g, h] = b.dataset.tap.split(',').map(Number); S.value = s; G.value = g; H.checked = !!h; upd();
+    }));
+    upd();
+  }
+
+  // --- Скетчи блоков ---
+  const KIDS = { grid: 6, grid2: 4, navwrap: 7 };
+  const ABS = ['sheet', 'fab', 'sticky'];
+  function sketch(rows, cls) {
+    const el = document.createElement('div'); el.className = 'sk ' + cls; el.setAttribute('aria-hidden', 'true');
+    rows.forEach(r => {
+      let rail = false;
+      if (r[0] === '~') { rail = true; r = r.slice(1); }
+      if (r[0] === '!') r = r.slice(1);
+      const toks = r.split(' ');
+      const mk = tk => {
+        const [n, f] = tk.split(':'); const d = document.createElement('div'); d.className = 'k-' + n;
+        if (f) d.style.flex = f + ' 1 0';
+        if (KIDS[n]) d.innerHTML = '<i></i>'.repeat(KIDS[n]);
+        return d;
+      };
+      if (toks.length === 1 && ABS.includes(toks[0])) { el.append(mk(toks[0])); return; }
+      const row = document.createElement('div'); row.className = 'sk-row' + (rail ? ' rail' : '');
+      toks.forEach(tk => row.append(mk(tk))); el.append(row);
+    });
+    return el;
+  }
+
+  // --- Тренажёр «десктоп → телефон» ---
+  const mob = $('#mob'), msrc = $('#mob-data');
+  if (mob && msrc) {
+    const C = JSON.parse(msrc.textContent);
+    const q = $('#mob-q'), d = $('#mob-d'), o = $('#mob-o'), e = $('#mob-e'), nx = $('#mob-next'), n = $('#mob-n'), sc = $('#mob-s');
+    let i = 0, score = 0;
+    const L = ['А', 'Б', 'В'];
+    function show() {
+      const c = C[i];
+      n.textContent = 'Задача ' + (i + 1) + ' из ' + C.length; sc.textContent = 'Верно ' + score;
+      q.textContent = c.q; d.innerHTML = '';
+      const sk = sketch(c.d, 'sk-desk'); d.className = sk.className; d.append(...sk.childNodes);
+      o.innerHTML = ''; e.innerHTML = ''; nx.hidden = true;
+      c.o.forEach((op, k) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'mob-opt';
+        const lt = document.createElement('span'); lt.className = 'lt'; lt.textContent = 'Вариант ' + L[k];
+        const tx = document.createElement('span'); tx.textContent = op.t;
+        const wrap = document.createElement('span'); wrap.style.cssText = 'display:flex;flex-direction:column;gap:4px;min-width:0';
+        wrap.append(lt, tx);
+        b.append(sketch(op.s, 'sk-ph'), wrap);
+        b.addEventListener('click', () => pick(k));
+        o.append(b);
+      });
+    }
+    function pick(k) {
+      const c = C[i], bs = $$('.mob-opt', o), ok = !!c.o[k].ok, rk = c.o.findIndex(x => x.ok);
+      bs.forEach((b, j) => { b.disabled = true; if (j === rk) b.classList.add('right'); else if (j === k) b.classList.add('wrong'); else b.classList.add('dim'); });
+      if (ok) score++;
+      sc.textContent = 'Верно ' + score;
+      e.innerHTML = '<span class="' + (ok ? 'okv' : 'warn') + '">' + (ok ? 'Верно.' : 'Не лучший вариант.') + '</span>' + c.o[k].e +
+        (ok ? '' : '<br><br><b>Лучше вариант ' + L[rk] + ':</b> ' + c.o[rk].e);
+      nx.hidden = false; nx.textContent = i < C.length - 1 ? 'Следующая задача' : 'Посмотреть итог';
+      nx.focus({ preventScroll: true });
+    }
+    let done = false;
+    nx.addEventListener('click', () => {
+      if (done) { done = false; i = 0; score = 0; show(); return; }
+      if (i < C.length - 1) { i++; show(); return; }
+      done = true;
+      n.textContent = 'Готово'; q.textContent = 'Верно ' + score + ' из ' + C.length;
+      d.className = 'mob-done';
+      d.textContent = score === C.length ? 'Все задачи решены. Теперь пройдись так же по каждому блоку своего лендинга.' : score >= 4 ? 'Хороший результат. Перечитай разбор задач, где ошибся: это самые частые ошибки адаптива.' : 'Перечитай список приёмов выше и пройди ещё раз. Главное — менять структуру, а не уменьшать.';
+      o.innerHTML = ''; e.innerHTML = ''; nx.textContent = 'Пройти заново';
+    });
+    show();
+  }
+
+  // --- Auto Layout: Fixed / Hug / Fill ---
+  const al = $('#al');
+  if (al) {
+    const fr = $('#al-frame'), stage = $('#al-stage'), Wr = $('#al-w'), out = $('#al-out'), sizes = $('#al-sizes');
+    const st = { dir: 'row', ic: 'fixed', tx: 'fill', bt: 'hug' };
+    const FIX = { ic: 44, tx: 220, bt: 150 };
+    const NAME = { ic: 'Иконка', tx: 'Текст', bt: 'Кнопка' };
+    const lbl = { fixed: 'Fixed', hug: 'Hug', fill: 'Fill' };
+    function apply() {
+      const maxW = Math.max(220, Math.min(680, stage.clientWidth - 32));
+      Wr.max = maxW; if (+Wr.value > maxW) Wr.value = maxW;
+      const W = +Wr.value; $('#al-wv').textContent = W;
+      fr.style.width = W + 'px'; fr.classList.toggle('col', st.dir === 'col');
+      $('#al-tag').textContent = 'Card · Auto layout ' + (st.dir === 'row' ? '→' : '↓') + ' · W ' + W;
+      ['ic', 'tx', 'bt'].forEach(k => {
+        const el = $('[data-n="' + k + '"]', fr), v = st[k];
+        Object.assign(el.style, { flex: 'none', width: '', alignSelf: '', minWidth: '', whiteSpace: '' });
+        if (v === 'fixed') el.style.width = FIX[k] + 'px';
+        if (v === 'fill') { if (st.dir === 'row') { el.style.flex = '1 1 0'; el.style.minWidth = '0'; } else el.style.alignSelf = 'stretch'; }
+        if (v !== 'fill' && st.dir === 'col') el.style.alignSelf = 'flex-start';
+        if (k === 'tx') $$('b,span', el).forEach(x => { x.style.whiteSpace = v === 'hug' ? 'nowrap' : ''; });
+      });
+      $$('.seg', al).forEach(seg => { const k = seg.dataset.al; if (k) press($$('button', seg), b => b.dataset.v === st[k]); });
+      // измерения
+      const inner = fr.clientWidth - 16;
+      let over = 0; const overN = [];
+      ['ic', 'tx', 'bt'].forEach(k => {
+        const el = $('[data-n="' + k + '"]', fr);
+        const right = el.offsetLeft + Math.max(el.offsetWidth, el.scrollWidth);
+        const o = right - inner;
+        el.classList.toggle('over', o > 1);
+        if (o > 1) { over = Math.max(over, o); overN.push(NAME[k].toLowerCase()); }
+      });
+      fr.classList.toggle('al-over', over > 1);
+      sizes.innerHTML = ['ic', 'tx', 'bt'].map(k => NAME[k] + ' · <span>' + lbl[st[k]] + '</span> · ' + $('[data-n="' + k + '"]', fr).offsetWidth + ' px').join(' &nbsp;/&nbsp; ');
+      const it = [];
+      if (over > 1) it.push(['bad', '<b>Не влезает на ' + Math.round(over) + ' px:</b> ' + overN.join(', ') + '. Fixed и Hug не умеют сжиматься — кому-то нужен Fill.']);
+      const txW = $('[data-n="tx"]', fr).offsetWidth;
+      const squeezed = st.dir === 'row' && st.tx === 'fill' && txW < 120;
+      if (squeezed) it.push(['bad', '<b>Тексту осталось ' + txW + ' px</b> — по слогу в строке. Для такой ширины строку перестраивают: направление вертикальное, кнопка Fill. Так и работает брейкпоинт.']);
+      if (st.ic === 'fill') it.push(['bad', '<b>Иконка растянулась в плашку.</b> Иконкам почти всегда ставят Fixed: 24, 40 или 44 px.']);
+      if (st.dir === 'row' && !Object.values(st).includes('fill')) it.push(['bad', '<b>Никто не тянется.</b> На широком фрейме справа пустота, на узком всё упрётся в край. Отдай Fill тексту.']);
+      if (st.dir === 'row' && st.tx === 'fill' && st.bt === 'fill') it.push(['info', '<b>Текст и кнопка делят место пополам</b> — кнопка раздувается. В строке кнопке хватает Hug.']);
+      if (st.tx === 'fixed') it.push(['info', '<b>Текст с Fixed не подстроится:</b> на узком экране вылезет, на широком останется узкой колонкой.']);
+      if (st.tx === 'hug') it.push(['info', '<b>Hug у текста — одна строка без переносов.</b> Хорошо для коротких подписей, плохо для заголовков, которые могут стать длиннее.']);
+      if (st.dir === 'col' && st.bt === 'fill') it.push(['ok', '<b>Кнопка на всю ширину карточки</b> — мобильный паттерн, в неё легко попасть большим пальцем.']);
+      if (st.dir === 'col' && st.bt !== 'fill') it.push(['info', '<b>Кнопка прижата к левому краю.</b> На десктопе нормально, на телефоне главную кнопку чаще ставят в Fill.']);
+      if (st.dir === 'row' && st.ic === 'fixed' && st.tx === 'fill' && st.bt === 'hug' && over <= 1 && !squeezed) it.push(['ok', '<b>Классическая строка списка:</b> иконка стоит, текст забирает свободное место, кнопка по содержимому. Потяни ширину — всё живёт.']);
+      if (st.dir === 'row' && st.tx === 'fill' && W < 360 && over <= 1 && !squeezed) it.push(['info', '<b>На узкой ширине текст переносится,</b> а кнопка остаётся целой. Если совсем тесно — переключи направление на вертикальное, как сделал бы брейкпоинт.']);
+      if (!it.length) it.push(['ok', '<b>Работает.</b> Потяни ширину и проверь крайние значения.']);
+      out.innerHTML = it.map(([c, h]) => '<li class="' + c + '">' + h + '</li>').join('');
+    }
+    $$('.seg', al).forEach(seg => { const k = seg.dataset.al; if (k) $$('button', seg).forEach(b => b.addEventListener('click', () => { st[k] = b.dataset.v; apply(); })); });
+    $$('[data-alp]', al).forEach(b => b.addEventListener('click', () => {
+      const [dir, ic, tx, bt, w] = b.dataset.alp.split(','); Object.assign(st, { dir, ic, tx, bt }); Wr.value = w; apply();
+    }));
+    Wr.addEventListener('input', apply);
+    let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(apply, 80); });
+    apply();
+  }
+})();
+
+</script>
+</body></html>

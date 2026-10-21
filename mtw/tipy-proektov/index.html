@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Типы проектов</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив методички «Типы проектов» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+.tp-capline{margin-top:-8px;font-family:var(--body);font-size:14px;text-transform:none;letter-spacing:0;color:var(--dim);max-width:70ch}
+.bld-row{display:flex;flex-direction:column;gap:6px}
+.dots3{display:inline-flex;gap:4px;vertical-align:middle}
+.dots3 i{width:9px;height:9px;border-radius:50%;background:var(--stroke)}
+.dots3 i.on{background:var(--accent)}
+
+/* матрёшка: проект → страница → блок → элементы */
+.tp-zoom{display:flex}
+.z1,.z2,.z3,.z4{border-radius:12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tp-zoom b{font-weight:400;color:var(--ink);font-size:17px}
+.tp-zoom .cap{color:var(--accent)}
+.z1{flex:1;background:var(--card);border:1px solid var(--stroke);padding:18px}
+.z2{background:var(--well);border:1px solid var(--stroke);padding:16px;margin-top:6px}
+.z3{background:#2a2a2a;border:1px dashed var(--faint);padding:14px;margin-top:6px}
+.z4{background:#f4f4f2;padding:14px;margin-top:6px}
+.z4 .cap{color:#5a5a58}
+.z4-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.z4-row i{font-style:normal;width:40px;height:36px;border-radius:8px;border:1px solid #c9c9c6;display:grid;place-items:center;font-size:14px;color:#101010;background:#fff}
+.z4-row i.on{border:1.5px solid #101010}
+.z4-row em{font-style:normal;background:#eb7540;color:#101010;border-radius:10px;padding:9px 16px;font-size:14px;font-weight:500;margin-left:auto}
+
+/* рентген проекта */
+.xp-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}
+.xp-facts{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--stroke)}
+.xp-facts>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.xp-facts>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding-top:3px}
+.xp-facts>div>span:last-child{color:var(--ink)}
+.xp-facts .tip{grid-template-columns:minmax(0,1fr);color:var(--dim);border-bottom:0}
+.xp-facts .tip span{color:var(--dim)!important;font-family:var(--body)!important;font-size:14px!important;text-transform:none!important;letter-spacing:0!important;padding:0!important}
+.xp-stage{display:block;padding:20px}
+.xp-map{display:flex;flex-direction:column;gap:6px;font-size:14px;color:#101010}
+.xp-map .cap{color:#5a5a58}
+.xp-flow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;counter-reset:f}
+.xp-flow li{counter-increment:f;display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:center;position:relative;padding:4px 0;opacity:0;transform:translateY(6px);animation:xpIn .35s forwards}
+.xp-flow li::before{content:counter(f);width:28px;height:28px;border-radius:50%;background:#eb7540;color:#101010;display:grid;place-items:center;font-family:var(--mono);font-size:11px;position:relative;z-index:1}
+.xp-flow li:not(:last-child)::after{content:"";position:absolute;left:13px;top:50%;height:100%;width:2px;background:#eb7540}
+.xp-flow li span{background:#fff;border:1.5px solid #101010;border-radius:8px;padding:8px 12px;line-height:1.25}
+.xp-flow li:last-child span{background:#101010;color:#f4f4f2}
+@keyframes xpIn{to{opacity:1;transform:none}}
+.xp-extra{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.xp-extra span{border:1px dashed #a3a3a0;border-radius:8px;padding:6px 10px;font-size:13px;color:#5a5a58;background:#ececea}
+
+/* таблица с фильтрами */
+.cmp-f{display:flex;flex-direction:column;gap:12px}
+.cmp-row{display:flex;flex-direction:column;gap:6px}
+.cmp-new{display:flex;gap:10px;align-items:center;font-size:15px;color:var(--ink);cursor:pointer}
+.cmp-new input{width:20px;height:20px;margin:0;accent-color:var(--accent)}
+.cmp-t td{transition:opacity .2s}
+.cmp-t tr.fresh td:first-child::after{content:"старт";font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--good);border:1px solid var(--good);border-radius:4px;padding:1px 5px;margin-left:8px;vertical-align:2px}
+.cmp-t td.empty{color:var(--dim);text-align:center;padding:28px 0}
+.cmp-t td:nth-child(6){font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* тренажёр брифов */
+.br-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.br-top .cap{color:var(--accent);font-size:12px}
+.br-dots{display:flex;gap:6px}
+.br-dots i{flex:1;height:4px;border-radius:2px;background:var(--stroke)}
+.br-dots i.cur{background:var(--ink)}
+.br-dots i.r{background:var(--good)} .br-dots i.h{background:#f2b33d} .br-dots i.w{background:var(--bad)}
+.br-stage{display:block;padding:20px}
+.br-card{background:#fff;border-radius:12px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:10px;max-width:620px;margin-inline:auto;color:#101010}
+.br-card .cap{color:#8e8e8c}
+.br-card b{font-size:20px;font-weight:600;color:#101010;letter-spacing:-.01em}
+.br-card p{font-size:17px;line-height:1.45;color:#2a2a2a;max-width:none}
+.br-card .sum{font-size:44px;font-weight:500;line-height:1;letter-spacing:-.03em}
+.br-opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.br-opts button{background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:12px 14px;font-weight:400;font-size:15px;text-align:left}
+.br-opts button:hover:not(:disabled){border-color:var(--accent)}
+.br-opts button:disabled{cursor:default;color:var(--dim)}
+.br-opts button.right{border-color:var(--good);color:var(--ink)}
+.br-opts button.half{border-color:#f2b33d;color:var(--ink)}
+.br-opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.br-acts{display:flex;gap:8px;flex-wrap:wrap}
+#br-out b{font-weight:400}
+#br-out .okv{color:var(--good)} #br-out .half{color:#f2b33d} #br-out .warn{color:var(--bad)}
+
+/* калькулятор */
+.vc-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px;align-items:start}
+.vc-ctrls{display:flex;flex-direction:column;gap:14px;min-width:0}
+.vc-sl{display:block;font-size:14px;color:var(--dim)}
+.vc-sl b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.vc-sl input{display:block;width:100%;margin:8px 0 0;accent-color:var(--accent)}
+.vc-view{display:flex;flex-direction:column;gap:14px;min-width:0;position:sticky;top:16px}
+.vc-big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.vc-big>div{background:var(--well);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.vc-big b{font-family:var(--display);font-size:clamp(26px,3.4vw,38px);font-weight:400;line-height:1;color:var(--ink);letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vc-bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--well)}
+.vc-bar i{display:block;height:100%;transition:width .25s}
+.vc-legend{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px;font-size:13px}
+.vc-legend li{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:8px;align-items:center}
+.vc-legend li i{width:10px;height:10px;border-radius:3px}
+.vc-legend li b{font-weight:400;color:var(--ink);font-variant-numeric:tabular-nums}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px;color:var(--faint)}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)}
+.verdict b{color:var(--ink);font-weight:400}
+
+.tp-path .d{max-width:70ch}
+
+@media (max-width:760px){
+  .xp-grid,.vc-grid{grid-template-columns:minmax(0,1fr)}
+  .xp-facts>div{grid-template-columns:minmax(0,1fr);gap:2px}
+  .vc-view{position:static}
+  .br-opts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .br-card{padding:16px}
+  .br-card p{font-size:16px}
+  .z1{padding:12px}.z2{padding:12px}.z3{padding:10px}.z4{padding:10px}
+  .z4-row em{margin-left:0}
+  .vc-legend{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){.xp-flow li{animation:none;opacity:1;transform:none}.vc-bar i,.cmp-t td{transition:none}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 3 · ВЕБ-ДИЗАЙН</span></div>
+  <div class="series"><span>01 Веб-дизайн и бизнес</span><span>02 Метрики сайта</span><span>03 Принципы веб-дизайна</span><b>04 Типы проектов</b><span>05 Типы страниц</span><span>06 Типы блоков</span><span>07 Конкурентный анализ</span></div>
+  <h1>Типы проектов</h1>
+  <p class="lead"><b>Лендинг, корпоративный сайт, магазин, лонгрид, портфолио, веб-сервис.</b> Разбираем, чем они отличаются по цели, объёму и сложности, — чтобы по брифу клиента ты сразу понимал, что за проект перед тобой и сколько он займёт.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#zoom">От сайта к кнопке</a><a href="#types">Шесть типов</a><a href="#table">Сравнение</a><a href="#axes">Оси классификации</a><a href="#brief">Тренажёр</a><a href="#calc">Объём работ</a><a href="#start">С чего начать</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="zoom">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>От сайта к кнопке</h2></div></div>
+  <p>Любой сайт собран как конструктор: из UI-элементов складываются блоки, из блоков — страницы, из страниц — проект. Этот подход называют атомарным. В модуле мы идём от общего к частному: сначала смотрим на проект целиком, потом на страницы, потом на блоки. До кнопок и полей доберёмся в модуле по UI.</p>
+  <div class="tp-zoom" role="img" aria-label="Вложенность: проект содержит страницы, страница — блоки, блок — UI-элементы">
+    <div class="z1"><span class="cap">Проект · этот урок</span><b>Интернет-магазин</b>
+      <div class="z2"><span class="cap">Страница · урок 05</span><b>Карточка товара</b>
+        <div class="z3"><span class="cap">Блок · урок 06</span><b>Выбор размера и покупка</b>
+          <div class="z4"><span class="cap">UI-элементы · модуль 4</span><div class="z4-row"><i>42</i><i class="on">43</i><i>44</i><em>В корзину</em></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p>Тип проекта определяет всё, что ниже по лестнице: какие страницы понадобятся, какие блоки на них будут и сколько состояний придётся нарисовать. Поэтому первый вопрос по любому брифу — что это за проект.</p>
+  <div class="sub">
+    <h3>Три задачи любого сайта</h3>
+    <div class="sub-b">
+      <div class="three">
+        <div class="box"><span class="kind">Ясность</span><b>Объяснить, что это и для кого</b><p>За первые секунды человек понимает, куда попал и подходит ли ему продукт.</p></div>
+        <div class="box"><span class="kind">Доверие</span><b>Доказать, что можно доверять</b><p>Кейсы, отзывы, цифры, реквизиты, живые фото команды и продукта.</p></div>
+        <div class="box"><span class="kind">Конверсия</span><b>Довести до целевого действия</b><p>Заявка, покупка, подписка, регистрация. Следующий шаг всегда на виду.</p></div>
+      </div>
+      <p class="why">Если сайт проваливает хотя бы одну задачу, бизнес теряет деньги даже с хорошим продуктом: люди приходят, но не понимают, не верят или не находят, куда нажать. Типы проектов различаются тем, какая из трёх задач у них главная и сколько шагов до целевого действия.</p>
+    </div>
+  </div>
+</section>
+
+<section id="types">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Шесть основных типов</h2></div></div>
+  <p>Почти любой заказ веб-дизайнера попадает в один из шести типов. Переключай их ниже: увидишь цель, объём и главную метрику, а на светлой схеме — путь человека по сайту. Обрати внимание, как от типа к типу растёт число шагов и страниц.</p>
+  <div class="demo" id="xp">
+    <span class="cap">Рентген проекта · выбери тип</span>
+    <div class="seg" id="xp-seg" role="group" aria-label="Тип проекта"></div>
+    <div class="xp-grid">
+      <div class="xp-facts" id="xp-facts" aria-live="polite"></div>
+      <div class="stage xp-stage"><div class="xp-map" id="xp-map"></div></div>
+    </div>
+  </div>
+  <p class="cap tp-capline">Оранжевым подсвечен главный путь к целевому действию. Серые плашки — страницы, которые тоже нужно нарисовать, но человек может по ним не пройти.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Лендинг</span><p>Небольшой сайт, который ярко показывает один продукт: физический объект, IT-сервис или курс. Пример — <a href="https://eiger-extreme.mammut.com/en" target="_blank" rel="noopener">Eiger Extreme от Mammut</a>.</p></div>
+    <div class="box"><span class="kind">Корпоративный</span><p>Многостраничный сайт, который представляет компанию. У человека уже несколько сценариев: изучить услуги, посмотреть кейсы, найти вакансию. Пример — <a href="https://www.goldensuisse.com/" target="_blank" rel="noopener">Golden Suisse</a>.</p></div>
+    <div class="box"><span class="kind">Интернет-магазин</span><p>Витрина товаров. Каталог, фильтры, карточка, корзина, оплата — много сценариев и состояний. Пример — <a href="https://teenage.engineering/store/" target="_blank" rel="noopener">магазин Teenage Engineering</a>.</p></div>
+    <div class="box"><span class="kind">Лонгрид и промо</span><p>Объёмная страница, которая рассказывает историю. Много контента и простора для креатива, поэтому отлично смотрится в портфолио. Пример — <a href="https://100.greatarmenia.org/main/" target="_blank" rel="noopener">100 лет Великой Армении</a>.</p></div>
+    <div class="box"><span class="kind">Портфолио</span><p>Сайт с реальными кейсами компании или дизайнера. Обычно минималистичный: весь акцент на работах. Пример — <a href="https://artmilitonian.com/" target="_blank" rel="noopener">Art Militonian</a>.</p></div>
+    <div class="box"><span class="kind">Веб-сервис</span><p>Интерфейс для регулярной работы: таблицы, статусы, роли, настройки. Ценность в функции и скорости. Примеры — Notion, Figma, <a href="https://linear.app/" target="_blank" rel="noopener">Linear</a>.</p></div>
+  </div>
+</section>
+
+<section id="table">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Сравнение по всем типам</h2></div></div>
+  <p>Шесть типов — основа. На практике ты встретишь ещё несколько форматов: медиа, маркетплейс, личный кабинет, базу знаний. Таблица ниже собирает их вместе. Фильтруй по задаче, сложности и аудитории, чтобы увидеть, какие проекты похожи между собой.</p>
+  <div class="demo" id="cmp">
+    <span class="cap">Таблица с фильтрами</span>
+    <div class="cmp-f">
+      <div class="cmp-row"><span class="cap">Главная задача</span><div class="seg" data-f="goal"><button type="button" data-v="">Все</button><button type="button" data-v="sell">Продать</button><button type="button" data-v="lead">Заявка</button><button type="button" data-v="trust">Доверие</button><button type="button" data-v="story">Контент</button><button type="button" data-v="work">Работа в сервисе</button></div></div>
+      <div class="cmp-row"><span class="cap">Сложность UX</span><div class="seg" data-f="cx"><button type="button" data-v="">Любая</button><button type="button" data-v="1">Простая</button><button type="button" data-v="2">Средняя</button><button type="button" data-v="3">Сложная</button></div></div>
+      <div class="cmp-row"><span class="cap">Аудитория</span><div class="seg" data-f="aud"><button type="button" data-v="">Все</button><button type="button" data-v="b2c">B2C</button><button type="button" data-v="b2b">B2B</button></div></div>
+      <label class="cmp-new"><input type="checkbox" id="cmp-new"><span>Только то, что подходит для первых проектов</span></label>
+    </div>
+    <output id="cmp-out"></output>
+    <div class="scroll"><table class="cmp-t">
+      <thead><tr><th>Тип</th><th>Главная задача</th><th>Объём</th><th>Сложность</th><th>Метрика успеха</th><th>Дизайн, недель</th></tr></thead>
+      <tbody id="cmp-body"></tbody>
+    </table></div>
+  </div>
+  <p class="why">Сроки в таблице — ориентир для одного дизайнера на полной загрузке, вместе с адаптивом и одним-двумя кругами правок. Без вёрстки и без разработки айдентики.</p>
+</section>
+
+<section id="axes">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Один проект — несколько категорий</h2></div></div>
+  <p>Типы удобны, чтобы быстро договориться с клиентом. Но реальный проект почти всегда сидит на пересечении: сайт клиники — это корпоративный сайт плюс личный кабинет с анализами, а у магазина есть промо-лендинги под распродажи. Поэтому опытные дизайнеры описывают проект по нескольким осям.</p>
+  <div class="formula"><span>Формат</span><em>+</em><span>Цель</span><em>+</em><span class="m">Сложность</span></div>
+  <p>Например: «корпоративный сайт, задача — доверие, средняя сложность» или «веб-сервис, задача — удержание, высокая сложность». Одна фраза — и команда уже понимает масштаб.</p>
+  <div class="lv">
+    <div><span>Формат</span><span>Что проектируем: промо-страница, многостраничный сайт, магазин, веб-приложение, платформа с несколькими ролями, личный кабинет.</span></div>
+    <div><span>Сложность UX</span><span><b>Простая</b> — один поток, минимум состояний, как у лендинга. <b>Средняя</b> — несколько разделов, фильтры, формы, аккаунт. <b>Сложная</b> — роли и права, таблицы, статусы, интеграции.</span></div>
+    <div><span>Пользователи</span><span><b>B2C</b> — эмоции и быстрое решение. <b>B2B</b> — аргументы, кейсы, документы, долгое согласование. <b>Внутренние продукты</b> — скорость работы, обучение, защита от ошибок.</span></div>
+    <div><span>Стадия</span><span><b>MVP</b> — быстро проверить гипотезу минимумом экранов. <b>Развитие</b> — улучшать воронку и добавлять функции. <b>Масштаб</b> — дизайн-система, доступность, другие языки.</span></div>
+    <div><span>Устройства</span><span><b>Desktop-first</b> — админки и B2B-сервисы. <b>Mobile-first</b> — медиа, магазины, сервисы «на ходу». Трафик из соцсетей почти весь мобильный.</span></div>
+    <div><span>Метрика</span><span>Конверсионные проекты меряют заявками и CR, контентные — временем на странице и дочитываниями, продуктовые — активацией и удержанием.</span></div>
+  </div>
+  <div class="sub">
+    <h3>Редизайн — тоже тип</h3>
+    <div class="sub-b">
+      <p>Редизайн встречается в любом формате: от лендинга до сервиса. Главное отличие — у проекта уже есть история. Есть старый контент, трафик из поиска, привычки пользователей и код, который нельзя выбросить за неделю.</p>
+      <div class="pair">
+        <div class="bad"><i>Перерисовать</i><span>Новые цвета и шрифты поверх старой структуры. Через месяц выясняется, что упала конверсия и пропали страницы из поиска.</span></div>
+        <div class="good"><i>Улучшить</i><span>Сначала смотрим метрики и слабые места, сохраняем адреса страниц и аналитику, меняем структуру там, где она мешает.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="brief">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Тренажёр: какой это проект</h2></div></div>
+  <p>Перед тобой восемь реальных по духу брифов. Прочитай, что хочет клиент, и выбери тип проекта. Ищи в тексте подсказки: сколько продуктов, сколько целевых действий, нужно ли рассказать историю или дать инструмент для работы.</p>
+  <div class="demo" id="br">
+    <div class="br-top"><span class="cap" id="br-n">Бриф 1 из 8</span><span class="cap" id="br-score">Верно: 0</span></div>
+    <div class="br-dots" id="br-dots" aria-hidden="true"></div>
+    <div class="stage br-stage"><div class="br-card" id="br-card"></div></div>
+    <div class="br-opts" id="br-opts" role="group" aria-label="Тип проекта"></div>
+    <output id="br-out" aria-live="polite"></output>
+    <div class="br-acts"><button type="button" class="ghost" id="br-next" hidden>Следующий бриф</button><button type="button" class="ghost" id="br-reset">Начать заново</button></div>
+  </div>
+  <p class="cap tp-capline">Подсказка: в брифе почти всегда есть слово-маркер — «одна цель», «каталог», «кейсы», «история», «каждый день работают».</p>
+</section>
+
+<section id="calc">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Калькулятор объёма работ</h2></div></div>
+  <p>Клиент спросит: «Сколько это будет стоить и когда будет готово?» Ответ зависит от трёх вещей: сколько уникальных шаблонов нужно нарисовать, под сколько экранов и насколько сложны анимации и состояния. Покрути параметры и посмотри, как растёт объём.</p>
+  <div class="demo" id="vc">
+    <span class="cap">Оценка объёма · ориентир для одного дизайнера</span>
+    <div class="vc-grid">
+      <div class="vc-ctrls">
+        <div class="bld-row"><span class="cap">Тип проекта</span><div class="seg" id="vc-type"></div></div>
+        <label class="vc-sl"><span id="vc-unit-l">Блоков на странице</span> <b id="vc-unit-v">10</b><input type="range" id="vc-unit" min="1" max="20" value="10"></label>
+        <div class="bld-row"><span class="cap">Адаптив</span><div class="seg" id="vc-bp"><button type="button" data-v="1">Только десктоп</button><button type="button" data-v="2">Десктоп + мобайл</button><button type="button" data-v="3">+ планшет</button></div></div>
+        <div class="bld-row"><span class="cap">Анимации и интерактив</span><div class="seg" id="vc-anim"><button type="button" data-v="0">Нет</button><button type="button" data-v="1">Базовые</button><button type="button" data-v="2">Сложные</button></div></div>
+        <div class="bld-row"><span class="cap">Визуальный стиль</span><div class="seg" id="vc-style"><button type="button" data-v="0">Есть брендбук</button><button type="button" data-v="1">Придумать с нуля</button></div></div>
+        <div class="bld-row"><span class="cap">Тексты</span><div class="seg" id="vc-copy"><button type="button" data-v="0">Клиент даёт готовые</button><button type="button" data-v="1">Помогаем писать</button></div></div>
+      </div>
+      <div class="vc-view">
+        <div class="vc-big"><div><span class="cap">Макетов</span><b id="vc-screens">0</b></div><div><span class="cap">Часов</span><b id="vc-hours">0</b></div><div><span class="cap">Недель</span><b id="vc-weeks">0</b></div></div>
+        <div class="vc-bar" id="vc-bar" aria-hidden="true"></div>
+        <ul class="vc-legend" id="vc-legend"></ul>
+        <ul class="verdict" id="vc-out"></ul>
+      </div>
+    </div>
+  </div>
+  <div class="two">
+    <div class="box"><b>Как считается</b><ul><li>Уникальный шаблон — страница с новой структурой. Двадцать карточек товара — это один шаблон.</li><li>Мобильная версия добавляет примерно 40% к времени десктопа, планшет — ещё около 20%.</li><li>Исследование и прототип — около четверти от времени на UI.</li><li>В неделе у дизайнера примерно 25 часов чистой работы: остальное съедают созвоны и правки.</li></ul></div>
+    <div class="box"><b>Как говорить с клиентом</b><ul><li>Называй вилку: «4–6 недель». Точная цифра на старте почти всегда оказывается неправдой.</li><li>Перечисли, что входит: сколько шаблонов, какие экраны, сколько кругов правок.</li><li>Отдельно оговори, что не входит: вёрстка, тексты, фото, айдентика.</li><li>Если бюджет меньше, сокращай объём: число шаблонов и анимаций. Качество оставляй прежним.</li></ul></div>
+  </div>
+</section>
+
+<section id="start">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>С чего начать и куда расти</h2></div></div>
+  <p>Начинать в индустрии лучше с лендингов. Они не такие сложные, зато на них проходишь весь процесс: бриф, структура, прототип, дизайн, адаптив, сдача. Дальше каждый новый тип добавляет один новый навык.</p>
+  <ol class="steps tp-path">
+    <li><div><div class="t">Лендинг</div><div class="d">Учишься строить историю из блоков и вести к одному действию. Первые заказы из небольших бизнесов и онлайн-школ.</div></div></li>
+    <li><div><div class="t">Своё портфолио</div><div class="d">Учишься упаковывать кейсы: задача, процесс, результат и твоя роль. Это твой главный инструмент продаж.</div></div></li>
+    <li><div><div class="t">Лонгрид или промо</div><div class="d">Учишься работать с большим объёмом контента и анимацией. Яркий проект в портфолио, на который приходят следующие заказчики. В студии Perasperadastra мы делали такой лонгрид для «Победы».</div></div></li>
+    <li><div><div class="t">Корпоративный сайт</div><div class="d">Учишься информационной архитектуре: несколько аудиторий, навигация, шаблоны страниц. Именно такие проекты вместе с айдентикой чаще всего заказывают у нас в студии.</div></div></li>
+    <li><div><div class="t">Магазин и сервис</div><div class="d">Учишься сценариям, состояниям и системности: фильтры, корзина, ошибки, роли, дизайн-система. Обычно это работа в команде с продакт-менеджером и разработчиками.</div></div></li>
+  </ol>
+  <div class="two">
+    <div class="note"><b>Позиционирование</b><p>Со временем ты выберешь, какие проекты тебе ближе. Кто-то уходит в креативные промо и спецпроекты, кто-то — в сложные сервисы и продуктовый дизайн. Заказчики охотнее идут к дизайнеру, у которого в портфолио три похожих кейса.</p></div>
+    <div class="note"><b>Конструкторы</b><p>Лендинг, портфолио и небольшой магазин дизайнер может собрать сам на Tilda или в Webflow. Сложный магазин и сервис почти всегда передаются разработчикам: твой результат — макеты, прототип и UI-кит.</p></div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Типы проектов вместе с нейронкой</h2></div></div>
+  <p>Нейронка хорошо играет роль клиента и придирчивого менеджера проекта: задаёт неудобные вопросы, находит забытые страницы, проверяет твою оценку сроков. Решения о типе, структуре и цене принимаешь ты.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Кто клиент, что продаёт, откуда придут люди и какое действие ему нужно.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, как на настоящем брифинге.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Тип проекта и объём определяешь сам, нейронка только проверяет.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Брифинг</span><b>Понять, какой это проект</b>
+<pre id="p1">Сыграй роль клиента. Твой бизнес: <em>[чем занимается компания]</em>. Ты пришёл к веб-дизайнеру за сайтом, но сам плохо понимаешь, что тебе нужно.
+Я буду задавать тебе вопросы, чтобы определить тип проекта: лендинг, корпоративный сайт, магазин, лонгрид, портфолио или веб-сервис.
+Отвечай коротко и реалистично, иногда противоречь себе, как настоящий клиент. Не подсказывай мне тип проекта. После 8 вопросов попроси меня назвать тип и объяснить выбор.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> задаёшь вопросы и называешь тип проекта по формуле «формат + цель + сложность».</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Карта страниц</span><b>Не забыть ни одной страницы</b>
+<pre id="p2">Я делаю <em>[тип проекта]</em> для <em>[бизнес и аудитория]</em>. Целевое действие: <em>[действие]</em>.
+Вот мой список страниц и главный путь пользователя: <em>[список страниц и путь]</em>.
+Не дополняй список сам. Задавай мне по одному вопросу о сценариях, которые я мог упустить: ошибки, пустые состояния, вход, доставка, юридические страницы. Жди моего ответа.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> решаешь, какие страницы добавить, и правишь карту сайта.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Оценка</span><b>Проверить сроки</b>
+<pre id="p3">Я оценил проект: <em>[тип]</em>, <em>[число шаблонов]</em> уникальных шаблонов, адаптив <em>[какие экраны]</em>, анимации <em>[уровень]</em>. Моя оценка: <em>[часы и недели]</em>.
+Сыграй опытного менеджера проекта. Найди, где я, скорее всего, недооценил работу, и спроси меня про каждый такой пункт по очереди. Не называй свою цифру, пока я не пересчитаю сам.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> пересчитываешь оценку и формулируешь, что входит в работу, а что нет.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Разбор трёх сайтов и выбор своего проекта</b><p>Найди три живых сайта разных типов: например, лендинг, корпоративный сайт и магазин. Для каждого запиши в Figma или Notion: тип по формуле «формат + цель + сложность», целевое действие, главный путь человека по страницам и метрику, по которой бизнес поймёт, что сайт работает. Затем выбери тип для своего проекта на курсе и оцени его объём в калькуляторе выше. Сдай таблицу из трёх разборов и абзац про свой проект с вилкой сроков.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>У каждого сайта назван тип, цель и сложность</span></label>
+    <label><input type="checkbox"><span>Целевое действие одно и сформулировано глаголом</span></label>
+    <label><input type="checkbox"><span>Главный путь расписан по страницам или блокам</span></label>
+    <label><input type="checkbox"><span>Для каждого сайта указана метрика успеха</span></label>
+    <label><input type="checkbox"><span>Для своего проекта есть число шаблонов и вилка сроков</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Типы страниц: из каких страниц собирается сайт и что должно быть на каждой.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 3 · Типы проектов</footer>
+
+</div>
+<script type="application/json" id="tp-data">{
+"types":[
+{"id":"land","n":"Лендинг","goal":"Одно целевое действие: заявка, покупка, регистрация","vol":"1 страница, 8–14 блоков","cx":1,"metric":"Конверсия в заявку (CR), стоимость заявки","weeks":"1–3","task":"Конверсия","flowL":"Блоки по порядку","flow":["Первый экран: оффер и кнопка","Выгоды","Как это работает","Отзывы и цифры","Тарифы","Частые вопросы","Форма заявки"],"extra":["Спасибо за заявку","Политика данных"],"tip":"Каждый блок отвечает на один вопрос человека и подводит к форме. Вторая цель на странице почти всегда снижает конверсию."},
+{"id":"corp","n":"Корпоративный","goal":"Доверие и запрос: связаться, запросить КП","vol":"5–15 шаблонов страниц","cx":2,"metric":"Заявки и звонки, просмотры кейсов, поиск","weeks":"4–8","task":"Доверие","flowL":"Главный путь","flow":["Главная","Услуги","Страница услуги","Кейс","Форма запроса КП"],"extra":["О компании","Команда","Карьера","Пресс-центр","Документы","Контакты"],"tip":"Несколько аудиторий: клиенты, партнёры, кандидаты, журналисты. Навигация и шаблоны страниц важнее эффектов."},
+{"id":"shop","n":"Интернет-магазин","goal":"Покупка","vol":"8–20 шаблонов, сотни товаров","cx":3,"metric":"Конверсия в покупку, добавления в корзину, средний чек","weeks":"6–12","task":"Конверсия","flowL":"Главный путь","flow":["Главная","Каталог и фильтры","Карточка товара","Корзина","Оформление и оплата","Спасибо за заказ"],"extra":["Поиск","Избранное","Личный кабинет","Доставка и возврат","О бренде","404"],"tip":"Самый простой сценарий — четыре страницы. В реальности человек сравнивает, читает отзывы, возвращается. Каждое лишнее поле в оформлении бьёт по выручке."},
+{"id":"long","n":"Лонгрид и промо","goal":"История и вовлечение: дочитать, поделиться","vol":"1 страница, 10–25 блоков","cx":1,"metric":"Дочитывания, время на странице, репосты","weeks":"2–5","task":"Ясность","flowL":"Сюжет по порядку","flow":["Обложка и интрига","Глава 1","Интерактив или карта","Глава 2","Цитаты и архив","Финал и призыв поделиться"],"extra":["Версия для соцсетей","Переход на основной сайт"],"tip":"Сложность лонгрида в контенте и анимации. Технически страница одна, а работы — как на маленький сайт."},
+{"id":"port","n":"Портфолио","goal":"Показать работы и получить контакт","vol":"3–6 шаблонов","cx":1,"metric":"Сообщения и отклики, дочитывание кейсов","weeks":"1–3","task":"Доверие","flowL":"Главный путь","flow":["Главная: кто ты и чем полезен","Список кейсов","Кейс: задача, процесс, результат","Контакты"],"extra":["Обо мне и CV","Услуги"],"tip":"Главная ошибка — галерея без контекста. В каждом кейсе нужны задача, твоя роль и результат."},
+{"id":"saas","n":"Веб-сервис","goal":"Регулярная работа: решать задачи быстро и без ошибок","vol":"20–100+ экранов и состояний","cx":3,"metric":"Активация, удержание, время на задачу","weeks":"8–20+","task":"Работа","flowL":"Главный путь","flow":["Регистрация","Онбординг","Рабочий экран","Создание объекта","Статусы и уведомления"],"extra":["Настройки","Роли и доступы","Тарифы и оплата","Пустые состояния","Ошибки","Поиск"],"tip":"Здесь нет промо. Ценность — в функции. Нужны дизайн-система, состояния каждого экрана и работа с клавиатуры."}
+],
+"rows":[
+{"n":"Лендинг","goal":["lead","sell"],"g":"Одно действие: заявка или покупка","v":"1 страница","cx":1,"aud":["b2c","b2b"],"m":"CR, стоимость заявки","w":"1–3","new":1},
+{"n":"Промо и спецпроект","goal":["story"],"g":"Эмоция и вовлечение под кампанию","v":"1–3 страницы","cx":1,"aud":["b2c"],"m":"Досмотры, репосты, упоминания","w":"2–5","new":1},
+{"n":"Лонгрид","goal":["story"],"g":"Рассказать историю","v":"1 большая страница","cx":1,"aud":["b2c","b2b"],"m":"Дочитывания, время на странице","w":"2–5","new":1},
+{"n":"Портфолио","goal":["trust","lead"],"g":"Показать работы, получить контакт","v":"3–6 шаблонов","cx":1,"aud":["b2c","b2b"],"m":"Сообщения, отклики","w":"1–3","new":1},
+{"n":"Корпоративный сайт","goal":["trust","lead"],"g":"Доверие к компании и запрос","v":"5–15 шаблонов","cx":2,"aud":["b2b","b2c"],"m":"Заявки, просмотры кейсов, SEO","w":"4–8","new":0},
+{"n":"Медиа и блог","goal":["story"],"g":"Чтение и поиск статей","v":"5–10 шаблонов","cx":2,"aud":["b2c"],"m":"Трафик из поиска, возвраты, подписки","w":"4–8","new":0},
+{"n":"Интернет-магазин","goal":["sell"],"g":"Выбор и покупка","v":"8–20 шаблонов","cx":3,"aud":["b2c"],"m":"Конверсия в покупку, средний чек","w":"6–12","new":0},
+{"n":"Маркетплейс","goal":["sell","work"],"g":"Свести покупателей и продавцов","v":"40+ экранов, 2 кабинета","cx":3,"aud":["b2c","b2b"],"m":"Сделки, удержание обеих сторон","w":"12–30","new":0},
+{"n":"Веб-сервис (SaaS)","goal":["work"],"g":"Регулярная работа с задачами","v":"20–100+ экранов","cx":3,"aud":["b2b"],"m":"Активация, удержание, время на задачу","w":"8–20+","new":0},
+{"n":"Личный кабинет","goal":["work"],"g":"Оплатить, скачать, управлять профилем","v":"8–20 экранов","cx":2,"aud":["b2c","b2b"],"m":"Задачи без звонка в поддержку","w":"4–8","new":0},
+{"n":"База знаний","goal":["work","story"],"g":"Быстро найти ответ","v":"3–6 шаблонов","cx":2,"aud":["b2c","b2b"],"m":"Меньше обращений в поддержку","w":"3–6","new":0}
+],
+"briefs":[
+{"c":"Кофейня-обжарка","t":"Мы обжариваем зерно и запускаем подписку: раз в месяц пачка кофе домой. Будем крутить рекламу в соцсетях. Нужно, чтобы люди оформляли подписку.","a":"land","ok":["shop"],"e":"Один продукт, трафик из рекламы и одно действие — оформить подписку. Это классический лендинг.","eok":"Магазин подошёл бы, если бы сортов было несколько десятков и людям нужно было выбирать. С одной подпиской каталог лишний."},
+{"c":"Инжиниринговая компания","t":"Нам 20 лет, четыре направления, работаем с госкорпорациями через тендеры. Нужно показать кейсы, лицензии, команду и раздел для соискателей.","a":"corp","ok":[],"e":"Несколько направлений, несколько аудиторий (клиенты и кандидаты), задача — доверие. Это корпоративный сайт."},
+{"c":"Бренд керамики","t":"Делаем посуду вручную, 140 позиций в шести коллекциях. Хотим продавать сами, без маркетплейсов, с доставкой по России.","a":"shop","ok":[],"e":"Сотня с лишним товаров, выбор и сравнение, корзина и доставка. Без каталога и фильтров здесь не обойтись — это интернет-магазин."},
+{"c":"Городской музей","t":"К юбилею города хотим рассказать историю одной улицы: архивные фото, воспоминания жителей, интерактивная карта. Сайт нужен на один сезон.","a":"long","ok":[],"e":"Главная задача — рассказать историю и вовлечь. Много контента, одна страница, ограниченный срок жизни. Это лонгрид или спецпроект."},
+{"c":"Моушн-дизайнер","t":"Я делаю анимацию для брендов и хочу получать заказы от зарубежных студий. Нужно красиво показать восемь лучших работ и как со мной связаться.","a":"port","ok":["land"],"e":"Продукт — сам специалист и его кейсы. Это портфолио.","eok":"Портфолио на одной странице и правда похоже на лендинг. Но у каждого кейса своя страница с задачей и процессом — поэтому это портфолио."},
+{"c":"Стартап","t":"Делаем сервис для кофеен: управляющий составляет график смен, бариста видят свои смены в телефоне и меняются друг с другом.","a":"saas","ok":[],"e":"Люди будут работать в интерфейсе каждый день, есть две роли, статусы и уведомления. Это веб-сервис. Промо-лендинг для него понадобится, но это отдельный проект."},
+{"c":"Банк","t":"Запускаем кредитную карту для путешественников. Весь трафик — из рекламы. Нужна одна цель: человек оставляет заявку на карту.","a":"land","ok":["corp"],"e":"У банка есть большой корпоративный сайт, но вести рекламу на главную дорого: там кредиты, вклады, новости. Поэтому под одну карту делают отдельную посадочную страницу — лендинг.","eok":"Страница и правда будет жить внутри корпоративного сайта банка. Но задача и подход у неё как у лендинга: один продукт, одно действие."},
+{"c":"Агентство недвижимости","t":"Хотим площадку, где владельцы сами публикуют квартиры, а покупатели ищут по фильтрам, сохраняют варианты и пишут владельцам в чат.","a":"saas","ok":["shop"],"e":"Две роли со своими кабинетами, публикация, модерация, чат. Это платформа-маркетплейс — самый сложный вид веб-сервиса.","eok":"Каталог с фильтрами здесь и правда как в магазине. Но корзины нет, а у продавцов свой кабинет — значит, это платформа, то есть веб-сервис."}
+],
+"calc":{
+"land":{"u":"Блоков на странице","min":5,"max":20,"def":10,"h":3,"tpl":1},
+"corp":{"u":"Уникальных шаблонов","min":3,"max":20,"def":8,"h":9,"tpl":0},
+"shop":{"u":"Уникальных шаблонов","min":5,"max":25,"def":10,"h":9,"tpl":0},
+"long":{"u":"Блоков на странице","min":8,"max":30,"def":16,"h":3,"tpl":1},
+"port":{"u":"Уникальных шаблонов","min":2,"max":8,"def":4,"h":8,"tpl":0},
+"saas":{"u":"Экранов","min":10,"max":80,"def":25,"h":7,"tpl":0}
+}
+}</script>
+<script type="application/json" id="quiz-data">[
+{"p":"Компания продаёт одну программу обучения и ведёт на сайт трафик из рекламы. Какой тип проекта подходит лучше всего?","o":["Интернет-магазин","Лендинг","Веб-сервис"],"a":1,"e":"Один продукт, рекламный трафик и одно целевое действие — классический лендинг."},
+{"p":"Почему банк делает отдельный лендинг под новую карту вместо рекламы главной страницы?","o":["На главной много других продуктов, и человек потеряется по пути к заявке","Лендинги дешевле хостить","Главную страницу нельзя рекламировать"],"a":0,"e":"Каждое лишнее действие снижает конверсию. На отдельной странице человек получает ответы только про карту и сразу видит форму."},
+{"p":"Что главное в корпоративном сайте?","o":["Эффектные анимации на каждом экране","Доверие и понятная навигация для нескольких аудиторий","Одна страница без меню"],"a":1,"e":"Корпоративный сайт строит доверие: кейсы, документы, команда. Аудиторий несколько, поэтому информационная архитектура важнее эффектов."},
+{"p":"По какой метрике чаще всего оценивают веб-сервис?","o":["Количество репостов","Активация и удержание пользователей","Время загрузки первого экрана"],"a":1,"e":"В сервисе люди работают регулярно. Важно, чтобы они начали пользоваться (активация) и возвращались (удержание)."},
+{"p":"В магазине 300 карточек товара одинаковой структуры. Сколько это уникальных шаблонов для дизайнера?","o":["300","Один","Столько, сколько категорий"],"a":1,"e":"Шаблон — страница с новой структурой. Все карточки товара собираются по одному шаблону, меняется только контент."},
+{"p":"С какого типа проектов лучше начинать путь в веб-дизайне?","o":["Маркетплейс","Веб-сервис с ролями и правами","Лендинг"],"a":2,"e":"Лендинг небольшой, но на нём проходишь весь процесс: бриф, структура, прототип, дизайн, адаптив и сдача."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Типы проектов» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const src = $('#tp-data');
+  if (!src) return;
+  const D = JSON.parse(src.textContent);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const dots = n => '<span class="dots3" aria-label="Сложность ' + n + ' из 3">' + [1, 2, 3].map(i => '<i' + (i <= n ? ' class="on"' : '') + '></i>').join('') + '</span>';
+  const cxName = ['', 'простая', 'средняя', 'сложная'];
+  const press = (wrap, fn) => $$('button', wrap).forEach(b => b.setAttribute('aria-pressed', String(fn(b))));
+
+  // --- Рентген проекта ---
+  const xpSeg = $('#xp-seg');
+  if (xpSeg) {
+    D.types.forEach(t => {
+      const b = document.createElement('button'); b.type = 'button'; b.dataset.id = t.id; b.textContent = t.n;
+      b.addEventListener('click', () => showXp(t.id)); xpSeg.append(b);
+    });
+    function showXp(id) {
+      const t = D.types.find(x => x.id === id);
+      press(xpSeg, b => b.dataset.id === id);
+      $('#xp-facts').innerHTML =
+        '<div><span>Цель</span><span>' + esc(t.goal) + '</span></div>' +
+        '<div><span>Объём</span><span>' + esc(t.vol) + '</span></div>' +
+        '<div><span>Сложность</span><span>' + dots(t.cx) + ' ' + cxName[t.cx] + '</span></div>' +
+        '<div><span>Метрика</span><span>' + esc(t.metric) + '</span></div>' +
+        '<div><span>Дизайн</span><span>' + esc(t.weeks) + ' недель</span></div>' +
+        '<div class="tip"><span>' + esc(t.tip) + '</span></div>';
+      $('#xp-map').innerHTML =
+        '<span class="cap">' + esc(t.flowL) + ' · ' + t.flow.length + ' шагов</span>' +
+        '<ol class="xp-flow">' + t.flow.map((f, i) => '<li style="animation-delay:' + (i * 60) + 'ms"><span>' + esc(f) + '</span></li>').join('') + '</ol>' +
+        '<span class="cap" style="margin-top:8px">Ещё нарисовать</span><div class="xp-extra">' + t.extra.map(e => '<span>' + esc(e) + '</span>').join('') + '</div>';
+    }
+    showXp(D.types[0].id);
+  }
+
+  // --- Таблица с фильтрами ---
+  const cmp = $('#cmp');
+  if (cmp) {
+    const st = { goal: '', cx: '', aud: '', fresh: false };
+    const goalName = { sell: 'продать', lead: 'заявка', trust: 'доверие', story: 'контент', work: 'работа в сервисе' };
+    function draw() {
+      $$('.seg', cmp).forEach(seg => press(seg, b => b.dataset.v === st[seg.dataset.f]));
+      const rows = D.rows.filter(r =>
+        (!st.goal || r.goal.includes(st.goal)) &&
+        (!st.cx || r.cx === +st.cx) &&
+        (!st.aud || r.aud.includes(st.aud)) &&
+        (!st.fresh || r.new));
+      const body = $('#cmp-body');
+      body.innerHTML = rows.length ? rows.map(r =>
+        '<tr' + (r.new ? ' class="fresh"' : '') + '><td>' + esc(r.n) + '</td><td>' + esc(r.g) + '</td><td>' + esc(r.v) + '</td><td>' + dots(r.cx) + '</td><td>' + esc(r.m) + '</td><td>' + esc(r.w) + '</td></tr>').join('')
+        : '<tr><td class="empty" colspan="6">Под эти фильтры ничего не подходит. Кстати, это пустое состояние: оно объясняет, почему пусто, и подсказывает, что сделать, — сними один фильтр.</td></tr>';
+      const out = $('#cmp-out');
+      let msg = '<b>Подходит ' + rows.length + ' из ' + D.rows.length + '.</b> ';
+      if (!rows.length) msg += 'Попробуй сбросить сложность или аудиторию.';
+      else if (st.cx === '3') msg += 'Сложные проекты почти всегда делают командой: продакт-менеджер, несколько дизайнеров, разработчики.';
+      else if (st.fresh) msg += 'Это проекты с простым сценарием: на них удобно пройти весь процесс от брифа до сдачи. Отмечены меткой «старт».';
+      else if (st.goal === 'story') msg += 'Контентные проекты меряют вниманием: дочитываниями, временем, возвратами. Здесь важны типографика и скорость загрузки.';
+      else if (st.goal === 'work') msg += 'Если человек работает в интерфейсе регулярно, красота первого экрана отходит на второй план. Важнее скорость и отсутствие ошибок.';
+      else if (st.goal === 'sell') msg += 'Там, где продают, любая лишняя секунда и лишнее поле напрямую снижают выручку.';
+      else if (st.goal) msg += 'Задача «' + goalName[st.goal] + '» встречается в разных форматах — один тип проекта может решать несколько задач.';
+      else if (st.aud === 'b2b') msg += 'B2B-проекты продают долго: важны аргументы, кейсы и документы для согласования внутри компании.';
+      else if (st.aud === 'b2c') msg += 'В B2C решение принимают быстро и часто с телефона: эмоция, доверие и короткий путь.';
+      else msg += 'Включи фильтр, чтобы сравнить похожие проекты.';
+      out.innerHTML = msg;
+    }
+    $$('.seg', cmp).forEach(seg => $$('button', seg).forEach(b => b.addEventListener('click', () => { st[seg.dataset.f] = b.dataset.v; draw(); })));
+    $('#cmp-new').addEventListener('change', e => { st.fresh = e.target.checked; draw(); });
+    draw();
+  }
+
+  // --- Тренажёр брифов ---
+  const br = $('#br');
+  if (br) {
+    const B = D.briefs, names = Object.fromEntries(D.types.map(t => [t.id, t.n]));
+    let i = 0, score = 0, res = [];
+    const fmt = n => String(n).replace('.', ',');
+    function dotsBar() {
+      $('#br-dots').innerHTML = B.map((_, k) => '<i class="' + (res[k] || (k === i ? 'cur' : '')) + '"></i>').join('');
+    }
+    function show() {
+      const q = B[i];
+      $('#br-n').textContent = 'Бриф ' + (i + 1) + ' из ' + B.length;
+      $('#br-score').textContent = 'Верно: ' + fmt(score);
+      $('#br-card').innerHTML = '<span class="cap">Клиент</span><b>' + esc(q.c) + '</b><p>«' + esc(q.t) + '»</p>';
+      const opts = $('#br-opts'); opts.innerHTML = '';
+      D.types.forEach(t => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = t.n; b.dataset.id = t.id;
+        b.addEventListener('click', () => answer(t.id)); opts.append(b);
+      });
+      $('#br-out').innerHTML = '';
+      $('#br-next').hidden = true;
+      dotsBar();
+    }
+    function answer(id) {
+      const q = B[i];
+      let msg;
+      $$('#br-opts button').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.id === q.a) b.classList.add('right');
+        else if (b.dataset.id === id) b.classList.add(q.ok.includes(id) ? 'half' : 'wrong');
+      });
+      if (id === q.a) { score += 1; res[i] = 'r'; msg = '<span class="okv">Верно.</span> ' + esc(q.e); }
+      else if (q.ok.includes(id)) { score += 0.5; res[i] = 'h'; msg = '<span class="half">Можно и так, половина балла.</span> ' + esc(q.eok) + ' <b>Точнее — ' + names[q.a].toLowerCase() + '.</b>'; }
+      else { res[i] = 'w'; msg = '<span class="warn">' + esc(names[id]) + ' здесь не подходит.</span> ' + esc(q.e); }
+      $('#br-out').innerHTML = msg;
+      $('#br-score').textContent = 'Верно: ' + fmt(score);
+      const nx = $('#br-next'); nx.hidden = false;
+      nx.textContent = i < B.length - 1 ? 'Следующий бриф' : 'Посмотреть итог';
+      dotsBar(); nx.focus({ preventScroll: true });
+    }
+    function finish() {
+      i = B.length; dotsBar();
+      const pct = score / B.length;
+      const v = pct >= .85 ? 'Ты уверенно читаешь брифы. На созвоне с клиентом это экономит часы.'
+        : pct >= .6 ? 'Хорошая база. Вернись к брифам с ошибками и найди в тексте слово-маркер, которое ты пропустил.'
+          : 'Перечитай разделы 02 и 03 и пройди ещё раз: смотри на число продуктов и целевых действий.';
+      $('#br-n').textContent = 'Итог';
+      $('#br-card').innerHTML = '<span class="cap">Результат</span><span class="sum">' + fmt(score) + ' из ' + B.length + '</span><p>' + v + '</p>';
+      $('#br-opts').innerHTML = ''; $('#br-out').innerHTML = ''; $('#br-next').hidden = true;
+    }
+    $('#br-next').addEventListener('click', () => { if (i < B.length - 1) { i++; show(); } else finish(); });
+    $('#br-reset').addEventListener('click', () => { i = 0; score = 0; res = []; show(); });
+    show();
+  }
+
+  // --- Калькулятор объёма ---
+  const vc = $('#vc');
+  if (vc) {
+    const C = D.calc, typeSeg = $('#vc-type'), sl = $('#vc-unit');
+    const st = { type: 'land', bp: 2, anim: 1, style: 0, copy: 0 };
+    const defs = { land: [2, 1], corp: [2, 1], shop: [2, 1], long: [2, 2], port: [2, 1], saas: [2, 0] };
+    D.types.forEach(t => {
+      const b = document.createElement('button'); b.type = 'button'; b.dataset.v = t.id; b.textContent = t.n;
+      b.addEventListener('click', () => setType(t.id)); typeSeg.append(b);
+    });
+    const parts = [
+      ['Исследование и прототип', '#5b8def'], ['UI-дизайн', '#eb7540'], ['UI-кит', '#b78bff'], ['Адаптив', '#34c759'],
+      ['Анимации', '#f2b33d'], ['Стиль', '#e5383b'], ['Тексты', '#8e8e8c'], ['Правки', '#4a4a48']
+    ];
+    function setType(id) {
+      st.type = id; const c = C[id];
+      sl.min = c.min; sl.max = c.max; sl.value = c.def;
+      [st.bp, st.anim] = defs[id];
+      calc();
+    }
+    function calc() {
+      const c = C[st.type], n = +sl.value, tpl = !!c.tpl;
+      $('#vc-unit-l').textContent = c.u; $('#vc-unit-v').textContent = n;
+      press(typeSeg, b => b.dataset.v === st.type);
+      press($('#vc-bp'), b => +b.dataset.v === st.bp);
+      press($('#vc-anim'), b => +b.dataset.v === st.anim);
+      press($('#vc-style'), b => +b.dataset.v === st.style);
+      press($('#vc-copy'), b => +b.dataset.v === st.copy);
+      const ui = n * c.h;
+      const kit = !tpl && n >= 6 ? ui * 0.12 : 0;
+      const disc = ui * 0.25;
+      const adapt = ui * [0, 0, 0.4, 0.6][st.bp];
+      const anim = ui * [0, 0.12, 0.35][st.anim];
+      const style = st.style ? 16 + ui * 0.08 : 0;
+      const copy = st.copy ? n * (tpl ? 1.5 : 4) : 0;
+      const edits = (ui + adapt + anim) * 0.15;
+      const v = [disc, ui, kit, adapt, anim, style, copy, edits];
+      const total = v.reduce((a, b) => a + b, 0);
+      const r5 = x => Math.max(5, Math.round(x / 5) * 5);
+      const wLo = Math.max(1, Math.floor(total * 0.85 / 25)), wHi = Math.max(wLo + 1, Math.ceil(total * 1.15 / 25));
+      $('#vc-screens').textContent = (tpl ? 1 : n) * st.bp;
+      $('#vc-hours').textContent = r5(total);
+      $('#vc-weeks').textContent = wLo + '–' + wHi;
+      $('#vc-bar').innerHTML = v.map((x, k) => x ? '<i style="width:' + (x / total * 100).toFixed(2) + '%;background:' + parts[k][1] + '"></i>' : '').join('');
+      $('#vc-legend').innerHTML = v.map((x, k) => x ? '<li><i style="background:' + parts[k][1] + '"></i><span>' + parts[k][0] + '</span><b>' + Math.round(x) + ' ч</b></li>' : '').join('');
+      const out = [];
+      const add = (cls, t) => out.push('<li class="' + cls + '"><span>' + t + '</span></li>');
+      if (total < 90) add('ok', '<b>Подходит для первого проекта.</b> Такой объём реально сделать одному и пройти весь процесс от брифа до сдачи.');
+      else if (total > 320) add('bad', '<b>Большой проект.</b> В одиночку это несколько месяцев. Обычно здесь работает команда: продакт-менеджер, два-три дизайнера и разработчики.');
+      else add('', '<b>Проект средний.</b> Один дизайнер справится, но заложи время на согласования: чем больше страниц, тем больше людей у клиента их смотрят.');
+      if (st.bp === 1) add('bad', st.type === 'saas' ? '<b>Только десктоп</b> иногда допустим для внутренних B2B-сервисов. Но мобильную версию всё равно спросят — обсуди это заранее.' : '<b>Без мобильной версии сдавать нельзя.</b> Больше половины трафика приходит с телефона, а из соцсетей — почти весь.');
+      if (st.anim === 2 && ['corp', 'shop', 'saas'].includes(st.type)) add('bad', '<b>Сложные анимации мешают работе.</b> В магазине и сервисе человек хочет быстро сделать дело. Оставь эффекты для промо-блоков.');
+      if (st.anim === 0 && st.type === 'long') add('bad', '<b>Лонгрид без анимации</b> читается как длинная статья. Заложи хотя бы базовые появления и один интерактив.');
+      if (tpl && n > 14 && st.type === 'land') add('bad', '<b>' + n + ' блоков на лендинге</b> — человек устанет раньше, чем дойдёт до формы. Проверь, отвечает ли каждый блок на реальный вопрос.');
+      if (kit) add('', '<b>Добавлен UI-кит.</b> При шести и больше шаблонах без общей библиотеки компонентов страницы начнут разъезжаться.');
+      if (st.style) add('', '<b>Стиль с нуля</b> — отдельный этап: мудборд, два-три направления, выбор. Если клиенту нужен логотип, это уже айдентика и отдельный проект.');
+      if (st.copy) add('', '<b>Тексты</b> часто тормозят проект сильнее дизайна. Договорись, кто их пишет и к какому сроку.');
+      $('#vc-out').innerHTML = out.join('');
+    }
+    sl.addEventListener('input', calc);
+    [['#vc-bp', 'bp'], ['#vc-anim', 'anim'], ['#vc-style', 'style'], ['#vc-copy', 'copy']].forEach(([sel, k]) =>
+      $$('button', $(sel)).forEach(b => b.addEventListener('click', () => { st[k] = +b.dataset.v; calc(); })));
+    setType('land');
+  }
+})();
+
+</script>
+</body></html>

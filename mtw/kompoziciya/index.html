@@ -1,0 +1,1558 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Композиция</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив только для методички «Композиция» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+button.ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.demo .warn{color:var(--bad)}
+.demo .okv{color:var(--good)}
+
+/* общие: ползунки и вердикт */
+.k-sliders{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 24px}
+.k-sliders.two-s{grid-template-columns:repeat(2,minmax(0,1fr))}
+.k-sliders label{display:block;font-size:14px;color:var(--dim)}
+.k-sliders b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.k-sliders input[type=range]{display:block;width:100%;margin:8px 0 0;accent-color:var(--accent);height:28px}
+.k-sliders .seg{margin-top:8px}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.4}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)} .verdict li.mid::before{color:#f2b33d}
+.verdict b{color:var(--ink);font-weight:400}
+.gl-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.gl-bar .cap{color:var(--faint)}
+
+/* статичные схемы */
+.k-fig{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.k-fig svg{display:block;width:100%;min-width:480px;height:auto}
+.k-fig text{font-family:var(--mono);font-size:11px;fill:var(--dim);letter-spacing:.06em}
+.k-mini{background:#f4f4f2;border-radius:8px;padding:10px;display:grid;place-items:center}
+.k-mini svg{display:block;width:100%;max-width:240px;height:auto}
+.k-gut{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;position:relative}
+.k-gut>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;min-height:130px}
+.k-gut>div:first-child{border-color:var(--ink)}
+.k-gut>div.end{border-color:var(--accent)}
+.k-gut i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--accent)}
+.k-gut b{font-weight:400;font-size:18px}
+.k-gut span{font-size:15px;line-height:1.4}
+.k-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.k-pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.k-pair i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.k-pair p{font-size:15px}
+.k-lines{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:12px;padding:24px 28px;position:relative}
+.k-l{display:flex}
+.k-bar{display:block;border-radius:3px;background:#101010;height:12px}
+.k-h{width:62%;height:18px}.k-t{width:76%;background:#8e8e8c;height:8px}.k-t2{width:54%;background:#8e8e8c;height:8px}
+.k-pill{display:block;width:34%;height:30px;border-radius:999px;background:#eb7540}
+.k-axis::before{content:"";position:absolute;left:24px;top:12px;bottom:12px;border-left:1.5px dashed #eb7540}
+.k-card{background:#fff;border-radius:12px;padding:16px;width:min(260px,100%);display:flex;flex-direction:column;gap:6px;box-shadow:0 2px 10px rgba(0,0,0,.08);color:#101010}
+.k-card b{font-size:16px;font-weight:600;color:#101010}
+.k-card span{font-size:13px;color:#5a5a58}
+.k-card em{font-style:normal;font-weight:600;font-size:16px}
+.k-card .u-btn{padding:9px 14px;font-size:13px}
+.k-card.c-bad{align-items:center;text-align:center;padding:10px 22px 22px 12px}
+.k-card.c-bad em{margin-left:30px}
+.k-card.c-good .row{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px}
+.k-rh{display:flex;align-items:flex-end;gap:6px;height:44px;background:#f4f4f2;border-radius:8px;padding:8px 12px}
+.k-rh i{flex:0 0 auto;width:14px;height:24px;background:#101010;border-radius:3px}
+.k-rh.dyn i:nth-child(1){height:30px;width:22px}.k-rh.dyn i:nth-child(2){height:10px;margin-left:10px}.k-rh.dyn i:nth-child(3){height:28px;width:8px}.k-rh.dyn i:nth-child(4){height:16px;width:24px;background:#eb7540;margin-left:2px}.k-rh.dyn i:nth-child(5){height:8px;margin-left:14px}.k-rh.dyn i:nth-child(6){height:26px}
+.k-rh.pro i:nth-child(1){height:6px;opacity:.3}.k-rh.pro i:nth-child(2){height:11px;opacity:.45}.k-rh.pro i:nth-child(3){height:16px;opacity:.6}.k-rh.pro i:nth-child(4){height:21px;opacity:.75}.k-rh.pro i:nth-child(5){height:26px;opacity:.9}.k-rh.pro i:nth-child(6){height:30px}
+
+/* угадай паттерн */
+.gz-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.gz-top b{font-weight:400}
+.gz-top .cap{color:var(--accent)}
+.gz-stage{padding:14px;display:block}
+.gz-mock{position:relative;aspect-ratio:16/10;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.gz-mock>.e{position:absolute;border-radius:3px;background:#d6d6d3}
+.gz-mock>.e.k{background:#101010}.gz-mock>.e.t{background:#bdbdba;height:1.4%!important;border-radius:2px}.gz-mock>.e.a{background:#eb7540;border-radius:999px}.gz-mock>.e.p{background:linear-gradient(135deg,#c9c9c6,#a3a3a0)}
+.gz-mock>.e.face{background:radial-gradient(circle at 50% 42%,#f2c9a8 0 18%,transparent 19%),linear-gradient(135deg,#c9c9c6,#a3a3a0)}
+.gz-mock svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.gz-mock .gz-path{fill:none;stroke:#3b6ef0;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .6s ease .2s}
+.gz-mock.show .gz-path{opacity:.85}
+.gz-dot{position:absolute;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:#3b6ef0;color:#fff;font:500 12px var(--body);display:grid;place-items:center;opacity:0;transform:scale(.4);transition:opacity .3s,transform .3s}
+.gz-mock.show .gz-dot{opacity:1;transform:none}
+#gz-ans button[aria-pressed="true"].right{border-color:var(--good)}
+#gz-ans button[aria-pressed="true"].wrong{border-color:var(--bad)}
+
+/* конструктор сетки */
+.gl-stage{padding:16px;display:block;min-height:0}
+.gl-fit{position:relative;width:100%;overflow:hidden}
+.gl-page{position:absolute;left:0;top:0;transform-origin:0 0;background:#fff;box-shadow:0 4px 24px rgba(0,0,0,.1);border-radius:10px;overflow:hidden}
+.gl-in{display:grid;position:relative;z-index:1}
+.gl-in>div{border-radius:6px;background:#e4e4e1;min-width:0}
+.gl-in .nav-l{background:#101010;height:28px;align-self:center}
+.gl-in .nav-r{height:16px;align-self:center;background:#bdbdba}
+.gl-in .h1{background:#101010}
+.gl-in .tx{background:#c9c9c6}
+.gl-in .btn{background:#eb7540;border-radius:999px}
+.gl-in .img{background:linear-gradient(135deg,#d6d6d3,#b5b5b1)}
+.gl-in .card{background:#ececea;border:1px solid #d6d6d3}
+.gl-cols{position:absolute;top:0;bottom:0;display:grid;z-index:2;pointer-events:none;transition:opacity .2s}
+.gl-cols i{background:rgba(235,117,64,.16);border-left:1px solid rgba(235,117,64,.5);border-right:1px solid rgba(235,117,64,.5)}
+.gl-page.no-ov .gl-cols{opacity:0}
+
+/* близость */
+.px-stage{display:block;padding:24px 20px}
+.px-list{width:min(440px,100%);margin-inline:auto;display:flex;flex-direction:column;font-family:var(--body);color:#101010}
+.px-list .tag{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#8e8e8c}
+.px-list .ttl{font-size:18px;font-weight:600;line-height:1.2;letter-spacing:-.01em}
+.px-list .dsc{font-size:14px;line-height:1.35;color:#5a5a58}
+.px-list .sp{flex:none;transition:height .12s}
+.px-list.show .sp.in{background:rgba(52,199,89,.28)}
+.px-list.show .sp.out{background:rgba(91,141,239,.28)}
+
+/* якоря */
+.an-stage{padding:14px;display:block}
+.an-box{position:relative;aspect-ratio:16/9;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.an-svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.an-el{position:absolute;border-radius:6px;transition:left .5s cubic-bezier(.3,.7,.2,1),top .5s cubic-bezier(.3,.7,.2,1),width .5s,height .5s;z-index:1}
+.an-el::after{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#eb7540;box-shadow:0 0 0 3px #fff}
+.an-d{background:#101010;color:#f4f4f2;display:grid;place-items:center;font:600 clamp(11px,2.2vw,22px) var(--body);letter-spacing:-.01em}
+.an-d span{position:relative;z-index:1;padding:0 6px;text-align:center}
+.an-d::after{width:16px;height:16px;margin:-8px 0 0 -8px;opacity:.0}
+.an-l{background:#101010;border-radius:3px}
+.an-a{background:linear-gradient(135deg,#d6d6d3,#a3a3a0)}
+.an-b{background:#e4e4e1}
+.an-c{background:#eb7540;border-radius:999px}
+
+/* кубик */
+.dc-stage{display:block;padding:24px 20px}
+.dc-block{background:#fff;border-radius:12px;padding:26px 22px;color:#101010;font-family:var(--body);display:flex;flex-direction:column;gap:18px;box-shadow:0 4px 20px rgba(0,0,0,.08);overflow:hidden}
+.dc-h{font-size:22px;font-weight:600;line-height:1.1;letter-spacing:-.02em;transition:all .35s}
+.dc-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start;transition:all .35s}
+.dc-c{background:#f4f4f2;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:4px;transition:all .35s;min-width:0}
+.dc-c i{display:block;height:54px;border-radius:6px;background:#d6d6d3;transition:all .35s}
+.dc-c b{font-size:14px;font-weight:600;color:#101010}
+.dc-c span{font-size:12px;color:#5a5a58}
+.dc-block.t-size .dc-cards{grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr)}
+.dc-block.t-size .dc-c:first-child i{height:120px}
+.dc-block.t-size .dc-c:first-child b{font-size:18px}
+.dc-block.t-pos .dc-h{padding-left:34%}
+.dc-block.t-pos .dc-c:nth-child(2){margin-top:28px}.dc-block.t-pos .dc-c:nth-child(3){margin-top:56px}
+.dc-block.t-color .dc-c:nth-child(2){background:#eb7540}
+.dc-block.t-color .dc-c:nth-child(2) i{background:#101010}
+.dc-block.t-color .dc-c:nth-child(2) span{color:#101010}
+.dc-block.t-shape .dc-c i{border-radius:50%;width:54px}
+.dc-block.t-shape .dc-c:nth-child(2){border-radius:999px 999px 10px 10px}
+.dc-block.t-text .dc-h{font-size:clamp(30px,5vw,48px);line-height:.92;max-width:9ch;letter-spacing:-.04em}
+
+/* весы */
+.sc-tg .seg button{padding:5px 10px;font-size:13px}
+.sc-stage{display:block;padding:14px 14px 22px}
+.sc-box{position:relative;aspect-ratio:2/1;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.sc-photo{position:absolute;left:6%;top:50%;transform:translateY(-50%);background:radial-gradient(circle at 50% 38%,#4a4a48 0 17%,transparent 18%),radial-gradient(ellipse at 50% 100%,#3a3a38 0 42%,transparent 43%),#1d1d1c;border-radius:6px;transition:width .15s,height .15s}
+.sc-text{position:absolute;top:50%;width:26%;transform:translate(-50%,-50%);display:flex;flex-direction:column;gap:6px;transition:left .15s}
+.sc-text b{display:block;height:14px;width:92%;background:#3a3a3a;border-radius:3px}
+.sc-text i{display:block;height:6px;background:#c9c9c6;border-radius:3px}
+.sc-text i.s{width:60%}
+.sc-b{display:block;height:20px;width:58%;margin-top:6px;border-radius:999px;background:#d6d6d3;transition:background .2s}
+.sc-b.acc{background:#eb7540}
+.sc-axis{position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed #c9c9c6}
+.sc-beam-w{position:relative;height:76px;margin-top:6px;overflow:hidden}
+.sc-beam{position:absolute;left:8%;right:8%;top:36px;height:4px;border-radius:2px;background:#101010;transition:transform .3s ease}
+.sc-beam i{position:absolute;top:-6px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:#eb7540;box-shadow:0 0 0 3px #f4f4f2;transition:left .3s ease}
+.sc-pivot{position:absolute;left:50%;top:40px;width:0;height:0;margin-left:-11px;border-left:11px solid transparent;border-right:11px solid transparent;border-bottom:18px solid #8e8e8c}
+
+/* спидометр */
+.sp-grid{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px;align-items:start}
+.sp-page{background:#f4f4f2;border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.sp-page button{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border:1px solid #d6d6d3;border-radius:6px;padding:0 10px;font:400 12px var(--body);color:#101010;background:#fff;text-align:left;transition:height .2s,background .2s}
+.sp-page button[data-l="1"]{height:30px;background:#fff}
+.sp-page button[data-l="2"]{height:44px;background:repeating-linear-gradient(0deg,#fff 0 7px,#ececea 7px 9px)}
+.sp-page button[data-l="3"]{height:62px;background:repeating-linear-gradient(90deg,#c9c9c6 0 22%,#fff 22% 26%);color:#101010}
+.sp-page button span{background:#fff;border-radius:4px;padding:2px 6px}
+.sp-page button small{font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:#5a5a58;background:#fff;border-radius:4px;padding:2px 6px}
+.sp-page button:hover{border-color:#eb7540}
+.sp-page button.hot{border-color:#e5383b;box-shadow:inset 0 0 0 1px #e5383b}
+.sp-view{display:flex;flex-direction:column;gap:14px;min-width:0}
+.sp-gauge{display:flex;flex-direction:column;align-items:center;gap:4px}
+.sp-gauge svg{width:min(240px,100%);height:auto;display:block}
+.sp-gauge .cap b{color:var(--ink);font-weight:400}
+#sp-needle{transform-origin:100px 100px;transition:transform .4s ease}
+.sp-chart{width:100%;height:110px;display:block;background:var(--well);border-radius:8px}
+
+/* тренажёр */
+.game{display:flex;flex-direction:column;gap:12px}
+.game-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.game-top .cap{color:var(--accent);font-size:12px}
+.game-acts{display:flex;gap:8px;flex-wrap:wrap}
+.game-stage{padding:16px;display:block}
+.tr-mock b{color:#101010}
+.tr-mock{position:relative;background:#fff;border-radius:12px;overflow:hidden;color:#101010;font-family:var(--body);padding:0 6% 28px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.tr-grid{position:absolute;top:0;bottom:0;left:6%;right:6%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:3%;pointer-events:none;opacity:0;transition:opacity .2s;z-index:3}
+.tr-grid i{background:rgba(235,117,64,.13);border-left:1px solid rgba(235,117,64,.45);border-right:1px solid rgba(235,117,64,.45)}
+.tr-mock.grid-on .tr-grid{opacity:1}
+.tr-nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:12px}
+.tr-logo{font-size:13px;font-weight:700;line-height:1;letter-spacing:-.02em;margin-left:-4%;padding:2px}
+.tr-menu{display:flex;gap:clamp(8px,2vw,22px);font-size:clamp(10px,1.4vw,13px);color:#5a5a58}
+.tr-hero,.tr-cards,.tr-gal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:3%}
+.tr-hero{margin-top:clamp(12px,3vw,28px);align-items:center}
+.tr-copy{grid-column:1/5;display:flex;flex-direction:column;align-items:flex-start;gap:clamp(8px,1.6vw,14px)}
+.tr-h{font-size:clamp(17px,3.6vw,38px);font-weight:600;line-height:1.02;letter-spacing:-.03em;margin-left:2.2%;max-width:14ch}
+.tr-p{font-size:clamp(11px,1.5vw,15px);color:#5a5a58;margin:0;max-width:34ch;line-height:1.35}
+.tr-btn{background:#eb7540;color:#101010;border-radius:999px;padding:clamp(7px,1.2vw,12px) clamp(12px,2vw,22px);font-size:clamp(11px,1.4vw,14px);font-weight:500;margin-left:5%;white-space:nowrap}
+.tr-img{grid-column:5/7;aspect-ratio:3/4;border-radius:8px;background:radial-gradient(circle at 50% 40%,#f2b33d 0 22%,transparent 23%),linear-gradient(135deg,#e4e4e1,#c9c9c6)}
+.tr-cards{margin-top:clamp(24px,6vw,64px)}
+.tr-c{grid-column:span 2;background:#f4f4f2;border-radius:8px;padding:8%;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tr-c i{display:block;aspect-ratio:4/3;border-radius:6px;background:#d6d6d3}
+.tr-c b{font-size:clamp(11px,1.5vw,15px);font-weight:600}
+.tr-c3{width:78%}
+.tr-rev{margin-top:4px;background:#101010;color:#f4f4f2;border-radius:8px;padding:clamp(10px,2vw,20px);display:flex;flex-direction:column;gap:4px}
+.tr-rev b{font-size:clamp(13px,2vw,20px);font-weight:600;color:#f4f4f2}
+.tr-rev span{font-size:clamp(11px,1.4vw,14px);color:#bdbdba}
+.tr-gal{margin-top:clamp(24px,6vw,64px)}
+.tr-ph{grid-column:1/4;aspect-ratio:16/10;border-radius:8px;background:linear-gradient(135deg,#d6d6d3,#a3a3a0)}
+.tr-cap{grid-column:1/4;margin-top:clamp(18px,4vw,40px);font-size:clamp(11px,1.4vw,14px);color:#5a5a58;justify-self:start;padding:2px}
+.tr-foot{grid-column:1/7;margin-top:6px;border-top:1px solid #ececea;padding-top:10px;font-size:clamp(11px,1.4vw,14px)}
+.tr-foot b{color:#101010;font-weight:500}
+.bug{cursor:pointer;border-radius:8px;transition:box-shadow .2s;position:relative;z-index:4}
+.bug:hover{box-shadow:0 0 0 2px rgba(59,110,240,.35)}
+.bug:focus-visible{outline:2px solid #3b6ef0;outline-offset:2px}
+.bug.found,.bug.found:hover{box-shadow:0 0 0 3px #e5383b}
+.game-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.game-list li{background:var(--card);border:1px solid var(--stroke);border-left:2px solid var(--bad);border-radius:10px;padding:12px 14px;font-size:15px;display:flex;flex-direction:column;gap:4px}
+.game-list li b{color:var(--ink);font-weight:400}
+.game-list li.game-win{border:1px solid var(--good)}
+
+@media (max-width:760px){
+  .k-sliders,.k-sliders.two-s,.k-pair,.sp-grid{grid-template-columns:minmax(0,1fr)}
+  .k-gut{grid-template-columns:minmax(0,1fr)}
+  .k-gut>div{min-height:0}
+  .dc-cards{gap:8px}
+  .dc-c{padding:8px}
+  .dc-c i{height:40px}
+  .dc-c span{display:none}
+  .dc-block{padding:18px 14px}
+  .dc-block.t-size .dc-c:first-child i{height:84px}
+  .dc-block.t-shape .dc-c i{width:40px}
+  .dc-block.t-pos .dc-c:nth-child(2){margin-top:16px}.dc-block.t-pos .dc-c:nth-child(3){margin-top:32px}
+  .gz-stage,.an-stage,.gl-stage,.game-stage,.sc-stage{padding:8px}
+  .gz-dot{width:20px;height:20px;margin:-10px 0 0 -10px;font-size:11px}
+  .tr-mock{padding-bottom:18px}
+  .tr-menu span:nth-child(n+2){display:none}
+  .tr-h{max-width:none}
+}
+@media (prefers-reduced-motion:reduce){.an-el,.dc-h,.dc-c,.dc-c i,.dc-cards,.sc-beam,.sc-beam i,#sp-needle,.gz-mock .gz-path,.gz-dot,.sp-page button{transition:none}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 4 · UI</span></div>
+  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 UI-элементы</span><span>03 UI-кит</span><span>04 Концепция в веб-дизайне</span><b>05 Композиция</b><span>06 Типографика</span><span>07 Иконки</span><span>08 Адаптив</span><span>09 Цвет</span></div>
+  <h1>Композиция</h1>
+  <p class="lead"><b>Композиция решает, что человек увидит первым, что с чем свяжет и куда посмотрит дальше.</b> Разбираем путь взгляда, сетку, группировку, якоря, баланс и ритм — и всё это можно покрутить руками.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#base">Основа</a><a href="#attention">Путь взгляда</a><a href="#grid">Сетка</a><a href="#group">Группировка</a><a href="#anchors">Якоря и доминанта</a><a href="#balance">Баланс и ритм</a><a href="#game">Тренажёр</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="base">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Что такое композиция</h2></div></div>
+  <p>Посмотри на свой рабочий стол. Если всё свалено в кучу, нужную бумагу ищешь минуту. Если разложено по стопкам — счета слева, заметки справа, ноутбук по центру, — рука сама тянется куда надо. Ты ничего не читаешь, ты просто видишь структуру.</p>
+  <p>В интерфейсе так же. Композиция — это правила, по которым элементы стоят на экране: что важнее, что второстепенно, что читать сначала, а что в конце. Без неё даже красивые элементы разваливаются на глазах. Эти законы одинаковы для сайтов, приложений, картин и кино: посмотри любой кадр Уэса Андерсона — там выверен каждый сантиметр, и взгляд идёт ровно туда, куда задумал режиссёр.</p>
+  <p class="quote">Дизайнер работает навигатором: прокладывает маршрут взгляда от первого экрана до целевого действия.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Вопрос 1</span><b>Что главное?</b><p>У экрана есть одна доминанта. Человек находит её за секунду, не вчитываясь.</p></div>
+    <div class="box"><span class="kind">Вопрос 2</span><b>Что с чем связано?</b><p>Связанные элементы стоят рядом и похожи друг на друга. Чужие — разведены.</p></div>
+    <div class="box"><span class="kind">Вопрос 3</span><b>Куда смотреть дальше?</b><p>От главного взгляд по цепочке переходит ко второстепенному и к кнопке.</p></div>
+  </div>
+
+  <div class="sub">
+    <h3>Как устроено восприятие</h3>
+    <div class="sub-b">
+      <p>Мозг экономит силы. Длинный текст даётся тяжело, короткое видео — легко. Поэтому минимализм — это не стиль, а суть дизайна: упрощать восприятие и при этом не делать скучно.</p>
+      <p>Чётко мы видим только небольшую зону в центре. Периферическое зрение размытое, но хорошо ловит движение, крупные формы и контраст. Отсюда два правила: функциональные блоки делаем узкими, а важное — контрастным, чтобы его заметили даже краем глаза.</p>
+      <div class="k-fig"><svg viewBox="0 0 640 230" role="img" aria-label="Экран десктопа шириной 1440 пикселей, в центре узкая зона чёткого зрения, края размыты">
+        <rect x="20" y="20" width="600" height="170" rx="10" fill="#222" stroke="#2a2a2a"/>
+        <rect x="40" y="44" width="150" height="10" rx="5" fill="#3a3a3a"/><rect x="450" y="44" width="150" height="10" rx="5" fill="#3a3a3a"/>
+        <rect x="40" y="150" width="110" height="18" rx="9" fill="#3a3a3a"/><rect x="510" y="150" width="90" height="18" rx="9" fill="#eb7540" opacity=".55"/>
+        <ellipse cx="320" cy="105" rx="120" ry="70" fill="#eb7540" opacity=".13" stroke="#eb7540" stroke-dasharray="4 4"/>
+        <rect x="250" y="80" width="140" height="14" rx="3" fill="#f4f4f2"/><rect x="262" y="104" width="116" height="7" rx="3" fill="#8e8e8c"/><rect x="262" y="118" width="96" height="7" rx="3" fill="#8e8e8c"/>
+        <text x="320" y="214" text-anchor="middle">ЗОНА ФОКУСА ≈ 500–700 PX · ЭКРАН 1440 PX</text>
+        <text x="96" y="110" text-anchor="middle">ПЕРИФЕРИЯ</text><text x="544" y="110" text-anchor="middle">ПЕРИФЕРИЯ</text>
+      </svg></div>
+      <p class="why">Поэтому форма заявки на десктопе — 400–480 px, а не на всю ширину, и строка текста — 60–75 знаков. Экран десктопа всегда шире зоны фокуса. На телефоне экран и зона фокуса почти совпадают.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Пространство</h3>
+    <div class="sub-b">
+      <p>В вебе мы работаем с ограниченным пространством: его можно измерить и разделить. Есть два формата.</p>
+      <div class="two">
+        <div class="box"><span class="kind">Физический</span><b>Окно экрана</b><p>Ширину и высоту видно сразу, поэтому экран легко разделить на равные части. Человек без усилий делит пространство пополам, на три и на четыре части. Семь равных частей глаз уже не видит — приходится считать. На этой особенности построены сетки.</p></div>
+        <div class="box"><span class="kind">Виртуальный</span><b>Длина страницы</b><p>Ширина ограничена контейнером, а высота заранее неизвестна. Для человека высота — это время, которое он тратит на скролл. Дизайнер решает, сколько смысла положить в каждую минуту.</p></div>
+      </div>
+      <p>Представь лонгрид-экскурсию по Эрмитажу. Где-то нужен «тяжёлый» блок — полотно во весь экран, на котором взгляд задерживается. Потом «лёгкий»: воздух и короткая подпись, чтобы человек выдохнул. Если поставить подряд только тяжёлые блоки, посетитель устанет на третьем зале. Если только лёгкие — заскучает и не дойдёт до главного экспоната. Управляешь высотой — управляешь вниманием.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Точка, линия, прямоугольник</h3>
+    <div class="sub-b">
+      <p>Любой макет собирается из трёх фигур. Это алфавит композиции: из него складываются все «слова» интерфейса. Хороший пример — рабочий стол компьютера: ярлыки — точки, панель задач — линия, окна — прямоугольники.</p>
+      <div class="three">
+        <div class="box"><span class="kind">Точка</span><div class="k-mini"><svg viewBox="0 0 160 70" aria-hidden="true"><circle cx="40" cy="35" r="16" fill="#eb7540"/><circle cx="90" cy="35" r="6" fill="#101010"/><circle cx="120" cy="35" r="6" fill="#101010"/><line x1="96" y1="35" x2="114" y2="35" stroke="#101010" stroke-dasharray="2 3"/></svg></div><p>Сильнее всего притягивает взгляд: аватар в профиле, круглая кнопка, лицо, логотип. Одна точка статична, две создают невидимую связь, много точек — текстуру. Таких элементов на экране держи мало.</p></div>
+        <div class="box"><span class="kind">Линия</span><div class="k-mini"><svg viewBox="0 0 160 70" aria-hidden="true"><rect x="16" y="22" width="22" height="8" rx="4" fill="#101010"/><rect x="46" y="22" width="22" height="8" rx="4" fill="#101010"/><rect x="76" y="22" width="22" height="8" rx="4" fill="#101010"/><rect x="106" y="22" width="22" height="8" rx="4" fill="#101010"/><line x1="16" y1="48" x2="144" y2="48" stroke="#eb7540" stroke-width="2"/></svg></div><p>Точка в движении: у неё есть направление и длина. Это меню, ряд иконок, футер, панель инструментов в Figma. Линия выравнивает, разделяет и ведёт взгляд.</p></div>
+        <div class="box"><span class="kind">Прямоугольник</span><div class="k-mini"><svg viewBox="0 0 160 70" aria-hidden="true"><rect x="16" y="10" width="58" height="50" rx="6" fill="none" stroke="#101010" stroke-width="2"/><rect x="86" y="10" width="58" height="50" rx="6" fill="#101010"/><rect x="22" y="16" width="46" height="22" rx="3" fill="#eb7540"/></svg></div><p>Замкнутая линия с площадью. Ограничивает пространство: карточка, фото, абзац текста, кнопка. В вебе любой блок можно представить прямоугольником.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Три этапа работы</h3>
+    <div class="sub-b">
+      <p>Композицию строят как дом: сначала идея, потом каркас, потом фасад. Разберём на лендинге доставки еды.</p>
+      <ol class="steps">
+        <li><div><div class="t">Концептуальная форма — смысл</div><div class="d">Ни цвета, ни шрифта. Решаем главную мысль: «еда у двери за 15 минут». Значит, в основе скорость, метафора — таймер и короткий путь. Каждое будущее пятно и линия несут функцию, а не украшают.</div></div></li>
+        <li><div><div class="t">Архитектурная форма — каркас</div><div class="d">Делим страницу на этажи: первый экран с обещанием и кнопкой, «как это работает» в три шага, меню, отзывы, финальный призыв. Ставим сетку и силовые линии: крупный заголовок слева, оффер по центру. Это макроуровень: блоки, страницы, путь пользователя.</div></div></li>
+        <li><div><div class="t">Графическая форма — фасад</div><div class="d">Только теперь плотный быстрый гротеск, энергичный акцент на кнопках, фото еды, микроанимация таймера. Это микроуровень: шрифт, форма текста, цвет, иллюстрации.</div></div></li>
+      </ol>
+      <p class="why">Если перепрыгнуть сразу к третьему этапу, получится красиво, но рассыплется: аккуратные кнопки, которые ведут в никуда. Порядок этажей не меняется.</p>
+    </div>
+  </div>
+</section>
+
+<section id="attention">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Путь взгляда</h2></div></div>
+  <p>Ты не вчитываешься в каждый элемент, а сканируешь визуальные массы. Взгляд останавливается только на том, что цепляет. Первым — лицо человека на фото, потом крупные заголовки, дальше всё остальное по иерархии. Траектории этого сканирования хорошо изучены с помощью айтрекинга.</p>
+
+  <div class="sub">
+    <h3>Диаграмма Гутенберга</h3>
+    <div class="sub-b">
+      <p>В 1950-х газетный дизайнер Эдмунд Арнольд заметил: на равномерно заполненной странице взгляд идёт из левого верхнего угла в правый нижний.</p>
+      <div class="k-gut">
+        <div><i>01 · Старт</i><b>Левый верх</b><span>Сюда смотрят первым, по привычке читать слева направо. Здесь логотип и главное.</span></div>
+        <div><i>02 · Сильная зона</i><b>Правый верх</b><span>Попадает в поле зрения следующей. Контакты, вход в профиль, корзина.</span></div>
+        <div><i>03 · Слабая зона</i><b>Левый низ</b><span>Воспринимается хуже всего. Важное сюда не ставят.</span></div>
+        <div class="end"><i>04 · Финиш</i><b>Правый низ</b><span>Здесь взгляд останавливается. Место для CTA: «Записаться», чат с оператором.</span></div>
+      </div>
+      <p class="why">В языках с письмом справа налево — арабском, иврите, фарси — схема зеркальная. Логотип справа, финиш в левом нижнем углу.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>F и Z</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><span class="kind">F-паттерн</span><div class="k-mini"><svg viewBox="0 0 160 80" aria-hidden="true"><rect x="12" y="10" width="136" height="7" rx="3" fill="#101010"/><rect x="12" y="26" width="96" height="5" rx="2" fill="#8e8e8c"/><rect x="12" y="38" width="120" height="5" rx="2" fill="#8e8e8c"/><rect x="12" y="50" width="70" height="5" rx="2" fill="#8e8e8c"/><rect x="12" y="62" width="100" height="5" rx="2" fill="#8e8e8c"/><path d="M10 13H146M10 13V72M10 34H104" fill="none" stroke="#eb7540" stroke-width="3" stroke-linecap="round" opacity=".85"/></svg></div><p>Страницы с большим количеством текста: статьи, блоги, выдача поиска. Человек читает первые строки целиком, потом всё короче и в итоге скользит по левому краю вниз. Важное — в начало строк и в заголовки.</p></div>
+        <div class="box"><span class="kind">Z-паттерн</span><div class="k-mini"><svg viewBox="0 0 160 80" aria-hidden="true"><rect x="12" y="8" width="20" height="8" rx="2" fill="#101010"/><rect x="110" y="8" width="38" height="8" rx="4" fill="#8e8e8c"/><rect x="40" y="26" width="80" height="30" rx="4" fill="#d6d6d3"/><rect x="12" y="64" width="40" height="6" rx="3" fill="#8e8e8c"/><rect x="112" y="62" width="36" height="12" rx="6" fill="#eb7540"/><path d="M18 12H138L22 68H136" fill="none" stroke="#101010" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/></svg></div><p>Мало текста, много графики: промо, первый экран, постер. Крупная картинка ломает F, и взгляд прыгает по диагонали через неё. Логотип слева вверху, меню справа, кнопка — в конце диагонали.</p></div>
+      </div>
+
+      <div class="demo" id="gaze">
+        <span class="cap">Угадай паттерн · 4 макета</span>
+        <div class="gz-top"><b id="gz-title">Макет 1 из 4</b><span class="cap" id="gz-score">Верно 0</span></div>
+        <div class="stage gz-stage"><div class="gz-mock" id="gz-mock"></div></div>
+        <div class="seg" id="gz-ans"><button type="button" data-a="F">Здесь сработает F</button><button type="button" data-a="Z">Здесь сработает Z</button></div>
+        <output id="gz-out"></output>
+        <button type="button" class="ghost" id="gz-next" hidden>Следующий макет</button>
+      </div>
+      <p class="cap">Посмотри на макет и выбери, по какой траектории его просканируют. После ответа поверх нарисуется путь взгляда.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Силовые линии</h3>
+    <div class="sub-b">
+      <p>Силовая линия — вертикаль, горизонталь или диагональ, на которой стоят минимум два элемента. Она собирает контент в систему, задаёт баланс и ускоряет работу: когда силовые намечены, новые элементы встают на место сами. Намечай их в самом начале, ещё на вайрфрейме.</p>
+      <div class="three">
+        <div class="box"><span class="kind">Центральная</span><p>Самая частая. Подчёркивает объект в центре, иерархия строится вокруг него. Воспринимается как устойчивая и спокойная.</p></div>
+        <div class="box"><span class="kind">По контенту</span><p>Обычно левый край текста. Пришла из журналов и газет: длинный текст читается в привычном формате без лишней нагрузки.</p></div>
+        <div class="box"><span class="kind">Диагональная</span><p>Ведёт взгляд из угла в угол, даёт движение. Основа Z-паттерна и промо-экранов.</p></div>
+      </div>
+      <div class="k-pair">
+        <div class="bad"><i>Без силовой</i><div class="stage k-lines"><div class="k-l" style="margin-left:6%"><b class="k-bar k-h"></b></div><div class="k-l" style="margin-left:14%"><b class="k-bar k-t"></b></div><div class="k-l" style="margin-left:0"><b class="k-bar k-t2"></b></div><div class="k-l" style="margin-left:22%"><span class="k-pill"></span></div></div><p>Каждый элемент начинается со своего места. Глаз прыгает и не находит опоры.</p></div>
+        <div class="good"><i>Одна силовая</i><div class="stage k-lines k-axis"><div class="k-l"><b class="k-bar k-h"></b></div><div class="k-l"><b class="k-bar k-t"></b></div><div class="k-l"><b class="k-bar k-t2"></b></div><div class="k-l"><span class="k-pill"></span></div></div><p>Те же элементы на одной вертикали. Взгляд спускается по ней прямо к кнопке.</p></div>
+      </div>
+      <ul class="box" style="padding-left:34px">
+        <li>Важный контент — в верхней части страницы.</li>
+        <li>Контрастные элементы притягивают взгляд: фото, крупные заголовки, кнопки, подложки.</li>
+        <li>Связанное группируй визуально, заголовки и подзаголовки держи в чёткой иерархии.</li>
+        <li>Кнопку ставь в зону естественной остановки взгляда для твоего паттерна.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="grid">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Сетка</h2></div></div>
+  <p>Сетка — скелет интерфейса: невидимые линии, по которым выравниваются блоки, заголовки и кнопки. Пользователь её не видит, но чувствует порядок. Дизайнеру она экономит часы: не нужно каждый раз думать, где поставить элемент.</p>
+  <div class="four">
+    <div class="box"><span class="kind">Колонки</span><p>Вертикальные полосы одинаковой ширины. Основа сетки, по ним ставят контент.</p></div>
+    <div class="box"><span class="kind">Гаттер</span><p>Отступ между колонками. На десктопе 10–20 px, на телефоне 8–16 px.</p></div>
+    <div class="box"><span class="kind">Поля</span><p>От края экрана до первой колонки. Нужны, чтобы интерфейс дышал и не прилипал к краям.</p></div>
+    <div class="box"><span class="kind">Столбцы</span><p>Группы колонок под один тип контента: слева фильтры на 3 колонки, справа товары на 9.</p></div>
+  </div>
+
+  <div class="demo" id="gridlab">
+    <span class="cap">Конструктор сетки · крути и смотри на макет</span>
+    <div class="seg" id="gl-dev"><button type="button" data-d="desk">Десктоп 1440</button><button type="button" data-d="mob">Телефон 390</button></div>
+    <div class="k-sliders">
+      <label>Колонки <b id="gl-vc">6</b><input type="range" id="gl-c" min="1" max="12" value="6"></label>
+      <label>Гаттер <b id="gl-vg">20</b> px<input type="range" id="gl-g" min="0" max="60" value="20"></label>
+      <label>Поля <b id="gl-vm">120</b> px<input type="range" id="gl-m" min="0" max="200" value="120"></label>
+    </div>
+    <div class="gl-bar"><button type="button" class="ghost" id="gl-ov" aria-pressed="true">Сетка видна</button><span class="cap" id="gl-info"></span></div>
+    <div class="stage gl-stage"><div class="gl-fit" id="gl-fit"><div class="gl-page" id="gl-page"></div></div></div>
+    <ul class="verdict" id="gl-out"></ul>
+    <div class="seg" id="gl-pre"><button type="button" data-p="desk,6,20,120">Уверенный старт</button><button type="button" data-p="desk,12,20,80">12 колонок</button><button type="button" data-p="desk,5,20,120">5 колонок</button><button type="button" data-p="desk,4,2,6">Всё слиплось</button><button type="button" data-p="mob,4,12,16">Телефон</button><button type="button" data-p="mob,8,16,40">Телефон тесно</button></div>
+  </div>
+  <p class="cap">Двигай ползунки или нажимай готовые варианты. Блоки макета сами встают по колонкам, а под макетом — разбор: что хорошо и что сломалось.</p>
+
+  <div class="sub">
+    <h3>Виды сеток</h3>
+    <div class="sub-b">
+      <div class="scroll"><table>
+        <thead><tr><th>Сетка</th><th>Как устроена</th><th>Когда брать</th></tr></thead>
+        <tbody>
+          <tr><td>4 колонки</td><td>Симметрия по центру, делится на 2 и 4</td><td>Универсальный выбор для старта</td></tr>
+          <tr><td>3 колонки</td><td>Асимметрия, сложнее найти баланс</td><td>Когда нужны интересные компоновки 1 + 2</td></tr>
+          <tr><td>6 колонок</td><td>Тройка, где каждая колонка разделена на две</td><td>Больше вариантов, нужен опыт</td></tr>
+          <tr><td>5 колонок</td><td>Редкая, сильная асимметрия</td><td>Креативные проекты, портфолио</td></tr>
+          <tr><td>12 колонок</td><td>Делится на 2, 3, 4 и 6 — слишком много комбинаций</td><td>Большие продукты и дизайн-системы. Новичку легко рассыпать ритм</td></tr>
+          <tr><td>Модульная</td><td>Колонки плюс горизонтальные строки, на пересечении — модули</td><td>Полиграфия, бенто-сетки, дашборды</td></tr>
+          <tr><td>Иерархическая</td><td>Без жёсткой структуры, элементы стоят по визуальному весу</td><td>Лонгриды и спецпроекты. В обычных сайтах не нужна</td></tr>
+        </tbody>
+      </table></div>
+      <p class="why">Комбинировать сетки на одном сайте можно, но ритм начинает ломаться. Лучше, когда весь проект выдержан в одной системе.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Цифры для старта</h3>
+    <div class="sub-b">
+      <div class="three">
+        <div class="box"><span class="kind">Десктоп 1440</span><ul><li>4–6 колонок, или 12, если собираешь блоки по 3, 4 и 6</li><li>Гаттер 16–20 px</li><li>Поля 80–120 px, контейнер 1200–1280 px</li></ul></div>
+        <div class="box"><span class="kind">Планшет 768</span><ul><li>6–8 колонок</li><li>Гаттер 16 px</li><li>Поля 24–40 px</li></ul></div>
+        <div class="box"><span class="kind">Телефон 390</span><ul><li>2–4 колонки</li><li>Гаттер 8–16 px</li><li>Поля 16–20 px</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Принципы</h3>
+    <div class="sub-b">
+      <ol class="steps">
+        <li><div><div class="t">Один контейнер на весь сайт</div><div class="d">Ширина контейнера одинаковая на всех страницах: лендинг, каталог, статья. Открой два раздела любого крупного сайта — левый край контента совпадёт.</div></div></li>
+        <li><div><div class="t">Принцип клетки в зоопарке</div><div class="d">Гаттер небольшой, 15–20 px. Чем шире прутья, тем легче вниманию сбежать: колонки распадаются на отдельные островки.</div></div></li>
+        <li><div><div class="t">Системные отступы</div><div class="d">Расстояние между блоками страницы — 100–160 px, и оно одинаковое везде. Выбрал 120 — держи 120.</div></div></li>
+        <li><div><div class="t">Принцип велосипеда</div><div class="d">Не занимай всё свободное место. Контент — спицы колеса: между ними пусто, и именно пустота делает колесо лёгким. Свободное пространство создаёт акцент.</div></div></li>
+        <li><div><div class="t">Силовые линии = зонирование</div><div class="d">Макет — здание, блоки — этажи. Пусть на каждом этаже будут одни и те же «лифты»: две-три вертикали, по которым стоит контент. Тогда по зданию легко ходить.</div></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="group">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Группировка и отступы</h2></div></div>
+  <p>Группировка объединяет элементы, связанные по смыслу: фото с подписью, заголовок с текстом, цену с кнопкой. Когда элементы собраны в группы, мозг считывает экран быстрее. Главный инструмент группировки — пустота вокруг элементов, её называют негативным пространством.</p>
+  <p>Новички и заказчики часто видят пустоту как недоработку и хотят её заполнить. Но пустое место уже занято фоном и работает: отделяет, подчёркивает, даёт воздух. Apple, Google и Airbnb строят на этом целые интерфейсы. В гайдлайнах айдентики пустота даже закреплена правилом — охранная зона логотипа.</p>
+
+  <div class="sub">
+    <h3>Закон близости</h3>
+    <div class="sub-b">
+      <p>Связанные элементы стоят ближе друг к другу, чем к чужим. Это правило «внутреннее меньше внешнего»: отступ внутри группы должен быть заметно меньше, чем между группами, обычно в 2–3 раза.</p>
+      <div class="demo" id="prox">
+        <span class="cap">Близость · раздвигай и сдвигай</span>
+        <div class="k-sliders two-s">
+          <label>Внутри записи <b id="px-vi">8</b> px<input type="range" id="px-i" min="0" max="48" step="2" value="8"></label>
+          <label>Между записями <b id="px-vo">32</b> px<input type="range" id="px-o" min="0" max="96" step="2" value="32"></label>
+        </div>
+        <div class="gl-bar"><button type="button" class="ghost" id="px-show" aria-pressed="false">Показать отступы</button></div>
+        <div class="stage px-stage"><div class="px-list" id="px-list"></div></div>
+        <ul class="verdict" id="px-out"></ul>
+        <div class="seg" id="px-pre"><button type="button" data-p="8,32">Норма 8 / 32</button><button type="button" data-p="16,16">Всё одинаково</button><button type="button" data-p="28,10">Перепутано</button><button type="button" data-p="4,90">Разъехалось</button></div>
+      </div>
+      <p class="cap">Меняй два отступа и следи, когда записи блога распадаются на отдельные строчки, а когда снова собираются в группы. Включи «Показать отступы», чтобы увидеть их цветом.</p>
+      <p>Группа должна иметь логику и ограниченный размер: оптимально 5–7 элементов. Когда объектов слишком много, их искусственно объединяют подложкой — так появляется карточка. Без карточек любой каталог выглядел бы как хаос.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Базовая единица</h3>
+    <div class="sub-b">
+      <p>Базовая единица — минимальный шаг, которому кратны все отступы и размеры. В приложениях это 8 px (иногда 4), на сайтах — 8 или 10. Если шаг 8, все отступы — 8, 16, 24, 32, 48, 64, 96, 128. Макет сразу выглядит собранным, а разработчику легче его сверстать.</p>
+      <div class="space">
+        <div><i style="width:8px;height:8px"></i><span>8</span></div><div><i style="width:16px;height:16px"></i><span>16</span></div><div><i style="width:24px;height:24px"></i><span>24</span></div><div><i style="width:32px;height:32px"></i><span>32</span></div><div><i style="width:48px;height:48px"></i><span>48</span></div><div><i style="width:64px;height:64px"></i><span>64</span></div><div><i style="width:96px;height:96px"></i><span>96</span></div>
+      </div>
+      <p><b>Принцип Пакмана.</b> У элементов одного уровня, например карточек в сетке, расстояние по горизонтали и по вертикали одинаковое. На этом держатся бенто-сетки: плитки разного размера, но промежутки между ними везде равны.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Сходство</h3>
+    <div class="sub-b">
+      <p>Похожие элементы тоже считываются как группа, даже если стоят далеко. У группы должна быть хотя бы одна общая черта, а отличие выделяет главное.</p>
+      <div class="three">
+        <div class="box"><span class="kind">Цвет</span><p>Самый сильный сигнал. Кнопки одного цвета читаются как равные по важности, поэтому главный CTA красят иначе.</p></div>
+        <div class="box"><span class="kind">Форма</span><p>Кнопки прямоугольные, теги скруглённые — и человек различает их без чтения. Если скруглил одну карточку, скругли все.</p></div>
+        <div class="box"><span class="kind">Размер</span><p>Одинаковый размер — равная значимость. Хит продаж делают крупнее остальных карточек, и он выделяется.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Зонирование</h3>
+    <div class="sub-b">
+      <p>Группировка связывает мелкие элементы, зонирование делит страницу на большие функциональные области: фильтры и каталог, промо и форма, контент и сайдбар. Сначала делишь материал на смысловые блоки, потом закрепляешь это в интерфейсе.</p>
+      <div class="two">
+        <div class="box"><span class="kind">По экрану</span><div class="k-mini"><svg viewBox="0 0 160 80" aria-hidden="true"><rect x="8" y="8" width="144" height="64" rx="4" fill="#fff" stroke="#c9c9c6"/><rect x="14" y="14" width="38" height="52" rx="3" fill="#e4e4e1"/><rect x="58" y="14" width="88" height="24" rx="3" fill="#d6d6d3"/><rect x="58" y="42" width="42" height="24" rx="3" fill="#d6d6d3"/><rect x="104" y="42" width="42" height="24" rx="3" fill="#eb7540" opacity=".7"/></svg></div><p>Экран делится на области по горизонтали: фильтры слева, товары справа. Зоны могут быть равными или разными — по важности.</p></div>
+        <div class="box"><span class="kind">По этажам</span><div class="k-mini"><svg viewBox="0 0 160 80" aria-hidden="true"><rect x="8" y="6" width="144" height="20" rx="3" fill="#d6d6d3"/><rect x="8" y="30" width="144" height="20" rx="3" fill="#fff" stroke="#c9c9c6"/><rect x="8" y="54" width="144" height="20" rx="3" fill="#e4e4e1"/></svg></div><p>Страница режется на горизонтальные полосы во всю ширину. Каждый этаж — отдельный смысловой блок со своей задачей.</p></div>
+      </div>
+      <p>Выделенная зона живёт по тем же правилам, что и весь экран: у неё появляются свои якоря, свой центр и своя разметка.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Разделить и объединить</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><span class="kind">Разделитель</span><b>Линия между группами</b><p>Проводит границу внутри одной зоны: пункты настроек, строки таблицы, сообщения в чате. Не даёт тексту и иконкам слипнуться.</p></div>
+        <div class="box"><span class="kind">Объединитель</span><b>Подложка, рамка, общий фон</b><p>Связывает разрозненные элементы в один блок. Подсказывает, что кнопка «Купить» относится к этому товару, а не к соседнему.</p></div>
+      </div>
+      <p>Частая беда макетов — блоки страницы слипаются, и непонятно, где закончился один смысл и начался другой. Есть три способа это исправить.</p>
+      <div class="three">
+        <div class="box hot"><span class="kind">1 · Пространство</span><p>Самый чистый способ. Если внутри секции элементы стоят на 24 px, между секциями — 120–160 px. Граница читается без единой линии.</p></div>
+        <div class="box"><span class="kind">2 · Якоря</span><p>Закрой блок своими якорями: заголовок слева вверху, акцент справа внизу. Блок читается как отдельный этаж даже на том же фоне.</p></div>
+        <div class="box"><span class="kind">3 · Цвет</span><p>Чередуй фон соседних блоков: светлый и чуть темнее. Работает даже на быстром скролле. Больше двух-трёх тонов — и страница станет лоскутным одеялом.</p></div>
+      </div>
+      <p class="why">Не смешивай все три приёма на каждом стыке. Обычно хватает одного — чаще всего пространства. Цвет и линии добавляй там, где пустоты не хватает.</p>
+    </div>
+  </div>
+</section>
+
+<section id="anchors">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Якоря и доминанта</h2></div></div>
+  <p>Якорные объекты — элементы с самым большим визуальным весом. По ним взгляд перескакивает и изучает экран в нужном порядке. Главный якорь — доминанта: на неё смотрят первым. Остальные задают границы, как рамка у картины. На главной tesla.com доминанта — машина на весь экран, а после неё взгляд падает на кнопки заказа.</p>
+  <p class="quote">Доминанта на экране одна. Если главных две, они спорят, и человек не знает, куда смотреть.</p>
+
+  <div class="demo" id="anch">
+    <span class="cap">Схемы якорей · переключай</span>
+    <div class="seg" id="an-seg"><button type="button" data-s="rect">Прямоугольник</button><button type="button" data-s="tri">Треугольник</button><button type="button" data-s="vert">Вертикаль</button><button type="button" data-s="hor">Горизонталь</button><button type="button" data-s="diag">Диагональ</button></div>
+    <div class="stage an-stage"><div class="an-box" id="an-box">
+      <svg class="an-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline id="an-line" points="" fill="none" stroke="#eb7540" stroke-width="1.5" stroke-dasharray="5 4" vector-effect="non-scaling-stroke"/></svg>
+      <div class="an-el an-l" data-k="L"></div>
+      <div class="an-el an-d" data-k="D"><span>Доминанта</span></div>
+      <div class="an-el an-a" data-k="A"></div>
+      <div class="an-el an-b" data-k="B"></div>
+      <div class="an-el an-c" data-k="C"></div>
+    </div></div>
+    <output id="an-out"></output>
+  </div>
+  <p class="cap">Нажимай схемы: элементы переедут на новые места, а пунктир покажет, по каким точкам пройдёт взгляд.</p>
+
+  <div class="sub">
+    <h3>Якоря в карточке</h3>
+    <div class="sub-b">
+      <p>Якоря работают и в маленьких блоках. Элементы карточки почти никогда не стоят по центру: заголовок — в левом верхнем углу, это первое, что считывается. В сложной карточке остальное притягивается к другим углам, и расстояние до каждого угла одинаковое.</p>
+      <div class="k-pair">
+        <div class="bad"><i>Всё по центру</i><div class="stage"><div class="k-card c-bad"><b>Кеды Classic</b><span>Белые, размеры 36–45</span><em>4 990 ₽</em><span class="u-btn u-primary">В корзину</span></div></div><p>Каждая строка со своим краем, отступы до границ разные. Карточка плывёт.</p></div>
+        <div class="good"><i>По якорям</i><div class="stage"><div class="k-card c-good"><b>Кеды Classic</b><span>Белые, размеры 36–45</span><div class="row"><em>4 990 ₽</em><span class="u-btn u-primary">В корзину</span></div></div></div><p>Заголовок в левом верхнем углу, цена слева внизу, кнопка справа внизу. Поля одинаковые со всех сторон.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Кубик инструментов</h3>
+    <div class="sub-b">
+      <p>Внимание — валюта. Однообразный макет наскучит, и человек уйдёт, не дочитав. Когда композиция выходит слишком стандартной, представь игральный кубик, на гранях которого пять инструментов: размер, расположение, цвет, форма объекта, форма текста. Брось его и поиграй с одной гранью.</p>
+      <div class="demo" id="dice">
+        <span class="cap">Кубик · оживи скучный блок</span>
+        <div class="seg" id="dc-seg"><button type="button" data-t="none">Скучный блок</button><button type="button" data-t="size">Размер</button><button type="button" data-t="pos">Расположение</button><button type="button" data-t="color">Цвет</button><button type="button" data-t="shape">Форма</button><button type="button" data-t="text">Форма текста</button></div>
+        <div class="stage dc-stage"><div class="dc-block" id="dc-block">
+          <div class="dc-h">Три шага до первого заказа</div>
+          <div class="dc-cards"><div class="dc-c"><i></i><b>Выбери блюдо</b><span>Меню на каждый день</span></div><div class="dc-c"><i></i><b>Оплати онлайн</b><span>Картой или СБП</span></div><div class="dc-c"><i></i><b>Встречай курьера</b><span>Через 15 минут</span></div></div>
+        </div></div>
+        <output id="dc-out"></output>
+        <button type="button" class="ghost" id="dc-roll">Бросить кубик</button>
+      </div>
+      <p class="cap">Сначала посмотри на скучный блок, потом нажимай грани по одной или бросай кубик. В разборе — что поменялось и почему взгляд теперь цепляется.</p>
+    </div>
+  </div>
+</section>
+
+<section id="balance">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Баланс и ритм</h2></div></div>
+  <p>У каждого элемента есть визуальный вес. Тяжелее то, что крупнее, темнее, ярче, сложнее по форме, и всё, где есть лицо. Баланс — когда веса распределены так, что макет стоит ровно. Дисбаланс — когда одна сторона перевешивает и макет будто падает.</p>
+
+  <div class="demo" id="scale">
+    <span class="cap">Весы · уравновесь экран</span>
+    <div class="k-sliders">
+      <label>Размер фото <b id="sc-vw">36</b> %<input type="range" id="sc-w" min="16" max="42" value="36"></label>
+      <label>Текст по горизонтали <b id="sc-vx">62</b> %<input type="range" id="sc-x" min="54" max="86" value="62"></label>
+      <label class="sc-tg">Кнопка<span class="seg" id="sc-btn"><button type="button" data-v="grey">Серая</button><button type="button" data-v="acc">Акцентная</button></span></label>
+    </div>
+    <div class="stage sc-stage"><div class="sc-box" id="sc-box">
+      <div class="sc-photo" id="sc-photo"></div>
+      <div class="sc-text" id="sc-text"><b></b><i></i><i></i><i class="s"></i><span class="sc-b" id="sc-b"></span></div>
+      <span class="sc-axis"></span>
+    </div>
+    <div class="sc-beam-w"><div class="sc-beam" id="sc-beam"><i id="sc-mark"></i></div><span class="sc-pivot"></span></div></div>
+    <output id="sc-out"></output>
+  </div>
+  <p class="cap">Слева большое тёмное фото. Отодвигай текст, меняй размер фото и цвет кнопки, пока весы не выровняются. Оранжевая точка на балке — центр тяжести экрана. Это упрощённая модель: глаз оценивает вес на глаз, но логика та же.</p>
+
+  <div class="sub">
+    <h3>Виды композиции</h3>
+    <div class="sub-b">
+      <div class="scroll"><table>
+        <thead><tr><th>Тип</th><th>Как устроена</th><th>Ощущение и где нужна</th></tr></thead>
+        <tbody>
+          <tr><td>Симметричная</td><td>Элементы зеркально по обе стороны оси, доминанта в центре</td><td>Спокойно, надёжно, иногда скучно. Промо одного продукта, страницы входа</td></tr>
+          <tr><td>Асимметричная</td><td>Веса сторон разные, но противовес держит равновесие</td><td>Живо, есть направление. Лендинги, промо. В вебе чаще всего центр плюс асимметричные детали</td></tr>
+          <tr><td>Статичная</td><td>Горизонтали, симметрия, равные отступы и одинаковые блоки</td><td>Покой и устойчивость. Каталоги, банки, сервисы, где важно доверие</td></tr>
+          <tr><td>Динамичная</td><td>Асимметрия, диагонали, разные размеры, наложения: текст заходит на фото</td><td>Движение и энергия. Спорт, музыка, события, креативные студии</td></tr>
+          <tr><td>Закрытая</td><td>Якоря закрывают все 4 угла, взгляд остаётся внутри экрана</td><td>Фокус на одной мысли, завершённость. Ювелирные и дорогие бренды</td></tr>
+          <tr><td>Открытая</td><td>Вместо 1–2 якорей пустота, элементы уходят за край</td><td>Простор и стимул скроллить дальше. Лёгкие современные лендинги</td></tr>
+        </tbody>
+      </table></div>
+      <p>Центральная композиция бывает устойчивой, когда всё прочно стоит на местах, и неустойчивой — чаще в форме треугольника, когда элементы тянутся к центру сверху или снизу. Неустойчивая подталкивает смотреть дальше.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Метр и ритм</h3>
+    <div class="sub-b">
+      <p><b>Метр</b> — одинаковые элементы на одинаковом расстоянии, как карточки в каталоге. Подходит, когда ничего не нужно выделять. <b>Ритм</b> — чередование разных элементов и пауз. Он удерживает внимание и даёт ощущение движения.</p>
+      <div class="three">
+        <div class="box"><span class="kind">Статичный</span><div class="k-rh"><i></i><i></i><i></i><i></i><i></i><i></i></div><p>Равные повторы. Покой и строгость, как lo-fi «для учёбы»: не отвлекает.</p></div>
+        <div class="box"><span class="kind">Динамичный</span><div class="k-rh dyn"><i></i><i></i><i></i><i></i><i></i><i></i></div><p>Неравные повторы, контрастные размеры, диагонали. Напряжение нарастает, как трек перед дропом.</p></div>
+        <div class="box"><span class="kind">Прогрессирующий</span><div class="k-rh pro"><i></i><i></i><i></i><i></i><i></i><i></i></div><p>Каждый повтор чуть меняется: растёт размер, темнеет цвет. Создаёт ощущение развития.</p></div>
+      </div>
+      <div class="lv">
+        <div><span>Микроритм</span><span>Элементы: интерлиньяж, отступы внутри карточек и между строками. Здесь закладывается система — если её соблюдать, макет выглядит аккуратным и профессиональным.</span></div>
+        <div><span>Мезоритм</span><span>Блоки: одинаковые расстояния между группами внутри секции. Одна увеличенная карточка ломает метр и делает акцент.</span></div>
+        <div><span>Макроритм</span><span>Страница: темп скролла и сторителлинг. Тяжёлые блоки чередуются с лёгкими. Заодно перепад плотности сам отделяет блоки друг от друга.</span></div>
+      </div>
+
+      <div class="demo" id="speed">
+        <span class="cap">Спидометр страницы · собери макроритм</span>
+        <div class="sp-grid">
+          <div class="sp-page" id="sp-page" aria-label="Блоки страницы"></div>
+          <div class="sp-view">
+            <div class="sp-gauge"><svg viewBox="0 0 200 116" aria-hidden="true"><path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="#2a2a2a" stroke-width="14" stroke-linecap="round"/><path d="M20 100A80 80 0 0 1 60 31" fill="none" stroke="#5b8def" stroke-width="14" stroke-linecap="round" opacity=".7"/><path d="M140 31A80 80 0 0 1 180 100" fill="none" stroke="#ff3b4e" stroke-width="14" stroke-linecap="round" opacity=".7"/><line id="sp-needle" x1="100" y1="100" x2="100" y2="34" stroke="#f4f4f2" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="100" r="7" fill="#eb7540"/></svg><span class="cap">Средняя нагрузка <b id="sp-avg"></b></span></div>
+            <svg class="sp-chart" id="sp-chart" viewBox="0 0 320 110" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <ul class="verdict" id="sp-out"></ul>
+          </div>
+        </div>
+        <div class="seg" id="sp-pre"><button type="button" data-p="3,3,3,3,2,3,3,2">Всё тяжёлое</button><button type="button" data-p="1,1,1,1,1,1,1,2">Всё лёгкое</button><button type="button" data-p="2,2,2,2,2,2,2,2">Метр</button><button type="button" data-p="3,1,2,3,1,2,1,2">Хороший ритм</button></div>
+      </div>
+      <p class="cap">Нажимай на блоки страницы слева — каждый клик меняет нагрузку: лёгкий, средний, тяжёлый. Стрелка и график показывают, где человек устанет, а где заскучает.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Контраст и нюанс</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><span class="kind">Контраст</span><b>Сильное различие</b><p>Размер, цвет, шрифт, положение. Строит иерархию, управляет вниманием, разделяет группы, добавляет динамики. Заголовок 64 px рядом с текстом 16 px — контраст.</p></div>
+        <div class="box"><span class="kind">Нюанс</span><b>Небольшое отклонение</b><p>Элементы не спорят, но есть «изюминка»: одна карточка чуть другого тона, лёгкий наклон подписи. Разбавляет монотонность и добавляет артистичности.</p></div>
+      </div>
+      <p>На контрасте и нюансе строится иерархия: порядок элементов от главного к второстепенному. Проверить её просто — размой макет или прищурься. Сначала должны читаться иллюстрация и заголовки, потом тексты. Если за 3–5 секунд главное не находится, человек уходит со страницы.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Движение</h3>
+    <div class="sub-b">
+      <p>В вебе композиция живая: элементы реагируют на курсор и скролл. Взаимодействие тоже проектируют заранее.</p>
+      <div class="four">
+        <div class="box"><span class="kind">Микро</span><p>Кнопка меняет цвет при наведении, фото проявляется при наведении на пункт списка.</p></div>
+        <div class="box"><span class="kind">Сторителлинг</span><p>Контент движется по мере скролла, иллюстрации собираются. Так часто делают лонгриды.</p></div>
+        <div class="box"><span class="kind">Игра</span><p>Прогресс, бейджи, награды за шаги. Эталон — Duolingo.</p></div>
+        <div class="box"><span class="kind">Скрытое</span><p>Раскрывающиеся списки, подсказки, карточки-перевёртыши. Информация появляется, когда нужна.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="game">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Тренажёр: что не по сетке</h2></div></div>
+  <p>Перед тобой лендинг на 6-колоночной сетке. В нём шесть ошибок: где-то элемент съехал с колонки, где-то сломана близость или отступ. Включи сетку, чтобы было легче, и нажимай на подозрительные элементы. Промах не считается.</p>
+  <div class="game" id="game-box">
+    <div class="game-top"><span class="cap" id="game-n">Найдено 0 из 6</span><div class="game-acts"><button type="button" class="ghost" id="tr-grid" aria-pressed="false">Показать сетку</button><button type="button" class="ghost" id="game-all">Показать все</button><button type="button" class="ghost" id="game-reset">Заново</button></div></div>
+    <div class="stage game-stage">
+      <div class="tr-mock" id="tr-mock">
+        <div class="tr-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="tr-nav"><b class="bug tr-logo" data-bug="0" role="button" tabindex="0">Вкусно<br>за 15</b><div class="tr-menu"><span>Меню</span><span>Доставка</span><span>Контакты</span></div></div>
+        <div class="tr-hero">
+          <div class="tr-copy">
+            <b class="bug tr-h" data-bug="1" role="button" tabindex="0">Горячий обед у двери за 15 минут</b>
+            <p class="tr-p">Готовим рядом с тобой и везём на самокате. Первая доставка бесплатно.</p>
+            <span class="bug tr-btn" data-bug="2" role="button" tabindex="0">Заказать обед</span>
+          </div>
+          <div class="tr-img"></div>
+        </div>
+        <div class="tr-cards">
+          <div class="tr-c"><i></i><b>Супы</b></div><div class="tr-c"><i></i><b>Боулы</b></div><div class="tr-c bug tr-c3" data-bug="3" role="button" tabindex="0"><i></i><b>Десерты</b></div>
+        </div>
+        <div class="tr-rev bug" data-bug="4" role="button" tabindex="0"><b>Отзывы</b><span>«Привезли за 12 минут, суп горячий» — Анна</span></div>
+        <div class="tr-gal">
+          <div class="tr-ph"></div>
+          <span class="bug tr-cap" data-bug="5" role="button" tabindex="0">Наша кухня на Тверской</span>
+          <div class="tr-foot"><b>Работаем каждый день с 9 до 23</b></div>
+        </div>
+      </div>
+    </div>
+    <ol class="game-list" id="game-list"></ol>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Композиция вместе с нейронкой</h2></div></div>
+  <p>Нейронка хорошо замечает то, к чему глаз привык: разные отступы, съехавшие края, два главных элемента. Используй её как придирчивого арт-директора на ревью. Раскладываешь макет и принимаешь решения ты.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Что за продукт, какая цель страницы, какое главное действие, какая сетка.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не раскладывает макет за тебя.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Замечания — повод подумать. Что исправлять, выбираешь сам.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Макроуровень</span><b>Этажи и ритм страницы</b>
+<pre id="p1">Я проектирую лендинг: <em>[продукт и аудитория]</em>. Главное действие: <em>[действие]</em>.
+Вот мой список блоков сверху вниз: <em>[блоки, по одному на строку]</em>.
+Помоги проверить макроритм: где подряд стоят тяжёлые блоки, где страница проседает, где нужна передышка перед кнопкой.
+Не предлагай свою структуру. Задавай вопросы по одному и жди ответа.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь на вопросы и сам переставляешь блоки на вайрфрейме.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Сетка и отступы</span><b>Ревью по скриншоту</b>
+<pre id="p2">Прикладываю скриншот экрана с включённой сеткой. Сетка: <em>[колонки, гаттер, поля]</em>. Базовая единица: <em>[8 или 10 px]</em>.
+Найди элементы, которые не стоят на колонках, и места, где отступ внутри группы больше или равен отступу между группами.
+Для каждой находки — где она и почему это мешает. Не перерисовывай, спроси меня, как я хочу исправить.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь макет в Figma и решаешь, с какими замечаниями согласен.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Путь взгляда</span><b>Проверка доминанты и якорей</b>
+<pre id="p3">Опишу первый экран: <em>[элементы, их размеры, цвета и положение]</em>.
+Как ты думаешь, в каком порядке человек увидит элементы? Есть ли одна доминанта, или главных несколько? Какой паттерн здесь сработает, F или Z, и попадает ли кнопка в точку остановки взгляда?
+Сначала задай мне один вопрос про цель экрана, потом дай разбор.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> сравниваешь разбор со своим замыслом и усиливаешь доминанту одним инструментом из кубика.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Композиция первого экрана и блока с карточками</b><p>Возьми лендинг из урока про концепцию. В Figma собери первый экран и один блок с карточками в двух версиях: десктоп 1440 и телефон 390. Настрой сетку (колонки, гаттер, поля) и подпиши её параметры. Поверх отдельным слоем нарисуй якоря, доминанту и путь взгляда. Рядом сделай мини-карту ритма всей страницы: блоки сверху вниз с пометками «лёгкий», «средний», «тяжёлый». Сдай ссылку на фрейм.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>Все элементы стоят на колонках сетки, сетка подписана</span></label>
+    <label><input type="checkbox"><span>Отступы кратны базовой единице, внутри групп меньше, чем между ними</span></label>
+    <label><input type="checkbox"><span>На экране одна доминанта, кнопка стоит в точке остановки взгляда</span></label>
+    <label><input type="checkbox"><span>Блоки страницы не слипаются, расстояние между ними одинаковое</span></label>
+    <label><input type="checkbox"><span>На карте ритма тяжёлые блоки чередуются с лёгкими</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Типографика: как шрифт, кегль и форма текста работают на композицию.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 4 · Композиция</footer>
+
+</div>
+<script type="application/json" id="game-data">[
+{"t":"Логотип вылез за поля","e":"Логотип начинается левее края сетки. Всё на странице стоит на полях, а он торчит — край страницы выглядит неровным."},
+{"t":"Заголовок съехал с колонки","e":"Заголовок начинается чуть правее текста и колонки. Сдвиг в несколько пикселей глаз видит как небрежность."},
+{"t":"Кнопка не на силовой линии","e":"Заголовок и текст стоят на одной вертикали, а кнопка отступила вправо. Взгляд спускается по линии и спотыкается."},
+{"t":"Карточка не дотянута до колонки","e":"Третья карточка уже двух других и обрывается раньше края колонки. Справа образовалась дыра, ряд выглядит недоделанным."},
+{"t":"Отзывы прилипли к карточкам","e":"Между блоками страницы везде большой отступ, а тут почти ноль. Отзывы читаются как часть каталога. Блоки разделяются одинаковым системным отступом."},
+{"t":"Подпись далеко от фото","e":"Подпись ближе к следующему блоку, чем к своему фото. По закону близости её прочитают как заголовок футера. Внутри группы отступ меньше, чем между группами."}
+]</script>
+<script type="application/json" id="quiz-data">[
+{"p":"Ты делаешь первый экран промо: крупное фото, короткий заголовок и кнопка. По какому паттерну его просканируют и где поставить кнопку?","o":["F-паттерн, кнопку слева внизу","Z-паттерн, кнопку в правом нижнем углу диагонали","Взгляд идёт хаотично, место кнопки не важно"],"a":1,"e":"Когда графики больше, чем текста, взгляд идёт по Z. Правый нижний угол — точка, где взгляд останавливается, туда и ставят CTA."},
+{"p":"Отступ между заголовком записи и её текстом 24 px, а между записями 16 px. Что произойдёт?","o":["Ничего, разница небольшая","Заголовок прочитается как часть предыдущей записи","Записи станут выглядеть дороже"],"a":1,"e":"Закон близости: внутри группы отступ меньше, чем между группами, обычно в 2–3 раза. Иначе элементы прилипают к чужой группе."},
+{"p":"Почему новичку не советуют сразу брать 12-колоночную сетку?","o":["Её не поддерживает Figma","Она подходит только для телефонов","Она даёт слишком много комбинаций, и ритм макета легко рассыпается"],"a":2,"e":"12 колонок делятся на 2, 3, 4 и 6. Без опыта блоки разной ширины перемешиваются. Для старта лучше 4–6 колонок."},
+{"p":"Что такое доминанта?","o":["Главный якорь экрана, на который смотрят первым","Самый крупный шрифт в футере","Любой элемент акцентного цвета"],"a":0,"e":"Доминанта на экране одна. Остальные якоря задают границы и ведут взгляд дальше."},
+{"p":"На лендинге подряд стоят пять плотных блоков: таблица, сетка карточек, длинный текст, ещё таблица, форма. Что не так?","o":["Нарушен макроритм: нет передышки, человек устанет","Это идеальный метр","Нужно добавить шестой такой же блок"],"a":0,"e":"Тяжёлые блоки чередуют с лёгкими. Перепад плотности держит внимание и заодно отделяет блоки друг от друга."},
+{"p":"Слева большое тёмное фото, справа маленький серый текст. Как проще всего уравновесить экран?","o":["Сдвинуть текст вплотную к фото, чтобы они слились","Добавить вес справа: акцентная кнопка, текст дальше от центра","Убрать пустоту, растянув фото на весь экран"],"a":1,"e":"Противовес работает как рычаг: чем дальше от центра и тяжелее элемент, тем сильнее он уравновешивает. Так получается асимметричный баланс."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Композиция» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const press = (btns, fn) => btns.forEach(b => b.setAttribute('aria-pressed', String(fn(b))));
+  const pl = (n, a, b, c) => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? a : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? b : c);
+  const li = items => items.map(([c, t]) => '<li class="' + c + '"><span>' + t + '</span></li>').join('');
+
+  // --- Угадай паттерн: F или Z ---
+  const gz = $('#gaze');
+  if (gz) {
+    const L = [
+      { name: 'Статья в блоге', a: 'F',
+        el: [['k', 5, 5, 8, 4], ['t', 70, 6, 24], ['k', 6, 15, 58, 6], ['t', 6, 26, 84], ['t', 6, 30, 80], ['t', 6, 34, 74], ['k', 6, 42, 32, 3.6], ['t', 6, 50, 70], ['t', 6, 54, 62], ['t', 6, 58, 48], ['k', 6, 66, 26, 3.6], ['t', 6, 74, 66], ['t', 6, 78, 52], ['t', 6, 82, 40], ['t', 6, 86, 58]],
+        path: 'M8 17H66M8 17V90M8 44H40M8 68H34', dots: [[8, 17], [64, 17], [8, 44], [38, 44], [8, 88]],
+        e: 'Много текста и заголовки по левому краю. Первые строки читают целиком, потом всё короче, а дальше взгляд скользит по левому краю вниз. Поэтому смысл выносят в начало строк и подзаголовки.' },
+      { name: 'Промо первого экрана', a: 'Z',
+        el: [['k', 5, 6, 10, 5], ['t', 60, 8, 34], ['face', 24, 20, 52, 46], ['k', 6, 72, 40, 6], ['t', 6, 82, 30], ['a', 72, 78, 22, 10]],
+        path: 'M10 9H90L20 75H84', dots: [[10, 9], [88, 9], [50, 43], [20, 75], [83, 83]],
+        e: 'Мало текста, крупное фото. Взгляд стартует с логотипа, уходит вправо к меню, по диагонали через лицо на фото падает к заголовку и заканчивает путь на кнопке справа внизу.' },
+      { name: 'Афиша концерта', a: 'Z',
+        el: [['k', 5, 6, 9, 5], ['t', 72, 8, 22], ['p', 5, 18, 90, 46], ['k', 6, 70, 54, 9], ['t', 6, 84, 28], ['a', 70, 80, 24, 11]],
+        path: 'M9 9H86L14 74H82', dots: [[9, 9], [84, 9], [50, 42], [14, 75], [82, 85]],
+        e: 'Картинка во всю ширину ломает F. Взгляд прыгает через неё по диагонали: логотип, дата справа, изображение, название внизу и кнопка покупки билета в конце пути.' },
+      { name: 'Выдача поиска', a: 'F',
+        el: [['p', 6, 6, 60, 7], ['k', 6, 20, 46, 3.4], ['t', 6, 26, 72], ['t', 6, 30, 60], ['k', 6, 38, 40, 3.4], ['t', 6, 44, 70], ['t', 6, 48, 56], ['k', 6, 56, 50, 3.4], ['t', 6, 62, 68], ['t', 6, 66, 50], ['k', 6, 74, 36, 3.4], ['t', 6, 80, 64], ['t', 6, 84, 44]],
+        path: 'M8 21H54M8 21V90M8 39H46M8 57H34', dots: [[8, 21], [52, 21], [8, 39], [44, 39], [8, 88]],
+        e: 'Однотипные текстовые результаты. Первые один-два читают внимательно, дальше только начала заголовков по левому краю. Поэтому ключевое слово в выдаче — в самом начале строки.' }
+    ];
+    const mock = $('#gz-mock'), out = $('#gz-out'), next = $('#gz-next'), btns = $$('#gz-ans button');
+    let i = 0, score = 0, done = false;
+    function draw() {
+      const l = L[i];
+      done = false; mock.classList.remove('show');
+      $('#gz-title').textContent = 'Макет ' + (i + 1) + ' из ' + L.length + ' · ' + l.name;
+      $('#gz-score').textContent = 'Верно ' + score;
+      let h = l.el.map(([c, x, y, w, hh]) => '<i class="e ' + c + '" style="left:' + x + '%;top:' + y + '%;width:' + w + '%;height:' + (hh || 1.4) + '%"></i>').join('');
+      h += '<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="gz-path" pathLength="1000" vector-effect="non-scaling-stroke" d="' + l.path + '"/></svg>';
+      h += l.dots.map(([x, y], k) => '<span class="gz-dot" style="left:' + x + '%;top:' + y + '%;transition-delay:' + (k * 0.22) + 's">' + (k + 1) + '</span>').join('');
+      mock.innerHTML = h;
+      btns.forEach(b => { b.classList.remove('right', 'wrong'); b.setAttribute('aria-pressed', 'false'); });
+      out.innerHTML = ''; next.hidden = true;
+    }
+    btns.forEach(b => b.addEventListener('click', () => {
+      if (done) return; done = true;
+      const ok = b.dataset.a === L[i].a; if (ok) score++;
+      b.setAttribute('aria-pressed', 'true'); b.classList.add(ok ? 'right' : 'wrong');
+      requestAnimationFrame(() => requestAnimationFrame(() => mock.classList.add('show')));
+      out.innerHTML = '<b>' + (ok ? 'Верно, ' : 'Здесь сработает ') + L[i].a + '-паттерн.</b> ' + L[i].e;
+      $('#gz-score').textContent = 'Верно ' + score;
+      next.hidden = false;
+      next.textContent = i === L.length - 1 ? 'Пройти заново' : 'Следующий макет';
+      if (i === L.length - 1) out.innerHTML += ' <span class="' + (score === L.length ? 'okv' : 'warn') + '">Итог: ' + score + ' из ' + L.length + '.</span>';
+    }));
+    next.addEventListener('click', () => { if (i === L.length - 1) { i = 0; score = 0; } else i++; draw(); });
+    draw();
+  }
+
+  // --- Конструктор сетки ---
+  const gl = $('#gridlab');
+  if (gl) {
+    const C = $('#gl-c'), G = $('#gl-g'), M = $('#gl-m'), fit = $('#gl-fit'), page = $('#gl-page'), out = $('#gl-out');
+    const D = { desk: { W: 1440, c: 6, g: 20, m: 120, gmax: 60, mmax: 200 }, mob: { W: 390, c: 4, g: 16, m: 16, gmax: 32, mmax: 60 } };
+    let dev = 'desk', ov = true;
+    function setDev(d, keep) {
+      dev = d; G.max = D[d].gmax; M.max = D[d].mmax;
+      if (!keep) { C.value = D[d].c; G.value = D[d].g; M.value = D[d].m; }
+      press($$('#gl-dev button'), b => b.dataset.d === d);
+    }
+    function cards(c) {
+      if (dev === 'mob') return c >= 2 && c % 2 === 0 ? [2, c / 2] : [2, c];
+      for (const k of [4, 3, 2]) if (c % k === 0) return [k, c / k];
+      return [Math.min(c, 6), 1];
+    }
+    function render() {
+      const c = +C.value, g = +G.value, m = +M.value, W = D[dev].W, mob = dev === 'mob';
+      $('#gl-vc').textContent = c; $('#gl-vg').textContent = g; $('#gl-vm').textContent = m;
+      const colW = (W - 2 * m - (c - 1) * g) / c;
+      $('#gl-info').textContent = 'Колонка ' + Math.max(0, Math.round(colW)) + ' px · контейнер ' + (W - 2 * m) + ' px';
+      const rg = mob ? 16 : 28;
+      const imgS = mob || c < 2 ? c : Math.floor(c / 2), ttl = mob || c < 2 ? c : c - imgS;
+      const [k, cs] = cards(c);
+      let h = '';
+      h += '<div class="nav-l" style="grid-column:1/span 1"></div>';
+      const nr = mob ? 1 : Math.max(1, Math.floor(c / 2));
+      h += c > 1 ? '<div class="nav-r" style="grid-column:' + (c - nr + 1) + '/-1;grid-row:1"></div>' : '';
+      h += '<div class="h1" style="grid-column:1/span ' + ttl + ';height:' + (mob ? 84 : 132) + 'px"></div>';
+      if (!mob && c >= 2) h += '<div class="img" style="grid-column:' + (ttl + 1) + '/-1;grid-row:2/span 3;min-height:300px"></div>';
+      h += '<div class="tx" style="grid-column:1/span ' + Math.max(1, mob ? c : Math.ceil(ttl * 0.8)) + ';height:' + (mob ? 56 : 64) + 'px"></div>';
+      h += '<div class="btn" style="grid-column:1/span ' + (mob ? c : Math.max(1, Math.round(ttl / 2))) + ';height:' + (mob ? 52 : 60) + 'px"></div>';
+      if (mob || c < 2) h += '<div class="img" style="grid-column:1/-1;height:' + (mob ? 200 : 300) + 'px"></div>';
+      for (let j = 0; j < k; j++) h += '<div class="card" style="grid-column:span ' + cs + ';height:' + (mob ? 150 : 230) + 'px;' + (j === 0 ? 'margin-top:' + (mob ? 24 : 56) + 'px' : (j < (c / cs) ? 'margin-top:' + (mob ? 24 : 56) + 'px' : '')) + '"></div>';
+      h += '<div class="tx" style="grid-column:1/-1;height:' + (mob ? 40 : 56) + 'px;margin-top:' + (mob ? 16 : 32) + 'px"></div>';
+      page.innerHTML = '<div class="gl-in" style="grid-template-columns:repeat(' + c + ',minmax(0,1fr));column-gap:' + g + 'px;row-gap:' + rg + 'px;padding:' + (mob ? 20 : 32) + 'px ' + m + 'px ' + (mob ? 28 : 48) + 'px">' + h + '</div>' +
+        '<div class="gl-cols" style="left:' + m + 'px;right:' + m + 'px;grid-template-columns:repeat(' + c + ',minmax(0,1fr));column-gap:' + g + 'px">' + '<i></i>'.repeat(c) + '</div>';
+      page.style.width = W + 'px';
+      page.classList.toggle('no-ov', !ov);
+      layout();
+      // разбор
+      const it = [];
+      if (!mob) {
+        if (c <= 2) it.push(['bad', '<b>' + c + ' колонк' + (c === 1 ? 'а' : 'и') + '.</b> Всё встаёт друг под другом, как на телефоне. Для десктопа мало.']);
+        else if (c === 3) it.push(['mid', '<b>3 колонки.</b> Асимметрия: интересные компоновки 1 + 2, но баланс искать сложнее.']);
+        else if (c === 4) it.push(['ok', '<b>4 колонки.</b> Универсальный выбор: симметрия по центру, делится пополам и на четыре.']);
+        else if (c === 5) it.push(['mid', '<b>5 колонок.</b> Редкая асимметричная сетка. Ни пополам, ни на три не делится — посмотри, как карточки стали узкими полосками. Для креативных проектов.']);
+        else if (c === 6) it.push(['ok', '<b>6 колонок.</b> Тройка, где каждая колонка разделена пополам. Много вариантов и при этом есть симметрия.']);
+        else if (c === 12) it.push(['mid', '<b>12 колонок.</b> Стандарт больших продуктов, но вариантов слишком много. Новичку легко рассыпать ритм — собирай блоки только по 3, 4 и 6 колонок.']);
+        else if (c === 8) it.push(['mid', '<b>8 колонок.</b> Чаще берут для планшета. На десктопе блоки делятся только на 2 и 4.']);
+        else it.push(['bad', '<b>' + c + ' колонок.</b> Нестандартное число: на него плохо делятся блоки, ряд карточек разваливается. Лучше 4–6 или 12.']);
+        if (g < 8) it.push(['bad', '<b>Гаттер ' + g + ' px.</b> Колонки слиплись, карточки сливаются в одно полотно.']);
+        else if (g <= 24) it.push(['ok', '<b>Гаттер ' + g + ' px.</b> Нормальный шаг для десктопа.']);
+        else if (g <= 40) it.push(['mid', '<b>Гаттер ' + g + ' px.</b> Широковато. Колонки начинают жить отдельно.']);
+        else it.push(['bad', '<b>Гаттер ' + g + ' px.</b> Принцип клетки в зоопарке: прутья слишком широкие, внимание сбегает, карточки стали островками.']);
+        if (m < 24) it.push(['bad', '<b>Поля ' + m + ' px.</b> Контент прилипает к краю экрана.']);
+        else if (m < 60) it.push(['mid', '<b>Поля ' + m + ' px.</b> Узко для 1440: контейнер ' + (W - 2 * m) + ' px, строки текста станут слишком длинными. Обычно 80–120.']);
+        else if (m <= 160) it.push(['ok', '<b>Поля ' + m + ' px.</b> Контейнер ' + (W - 2 * m) + ' px — интерфейс дышит.']);
+        else it.push(['mid', '<b>Поля ' + m + ' px.</b> Контейнер сжался до ' + (W - 2 * m) + ' px, по бокам много пустоты.']);
+        if (colW < 40) it.push(['bad', '<b>Колонка ' + Math.max(0, Math.round(colW)) + ' px.</b> Слишком узко: в неё не поместится даже кнопка.']);
+      } else {
+        if (c <= 4) it.push([c === 1 ? 'mid' : 'ok', '<b>' + c + ' колонк' + (c === 1 ? 'а' : 'и') + '.</b> ' + (c === 1 ? 'Просто, но карточки по две уже не поставить.' : 'Для телефона в самый раз: блоки во всю ширину или по два.')]);
+        else it.push(['bad', '<b>' + c + ' колонок.</b> Колонка ' + Math.max(0, Math.round(colW)) + ' px — уже пальца. На телефоне хватает 2–4.']);
+        if (g < 8) it.push(['mid', '<b>Гаттер ' + g + ' px.</b> Тесновато, хотя для мелких плиток бывает 4–8.']);
+        else if (g <= 16) it.push(['ok', '<b>Гаттер ' + g + ' px.</b> Нормальный шаг для телефона.']);
+        else it.push(['bad', '<b>Гаттер ' + g + ' px.</b> На узком экране такой отступ съедает место у контента.']);
+        if (m < 12) it.push(['bad', '<b>Поля ' + m + ' px.</b> Текст у самого края: на скруглённых экранах его обрежет, палец закроет.']);
+        else if (m <= 24) it.push(['ok', '<b>Поля ' + m + ' px.</b> Стандарт для телефона — 16–20 px.']);
+        else it.push(['bad', '<b>Поля ' + m + ' px.</b> Поля съели ширину: на контент осталось ' + (W - 2 * m) + ' px.']);
+      }
+      out.innerHTML = li(it);
+    }
+    function layout() {
+      const W = D[dev].W, fw = fit.clientWidth || 300;
+      const s = Math.min(1, fw / W);
+      page.style.transform = 'scale(' + s + ')';
+      page.style.left = Math.max(0, (fw - W * s) / 2) + 'px';
+      fit.style.height = Math.ceil(page.offsetHeight * s) + 'px';
+    }
+    [C, G, M].forEach(r => r.addEventListener('input', render));
+    $$('#gl-dev button').forEach(b => b.addEventListener('click', () => { setDev(b.dataset.d); render(); }));
+    $('#gl-ov').addEventListener('click', e => { ov = !ov; e.currentTarget.setAttribute('aria-pressed', String(ov)); e.currentTarget.textContent = ov ? 'Сетка видна' : 'Сетка скрыта'; render(); });
+    $$('#gl-pre button').forEach(b => b.addEventListener('click', () => {
+      const [d, c, g, m] = b.dataset.p.split(','); setDev(d, true); C.value = c; G.value = g; M.value = m; render();
+    }));
+    if (window.ResizeObserver) new ResizeObserver(layout).observe(fit); else window.addEventListener('resize', layout);
+    setDev('desk'); render();
+  }
+
+  // --- Закон близости ---
+  const px = $('#prox');
+  if (px) {
+    const I = $('#px-i'), O = $('#px-o'), list = $('#px-list'), out = $('#px-out');
+    const E = [['Сетка', 'Как собрать сетку за 10 минут', 'Колонки, гаттер и поля для лендинга на 1440.'], ['Отступы', 'Почему всё кратно восьми', 'Базовая единица и система отступов в макете.'], ['Ритм', 'Спидометр креатива', 'Как чередовать тяжёлые и лёгкие блоки страницы.']];
+    list.innerHTML = E.map(([t, h, d], k) => (k ? '<i class="sp out"></i>' : '') + '<span class="tag">' + t + '</span><i class="sp in"></i><span class="ttl">' + h + '</span><i class="sp in"></i><span class="dsc">' + d + '</span>').join('');
+    function upd() {
+      const i = +I.value, o = +O.value;
+      $('#px-vi').textContent = i; $('#px-vo').textContent = o;
+      $$('.sp.in', list).forEach(s => s.style.height = i + 'px');
+      $$('.sp.out', list).forEach(s => s.style.height = o + 'px');
+      const r = i ? o / i : (o ? 99 : 1), it = [];
+      if (i === 0) it.push(['bad', '<b>Внутри 0 px.</b> Строки слиплись, тексту нечем дышать.']);
+      if (o < i) it.push(['bad', '<b>Внутри ' + i + ', между ' + o + '.</b> Тег и заголовок стоят ближе к чужой записи, чем к своей. Глаз склеивает их с предыдущей.']);
+      else if (i > 0 && r < 1.5) it.push(['bad', '<b>Внутри ' + i + ', между ' + o + '.</b> Отступы почти равны: групп нет, список превратился в сплошной столбик строк.']);
+      else if (r < 2) it.push(['mid', '<b>Внутри ' + i + ', между ' + o + '.</b> Группы угадываются, но слабо. Сделай разницу в 2–3 раза.']);
+      else if (o > 64) it.push(['mid', '<b>Между записями ' + o + ' px.</b> Группы читаются, но разъехались так далеко, что список потерял целостность.']);
+      else if (i > 0) it.push(['ok', '<b>Внутри ' + i + ', между ' + o + '.</b> Внешний отступ в ' + (Math.round(r * 10) / 10).toString().replace('.', ',') + ' раза больше внутреннего — группы читаются сразу.']);
+      const bad8 = [i, o].filter(v => v % 4);
+      if (!bad8.length && i % 8 === 0 && o % 8 === 0) it.push(['ok', '<b>Оба значения кратны 8.</b> Система отступов держится.']);
+      else if (!bad8.length) it.push(['mid', '<b>Значения кратны 4.</b> Для мелких отступов нормально, крупные лучше брать по шагу 8.']);
+      else it.push(['mid', '<b>' + bad8.join(' и ') + (bad8.length > 1 ? ' не кратны' : ' не кратно') + ' ни 4, ни 8.</b> Округли до ближайшего шага: 8, 16, 24, 32…']);
+      out.innerHTML = li(it);
+    }
+    [I, O].forEach(r => r.addEventListener('input', upd));
+    $('#px-show').addEventListener('click', e => { const on = list.classList.toggle('show'); e.currentTarget.setAttribute('aria-pressed', String(on)); e.currentTarget.textContent = on ? 'Скрыть отступы' : 'Показать отступы'; });
+    $$('#px-pre button').forEach(b => b.addEventListener('click', () => { const [i, o] = b.dataset.p.split(','); I.value = i; O.value = o; upd(); }));
+    upd();
+  }
+
+  // --- Схемы якорей ---
+  const an = $('#anch');
+  if (an) {
+    const S = {
+      rect: { p: { L: [5, 7, 9, 6], D: [28, 36, 44, 26], A: [64, 7, 30, 14], B: [5, 70, 26, 22], C: [72, 78, 22, 12] }, line: ['L', 'A', 'C', 'B', 'L'],
+        t: '<b>Прямоугольник.</b> Якоря по углам держат экран как рамка, доминанта в центре. Взгляд обходит экран по горизонталям — устойчиво и спокойно. Так строят закрытую композицию.' },
+      tri: { p: { L: [5, 7, 9, 6], D: [5, 18, 50, 26], A: [62, 14, 32, 52], B: [5, 50, 32, 9], C: [5, 76, 22, 12] }, line: ['D', 'A', 'C', 'D'],
+        t: '<b>Треугольник.</b> Три главных якоря в вершинах воображаемого треугольника. Взгляд ходит по кругу и задерживается — ловушка для глаз. Если поставить те же элементы друг под другом, человек быстро проскроллит дальше.' },
+      vert: { p: { L: [45.5, 6, 9, 6], D: [18, 17, 64, 22], A: [34, 44, 32, 25], B: [30, 73, 40, 6], C: [39, 83, 22, 11] }, line: ['L', 'D', 'A', 'B', 'C'],
+        t: '<b>Вертикаль.</b> Взгляд спускается по оси от одного крупного элемента к другому. Если внизу виден край следующего якоря, хочется скроллить дальше. Так устроены лонгриды и мобильные экраны.' },
+      hor: { p: { L: [5, 7, 9, 6], D: [5, 18, 56, 16], A: [5, 44, 28, 44], B: [36, 44, 28, 44], C: [67, 44, 28, 44] }, line: ['A', 'B', 'C'],
+        t: '<b>Горизонталь.</b> Якоря в одну линию слева направо — витрина. Выставляет варианты перед глазами и предлагает выбрать. Основа шапки сайта и рядов карточек.' },
+      diag: { p: { L: [5, 7, 9, 6], D: [5, 16, 46, 24], A: [40, 44, 26, 26], B: [70, 8, 25, 6], C: [72, 80, 22, 11] }, line: ['D', 'A', 'C'],
+        t: '<b>Диагональ.</b> Взгляд идёт из левого верхнего угла в правый нижний. Самый динамичный способ вести внимание и основа Z-паттерна. В конце диагонали — кнопка.' }
+    };
+    const els = {}; $$('.an-el', an).forEach(e => els[e.dataset.k] = e);
+    function set(k) {
+      const s = S[k];
+      Object.entries(s.p).forEach(([n, [x, y, w, h]]) => Object.assign(els[n].style, { left: x + '%', top: y + '%', width: w + '%', height: h + '%' }));
+      els.C.style.borderRadius = k === 'hor' ? '8px' : '999px';
+      $('#an-line').setAttribute('points', s.line.map(n => { const [x, y, w, h] = s.p[n]; return (x + w / 2) + ',' + (y + h / 2); }).join(' '));
+      $('#an-out').innerHTML = s.t;
+      press($$('#an-seg button'), b => b.dataset.s === k);
+    }
+    $$('#an-seg button').forEach(b => b.addEventListener('click', () => set(b.dataset.s)));
+    set('rect');
+  }
+
+  // --- Кубик инструментов ---
+  const dc = $('#dice');
+  if (dc) {
+    const blk = $('#dc-block'), out = $('#dc-out');
+    const T = {
+      none: '<b>Скучный блок.</b> Всё одинаковое: три равные карточки, ровный заголовок. Это метр без акцента — взгляд скользит и ни за что не цепляется.',
+      size: '<b>Размер.</b> Первый шаг стал вдвое шире остальных. Появилась доминанта, и сразу понятно, с чего начать.',
+      pos: '<b>Расположение.</b> Заголовок сдвинут вправо, карточки спускаются лесенкой. Пустота слева стала активной, а лесенка сама показывает порядок шагов.',
+      color: '<b>Цвет.</b> Одна карточка в акцентном цвете. Самый быстрый способ создать якорь: контраст на нейтральном фоне виден даже краем глаза.',
+      shape: '<b>Форма.</b> Картинки стали кругами, средняя карточка — аркой. Необычная форма цепляет взгляд. Приём разовый: повторишь его везде — перестанет работать.',
+      text: '<b>Форма текста.</b> Заголовок крупный, плотный и разбит на короткие строки. Текст стал пятном в композиции ещё до того, как его прочитали.'
+    };
+    let cur = 'none';
+    function set(t) {
+      cur = t; blk.className = 'dc-block' + (t === 'none' ? '' : ' t-' + t);
+      out.innerHTML = T[t]; press($$('#dc-seg button'), b => b.dataset.t === t);
+    }
+    $$('#dc-seg button').forEach(b => b.addEventListener('click', () => set(b.dataset.t)));
+    $('#dc-roll').addEventListener('click', () => {
+      const opts = ['size', 'pos', 'color', 'shape', 'text'].filter(x => x !== cur);
+      set(opts[Math.floor(Math.random() * opts.length)]);
+    });
+    set('none');
+  }
+
+  // --- Весы ---
+  const sc = $('#scale');
+  if (sc) {
+    const W = $('#sc-w'), X = $('#sc-x'), photo = $('#sc-photo'), text = $('#sc-text'), bt = $('#sc-b'), out = $('#sc-out');
+    let acc = false;
+    function upd() {
+      const w = +W.value, x = +X.value;
+      $('#sc-vw').textContent = w; $('#sc-vx').textContent = x;
+      Object.assign(photo.style, { width: w + '%', height: Math.min(90, w * 2) + '%' });
+      text.style.left = x + '%'; bt.classList.toggle('acc', acc);
+      const m1 = w * w, x1 = 6 + w / 2, m2 = 300 + (acc ? 420 : 60);
+      const cx = (m1 * x1 + m2 * x) / (m1 + m2), d = cx - 50;
+      $('#sc-beam').style.transform = 'rotate(' + Math.max(-5, Math.min(5, d * 0.3)).toFixed(2) + 'deg)';
+      $('#sc-mark').style.left = Math.max(0, Math.min(100, (cx - 8) / 84 * 100)) + '%';
+      const pc = Math.round(cx);
+      let msg;
+      if (Math.abs(d) < 3) msg = '<span class="okv">Баланс.</span> Центр тяжести на ' + pc + '%, почти ровно посередине. Это асимметричный баланс: стороны разные, но ' + (acc ? 'текст у края и акцентная кнопка уравновешивают тяжёлое фото.' : 'текст отодвинут к краю и работает как длинный рычаг.');
+      else if (Math.abs(d) < 8) msg = '<b>Почти.</b> Центр тяжести на ' + pc + '%: ' + (d < 0 ? 'левая' : 'правая') + ' сторона чуть тяжелее. Ещё немного.';
+      else if (d < 0) msg = '<span class="warn">Перекос влево.</span> Центр тяжести на ' + pc + '%: фото перетягивает экран, макет падает налево. Добавь вес справа: отодвинь текст к краю, включи акцентную кнопку или уменьши фото.';
+      else msg = '<span class="warn">Перекос вправо.</span> Центр тяжести на ' + pc + '%: правая сторона перевесила фото. Придвинь текст к центру или увеличь фото.';
+      out.innerHTML = msg;
+      press($$('#sc-btn button'), b => (b.dataset.v === 'acc') === acc);
+    }
+    [W, X].forEach(r => r.addEventListener('input', upd));
+    $$('#sc-btn button').forEach(b => b.addEventListener('click', () => { acc = b.dataset.v === 'acc'; upd(); }));
+    upd();
+  }
+
+  // --- Спидометр страницы ---
+  const sp = $('#speed');
+  if (sp) {
+    const N = ['Первый экран', 'Как это работает', 'Меню', 'Отзывы', 'Цифры', 'Галерея', 'Вопросы', 'Форма заявки'];
+    const LV = ['', 'Лёгкий', 'Средний', 'Тяжёлый'];
+    let lv = [3, 3, 3, 2, 1, 1, 1, 3];
+    const pg = $('#sp-page'), chart = $('#sp-chart'), out = $('#sp-out');
+    pg.innerHTML = N.map((n, k) => '<button type="button" data-k="' + k + '"><span>' + n + '</span><small></small></button>').join('');
+    const bs = $$('button', pg);
+    bs.forEach((b, k) => b.addEventListener('click', () => { lv[k] = lv[k] % 3 + 1; upd(); }));
+    function runs(pred) {
+      const r = []; let s = -1;
+      lv.concat([0]).forEach((v, k) => { if (pred(v, k)) { if (s < 0) s = k; } else if (s >= 0) { r.push([s, k - 1]); s = -1; } });
+      return r;
+    }
+    function upd() {
+      bs.forEach((b, k) => { b.dataset.l = lv[k]; b.querySelector('small').textContent = LV[lv[k]]; b.setAttribute('aria-label', N[k] + ': ' + LV[lv[k]] + ' блок. Нажми, чтобы сменить'); b.classList.remove('hot'); });
+      const avg = lv.reduce((a, b) => a + b, 0) / lv.length;
+      $('#sp-needle').style.transform = 'rotate(' + ((avg - 2) * 80).toFixed(1) + 'deg)';
+      $('#sp-avg').textContent = avg.toFixed(1).replace('.', ',') + ' из 3';
+      const pts = lv.map((v, k) => [20 + k * 40, 100 - (v - 1) * 40 - 12]);
+      chart.innerHTML = '<line x1="0" y1="48" x2="320" y2="48" stroke="#2a2a2a" stroke-dasharray="3 4"/>' +
+        '<polygon points="20,110 ' + pts.map(p => p.join(',')).join(' ') + ' 300,110" fill="rgba(235,117,64,.14)"/>' +
+        '<polyline points="' + pts.map(p => p.join(',')).join(' ') + '" fill="none" stroke="#eb7540" stroke-width="2" vector-effect="non-scaling-stroke"/>' +
+        pts.map((p, k) => '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="4" fill="' + (lv[k] === 3 ? '#ff3b4e' : lv[k] === 1 ? '#5b8def' : '#f4f4f2') + '"/>').join('');
+      const it = [];
+      const heavy = runs(v => v === 3).filter(([a, b]) => b > a);
+      heavy.forEach(([a, b]) => { for (let k = a; k <= b; k++) bs[k].classList.add('hot'); it.push(['bad', '<b>' + N[a] + ' → ' + N[b] + ':</b> ' + pl(b - a + 1, 'тяжёлый блок', 'тяжёлых блока', 'тяжёлых блоков') + ' подряд. Нагрузка не спадает, к этому месту человек устанет. Вставь между ними лёгкий.']); });
+      if (!lv.includes(3)) it.push(['bad', '<b>Нет ни одного тяжёлого блока.</b> Нет кульминации — страница скучная, взгляду не за что зацепиться.']);
+      for (let a = 0, b = 0; a < lv.length; a = b + 1) {
+        b = a; while (b + 1 < lv.length && lv[b + 1] === lv[a]) b++;
+        if (lv[a] !== 3 && b - a >= 2) it.push(['mid', '<b>' + N[a] + ' → ' + N[b] + ':</b> ' + pl(b - a + 1, 'блок', 'блока', 'блоков') + ' с одинаковой нагрузкой. Это метр, а не ритм: плотность не меняется, внимание засыпает.']);
+      }
+      if (lv[7] === 3 && !it.length) it.push(['mid', '<b>Форма заявки тяжёлая.</b> Перед финальным действием лучше дать воздух: короткая форма на 2–3 поля.']);
+      if (!it.length) it.push(['ok', '<b>Хороший макроритм.</b> Напряжение и передышки чередуются. Перепад плотности заодно сам отделяет блоки друг от друга.']);
+      out.innerHTML = li(it);
+    }
+    $$('#sp-pre button').forEach(b => b.addEventListener('click', () => { lv = b.dataset.p.split(',').map(Number); upd(); }));
+    upd();
+  }
+
+  // --- Тренажёр «Что не по сетке» ---
+  const game = $('#game-box'), gsrc = $('#game-data');
+  if (game && gsrc) {
+    const G = JSON.parse(gsrc.textContent), found = new Set();
+    const list = $('#game-list'), n = $('#game-n');
+    function draw() {
+      n.textContent = 'Найдено ' + found.size + ' из ' + G.length;
+      list.innerHTML = '';
+      [...found].sort((a, b) => a - b).forEach(i => {
+        const el = document.createElement('li'); const b = document.createElement('b'); b.textContent = G[i].t;
+        el.append(b, document.createTextNode(G[i].e)); list.append(el);
+      });
+      if (found.size === G.length) { const w = document.createElement('li'); w.className = 'game-win'; w.textContent = 'Все шесть ошибок найдены. Включи сетку в своём макете и проверь его так же.'; list.append(w); }
+      $$('.bug', game).forEach(el => el.classList.toggle('found', found.has(+el.dataset.bug)));
+    }
+    $$('.bug', game).forEach(el => {
+      const hit = e => { e.stopPropagation(); found.add(+el.dataset.bug); draw(); };
+      el.addEventListener('click', hit);
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hit(e); } });
+    });
+    $('#tr-grid').addEventListener('click', e => { const on = $('#tr-mock').classList.toggle('grid-on'); e.currentTarget.setAttribute('aria-pressed', String(on)); e.currentTarget.textContent = on ? 'Скрыть сетку' : 'Показать сетку'; });
+    $('#game-all').addEventListener('click', () => { G.forEach((_, i) => found.add(i)); draw(); });
+    $('#game-reset').addEventListener('click', () => { found.clear(); draw(); });
+    draw();
+  }
+})();
+
+</script>
+</body></html>

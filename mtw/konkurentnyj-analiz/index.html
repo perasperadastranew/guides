@@ -1,0 +1,1170 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Конкурентный анализ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив только для методички «Конкурентный анализ» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+.demo .warn{color:var(--bad)}
+.demo .okv{color:var(--good)}
+
+/* сортировка карточек */
+.cls-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.demo output.cls-n{min-height:0;color:var(--accent);font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.cls-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cls-card{background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0;transition:border-color .2s}
+.cls-card b{color:var(--ink);font-weight:400;font-size:16px;line-height:1.3}
+.cls-card .d{font-size:14px;line-height:1.4}
+.cls-card .seg button{background:var(--card)}
+.cls-card .seg button:disabled{cursor:default;opacity:.55}
+.cls-card .seg button.right{border-color:var(--good);color:var(--ink);opacity:1}
+.cls-card .seg button.wrong{border-color:var(--bad);color:var(--ink);opacity:1}
+.cls-card.is-right{border-color:color-mix(in srgb,var(--good) 55%,var(--stroke))}
+.cls-card.is-wrong{border-color:color-mix(in srgb,var(--bad) 55%,var(--stroke))}
+.cls-card .e{font-size:14px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.cls-card .e b{font-size:14px}
+.cls-win{grid-column:1/-1;border:1px solid var(--good);border-radius:10px;padding:14px 16px;color:var(--ink);font-size:15px}
+
+/* конструктор шаблона */
+.tplb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:20px;align-items:start}
+.tplb-ctrls{display:flex;flex-direction:column;gap:16px;min-width:0}
+.tplb-ctrls>div{display:flex;flex-direction:column;gap:8px}
+.tplb-f{display:flex;flex-direction:column;gap:8px}
+.tplb-f textarea{font:15px/1.45 var(--body);background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:10px 12px;resize:vertical;width:100%}
+.tplb-f textarea:focus{outline:none;border-color:var(--accent)}
+.tplb-crit{display:flex;flex-wrap:wrap;gap:6px}
+.tplb-crit label{display:inline-flex;align-items:center;gap:6px;background:var(--well);border:1px solid var(--stroke);border-radius:999px;padding:6px 12px 6px 9px;font-size:14px;color:var(--dim);cursor:pointer}
+.tplb-crit input{accent-color:var(--accent);margin:0;width:16px;height:16px}
+.tplb-crit label:has(input:checked){border-color:var(--accent);color:var(--ink)}
+.tplb-crit label:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.tplb-view{display:flex;flex-direction:column;gap:12px;min-width:0;position:sticky;top:16px}
+.tplb-view pre{margin:0;background:#f4f4f2;color:#101010;border-radius:8px;padding:16px;font:12.5px/1.55 var(--mono);white-space:pre-wrap;word-break:break-word;tab-size:14;max-height:420px;overflow:auto}
+
+/* таблица оценок */
+table.st{min-width:640px;font-size:14px}
+table.st th,table.st td{padding:6px 8px 6px 0;vertical-align:middle}
+table.st thead th{vertical-align:bottom}
+.st-in{font:14px var(--body);background:transparent;color:var(--ink);border:1px solid transparent;border-radius:6px;padding:6px 8px;width:100%;min-width:0}
+.st-in:hover{border-color:var(--stroke)}
+.st-in:focus{outline:none;border-color:var(--accent);background:var(--well)}
+thead .st-in{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);text-align:center}
+td.st-crit{width:34%}
+.st-cell{width:100%;min-width:52px;height:38px;border-radius:8px;border:1px solid var(--stroke);font:500 15px var(--mono);color:var(--ink);background:var(--well);transition:background .15s}
+.st-cell[data-v="1"]{background:color-mix(in srgb,var(--accent) 22%,var(--well))}
+.st-cell[data-v="2"]{background:color-mix(in srgb,var(--accent) 50%,var(--well))}
+.st-cell[data-v="3"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.st-tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;border-radius:6px;padding:4px 7px;white-space:nowrap;color:var(--faint);border:1px solid var(--stroke)}
+.st-tag.niche{color:var(--good);border-color:var(--good)}
+.st-tag.std{color:var(--ink);border-color:var(--faint)}
+.st-tag.spread{color:var(--line2);border-color:var(--line2)}
+tr.r-niche td.st-crit .st-in{color:var(--good)}
+tfoot td{font-family:var(--mono);font-size:13px;color:var(--ink);text-align:center;border-bottom:0;padding-top:12px}
+tfoot td:first-child{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+tfoot td.lead-c{color:var(--accent)}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px;color:var(--faint)}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)} .verdict li.inf::before{color:var(--line2)} .verdict li.acc::before{color:var(--accent)}
+.verdict b{color:var(--ink);font-weight:400}
+
+/* карта позиционирования */
+.pm-wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:start}
+.pm-stage{padding:34px 34px;display:block}
+.pm{position:relative;width:100%;max-width:440px;margin:0 auto;aspect-ratio:1;touch-action:none;cursor:crosshair}
+.pm::before,.pm::after{content:"";position:absolute;background:#9a9a96;pointer-events:none}
+.pm::before{left:50%;top:0;bottom:0;width:1.5px;transform:translateX(-50%)}
+.pm::after{top:50%;left:0;right:0;height:1.5px;transform:translateY(-50%)}
+.pm-q{position:absolute;width:50%;height:50%;border-radius:4px;transition:background .25s;pointer-events:none}
+.pm-q.q0{left:0;top:0}.pm-q.q1{left:50%;top:0}.pm-q.q2{left:0;top:50%}.pm-q.q3{left:50%;top:50%}
+.pm-q.empty{background:repeating-linear-gradient(45deg,rgba(47,168,79,.13) 0 8px,transparent 8px 16px)}
+.pm-q span{position:absolute;inset:auto 8px 8px auto;font:11px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:#2fa84f;opacity:0;transition:opacity .25s}
+.pm-q.q0 span,.pm-q.q2 span{inset:auto auto 8px 8px}
+.pm-q.q0 span,.pm-q.q1 span{bottom:auto;top:8px}
+.pm-q.empty span{opacity:1}
+.pm-ax{position:absolute;font:11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#5a5a58;white-space:nowrap;pointer-events:none;z-index:1}
+.pm-top{left:50%;top:-24px;transform:translateX(-50%)}
+.pm-bot{left:50%;bottom:-24px;transform:translateX(-50%)}
+.pm-l{left:-24px;top:50%;transform:translate(-50%,-50%) rotate(-90deg)}
+.pm-r{right:-24px;top:50%;transform:translate(50%,-50%) rotate(90deg)}
+.pm-dot{position:absolute;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;border:2px solid #101010;background:#fff;color:#101010;font:500 14px var(--body);display:grid;place-items:center;cursor:grab;touch-action:none;z-index:2;padding:0;box-shadow:0 2px 6px rgba(0,0,0,.15);transition:box-shadow .15s}
+.pm-dot:active{cursor:grabbing}
+.pm-dot:focus-visible{outline:none;box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.pm-dot.you{width:46px;height:46px;margin:-23px 0 0 -23px;background:#eb7540;border-color:#eb7540;font-size:13px;z-index:3}
+.pm-dot.drag{box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.pm-side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.pm-legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.35}
+.pm-legend li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;align-items:center}
+.pm-legend i{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-style:normal;font-size:12px;color:var(--ink)}
+.pm-legend li.you i{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-size:9px}
+
+/* польза × усилия */
+.ie{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ie>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.ie>div.hot{border-color:var(--accent)}
+.ie .kind{color:var(--accent)}
+.ie b{font-weight:400;font-size:18px}
+.ie p{font-size:15px}
+
+@media (max-width:760px){
+  .cls-list,.tplb-grid,.pm-wrap{grid-template-columns:minmax(0,1fr)}
+  .tplb-view{position:static}
+  .pm-stage{padding:30px 28px}
+  .pm-dot{width:32px;height:32px;margin:-16px 0 0 -16px;font-size:13px}
+  .pm-dot.you{width:40px;height:40px;margin:-20px 0 0 -20px;font-size:12px}
+  .pm-q span{font-size:9.5px}
+  .pm-l{left:-15px}.pm-r{right:-15px}.pm-top{top:-20px}.pm-bot{bottom:-20px}
+}
+@media (max-width:420px){.ie{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.pm-q,.pm-q span,.st-cell,.cls-card{transition:none}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 3 · ВЕБ-ДИЗАЙН</span></div>
+  <div class="series"><span>01 Веб-дизайн и бизнес</span><span>02 Метрики сайта</span><span>03 Принципы веб-дизайна</span><span>04 Типы проектов</span><span>05 Типы страниц</span><span>06 Типы блоков</span><b>07 Конкурентный анализ</b></div>
+  <h1>Конкурентный анализ</h1>
+  <p class="lead"><b>Прежде чем рисовать сайт, посмотри, что уже видит твой пользователь.</b> Разбираем, кого брать в сравнение, по каким критериям оценивать, как найти свободное место на рынке и что из чужих решений можно забрать.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#why">Зачем</a><a href="#goal">Цель и рамки</a><a href="#who">Кого сравнивать</a><a href="#what">Что сравнивать</a><a href="#table">Таблица оценок</a><a href="#map">Карта позиционирования</a><a href="#insights">Выводы</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="why">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Зачем смотреть на конкурентов</h2></div></div>
+  <p>Пользователь приходит на твой сайт уже насмотренным. До тебя он открыл три-четыре похожих сайта и привык к тому, где лежит цена, как выглядит запись и что обещают на первом экране. Конкурентный анализ показывает эти ожидания и места, где рынок их не закрывает.</p>
+  <p class="quote">Анализ нужен, чтобы принять решения по своему сайту. Если после таблицы ничего не поменялось в макете, анализа не было.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Ориентиры</span><b>Стандарт рынка</b><p>Что есть у всех и чего от тебя точно ждут: цена на сайте, мобильная версия, понятная форма заявки.</p></div>
+    <div class="box"><span class="kind">Гипотезы</span><b>Идеи для интерфейса</b><p>Готовые паттерны, которые уже проверены чужим трафиком: квиз-подбор, калькулятор, сравнение тарифов.</p></div>
+    <div class="box"><span class="kind">Отличие</span><b>Свободное место</b><p>Где все одинаковые или где все слабые. Там проще всего выделиться.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Какие задачи решает</h3>
+    <div class="sub-b">
+      <div class="lv">
+        <div><span>Позиционирование</span><span>Чем ты отличаешься и как это показать на первом экране.</span></div>
+        <div><span>UX-паттерны</span><span>Как устроены навигация, фильтры, корзина, запись. Где люди спотыкаются.</span></div>
+        <div><span>Контент</span><span>Какие аргументы приводят конкуренты, какие вопросы закрывают в FAQ, как пишут офферы.</span></div>
+        <div><span>Визуальный язык</span><span>Какие цвета, шрифты и фото заняты. Если у пяти школ английского синий и фото улыбающихся людей, шестой синий сайт потеряется.</span></div>
+        <div><span>Фичи</span><span>Что входит в MVP, а что можно отложить: личный кабинет, тест уровня, чат.</span></div>
+        <div><span>Конверсия</span><span>Сколько шагов до заявки, какие поля просят, что предлагают взамен контакта.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Типичные ошибки</h3>
+    <div class="sub-b">
+      <div class="dodont">
+        <div class="bad"><i>Так не делай</i><ul>
+          <li><b>«Сделаем как у лидера».</b> У лидера узнаваемый бренд и рекламный бюджет. То, что работает у него, может провалиться у маленького сайта.</li>
+          <li><b>Таблица без выводов.</b> 40 строк скриншотов и оценок, а что менять — непонятно.</li>
+          <li><b>Двадцать конкурентов.</b> Анализ растягивается на месяц и становится поверхностным.</li>
+          <li><b>Оценка по вкусу.</b> «Красиво» и «некрасиво» ничего не говорят о том, работает ли сайт.</li>
+          <li><b>Только главная на десктопе.</b> Большая часть трафика обычно приходит с телефона и попадает на внутренние страницы.</li>
+        </ul></div>
+        <div class="good"><i>Так делай</i><ul>
+          <li>Сначала цель анализа, потом выборка.</li>
+          <li>5–8 прямых конкурентов, несколько косвенных и референсов.</li>
+          <li>Одна шкала оценок и одни критерии для всех.</li>
+          <li>У каждой оценки есть доказательство: скриншот, ссылка, цитата.</li>
+          <li>На выходе — рекомендации для своего макета с приоритетом.</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="goal">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Цель и рамки</h2></div></div>
+  <p>Анализ «вообще» превращается в коллекцию скриншотов. Сформулируй одну цель — от неё зависит, каких конкурентов брать и что сравнивать. Для редизайна лендинга важны первый экран и путь до заявки, для нового сервиса — набор функций и тарифы.</p>
+  <div class="formula"><span>Хочу</span><em>+</em><span class="m">что улучшить</span><em>+</em><span>для кого</span><em>+</em><span>на каком сценарии</span></div>
+  <div class="two">
+    <div class="box"><span class="kind">Размыто</span><p>«Посмотреть, что делают другие школы английского».</p></div>
+    <div class="box hot"><span class="kind">Конкретно</span><p>«Понять, как конкуренты доводят взрослого новичка с телефона от первого экрана до записи на пробный урок, и сократить этот путь на нашем лендинге».</p></div>
+  </div>
+  <div class="sub">
+    <h3>Контекст, который фиксируем до начала</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><span class="kind">Продукт</span><p>Что продаём, какой средний чек, это разовая покупка или подписка.</p></div>
+        <div class="box"><span class="kind">Аудитория</span><p>Кто приходит, что уже знает, чего боится. Новичок и профи сравнивают по-разному.</p></div>
+        <div class="box"><span class="kind">Регион и устройство</span><p>Москва или вся Россия, телефон или компьютер. Смотри сайты с того устройства, с которого смотрит клиент.</p></div>
+        <div class="box"><span class="kind">Трафик</span><p>Откуда приходят: из поиска, рекламы, соцсетей. От этого зависит, на какую страницу человек попадает первым.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Что получится на выходе</h3>
+    <div class="sub-b">
+      <ol class="steps">
+        <li><div><div class="t">Таблица сравнения</div><div class="d">Конкуренты × критерии, оценки по одной шкале и ссылки на доказательства.</div></div></li>
+        <li><div><div class="t">Список инсайтов</div><div class="d">10 наблюдений и выводов из них: где рынок одинаковый, где пусто, что работает.</div></div></li>
+        <li><div><div class="t">Рекомендации с приоритетом</div><div class="d">3–5 изменений для своего сайта, расставленных по пользе и трудозатратам.</div></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="who">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Кого брать в сравнение</h2></div></div>
+  <p>Конкурент — любой, к кому человек может уйти со своей задачей. Поэтому выборка состоит из трёх групп. Прямые показывают стандарт рынка, косвенные — чем ещё человек может решить ту же потребность, референсы — как лучшие сайты решают похожую задачу интерфейса.</p>
+  <div class="three">
+    <div class="box"><span class="kind">5–8 · Прямые</span><b>Тот же продукт, та же аудитория</b><p>Для онлайн-школы английского — другие онлайн-школы английского с преподавателем.</p></div>
+    <div class="box"><span class="kind">3–5 · Косвенные</span><b>Другой формат, та же потребность</b><p>Приложения для самостоятельного изучения, частные репетиторы, разговорные клубы.</p></div>
+    <div class="box"><span class="kind">3–5 · Референсы</span><b>Другая ниша, похожая задача интерфейса</b><p>Лучшие пошаговые анкеты, страницы тарифов, онбординги — где угодно.</p></div>
+  </div>
+  <p class="why">Где искать прямых конкурентов: набери в Яндексе и Google запрос, по которому тебя будут искать, и посмотри первые две страницы выдачи и рекламные объявления. Спроси 2–3 клиентов, с кем они сравнивали. Загляни в подборки и рейтинги в нише.</p>
+
+  <div class="demo" id="sort-who">
+    <span class="cap">Сортировка · проект: онлайн-школа английского для взрослых</span>
+    <div class="cls-top"><output class="cls-n" id="sort-who-n"></output><button type="button" class="ghost" data-reset>Заново</button></div>
+    <div class="cls-list" data-list></div>
+  </div>
+  <p class="cap">Определи для каждой карточки группу. После ответа появится объяснение.</p>
+</section>
+
+<section id="what">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Что сравнивать и как собирать</h2></div></div>
+  <p>Сайт сравнивают на двух уровнях. Первый — сценарии: ты проходишь путь клиента и замечаешь, где удобно, а где застрял. Второй — уровни анализа: от стратегии до скорости загрузки. Начинай со сценариев: так ты видишь сайт глазами клиента.</p>
+  <div class="sub">
+    <h3>Сценарии</h3>
+    <div class="sub-b">
+      <div class="words"><span>Первый визит</span><span>Поиск решения</span><span>Выбор тарифа</span><span>Регистрация</span><span>Покупка или заявка</span><span>Возврат в продукт</span></div>
+      <p>Каждый сценарий проходи с секундомером и записывай: сколько шагов и секунд до цели, где пришлось думать, что раздражало. «До заявки 4 экрана и 7 полей, 2 минуты 10 секунд» — это уже факт для таблицы.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Уровни анализа</h3>
+    <div class="sub-b">
+      <div class="lv">
+        <div><span>Стратегия</span><span>Кому продают, какое обещание на первом экране, чем объясняют цену.</span></div>
+        <div><span>Структура</span><span>Меню, порядок блоков на лендинге, сколько кликов до важного.</span></div>
+        <div><span>Контент и офферы</span><span>Заголовки, аргументы, доказательства: цифры, отзывы, кейсы, гарантии.</span></div>
+        <div><span>UI</span><span>Цвета, шрифты, фото и иллюстрации, сетка. Что повторяется у всех.</span></div>
+        <div><span>UX-паттерны</span><span>Формы, ошибки, пустые состояния, фильтры, подтверждения.</span></div>
+        <div><span>Онбординг</span><span>Что происходит после заявки: письмо, звонок, личный кабинет, напоминания.</span></div>
+        <div><span>Адаптив</span><span>Как сайт выглядит на телефоне, доступность: контраст, размер шрифта.</span></div>
+        <div><span>Скорость</span><span>Время загрузки и вес страницы. Проверяется в PageSpeed Insights за минуту.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Как фиксировать</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><b>Доказательства</b><ul><li>Скриншот всей страницы целиком, до подвала.</li><li>Ссылка на конкретную страницу и дата: сайты меняются.</li><li>Цитаты: заголовки, тексты кнопок, ошибки форм.</li><li>Запись экрана при прохождении сценария на телефоне.</li></ul></div>
+        <div class="box"><b>Где складывать</b><ul><li>Скриншоты — на доску в Figma, по колонке на конкурента, сверху вниз в одном масштабе.</li><li>Оценки — в Google Таблицы или Notion.</li><li>На скриншоты сразу ставь стикеры с наблюдениями, пока помнишь.</li></ul></div>
+      </div>
+      <div class="links">
+        <a href="https://pagespeed.web.dev" target="_blank" rel="noopener"><span>PageSpeed Insights</span><span>Скорость загрузки и проблемы мобильной версии</span></a>
+        <a href="https://web.archive.org" target="_blank" rel="noopener"><span>Wayback Machine</span><span>Как сайт конкурента выглядел год-два назад и что он поменял</span></a>
+        <a href="https://www.similarweb.com" target="_blank" rel="noopener"><span>Similarweb</span><span>Примерный трафик и его источники. Цифры оценочные, смотри на порядок</span></a>
+        <a href="https://wordstat.yandex.ru" target="_blank" rel="noopener"><span>Яндекс Вордстат</span><span>Что и как часто люди ищут в нише — помогает найти спрос</span></a>
+        <a href="https://mobbin.com" target="_blank" rel="noopener"><span>Mobbin</span><span>Библиотека экранов приложений и сайтов для поиска референсов</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo" id="tplb">
+    <span class="cap">Конструктор шаблона · собери свою таблицу</span>
+    <div class="tplb-grid">
+      <div class="tplb-ctrls">
+        <label class="tplb-f"><span class="cap">Конкуренты, каждый с новой строки</span><textarea id="tplb-names" rows="5">Школа А
+Школа Б
+Приложение В
+Репетиторы Г</textarea></label>
+        <div><span class="cap">Сценарий</span><div class="seg" id="tplb-sc"><button type="button" data-v="Первый визит">Первый визит</button><button type="button" data-v="Выбор тарифа">Выбор тарифа</button><button type="button" data-v="Запись или покупка">Запись или покупка</button></div></div>
+        <div><span class="cap">Критерии</span><div class="tplb-crit" id="tplb-crit"></div></div>
+        <div><span class="cap">Формат</span><div class="seg" id="tplb-fmt"><button type="button" data-v="tsv">Таблица для Google Таблиц</button><button type="button" data-v="md">Отчёт для Notion</button></div></div>
+      </div>
+      <div class="tplb-view">
+        <pre id="tplb-out"></pre>
+        <button class="copy" type="button" data-copy="tplb-out">Скопировать шаблон</button>
+        <output id="tplb-msg"></output>
+      </div>
+    </div>
+  </div>
+  <p class="cap">Впиши своих конкурентов, отметь критерии и скопируй. Таблица вставится в Google Таблицы по колонкам.</p>
+</section>
+
+<section id="table">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Таблица оценок</h2></div></div>
+  <p>Оценки ставь по одной шкале для всех, иначе сравнение не сработает. Удобна шкала 0–3: её быстро заполнять, а различия видны. Самое полезное в таблице — строки. Если строка вся зелёная, это стандарт рынка. Если вся пустая — свободная ниша или то, что никому не нужно.</p>
+  <div class="four">
+    <div class="box"><span class="kind">0</span><p>Нет совсем.</p></div>
+    <div class="box"><span class="kind">1</span><p>Есть, но слабо: спрятано, неудобно, непонятно.</p></div>
+    <div class="box"><span class="kind">2</span><p>Сделано нормально, как ожидаешь.</p></div>
+    <div class="box"><span class="kind">3</span><p>Лучшее на рынке, хочется взять за образец.</p></div>
+  </div>
+
+  <div class="demo" id="score-t">
+    <span class="cap">Интерактивная таблица · нажимай на оценки</span>
+    <div class="seg" id="st-mode"><button type="button" data-v="demo">Пример: школы английского</button><button type="button" data-v="mine">Заполнить своё</button></div>
+    <div class="scroll"><table class="st" id="st-table"></table></div>
+    <ul class="verdict" id="st-out"></ul>
+  </div>
+  <p class="cap">Каждый клик по ячейке меняет оценку 0 → 1 → 2 → 3. Названия конкурентов можно переписать. Итог и подсветка строк пересчитываются сразу.</p>
+  <p class="why">Пустая строка — повод проверить спрос. Цену не показывают, потому что она высокая и её проще продать на звонке? Или потому, что никто не догадался? Ответ ищи в отзывах клиентов, на форумах и в Вордстате.</p>
+</section>
+
+<section id="map">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Карта позиционирования</h2></div></div>
+  <p>Таблица отвечает на вопрос «кто что делает». Карта показывает, кто где стоит. Выбери две оси, важные для клиента, и расставь конкурентов. Пустой квадрант — кандидат на твоё место. Если ты стоишь вплотную к другому сайту, человеку будет сложно понять, чем вы отличаетесь.</p>
+  <div class="demo" id="posmap">
+    <span class="cap">Карта · перетаскивай точки</span>
+    <div class="seg" id="pm-axes"></div>
+    <div class="pm-wrap">
+      <div class="stage pm-stage">
+        <div class="pm" id="pm">
+          <span class="pm-ax pm-top" id="pm-top"></span><span class="pm-ax pm-bot" id="pm-bot"></span>
+          <span class="pm-ax pm-l" id="pm-l"></span><span class="pm-ax pm-r" id="pm-r"></span>
+        </div>
+      </div>
+      <div class="pm-side">
+        <ul class="pm-legend" id="pm-legend"></ul>
+        <output id="pm-out"></output>
+        <button type="button" class="ghost" id="pm-reset">Вернуть как было</button>
+      </div>
+    </div>
+  </div>
+  <p class="cap">Перетащи оранжевую точку «Ты» туда, где хочешь стоять. Точки двигаются мышью, пальцем и стрелками на клавиатуре. Смени оси — картина рынка поменяется.</p>
+  <div class="two">
+    <div class="box"><b>Как выбрать оси</b><ul><li>Обе оси важны клиенту при выборе: цена, формат, скорость результата.</li><li>Оси не зависят друг от друга. «Цена» и «премиальность» почти одно и то же — точки лягут по диагонали.</li><li>Попробуй 3–4 пары. Свободное место часто видно только на одной из них.</li></ul></div>
+    <div class="box"><b>Что делать с пустотой</b><ul><li>Проверь спрос: ищут ли такое, жалуются ли на рынок в отзывах.</li><li>Проверь, сможет ли бизнес туда встать: «дёшево и с преподавателем» бывает просто убыточно.</li><li>Если место реальное, вынеси его в оффер на первый экран.</li></ul></div>
+  </div>
+</section>
+
+<section id="insights">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>От наблюдений к рекомендациям</h2></div></div>
+  <p>Собранные данные — сырьё. Дальше три шага: записать факты, сделать из них выводы и превратить выводы в задачи для своего сайта. Смешивать факты и выводы нельзя: факт проверит любой, вывод — твоя интерпретация, и её нужно обосновать.</p>
+  <div class="pair">
+    <div class="bad"><i>Наблюдение · факт</i><span>«У 5 из 6 школ цена появляется только после заявки и звонка менеджера».</span></div>
+    <div class="good"><i>Вывод · интерпретация</i><span>«Клиент, который хочет сравнить цены сам, на рынке не обслужен. Открытая цена может стать нашим отличием».</span></div>
+  </div>
+  <div class="sub">
+    <h3>Формула рекомендации</h3>
+    <div class="sub-b">
+      <div class="formula"><span>Сделать X</span><em>→</em><span class="m">чтобы улучшить Y</span><em>←</em><span>потому что Z</span></div>
+      <div class="box"><p><b>Пример.</b> Показать цену пробного урока и пакетов на первом экране, чтобы больше людей с телефона доходили до записи, потому что 5 из 6 конкурентов прячут цену, а в отзывах клиенты жалуются на навязчивые звонки.</p></div>
+      <p>Типы возможностей, которые стоит искать: <b>быстрые улучшения</b> (мало работы, заметный эффект), <b>отличия</b> (того, чего нет ни у кого) и <b>риски</b> (то, что у конкурентов явно не работает, и повторять это нельзя).</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Приоритет: польза × усилия</h3>
+    <div class="sub-b">
+      <div class="ie">
+        <div class="hot"><span class="kind">Много пользы · мало усилий</span><b>Делай первым</b><p>Цена на первом экране, короче форма, понятнее кнопка.</p></div>
+        <div><span class="kind">Много пользы · много усилий</span><b>Планируй</b><p>Тест уровня, личный кабинет, калькулятор.</p></div>
+        <div><span class="kind">Мало пользы · мало усилий</span><b>Если останется время</b><p>Анимации, мелкие улучшения текстов.</p></div>
+        <div><span class="kind">Мало пользы · много усилий</span><b>Не делай</b><p>Сложный 3D-хедер «потому что у лидера есть».</p></div>
+      </div>
+      <p>План делим на два горизонта: 3–5 задач на ближайший спринт и 3–5 на квартал. Для большой команды подойдёт RICE: охват × влияние × уверенность / усилия.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Что можно забрать</h3>
+    <div class="sub-b">
+      <p>Паттерны, привычные людям, брать можно и нужно: корзина справа вверху, тарифы в три колонки. Чужие тексты, фото, иллюстрации и фирменный стиль — нельзя: это авторское право и бренд конкурента. Между ними — идеи, которые можно переосмыслить и сделать своими.</p>
+      <div class="demo" id="sort-take">
+        <span class="cap">Тренажёр · забрать или нельзя</span>
+        <div class="cls-top"><output class="cls-n" id="sort-take-n"></output><button type="button" class="ghost" data-reset>Заново</button></div>
+        <div class="cls-list" data-list></div>
+      </div>
+      <p class="cap">Ты нашёл это у конкурента. Реши, что с этим делать на своём сайте.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Анализ вместе с нейронкой</h2></div></div>
+  <p>Нейронка помогает не забыть критерии, задать неудобные вопросы к выводам и найти косвенных конкурентов, о которых ты не подумал. Сайты конкурентов проходишь сам: нейронка может придумать то, чего на сайте нет, поэтому каждый факт проверяй глазами.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Продукт, аудитория, регион, цель анализа.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа. Таблицу заполняешь ты.</div>
+    <div><i>Правило 3</i><b>Факты — твои</b>Оценки и скриншоты собираешь сам. Нейронка работает с тем, что ты ей дал.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Выборка</span><b>Кого взять в анализ</b>
+<pre id="p1">Я делаю конкурентный анализ для сайта: <em>[продукт, аудитория, регион]</em>. Цель анализа: <em>[что хочу улучшить]</em>.
+Прямых конкурентов я уже нашёл: <em>[список]</em>.
+Помоги проверить выборку: кого из косвенных конкурентов и референсов из других ниш я мог упустить. Задавай вопросы по одному и жди ответа. Не придумывай факты о сайтах — только типы конкурентов и где их искать.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> находишь сайты, открываешь их и решаешь, кто войдёт в выборку.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Критерии</span><b>По чему сравнивать</b>
+<pre id="p2">Контекст: <em>[продукт и цель анализа]</em>. Сценарий, который я прохожу на сайтах конкурентов: <em>[сценарий]</em>.
+Помоги составить 8–10 критериев для оценки по шкале 0–3. Для каждого — как его проверить на сайте за 1–2 минуты.
+Сначала спроси, что важно моей аудитории при выборе. Вопросы по одному.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> оставляешь критерии, важные для цели, и сам ставишь оценки.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Выводы</span><b>Проверка инсайтов</b>
+<pre id="p3">Вот мои наблюдения по конкурентам: <em>[факты из таблицы]</em>. И мои выводы: <em>[выводы]</em>.
+Проверь каждый вывод: следует ли он из фактов, какие есть другие объяснения, чем его подтвердить. Отдельно отметь места, где я перепутал факт и мнение.
+Не пиши рекомендации за меня. Задай вопрос по самому слабому выводу.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь выводы и пишешь рекомендации по формуле «сделать X, чтобы Y, потому что Z».</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Конкурентный анализ для своего проекта</b><p>Сформулируй цель анализа по формуле из раздела 02. Возьми 5–7 конкурентов: прямых, косвенных и 1–2 референса. Пройди на каждом один сценарий с телефона и заполни таблицу по 8 критериям со ссылками на скриншоты. Построй карту позиционирования на двух осях. Сделай 10 инсайтов и 5 рекомендаций с приоритетом. Сдай ссылку на таблицу и доску в Figma с картой, скриншотами и 1–2 экранами, где ты показываешь главное улучшение.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>Цель анализа записана одной фразой</span></label>
+    <label><input type="checkbox"><span>В выборке есть прямые, косвенные конкуренты и референсы</span></label>
+    <label><input type="checkbox"><span>У всех одна шкала оценок, у каждой оценки есть доказательство</span></label>
+    <label><input type="checkbox"><span>Факты и выводы записаны отдельно</span></label>
+    <label><input type="checkbox"><span>Рекомендации по формуле «сделать X, чтобы Y, потому что Z» и с приоритетом</span></label>
+    <label><input type="checkbox"><span>В макете нет чужих текстов, фото и иллюстраций</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Модуль 4. Стили в веб-дизайне.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 3 · Конкурентный анализ</footer>
+
+</div>
+<script type="application/json" id="sort-who-data">{
+"labels":["Прямой","Косвенный","Референс"],
+"items":[
+{"t":"Онлайн-школа английского с преподавателем","d":"Индивидуальные уроки по видеосвязи, пробный урок бесплатно","a":0,"e":"Тот же продукт и та же аудитория. Это прямой конкурент: его сайт человек откроет рядом с твоим."},
+{"t":"Приложение для изучения языка","d":"Учишься сам по 10 минут в день, есть бесплатная версия","a":1,"e":"Другой формат, но та же потребность — выучить английский. Человек может выбрать приложение вместо школы, поэтому это косвенный конкурент."},
+{"t":"Сервис подбора частных репетиторов","d":"Каталог анкет преподавателей с отзывами и ценами","a":1,"e":"Решает ту же задачу другим способом. Полезно посмотреть, как там показывают цены и анкеты преподавателей."},
+{"t":"Страница сравнения моделей на сайте Apple","d":"Модели в колонках, отличия видны с одного взгляда","a":2,"e":"Совсем другая ниша, но задача та же, что у страницы тарифов: сравнить варианты и выбрать. Это референс."},
+{"t":"Курсы английского при языковом центре в твоём городе","d":"Группы офлайн, тот же уровень цен","a":0,"e":"Для взрослого, который выбирает, где учить язык, это прямой конкурент, даже если формат офлайн. Цель и аудитория совпадают."},
+{"t":"Пошаговая анкета на кредитную карту в банковском приложении","d":"Один вопрос на экран, прогресс-бар, подсказки","a":2,"e":"Референс для формы записи и теста уровня: как провести человека через много вопросов и не потерять."},
+{"t":"Разговорный клуб в Telegram","d":"Встречи по вечерам, оплата за одно занятие","a":1,"e":"Другой формат, та же потребность — заговорить. Часть аудитории уходит туда, потому что это дешевле и без обязательств."},
+{"t":"Страница тарифов Notion","d":"Три-четыре колонки, выделенный рекомендуемый тариф, переключатель месяц/год","a":2,"e":"Референс для блока цен: как показать несколько пакетов и подсказать, какой выбрать."}
+]}</script>
+<script type="application/json" id="sort-take-data">{
+"labels":["Забирай","Переосмысли","Нельзя"],
+"items":[
+{"t":"Порядок блоков на лендинге","d":"Оффер → программа → преподаватели → цены → отзывы → FAQ","a":0,"e":"Это паттерн рынка, и люди к нему привыкли. Забирай и проверяй на своих данных."},
+{"t":"Отзывы учеников с сайта конкурента","d":"Хочешь вставить их в макет, чтобы было похоже на правду","a":2,"e":"Чужие отзывы — чужой контент и обман клиента. В макете используй честные заглушки или отзывы своего продукта."},
+{"t":"Квиз-подбор курса из 5 вопросов","d":"После ответов предлагает программу и просит телефон","a":1,"e":"Идею бери: квиз снижает страх выбора. Вопросы, порядок и вид делай под свою аудиторию и свой стиль."},
+{"t":"Фирменные иллюстрации конкурента","d":"Узнаваемые персонажи в одном стиле на всех страницах","a":2,"e":"Иллюстрации — авторская работа и часть бренда конкурента. Даже «похожие в том же стиле» сделают тебя его копией."},
+{"t":"Вход и корзина в правом верхнем углу","d":"Так у всех крупных сайтов в нише","a":0,"e":"Это конвенция. Если перенести её в другое место, человек будет искать и раздражаться."},
+{"t":"Оффер «Заговоришь за 3 месяца» слово в слово","d":"Звучит сильно, хочется так же","a":2,"e":"Дословный оффер — чужой текст и чужое позиционирование. Найди своё обещание, которое твой продукт может выполнить."},
+{"t":"Тарифы в три колонки с выделенной средней","d":"Средний тариф подписан «Чаще выбирают»","a":0,"e":"Распространённый паттерн, который помогает выбрать. Забирай, а цены и названия тарифов будут твои."},
+{"t":"Необычная анимация кнопки на сайте-референсе","d":"Стрелка улетает и возвращается при наведении","a":1,"e":"Приём можно взять как идею, но анимацию придумай в своём стиле. Код чужого сайта копировать нельзя."},
+{"t":"Сайт конкурента целиком, поменяв цвета и логотип","d":"Быстро и вроде бы работает","a":2,"e":"Это копия чужого дизайна. Помимо авторского права, ты получаешь сайт, который выглядит как конкурент и ничем от него не отличается."},
+{"t":"Калькулятор стоимости обучения","d":"Ползунки: сколько уроков в неделю и на сколько месяцев","a":1,"e":"Функцию бери, если она нужна твоей аудитории. Логику и интерфейс проектируй сам под свои тарифы."}
+]}</script>
+<script type="application/json" id="quiz-data">[
+{"p":"Ты делаешь лендинг онлайн-школы английского. Кто из этих сайтов — косвенный конкурент?","o":["Другая онлайн-школа английского","Приложение для самостоятельного изучения языка","Страница тарифов Notion"],"a":1,"e":"Косвенный конкурент решает ту же потребность в другом формате. Школа — прямой конкурент, страница Notion — референс."},
+{"p":"В таблице строка «Цена видна без заявки» у всех конкурентов 0 или 1. Что это значит?","o":["Цена на сайте не нужна, раз её никто не показывает","Это свободная ниша: стоит проверить спрос и, возможно, сделать это своим отличием","Нужно убрать строку из таблицы"],"a":1,"e":"Пустая строка — кандидат на отличие. Но сначала проверь, почему так: в отзывах, на форумах, у клиентов."},
+{"p":"Что из этого — наблюдение, то есть факт?","o":["Клиентам не нравятся звонки менеджеров","Открытая цена станет нашим преимуществом","У 5 из 6 конкурентов форма заявки из 6 и более полей"],"a":2,"e":"Наблюдение проверит любой, открыв сайты. Остальные два варианта — интерпретации, их нужно обосновать фактами."},
+{"p":"Почему опасно «сделать как у лидера рынка»?","o":["У лидера есть бренд и бюджет, его решения могут не сработать у маленького сайта","Лидеры всегда делают плохие сайты","Так запрещает закон"],"a":0,"e":"Лидеру прощают многое за счёт известности. Решения проверяй по своей цели и своей аудитории."},
+{"p":"Какие оси лучше подходят для карты позиционирования?","o":["Цена и премиальность","Цена и формат обучения (сам ↔ с преподавателем)","Цвет логотипа и год основания"],"a":1,"e":"Обе оси важны клиенту и не зависят друг от друга. Цена и премиальность почти совпадают — точки лягут по диагонали."},
+{"p":"Что из сайта конкурента можно забрать в свой проект без переделки?","o":["Отзывы учеников","Фирменные иллюстрации","Привычный паттерн: тарифы в три колонки с выделенным средним"],"a":2,"e":"Паттерны интерфейса общие. Тексты, отзывы, фото и иллюстрации — чужой контент и часть чужого бренда."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Конкурентный анализ» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const press = (wrap, val) => $$('button', wrap).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === val)));
+
+  // --- Сортировка карточек с проверкой (две штуки на странице) ---
+  function classify(id, winText) {
+    const box = document.getElementById(id), src = document.getElementById(id + '-data');
+    if (!box || !src) return;
+    const D = JSON.parse(src.textContent), list = $('[data-list]', box), n = document.getElementById(id + '-n');
+    let done = 0, right = 0;
+    function count() {
+      n.textContent = 'Отвечено ' + done + ' из ' + D.items.length + ' · верно ' + right;
+      const w = $('.cls-win', list); if (w) w.remove();
+      if (done === D.items.length) {
+        const d = document.createElement('div'); d.className = 'cls-win';
+        d.textContent = right === D.items.length ? winText : 'Верно ' + right + ' из ' + D.items.length + '. Перечитай объяснения у красных карточек и нажми «Заново».';
+        list.append(d);
+      }
+    }
+    function build() {
+      list.innerHTML = ''; done = 0; right = 0;
+      D.items.forEach(it => {
+        const c = document.createElement('div'); c.className = 'cls-card';
+        c.innerHTML = '<b></b><span class="d"></span><div class="seg" role="group"></div><p class="e" hidden></p>';
+        $('b', c).textContent = it.t; $('.d', c).textContent = it.d;
+        const seg = $('.seg', c), e = $('.e', c);
+        seg.setAttribute('aria-label', 'Выбери вариант для: ' + it.t);
+        D.labels.forEach((l, j) => {
+          const b = document.createElement('button'); b.type = 'button'; b.textContent = l;
+          b.addEventListener('click', () => {
+            $$('button', seg).forEach((x, k) => { x.disabled = true; if (k === it.a) x.classList.add('right'); });
+            const ok = j === it.a; if (!ok) b.classList.add('wrong');
+            c.classList.add(ok ? 'is-right' : 'is-wrong');
+            e.innerHTML = '<b>' + (ok ? 'Верно. ' : 'Правильно: ' + esc(D.labels[it.a]) + '. ') + '</b>' + esc(it.e);
+            e.hidden = false; done++; if (ok) right++; count();
+          });
+          seg.append(b);
+        });
+        list.append(c);
+      });
+      count();
+    }
+    $('[data-reset]', box).addEventListener('click', build);
+    build();
+  }
+  classify('sort-who', 'Все восемь верно. Теперь собери такую же выборку для своего проекта: 5–8 прямых, 3–5 косвенных, 3–5 референсов.');
+  classify('sort-take', 'Все верно. Правило простое: паттерны общие, контент и стиль — чужие.');
+
+  // --- Конструктор шаблона ---
+  const tb = $('#tplb');
+  if (tb) {
+    const CRIT = ['Оффер понятен за 5 секунд', 'Цена видна без заявки', 'Пробный урок или демо', 'Тест уровня или квиз', 'Отзывы с доказательствами', 'Мобильная версия', 'Запись в 1–2 шага', 'Скорость загрузки', 'FAQ закрывает страхи', 'Что после заявки'];
+    const ON = [0, 1, 2, 4, 5, 6];
+    const cbox = $('#tplb-crit');
+    CRIT.forEach((c, i) => {
+      const l = document.createElement('label');
+      l.innerHTML = '<input type="checkbox"' + (ON.includes(i) ? ' checked' : '') + '><span></span>';
+      $('span', l).textContent = c; cbox.append(l);
+    });
+    const st = { sc: 'Запись или покупка', fmt: 'tsv' };
+    const col = i => String.fromCharCode(66 + i); // B, C, D…
+    function render() {
+      const names = $('#tplb-names').value.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 12);
+      const crit = $$('input', cbox).map((x, i) => x.checked ? CRIT[i] : null).filter(Boolean);
+      const N = names.length ? names : ['Конкурент 1'];
+      let t = '';
+      if (st.fmt === 'tsv') {
+        const rows = [['Цель анализа', ''], ['Сценарий', st.sc], ['Шкала', '0 нет · 1 слабо · 2 нормально · 3 лучшее на рынке'], []];
+        rows.push(['Критерий', ...N, 'Вывод']);
+        const first = rows.length + 1;
+        crit.forEach(c => rows.push([c, ...N.map(() => ''), '']));
+        const last = rows.length;
+        if (crit.length) rows.push(['Итого', ...N.map((_, i) => '=SUM(' + col(i) + first + ':' + col(i) + last + ')'), '']);
+        rows.push(['Ссылки и скриншоты', ...N.map(() => ''), '']);
+        t = rows.map(r => r.join('\t')).join('\n');
+      } else {
+        t = '# Конкурентный анализ: [проект]\n\n## Вводные\n- Цель: \n- Аудитория: \n- Регион и устройство: \n- Сценарий: ' + st.sc + '\n- Конкуренты: ' + N.join(', ') + '\n\n## Сравнение\nШкала: 0 нет · 1 слабо · 2 нормально · 3 лучшее на рынке\n\n';
+        t += '| Критерий | ' + N.join(' | ') + ' | Вывод |\n|' + ' --- |'.repeat(N.length + 2) + '\n';
+        crit.forEach(c => { t += '| ' + c + ' |' + '  |'.repeat(N.length + 1) + '\n'; });
+        t += '\n## Наблюдения (факты)\n1. \n2. \n3. \n\n## Выводы\n1. \n2. \n3. \n\n## Рекомендации\n1. Сделать … чтобы … потому что …\n2. \n3. \n\n## Следующие шаги\n- Спринт: \n- Квартал: ';
+      }
+      $('#tplb-out').textContent = t;
+      const m = [];
+      m.push('<b>' + names.length + ' × ' + crit.length + '.</b>');
+      if (names.length < 3) m.push('<span class="warn">Меньше трёх конкурентов — не с чем сравнивать, стандарт рынка не увидишь.</span>');
+      else if (names.length > 10) m.push('<span class="warn">Больше десяти — анализ затянется. Оставь 5–8 прямых и добавь пару референсов.</span>');
+      if (crit.length < 4) m.push('<span class="warn">Мало критериев: таблица получится поверхностной.</span>');
+      else if (crit.length > 9) m.push('<span class="warn">Все критерии сразу заполнять долго. Оставь те, что связаны с целью анализа.</span>');
+      if (m.length === 1) m.push('<span class="okv">Хороший объём: заполнишь за вечер и увидишь картину рынка.</span>');
+      $('#tplb-msg').innerHTML = m.join(' ');
+    }
+    $$('#tplb-sc button').forEach(b => b.addEventListener('click', () => { st.sc = b.dataset.v; press($('#tplb-sc'), st.sc); render(); }));
+    $$('#tplb-fmt button').forEach(b => b.addEventListener('click', () => { st.fmt = b.dataset.v; press($('#tplb-fmt'), st.fmt); render(); }));
+    $('#tplb-names').addEventListener('input', render);
+    cbox.addEventListener('change', render);
+    press($('#tplb-sc'), st.sc); press($('#tplb-fmt'), st.fmt); render();
+  }
+
+  // --- Интерактивная таблица оценок ---
+  const sT = $('#score-t');
+  if (sT) {
+    const DEMO = {
+      names: ['Школа А', 'Школа Б', 'Прил. В', 'Репет. Г'],
+      rows: [
+        ['Оффер понятен за 5 секунд', [3, 2, 2, 1]],
+        ['Цена видна без заявки', [1, 0, 1, 0]],
+        ['Бесплатный пробный урок', [3, 3, 0, 2]],
+        ['Тест уровня онлайн', [3, 0, 3, 1]],
+        ['Отзывы с доказательствами', [2, 1, 2, 3]],
+        ['Мобильная версия', [3, 3, 3, 2]],
+        ['Запись в 1–2 шага', [1, 1, 3, 1]],
+        ['Скорость загрузки', [2, 1, 3, 2]]
+      ]
+    };
+    let S, mode = 'demo';
+    const table = $('#st-table'), out = $('#st-out');
+    function load(m) {
+      mode = m;
+      S = mode === 'demo'
+        ? { names: DEMO.names.slice(), rows: DEMO.rows.map(([c, v]) => [c, v.slice()]) }
+        : { names: ['Конкурент 1', 'Конкурент 2', 'Конкурент 3', 'Конкурент 4'], rows: DEMO.rows.map(([c]) => [c, [0, 0, 0, 0]]) };
+      press($('#st-mode'), mode); draw();
+    }
+    function kind(v) {
+      const mx = Math.max(...v), mn = Math.min(...v);
+      if (mode === 'mine' && mx === 0) return ['', 'Не заполнено'];
+      if (mx <= 1) return ['niche', 'Пустая ниша'];
+      if (mn >= 2) return ['std', 'Стандарт рынка'];
+      if (mx - mn >= 2) return ['spread', 'Разброс'];
+      return ['', 'Средне'];
+    }
+    function draw() {
+      let h = '<thead><tr><th>Критерий</th>' + S.names.map((n, i) => '<th><input class="st-in" data-name="' + i + '" value="' + esc(n) + '" aria-label="Название конкурента ' + (i + 1) + '"></th>').join('') + '<th>Строка</th></tr></thead><tbody>';
+      S.rows.forEach(([c, v], r) => {
+        h += '<tr data-r="' + r + '"><td class="st-crit"><input class="st-in" data-crit="' + r + '" value="' + esc(c) + '" aria-label="Критерий ' + (r + 1) + '"></td>';
+        v.forEach((x, i) => { h += '<td><button type="button" class="st-cell" data-r="' + r + '" data-i="' + i + '" data-v="' + x + '"></button></td>'; });
+        h += '<td class="st-k"></td></tr>';
+      });
+      h += '</tbody><tfoot><tr><td>Итого</td>' + S.names.map((_, i) => '<td data-sum="' + i + '"></td>').join('') + '<td></td></tr></tfoot>';
+      table.innerHTML = h;
+      update();
+    }
+    function update() {
+      const sums = S.names.map((_, i) => S.rows.reduce((a, [, v]) => a + v[i], 0));
+      const best = Math.max(...sums), max = S.rows.length * 3;
+      $$('.st-cell', table).forEach(b => {
+        const r = +b.dataset.r, i = +b.dataset.i, v = S.rows[r][1][i];
+        b.dataset.v = v; b.textContent = v;
+        b.setAttribute('aria-label', S.names[i] + ', ' + S.rows[r][0] + ': ' + v + ' из 3');
+      });
+      const groups = { niche: [], std: [], spread: [] };
+      S.rows.forEach(([c, v], r) => {
+        const [k, t] = kind(v), tr = $('tr[data-r="' + r + '"]', table);
+        tr.className = k ? 'r-' + k : '';
+        $('.st-k', tr).innerHTML = '<span class="st-tag ' + k + '">' + t + '</span>';
+        if (k) groups[k].push(c);
+      });
+      sums.forEach((s, i) => { const td = $('[data-sum="' + i + '"]', table); td.textContent = s + ' / ' + max; td.classList.toggle('lead-c', s === best && best > 0); });
+      const total = sums.reduce((a, b) => a + b, 0), items = [];
+      if (!total) { out.innerHTML = '<li class="inf"><span><b>Таблица пустая.</b> Открой сайты своих конкурентов и ставь оценки по шкале 0–3. Названия и критерии можно переписать.</span></li>'; return; }
+      const leaders = S.names.filter((_, i) => sums[i] === best);
+      items.push(['acc', '<b>Сильнее всех по сумме: ' + esc(leaders.join(', ')) + ' (' + best + ' из ' + max + ').</b> Сумма показывает общий уровень, но решения ищи в строках.']);
+      if (groups.std.length) items.push(['ok', '<b>Стандарт рынка: ' + esc(groups.std.join(', ')) + '.</b> Это есть у всех — на твоём сайте должно быть не хуже, иначе ты проиграешь уже на старте.']);
+      if (groups.niche.length) items.push(['ok', '<b>Пустая ниша: ' + esc(groups.niche.join(', ')) + '.</b> Никто не делает хорошо. Проверь спрос — если он есть, это твоё отличие и кандидат на первый экран.']);
+      if (groups.spread.length) items.push(['inf', '<b>Разброс: ' + esc(groups.spread.join(', ')) + '.</b> Кто-то делает отлично, кто-то никак. Разбери лучший пример и пойми, почему у остальных этого нет.']);
+      if (!groups.std.length && !groups.niche.length && !groups.spread.length) items.push(['inf', '<b>Рынок ровный.</b> Ярких различий нет — попробуй другие критерии или пройди другой сценарий.']);
+      out.innerHTML = items.map(([c, t]) => '<li class="' + c + '"><span>' + t + '</span></li>').join('');
+    }
+    table.addEventListener('click', e => {
+      const b = e.target.closest('.st-cell'); if (!b) return;
+      const v = S.rows[+b.dataset.r][1]; v[+b.dataset.i] = (v[+b.dataset.i] + 1) % 4; update();
+    });
+    table.addEventListener('input', e => {
+      const t = e.target;
+      if (t.dataset.name !== undefined) S.names[+t.dataset.name] = t.value || '—';
+      if (t.dataset.crit !== undefined) S.rows[+t.dataset.crit][0] = t.value || '—';
+      update();
+    });
+    $$('#st-mode button').forEach(b => b.addEventListener('click', () => load(b.dataset.v)));
+    load('demo');
+  }
+
+  // --- Карта позиционирования ---
+  const pmBox = $('#posmap');
+  if (pmBox) {
+    const WHO = [['А', 'Крупная онлайн-школа'], ['Б', 'Премиальная школа с носителями'], ['В', 'Приложение для самостоятельного изучения'], ['Г', 'Сервис частных репетиторов'], ['Д', 'Разговорный клуб']];
+    const AX = [
+      { n: 'Цена × формат', x: ['Доступно', 'Премиум'], y: ['Сам', 'С преподавателем'], p: [[62, 76], [86, 88], [14, 12], [42, 82], [24, 40]] },
+      { n: 'Тон × результат', x: ['Строгий', 'Дружелюбный'], y: ['Быстро', 'Системно'], p: [[70, 62], [24, 86], [88, 24], [38, 58], [80, 36]] },
+      { n: 'Аудитория × визуал', x: ['Все подряд', 'Узкая ниша'], y: ['Типовой', 'Характерный'], p: [[18, 30], [36, 22], [14, 80], [26, 14], [62, 38]] }
+    ];
+    const pm = $('#pm'), axSeg = $('#pm-axes'), out = $('#pm-out');
+    let a = 0, P = [];
+    const Q = [0, 1, 2, 3].map(i => { const d = document.createElement('div'); d.className = 'pm-q q' + i; d.innerHTML = '<span>свободно</span>'; pm.append(d); return d; });
+    const dots = WHO.map(([l, d]) => mk(l, d, false)).concat([mk('Ты', 'Твой проект', true)]);
+    function mk(l, d, you) {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'pm-dot' + (you ? ' you' : ''); b.textContent = l;
+      pm.append(b); return b;
+    }
+    AX.forEach((x, i) => { const b = document.createElement('button'); b.type = 'button'; b.dataset.v = String(i); b.textContent = x.n; b.addEventListener('click', () => setAx(i)); axSeg.append(b); });
+    $('#pm-legend').innerHTML = WHO.map(([l, d]) => '<li><i>' + l + '</i><span>' + d + '</span></li>').join('') + '<li class="you"><i>Ты</i><span>Твой проект — перетащи на свободное место</span></li>';
+    const quad = ([x, y]) => (y >= 50 ? 0 : 2) + (x >= 50 ? 1 : 0); // 0 лев-верх, 1 прав-верх, 2 лев-низ, 3 прав-низ
+    const qName = q => AX[a].x[q % 2] + ' + ' + AX[a].y[q < 2 ? 1 : 0];
+    function place() {
+      dots.forEach((d, i) => {
+        const [x, y] = P[i]; d.style.left = x + '%'; d.style.top = (100 - y) + '%';
+        const nm = i < WHO.length ? WHO[i][1] : 'Ты';
+        d.setAttribute('aria-label', nm + ': ' + AX[a].x[0] + '–' + AX[a].x[1] + ' ' + Math.round(x) + ' из 100, ' + AX[a].y[0] + '–' + AX[a].y[1] + ' ' + Math.round(y) + ' из 100. Двигай стрелками');
+      });
+      const cnt = [0, 0, 0, 0]; P.slice(0, WHO.length).forEach(p => cnt[quad(p)]++);
+      Q.forEach((q, i) => q.classList.toggle('empty', cnt[i] === 0));
+      const you = P[WHO.length], yq = quad(you);
+      let near = -1, nd = 1e9;
+      P.slice(0, WHO.length).forEach((p, i) => { const d = Math.hypot(p[0] - you[0], p[1] - you[1]); if (d < nd) { nd = d; near = i; } });
+      const empty = cnt.map((c, i) => c ? null : qName(i)).filter(Boolean);
+      const m = [];
+      m.push(empty.length ? '<b>Свободно: ' + empty.join('; ') + '.</b>' : '<b>Пустых квадрантов нет.</b> На этих осях рынок занят — попробуй другую пару осей.');
+      if (Math.abs(you[0] - 50) < 6 && Math.abs(you[1] - 50) < 6) m.push('Ты стоишь в центре — так выглядит сайт «для всех». Человеку непонятно, чем ты отличаешься. Сдвинь точку.');
+      else if (nd < 16) m.push('<span class="warn">Ты вплотную к «' + WHO[near][0] + '» (' + WHO[near][1].toLowerCase() + '). Со стороны вы будете выглядеть одинаково. Сдвинься или найди ось, по которой вы различаетесь.</span>');
+      else if (cnt[yq] === 0) m.push('<span class="okv">Ты в свободном квадранте «' + qName(yq) + '».</span> Теперь проверь спрос и сможет ли бизнес так работать. Если да — это и есть твоё позиционирование для первого экрана.');
+      else m.push('В твоём квадранте ещё ' + cnt[yq] + ' — ближе всех «' + WHO[near][0] + '». Отличие есть, но его придётся ясно объяснить в оффере.');
+      out.innerHTML = m.join(' ');
+    }
+    function setAx(i) { a = i; P = AX[i].p.map(p => p.slice()).concat([[50, 50]]); press(axSeg, String(i)); $('#pm-top').textContent = AX[i].y[1]; $('#pm-bot').textContent = AX[i].y[0]; $('#pm-l').textContent = AX[i].x[0]; $('#pm-r').textContent = AX[i].x[1]; place(); }
+    const clamp = v => Math.max(3, Math.min(97, v));
+    function fromEv(e) { const r = pm.getBoundingClientRect(); return [clamp((e.clientX - r.left) / r.width * 100), clamp(100 - (e.clientY - r.top) / r.height * 100)]; }
+    dots.forEach((d, i) => {
+      d.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); d.setPointerCapture(e.pointerId); d.classList.add('drag'); d.focus({ preventScroll: true }); });
+      d.addEventListener('pointermove', e => { if (!d.hasPointerCapture(e.pointerId)) return; P[i] = fromEv(e); place(); });
+      const end = e => { if (d.hasPointerCapture(e.pointerId)) d.releasePointerCapture(e.pointerId); d.classList.remove('drag'); };
+      d.addEventListener('pointerup', end); d.addEventListener('pointercancel', end);
+      d.addEventListener('keydown', e => {
+        const s = e.shiftKey ? 10 : 4, k = { ArrowLeft: [-s, 0], ArrowRight: [s, 0], ArrowUp: [0, s], ArrowDown: [0, -s] }[e.key];
+        if (!k) return; e.preventDefault(); P[i] = [clamp(P[i][0] + k[0]), clamp(P[i][1] + k[1])]; place();
+      });
+    });
+    // клик по пустому месту карты ставит туда «Ты»
+    pm.addEventListener('pointerdown', e => { if (e.target.closest('.pm-dot')) return; P[WHO.length] = fromEv(e); place(); });
+    $('#pm-reset').addEventListener('click', () => setAx(a));
+    setAx(0);
+  }
+})();
+
+</script>
+</body></html>

@@ -1,0 +1,1217 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>UI-элементы</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив только для методички «UI-элементы» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+button.ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+
+/* конструктор кнопки */
+.bld-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:start}
+.bld-ctrls{display:flex;flex-direction:column;gap:14px;min-width:0}
+.bld-row{display:flex;flex-direction:column;gap:6px}
+.bld-view{display:flex;flex-direction:column;gap:12px;min-width:0;position:sticky;top:16px}
+.bld-view .stage{min-height:160px}
+.bld-btn{--bg:#eb7540;--fg:#101010;--bd:transparent;font:500 16px var(--body);display:inline-flex;align-items:center;gap:10px;padding:16px 28px;border:0;background:var(--bg);color:var(--fg);cursor:pointer;position:relative;transition:background .18s,color .18s,transform .18s,box-shadow .18s,filter .18s;outline:none}
+.bld-btn span{white-space:nowrap}
+.bld-btn i{font-style:normal;display:none;transition:transform .2s}
+.bld-btn.has-icon{padding-right:10px}
+.bld-btn.has-icon i{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--fg);color:var(--bg)}
+.bld-btn:focus-visible{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.bld-btn.h-dark:hover{filter:brightness(.86)}
+.bld-btn.h-invert:hover{background:var(--fg);color:var(--bg)}
+.bld-btn.h-invert:hover i{background:var(--bg);color:var(--fg)}
+.bld-btn.h-arrow:hover i{transform:translateX(5px) rotate(-45deg)}
+.bld-btn.h-lift:hover{transform:translateY(-3px)}
+.bld-btn.h-lift.sh:hover{box-shadow:6px 9px 0 #101010}
+.bld-btn:active{transform:translateY(1px) scale(.98)}
+.bld-btn.sh{box-shadow:4px 4px 0 #101010}
+.bld-btn.cut{clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.bld-btn.dbl{outline:1.5px solid #101010;outline-offset:3px}
+.demo .warn{color:var(--bad)}
+.demo .okv{color:var(--good)}
+
+/* прищур */
+.squint-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:15px}
+.squinted .stage{filter:blur(3.5px) saturate(.9)}
+.hier .stage{transition:filter .3s}
+
+/* песочница пропорций */
+.sliders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+.sliders label{display:block;font-size:14px;color:var(--dim)}
+.sliders b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.sliders input{display:block;width:100%;margin:8px 0 0;accent-color:var(--accent)}
+#anat-play .stage{min-height:150px}
+#play-btn{transition:none}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)}
+.verdict b{color:var(--ink);font-weight:400}
+
+/* живая форма */
+.form-stage{flex-direction:column;align-items:stretch;gap:14px;max-width:420px;margin-inline:auto;width:100%}
+.form-stage .u-field{width:100%}
+.form-stage input.in{font:16px var(--body);outline:none;width:100%}
+.form-stage input.in::placeholder{color:#a3a3a0}
+.form-stage input.in:hover{border-color:#8e8e8c}
+.form-stage input.in:focus{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.form-stage .is-error input.in{border-color:#e5383b}
+.form-stage .is-ok input.in{border-color:#2fa84f}
+.lf-check{cursor:pointer}
+.lf-check input{width:20px;height:20px;accent-color:#101010;margin:0}
+.lf-check.is-error span{color:#e5383b}
+.lf-submit{cursor:pointer;width:100%}
+.lf-submit:hover{background:#d9612c}
+.lf-submit:focus-visible{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0;outline:none}
+.lf-done{color:#2fa84f;font-size:15px;margin:0}
+
+/* кликабельные образцы */
+.live{cursor:pointer;user-select:none}
+.live:focus-visible{outline:2px solid #3b6ef0;outline-offset:2px;border-radius:6px}
+.tog{transition:background .2s}.tog::after{transition:left .2s,right .2s}
+.chip{transition:background .15s,color .15s}
+.tab-body{font-size:13px;color:#5a5a58;width:100%;text-align:center}
+
+/* тренажёр */
+.game{display:flex;flex-direction:column;gap:12px}
+.game-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.game-top .cap{color:var(--accent);font-size:12px}
+.game-acts{display:flex;gap:8px}
+.game-stage{padding:16px;display:block}
+.mock{background:#fff;border-radius:12px;overflow:hidden;color:#101010;font-family:var(--body);box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.mock-nav{display:flex;align-items:center;gap:16px;padding:14px 18px;border-bottom:1px solid #ececea}
+.mock-nav b{color:#101010;font-weight:600;font-size:15px;white-space:nowrap}
+.mock-links{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:#5a5a58}
+.mock-body{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px;padding:28px 22px}
+.mock-copy{display:flex;flex-direction:column;gap:12px}
+.mock-h{font-size:clamp(24px,3.4vw,36px);font-weight:600;line-height:1.05;letter-spacing:-.02em;color:#101010}
+.mock-faint{font-size:12px;color:#c8c8c4;margin:0;max-width:34ch}
+.mock-btns{display:flex;flex-wrap:wrap;gap:8px}
+.mock-btns .u-btn{padding:11px 16px;font-size:14px}
+.mock-form{display:flex;flex-direction:column;gap:10px}
+.mock-in{height:46px;border:1px solid #c9c9c6;border-radius:10px;display:flex;align-items:center;padding:0 14px;font-size:14px;color:#a3a3a0}
+.mock-ok{background:#101010;color:#fff;padding:6px 14px;font-size:12px;height:28px;align-self:flex-start;display:inline-flex;align-items:center}
+.mock-icons{display:flex;align-items:center;gap:10px;font-size:20px}
+.mock-icons small{font-size:11px;color:#a3a3a0}
+.ic-line{font-weight:200}.ic-fill{font-size:22px}.ic-emoji{font-size:18px}
+.bug{cursor:pointer;border-radius:8px;transition:box-shadow .2s}
+.bug:hover{box-shadow:0 0 0 2px rgba(59,110,240,.35)}
+.bug:focus-visible{outline:2px solid #3b6ef0;outline-offset:2px}
+.bug.found{box-shadow:0 0 0 3px #e5383b}
+.bug.found:hover{box-shadow:0 0 0 3px #e5383b}
+.game-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.game-list li{background:var(--card);border:1px solid var(--stroke);border-left:2px solid var(--bad);border-radius:10px;padding:12px 14px;font-size:15px;display:flex;flex-direction:column;gap:4px}
+.game-list li b{color:var(--ink);font-weight:400}
+.game-win{border:1px solid var(--good);border-radius:10px;padding:14px 16px;color:var(--ink)}
+
+@media (max-width:760px){
+  .bld-grid,.sliders,.mock-body{grid-template-columns:minmax(0,1fr)}
+  .bld-view{position:static}
+  .mock-links{display:none}
+  .mock-nav .mock-links.bug{display:flex}
+}
+@media (prefers-reduced-motion:reduce){.bld-btn,.bld-btn i,.tog,.tog::after,.hier .stage{transition:none}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 4 · UI</span></div>
+  <div class="series"><span>01 Стили в веб-дизайне</span><b>02 UI-элементы</b><span>03 UI-кит</span><span>04 Концепция в веб-дизайне</span><span>05 Композиция</span><span>06 Типографика</span><span>07 Иконки</span><span>08 Адаптив</span><span>09 Цвет</span></div>
+  <h1>UI-элементы</h1>
+  <p class="lead"><b>Кнопки, поля, карточки, навигация — из чего собран любой интерфейс.</b> Разбираем, как каждый элемент устроен, какие у него состояния и как сделать его своим, не сломав понятность.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#base">Основа</a><a href="#states">Состояния</a><a href="#design">Форма и характер</a><a href="#buttons">Кнопки</a><a href="#inputs">Поля и формы</a><a href="#icons">Иконки</a><a href="#nav">Навигация</a><a href="#content">Карточки и контент</a><a href="#game">Тренажёр</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="base">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Из чего состоит интерфейс</h2></div></div>
+  <p>UX отвечает за то, что человек делает и как проходит путь: логика, сценарии, структура. UI отвечает за то, как это выглядит и ощущается. Хороший UI не украшает сценарий, а делает его очевидным: человек сразу видит, что здесь можно сделать и что произойдёт дальше.</p>
+  <p class="quote">UI-элемент — это обещание действия. По виду кнопки человек должен понять, что она нажимается и куда ведёт.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Принцип 1</span><b>Ясность</b><p>На экране видно, что это, что можно сделать и что будет после клика.</p></div>
+    <div class="box"><span class="kind">Принцип 2</span><b>Последовательность</b><p>Одинаковые элементы выглядят и ведут себя одинаково на всех экранах.</p></div>
+    <div class="box"><span class="kind">Принцип 3</span><b>Обратная связь</b><p>Любое действие подтверждается: изменилась кнопка, появилась подсказка, побежал прогресс.</p></div>
+  </div>
+  <p>Каждый элемент в этой методичке разбираем по одной схеме: <b>что это</b>, <b>где используется</b>, <b>анатомия</b> (размеры, кегль, отступы) и <b>усложнения</b> — как сделать элемент характерным.</p>
+</section>
+
+<section id="states">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Состояния</h2></div></div>
+  <p>У каждого интерактивного элемента несколько состояний. Они отвечают человеку на вопрос «меня услышали?». Состояние меняется через размер, цвет заливки или контура, форму и иногда тень. Понажимай переключатели ниже.</p>
+  <div class="demo" data-states>
+    <span class="cap">Кнопка · переключай состояния</span>
+    <div class="seg">
+      <button type="button" data-state="default" data-desc="<b>Default.</b> Как кнопка выглядит в покое. Главная кнопка экрана — самая контрастная.">Default</button>
+      <button type="button" data-state="hover" data-desc="<b>Hover.</b> Курсор над кнопкой: темнеет или светлеет заливка, меняется контур. На телефоне этого состояния нет, поэтому важное в hover не прячем.">Hover</button>
+      <button type="button" data-state="focus" data-desc="<b>Focus.</b> Кнопку выбрали клавишей Tab или голосовым помощником. Обводка вокруг — обязательна: без неё человек с клавиатурой не поймёт, где находится.">Focus</button>
+      <button type="button" data-state="active" data-desc="<b>Pressed.</b> Момент нажатия: кнопка чуть «вдавливается» или темнеет. Даёт ощущение физического клика.">Pressed</button>
+      <button type="button" data-state="loading" data-desc="<b>Loading.</b> Действие запущено, ждём ответа. Спиннер вместо текста не даёт нажать второй раз.">Loading</button>
+      <button type="button" data-state="disabled" data-desc="<b>Disabled.</b> Сейчас нажать нельзя. Серый цвет и низкий контраст. Рядом объясни, что нужно сделать, чтобы кнопка ожила.">Disabled</button>
+    </div>
+    <div class="stage"><button type="button" class="u-btn u-primary" data-target tabindex="-1">Оформить заказ</button><button type="button" class="u-btn u-secondary" data-target tabindex="-1">В избранное</button></div>
+    <output></output>
+  </div>
+  <div class="demo" data-states>
+    <span class="cap">Поле ввода · переключай состояния</span>
+    <div class="seg">
+      <button type="button" data-state="default" data-text='<span class="ph">ivan@mail.ru</span>' data-help="" data-desc="<b>Default.</b> Пустое поле с подсказкой формата. Подпись над полем видна всегда.">Default</button>
+      <button type="button" data-state="hover" data-text='<span class="ph">ivan@mail.ru</span>' data-help="" data-desc="<b>Hover.</b> Контур чуть темнеет — поле откликается на курсор.">Hover</button>
+      <button type="button" data-state="focus" data-text='vasya@<span class="caret"></span>' data-help="" data-desc="<b>Focus.</b> Человек печатает: яркий контур, мигающий курсор.">Ввод</button>
+      <button type="button" data-state="error" data-text="vasya@" data-help="Допиши адрес после @, например vasya@mail.ru" data-desc="<b>Ошибка.</b> Красный контур и текст рядом с полем: что не так и как исправить.">Ошибка</button>
+      <button type="button" data-state="ok" data-text="vasya@mail.ru" data-help="Отлично, сюда пришлём чек" data-desc="<b>Успех.</b> Зелёный контур или галочка. Нужен там, где важно подтвердить проверку: почта, промокод, пароль.">Успех</button>
+      <button type="button" data-state="disabled" data-text="vasya@mail.ru" data-help="" data-desc="<b>Disabled.</b> Поле нельзя изменить, например почту из аккаунта.">Disabled</button>
+    </div>
+    <div class="stage"><div class="u-field" data-target><label>Электронная почта</label><div class="in" data-text='<span class="ph">ivan@mail.ru</span>'></div><span class="help"></span></div></div>
+    <output></output>
+  </div>
+  <div class="sub">
+    <h3>Состояния всего экрана</h3>
+    <div class="sub-b">
+      <div class="three">
+        <div class="box"><span class="kind">Loading</span><p>Скелетон или спиннер лучше, чем «молчание». Скелетон повторяет форму будущего контента, поэтому ожидание кажется короче.</p></div>
+        <div class="box"><span class="kind">Empty</span><p>Объясни, почему пусто, и дай следующее действие: «Корзина пуста. Посмотри новинки».</p></div>
+        <div class="box"><span class="kind">Error</span><p>Что случилось и как исправить. «Ошибка 500» без пояснения — тупик.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="design">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Форма, обводка, детализация</h2></div></div>
+  <p>Компании выражают уникальность в том числе через интерфейс, поэтому одна и та же кнопка на разных сайтах выглядит по-разному. Все варианты собираются из трёх инструментов. Крути их по одному — и у тебя будет десяток разных кнопок с одной функцией.</p>
+  <div class="tools3">
+    <div class="box"><span class="kind">1 · Форма</span><b>От простого к сложному</b><div class="stage"><span class="u-btn u-primary b-sq">Купить</span><span class="u-btn u-primary b-pill">Купить</span><span class="u-btn u-primary b-cut">Купить</span></div><ul><li>простая геометрия</li><li>капсулы, асимметрия</li><li>маски и вырезы</li></ul></div>
+    <div class="box"><span class="kind">2 · Обводка</span><b>От нейтральной к фирменной</b><div class="stage"><span class="u-btn b-thin">Купить</span><span class="u-btn b-bold">Купить</span><span class="u-btn b-dash">Купить</span></div><ul><li>тонкая нейтральная</li><li>контрастная, заметная</li><li>с характером: пунктир, двойная</li></ul></div>
+    <div class="box"><span class="kind">3 · Детализация</span><b>От базы к слоям</b><div class="stage"><span class="u-btn u-primary b-icon b-pill">Купить <i>→</i></span><span class="u-btn b-grad">Купить</span><span class="u-btn b-shadow">Купить</span></div><ul><li>иконка, доп-элемент</li><li>микроанимации, доп-состояния</li><li>градиент, зерно, жёсткая тень</li></ul></div>
+  </div>
+
+  <div class="demo builder" id="builder">
+    <span class="cap">Конструктор · собери свою кнопку</span>
+    <div class="bld-grid">
+      <div class="bld-ctrls">
+        <div class="bld-row"><span class="cap">Форма</span><div class="seg" data-k="shape"><button type="button" data-v="0">Прямоугольник</button><button type="button" data-v="1">Скругление</button><button type="button" data-v="2">Капсула</button><button type="button" data-v="3">Срез углов</button></div></div>
+        <div class="bld-row"><span class="cap">Обводка</span><div class="seg" data-k="stroke"><button type="button" data-v="0">Нет</button><button type="button" data-v="1">Тонкая</button><button type="button" data-v="2">Жирная</button><button type="button" data-v="3">Пунктир</button><button type="button" data-v="4">Двойная</button></div></div>
+        <div class="bld-row"><span class="cap">Детализация</span><div class="seg" data-k="detail"><button type="button" data-v="0">Нет</button><button type="button" data-v="1">Иконка</button><button type="button" data-v="2">Жёсткая тень</button><button type="button" data-v="3">Градиент</button></div></div>
+        <div class="bld-row"><span class="cap">Заливка</span><div class="seg" data-k="fill"><button type="button" data-v="0">Акцент</button><button type="button" data-v="1">Чёрная</button><button type="button" data-v="2">Без заливки</button></div></div>
+        <div class="bld-row"><span class="cap">Hover</span><div class="seg" data-k="hover"><button type="button" data-v="0">Темнеет</button><button type="button" data-v="1">Инверсия</button><button type="button" data-v="2">Сдвиг стрелки</button><button type="button" data-v="3">Подъём</button></div></div>
+      </div>
+      <div class="bld-view">
+        <div class="stage"><button type="button" class="bld-btn" id="bld-btn"><span>Записаться на курс</span><i aria-hidden="true">→</i></button></div>
+        <span class="cap">Наведи курсор или нажми Tab, чтобы проверить hover и focus</span>
+        <output id="bld-out"></output>
+        <button type="button" class="ghost" id="bld-rand">Случайная комбинация</button>
+      </div>
+    </div>
+  </div>
+  <div class="two">
+    <div class="box"><span class="kind">Пример</span><b>Кнопка с доп-элементом</b><p>На <a href="https://www.museumofmoney.com" target="_blank" rel="noopener">museumofmoney.com</a> и <a href="https://good-fella.com" target="_blank" rel="noopener">good-fella.com</a> кнопка — не просто прямоугольник: к форме добавлен отдельный круг со стрелкой, который живёт своей жизнью при наведении.</p></div>
+    <div class="box"><span class="kind">Пример</span><b>Toggle с иконкой</b><p>На <a href="https://www.on.energy/financing" target="_blank" rel="noopener">on.energy</a> переключатель усложнён формой и иконкой внутри бегунка. Функция та же, а элемент запоминается.</p></div>
+  </div>
+  <p class="why">Референсы UI-элементов обычно простые. Сложность делает не один элемент, а их система: одинаковые радиусы, одна толщина обводки, общий приём на весь сайт. Усложняй один инструмент, а не все три сразу.</p>
+</section>
+
+<section id="buttons">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Кнопки</h2></div></div>
+  <p>Кнопка — основной элемент, который запускает действие: переход, отправку данных или изменение состояния системы. Она запускает событие («Отправить», «Купить»), связывает экраны (ведёт в корзину или к оплате) и предсказывает действие: человек должен с первого взгляда понять, что на неё можно нажать.</p>
+
+  <div class="sub">
+    <h3>Иерархия</h3>
+    <div class="sub-b">
+      <div class="stage"><span class="u-btn u-primary">Купить</span><span class="u-btn u-secondary">Подробнее</span><span class="u-btn u-tertiary">Сравнить</span><span class="u-btn u-danger">Удалить аккаунт</span></div>
+      <div class="four">
+        <div class="box"><span class="kind">Primary</span><p>Главное действие экрана. Акцентный цвет, заливка, самая заметная. Одна на экран или блок.</p></div>
+        <div class="box"><span class="kind">Secondary</span><p>Альтернативное действие. Обводка или спокойная заливка.</p></div>
+        <div class="box"><span class="kind">Tertiary</span><p>Низкий приоритет. Часто выглядит как ссылка, чтобы не спорить с главной.</p></div>
+        <div class="box"><span class="kind">Destructive</span><p>Действие с серьёзными последствиями. Красный цвет предупреждает.</p></div>
+      </div>
+
+      <div class="squint-bar"><button type="button" class="ghost" data-squint="hier-btn" aria-pressed="false">Прищуриться</button><span>Размой картинку: если главное всё ещё видно, иерархия работает.</span></div>
+      <div class="hier" id="hier-btn">
+        <div class="bad"><i>Все главные</i><div class="stage"><span class="u-btn u-primary">Купить</span><span class="u-btn u-primary">Подробнее</span><span class="u-btn u-primary">Сравнить</span></div><p>Три одинаковых акцента — глаз не знает, куда смотреть. Если всё главное, ничего не главное.</p></div>
+        <div class="good"><i>Одна главная</i><div class="stage"><span class="u-btn u-primary">Купить</span><span class="u-btn u-secondary">Подробнее</span><span class="u-btn u-tertiary">Сравнить</span></div><p>Иерархия ведёт по пути: сначала «Купить», остальное — по желанию.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Анатомия</h3>
+    <div class="sub-b">
+      <div class="anat"><svg viewBox="0 0 640 210" role="img" aria-label="Анатомия кнопки: высота, поля по вертикали в два раза меньше полей по горизонтали, текст по центру">
+        <rect x="170" y="60" width="300" height="72" rx="12" fill="#eb7540"/>
+        <rect x="170" y="60" width="60" height="72" fill="#5b8def" opacity=".28"/><rect x="410" y="60" width="60" height="72" fill="#5b8def" opacity=".28"/>
+        <rect x="230" y="60" width="180" height="22" fill="#34c759" opacity=".3"/><rect x="230" y="110" width="180" height="22" fill="#34c759" opacity=".3"/>
+        <text class="t" x="320" y="102" text-anchor="middle">Оформить заказ</text>
+        <line x1="150" y1="60" x2="150" y2="132" stroke="#8e8e8c"/><text x="140" y="100" text-anchor="end">высота</text>
+        <text x="200" y="160" text-anchor="middle" fill="#5b8def">2X</text><text x="440" y="160" text-anchor="middle" fill="#5b8def">2X</text>
+        <text x="320" y="50" text-anchor="middle" fill="#34c759">X</text><text x="320" y="152" text-anchor="middle" fill="#34c759">X</text>
+        <text x="320" y="190" text-anchor="middle">ТЕКСТ ПО ЦЕНТРУ · КЕГЛЬ 15–18 PX · ОДНА СТРОКА</text>
+      </svg></div>
+
+      <div class="demo" id="anat-play">
+        <span class="cap">Песочница · подбери пропорции</span>
+        <div class="sliders">
+          <label>Высота <b id="v-h">52</b> px<input type="range" id="r-h" min="28" max="88" value="52"></label>
+          <label>Поля по бокам <b id="v-p">28</b> px<input type="range" id="r-p" min="6" max="72" value="28"></label>
+          <label>Кегль <b id="v-f">16</b> px<input type="range" id="r-f" min="11" max="24" value="16"></label>
+          <label>Скругление <b id="v-r">10</b> px<input type="range" id="r-r" min="0" max="44" value="10"></label>
+        </div>
+        <div class="stage"><span class="u-btn u-primary" id="play-btn">Оформить заказ</span></div>
+        <ul class="verdict" id="play-out"></ul>
+        <div class="seg"><button type="button" data-preset="52,28,16,10">Интерфейс</button><button type="button" data-preset="72,44,18,14">CTA лендинга</button><button type="button" data-preset="32,10,12,4">Слишком мелко</button><button type="button" data-preset="56,8,16,0">Тесно по бокам</button></div>
+      </div>
+      <div class="two">
+        <div class="box"><b>Размер</b><ul><li>Кнопки в интерфейсе — 40–56 px в высоту.</li><li>Крупный CTA на лендинге — 56–80 px.</li><li>Кликабельная зона на телефоне — не меньше 44 px, иначе палец промахнётся.</li></ul></div>
+        <div class="box"><b>Пропорции</b><ul><li>Поля сверху и снизу в два раза меньше, чем по бокам — так кнопка выглядит собранной.</li><li>Кегль 15–18 px, текст по центру.</li><li>На телефоне главная кнопка часто растягивается на всю ширину контейнера.</li></ul></div>
+      </div>
+      <p><b>Ссылка</b> по функции та же кнопка, только без формы. Выделяется цветом или подчёркиванием, расстояние от текста до линии — 5–10 px на крупных кеглях. На hover меняет цвет или толщину линии.</p>
+      <div class="stage"><span class="lnk">Все проекты</span><span class="lnk h">Все проекты · hover</span></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Текст на кнопке</h3>
+    <div class="sub-b">
+      <div class="pair">
+        <div class="bad"><i>Размыто</i><span>«Дальше», «ОК», «Отправить»</span></div>
+        <div class="good"><i>Глагол + результат</i><span>«Оформить заказ», «Забронировать столик», «Получить чек-лист»</span></div>
+      </div>
+      <p>Тон кнопки — часть голоса бренда. Дружелюбный продукт может написать «Погнали» вместо «Продолжить». Но не уходи в крайность: кнопки отказа вроде «Мне это до лампочки» обижают и закрепляют негатив к сервису. Большинство людей выберут вежливый вариант.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Опасные действия</h3>
+    <div class="sub-b">
+      <p>Чтобы человек не удалил аккаунт случайно, перед необратимым действием покажи окно подтверждения. Заголовок — вопрос «Точно удалить?», главная кнопка называет действие, вторичная — «Отмена», «Оставить», «Не сейчас».</p>
+      <div class="hier">
+        <div class="bad"><i>Цвет врёт</i><div class="stage"><div class="modal"><b>Удалить аккаунт?</b><span>Проекты и история заказов пропадут.</span><div class="row"><span class="u-btn u-secondary">Отмена</span><span class="u-btn" style="background:#3b6ef0;color:#fff">Да</span></div></div></div><p>Синяя спокойная кнопка и «Да» не предупреждают об опасности.</p></div>
+        <div class="good"><i>Цвет предупреждает</i><div class="stage"><div class="modal"><b>Удалить аккаунт?</b><span>Проекты и история заказов пропадут.</span><div class="row"><span class="u-btn u-secondary">Оставить</span><span class="u-btn u-danger">Удалить</span></div></div></div><p>Красный цвет, иконка корзины или прямой глагол — и человек остановится подумать.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Принципы</h3>
+    <div class="sub-b">
+      <ol class="steps">
+        <li><div><div class="t">Акцентный цвет и контраст</div><div class="d">Главная кнопка выделяется на фоне. Цвет берём из брендбука и закрепляем только за главным действием.</div></div></li>
+        <li><div><div class="t">Главное — крупнее</div><div class="d">Маленький CTA где-то сбоку заставляет дольше думать. Главную кнопку делай чуть больше остальных.</div></div></li>
+        <li><div><div class="t">Лимит главных действий</div><div class="d">Одна primary на экран или блок. Остальные визуально отличаются от неё.</div></div></li>
+        <li><div><div class="t">Понятно, что нажимается</div><div class="d">Форма, контур или подчёркивание. Текст без признаков кнопки пользователь пропустит.</div></div></li>
+        <li><div><div class="t">Очерёдность</div><div class="d">«Далее» в конце ряда: сначала человек видит варианты, потом действие.</div></div></li>
+        <li><div><div class="t">Честные акценты</div><div class="d">Банки иногда делают «Подключить услугу» яркой, а «Отказаться» серой, чтобы клиент нажал не читая. Это тёмный паттерн: работает один раз, а доверие теряется надолго. Если варианты равноценны, не выделяй ни один.</div></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="inputs">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Поля ввода и формы</h2></div></div>
+  <p>Поле ввода — место, куда человек вписывает данные: имя, почту, пароль, адрес, комментарий. Поле может подсказывать формат, предлагать варианты по прошлым вводам и скрывать символы пароля.</p>
+  <div class="sub">
+    <h3>Анатомия</h3>
+    <div class="sub-b">
+      <div class="stage"><div class="u-field"><label>Подпись (label)</label><div class="in"><span class="ph">Подсказка формата</span></div><span class="help">Вспомогательный текст или ошибка</span></div></div>
+      <ul class="box" style="padding-left:34px">
+        <li>Высота как у кнопки рядом: если кнопка 52 px, поле тоже 52 px.</li>
+        <li>Текст по левому краю, поля слева и справа одинаковые.</li>
+        <li>Контур 1 px, тот же радиус и шрифт, что у кнопки.</li>
+        <li>Подсказку внутри поля делай полупрозрачной, чтобы её не приняли за введённые данные.</li>
+      </ul>
+      <div class="pair">
+        <div class="bad"><i>Только плейсхолдер</i><span>Подсказка исчезает, как только человек начал печатать. На середине формы он уже не помнит, что вводит.</span></div>
+        <div class="good"><i>Подпись над полем</i><span>Label виден всегда, а плейсхолдер показывает формат: «ivan@mail.ru», «+7 900 000-00-00».</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Валидация</h3>
+    <div class="sub-b">
+      <p>Валидация — проверка того, что человек ввёл. Есть три момента, когда её запускают:</p>
+      <div class="three">
+        <div class="box"><span class="kind">Мгновенная</span><p>Во время ввода. Лучше всего — маска: в поле телефона просто нельзя ввести букву.</p></div>
+        <div class="box hot"><span class="kind">При потере фокуса</span><p>Человек дописал «vasya@» и ушёл в следующее поле — тут же видит «Укажи полный адрес почты». Самый спокойный вариант для большинства полей.</p></div>
+        <div class="box"><span class="kind">При отправке</span><p>Проверка по нажатию кнопки. Ошибки подсвечиваем у каждого поля, а не одним списком сверху.</p></div>
+      </div>
+
+      <form class="demo live-form" id="live-form" novalidate>
+        <span class="cap">Живая форма · попробуй все три вида проверки</span>
+        <div class="seg" id="vmode"><button type="button" data-mode="input">Мгновенная</button><button type="button" data-mode="blur">При потере фокуса</button><button type="button" data-mode="submit">При отправке</button></div>
+        <output id="vmode-out"></output>
+        <div class="stage form-stage">
+          <div class="u-field" data-f="name"><label for="lf-name">Имя</label><input class="in" id="lf-name" autocomplete="off" placeholder="Анна"><span class="help"></span></div>
+          <div class="u-field" data-f="email"><label for="lf-email">Почта</label><input class="in" id="lf-email" autocomplete="off" inputmode="email" placeholder="anna@mail.ru"><span class="help"></span></div>
+          <div class="u-field" data-f="phone"><label for="lf-phone">Телефон</label><input class="in" id="lf-phone" autocomplete="off" inputmode="tel" placeholder="+7 (900) 000-00-00"><span class="help">Маска: буквы сюда просто не напечатаются</span></div>
+          <label class="ctl lf-check" for="lf-agree"><input type="checkbox" id="lf-agree"><span>Согласна с условиями</span></label>
+          <button type="submit" class="u-btn u-primary lf-submit">Отправить заявку</button>
+          <p class="lf-done" id="lf-done" hidden>Готово, заявка ушла. Это демо — никуда ничего не отправилось.</p>
+        </div>
+      </form>
+      <p class="why">Можно блокировать кнопку отправки, пока обязательные поля пустые. Но у disabled-кнопки есть минус: человек не понимает, почему она не нажимается. Если блокируешь — пиши рядом, чего не хватает. Другой путь: кнопка активна всегда, а по клику показывает ошибки у конкретных полей.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Принципы формы</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><b>Визуально</b><ul><li><b>Принцип сосисок:</b> одинаковая ширина и высота у полей и кнопки — самый простой способ сделать красивую форму.</li><li>Поля выровнены по одной линии, их легко сканировать.</li><li>Для длинного текста — textarea, она растёт в высоту. Ограничь, до какой высоты.</li><li>Ошибка и подсказка разного цвета.</li><li>Иконки в полях — только узнаваемые и без перебора.</li></ul></div>
+        <div class="box"><b>По смыслу</b><ul><li>Не пишем «Введите» и «Напишите» — поле и так подразумевает ввод.</li><li>Необязательное поле подписываем «если есть»: «Отчество, если есть».</li><li>Подсказка помогает не ошибиться в формате.</li><li>Предлагай популярные варианты: города, размеры, суммы.</li><li><b>Главное правило:</b> не собирай лишних данных. Каждое поле снижает конверсию.</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Выбор и настройки</h3>
+    <div class="sub-b">
+      <div class="zoo">
+        <div class="box"><span class="kind">Чекбокс</span><div class="stage" style="flex-direction:column;align-items:flex-start"><span class="ctl"><span class="chk">✓</span>Согласен с условиями</span><span class="ctl"><span class="chk off"></span>Подписаться на новости</span></div><p>Несколько независимых вариантов. Можно выбрать все или ни одного. Нажимается.</p></div>
+        <div class="box"><span class="kind">Радиокнопка</span><div class="stage" style="flex-direction:column;align-items:flex-start"><span class="ctl"><span class="rad on"></span>Курьером</span><span class="ctl"><span class="rad"></span>Самовывоз</span></div><p>Один вариант из нескольких. Выбор одного снимает другой.</p></div>
+        <div class="box"><span class="kind">Переключатель</span><div class="stage" style="flex-direction:column;align-items:flex-start"><span class="ctl"><span class="tog"></span>Wi-Fi</span><span class="ctl"><span class="tog off"></span>Bluetooth</span></div><p>Включает и выключает что-то сразу, без кнопки «Сохранить». Как в настройках iPhone.</p></div>
+      </div>
+      <p>Из полей, кнопки и этих элементов собирается <b>форма</b>. А если в одном блоке живут поля, ползунки, переключатели и итог — получается <b>калькулятор</b>: расчёт ипотеки, стоимости доставки, тарифа. Нарисовать его можно сотней способов, главное — единообразие элементов и ясная иерархия: что вводим, что получаем.</p>
+    </div>
+  </div>
+</section>
+
+<section id="icons">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Иконки</h2></div></div>
+  <p>Иконка — сжатая до картинки подсказка. Хорошая читается быстрее слова, плохая заставляет гадать. В наборе иконок работают одни и те же правила, поэтому лучше взять готовый набор (Phosphor, Lucide, Material Symbols) и придерживаться его, чем собирать иконки с разных сайтов.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Принцип</th><th>Как применять</th></tr></thead>
+    <tbody>
+      <tr><td>Чёткость</td><td>Точная метафора считывается мгновенно. Учти контекст: одна иконка в разных продуктах значит разное.</td></tr>
+      <tr><td>Простота</td><td>Минимум деталей. Простая форма читается и в 16 px, и в 48 px.</td></tr>
+      <tr><td>Единый стиль</td><td>Весь набор в одном стиле: line, solid или duotone. Можно сочетать осознанно: line для навигации, solid для активного состояния.</td></tr>
+      <tr><td>Сетка</td><td>Чаще всего 24×24 px. Все линии — на пиксельной сетке, иначе иконка мылится.</td></tr>
+      <tr><td>Зона безопасности</td><td>Основная форма — внутри живой зоны с отступом от края. Выходить за неё можно, но по здравому смыслу.</td></tr>
+      <tr><td>Базовые формы</td><td>Круг, квадрат и прямоугольник разного размера, чтобы визуальный вес иконок был одинаковым.</td></tr>
+      <tr><td>Толщина линий</td><td>Целые значения: 1,5 или 2 px. Расстояние между линиями не меньше толщины линии.</td></tr>
+      <tr><td>Скругления и углы</td><td>Одно правило на весь набор: острые или скруглённые 2 px. Наклоны кратны 15°.</td></tr>
+      <tr><td>Оптический баланс</td><td>Геометрически ровно ≠ визуально ровно. Треугольник Play сдвигают вправо, чтобы он казался по центру.</td></tr>
+      <tr><td>Перспектива</td><td>Один подход на всё: плоско или в 3D. Чаще всего — фронтальный 2D.</td></tr>
+      <tr><td>Подпись</td><td>Без подписи — только общепонятные: поиск, корзина, закрыть, меню. Остальное подписывай.</td></tr>
+      <tr><td>Формат</td><td>SVG: не пикселит на любом экране и меняет цвет кодом.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="nav">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Навигация</h2></div></div>
+  <p>Навигация отвечает на два вопроса: где я сейчас и куда могу пойти. Выбери одну главную модель (верхнее меню, сайдбар или табы) и всегда подсвечивай активный пункт. Все образцы ниже нажимаются — пощёлкай и посмотри, как меняется активное состояние.</p>
+  <div class="zoo">
+    <div class="box"><span class="kind">Меню</span><div class="stage"><div class="tabs"><span class="on">Курсы</span><span>Студия</span><span>Блог</span></div></div><p>Набор ссылок вверху страницы или в бургере на телефоне. 5–7 пунктов — больше человек не охватит взглядом.</p></div>
+    <div class="box"><span class="kind">Хлебные крошки</span><div class="stage"><span class="crumbs">Каталог / Обувь / <b>Кеды</b></span></div><p>Цепочка разделов, обычно через «/». Помогает вернуться наверх из глубины каталога.</p></div>
+    <div class="box"><span class="kind">Пагинация</span><div class="stage"><div class="pages"><span>‹</span><span>1</span><span class="on">2</span><span>3</span><span>…</span><span>12</span><span>›</span></div></div><p>Номер страницы в длинном списке: магазин, поиск, блог.</p></div>
+    <div class="box"><span class="kind">Табы</span><div class="stage"><div class="tabs"><span class="on">Все</span><span>Личные</span><span>Работа</span></div></div><p>Переключают контент без перехода. Папки в Telegram, листы в Excel.</p></div>
+    <div class="box"><span class="kind">Фильтры</span><div class="stage"><span class="chip on">До 5000 ₽</span><span class="chip">Размер 42</span><span class="chip">Чёрные</span></div><p>Сужают выдачу. Активные фильтры видны и снимаются в один клик.</p></div>
+    <div class="box"><span class="kind">Прогресс</span><div class="stage"><div class="prog"><div class="steps3"><b>1</b><hr><b>2</b><hr><b class="off">3</b></div><div class="bar"><i></i></div><div class="lbl"><span>Шаг 2 из 3</span><span>60%</span></div></div></div><p>Показывает этап процесса — как анкета в Т-Банке — или величину, как шкала готовности дома у «Самолёта».</p></div>
+  </div>
+</section>
+
+<section id="content">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Карточки и контент</h2></div></div>
+  <p>Карточка — контейнер для одного объекта. Она делает анонс основного контента: быстро показывает главное и ведёт дальше. Карточки делят большой массив данных на понятные единицы и легко перестраиваются под любой экран, как модульный конструктор.</p>
+  <div class="stage dark"><div class="mini-card"><div class="pic"></div><div class="tx"><b>Кеды Classic</b>4 990 ₽ · ★ 4,8</div></div><div class="mini-card"><div class="pic" style="background:linear-gradient(135deg,#5b8def,#9fb8ff)"></div><div class="tx"><b>Как сделать UI-кит</b>Блог · 7 минут</div></div><div class="mini-card"><div class="pic" style="background:linear-gradient(135deg,#34c759,#b8f0c4)"></div><div class="tx"><b>Анна Смирнова</b>Дизайнер · онлайн</div></div></div>
+  <div class="scroll"><table>
+    <thead><tr><th>Карточка</th><th>Где</th><th>Из чего состоит</th><th>Задача</th></tr></thead>
+    <tbody>
+      <tr><td>Товар</td><td>Маркетплейсы, каталоги</td><td>Фото, название, цена (акцент), рейтинг, бейджи «хит» и «скидка», кнопка «в корзину»</td><td>Заинтересовать и увести на страницу товара</td></tr>
+      <tr><td>Статья</td><td>Медиа, блоги</td><td>Обложка, заголовок, лид, дата и автор, теги. Кликабельна целиком</td><td>Увести читать полностью</td></tr>
+      <tr><td>Пользователь</td><td>Соцсети, CRM</td><td>Аватар, имя, роль или статус, контакты, кнопки действий</td><td>Показать, кто это и что с ним можно сделать</td></tr>
+      <tr><td>Задача</td><td>Trello, Notion, таск-трекеры</td><td>Название, метки, исполнитель, срок, вложения</td><td>Быть компактной единицей, которую легко двигать</td></tr>
+    </tbody>
+  </table></div>
+  <div class="sub">
+    <h3>Как сделать карточку</h3>
+    <div class="sub-b">
+      <ul class="box" style="padding-left:34px">
+        <li>Внутри: заголовок, ключевой факт, действие. Акцент на изображении — как на обложках Behance или анкетах в Tinder.</li>
+        <li>Границы понятны: фон, обводка или тень и достаточные внутренние отступы.</li>
+        <li>Карточки бывают разного размера в одной сетке и даже во всю ширину страницы — как кейсы на <a href="https://newgenre.studio" target="_blank" rel="noopener">newgenre.studio</a> или центрированные карточки на <a href="https://solais.ai" target="_blank" rel="noopener">solais.ai</a>.</li>
+        <li>Карточка работает, только если в неё есть что положить. Пустые плитки с одним словом выглядят как недоделанный макет.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Список и таблица</h3>
+    <div class="sub-b">
+      <p><b>Список</b> — перечень однотипных данных: преимущества с заголовком и описанием, пункты тарифа, вопросы-ответы. Бывает раскрывающимся. Если у каждого пункта появляется несколько характеристик, список превращается в <b>таблицу</b> — как сравнение MacBook на сайте Apple или тарифов у Notion.</p>
+      <p>Визуально таблице хватает горизонтальных разделителей, чёткого выравнивания по колонкам и аккуратной системы отступов. Цифры выравнивай по правому краю, текст — по левому.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Медиа и поп-ап</h3>
+    <div class="sub-b">
+      <div class="three">
+        <div class="box"><span class="kind">Слайдер</span><div class="stage" style="min-height:60px;padding:16px"><div class="dots"><i class="on"></i><i></i><i></i><i></i></div></div><p>Листает фото, видео или блоки. Главное — стрелки и точки-индикаторы. Осторожно: до третьего слайда доходят немногие, важное туда не прячь.</p></div>
+        <div class="box"><span class="kind">Плеер</span><p>Для видео. Чаще встраивают YouTube или Vimeo, но плеер можно нарисовать в стиле сайта — как у фильма Design Canada или на лендингах наших курсов.</p></div>
+        <div class="box"><span class="kind">Поп-ап</span><p>Окно поверх страницы без перехода. Ускоряет действие: форма заявки, корзина, подтверждение. Всегда с понятным крестиком и закрытием по клику мимо.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="game">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Тренажёр: найди 6 ошибок</h2></div></div>
+  <p>Перед тобой экран записи на курс. В нём шесть ошибок из этой методички. Нажимай на элементы, которые кажутся неправильными. Промах не считается — ищи спокойно.</p>
+  <div class="game" id="game-box">
+    <div class="game-top"><span class="cap" id="game-n">Найдено 0 из 6</span><div class="game-acts"><button type="button" class="ghost" id="game-all">Показать все</button><button type="button" class="ghost" id="game-reset">Заново</button></div></div>
+    <div class="stage game-stage">
+      <div class="mock">
+        <div class="mock-nav"><b>Школа UI</b><div class="mock-links bug" data-bug="0" role="button" tabindex="0"><span>Курсы</span><span>Преподаватели</span><span>Отзывы</span><span>Блог</span><span>Цены</span><span>Контакты</span><span>Вакансии</span><span>Партнёрам</span><span>FAQ</span></div></div>
+        <div class="mock-body">
+          <div class="mock-copy">
+            <b class="mock-h">Курс по UI-дизайну</b>
+            <p class="bug mock-faint" data-bug="1" role="button" tabindex="0">Старт 1 ноября · 12 недель · проекты в портфолио и разбор каждой домашки с наставником</p>
+            <div class="mock-btns">
+              <span class="bug u-btn u-primary" data-bug="2" role="button" tabindex="0">Записаться</span><span class="bug u-btn u-primary" data-bug="2" role="button" tabindex="0">Программа</span><span class="bug u-btn u-primary" data-bug="2" role="button" tabindex="0">Отзывы</span>
+            </div>
+          </div>
+          <div class="mock-form">
+            <div class="bug mock-in" data-bug="3" role="button" tabindex="0"><span>Введите ваш e-mail</span></div>
+            <div class="mock-in"><span class="ph">Телефон</span></div>
+            <span class="bug u-btn mock-ok" data-bug="4" role="button" tabindex="0">ОК</span>
+            <div class="mock-icons bug" data-bug="5" role="button" tabindex="0"><span class="ic-line">◯</span><span class="ic-fill">●</span><span class="ic-emoji">✉︎</span><small>Иконки соцсетей</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ol class="game-list" id="game-list"></ol>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">10</span><h2>UI-элементы вместе с нейронкой</h2></div></div>
+  <p>Нейронка хорошо замечает то, что глаз пропускает: забытые состояния, неочевидные ошибки, размытые подписи. Используй её как придирчивого ревьюера, а рисуешь и решаешь ты.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Продукт, аудитория, стиль сайта и что за экран.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не выдаёт готовый дизайн.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Формулировки и вид элемента выбираешь сам.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Инвентаризация</span><b>Какие элементы нужны экрану</b>
+<pre id="p1">Я проектирую экран: <em>[что за экран и для какого продукта]</em>. Главное действие пользователя: <em>[действие]</em>.
+Помоги составить список UI-элементов, которые здесь нужны, и для каждого — какие состояния я обязан нарисовать.
+Не предлагай дизайн. Задавай уточняющие вопросы по одному и жди моего ответа.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь на вопросы и сам решаешь, что войдёт в экран.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Тексты</span><b>Кнопки, подписи и ошибки</b>
+<pre id="p2">Вот тексты моего экрана: <em>[кнопки, подписи полей, тексты ошибок]</em>. Тон бренда: <em>[3 слова]</em>.
+Отметь, где текст размыт, длинный или не говорит, что произойдёт после клика. Объясни почему, но не переписывай за меня.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> переписываешь формулировки по схеме «глагол + результат».</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Ревью</span><b>Проверка на ошибки</b>
+<pre id="p3">Опишу свой экран: <em>[элементы, их размеры, цвета и иерархия]</em>. Можешь также посмотреть скриншот.
+Проверь по чек-листу: одна главная кнопка, размеры кликабельных зон от 44 px, у полей есть подписи, есть focus и ошибки, контраст текста достаточный, иконки в одном стиле.
+По каждому пункту: ок или проблема. Для проблем задай мне вопрос, как я хочу её решить.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь макет и решаешь, с какими замечаниями согласен.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">11</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Набор UI-элементов для своего лендинга</b><p>Нарисуй в Figma кнопки трёх уровней (primary, secondary, tertiary), поле ввода, чекбокс и карточку в стиле своего проекта. Для кнопки и поля покажи все состояния: default, hover, focus, pressed, disabled, плюс ошибку у поля. Используй форму, обводку или детализацию, чтобы элементы были с характером. Сдай фрейм со всеми элементами.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>Главная кнопка одна и заметнее остальных</span></label>
+    <label><input type="checkbox"><span>У кнопки и поля одинаковые высота, радиус и шрифт</span></label>
+    <label><input type="checkbox"><span>Есть focus-состояние с заметной обводкой</span></label>
+    <label><input type="checkbox"><span>У поля есть подпись, подсказка и текст ошибки</span></label>
+    <label><input type="checkbox"><span>Тексты кнопок по схеме «глагол + результат»</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — UI-кит: как собрать все элементы в систему.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 4 · UI-элементы</footer>
+
+</div>
+<script type="application/json" id="game-data">[
+{"t":"Меню на 9 пунктов","e":"Больше 5–7 пунктов человек не охватывает взглядом. Остальное — в подвал или бургер."},
+{"t":"Бледный мелкий текст","e":"Самая важная информация — дата и формат — набрана светло-серым на белом. Контраст ниже 4.5:1, текст сливается."},
+{"t":"Три главные кнопки","e":"Все три кнопки одинаково яркие. Главная должна быть одна, остальные — secondary и tertiary."},
+{"t":"Поле без подписи, «Введите…»","e":"Плейсхолдер вместо подписи исчезнет при вводе, а «Введите» — лишнее слово. Нужна подпись «Почта» над полем и пример формата внутри."},
+{"t":"Кнопка «ОК» высотой 28 px","e":"Текст не говорит, что произойдёт, а размер меньше 44 px — на телефоне в неё трудно попасть. Лучше «Записаться на курс» и высота как у полей."},
+{"t":"Иконки из разных наборов","e":"Линейная, залитая и символ-эмодзи рядом. Весь набор иконок — в одном стиле и одной толщине."}
+]</script>
+<script type="application/json" id="quiz-data">[
+{"p":"Зачем кнопке focus-состояние?","o":["Это редкое состояние только для мобильных приложений","Чтобы человек с клавиатуры видел, на каком элементе он сейчас","Чтобы кнопка выглядела нажатой"],"a":1,"e":"Focus показывает, где находится человек, который управляет сайтом с клавиатуры или голосом. Без него интерфейс недоступен."},
+{"p":"На экране три яркие кнопки одного цвета: «Купить», «Подробнее», «Сравнить». В чём проблема?","o":["Нет иерархии: непонятно, какое действие главное","Кнопок слишком мало","Нужно сделать их ещё крупнее"],"a":0,"e":"Одна главная кнопка на экран или блок. Остальные — secondary и tertiary."},
+{"p":"Какой текст кнопки лучше?","o":["Дальше","ОК","Забронировать столик"],"a":2,"e":"Схема «глагол + результат» говорит, что произойдёт после клика."},
+{"p":"Когда чаще всего удобнее проверять поле почты?","o":["При потере фокуса, когда человек перешёл к следующему полю","На каждом символе, пока человек печатает","Только через день после отправки"],"a":0,"e":"Проверка при потере фокуса не мешает печатать и сразу показывает ошибку."},
+{"p":"Почему плейсхолдер не заменяет подпись поля?","o":["Его нельзя покрасить","Он исчезает, когда человек начинает печатать","Его не поддерживает Figma"],"a":1,"e":"Подпись над полем видна всегда, а плейсхолдер лучше использовать для примера формата."},
+{"p":"Какие три инструмента делают UI-элемент уникальным?","o":["Форма, обводка, детализация","Шрифт, логотип, фото","Сетка, колонки, отступы"],"a":0,"e":"Их можно крутить по одному. Усложняй один инструмент, а не все три сразу."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «UI-элементы» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  // --- Конструктор кнопки ---
+  const box = $('#builder');
+  if (box) {
+    const btn = $('#bld-btn'), out = $('#bld-out');
+    const st = { shape: 2, stroke: 0, detail: 1, fill: 0, hover: 2 };
+    const names = {
+      shape: ['прямоугольник', 'скругление', 'капсула', 'срез углов'],
+      stroke: ['без обводки', 'тонкая обводка', 'жирная обводка', 'пунктир', 'двойная обводка'],
+      detail: ['без деталей', 'иконка', 'жёсткая тень', 'градиент'],
+      hover: ['hover: темнеет', 'hover: инверсия', 'hover: стрелка поворачивается', 'hover: подъём']
+    };
+    function render() {
+      const fills = [['#eb7540', '#101010'], ['#101010', '#f4f4f2'], ['transparent', '#101010']];
+      let [bg, fg] = fills[st.fill];
+      if (st.detail === 3) bg = 'linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540)';
+      btn.style.setProperty('--bg', bg); btn.style.setProperty('--fg', fg);
+      if (st.detail === 3 && st.fill !== 0) { btn.style.setProperty('--bg', 'linear-gradient(120deg,#101010,#3a3a3a)'); btn.style.setProperty('--fg', '#f4f4f2'); }
+      btn.style.borderRadius = ['0', '10px', '999px', '0'][st.shape];
+      btn.style.border = ['0', '1px solid #9a9a96', '2.5px solid #101010', '1.5px dashed #101010', '1.5px solid #101010'][st.stroke];
+      btn.className = 'bld-btn ' + ['h-dark', 'h-invert', 'h-arrow', 'h-lift'][st.hover];
+      if (st.shape === 3) btn.classList.add('cut');
+      if (st.stroke === 4) btn.classList.add('dbl');
+      if (st.detail === 1 || st.hover === 2) btn.classList.add('has-icon');
+      if (st.detail === 2) btn.classList.add('sh');
+      $$('.seg', box).forEach(seg => $$('button', seg).forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.v === st[seg.dataset.k]))));
+      const complex = (st.shape >= 2 ? 1 : 0) + (st.stroke >= 2 ? 1 : 0) + (st.detail >= 1 ? 1 : 0);
+      let msg = '<b>Рецепт:</b> ' + [names.shape[st.shape], names.stroke[st.stroke], names.detail[st.detail], names.hover[st.hover]].join(' + ') + '. ';
+      if (st.fill === 2 && st.stroke === 0) msg += '<span class="warn">Без заливки и без обводки кнопка превращается в текст — непонятно, что она нажимается.</span>';
+      else if (complex === 3) msg += '<span class="warn">Усложнены все три инструмента сразу. Кнопка начинает спорить с контентом — попробуй убрать один.</span>';
+      else if (st.shape === 3 && st.stroke >= 1) msg += '<span class="warn">Срез углов обрезает и обводку — в вёрстке это тоже будет выглядеть сломанным.</span>';
+      else if (complex === 0) msg += 'Нейтральная база. Подходит строгим стилям, а характер можно добавить одним инструментом.';
+      else msg += '<span class="okv">Хороший баланс: характер есть, понятность не страдает.</span>';
+      out.innerHTML = msg;
+    }
+    $$('.seg', box).forEach(seg => $$('button', seg).forEach(b => b.addEventListener('click', () => { st[seg.dataset.k] = +b.dataset.v; render(); })));
+    $('#bld-rand').addEventListener('click', () => {
+      const r = n => Math.floor(Math.random() * n);
+      Object.assign(st, { shape: r(4), stroke: r(5), detail: r(4), fill: r(3), hover: r(4) }); render();
+    });
+    render();
+  }
+
+  // --- Прищуриться ---
+  $$('[data-squint]').forEach(b => b.addEventListener('click', () => {
+    const t = document.getElementById(b.dataset.squint); const on = !t.classList.contains('squinted');
+    t.classList.toggle('squinted', on); b.setAttribute('aria-pressed', String(on));
+    b.textContent = on ? 'Открыть глаза' : 'Прищуриться';
+  }));
+
+  // --- Песочница пропорций ---
+  const play = $('#anat-play');
+  if (play) {
+    const H = $('#r-h'), P = $('#r-p'), F = $('#r-f'), R = $('#r-r'), b = $('#play-btn'), out = $('#play-out');
+    function upd() {
+      const h = +H.value, p = +P.value, f = +F.value, r = +R.value;
+      $('#v-h').textContent = h; $('#v-p').textContent = p; $('#v-f').textContent = f; $('#v-r').textContent = r;
+      const lh = Math.round(f * 1.2), v = Math.max(0, Math.round((h - lh) / 2));
+      Object.assign(b.style, { height: h + 'px', padding: '0 ' + p + 'px', fontSize: f + 'px', borderRadius: r + 'px', display: 'inline-flex', alignItems: 'center', lineHeight: '1.2' });
+      const ratio = v ? p / v : 99;
+      const items = [];
+      items.push(h < 44 ? ['bad', '<b>Высота ' + h + ' px.</b> Меньше 44 px — на телефоне палец промахнётся.'] : h > 80 ? ['bad', '<b>Высота ' + h + ' px.</b> Больше 80 px — кнопка выглядит как баннер.'] : ['ok', '<b>Высота ' + h + ' px.</b> ' + (h <= 56 ? 'Нормально для интерфейса.' : 'Крупный CTA для лендинга.')]);
+      items.push(ratio < 1.4 ? ['bad', '<b>Поля: ' + v + ' сверху, ' + p + ' по бокам.</b> Тесно по бокам — боковые поля должны быть примерно вдвое больше вертикальных.'] : ratio > 3.2 ? ['bad', '<b>Поля: ' + v + ' сверху, ' + p + ' по бокам.</b> Кнопка слишком вытянута, текст теряется в ней.'] : ['ok', '<b>Поля: ' + v + ' сверху, ' + p + ' по бокам.</b> Пропорция около 1:2 — кнопка собранная.']);
+      items.push(f < 14 ? ['bad', '<b>Кегль ' + f + ' px.</b> Мелко — текст кнопки читается с трудом.'] : f > 20 ? ['bad', '<b>Кегль ' + f + ' px.</b> Крупновато: кнопка начинает спорить с заголовком.'] : ['ok', '<b>Кегль ' + f + ' px.</b> Хорошо читается.']);
+      items.push(r >= h / 2 ? ['ok', '<b>Скругление ' + r + ' px.</b> Это уже капсула.'] : ['ok', '<b>Скругление ' + r + ' px.</b> ' + (r === 0 ? 'Строгий прямоугольник.' : 'Мягкий прямоугольник.') + ' Держи такое же у полей и карточек.']);
+      out.innerHTML = items.map(([c, t]) => '<li class="' + c + '"><span>' + t + '</span></li>').join('');
+    }
+    [H, P, F, R].forEach(i => i.addEventListener('input', upd));
+    $$('[data-preset]', play).forEach(btn => btn.addEventListener('click', () => {
+      const [h, p, f, r] = btn.dataset.preset.split(',');
+      H.value = h; P.value = p; F.value = f; R.value = r; upd();
+    }));
+    upd();
+  }
+
+  // --- Живая форма с режимами валидации ---
+  const form = $('#live-form');
+  if (form) {
+    let mode = 'blur';
+    const modeTxt = {
+      input: '<b>Мгновенная.</b> Ошибка появляется прямо во время ввода. Попробуй начать печатать почту — увидишь, как это раздражает, пока ты не дописал адрес.',
+      blur: '<b>При потере фокуса.</b> Пиши спокойно, а когда перейдёшь к следующему полю, оно проверится. Самый комфортный вариант.',
+      submit: '<b>При отправке.</b> Ничего не проверяется, пока не нажмёшь кнопку. Ошибки всплывут все разом.'
+    };
+    const fields = {
+      name: { el: $('#lf-name'), check: v => v.trim().length >= 2 ? '' : 'Напиши имя, хотя бы две буквы', ok: '' },
+      email: { el: $('#lf-email'), check: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : (v.includes('@') ? 'Допиши адрес после @, например anna@mail.ru' : 'Нужна почта с @, например anna@mail.ru'), ok: 'Сюда пришлём доступ' },
+      phone: { el: $('#lf-phone'), check: v => v.replace(/\D/g, '').length === 11 ? '' : 'Номер из 10 цифр после +7', ok: '' }
+    };
+    const phoneHelp = 'Маска: буквы сюда просто не напечатаются';
+    function show(k) {
+      const f = fields[k], wrap = f.el.closest('.u-field'), help = wrap.querySelector('.help');
+      const err = f.check(f.el.value);
+      wrap.classList.toggle('is-error', !!err); wrap.classList.toggle('is-ok', !err);
+      help.textContent = err || f.ok;
+      return !err;
+    }
+    function clear(k) {
+      const wrap = fields[k].el.closest('.u-field');
+      wrap.classList.remove('is-error', 'is-ok');
+      wrap.querySelector('.help').textContent = k === 'phone' ? phoneHelp : '';
+    }
+    // маска телефона
+    const ph = fields.phone.el;
+    ph.addEventListener('input', () => {
+      let d = ph.value.replace(/\D/g, '');
+      if (d.startsWith('8') || d.startsWith('7')) d = d.slice(1);
+      d = d.slice(0, 10);
+      let s = '+7';
+      if (d.length) s += ' (' + d.slice(0, 3);
+      if (d.length >= 3) s += ')';
+      if (d.length > 3) s += ' ' + d.slice(3, 6);
+      if (d.length > 6) s += '-' + d.slice(6, 8);
+      if (d.length > 8) s += '-' + d.slice(8, 10);
+      ph.value = d.length ? s : '';
+    });
+    Object.keys(fields).forEach(k => {
+      const el = fields[k].el;
+      el.addEventListener('input', () => { $('#lf-done').hidden = true; if (mode === 'input') show(k); else if (el.closest('.u-field').classList.contains('is-error') && mode === 'blur') show(k); });
+      el.addEventListener('blur', () => { if (mode === 'blur' && el.value) show(k); });
+    });
+    const agree = $('#lf-agree');
+    agree.addEventListener('change', () => { if (agree.checked) agree.closest('label').classList.remove('is-error'); });
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const ok = Object.keys(fields).map(show).every(Boolean);
+      agree.closest('label').classList.toggle('is-error', !agree.checked);
+      const done = ok && agree.checked;
+      $('#lf-done').hidden = !done;
+      if (!done) { const first = form.querySelector('.is-error input'); if (first) first.focus(); }
+    });
+    function setMode(m) {
+      mode = m;
+      $$('#vmode button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === m)));
+      $('#vmode-out').innerHTML = modeTxt[m];
+      Object.keys(fields).forEach(clear); agree.closest('label').classList.remove('is-error'); $('#lf-done').hidden = true;
+    }
+    $$('#vmode button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+    setMode('blur');
+  }
+
+  // --- Кликабельные образцы: переключатели, чекбоксы, табы, пагинация, фильтры ---
+  function live(el, fn) {
+    el.classList.add('live'); if (!el.matches('button,input,a')) { el.tabIndex = 0; el.setAttribute('role', 'button'); }
+    el.addEventListener('click', fn);
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } });
+  }
+  $$('#inputs .ctl, #nav .ctl').forEach(ctl => {
+    const tog = ctl.querySelector('.tog'), chk = ctl.querySelector('.chk'), rad = ctl.querySelector('.rad');
+    if (tog) live(ctl, () => tog.classList.toggle('off'));
+    if (chk) live(ctl, () => { const off = chk.classList.toggle('off'); chk.textContent = off ? '' : '✓'; });
+    if (rad) live(ctl, () => { ctl.parentElement.querySelectorAll('.rad').forEach(r => r.classList.remove('on')); rad.classList.add('on'); });
+  });
+  $$('#nav .tabs').forEach(t => $$('span', t).forEach(s => live(s, () => { $$('span', t).forEach(x => x.classList.remove('on')); s.classList.add('on'); })));
+  $$('#nav .chip').forEach(c => live(c, () => c.classList.toggle('on')));
+  $$('#nav .pages').forEach(pg => {
+    const nums = $$('span', pg).filter(s => /^\d+$/.test(s.textContent));
+    const go = d => { const i = nums.findIndex(n => n.classList.contains('on')); const j = Math.min(nums.length - 1, Math.max(0, i + d)); nums.forEach(n => n.classList.remove('on')); nums[j].classList.add('on'); };
+    $$('span', pg).forEach(s => {
+      if (/^\d+$/.test(s.textContent)) live(s, () => { nums.forEach(n => n.classList.remove('on')); s.classList.add('on'); });
+      else if (s.textContent === '‹') live(s, () => go(-1));
+      else if (s.textContent === '›') live(s, () => go(1));
+    });
+  });
+  $$('#nav .crumbs').forEach(c => { c.title = 'Хлебные крошки ведут вверх по каталогу'; });
+  // прогресс: шаги кликабельны
+  $$('#nav .prog').forEach(pr => {
+    const steps = $$('.steps3 b', pr), bar = pr.querySelector('.bar i'), lbl = pr.querySelectorAll('.lbl span');
+    steps.forEach((s, i) => live(s, () => {
+      steps.forEach((x, j) => x.classList.toggle('off', j > i));
+      const pct = Math.round((i + 1) / steps.length * 100);
+      bar.style.width = pct + '%'; lbl[0].textContent = 'Шаг ' + (i + 1) + ' из ' + steps.length; lbl[1].textContent = pct + '%';
+    }));
+  });
+  $$('#content .dots').forEach(d => $$('i', d).forEach(i => live(i, () => { $$('i', d).forEach(x => x.classList.remove('on')); i.classList.add('on'); })));
+
+  // --- Тренажёр «Найди ошибки» ---
+  const game = $('#game-box'), gsrc = $('#game-data');
+  if (game && gsrc) {
+    const G = JSON.parse(gsrc.textContent), found = new Set();
+    const list = $('#game-list'), n = $('#game-n');
+    function draw() {
+      n.textContent = 'Найдено ' + found.size + ' из ' + G.length;
+      list.innerHTML = '';
+      [...found].sort((a, b) => a - b).forEach(i => {
+        const li = document.createElement('li'); const b = document.createElement('b'); b.textContent = G[i].t;
+        li.append(b, document.createTextNode(G[i].e)); list.append(li);
+      });
+      if (found.size === G.length) { const w = document.createElement('li'); w.className = 'game-win'; w.textContent = 'Все шесть ошибок найдены. Теперь проверь так же свой макет.'; list.append(w); }
+      $$('.bug', game).forEach(el => el.classList.toggle('found', found.has(+el.dataset.bug)));
+    }
+    $$('.bug', game).forEach(el => {
+      const hit = e => { e.stopPropagation(); found.add(+el.dataset.bug); draw(); };
+      el.addEventListener('click', hit);
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hit(e); } });
+    });
+    $('#game-all').addEventListener('click', () => { G.forEach((_, i) => found.add(i)); draw(); });
+    $('#game-reset').addEventListener('click', () => { found.clear(); draw(); });
+    draw();
+  }
+})();
+
+</script>
+</body></html>

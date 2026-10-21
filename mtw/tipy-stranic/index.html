@@ -1,0 +1,1369 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Типы страниц</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив только для методички «Типы страниц» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px}
+button.ghost:hover{border-color:var(--accent)}
+button.main{background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+.demo .cap,.cap{display:block}
+section>.cap{margin-top:-12px}
+
+/* ---------- скелеты страниц ---------- */
+.wf{--g:#e4e4e1;--g2:#cfcfcb;--ink-w:#101010;background:#fff;border-radius:8px;padding:6px;display:flex;flex-direction:column;gap:5px;width:100%;box-shadow:0 2px 12px rgba(0,0,0,.08);color:#101010}
+.wf-sm{max-width:190px}
+.wf-md{max-width:240px}
+.wf-lg{max-width:300px}
+.wf .w{background:#f6f6f4;border-radius:5px;padding:7px;display:flex;flex-direction:column;gap:4px;position:relative;transition:background .25s,box-shadow .25s}
+.wf .w.hl{background:color-mix(in srgb,#eb7540 16%,#fff);box-shadow:0 0 0 1.5px #eb7540}
+.wf .w.hl .ln{background:#f0a37f}
+.wf .ln{display:block;height:4px;border-radius:2px;background:var(--g2);font-style:normal}
+.wf .ln.h{height:7px;background:#9d9d99}
+.wf .pic{display:block;background:var(--g);border-radius:3px;text-decoration:none;min-height:22px}
+.wf s.btn{display:block;width:34%;height:9px;border-radius:3px;background:#eb7540;text-decoration:none}
+.wf s.btn.wide{width:100%}
+.wf .ava{display:block;width:12px;height:12px;border-radius:50%;background:var(--g2);flex:none}
+.wf .in{display:block;height:10px;border-radius:3px;border:1px solid var(--g2);background:#fff;font-style:normal}
+.wf .dot{display:block;width:7px;height:7px;border-radius:50%;background:#9d9d99;flex:none;font-style:normal}
+.wf .price{display:block;width:30%;height:7px;border-radius:2px;background:#101010}
+.w-nav{flex-direction:row!important;align-items:center;justify-content:space-between;padding:5px 7px!important;background:#fff!important;border:1px solid #efefec}
+.w-nav b{width:14px;height:6px;border-radius:2px;background:#101010}
+.w-nav span{display:flex;gap:4px;width:46%}
+.w-hero{padding:14px 10px!important;gap:5px!important;min-height:64px;justify-content:center}
+.w-hero s.btn{margin-top:4px}
+.w-split{flex-direction:row!important;gap:7px!important}
+.w-split>div{flex:1.2;display:flex;flex-direction:column;gap:4px}
+.w-split .pic{flex:1}
+.w-cards{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px!important}
+.w-cd{background:#fff;border-radius:3px;padding:3px;display:flex;flex-direction:column;gap:3px}
+.w-cd .pic{min-height:18px}
+.w-pr{display:flex;align-items:center;justify-content:space-between;gap:3px}
+.w-pr em{display:block;width:40%;height:5px;background:#101010;border-radius:2px}
+.w-pr s.btn{width:36%;height:6px}
+.w-logos{flex-direction:row!important;justify-content:space-between;gap:4px!important}
+.w-logos i{flex:1;height:7px;border-radius:2px;background:var(--g2)}
+.w-list>div{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e6e6e3;padding:2px 0 4px}
+.w-list s{width:6px;height:6px;border-top:1.5px solid #9d9d99;border-right:1.5px solid #9d9d99;transform:rotate(45deg);text-decoration:none}
+.w-steps{flex-direction:row!important;align-items:center;padding:10px!important}
+.w-steps i{width:11px;height:11px;border-radius:50%;border:1.5px solid #101010;flex:none}
+.w-steps hr{flex:1;border:0;height:1.5px;background:var(--g2);margin:0}
+.w-quote{flex-direction:row!important;gap:6px!important}
+.w-quote>b{font-size:20px;line-height:.8;color:#eb7540;font-weight:600}
+.w-quote>div{flex:1;display:flex;flex-direction:column;gap:4px}
+.w-quote span{display:flex;align-items:center;gap:4px;margin-top:2px}
+.w-team{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))}
+.w-team>div{display:flex;flex-direction:column;align-items:center;gap:3px}
+.w-team .ava{width:18px;height:18px}
+.w-num{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px!important}
+.w-num>div{display:flex;flex-direction:column;gap:3px}
+.w-num b{display:block;height:11px;width:70%;background:#101010;border-radius:2px}
+.w-cta{background:#101010!important;flex-direction:row!important;align-items:center;justify-content:space-between;gap:8px!important;padding:10px!important}
+.w-cta>div{flex:1;display:flex;flex-direction:column;gap:4px}
+.w-cta .ln{background:#5a5a58}.w-cta .ln.h{background:#c9c9c6}
+.w-cta s.btn{width:28%}
+.w-form .in{height:11px}
+.w-map{min-height:48px;background:repeating-linear-gradient(0deg,transparent 0 9px,#e3e3df 9px 10px),repeating-linear-gradient(90deg,#f0f0ec 0 9px,#e3e3df 9px 10px)!important;align-items:center;justify-content:center}
+.w-map .pin{display:block;width:10px;height:10px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#eb7540}
+.w-contacts>div{display:flex;align-items:center;gap:5px}
+.w-acc>div{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e6e6e3;padding:2px 0 4px}
+.w-acc b{font-size:10px;line-height:1;color:#101010;font-weight:500}
+.w-search .in{height:14px;display:flex;align-items:center;padding-left:4px}
+.w-tags{flex-direction:row!important;flex-wrap:wrap;gap:4px!important;align-items:center}
+.w-tags>i{width:22px;height:8px;border-radius:5px;border:1px solid var(--g2);background:#fff}
+.w-tags>i.on{background:#101010;border-color:#101010}
+.w-filters span{flex:1;display:flex;justify-content:flex-end}
+.w-filters span .ln{width:30%!important}
+.w-article{padding:10px 18%!important}
+.w-article>span{display:flex;margin-bottom:3px}
+.w-article .pic{min-height:30px;margin:3px 0}
+.w-gallery .pic{min-height:56px}
+.w-product{flex-direction:row!important;gap:7px!important}
+.w-product>div{flex:1;display:flex;flex-direction:column;gap:5px}
+.w-ph{flex:1.1!important}
+.w-ph>.pic{min-height:52px}
+.w-ph span{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}
+.w-ph span .pic{min-height:10px}
+.w-product .sw{display:flex;gap:3px}
+.w-product .sw i{width:8px;height:8px;border-radius:50%;background:var(--g2)}
+.w-product .sw i:first-child{background:#101010}
+.w-cart{flex-direction:row!important;gap:6px!important}
+.w-cart>div:first-child{flex:1.6;display:flex;flex-direction:column;gap:4px}
+.w-cart .row{display:flex;align-items:center;gap:5px;background:#fff;border-radius:3px;padding:3px}
+.w-cart .row .pic{width:18px;min-height:18px;flex:none}
+.w-cart .row span{flex:1;display:flex;flex-direction:column;gap:3px}
+.w-cart .row .price{width:18%}
+.w-cart .sum{flex:1;background:#fff;border-radius:3px;padding:5px;display:flex;flex-direction:column;gap:5px;align-self:flex-start}
+.w-cart .sum .price{width:60%;height:9px}
+.w-pages{flex-direction:row!important;justify-content:center;gap:4px!important}
+.w-pages i{width:9px;height:9px;border-radius:2px;background:var(--g)}
+.w-pages i.on{background:#101010}
+.w-404,.w-ok{align-items:center;padding:22px 10px!important;gap:6px!important}
+.w-404 b{font-size:34px;line-height:1;font-weight:600;letter-spacing:-.04em;color:#101010}
+.w-ok b{width:34px;height:34px;border-radius:50%;background:#34c759;color:#fff;display:grid;place-items:center;font-size:18px;font-weight:500}
+.w-404 .ln,.w-ok .ln{align-self:center}
+.w-foot{background:#2a2a2a!important;padding:8px!important;flex-direction:row!important;gap:8px!important}
+.w-foot .ln{background:#5a5a58}
+.wf-lg .w{padding:9px}
+.wf-lg .ln{height:5px}.wf-lg .ln.h{height:8px}
+.wf-lg .w-hero{min-height:80px}
+.wf-lg .w-gallery .pic{min-height:72px}
+
+/* ---------- дозировка ---------- */
+.dose-stage{gap:20px;align-items:center}
+.dose-legend{display:flex;align-items:center;gap:8px;font-size:13px;color:#5a5a58}
+.sw-hl{width:14px;height:14px;border-radius:4px;background:color-mix(in srgb,#eb7540 16%,#fff);box-shadow:0 0 0 1.5px #eb7540}
+table.dosage{min-width:620px}
+table.dosage td:not(:first-child),table.dosage th:not(:first-child){text-align:center;padding-right:8px;padding-left:8px}
+.dosage i{display:inline-block;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--accent);vertical-align:middle}
+.dosage i.d2{background:var(--accent)}
+.dosage i.d1{background:linear-gradient(90deg,var(--accent) 50%,transparent 50%)}
+
+/* ---------- карта сайта ---------- */
+.sm-tree{display:flex;flex-direction:column;align-items:center;gap:0}
+.sm-n{background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:9px 10px;font-weight:400;font-size:14px;line-height:1.2;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px;transition:border-color .15s,background .15s}
+.sm-n small{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.sm-n:hover{border-color:var(--accent)}
+.sm-n[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.sm-n[aria-pressed="true"] small{color:var(--accent-ink)}
+.sm-root{width:180px;position:relative;padding-bottom:18px}
+.sm-root::after{content:"";position:absolute;left:50%;bottom:0;width:1px;height:18px;background:var(--faint)}
+.sm-l1{list-style:none;margin:0;padding:18px 0 0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;width:100%;position:relative}
+.sm-l1::before{content:"";position:absolute;top:0;left:calc(100%/14);right:calc(100%/14);height:1px;background:var(--faint)}
+.sm-l1 li{display:flex;flex-direction:column;gap:18px;position:relative}
+.sm-l1 li::before{content:"";position:absolute;top:-18px;left:50%;width:1px;height:18px;background:var(--faint)}
+.sm-c{position:relative;font-size:13px;color:var(--dim);background:transparent;border-style:dashed}
+.sm-c::before{content:"";position:absolute;top:-19px;left:50%;width:1px;height:18px;background:var(--faint)}
+.sm-sys{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:22px;padding-top:16px;border-top:1px dashed var(--stroke);width:100%;justify-content:center}
+.sm-sys .cap{width:auto}
+.sm-s{width:auto;min-width:96px;font-size:13px;color:var(--dim)}
+.sm-panel{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;border-top:1px solid var(--stroke);padding-top:20px}
+.sm-info{display:flex;flex-direction:column;gap:10px;min-width:0}
+.sm-info .kind{color:var(--accent)}
+.sm-t{font-family:var(--display);font-size:clamp(26px,3.2vw,34px);font-weight:400;line-height:1;color:var(--ink);letter-spacing:-.02em}
+.sm-q{color:var(--ink);font-size:18px;line-height:1.3}
+.sm-info p{font-size:15px}
+.sm-blocks{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px;font-size:15px;color:var(--ink)}
+.sm-blocks li::marker{color:var(--faint);font-family:var(--mono);font-size:12px}
+.sm-cta,.sm-err{display:flex;flex-direction:column;gap:3px;border-left:1px solid var(--good);padding-left:12px}
+.sm-err{border-color:var(--bad)}
+.sm-cta span:last-child,.sm-err span:last-child{color:var(--dim)}
+.sm-stage{align-items:flex-start;padding:20px}
+
+/* ---------- порядок главной ---------- */
+.ord-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:start}
+.ord-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ord-list li{display:grid;grid-template-columns:30px minmax(0,1fr) 44px 44px;gap:6px;align-items:center;background:var(--well);border:1px solid var(--stroke);border-radius:8px;padding:4px 4px 4px 12px}
+.ord-n{font-family:var(--mono);font-size:11px;color:var(--faint)}
+.ord-t{color:var(--ink);font-size:15px}
+.ord-b{height:40px;border-radius:6px;background:var(--card);color:var(--ink);border:1px solid var(--stroke);font-size:16px;font-weight:400}
+.ord-b:hover:not(:disabled){border-color:var(--accent)}
+.ord-b:disabled{opacity:.3;cursor:default}
+.ord-stage{padding:18px}
+.ord-acts{display:flex;flex-wrap:wrap;gap:8px}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;line-height:1.4}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px;color:var(--faint)}
+.verdict li.ok::before{color:var(--good)}
+.verdict li.bad::before{color:var(--bad)}
+.verdict li.sum::before{color:var(--accent)}
+.verdict b{color:var(--ink);font-weight:400}
+
+/* ---------- угадай страницу ---------- */
+.g-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.g-top .cap{width:auto}
+.g-sc{color:var(--accent)!important}
+.g-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.g-stage{padding:20px;min-height:300px;align-items:flex-start}
+.g-side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.g-opts{display:flex;flex-direction:column;gap:6px}
+.g-opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.g-opts button:hover:not(:disabled){border-color:var(--accent)}
+.g-opts button:disabled{cursor:default;color:var(--dim)}
+.g-opts button.right{border-color:var(--good);color:var(--ink)}
+.g-opts button.wrong{border-color:var(--bad);color:var(--ink)}
+#g-next{align-self:flex-start}
+
+/* ---------- магазин: путь ---------- */
+.flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;position:relative}
+.flow>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative;min-width:0}
+.flow>div:not(:last-child)::after{content:"→";position:absolute;right:-8px;top:14px;transform:translateX(50%);color:var(--accent);font-size:14px;z-index:1}
+.flow i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--accent);font-style:normal}
+.flow b{font-weight:400;font-size:17px}
+.flow span{font-size:14px;line-height:1.35}
+.flow .end{border-color:var(--accent)}
+
+/* ---------- страницы: карточка с превью ---------- */
+.pt{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;align-items:start}
+.pt-wf{padding:16px;min-height:0}
+.pt-tx{display:flex;flex-direction:column;gap:10px;min-width:0}
+.pt-tx .kind{color:var(--accent)}
+.pt-tx>b{font-size:20px;font-weight:400;line-height:1.2}
+.pt-tx p,.pt-tx li{font-size:15px;line-height:1.4}
+.pt-tx ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.pt-tx li::marker{color:var(--faint)}
+.pt-f{border-left:1px solid var(--accent);padding-left:12px;color:var(--ink)}
+.formula.fs{font-size:16px;gap:6px}
+.formula.fs span{padding:5px 10px}
+
+/* ---------- собери структуру ---------- */
+.bs-brief{color:var(--ink);font-size:16px;line-height:1.4;max-width:70ch;border-left:2px solid var(--accent);padding-left:14px}
+.bs-pool{display:flex;flex-wrap:wrap;gap:6px}
+.bs-chip{background:var(--well);color:var(--dim);border:1.5px solid var(--stroke);border-radius:999px;padding:9px 14px;font-weight:400;font-size:14px;transition:border-color .15s,color .15s,background .15s}
+.bs-chip:hover{border-color:var(--faint)}
+.bs-chip[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.bs-chip.r-req{border-color:var(--good);background:color-mix(in srgb,var(--good) 18%,var(--well));color:var(--ink)}
+.bs-chip.r-opt{border-style:dashed;border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--well));color:var(--ink)}
+.bs-chip.r-no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 16%,var(--well));color:var(--ink);text-decoration:line-through}
+.bs-chip.r-miss{border-style:dashed;border-color:var(--good);color:var(--good)}
+#bs-res{display:flex;flex-direction:column;gap:12px}
+#bs-res:empty{display:none}
+.bs-sum{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;color:var(--ink)}
+.bs-sum .big{font-family:var(--display);font-size:40px;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.bs-more summary{cursor:pointer;color:var(--dim);font-size:15px;margin-bottom:8px}
+.bs-more summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+@media (max-width:860px){.flow{grid-template-columns:repeat(3,minmax(0,1fr))}.flow>div:nth-child(3)::after{display:none}}
+@media (max-width:760px){
+  .sm-l1{grid-template-columns:minmax(0,1fr);padding:0 0 0 18px;gap:8px}
+  .sm-l1::before{top:0;bottom:22px;left:0;right:auto;width:1px;height:auto}
+  .sm-l1 li{flex-direction:row;gap:8px}
+  .sm-l1 li::before{top:20px;left:-18px;width:18px;height:1px}
+  .sm-c::before{top:50%;left:-9px;width:8px;height:1px}
+  .sm-n{text-align:left;align-items:flex-start;padding:10px 12px}
+  .sm-root{width:100%;padding-bottom:12px}
+  .sm-root::after{left:0;height:12px}
+  .sm-panel,.ord-grid,.g-grid{grid-template-columns:minmax(0,1fr)}
+  .pt{grid-template-columns:minmax(0,1fr)}
+  .pt-wf{justify-content:center}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow>div:nth-child(3)::after{display:block}
+  .flow>div:nth-child(2n)::after{display:none}
+  .g-stage{min-height:0}
+}
+@media (prefers-reduced-motion:reduce){.wf .w,.sm-n,.bs-chip{transition:none}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 3 · ВЕБ-ДИЗАЙН</span></div>
+  <div class="series"><span>01 Веб-дизайн и бизнес</span><span>02 Метрики сайта</span><span>03 Принципы веб-дизайна</span><span>04 Типы проектов</span><b>05 Типы страниц</b><span>06 Типы блоков</span><span>07 Конкурентный анализ</span></div>
+  <h1>Типы страниц</h1>
+  <p class="lead"><b>Главная, услуги, кейсы, контакты, блог, FAQ — у каждой страницы своя задача.</b> Разбираем, на какой вопрос посетителя отвечает каждая, из каких блоков она собрана и как сложить из страниц цельный сайт.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#blocks">Страницы и блоки</a><a href="#sitemap">Карта сайта</a><a href="#home">Главная</a><a href="#types">Остальные страницы</a><a href="#templates">Шаблоны и служебные</a><a href="#shop">Магазин</a><a href="#build">Тренажёр</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="blocks">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Страницы и блоки</h2></div></div>
+  <p>На сайте может быть десяток страниц: главная, о компании, услуги, кейсы, вакансии, контакты, блог, FAQ. Но собраны они из одних и тех же смысловых блоков: описание, преимущества, услуги, кейсы, отзывы, команда, призыв к действию, контакты.</p>
+  <p>Каждая страница — это комбинация блоков. От страницы к странице меняется их соотношение, порядок и глубина. Блок «О компании» на главной занимает один абзац, а на странице «О нас» разворачивается в историю с цифрами, фото команды и цитатами.</p>
+  <p class="quote">Набор кирпичиков почти всегда один. Дизайнер решает, сколько каждого положить и в каком порядке.</p>
+
+  <div class="demo" id="dose">
+    <span class="cap">Дозировка · один блок на разных страницах</span>
+    <div class="seg" id="dose-seg">
+      <button type="button" data-i="0">Главная</button>
+      <button type="button" data-i="1">О компании</button>
+      <button type="button" data-i="2">Услуга</button>
+      <button type="button" data-i="3">Карьера</button>
+    </div>
+    <div class="stage dose-stage"><div class="wf wf-md" id="dose-wf"></div><div class="dose-legend"><span class="sw-hl"></span>Блок «О компании»</div></div>
+    <output id="dose-out"></output>
+  </div>
+  <p class="cap">Переключай страницы: оранжевым подсвечен блок «О компании». Смотри, сколько места он занимает и что в нём внутри.</p>
+
+  <div class="sub">
+    <h3>Кто где живёт</h3>
+    <div class="sub-b">
+      <p>Таблица показывает, какие блоки встречаются на каких страницах. Полный круг — блок раскрыт подробно, полукруг — коротко, в виде превью или одной строки.</p>
+      <div class="scroll"><table class="dosage">
+        <thead><tr><th>Блок</th><th>Главная</th><th>О нас</th><th>Услуги</th><th>Кейс</th><th>Карьера</th><th>Контакты</th></tr></thead>
+        <tbody>
+          <tr><td>О компании</td><td><i class="d1"></i></td><td><i class="d2"></i></td><td></td><td></td><td><i class="d1"></i></td><td></td></tr>
+          <tr><td>Услуги</td><td><i class="d1"></i></td><td></td><td><i class="d2"></i></td><td><i class="d1"></i></td><td></td><td></td></tr>
+          <tr><td>Преимущества</td><td><i class="d1"></i></td><td><i class="d1"></i></td><td><i class="d2"></i></td><td></td><td><i class="d2"></i></td><td></td></tr>
+          <tr><td>Кейсы</td><td><i class="d1"></i></td><td></td><td><i class="d1"></i></td><td><i class="d2"></i></td><td></td><td></td></tr>
+          <tr><td>Отзывы</td><td><i class="d1"></i></td><td><i class="d1"></i></td><td><i class="d1"></i></td><td><i class="d2"></i></td><td><i class="d1"></i></td><td></td></tr>
+          <tr><td>Команда</td><td></td><td><i class="d2"></i></td><td></td><td><i class="d1"></i></td><td><i class="d2"></i></td><td></td></tr>
+          <tr><td>Форма / CTA</td><td><i class="d1"></i></td><td><i class="d1"></i></td><td><i class="d2"></i></td><td><i class="d1"></i></td><td><i class="d2"></i></td><td><i class="d2"></i></td></tr>
+          <tr><td>Контакты</td><td><i class="d1"></i></td><td><i class="d1"></i></td><td></td><td></td><td></td><td><i class="d2"></i></td></tr>
+        </tbody>
+      </table></div>
+      <p class="why">Поэтому дизайнер мыслит блоками. Нарисовал блок отзывов один раз — и используешь его на пяти страницах в разной глубине. Сайт становится системой: каждый элемент поддерживает общий смысл, а вёрстка и поддержка дешевеют.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sitemap">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Карта сайта</h2></div></div>
+  <p>Карта сайта (sitemap) — схема всех страниц и связей между ними. С неё начинается проектирование: прежде чем рисовать, ты договариваешься с заказчиком, какие страницы будут и что на каждой. Обычно хватает трёх уровней: главная, разделы и внутренние страницы. Отдельно живут служебные — 404, «Спасибо», политика.</p>
+  <p>У каждой страницы одна задача и один главный вопрос посетителя, на который она отвечает. Если задачу страницы нельзя сформулировать одной фразой, её стоит разделить или убрать.</p>
+
+  <div class="demo" id="sm">
+    <span class="cap">Интерактивная карта сайта студии</span>
+    <div class="sm-tree" role="group" aria-label="Карта сайта">
+      <div class="sm-root"><button type="button" class="sm-n" data-p="home"><small>Уровень 0</small>Главная</button></div>
+      <ul class="sm-l1">
+        <li><button type="button" class="sm-n" data-p="about">О компании</button></li>
+        <li><button type="button" class="sm-n" data-p="services">Услуги</button><button type="button" class="sm-n sm-c" data-p="service">Страница услуги</button></li>
+        <li><button type="button" class="sm-n" data-p="cases">Кейсы</button><button type="button" class="sm-n sm-c" data-p="case">Страница кейса</button></li>
+        <li><button type="button" class="sm-n" data-p="blog">Блог</button><button type="button" class="sm-n sm-c" data-p="article">Статья</button></li>
+        <li><button type="button" class="sm-n" data-p="career">Карьера</button><button type="button" class="sm-n sm-c" data-p="vacancy">Вакансия</button></li>
+        <li><button type="button" class="sm-n" data-p="faq">FAQ</button></li>
+        <li><button type="button" class="sm-n" data-p="contacts">Контакты</button></li>
+      </ul>
+      <div class="sm-sys"><span class="cap">Служебные</span><button type="button" class="sm-n sm-s" data-p="e404">404</button><button type="button" class="sm-n sm-s" data-p="thanks">Спасибо</button><button type="button" class="sm-n sm-s" data-p="policy">Политика</button></div>
+    </div>
+    <div class="sm-panel" id="sm-panel" aria-live="polite">
+      <div class="sm-info">
+        <span class="kind" id="sm-kind"></span>
+        <b class="sm-t" id="sm-t"></b>
+        <p class="sm-q" id="sm-q"></p>
+        <p id="sm-task"></p>
+        <span class="cap">Обязательные блоки</span>
+        <ol class="sm-blocks" id="sm-blocks"></ol>
+        <p class="sm-cta"><span class="cap">Главное действие</span><span id="sm-cta"></span></p>
+        <p class="sm-err"><span class="cap">Частая ошибка</span><span id="sm-err"></span></p>
+      </div>
+      <div class="stage sm-stage"><div class="wf wf-lg" id="sm-wf"></div></div>
+    </div>
+  </div>
+  <p class="cap">Нажми на любую страницу карты: справа появится её задача, обязательные блоки по порядку и схематичный скелет.</p>
+
+  <div class="three">
+    <div class="box"><span class="kind">Уровень 0</span><b>Главная</b><p>Точка входа и оглавление. Ведёт во все разделы.</p></div>
+    <div class="box"><span class="kind">Уровень 1</span><b>Разделы</b><p>Пункты главного меню: услуги, кейсы, блог, контакты. Их 5–7, больше человек не охватит взглядом.</p></div>
+    <div class="box"><span class="kind">Уровень 2</span><b>Внутренние</b><p>Конкретная услуга, кейс, статья, вакансия. Обычно это шаблон, который повторяется десятки раз.</p></div>
+  </div>
+  <p class="why">Правило трёх кликов — просто ориентир. Если до важной страницы нужно пройти больше трёх уровней, проверь, не прячешь ли ты её слишком глубоко.</p>
+</section>
+
+<section id="home">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Главная страница</h2></div></div>
+  <p>Главная знакомит с компанией и задаёт общее впечатление. Это агрегатор: на ней собраны превью важных разделов, чтобы человек за 10–15 секунд понял, кто вы, и выбрал, куда идти дальше. По сути главная — краткое содержание всего сайта: всё важное здесь есть, но в сжатом виде.</p>
+  <div class="two">
+    <div class="box hot"><span class="kind">Как проектируют</span><b>Главную делают в конце</b><p>На больших сайтах сначала прорабатывают ключевые страницы — услуги, кейсы, каталог. Когда понятно, что в них, главную собирают из их превью. Если начать с главной, придётся переделывать её после каждой новой страницы.</p></div>
+    <div class="box"><span class="kind">Исключение</span><b>Одностраничник</b><p>У лендинга главная и есть весь сайт. Тогда превью разворачиваются в полноценные блоки, а меню ведёт по якорям внутри страницы.</p></div>
+  </div>
+
+  <div class="sub">
+    <h3>Блок — ответ на вопрос</h3>
+    <div class="sub-b">
+      <p>Каждый блок главной отвечает на вопрос, который возникает у посетителя по мере прокрутки. Если вопрос не возникает, блок лишний.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Блок</th><th>Вопрос в голове посетителя</th><th>Что показать</th></tr></thead>
+        <tbody>
+          <tr><td>Первый экран</td><td>Куда я попал? Это для меня?</td><td>Оффер одной фразой, подзаголовок, главная кнопка</td></tr>
+          <tr><td>Коротко о компании</td><td>Кто эти люди?</td><td>2–3 предложения и пара цифр: годы, проекты, клиенты</td></tr>
+          <tr><td>Услуги</td><td>Что конкретно вы делаете?</td><td>3–6 карточек направлений со ссылками внутрь</td></tr>
+          <tr><td>Кейсы и клиенты</td><td>Вы это уже умеете?</td><td>3–4 лучших проекта, логотипы клиентов</td></tr>
+          <tr><td>Отзывы</td><td>Другим понравилось?</td><td>Цитаты с именем, должностью и фото</td></tr>
+          <tr><td>CTA</td><td>Что мне сделать сейчас?</td><td>Короткая форма или кнопка и контакты</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Собери главную</h3>
+    <div class="sub-b">
+      <div class="demo" id="order">
+        <span class="cap">Конструктор порядка · главная студии</span>
+        <div class="ord-grid">
+          <ol class="ord-list" id="ord-list"></ol>
+          <div class="ord-view"><div class="stage ord-stage"><div class="wf wf-md" id="ord-wf"></div></div></div>
+        </div>
+        <ul class="verdict" id="ord-out"></ul>
+        <div class="ord-acts"><button type="button" class="ghost" id="ord-shuffle">Перемешать</button><button type="button" class="ghost" id="ord-show">Показать удачный порядок</button></div>
+      </div>
+      <p class="cap">Блоки перемешаны. Двигай их стрелками вверх и вниз — скелет справа и разбор снизу обновляются сразу. Цель — все пункты разбора зелёные.</p>
+    </div>
+  </div>
+</section>
+
+<section id="types">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Остальные страницы</h2></div></div>
+  <p>Ниже — типичные страницы корпоративного сайта или сайта студии. Они используют одни и те же блоки, но с разной целью. Удобно делить их на три группы: страницы доверия, страницы выбора и действия, страницы знаний и поддержки.</p>
+
+  <div class="sub">
+    <h3>Доверие</h3>
+    <div class="sub-b">
+      <div class="pt">
+        <div class="stage pt-wf"><div class="wf wf-sm" data-wf="nav hero num txt2 team logos quote foot"></div></div>
+        <div class="pt-tx"><span class="kind">О компании / о продукте</span><b>Кто вы и почему вам можно верить</b><p>Раскрывает личность бренда: зачем компания существует и чем отличается. Эта страница редко продаёт напрямую. Её работа — доверие и узнаваемость.</p>
+          <ul><li>Обложка с миссией или фото команды</li><li>История и цифры: год основания, число проектов</li><li>Ценности и принципы работы</li><li>Команда: фото, роли, цитаты</li><li>Клиенты и партнёры, отзывы</li></ul>
+          <p class="pt-f">Заменяй общие слова фактами. «Динамично развивающаяся компания» ничего не говорит, «120 проектов с 2017 года» — говорит.</p></div>
+      </div>
+      <div class="pt">
+        <div class="stage pt-wf"><div class="wf wf-sm" data-wf="nav gallery txt num gallery quote cta foot"></div></div>
+        <div class="pt-tx"><span class="kind">Кейсы / портфолио</span><b>Доказательство компетенции</b><p>Показывает результат и экспертность. Раздел состоит из списка (карточки или галерея с фильтром по отраслям) и внутренних страниц проектов. Внутренняя страница строится как история:</p>
+          <div class="formula fs"><span>Задача</span><em>→</em><span>Процесс</span><em>→</em><span>Решение</span><em>→</em><span class="m">Результат</span></div>
+          <ul><li>Задача: кто клиент и что болело</li><li>Процесс: исследование, варианты, почему выбрали этот</li><li>Решение: крупные экраны, детали, анимация</li><li>Результат в цифрах: конверсия, заявки, сроки</li><li>Цитата клиента и CTA «Обсудить проект»</li></ul>
+          <p class="pt-f">Кейс без результата — просто галерея. Даже если цифр нет, напиши, что изменилось для клиента.</p></div>
+      </div>
+      <div class="pt">
+        <div class="stage pt-wf"><div class="wf wf-sm" data-wf="nav hero cards3 gallery list quote foot"></div></div>
+        <div class="pt-tx"><span class="kind">Карьера / вакансии</span><b>Приглашение в команду</b><p>Показывает культуру компании и помогает нанимать. Хороший пример — <a href="https://yandex.ru/jobs" target="_blank" rel="noopener">yandex.ru/jobs</a>: фильтр по направлениям, рассказы сотрудников, понятный процесс отбора.</p>
+          <ul><li>Обложка с посылом: кого ищете и зачем</li><li>Условия и плюсы работы</li><li>Фото команды и офиса</li><li>Список вакансий с фильтром</li><li>Отзывы сотрудников, кнопка «Откликнуться»</li></ul>
+          <p class="pt-f">Пиши по-человечески, как приглашение. Канцелярский HR-раздел отпугивает тех самых людей, которых вы ищете.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Выбор и действие</h3>
+    <div class="sub-b">
+      <div class="pt">
+        <div class="stage pt-wf"><div class="wf wf-sm" data-wf="nav hero cards3 steps cards3 cta foot"></div></div>
+        <div class="pt-tx"><span class="kind">Услуги / направления / решения</span><b>Что вы предлагаете и как работаете</b><p>Главный фокус — разложить предложение по полкам и сделать выбор простым. Если услуг много, раздел делится на список и отдельную страницу на каждую услугу: на ней цена «от», сроки, этапы и кейсы именно по этой услуге.</p>
+          <ul><li>Обложка с описанием подхода</li><li>Список услуг или продуктов</li><li>Польза и преимущества</li><li>Процесс работы по шагам</li><li>Кейсы по теме и CTA «Рассчитать стоимость»</li></ul>
+          <p class="pt-f">Называй услуги словами клиента. «Комплексные digital-решения» непонятны, «Сайт для клиники за 6 недель» — понятно.</p></div>
+      </div>
+      <div class="pt">
+        <div class="stage pt-wf"><div class="wf wf-sm" data-wf="nav hero contacts map form foot"></div></div>
+        <div class="pt-tx"><span class="kind">Контакты</span><b>Финальная точка доверия</b><p>Сюда приходят, когда уже готовы написать. Страница должна быть простой, живой и давать ощущение, что ответят.</p>
+          <ul><li>Короткое вступление: «Расскажи о задаче — ответим за день»</li><li>Телефон, почта, адрес — кликабельные</li><li>Карта и схема проезда, если есть офис</li><li>Короткая форма</li><li>Мессенджеры и соцсети</li></ul>
+          <p class="pt-f">Телефон на сайте — ссылка tel:, почта — mailto:. С телефона человек звонит в одно касание.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Знания и поддержка</h3>
+    <div class="sub-b">
+      <div class="pt">
+        <div class="stage pt-wf"><div class="wf wf-sm" data-wf="nav hero tags cards3 cards3 form foot"></div></div>
+        <div class="pt-tx"><span class="kind">Блог / новости / медиа</span><b>Компания живая и делится опытом</b><p>Работает на имидж и на поиск: полезные статьи приводят людей из Яндекса и Google. Раздел — это лента и шаблон статьи.</p>
+          <ul><li>Обложка, теги и фильтр по темам</li><li>Лента карточек статей</li><li>Подписка на рассылку или Telegram</li><li>Внутри статьи: заголовок, автор, дата, текст, похожие материалы</li></ul>
+          <p class="pt-f">Последняя новость двухлетней давности говорит «компания закрылась». Если писать некому, лучше без блога.</p></div>
+      </div>
+      <div class="pt">
+        <div class="stage pt-wf"><div class="wf wf-sm" data-wf="nav search tags acc acc cta foot"></div></div>
+        <div class="pt-tx"><span class="kind">FAQ / поддержка / база знаний</span><b>Снимает вопросы и нагрузку с менеджеров</b><p>Хорошо спроектированный FAQ — тоже дизайн опыта: он экономит время человека и повышает доверие. Вопросы бери из реальной переписки с клиентами.</p>
+          <ul><li>Поиск по вопросам</li><li>Категории: доставка, оплата, сервис</li><li>Раскрывающиеся ответы — аккордеон</li><li>CTA «Не нашли ответ — напишите нам»</li></ul>
+          <p class="pt-f">Если вопросов меньше пяти, отдельная страница не нужна — поставь блок FAQ на страницу услуги.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="templates">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Шаблоны и служебные страницы</h2></div></div>
+  <p>Многие страницы ты рисуешь один раз, а сайт размножает их сотни раз. Это шаблоны: карточка товара, статья, кейс, вакансия. В шаблоне проверяй крайние случаи: длинный заголовок в три строки, статью без обложки, товар без отзывов.</p>
+  <div class="two">
+    <div class="box"><span class="kind">Листинг</span><b>Список однотипного</b><p>Каталог, лента блога, список кейсов или вакансий. Состоит из фильтров, сетки карточек и пагинации или кнопки «Показать ещё».</p></div>
+    <div class="box"><span class="kind">Детальная</span><b>Один объект целиком</b><p>Товар, статья, кейс, вакансия. Её блоки одинаковы для всех объектов, меняется только наполнение.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Служебные</h3>
+    <div class="sub-b">
+      <p>Их легко забыть в смете, а без них сайт выглядит недоделанным. Заложи их в карту сайта с самого начала.</p>
+      <div class="three">
+        <div class="box"><span class="kind">404</span><p>Страница не найдена. Объясни, что случилось, и дай выход: поиск, ссылки на популярные разделы, кнопку на главную. Это место, где можно пошутить в тоне бренда.</p></div>
+        <div class="box"><span class="kind">Спасибо</span><p>После заявки или заказа. Подтверди, что всё получено, скажи, что будет дальше и когда, предложи следующий шаг: подписаться, почитать кейсы.</p></div>
+        <div class="box"><span class="kind">Политика</span><p>Если сайт собирает имя, телефон или почту, по 152-ФЗ нужна политика обработки персональных данных и согласие у формы. Это текстовая страница по шаблону статьи.</p></div>
+      </div>
+      <p>Ещё бывают: результаты поиска, личный кабинет, вход и регистрация, страница «Сайт на обслуживании», оферта для интернет-магазина.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Угадай страницу</h3>
+    <div class="sub-b">
+      <div class="demo" id="guess">
+        <div class="g-top"><span class="cap" id="g-n"></span><span class="cap g-sc" id="g-sc"></span></div>
+        <div class="g-grid">
+          <div class="stage g-stage"><div class="wf wf-lg" id="g-wf"></div></div>
+          <div class="g-side">
+            <div class="g-opts" id="g-opts"></div>
+            <output id="g-out"></output>
+            <button type="button" class="ghost" id="g-next" hidden>Следующая страница</button>
+          </div>
+        </div>
+      </div>
+      <p class="cap">Перед тобой скелет страницы без текста. Определи по набору и порядку блоков, что это за страница. После ответа увидишь, по каким признакам её узнают.</p>
+    </div>
+  </div>
+</section>
+
+<section id="shop">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Страницы магазина</h2></div></div>
+  <p>Интернет-магазин — лучший пример того, как страницы складываются в путь. Человек идёт по цепочке, и на каждом шаге может уйти. По данным Baymard Institute, в среднем около 70% корзин бросают, не оформив заказ. Главные причины — неожиданная стоимость доставки, обязательная регистрация и длинная форма.</p>
+  <div class="flow" role="list">
+    <div role="listitem"><i>01</i><b>Главная</b><span>Подборки, акции, категории</span></div>
+    <div role="listitem"><i>02</i><b>Каталог</b><span>Фильтры, сортировка, сетка</span></div>
+    <div role="listitem"><i>03</i><b>Товар</b><span>Фото, цена, «В корзину»</span></div>
+    <div role="listitem"><i>04</i><b>Корзина</b><span>Состав, итог, доставка</span></div>
+    <div role="listitem"><i>05</i><b>Оформление</b><span>Контакты, адрес, оплата</span></div>
+    <div role="listitem" class="end"><i>06</i><b>Спасибо</b><span>Номер заказа, что дальше</span></div>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>Страница</th><th>Базовый UX, без которого теряешь покупателя</th></tr></thead>
+    <tbody>
+      <tr><td>Каталог</td><td>Фильтры по тому, как выбирают люди: размер, цена, цвет. Активные фильтры видны и снимаются в один клик. Число товаров видно сразу.</td></tr>
+      <tr><td>Карточка товара</td><td>Несколько фото с приближением, цена и кнопка «В корзину» на первом экране. Наличие, сроки и стоимость доставки рядом с ценой. Отзывы и характеристики ниже.</td></tr>
+      <tr><td>Корзина</td><td>Можно поменять количество и удалить товар. Итоговая сумма с доставкой видна до оформления, без сюрпризов на последнем шаге.</td></tr>
+      <tr><td>Оформление</td><td>Покупка без регистрации. Минимум полей, автозаполнение адреса, понятные способы оплаты. Сводка заказа всё время перед глазами.</td></tr>
+      <tr><td>Спасибо</td><td>Номер заказа, что придёт на почту, когда ждать доставку. Ссылка на отслеживание.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="why">Посмотри, как это сделано у <a href="https://www.apple.com/ru/" target="_blank" rel="noopener">Apple</a>: на странице товара сначала выбираешь модель и цвет, цена пересчитывается сразу, а кнопка покупки остаётся на виду. Когда разбираешь любой магазин, иди по этой же цепочке и отмечай, где тебе пришлось думать.</p>
+</section>
+
+<section id="build">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Тренажёр: собери структуру сайта</h2></div></div>
+  <p>Выбери бизнес и отметь страницы, которые нужны его сайту. Потом нажми «Проверить»: увидишь, что лишнее, чего не хватает и почему. Лишняя страница — это деньги клиента на дизайн, вёрстку и поддержку, которые не принесут результата.</p>
+  <div class="demo" id="bs">
+    <span class="cap">Бизнес</span>
+    <div class="seg" id="bs-biz"></div>
+    <p class="bs-brief" id="bs-brief"></p>
+    <span class="cap">Страницы · нажимай, чтобы добавить</span>
+    <div class="bs-pool" id="bs-pool"></div>
+    <div class="ord-acts"><button type="button" class="main" id="bs-check">Проверить</button><button type="button" class="ghost" id="bs-answer">Показать ответ</button><button type="button" class="ghost" id="bs-reset">Сбросить</button></div>
+    <div id="bs-res" aria-live="polite"></div>
+  </div>
+  <p class="cap">Зелёная рамка — страница нужна, пунктир — можно добавить по ситуации, красная — лишняя. Разбор появится под кнопкой.</p>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Структура сайта вместе с нейронкой</h2></div></div>
+  <p>Нейронка полезна как заказчик, который задаёт неудобные вопросы, и как ревьюер, который замечает пропущенные страницы. Структуру придумываешь ты: тебе её защищать перед клиентом.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Бизнес, аудитория, цель сайта и что человек должен сделать.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа. Готовую карту сайта не выдаёт.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Нейронка отмечает дыры, а какие страницы оставить, выбираешь сам.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Бриф</span><b>Понять, какие страницы нужны</b>
+<pre id="p1">Я проектирую сайт для <em>[бизнес и город]</em>. Аудитория: <em>[кто приходит на сайт]</em>. Цель сайта: <em>[заявки, продажи, найм, имидж]</em>.
+Сыграй роль опытного арт-директора. Задай мне вопросы по одному, чтобы понять, какие задачи должен решать сайт и какие вопросы будут у посетителей. Жди ответа на каждый вопрос.
+Не предлагай карту сайта сам. В конце попроси меня набросать список страниц.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь на вопросы и сам пишешь первый вариант карты сайта.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Ревью карты</span><b>Найти лишнее и пропущенное</b>
+<pre id="p2">Вот моя карта сайта: <em>[страницы по уровням]</em>. Бизнес: <em>[кратко]</em>.
+Для каждой страницы спроси меня, на какой вопрос посетителя она отвечает. Если я не могу ответить одной фразой, отметь страницу как спорную.
+Потом проверь, не забыты ли служебные страницы: 404, «Спасибо», политика обработки персональных данных. Не переписывай карту за меня.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> формулируешь задачу каждой страницы и убираешь те, у которых её нет.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Блоки страницы</span><b>Проверить порядок блоков</b>
+<pre id="p3">Страница <em>[название]</em> моего сайта состоит из блоков: <em>[блоки по порядку]</em>.
+Пройди по блокам сверху вниз глазами посетителя. Для каждого назови вопрос, который у него сейчас в голове, и скажи, отвечает ли на него блок.
+Где порядок ломает логику, задай мне вопрос, как я хочу это исправить.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> меняешь порядок и состав блоков и рисуешь скелет страницы.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Карта сайта и скелеты трёх страниц для своего проекта</b><p>Возьми проект, который делаешь на курсе. В Figma или FigJam нарисуй карту сайта по уровням: главная, разделы, внутренние и служебные страницы. Подпиши у каждой страницы её задачу одной фразой. Затем собери серые скелеты трёх страниц: главной, одной внутренней (услуга, кейс или товар) и контактов. У каждого блока на полях напиши вопрос посетителя, на который он отвечает. Сдай один фрейм с картой и тремя скелетами.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>В карте не больше трёх уровней и 5–7 разделов в меню</span></label>
+    <label><input type="checkbox"><span>У каждой страницы есть задача в одну фразу</span></label>
+    <label><input type="checkbox"><span>Служебные страницы на месте: 404, «Спасибо», политика</span></label>
+    <label><input type="checkbox"><span>На главной есть превью ключевых разделов и CTA в конце</span></label>
+    <label><input type="checkbox"><span>Каждый блок скелета отвечает на вопрос посетителя</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Типы блоков: разберём сами кирпичики, из которых собираются страницы.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 3 · Типы страниц</footer>
+
+</div>
+<script type="application/json" id="quiz-data">[
+{"p":"Почему главную страницу большого сайта часто проектируют в конце?","o":["Она самая простая, её можно сделать быстро","Она собирается из превью других страниц, поэтому сначала нужно понять, что в них","Заказчики редко смотрят главную"],"a":1,"e":"Главная — краткое содержание сайта. Пока не готовы услуги, кейсы и каталог, непонятно, что на ней показывать."},
+{"p":"Чем страница «О компании» отличается от блока «О компании» на главной?","o":["Ничем, это одно и то же","Тот же смысл раскрыт глубже: история, цифры, команда, ценности","На странице «О компании» нельзя ставить отзывы"],"a":1,"e":"Блоки повторяются от страницы к странице, меняется их глубина и порядок. На главной — абзац, на странице — полная история."},
+{"p":"Какая структура у страницы кейса?","o":["Задача → процесс → решение → результат","Галерея картинок и кнопка «Позвонить»","Список услуг и прайс"],"a":0,"e":"Кейс рассказывает историю. Без задачи и результата он превращается в галерею."},
+{"p":"Сайт собирает заявки с именем и телефоном. Какая служебная страница обязательна?","o":["Карьера","Блог","Политика обработки персональных данных"],"a":2,"e":"По 152-ФЗ при сборе персональных данных нужна политика и согласие у формы. Ещё понадобится страница «Спасибо»."},
+{"p":"Что важнее всего на карточке товара?","o":["Анимация логотипа в шапке","Фото, цена и кнопка «В корзину» на первом экране, рядом наличие и доставка","Длинное описание истории бренда"],"a":1,"e":"Человек пришёл решить, покупать или нет. Всё, что нужно для решения, должно быть на виду."},
+{"p":"Как проверить, нужна ли сайту отдельная страница?","o":["Если у конкурента она есть — нужна","Сформулировать её задачу и вопрос посетителя одной фразой","Добавить все возможные страницы на всякий случай"],"a":1,"e":"У каждой страницы одна задача. Если её нельзя назвать, страницу лучше убрать или объединить с другой."}
+]</script>
+<script type="application/json" id="pages-data">{
+"home":{"k":"Уровень 0 · Знакомство","t":"Главная","q":"«Я туда попал? Это для меня?»","task":"За 10–15 секунд объяснить, кто вы и что предлагаете, и развести людей по разделам.","b":["Первый экран с оффером и кнопкой","Коротко о компании и цифры","Превью услуг","Кейсы и логотипы клиентов","Отзывы","CTA: форма или контакты"],"cta":"Перейти в услуги или оставить заявку","err":"Рассказать всё подробно. Главная превращается в бесконечную простыню, в которой ничего не найти.","wf":"nav hero logos cards3 txt2 quote cta foot"},
+"about":{"k":"Уровень 1 · Доверие","t":"О компании","q":"«Кто эти люди и можно ли им доверять?»","task":"Показать характер бренда, историю и людей за ним.","b":["Обложка с миссией или фото команды","История и цифры","Ценности и принципы","Команда","Клиенты и партнёры","Отзывы"],"cta":"Посмотреть кейсы или написать","err":"Общие слова без фактов: «надёжный партнёр», «индивидуальный подход».","wf":"nav hero num txt2 team logos quote foot"},
+"services":{"k":"Уровень 1 · Выбор","t":"Услуги","q":"«Что вы делаете и что из этого нужно мне?»","task":"Разложить предложение по полкам и помочь выбрать направление.","b":["Обложка с подходом","Карточки услуг со ссылками внутрь","Польза и преимущества","Процесс работы","Кейсы","CTA «Рассчитать стоимость»"],"cta":"Открыть страницу нужной услуги","err":"Названия услуг на языке студии: «комплексные digital-решения» вместо «сайт для клиники».","wf":"nav hero cards3 steps cards3 cta foot"},
+"service":{"k":"Уровень 2 · Выбор","t":"Страница услуги","q":"«Сколько стоит, как долго и что я получу?»","task":"Снять вопросы по одной услуге и довести до заявки.","b":["Оффер услуги","Что входит","Этапы и сроки","Цена или «от»","Кейсы по этой услуге","FAQ","Форма заявки"],"cta":"Оставить заявку на эту услугу","err":"Скрыть цену совсем. Хотя бы «от» и из чего складывается стоимость.","wf":"nav hero list steps num acc form foot"},
+"cases":{"k":"Уровень 1 · Доверие","t":"Кейсы","q":"«Делали ли они что-то похожее на мою задачу?»","task":"Быстро показать опыт и дать найти проект из своей отрасли.","b":["Фильтр по отраслям и услугам","Сетка карточек кейсов","Логотипы клиентов","CTA «Обсудить проект»"],"cta":"Открыть кейс из своей отрасли","err":"Свалить все работы подряд без фильтра и отбора. Лучше 12 сильных, чем 60 любых.","wf":"nav filters cards3 cards3 cta foot"},
+"case":{"k":"Уровень 2 · Доверие","t":"Страница кейса","q":"«Какой результат они дали клиенту?»","task":"Рассказать историю проекта и доказать экспертность фактами.","b":["Обложка проекта","Задача клиента","Процесс","Решение: крупные экраны","Результат в цифрах","Цитата клиента","Следующий кейс и CTA"],"cta":"Нажать «Хочу такой же результат»","err":"Только картинки без задачи и результата — это просто галерея.","wf":"nav gallery txt num gallery quote cta foot"},
+"blog":{"k":"Уровень 1 · Знания","t":"Блог","q":"«Им есть что сказать? Тут есть полезное для меня?»","task":"Показать экспертизу и приводить людей из поиска.","b":["Обложка","Теги и фильтр по темам","Лента карточек статей","Подписка"],"cta":"Прочитать статью или подписаться","err":"Последний пост два года назад. Брошенный блог хуже, чем никакого.","wf":"nav hero tags cards3 cards3 form foot"},
+"article":{"k":"Уровень 2 · Шаблон","t":"Статья","q":"«Стоит ли дочитать и что почитать дальше?»","task":"Дать удобно прочитать текст и увести к следующему материалу или заявке.","b":["Заголовок, автор, дата, время чтения","Текст узкой колонкой 60–75 знаков","Иллюстрации и цитаты","Похожие статьи","Подписка или CTA"],"cta":"Перейти к похожей статье","err":"Текст на всю ширину экрана: строки по 150 знаков читать тяжело.","wf":"nav article cards3 foot"},
+"career":{"k":"Уровень 1 · Найм","t":"Карьера","q":"«Хочу ли я здесь работать?»","task":"Показать культуру и привлечь подходящих людей.","b":["Посыл: кого ищете","Условия и плюсы","Фото команды и офиса","Список вакансий","Отзывы сотрудников"],"cta":"Открыть вакансию и откликнуться","err":"Язык HR-отдела: «стрессоустойчивость», «работа в режиме многозадачности».","wf":"nav hero cards3 gallery list quote foot"},
+"vacancy":{"k":"Уровень 2 · Шаблон","t":"Вакансия","q":"«Подхожу ли я и что будет после отклика?»","task":"Честно описать работу и упростить отклик.","b":["Название, формат, зарплатная вилка","Задачи","Требования","Условия","Этапы отбора","Форма отклика"],"cta":"Откликнуться","err":"Форма на 20 полей. Хватит имени, контакта и ссылки на портфолио.","wf":"nav hero txt list steps form foot"},
+"faq":{"k":"Уровень 1 · Поддержка","t":"FAQ","q":"«Где ответ на мой вопрос?»","task":"Ответить на частые вопросы без звонка менеджеру.","b":["Поиск","Категории","Аккордеон с ответами","CTA «Не нашли ответ — напишите»"],"cta":"Найти ответ или написать в поддержку","err":"Придуманные вопросы вместо настоящих из переписки с клиентами.","wf":"nav search tags acc acc cta foot"},
+"contacts":{"k":"Уровень 1 · Действие","t":"Контакты","q":"«Как связаться прямо сейчас?»","task":"Дать удобный способ связи и ощущение, что ответят.","b":["Вступление «Мы на связи»","Телефон, почта, адрес — кликабельные","Карта и схема проезда","Форма","Мессенджеры"],"cta":"Позвонить, написать или отправить форму","err":"Только форма без телефона и почты. Многие хотят написать в привычный мессенджер.","wf":"nav hero contacts map form foot"},
+"e404":{"k":"Служебная","t":"404","q":"«Куда я попал и как отсюда выбраться?»","task":"Не потерять человека, который пришёл по битой ссылке.","b":["Понятное сообщение","Поиск","Ссылки на популярные разделы","Кнопка на главную"],"cta":"Вернуться на главную или в каталог","err":"Стандартная белая страница сервера без навигации — человек просто закрывает вкладку.","wf":"nav big404 foot"},
+"thanks":{"k":"Служебная","t":"Спасибо","q":"«Всё получилось? Что будет дальше?»","task":"Подтвердить заявку и предложить следующий шаг.","b":["Подтверждение","Что дальше и когда ответят","Следующий шаг: кейсы, подписка"],"cta":"Почитать кейсы или подписаться","err":"Тупик без навигации. Ещё на этой странице ставят цель для метрики — без неё не посчитать заявки.","wf":"nav check cards3 foot"},
+"policy":{"k":"Служебная","t":"Политика","q":"«Что будет с моими данными?»","task":"Выполнить требования 152-ФЗ и показать, как обрабатываются данные.","b":["Заголовок и дата редакции","Текст политики","Контакты оператора данных"],"cta":"Вернуться к форме","err":"Забыть её совсем — форма на сайте без политики нарушает закон.","wf":"nav article foot"}
+}</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Типы страниц» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  // --- Скелеты страниц: строка "nav hero* cards3 foot" -> серые блоки, * = подсветка ---
+  const L = (w, c) => '<i class="ln' + (c ? ' ' + c : '') + '" style="width:' + w + '%"></i>';
+  const rep = (n, f) => Array.from({ length: n }, (_, i) => f(i)).join('');
+  const card = (p) => '<div class="w-cd"><u class="pic"></u>' + L(80) + L(50) + (p ? '<span class="w-pr"><em></em><s class="btn"></s></span>' : '') + '</div>';
+  const W = {
+    nav: () => '<div class="w w-nav"><b></b><span>' + L(100) + L(100) + L(100) + L(100) + '</span></div>',
+    hero: () => '<div class="w w-hero">' + L(72, 'h') + L(52, 'h') + L(60) + '<s class="btn"></s></div>',
+    txt: () => '<div class="w w-txt">' + L(92) + L(96) + L(64) + '</div>',
+    txt2: () => '<div class="w w-split"><div>' + L(70, 'h') + L(96) + L(90) + L(60) + '</div><u class="pic"></u></div>',
+    cards3: () => '<div class="w w-cards">' + rep(3, () => card(false)) + '</div>',
+    cardsP: () => '<div class="w w-cards">' + rep(3, () => card(true)) + '</div>',
+    logos: () => '<div class="w w-logos">' + rep(5, () => '<i></i>') + '</div>',
+    list: () => '<div class="w w-list">' + rep(4, () => '<div>' + L(55) + '<s></s></div>') + '</div>',
+    steps: () => '<div class="w w-steps">' + rep(4, i => (i ? '<hr>' : '') + '<i></i>') + '</div>',
+    quote: () => '<div class="w w-quote"><b>“</b><div>' + L(92) + L(70) + '<span><i class="ava"></i>' + L(40) + '</span></div></div>',
+    team: () => '<div class="w w-team">' + rep(4, () => '<div><i class="ava"></i>' + L(70) + '</div>') + '</div>',
+    num: () => '<div class="w w-num">' + rep(3, () => '<div><b></b>' + L(70) + '</div>') + '</div>',
+    cta: () => '<div class="w w-cta"><div>' + L(70, 'h') + L(50) + '</div><s class="btn"></s></div>',
+    form: () => '<div class="w w-form">' + L(50, 'h') + '<i class="in"></i><i class="in"></i><s class="btn wide"></s></div>',
+    map: () => '<div class="w w-map"><i class="pin"></i></div>',
+    contacts: () => '<div class="w w-contacts">' + rep(3, () => '<div><i class="dot"></i>' + L(62, 'h') + '</div>') + '</div>',
+    acc: () => '<div class="w w-acc">' + rep(4, () => '<div>' + L(62) + '<b>+</b></div>') + '</div>',
+    search: () => '<div class="w w-search"><i class="in"><i class="dot"></i></i></div>',
+    tags: () => '<div class="w w-tags">' + rep(5, i => '<i class="' + (i ? '' : 'on') + '"></i>') + '</div>',
+    filters: () => '<div class="w w-tags w-filters">' + rep(4, i => '<i class="' + (i ? '' : 'on') + '"></i>') + '<span>' + L(100) + '</span></div>',
+    article: () => '<div class="w w-article">' + L(80, 'h') + L(55, 'h') + '<span>' + L(30) + '</span>' + rep(3, () => L(100)) + L(70) + '<u class="pic"></u>' + rep(3, () => L(100)) + L(50) + '</div>',
+    gallery: () => '<div class="w w-gallery"><u class="pic"></u></div>',
+    product: () => '<div class="w w-product"><div class="w-ph"><u class="pic"></u><span>' + rep(3, () => '<u class="pic"></u>') + '</span></div><div>' + L(85, 'h') + L(50) + '<b class="price"></b><span class="sw">' + rep(3, () => '<i></i>') + '</span><s class="btn wide"></s>' + L(70) + '</div></div>',
+    cart: () => '<div class="w w-cart"><div>' + rep(3, () => '<div class="row"><u class="pic"></u><span>' + L(80) + L(40) + '</span><b class="price"></b></div>') + '</div><div class="sum">' + L(60) + L(80) + '<b class="price"></b><s class="btn wide"></s></div></div>',
+    pages: () => '<div class="w w-pages">' + rep(5, i => '<i class="' + (i === 1 ? 'on' : '') + '"></i>') + '</div>',
+    big404: () => '<div class="w w-404"><b>404</b>' + L(50) + L(36) + '<s class="btn"></s></div>',
+    check: () => '<div class="w w-ok"><b>✓</b>' + L(55, 'h') + L(40) + '<s class="btn"></s></div>',
+    foot: () => '<div class="w w-foot">' + L(30) + L(22) + '</div>'
+  };
+  function wf(el, spec) {
+    el.innerHTML = spec.trim().split(/\s+/).map(t => {
+      const hl = t.endsWith('*'), k = hl ? t.slice(0, -1) : t;
+      const html = (W[k] || W.txt)();
+      return hl ? html.replace('class="w ', 'class="w hl ') : html;
+    }).join('');
+  }
+  $$('[data-wf]').forEach(el => wf(el, el.dataset.wf));
+
+  const press = (btns, on) => btns.forEach(b => b.setAttribute('aria-pressed', String(b === on)));
+
+  // --- Дозировка блока «О компании» ---
+  const dose = $('#dose');
+  if (dose) {
+    const D = [
+      ['nav hero txt* cards3 quote cta foot', '<b>Главная.</b> Два-три предложения и пара цифр между первым экраном и услугами. Задача — быстро сказать, кто вы, и не задерживать человека.'],
+      ['nav hero* num* txt2* team* quote foot', '<b>О компании.</b> Блок разворачивается на всю страницу: миссия, история, цифры, команда. Здесь он главный герой.'],
+      ['nav hero list steps num* cards3 form foot', '<b>Услуга.</b> Одна строка цифр доверия рядом с этапами: «8 лет, 120 проектов». Небольшой аргумент в пользу выбора.'],
+      ['nav hero txt2* gallery list quote foot', '<b>Карьера.</b> Рассказ о компании глазами сотрудника: ценности, как устроена работа. Смысл тот же, адресат другой — будущий коллега.']
+    ];
+    const btns = $$('#dose-seg button');
+    const set = i => { press(btns, btns[i]); wf($('#dose-wf'), D[i][0]); $('#dose-out').innerHTML = D[i][1]; };
+    btns.forEach(b => b.addEventListener('click', () => set(+b.dataset.i)));
+    set(0);
+  }
+
+  // --- Интерактивная карта сайта ---
+  const P = JSON.parse(($('#pages-data') || {}).textContent || '{}');
+  const sm = $('#sm');
+  if (sm) {
+    const nodes = $$('.sm-n', sm);
+    function show(id) {
+      const p = P[id]; if (!p) return;
+      press(nodes, nodes.find(n => n.dataset.p === id));
+      $('#sm-kind').textContent = p.k; $('#sm-t').textContent = p.t; $('#sm-q').textContent = p.q;
+      $('#sm-task').textContent = p.task; $('#sm-cta').textContent = p.cta; $('#sm-err').textContent = p.err;
+      $('#sm-blocks').innerHTML = p.b.map(x => '<li>' + esc(x) + '</li>').join('');
+      wf($('#sm-wf'), p.wf);
+    }
+    nodes.forEach(n => n.addEventListener('click', () => {
+      show(n.dataset.p);
+      if (window.innerWidth < 760) { const pn = $('#sm-panel'); if (pn.getBoundingClientRect().top > window.innerHeight * .6) pn.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    }));
+    show('home');
+  }
+
+  // --- Конструктор порядка главной ---
+  const ord = $('#order');
+  if (ord) {
+    const B = {
+      hero: ['Первый экран', 'hero'], logos: ['Логотипы клиентов', 'logos'], about: ['Коротко о компании', 'txt'],
+      services: ['Услуги', 'cards3'], cases: ['Кейсы', 'gallery'], reviews: ['Отзывы', 'quote'], cta: ['Заявка / CTA', 'cta']
+    };
+    const START = ['reviews', 'services', 'cta', 'hero', 'cases', 'logos', 'about'];
+    const BEST = ['hero', 'logos', 'about', 'services', 'cases', 'reviews', 'cta'];
+    let o = START.slice(), focusKey = null, focusDir = null;
+    const list = $('#ord-list');
+    function rules() {
+      const i = k => o.indexOf(k);
+      return [
+        i('hero') === 0 ? ['ok', '<b>Первый экран открывает страницу.</b> Оффер и главная кнопка — первое, что видит человек.'] : ['bad', '<b>Страница начинается не с первого экрана.</b> Сначала оффер: куда попал и что здесь делают.'],
+        i('cta') === o.length - 1 ? ['ok', '<b>Заявка в конце.</b> К этому моменту человек всё узнал и готов действовать.'] : ['bad', '<b>Форма заявки стоит в середине.</b> Её место — последний блок перед подвалом. Кнопка на первом экране и так ведёт к ней.'],
+        i('about') <= 3 && i('about') > 0 ? ['ok', '<b>«Коротко о компании» в начале.</b> Кто вы, человек хочет понять сразу после знакомства.'] : ['bad', '<b>«Коротко о компании» не на месте.</b> Поставь блок во вторую — четвёртую позицию, сразу после знакомства.'],
+        i('services') < i('cases') ? ['ok', '<b>Услуги выше кейсов.</b> Сначала что вы делаете, потом доказательства.'] : ['bad', '<b>Кейсы выше услуг.</b> Человек видит доказательства раньше, чем понял, что вы предлагаете.'],
+        i('reviews') > i('services') ? ['ok', '<b>Отзывы после услуг.</b> Чужое мнение подкрепляет уже понятное предложение.'] : ['bad', '<b>Отзывы раньше услуг.</b> Хвалят, а за что — ещё непонятно.'],
+        (i('logos') === 1 || Math.abs(i('logos') - i('cases')) === 1) ? ['ok', '<b>Логотипы на месте.</b> Сразу после первого экрана или рядом с кейсами они дают быстрое доверие.'] : ['bad', '<b>Логотипы потерялись.</b> Ставь их сразу после первого экрана или рядом с кейсами.']
+      ];
+    }
+    function render() {
+      list.innerHTML = o.map((k, n) => '<li><span class="ord-n">' + String(n + 1).padStart(2, '0') + '</span><span class="ord-t">' + B[k][0] + '</span>' +
+        '<button type="button" class="ord-b" data-k="' + k + '" data-d="-1" aria-label="Поднять блок ' + B[k][0] + '"' + (n === 0 ? ' disabled' : '') + '>↑</button>' +
+        '<button type="button" class="ord-b" data-k="' + k + '" data-d="1" aria-label="Опустить блок ' + B[k][0] + '"' + (n === o.length - 1 ? ' disabled' : '') + '>↓</button></li>').join('');
+      wf($('#ord-wf'), 'nav ' + o.map(k => B[k][1]).join(' ') + ' foot');
+      const R = rules(), good = R.filter(r => r[0] === 'ok').length;
+      $('#ord-out').innerHTML = R.map(([c, t]) => '<li class="' + c + '"><span>' + t + '</span></li>').join('') +
+        '<li class="' + (good === R.length ? 'ok' : 'sum') + '"><span><b>' + good + ' из ' + R.length + '.</b> ' + (good === R.length ? 'Главная читается как история: знакомство, предложение, доказательства, действие.' : 'Поправь красные пункты.') + '</span></li>';
+      if (focusKey) {
+        const b = list.querySelector('[data-k="' + focusKey + '"][data-d="' + focusDir + '"]:not(:disabled)') || list.querySelector('[data-k="' + focusKey + '"]:not(:disabled)');
+        if (b) b.focus();
+        focusKey = null;
+      }
+    }
+    list.addEventListener('click', e => {
+      const b = e.target.closest('.ord-b'); if (!b) return;
+      const k = b.dataset.k, d = +b.dataset.d, i = o.indexOf(k), j = i + d;
+      if (j < 0 || j >= o.length) return;
+      [o[i], o[j]] = [o[j], o[i]]; focusKey = k; focusDir = d; render();
+    });
+    $('#ord-shuffle').addEventListener('click', () => {
+      do { o.sort(() => Math.random() - .5); } while (rules().every(r => r[0] === 'ok'));
+      render();
+    });
+    $('#ord-show').addEventListener('click', () => { o = BEST.slice(); render(); });
+    render();
+  }
+
+  // --- Угадай страницу по скелету ---
+  const gs = $('#guess');
+  if (gs) {
+    const G = [
+      ['Главная', P.home && P.home.wf, 'Логотипы, превью услуг, кейсы, отзывы и CTA — всего понемногу. Так выглядит агрегатор, краткое содержание сайта.'],
+      ['Каталог', 'nav filters cardsP cardsP pages foot', 'Фильтры сверху, сетка карточек с ценой и кнопкой, внизу пагинация. Это листинг товаров.'],
+      ['Карточка товара', 'nav product txt quote cardsP foot', 'Фото с миниатюрами слева, цена, выбор цвета и широкая кнопка справа. Внизу отзывы и похожие товары.'],
+      ['Страница кейса', P.case && P.case.wf, 'Крупные изображения, текст между ними, цифры результата и цитата клиента. История проекта от задачи к результату.'],
+      ['Контакты', P.contacts && P.contacts.wf, 'Крупные строки с иконками — телефон, почта, адрес. Карта и форма ниже.'],
+      ['FAQ', P.faq && P.faq.wf, 'Поиск, категории и аккордеон с плюсами. Вопросы и ответы.'],
+      ['Статья', P.article && P.article.wf, 'Узкая колонка длинного текста, иллюстрация внутри и похожие материалы в конце.'],
+      ['404', P.e404 && P.e404.wf, 'Почти пустой экран, крупный код ошибки и кнопка, которая выводит обратно на сайт.'],
+      ['Корзина', 'nav cart foot', 'Строки товаров с миниатюрами и ценой, сбоку блок итога с главной кнопкой.'],
+      ['Карьера', P.career && P.career.wf, 'Посыл, плюсы работы, фото офиса и список строк со стрелками — вакансии. В конце отзыв сотрудника.']
+    ];
+    const LABELS = ['Главная', 'Каталог', 'Карточка товара', 'Страница кейса', 'Кейсы', 'Контакты', 'FAQ', 'Статья', 'Блог', '404', 'Корзина', 'Оформление заказа', 'Карьера', 'Страница услуги', 'О компании', 'Спасибо'];
+    const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+    let order, cur, got;
+    function start() { order = shuffle(G); cur = 0; got = 0; round(); }
+    function round() {
+      const opts = $('#g-opts'), out = $('#g-out'), next = $('#g-next');
+      next.hidden = true; out.innerHTML = '';
+      $('#g-sc').textContent = 'Верно: ' + got;
+      if (cur >= order.length) {
+        $('#g-n').textContent = 'Готово';
+        wf($('#g-wf'), 'check');
+        opts.innerHTML = '';
+        out.innerHTML = '<b>' + got + ' из ' + order.length + '.</b> ' + (got >= 8 ? 'Ты узнаёшь страницы по структуре — так и разбирают сайты конкурентов.' : 'Перечитай разделы 03–06 и попробуй снова: смотри на набор и порядок блоков.');
+        next.textContent = 'Сыграть ещё раз'; next.hidden = false; next.onclick = start;
+        return;
+      }
+      const [ans, spec, tell] = order[cur];
+      $('#g-n').textContent = 'Страница ' + (cur + 1) + ' из ' + order.length;
+      wf($('#g-wf'), spec);
+      const variants = shuffle([ans].concat(shuffle(LABELS.filter(l => l !== ans)).slice(0, 3)));
+      opts.innerHTML = variants.map(v => '<button type="button">' + esc(v) + '</button>').join('');
+      $$('button', opts).forEach(b => b.addEventListener('click', () => {
+        const ok = b.textContent === ans; if (ok) got++;
+        $$('button', opts).forEach(x => { x.disabled = true; if (x.textContent === ans) x.classList.add('right'); });
+        if (!ok) b.classList.add('wrong');
+        out.innerHTML = '<b>' + (ok ? 'Верно.' : 'Правильный ответ: ' + esc(ans) + '.') + '</b> ' + esc(tell);
+        $('#g-sc').textContent = 'Верно: ' + got;
+        next.textContent = cur === order.length - 1 ? 'Посмотреть итог' : 'Следующая страница';
+        next.hidden = false; next.onclick = () => { cur++; round(); $('#g-opts button') && $('#g-opts button').focus(); };
+        next.focus();
+      }));
+    }
+    start();
+  }
+
+  // --- Тренажёр: собери структуру сайта ---
+  const bs = $('#bs');
+  if (bs) {
+    const PAGES = [['home', 'Главная'], ['about', 'О компании'], ['services', 'Услуги'], ['service', 'Страница услуги'], ['cases', 'Кейсы'], ['case', 'Страница кейса'], ['catalog', 'Каталог'], ['product', 'Карточка товара'], ['cart', 'Корзина'], ['checkout', 'Оформление заказа'], ['blog', 'Блог'], ['career', 'Карьера'], ['faq', 'FAQ'], ['contacts', 'Контакты'], ['thanks', 'Спасибо'], ['e404', '404'], ['policy', 'Политика']];
+    const name = Object.fromEntries(PAGES);
+    const r = 'req', o = 'opt', n = 'no';
+    const BIZ = [
+      { t: 'Архитектурное бюро', brief: 'Бюро из 8 человек в Казани проектирует частные дома и интерьеры. Цель сайта — заявки на проект от частных клиентов.', m: {
+        home: [r, 'Точка входа и оглавление — нужна любому многостраничному сайту.'],
+        about: [r, 'Архитектора выбирают как человека: команда и подход здесь решают.'],
+        services: [o, 'Направлений всего два — можно отдельной страницей, можно блоком на главной.'],
+        service: [o, 'Отдельные страницы оправданы, если у домов и интерьеров разные цены и этапы.'],
+        cases: [r, 'Портфолио — главный аргумент архитектора.'],
+        case: [r, 'Каждый проект — история: участок, задача, решение, фото после стройки.'],
+        catalog: [n, 'Бюро ничего не продаёт с полки — каталог не нужен.'],
+        product: [n, 'Товаров нет, значит и карточек товара нет.'],
+        cart: [n, 'Проект заказывают через заявку и встречу, корзина здесь лишняя.'],
+        checkout: [n, 'Оформлять нечего: договор подписывают после встречи.'],
+        blog: [o, 'Статьи о строительстве приведут людей из поиска, если будет кому писать.'],
+        career: [n, 'В бюро из 8 человек вакансии редки — хватит строки в контактах.'],
+        faq: [o, 'Вопросы про сроки и стоимость можно поставить блоком на страницу услуг.'],
+        contacts: [r, 'Адрес, телефон и форма — сюда приходят готовые клиенты.'],
+        thanks: [r, 'После заявки человек должен увидеть, что всё ушло. Здесь же ставят цель метрики.'],
+        e404: [r, 'Нужна любому сайту: битые ссылки случаются всегда.'],
+        policy: [r, 'Форма собирает имя и телефон — по 152-ФЗ нужна политика.']
+      } },
+      { t: 'Онлайн-школа английского', brief: 'Школа ведёт занятия для детей 7–14 лет в Zoom, три программы по возрасту. Сайт для родителей: записать ребёнка на бесплатный пробный урок.', m: {
+        home: [r, 'Точка входа: родитель за несколько секунд понимает, что это и для какого возраста.'],
+        about: [r, 'Родители доверяют ребёнка — им важно, кто преподаёт и как устроены занятия.'],
+        services: [r, 'Три программы по возрасту — родителю нужно сравнить и выбрать.'],
+        service: [r, 'У каждой программы своя цена, расписание и результат — по странице на программу.'],
+        cases: [o, 'Кейсов у школы нет, но страница «Отзывы и результаты учеников» может её заменить.'],
+        case: [n, 'Истории проектов школе не нужны. Результат ученика показывают блоком отзывов.'],
+        catalog: [n, 'Программ всего три — каталог с фильтрами избыточен.'],
+        product: [n, 'Программы оформляются как страницы услуг.'],
+        cart: [n, 'Запись на пробный урок идёт через форму, корзина не нужна.'],
+        checkout: [n, 'Абонемент оплачивают по ссылке после пробного урока — отдельное оформление заказа лишнее.'],
+        blog: [o, 'Советы родителям по английскому — хороший источник трафика из поиска.'],
+        career: [o, 'Школе постоянно нужны преподаватели — страница найма сэкономит время на поиск.'],
+        faq: [r, 'Родители спрашивают одно и то же: возраст, оплата, пропуски, техника. FAQ разгрузит менеджеров.'],
+        contacts: [r, 'Телефон, мессенджеры и форма — школа должна быть на связи.'],
+        thanks: [r, 'Подтверждение записи и что будет дальше: когда позвонят, как подготовить ребёнка.'],
+        e404: [r, 'Нужна любому сайту: битые ссылки случаются всегда.'],
+        policy: [r, 'Школа собирает данные родителей и детей — политика обязательна по 152-ФЗ.']
+      } },
+      { t: 'Мастерская керамики', brief: 'Два мастера лепят посуду вручную и продают её онлайн с доставкой по России. В ассортименте около 60 товаров. Цель — продажи.', m: {
+        home: [r, 'Витрина магазина: подборки, новинки, вход в каталог.'],
+        about: [o, 'История мастеров добавляет ценности ручной работе, но её можно рассказать блоком на главной.'],
+        services: [n, 'Услуг нет, только товары. Если появятся мастер-классы, добавишь потом.'],
+        service: [n, 'Нет услуг — нет страниц услуг.'],
+        cases: [n, 'Кейсы нужны для услуг. Магазину помогают отзывы покупателей на карточках.'],
+        case: [n, 'Истории проектов магазину не нужны.'],
+        catalog: [r, '60 товаров — нужен каталог с фильтром по типу посуды и цвету.'],
+        product: [r, 'Карточка товара — шаблон, на котором принимают решение о покупке.'],
+        cart: [r, 'Без корзины не собрать заказ из нескольких тарелок.'],
+        checkout: [r, 'Адрес, доставка, оплата — без этого шага продажи нет.'],
+        blog: [o, 'Уход за керамикой и процесс лепки помогают продавать, если вести регулярно.'],
+        career: [n, 'Мастеров двое, и они никого не нанимают.'],
+        faq: [r, 'Доставка, оплата, возврат, «а не разобьётся?» — без страницы «Доставка и оплата» магазин теряет доверие.'],
+        contacts: [r, 'Как связаться с мастерской, если есть вопрос по заказу.'],
+        thanks: [r, 'Номер заказа и сроки доставки после оплаты.'],
+        e404: [r, 'Товары заканчиваются, ссылки ломаются — 404 нужна обязательно.'],
+        policy: [r, 'Магазин собирает адрес и телефон — нужна политика, а для онлайн-продаж ещё и оферта.']
+      } }
+    ];
+    let bi = 0, sel = new Set(), checked = false;
+    const biz = $('#bs-biz'), pool = $('#bs-pool'), res = $('#bs-res');
+    biz.innerHTML = BIZ.map((b, i) => '<button type="button" data-i="' + i + '">' + esc(b.t) + '</button>').join('');
+    pool.innerHTML = PAGES.map(([id, t]) => '<button type="button" class="bs-chip" data-id="' + id + '" aria-pressed="false">' + esc(t) + '</button>').join('');
+    const chips = $$('.bs-chip', pool);
+    function paint() {
+      const m = BIZ[bi].m;
+      chips.forEach(c => {
+        const id = c.dataset.id, on = sel.has(id);
+        c.setAttribute('aria-pressed', String(on));
+        c.classList.remove('r-req', 'r-opt', 'r-no', 'r-miss');
+        if (checked) {
+          if (on) c.classList.add('r-' + m[id][0]);
+          else if (m[id][0] === 'req') c.classList.add('r-miss');
+        }
+      });
+    }
+    function setBiz(i) {
+      bi = i; sel = new Set(); checked = false; res.innerHTML = '';
+      press($$('button', biz), $$('button', biz)[i]);
+      $('#bs-brief').textContent = BIZ[i].brief; paint();
+    }
+    function check() {
+      checked = true; paint();
+      const m = BIZ[bi].m, ids = PAGES.map(p => p[0]);
+      const req = ids.filter(id => m[id][0] === 'req');
+      const hit = req.filter(id => sel.has(id)), miss = req.filter(id => !sel.has(id));
+      const extra = ids.filter(id => sel.has(id) && m[id][0] === 'no');
+      const opt = ids.filter(id => sel.has(id) && m[id][0] === 'opt');
+      const item = (id, c) => '<li class="' + c + '"><span><b>' + esc(name[id]) + '.</b> ' + esc(m[id][1]) + '</span></li>';
+      let h = '<div class="bs-sum"><span class="big">' + hit.length + ' / ' + req.length + '</span><span>' +
+        (miss.length === 0 && extra.length === 0 ? 'Структура собрана точно. Так и защищай её перед заказчиком.' :
+          'Обязательных страниц на месте' + (extra.length ? ', лишних: ' + extra.length : '') + '. Разбор ниже.') + '</span></div>';
+      if (miss.length) h += '<span class="cap">Не хватает</span><ul class="verdict">' + miss.map(id => item(id, 'bad')).join('') + '</ul>';
+      if (extra.length) h += '<span class="cap">Лишние</span><ul class="verdict">' + extra.map(id => item(id, 'bad')).join('') + '</ul>';
+      if (opt.length) h += '<span class="cap">По ситуации</span><ul class="verdict">' + opt.map(id => item(id, 'sum')).join('') + '</ul>';
+      if (hit.length) h += '<details class="bs-more"><summary>Почему нужны выбранные обязательные страницы</summary><ul class="verdict">' + hit.map(id => item(id, 'ok')).join('') + '</ul></details>';
+      res.innerHTML = h;
+    }
+    chips.forEach(c => c.addEventListener('click', () => {
+      const id = c.dataset.id; sel.has(id) ? sel.delete(id) : sel.add(id);
+      if (checked) check(); else paint();
+    }));
+    $$('button', biz).forEach(b => b.addEventListener('click', () => setBiz(+b.dataset.i)));
+    $('#bs-check').addEventListener('click', check);
+    $('#bs-answer').addEventListener('click', () => {
+      const m = BIZ[bi].m; sel = new Set(PAGES.map(p => p[0]).filter(id => m[id][0] === 'req')); check();
+    });
+    $('#bs-reset').addEventListener('click', () => setBiz(bi));
+    setBiz(0);
+  }
+})();
+
+</script>
+</body></html>

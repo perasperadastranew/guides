@@ -1,0 +1,1259 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Веб-дизайн и бизнес</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив методички «Веб-дизайн и бизнес» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+.demo .warn{color:var(--bad)}
+.demo .okv{color:var(--good)}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;line-height:1.4}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)} .verdict li.mid::before{color:#f2b33d}
+.verdict b{color:var(--ink);font-weight:400}
+.sliders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+.sliders label{display:block;font-size:14px;color:var(--dim)}
+.sliders b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.sliders input{display:block;width:100%;margin:8px 0 0;accent-color:var(--accent)}
+
+/* мини-сайт внутри .stage */
+.site{background:#fff;border-radius:12px;color:#101010;width:100%;box-shadow:0 4px 20px rgba(0,0,0,.08);overflow:hidden;font-family:var(--body);text-align:left;position:relative}
+.site-nav{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid #ececea;font-size:12px;color:#5a5a58;flex-wrap:wrap}
+.site-nav b{font-weight:600;font-size:15px;color:#101010;margin-right:auto}
+.site-hero{padding:26px 22px 28px;display:flex;flex-direction:column;gap:12px}
+.site-h{font-size:clamp(22px,3vw,32px);font-weight:600;line-height:1.08;letter-spacing:-.02em;color:#101010;max-width:20ch}
+.site-s{font-size:14px;line-height:1.4;color:#5a5a58;max-width:44ch;margin:0}
+.site-p{font-size:12px;color:#2f7a45;margin:0;font-family:var(--mono);letter-spacing:.02em}
+.site-p.vague{color:#8e8e8c}
+.site-p:empty{display:none}
+.site-btns{display:flex;flex-wrap:wrap;gap:8px}
+.site-btns .u-btn{padding:11px 18px;font-size:14px;white-space:normal;text-align:center;max-width:100%}
+
+/* конструктор первого экрана */
+.hb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px;align-items:start}
+.hb-ctrls{display:flex;flex-direction:column;gap:14px;min-width:0}
+.hb-row{display:flex;flex-direction:column;gap:6px}
+.hb-view{display:flex;flex-direction:column;gap:12px;min-width:0}
+.hb-stage{position:relative;padding:18px;min-height:260px}
+.hb-cover{position:absolute;inset:0;border-radius:8px;background:#101010;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:20px}
+.hb-cover b{font-size:22px;font-weight:400}
+.hb-cover span{color:var(--dim);font-size:15px}
+.hb-acts{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.hb-score{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.hb-site.fade{transition:none}
+
+/* до / после */
+.ba-stage{padding:16px;display:block}
+.ba-hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;padding:24px 20px 26px;align-items:stretch}
+.ba-copy{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ba-row{display:flex;gap:8px;align-items:flex-start;min-width:0}
+.ba-row>:last-child{min-width:0}
+.ba-pic{border-radius:10px;min-height:170px;display:flex;align-items:flex-end;padding:10px;font-size:11px;color:#fff;position:relative}
+.ba-pic.art{background:radial-gradient(circle at 30% 30%,#b9e3ff,transparent 45%),radial-gradient(circle at 70% 70%,#7f5bff,transparent 50%),linear-gradient(135deg,#0e3a74,#36b1d9)}
+.ba-pic.real{background:linear-gradient(180deg,#bfe6f7 0 38%,#3aa6d6 38% 100%)}
+.ba-pic.real::before{content:"";position:absolute;left:28%;top:26%;width:34px;height:34px;border-radius:50%;background:#f2c7a5;box-shadow:58px 10px 0 4px #e8b48f}
+.ba-pic.real::after{content:"";position:absolute;left:18%;right:18%;top:46%;height:6px;border-radius:3px;background:rgba(255,255,255,.6);box-shadow:0 18px 0 rgba(255,255,255,.35),0 36px 0 rgba(255,255,255,.25)}
+.ba-pic span{position:relative;z-index:1;background:rgba(0,0,0,.35);border-radius:6px;padding:4px 7px}
+.ba-after{font-size:12px;color:#5a5a58}
+.ba-after:empty{display:none}
+.pin{flex:none;width:24px;height:24px;border-radius:50%;border:0;padding:0;background:#101010;color:#fff;font:500 12px var(--mono);display:grid;place-items:center;cursor:pointer;transition:transform .15s,background .15s}
+.pin:hover{transform:scale(1.12)}
+.pin[aria-pressed="true"]{background:#eb7540;color:#101010}
+.pin:focus-visible{outline:2px solid #3b6ef0;outline-offset:2px}
+.ba-site .site-nav .pin{margin-left:4px}
+#ba-out .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+#ba-out .tag.bad{color:var(--bad)} #ba-out .tag.good{color:var(--good)}
+
+/* цепочка бизнеса */
+.chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;counter-reset:c}
+.chain>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;position:relative;min-width:0}
+.chain>div:not(:last-child)::after{content:"→";position:absolute;right:-9px;top:14px;color:var(--accent);font-size:14px;z-index:1;background:var(--panel);line-height:1}
+.chain i{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--faint)}
+.chain b{font-weight:400;font-size:17px}
+.chain span{font-size:14px;line-height:1.35}
+.chain .hot{border-color:var(--accent)}
+
+/* портрет */
+.persona{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.persona-h{display:flex;align-items:center;gap:12px}
+.persona-h>div{display:flex;flex-direction:column;gap:2px}
+.persona-h b{font-weight:400;font-size:18px}
+.persona-h span:not(.ava){font-size:14px}
+.ava{width:44px;height:44px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:18px;flex:none}
+
+/* статичная воронка */
+.fbars{display:flex;flex-direction:column;gap:6px}
+.fbars>div{display:grid;grid-template-columns:70px minmax(0,1fr);gap:12px;align-items:center;font-size:15px}
+.fbars b{font-weight:400;text-align:right;font-variant-numeric:tabular-nums}
+.fbars p{display:flex;align-items:center;gap:10px;margin:0;max-width:none;min-width:0}
+.fbars p i{display:block;height:26px;border-radius:6px;background:color-mix(in srgb,var(--accent) 35%,var(--card));flex:none;width:max(calc(var(--w) * .7),6px)}
+.fbars .hot p i{background:var(--accent)}
+.fbars span{color:var(--ink);font-size:14px;min-width:0}
+
+/* калькулятор воронки */
+#fn .fn-view{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:start}
+.fn-bars{display:flex;flex-direction:column;gap:8px;background:var(--well);border-radius:8px;padding:14px}
+.fn-bar{display:flex;flex-direction:column;gap:4px}
+.fn-bar .lbl{display:flex;justify-content:space-between;gap:10px;font-size:13px}
+.fn-bar .lbl b{font-weight:400;color:var(--ink);font-variant-numeric:tabular-nums}
+.fn-bar .tr{height:16px;border-radius:4px;background:var(--card);overflow:hidden}
+.fn-bar .tr i{display:block;height:100%;background:color-mix(in srgb,var(--accent) 45%,var(--card));border-radius:4px;transition:width .25s}
+.fn-bar.design .tr i{background:var(--accent)}
+.fn-bar .drop{font-size:12px;color:var(--faint)}
+.fn-kpi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.fn-kpi>div{background:var(--well);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.fn-kpi .cap{font-size:10px}
+.fn-kpi b{font-weight:400;font-size:20px;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.01em;overflow-wrap:anywhere}
+.fn-kpi .big{grid-column:1/-1}
+.fn-kpi .big b{font-size:26px}
+.fn-kpi .neg b{color:var(--bad)} .fn-kpi .pos b{color:var(--good)}
+.fn-what{display:flex;flex-wrap:wrap;gap:8px}
+#fn output{min-height:4.2em}
+#fn output p{max-width:none}
+
+/* лестница осведомлённости */
+.lad-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;align-items:end}
+.lad-steps button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:8px;padding:10px 8px;font-weight:400;font-size:13px;line-height:1.25;text-align:left;display:flex;flex-direction:column;gap:6px;min-height:var(--h)}
+.lad-steps button i{font-family:var(--mono);font-size:10px;font-style:normal;letter-spacing:.06em;color:var(--faint)}
+.lad-steps button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink);background:color-mix(in srgb,var(--accent) 12%,var(--well))}
+.lad-steps button[aria-pressed="true"] i{color:var(--accent)}
+.lad-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px;align-items:start}
+.lad-card .lv>div{grid-template-columns:110px minmax(0,1fr)}
+.lad-card .stage{padding:18px;min-height:0}
+.lad-card .site-hero{padding:18px}
+.lad-flow{display:flex;flex-direction:column;gap:8px}
+.lad-blocks{display:flex;flex-wrap:wrap;gap:6px}
+.lad-blocks span{border:1px solid var(--stroke);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--faint);transition:all .2s}
+.lad-blocks span.on{border-color:var(--accent);color:var(--ink);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+
+/* переводчик */
+.tr-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.tr-top .cap{color:var(--accent)}
+.tr-dots{display:flex;gap:5px}
+.tr-dots i{width:18px;height:4px;border-radius:2px;background:var(--stroke)}
+.tr-dots i.ok{background:var(--good)} .tr-dots i.no{background:var(--bad)} .tr-dots i.cur{background:var(--ink)}
+.tr-say{font-family:var(--display);font-size:clamp(22px,3vw,30px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;border-left:2px solid var(--accent);padding-left:16px}
+.tr-opts{display:flex;flex-direction:column;gap:6px}
+.tr-opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:12px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.tr-opts button:hover:not(:disabled){border-color:var(--accent)}
+.tr-opts button:disabled{cursor:default;color:var(--dim)}
+.tr-opts button.right{border-color:var(--good);color:var(--ink)}
+.tr-opts button.wrong{border-color:var(--bad)}
+.tr-res{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:10px}
+.tr-res>div{background:var(--well);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+.tr-res .cap{font-size:10px}
+.tr-res b{font-weight:400;color:var(--ink);font-size:15px}
+.tr-end{display:flex;flex-direction:column;gap:8px}
+.tr-end .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em}
+
+@media (max-width:760px){
+  .hb-grid,.sliders,#fn .fn-view,.lad-card,.ba-hero,.tr-res{grid-template-columns:minmax(0,1fr)}
+  .chain{grid-template-columns:minmax(0,1fr)}
+  .chain>div:not(:last-child)::after{content:"↓";right:auto;left:20px;top:auto;bottom:-10px}
+  .lad-steps{grid-template-columns:minmax(0,1fr)}
+  .lad-steps button{min-height:0;flex-direction:row;align-items:center;gap:10px;padding-left:calc(8px + var(--i) * 10px)}
+  .ba-pic{min-height:110px}
+  .lad-card .lv>div{grid-template-columns:minmax(0,1fr)}
+  .fbars>div{grid-template-columns:52px minmax(0,1fr)}
+  .fbars p i{width:max(calc(var(--w) * .45),6px)}
+}
+@media (prefers-reduced-motion:reduce){.fn-bar .tr i,.lad-blocks span,.pin{transition:none}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 3 · ВЕБ-ДИЗАЙН</span></div>
+  <div class="series"><b>01 Веб-дизайн и бизнес</b><span>02 Метрики сайта</span><span>03 Принципы веб-дизайна</span><span>04 Типы проектов</span><span>05 Типы страниц</span><span>06 Типы блоков</span><span>07 Конкурентный анализ</span></div>
+  <h1>Веб-дизайн и бизнес</h1>
+  <p class="lead"><b>Сайт — это инструмент, который помогает бизнесу зарабатывать.</b> Разбираем, какие задачи он решает, что такое целевое действие и воронка и как дизайнер переводит просьбы клиента в решения, которые можно измерить.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#tool">Сайт как инструмент</a><a href="#tasks">Задачи сайта</a><a href="#action">Целевое действие</a><a href="#business">Бизнес и аудитория</a><a href="#funnel">Воронка</a><a href="#ladder">Осведомлённость</a><a href="#translate">Язык клиента</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="tool">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Сайт как инструмент бизнеса</h2></div></div>
+  <p>Веб-дизайн — это проектирование сайтов и веб-сервисов, которыми понятно, удобно и приятно пользоваться. При этом сайт решает задачу бизнеса: приводит заявки, продаёт, объясняет продукт или укрепляет бренд. Красота здесь работает на результат. Если сайт красивый, но заявок нет, клиент считает его неудачным.</p>
+  <p class="quote">Хороший сайт помогает человеку быстро решить свою задачу, а бизнесу — заработать на этом.</p>
+  <div class="sub">
+    <h3>Три уровня работы</h3>
+    <div class="sub-b">
+      <p>Любой сайт собирается снизу вверх. Если пропустить нижний уровень, верхний не спасёт: идеальная типографика не поможет, если непонятно, что продают.</p>
+      <div class="three">
+        <div class="box"><span class="kind">1 · Смысл и стратегия</span><b>Что и зачем говорим</b><p>Для кого сайт, какую задачу решает продукт, чем он лучше конкурентов, какое действие нужно от человека.</p></div>
+        <div class="box"><span class="kind">2 · UX</span><b>Как человек проходит путь</b><p>Структура, порядок блоков, навигация, сценарии, формы, адаптив. Сколько шагов до заявки и где он может застрять.</p></div>
+        <div class="box"><span class="kind">3 · UI</span><b>Как это выглядит и читается</b><p>Визуальный стиль, типографика, сетка, компоненты. Он создаёт впечатление и расставляет акценты.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Четыре функции сайта</h3>
+    <div class="sub-b">
+      <p>У любого сайта есть несколько функций. В каждом проекте их пропорция своя, и важно понять, какая главная: от неё зависят структура и акценты.</p>
+      <div class="two">
+        <div class="box"><span class="kind">Информационная</span><b>Объяснить, кто вы и чем занимаетесь</b><p>Корпоративные сайты, госсервисы, новостные порталы, сайты музеев. Цель — дать достоверную информацию в понятной структуре: часы работы, адрес, расписание, документы.</p></div>
+        <div class="box"><span class="kind">Коммуникационная</span><b>Выстроить контакт и доверие</b><p>Сайты агентств, консалтинга, студий. Показать подход, команду, культуру и вызвать симпатию. Сюда же — лендинги про важные события: Apple рассказывает о цели стать углеродно-нейтральной к 2030 году на отдельной странице <a href="https://www.apple.com/environment/" target="_blank" rel="noopener">apple.com/environment</a>.</p></div>
+        <div class="box hot"><span class="kind">Конверсионная</span><b>Привести к действию</b><p>Лендинги, интернет-магазины, SaaS. Убедить и подтолкнуть к шагу: покупке, заявке, регистрации. Здесь каждый блок проверяют цифрами.</p></div>
+        <div class="box"><span class="kind">Имиджевая</span><b>Передать настроение бренда</b><p>Промо-сайты, спецпроекты, выставочные страницы. Эмоция важнее структуры, но UX всё равно должен быть безупречным. Пример — спецпроект «Победы»: лонгрид с историями пассажиров и конкурсом. Он укрепляет лояльность и собирает пользовательский контент.</p></div>
+      </div>
+      <p class="why">Чтобы проектировать сайты, дизайнеру нужно хотя бы на базовом уровне понимать, как бизнес зарабатывает и где сайт стоит в этой цепочке. Об этом — весь урок.</p>
+    </div>
+  </div>
+</section>
+
+<section id="tasks">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Пять задач сайта</h2></div></div>
+  <p>Задачи идут в том порядке, в котором человек принимает решение: сначала понимает, куда попал, потом чувствует, нравится ли ему, потом проверяет, стоит ли верить, и только потом действует.</p>
+  <ol class="steps">
+    <li><div><div class="t">Объяснить, что это и для кого</div><div class="d">За первые секунды ответить: куда я попал, что мне предлагают, подходит ли это мне. Если ответа нет, человек уходит, даже если продукт хороший.</div></div></li>
+    <li><div><div class="t">Сформировать впечатление</div><div class="d">Человек оценивает сайт за секунды, ещё до чтения текста: «это профессионально» или «сомнительно». Впечатление должно совпадать с брендом: банку нужна надёжность, детскому лагерю — радость.</div></div></li>
+    <li><div><div class="t">Доказать ценность</div><div class="d">Показать результат, который получит человек, условия (сроки, цена, состав) и отличие от альтернатив.</div></div></li>
+    <li><div><div class="t">Сформировать доверие и снизить риск</div><div class="d">Кейсы, отзывы, цифры, клиенты, гарантии, понятные правила возврата. Плюс чистый интерфейс: опечатки, кривая вёрстка и битые ссылки снижают доверие так же, как плохой текст.</div></div></li>
+    <li><div><div class="t">Привести к действию</div><div class="d">Один главный CTA в нужном месте, минимум трения в форме и честное «что будет дальше».</div></div></li>
+  </ol>
+
+  <div class="sub">
+    <h3>Первый экран</h3>
+    <div class="sub-b">
+      <p>Первый экран (hero) отвечает за первую задачу. На нём человек решает, листать дальше или закрыть вкладку. Хорошая формула:</p>
+      <div class="formula"><span>Заголовок: что и для кого</span><em>+</em><span>Подзаголовок: результат и условия</span><em>+</em><span>Доказательство</span><em>+</em><span class="m">Одно действие</span></div>
+      <div class="demo" id="hb">
+        <span class="cap">Конструктор · собери первый экран для сервиса уборки</span>
+        <div class="hb-grid">
+          <div class="hb-ctrls">
+            <div class="hb-row"><span class="cap">Заголовок</span><div class="seg" data-k="h"><button type="button" data-v="0">Про ценности</button><button type="button" data-v="1">Канцелярит</button><button type="button" data-v="2">Что и для кого</button></div></div>
+            <div class="hb-row"><span class="cap">Подзаголовок</span><div class="seg" data-k="s"><button type="button" data-v="0">Про себя</button><button type="button" data-v="1">Список услуг</button><button type="button" data-v="2">Условия и цена</button></div></div>
+            <div class="hb-row"><span class="cap">Доказательство</span><div class="seg" data-k="p"><button type="button" data-v="0">Нет</button><button type="button" data-v="1">«Лучшие на рынке»</button><button type="button" data-v="2">Цифры и рейтинг</button></div></div>
+            <div class="hb-row"><span class="cap">Кнопки</span><div class="seg" data-k="c"><button type="button" data-v="0">«Отправить»</button><button type="button" data-v="1">Три главные</button><button type="button" data-v="2">Одна с результатом</button></div></div>
+          </div>
+          <div class="hb-view">
+            <div class="stage hb-stage">
+              <div class="site" id="hb-site">
+                <div class="site-nav"><b>Чисто</b><span>Услуги</span><span>Цены</span><span>Отзывы</span></div>
+                <div class="site-hero">
+                  <b class="site-h" id="hb-h"></b>
+                  <p class="site-s" id="hb-s"></p>
+                  <p class="site-p" id="hb-p"></p>
+                  <div class="site-btns" id="hb-c"></div>
+                </div>
+              </div>
+              <div class="hb-cover" id="hb-cover" hidden><b>Время вышло</b><span>Что ты успел понять?</span></div>
+            </div>
+            <div class="hb-acts"><button type="button" class="ghost" id="hb-test">Тест 5 секунд</button><span class="hb-score" id="hb-score"></span></div>
+          </div>
+        </div>
+        <ul class="verdict" id="hb-out"></ul>
+      </div>
+      <p class="why">Тест 5 секунд в жизни: покажи первый экран другу или коллеге на 5–7 секунд и закрой. Спроси: что это за компания, для кого она и что там можно сделать. Если человек не ответил на все три вопроса, первый экран нужно переделать.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Красиво или работает</h3>
+    <div class="sub-b">
+      <p>Ниже два первых экрана детской школы плавания. Оба аккуратно сделаны. Переключай версии и нажимай на номера на макете: что поменялось и почему это важно для бизнеса.</p>
+      <div class="demo" id="ba">
+        <div class="seg" id="ba-mode"><button type="button" data-m="0">Красиво ради красоты</button><button type="button" data-m="1">Решает задачу</button></div>
+        <div class="stage ba-stage">
+          <div class="site ba-site" id="ba-site"></div>
+        </div>
+        <output id="ba-out"></output>
+      </div>
+      <span class="cap">Переключай версии и нажимай на номера 1–5</span>
+    </div>
+  </div>
+</section>
+
+<section id="action">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Целевое действие</h2></div></div>
+  <p><b>Целевое действие</b> — это ценное для бизнеса событие на сайте, которое помогает найти клиентов и заработать. Цель «увеличить продажи» слишком абстрактна. Целевое действие можно увидеть и посчитать: нажал кнопку, заполнил форму, оплатил, оставил контакты, начал пробный период.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Тип сайта</th><th>Целевое действие</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td>Интернет-магазин</td><td>Покупка</td><td>На Lamoda всё ведёт к корзине и оплате заказа.</td></tr>
+      <tr><td>SaaS, сервис</td><td>Регистрация или пробный период</td><td>Яндекс Плюс предлагает начать с бесплатного пробного периода.</td></tr>
+      <tr><td>Образование</td><td>Запись на консультацию или пробный урок</td><td>Skyeng ведёт на бесплатный вводный урок, после него с человеком работает менеджер.</td></tr>
+      <tr><td>Услуги</td><td>Заявка или расчёт стоимости</td><td>Ремонт, клиника, студия: «Рассчитать стоимость», «Записаться».</td></tr>
+      <tr><td>Медиа и контент</td><td>Подписка</td><td>Рассылка, Telegram-канал, платный доступ.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="sub">
+    <h3>Промежуточный шаг</h3>
+    <div class="sub-b">
+      <p>Большинство людей при первом визите не доверяют бренду, сомневаются в продукте и не готовы платить. Поэтому покупка редко бывает первым действием. Путь выглядит так:</p>
+      <div class="formula"><span>Интерес</span><em>→</em><span>Знакомство</span><em>→</em><span>Доверие</span><em>→</em><span>Решение</span><em>→</em><span class="m">Покупка</span></div>
+      <p>Чтобы человек не ушёл на середине, бизнес добавляет промежуточное целевое действие — шаг, который почти ничего не стоит человеку. Чаще всего это <b>лид-магнит</b>: небольшая часть продукта, которую компания отдаёт бесплатно в обмен на контакт.</p>
+      <div class="three">
+        <div class="box"><span class="kind">Образование</span><b>Пробный урок</b><p>Skyeng даёт бесплатный вводный урок. Человек пробует формат, а школа получает контакт и шанс продать курс.</p></div>
+        <div class="box"><span class="kind">Товар</span><b>Тест-драйв</b><p>Производитель электровелосипедов Cowboy предлагает записаться на тестовый заезд. Велосипед стоит несколько тысяч евро, и мало кто купит его, ни разу не проехав.</p></div>
+        <div class="box"><span class="kind">Недвижимость</span><b>Подборка или расчёт</b><p>«Пришлём 10 квартир под ваш бюджет» или калькулятор ипотеки. Человек получает пользу, агентство — тёплый контакт.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Как дизайн доводит до действия</h3>
+    <div class="sub-b">
+      <p>Дизайн превращает намерение в действие. Перед кнопкой у человека четыре вопроса, и на каждый должен быть ответ прямо на экране.</p>
+      <div class="two">
+        <div class="box"><span class="kind">Понятно, что делать</span><ul><li>CTA заметен и выглядит как кнопка.</li><li>Текст говорит про результат: «Получить расчёт», «Начать пробный период».</li><li>На экране нет конкурирующих главных кнопок.</li></ul></div>
+        <div class="box"><span class="kind">Понятно, зачем</span><ul><li>Рядом аргументы: цена, выгода, кейсы, гарантии.</li><li>Сняты страхи: что будет после клика, сколько займёт, будет ли спам.</li></ul></div>
+        <div class="box"><span class="kind">Легко сделать</span><ul><li>Меньше полей, решений и шагов. Для заявки часто хватает имени и телефона.</li><li>Подсказки и проверка полей, чтобы не ошибиться.</li><li>Понятные состояния: загрузка, успех, ошибка.</li></ul></div>
+        <div class="box"><span class="kind">Безопасно сделать</span><ul><li>Написано, что будет с данными.</li><li>Видны сроки, стоимость, отмена и возврат.</li><li>Сайт выглядит надёжно: это влияет на доверие наравне с текстом.</li></ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="business">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Как устроен бизнес</h2></div></div>
+  <p>Если упростить, любой бизнес привлекает людей, превращает их в покупателей, даёт им ценность и получает прибыль. Сайт — одно звено в этой цепочке. Чтобы сделать его полезным, нужно понимать, что стоит до и после него.</p>
+  <div class="chain">
+    <div><i>01</i><b>Рынок</b><span>Конкуренты, альтернативы, ценовые сегменты</span></div>
+    <div><i>02</i><b>Аудитория</b><span>Кому помогаем и какую задачу решаем</span></div>
+    <div><i>03</i><b>Продукт</b><span>Что продаём: товар, услугу, сервис, подписку</span></div>
+    <div><i>04</i><b>Маркетинг</b><span>Как находим людей и приводим на сайт</span></div>
+    <div class="hot"><i>05</i><b>Продажи</b><span>Момент, когда человек решает заплатить</span></div>
+  </div>
+
+  <div class="sub">
+    <h3>Рынок и конкуренты</h3>
+    <div class="sub-b">
+      <p>Любой продукт живёт на рынке, где человеку есть из чего выбрать. Курс дизайна конкурирует с другими школами, а ещё с YouTube, бесплатными уроками, вузами и менторами. Задача сайта — показать, почему выбрать стоит именно этот вариант. Если у компании монополия, дизайн ей почти не нужен для продаж. В конкурентной нише он становится одним из главных аргументов.</p>
+      <p class="why">Как разбирать конкурентов по шагам, ты узнаешь в уроке 07 «Конкурентный анализ».</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Целевая аудитория</h3>
+    <div class="sub-b">
+      <p><b>Целевая аудитория (ЦА)</b> — группа людей или компаний, для которых бизнес создаёт продукт. Сделать сайт «для всех» не получится: одну и ту же мысль ты по-разному объяснишь другу и маме, новичку и профессионалу.</p>
+      <div class="three">
+        <div class="box"><span class="kind">Сегменты</span><p>ЦА делится на группы с разными потребностями. У онлайн-школы это новичок «хочу в профессию с нуля» и практикующий дизайнер «хочу прокачать портфолио».</p></div>
+        <div class="box"><span class="kind">Покупатель ≠ пользователь</span><p>HR-отдел покупает сервис для сотрудников, а пользуются им сами сотрудники. Родитель платит за детский кружок. Сайт должен убедить того, кто платит.</p></div>
+        <div class="box"><span class="kind">Решения для сайта</span><p>Язык, примеры, оффер, порядок блоков и CTA подбираются под выбранный сегмент.</p></div>
+      </div>
+      <p>«Женщины 25–40, высокий доход» почти ничего не говорит дизайнеру. Полезнее <b>портрет</b>: образ человека, за которым стоит часть аудитории. Его описывают по шести пунктам.</p>
+      <div class="persona">
+        <div class="persona-h"><span class="ava" aria-hidden="true">М</span><div><b>Марина, 29 лет</b><span>Портрет для онлайн-школы дизайна</span></div></div>
+        <div class="lv">
+          <div><span>Возраст</span><span>29 лет, живёт в Казани</span></div>
+          <div><span>Доход</span><span>Средний, может отложить на курс за 3–4 месяца или взять рассрочку</span></div>
+          <div><span>Сфера</span><span>Маркетолог в небольшой компании, сама делает баннеры в Figma</span></div>
+          <div><span>Потребность</span><span>Перейти в дизайн и зарабатывать больше, не бросая работу</span></div>
+          <div><span>Опыт решения</span><span>Смотрела бесплатные уроки на YouTube, бросила через две недели: не было обратной связи</span></div>
+          <div><span>Сомнения</span><span>«Мне уже поздно», «А вдруг не получится», «Успею ли совмещать с работой»</span></div>
+        </div>
+        <p class="why">Каждое сомнение — готовый блок для сайта: истории студентов того же возраста, формат «вечером и в выходные», бесплатный первый урок.</p>
+      </div>
+      <p>Главный навык здесь — эмпатия: умение посмотреть на мир глазами другого человека. Представь, что делаешь фитнес-приложение, а сам кроме школьной физкультуры ничем не занимался. Кажется, что спортсменам нужен просто красивый современный дизайн. А интервью с реальными пользователями покажет, что многие постоянно на грани того, чтобы бросить. Из этого инсайта рождаются совместные тренировки и рейтинг с друзьями. Данные для портрета дают клиент, менеджеры по продажам, которые каждый день общаются с покупателями, и сами пользователи.</p>
+      <p>Персонализация в крупных продуктах доходит до отдельного человека. Netflix показывает разным зрителям разные обложки одного и того же фильма в зависимости от истории просмотров, чтобы повысить шанс, что фильм включат.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>B2C и B2B</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><span class="kind">B2C · бизнес для человека</span><b>Эмоция, польза, простой выбор</b><ul><li>Меньше текста, больше визуала и эмоций.</li><li>Решение принимает один человек, часто быстро.</li><li>Онлайн-школа, бренд одежды, кафе, приложение.</li></ul></div>
+        <div class="box"><span class="kind">B2B · бизнес для бизнеса</span><b>Компетенция, надёжность, факты</b><ul><li>Больше деталей, характеристик, кейсов, цифр.</li><li>Решает группа людей, сделка идёт неделями или месяцами.</li><li>IT-платформа, логистика, производство, консалтинг.</li></ul></div>
+      </div>
+      <p class="why">Один и тот же блок работает по-разному: короткий эмоциональный оффер хорош для кофейни и вызовет недоверие у закупщика оборудования, которому нужны ГОСТы и сроки поставки.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Позиционирование</h3>
+    <div class="sub-b">
+      <p>Рынок, аудитория и продукт вместе дают <b>позиционирование</b>: за что бренд выбирают и чем он отличается. Его фиксируют в платформе бренда, которую ты разбирал в блоке по брендингу. Для веб-дизайнера платформа — готовый ответ на вопросы «кому говорим», «какое впечатление создаём» и «какое отличие выносим на первый экран». Если платформы нет, эти ответы придётся собрать на брифе с клиентом.</p>
+    </div>
+  </div>
+</section>
+
+<section id="funnel">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Воронка продаж</h2></div></div>
+  <p><b>Воронка продаж</b> — модель пути человека от первого контакта с продуктом до покупки. Её называют воронкой, потому что на входе много людей, а до оплаты доходит небольшая часть. На каждом шаге кто-то отсеивается: продукт не подходит, цена кажется высокой, нет доверия, информация непонятна, действие слишком сложное.</p>
+  <div class="fbars" aria-label="Пример воронки">
+    <div style="--w:100%"><b>1 000</b><p><i></i><span>увидели рекламу</span></p></div>
+    <div style="--w:30%"><b>300</b><p><i></i><span>перешли на сайт</span></p></div>
+    <div style="--w:8%"><b>80</b><p><i></i><span>заинтересовались</span></p></div>
+    <div style="--w:2%"><b>20</b><p><i></i><span>оставили заявку</span></p></div>
+    <div style="--w:1%" class="hot"><b>10</b><p><i></i><span>купили</span></p></div>
+  </div>
+
+  <div class="sub">
+    <h3>AIDA</h3>
+    <div class="sub-b">
+      <p>Классическая модель этапов — AIDA. Её придумал американский рекламист Элайас Сент-Элмо Льюис ещё в конце XIX века, и ей до сих пор пользуются маркетологи. У каждого этапа своя задача сайта.</p>
+      <div class="four">
+        <div class="box"><span class="kind">A · Attention</span><b>Внимание</b><p>Человек впервые узнаёт о продукте: реклама, соцсети, поиск, рекомендации. Задача — зацепить и привести.</p></div>
+        <div class="box"><span class="kind">I · Interest</span><b>Интерес</b><p>Изучает: что это, как работает, решает ли его проблему. Чаще всего здесь он попадает на сайт. Задача — объяснить ценность.</p></div>
+        <div class="box"><span class="kind">D · Desire</span><b>Желание</b><p>Сравнивает, читает отзывы, смотрит кейсы. Задача — доказать ценность и сформировать доверие.</p></div>
+        <div class="box hot"><span class="kind">A · Action</span><b>Действие</b><p>Оформляет заказ, оставляет заявку, регистрируется. Задача интерфейса — сделать это максимально просто.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub wide">
+    <h3>Калькулятор воронки</h3>
+    <div class="demo" id="fn">
+      <span class="cap">Симулятор · онлайн-школа покупает рекламу и ведёт людей на лендинг</span>
+      <div class="seg" id="fn-pre"><button type="button" data-p="0">Онлайн-школа</button><button type="button" data-p="1">Ремонт квартир</button><button type="button" data-p="2">Сайт без доработок</button></div>
+      <div class="sliders fn-sl">
+        <label>Рекламный бюджет <b id="fv-b"></b><input type="range" id="fr-b" min="50000" max="1000000" step="10000"></label>
+        <label>Переходов на сайт <b id="fv-v"></b><input type="range" id="fr-v" min="500" max="20000" step="100"></label>
+        <label>Сайт → заявка <b id="fv-c1"></b><input type="range" id="fr-c1" min="0.2" max="15" step="0.1"></label>
+        <label>Заявка → консультация <b id="fv-c2"></b><input type="range" id="fr-c2" min="10" max="95" step="1"></label>
+        <label>Консультация → оплата <b id="fv-c3"></b><input type="range" id="fr-c3" min="5" max="70" step="1"></label>
+        <label>Средний чек <b id="fv-ch"></b><input type="range" id="fr-ch" min="5000" max="600000" step="5000"></label>
+      </div>
+      <div class="fn-view">
+        <div class="fn-bars" id="fn-bars"></div>
+        <div class="fn-kpi" id="fn-kpi"></div>
+      </div>
+      <div class="fn-what">
+        <button type="button" class="ghost" id="fn-design">Дизайн: +1 п. п. к конверсии сайта</button>
+        <button type="button" class="ghost" id="fn-ads">Реклама: +20% бюджета</button>
+      </div>
+      <output id="fn-out"></output>
+    </div>
+    <span class="cap">Двигай ползунки и сравни, что выгоднее: улучшить сайт или купить больше рекламы</span>
+  </div>
+  <div class="sub">
+    <h3>Что считает бизнес</h3>
+    <div class="sub-b">
+      <div class="scroll"><table>
+        <thead><tr><th>Метрика</th><th>Что значит</th><th>Как считают</th></tr></thead>
+        <tbody>
+          <tr><td>Конверсия (CR)</td><td>Доля людей, сделавших целевое действие</td><td>Заявки ÷ посетители × 100%</td></tr>
+          <tr><td>CPL</td><td>Сколько стоит одна заявка</td><td>Бюджет ÷ заявки</td></tr>
+          <tr><td>CAC</td><td>Сколько стоит один клиент</td><td>Бюджет ÷ оплаты</td></tr>
+          <tr><td>ROMI</td><td>Окупается ли реклама</td><td>(Выручка − бюджет) ÷ бюджет × 100%</td></tr>
+        </tbody>
+      </table></div>
+      <p class="why">Дизайн сайта сильнее всего влияет на первый шаг — из посетителя в заявку. Когда CR сайта растёт, с того же бюджета приходит больше заявок, и каждая стоит дешевле. Подробно про метрики — в следующем уроке.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ladder">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Лестница осведомлённости</h2></div></div>
+  <p>Люди приходят на сайт с разной готовностью. Кто-то только начал разбираться в теме, кто-то уже выбирает между двумя компаниями. Маркетолог Юджин Шварц в книге «Breakthrough Advertising» (1966) описал пять уровней осведомлённости. На каждом человек ждёт разную информацию.</p>
+  <div class="two">
+    <div class="box"><span class="kind">Холодный</span><p>«Нам нужно как-то показать бизнес в интернете». Ещё не знает, что ему нужен сайт.</p></div>
+    <div class="box"><span class="kind">Горячий</span><p>«Мы выбираем студию, которая сделает лендинг за месяц». Сравнивает конкретных подрядчиков.</p></div>
+  </div>
+  <div class="demo" id="lad">
+    <span class="cap">Лестница · выбери уровень человека, который пришёл на сайт курса по веб-дизайну</span>
+    <div class="lad-steps" id="lad-steps" role="group" aria-label="Уровни осведомлённости"></div>
+    <div class="lad-card" id="lad-card"></div>
+    <div class="lad-flow"><span class="cap">Блоки лендинга, которые нужны этому человеку</span><div class="lad-blocks" id="lad-blocks"></div></div>
+  </div>
+  <span class="cap">Переключай уровни и смотри, как меняются заголовок, кнопка и нужные блоки</span>
+  <div class="sub">
+    <h3>Структура лендинга</h3>
+    <div class="sub-b">
+      <p>Хороший лендинг закрывает все уровни сразу: холодного вовлекает, тёплого убеждает, горячему даёт быстро купить. Поэтому у большинства продающих страниц похожая логика блоков.</p>
+      <div class="formula"><span>Контекст</span><em>→</em><span>Проблема</span><em>→</em><span>Решение</span><em>→</em><span>Как работает</span><em>→</em><span>Преимущества</span><em>→</em><span>Доказательства</span><em>→</em><span>Предложение</span><em>→</em><span class="m">Действие</span></div>
+      <p>Горячему не нужно листать всё: дай ему кнопку на первом экране и в шапке. Холодному нужен весь путь. Одна главная кнопка повторяется по странице, а рядом стоят мягкие действия: «Смотреть программу», «Скачать план обучения».</p>
+      <p class="why">В продуктовом дизайне тот же путь описывают через Customer Journey: возникла задача → поиск информации → изучение решений → сравнение компаний → выбор. Карту пути клиента (CJM) подробно разберём, когда займёмся дизайном приложений.</p>
+    </div>
+  </div>
+</section>
+
+<section id="translate">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Перевод с языка клиента</h2></div></div>
+  <p>Клиент редко формулирует задачу в терминах дизайна. Он говорит «хотим модный сайт» или «люди уходят». Работа дизайнера — перевести это в понятную цепочку: какая проблема у бизнеса, какое решение на сайте, по какой цифре проверить результат.</p>
+  <div class="formula"><span>Слова клиента</span><em>→</em><span>Задача бизнеса</span><em>→</em><span>Решение на сайте</span><em>→</em><span class="m">Метрика</span></div>
+  <div class="demo" id="tr">
+    <div class="tr-top"><span class="cap" id="tr-n"></span><div class="tr-dots" id="tr-dots" aria-hidden="true"></div></div>
+    <div class="tr-say" id="tr-say"></div>
+    <div class="tr-opts" id="tr-opts"></div>
+    <output id="tr-out"></output>
+    <div class="tr-nav"><button type="button" class="ghost" id="tr-next" hidden>Следующая задача</button></div>
+  </div>
+  <span class="cap">Прочитай слова клиента и выбери решение, которое закрывает его настоящую задачу</span>
+  <div class="sub">
+    <h3>Гипотеза</h3>
+    <div class="sub-b">
+      <p>Любое решение на сайте — это предположение, пока его не проверили. Записывай его так, чтобы потом можно было проверить цифрами:</p>
+      <div class="tpl"><pre>Если мы [изменение на сайте],
+то [метрика] изменится [на сколько],
+потому что [что мы знаем об аудитории].</pre></div>
+      <p>Пример: «Если мы добавим цену „от 3 900 ₽“ на первый экран, то доля нецелевых заявок снизится с 40% до 20%, потому что сейчас менеджеры тратят половину звонков на людей, которым дорого».</p>
+      <div class="pair">
+        <div class="bad"><i>На вкус</i><span>«Сделаем кнопку оранжевой, так красивее»</span></div>
+        <div class="good"><i>На результат</i><span>«Кнопка теряется на фоне фото, 70% людей не долистывают до формы. Вынесем CTA в шапку и проверим, вырастут ли заявки»</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Бизнес-задача вместе с нейронкой</h2></div></div>
+  <p>Нейронка помогает подготовиться к разговору с клиентом, найти слепые зоны в понимании аудитории и проверить первый экран. Пусть она задаёт вопросы и спорит, а выводы делаешь ты.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Продукт, рынок, аудитория, что уже есть на сайте.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа. Стратегию собираешь ты.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Нейронка не знает реальных клиентов. Проверяй её идеи на людях и цифрах.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Бриф</span><b>Разобрать бизнес клиента</b>
+<pre id="p1">Я веб-дизайнер, готовлюсь к брифу. Клиент: <em>[чем занимается компания, город, продукт]</em>. Он хочет: <em>[что сказал клиент своими словами]</em>.
+Помоги мне понять бизнес: кто платит, кто конкуренты, какое целевое действие на сайте и какое промежуточное.
+Задавай мне вопросы по одному и жди ответа. Готовую структуру сайта не предлагай.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь, отмечаешь, чего не знаешь, и уносишь эти вопросы на встречу с клиентом.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Аудитория</span><b>Найти сомнения покупателя</b>
+<pre id="p2">Вот портрет моей аудитории: <em>[возраст, сфера, потребность, опыт решения]</em>. Продукт: <em>[что продаём и за сколько]</em>.
+Сыграй этого человека. Я буду задавать тебе вопросы как интервьюер, а ты отвечай коротко и честно, со страхами и возражениями.
+После 5 вопросов спроси меня, какие блоки сайта я бы сделал под эти сомнения.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> задаёшь вопросы, выписываешь сомнения и сам решаешь, каким блоком закрыть каждое. Потом сверяешь с ответами живых людей.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Ревью</span><b>Проверить первый экран</b>
+<pre id="p3">Вот тексты моего первого экрана: заголовок <em>[…]</em>, подзаголовок <em>[…]</em>, доказательство <em>[…]</em>, кнопка <em>[…]</em>. Аудитория: <em>[кто]</em>. Целевое действие: <em>[какое]</em>.
+Проверь по чек-листу: понятно, что это и для кого; есть результат и условия; доказательство можно проверить; одна кнопка с результатом.
+По каждому пункту: ок или проблема. Для проблем задай мне вопрос, как я хочу её решить. Не переписывай тексты за меня.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> переписываешь тексты и проводишь тест 5 секунд на трёх живых людях.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Бизнес-разбор сайта</b><p>Выбери сайт реальной компании, у которой есть заявки или продажи (школа, клиника, студия, магазин), или клиента своего лендинга. Опиши на одном фрейме в Figma: функция сайта, ЦА и портрет по шести пунктам, главное и промежуточное целевое действие, лид-магнит (есть или какой бы ты предложил). Проведи тест 5 секунд с первым экраном на трёх людях и запиши ответы. Нарисуй воронку с примерными цифрами и сформулируй три гипотезы по формуле «если — то — потому что». Сдай фрейм с разбором.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>Назвал главную функцию сайта и объяснил почему</span></label>
+    <label><input type="checkbox"><span>Портрет описан по шести пунктам, включая сомнения</span></label>
+    <label><input type="checkbox"><span>Указаны главное и промежуточное целевое действие</span></label>
+    <label><input type="checkbox"><span>Записаны ответы трёх людей после теста 5 секунд</span></label>
+    <label><input type="checkbox"><span>У каждой гипотезы есть изменение, метрика и причина</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Метрики сайта: как понять, что дизайн приносит пользу.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 3 · Веб-дизайн и бизнес</footer>
+
+</div>
+<script type="application/json" id="tr-data">[
+{"say":"«Хотим модный и дорогой сайт, чтобы было не стыдно»","o":["Добавить 3D-анимацию и видео на первый экран","Выяснить, с кем клиента сравнивают и за что готовы платить больше, и показать это: материалы, гарантии, кейсы с ценами","Сделать тёмную тему и крупный шрифт, сейчас так модно"],"a":1,"task":"Оправдать цену и выделиться среди конкурентов","m":"Конверсия в заявку, средний чек","e":"За словом «дорогой» обычно стоит задача: продавать дороже конкурентов. Визуал поддержит это впечатление, но человек заплатит больше, только если увидит, за что."},
+{"say":"«Люди заходят на сайт и сразу уходят»","o":["Показать поп-ап со скидкой через 3 секунды","Добавить ещё пять блоков вниз страницы","Переписать первый экран: что это, для кого, какой результат и одна кнопка. Проверить тестом 5 секунд"],"a":2,"task":"Первый экран не отвечает «мне сюда или нет»","m":"Показатель отказов, глубина скролла","e":"Если уходят сразу, до нижних блоков никто не доходит. А поп-ап на третьей секунде раздражает человека, который ещё не понял, куда попал."},
+{"say":"«Заявок много, но половина — вообще не наши клиенты»","o":["Показать на сайте цену «от», географию и условия. В форму добавить один вопрос, который отсеивает нецелевых","Убрать форму, оставить только телефон","Сделать кнопку заявки меньше и бледнее"],"a":0,"task":"Отсечь нецелевые заявки, чтобы менеджеры не тратили время","m":"Доля целевых заявок, конверсия заявки в продажу","e":"Иногда хорошо, когда заявок становится меньше: если за ними стоят люди, которым продукт подходит, продажи растут."},
+{"say":"«Доходят до корзины и бросают»","o":["Сделать кнопку «В корзину» ярче на каждой карточке","Разрешить заказ без регистрации, показать итоговую цену с доставкой заранее, сократить поля","Добавить баннер с акцией в корзину"],"a":1,"task":"Снизить трение на последнем шаге","m":"Конверсия корзины в оплату","e":"До корзины человек уже дошёл, значит, товар ему нужен. Мешает оформление: обязательная регистрация, сюрприз с ценой доставки, длинная форма."},
+{"say":"«Нам не доверяют, мы на рынке всего год»","o":["Написать в заголовке «Лидер рынка»","Поставить красивые стоковые фото улыбающихся людей","Показать реальную команду и процесс, отзывы с именами и фото, договор и гарантию"],"a":2,"task":"Снизить риск для человека, который видит бренд впервые","m":"Конверсия в заявку, клики по отзывам и кейсам","e":"Непроверяемые слова и сток вызывают ещё больше подозрений. Доверие строят доказательства, которые можно проверить."},
+{"say":"«Нужен сайт для завода, чтобы закупщики присылали запросы»","o":["Технические характеристики, сертификаты, кейсы поставок и форма запроса КП с загрузкой ТЗ","Эмоциональное видео на весь экран и минимум текста","Короткий оффер и кнопку «Купить» как в интернет-магазине"],"a":0,"task":"B2B: доказать надёжность и упростить запрос коммерческого предложения","m":"Количество запросов КП, доля квалифицированных","e":"Закупщик сравнивает поставщиков по фактам и отчитывается перед руководством. Ему нужны цифры, документы и удобный способ отправить ТЗ."}
+]</script>
+<script type="application/json" id="quiz-data">[
+{"p":"Что такое целевое действие?","o":["Любой клик на сайте","Ценное для бизнеса событие, которое можно увидеть и посчитать: заявка, оплата, регистрация","Цель «увеличить продажи на 20%»"],"a":1,"e":"«Увеличить продажи» — цель бизнеса. Целевое действие измеримо: нажал, заполнил, оплатил."},
+{"p":"Зачем Skyeng предлагает бесплатный вводный урок?","o":["Это лид-магнит: промежуточное действие, которое человеку легко сделать, а школе даёт контакт","Чтобы меньше людей покупали курс","Так требует закон"],"a":0,"e":"Большинство не готовы платить при первом визите. Промежуточный шаг удерживает их в воронке."},
+{"p":"На лендинг пришло 2 000 человек, заявок 40. Какая конверсия сайта?","o":["40%","20%","2%"],"a":2,"e":"40 ÷ 2 000 × 100% = 2%."},
+{"p":"Человек пишет в поиске «студия веб-дизайна лендинг за месяц цена». На каком он уровне осведомлённости?","o":["Не осознаёт проблему","Сравнивает продукты или готов купить","Только осознал проблему"],"a":1,"e":"Он знает, что ему нужно, и выбирает подрядчика. Ему нужны кейсы, цены и быстрая кнопка."},
+{"p":"Чем сайт для B2B обычно отличается от B2C?","o":["В B2B больше фактов, характеристик и кейсов, решение принимают дольше","В B2B всегда меньше текста","Ничем, структура одна"],"a":0,"e":"В B2B важны надёжность и компетенция, а решает группа людей."},
+{"p":"Клиент говорит: «Люди заходят и сразу уходят». С чего начать?","o":["Добавить поп-ап со скидкой","Проверить первый экран: ясно ли, что это и для кого, есть ли одно действие","Сменить шрифт на модный"],"a":1,"e":"Если уходят сразу, проблема в первых секундах. Тест 5 секунд покажет, что человек успевает понять."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Веб-дизайн и бизнес» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const fmt = n => Math.round(n).toLocaleString('ru-RU');
+  const rub = n => fmt(n) + ' ₽';
+
+  // --- 1. Конструктор первого экрана ---
+  const hb = $('#hb');
+  if (hb) {
+    const D = {
+      h: ['Чистота — это стиль жизни', 'Инновационные клининговые решения для вашего комфорта', 'Уборка квартиры в Москве за 3 часа'],
+      s: ['Мы команда профессионалов, которая любит своё дело', 'Генеральная, поддерживающая, после ремонта, мойка окон, химчистка мебели', 'Клинер приедет завтра со своим инвентарём. Цена от 3 900 ₽, оплата после уборки'],
+      p: ['', 'Лучший клининг на рынке', '4,9 на Яндекс Картах · 12 000 уборок с 2021 года'],
+      c: [[['Отправить', 'u-secondary']], [['Заказать', 'u-primary'], ['Позвонить', 'u-primary'], ['Написать', 'u-primary']], [['Рассчитать стоимость', 'u-primary'], ['Смотреть цены', 'u-tertiary']]]
+    };
+    const V = {
+      h: [['bad', '<b>Заголовок про ценности.</b> Красиво, но непонятно, что продают: косметику, мебель, клининг?'], ['bad', '<b>Канцелярит.</b> «Решения» и «комфорт» ничего не говорят. Человек не узнаёт ни услугу, ни город.'], ['ok', '<b>Заголовок отвечает «что и для кого»:</b> уборка, квартира, Москва, результат за 3 часа.']],
+      s: [['bad', '<b>Подзаголовок про себя.</b> Человеку важен его результат, а «любим своё дело» пишут все.'], ['mid', '<b>Список услуг.</b> Уже конкретнее, но нет условий: сколько стоит, когда приедут, как платить.'], ['ok', '<b>Условия и цена.</b> Снимает главные вопросы: когда, сколько и есть ли риск.']],
+      p: [['bad', '<b>Нет доказательства.</b> Нечем подтвердить, что сервису можно доверить ключи от квартиры.'], ['bad', '<b>«Лучший на рынке» нельзя проверить.</b> Такие слова скорее вызывают недоверие.'], ['ok', '<b>Проверяемые цифры:</b> рейтинг на внешней площадке и количество уборок.']],
+      c: [['bad', '<b>«Отправить» — что отправить?</b> Кнопка с обводкой ещё и теряется на экране.'], ['bad', '<b>Три главные кнопки.</b> Глаз не знает, куда нажать, и человек часто не нажимает никуда.'], ['ok', '<b>Одна главная кнопка с результатом</b> и спокойная ссылка для тех, кто ещё сравнивает.']]
+    };
+    const st = { h: 0, s: 0, p: 0, c: 1 };
+    const out = $('#hb-out'), score = $('#hb-score'), cover = $('#hb-cover'), testBtn = $('#hb-test');
+    let timer = null;
+    function render() {
+      $('#hb-h').textContent = D.h[st.h];
+      $('#hb-s').textContent = D.s[st.s];
+      const p = $('#hb-p'); p.textContent = D.p[st.p]; p.className = 'site-p' + (st.p === 1 ? ' vague' : '');
+      $('#hb-c').innerHTML = D.c[st.c].map(([t, k]) => `<span class="u-btn ${k}">${esc(t)}</span>`).join('');
+      $$('.seg', hb).forEach(seg => $$('button', seg).forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.v === st[seg.dataset.k]))));
+      const items = ['h', 's', 'p', 'c'].map(k => V[k][st[k]]);
+      out.innerHTML = items.map(([c, t]) => `<li class="${c}"><span>${t}</span></li>`).join('');
+      const pts = items.reduce((a, [c]) => a + (c === 'ok' ? 1 : c === 'mid' ? .5 : 0), 0);
+      if (!timer) score.textContent = pts === 4 ? 'Первый экран работает · 4 из 4' : `Готовность ${String(pts).replace('.', ',')} из 4`;
+    }
+    $$('.seg button', hb).forEach(b => b.addEventListener('click', () => {
+      st[b.closest('.seg').dataset.k] = +b.dataset.v;
+      stopTest(); render();
+    }));
+    function stopTest() {
+      if (timer) { clearInterval(timer); timer = null; }
+      cover.hidden = true; testBtn.textContent = 'Тест 5 секунд';
+    }
+    function results() {
+      const r = [
+        st.h === 2 ? ['ok', '<b>Что это?</b> Уборка квартир — понял сразу.'] : ['bad', '<b>Что это?</b> Не понял: в заголовке нет названия услуги.'],
+        st.h === 2 ? ['ok', '<b>Для кого?</b> Для тех, кто живёт в Москве и хочет чистую квартиру.'] : ['bad', '<b>Для кого?</b> Непонятно: ни города, ни ситуации.'],
+        st.s === 2 ? ['ok', '<b>Сколько и как?</b> От 3 900 ₽, приедут завтра, оплата после.'] : ['bad', '<b>Сколько и как?</b> Не запомнил ни цены, ни условий.'],
+        st.p === 2 ? ['ok', '<b>Почему верить?</b> Рейтинг 4,9 и много уборок.'] : ['bad', '<b>Почему верить?</b> Не увидел причин.'],
+        st.c === 2 ? ['ok', '<b>Что сделать?</b> Рассчитать стоимость.'] : ['bad', '<b>Что сделать?</b> Не понял, на какую кнопку нажать.']
+      ];
+      const n = r.filter(x => x[0] === 'ok').length;
+      out.innerHTML = r.map(([c, t]) => `<li class="${c}"><span>${t}</span></li>`).join('') + `<li class="${n === 5 ? 'ok' : 'mid'}"><span><b>Итог:</b> ${n} из 5 ответов. ${n === 5 ? 'Первый экран проходит тест.' : 'Поменяй слабые блоки и проверь снова.'}</span></li>`;
+    }
+    testBtn.addEventListener('click', () => {
+      if (timer || !cover.hidden) { stopTest(); render(); return; }
+      let left = 5;
+      score.textContent = 'Смотри: ' + left + ' с';
+      out.innerHTML = '<li class="mid"><span>Читай первый экран, через 5 секунд он скроется.</span></li>';
+      testBtn.textContent = 'Остановить';
+      timer = setInterval(() => {
+        left--;
+        if (left > 0) { score.textContent = 'Смотри: ' + left + ' с'; return; }
+        clearInterval(timer); timer = null;
+        cover.hidden = false; score.textContent = 'Вот что запомнил человек';
+        testBtn.textContent = 'Показать экран снова';
+        results();
+      }, 1000);
+    });
+    render();
+  }
+
+  // --- 2. Красиво или работает ---
+  const ba = $('#ba');
+  if (ba) {
+    const site = $('#ba-site'), out = $('#ba-out');
+    const M = [
+      { menu: ['О нас', 'Философия', 'Галерея', 'Контакты'], h: 'Почувствуй воду', s: 'Пространство, где рождается гармония', p: '', c: [['Узнать больше', 'u-secondary']], after: '', pic: 'art', picT: 'Абстрактная 3D-волна' },
+      { menu: ['Программы', 'Цены', 'Тренеры', 'Отзывы'], h: 'Научим ребёнка плавать за 8 занятий', s: 'Дети 4–10 лет, группы по 4 человека, бассейн у метро Сокол', p: 'Тренеры с опытом от 5 лет · 4,9 на Яндекс Картах', c: [['Записаться на пробное за 500 ₽', 'u-primary']], after: 'Перезвоним за 15 минут и подберём время', pic: 'real', picT: 'Фото: занятие с тренером' }
+    ];
+    const E = [
+      [['Заголовок', 'Красивая фраза, но непонятно, что это: спа, бассейн или магазин купальников. Родитель с ребёнком не узнаёт себя.'], ['Заголовок', 'Сразу ясно, что это (обучение плаванию), для кого (ребёнок) и какой результат (8 занятий).']],
+      [['Подзаголовок', 'Абстракция без фактов. Ни возраста, ни формата, ни места — человеку не на что опереться.'], ['Подзаголовок', 'Возраст, размер группы и место — три вопроса, которые родитель задаёт первыми.']],
+      [['Доказательство', 'Его нет. Почему ребёнка стоит доверить именно этой школе — неизвестно.'], ['Доказательство', 'Опыт тренеров и рейтинг, который можно проверить на внешней площадке.']],
+      [['Кнопка', '«Узнать больше» не говорит, что будет после клика. Кнопка с обводкой теряется рядом с яркой картинкой.'], ['Кнопка', 'Одна главная кнопка с результатом и ценой пробного занятия. Под ней написано, что будет дальше. Пробное за 500 ₽ — промежуточное целевое действие.']],
+      [['Меню и картинка', '«Философия» и «Галерея» не помогают выбрать. Абстрактная волна создаёт настроение, но не показывает, как проходят занятия.'], ['Меню и картинка', 'В меню то, что ищет родитель: программы, цены, тренеры, отзывы. Фото показывает сам продукт — занятие.']]
+    ];
+    let mode = 0, pin = -1;
+    const pinB = i => `<button type="button" class="pin" data-i="${i}" aria-label="Пояснение ${i + 1}" aria-pressed="${pin === i}">${i + 1}</button>`;
+    function render() {
+      const m = M[mode];
+      site.innerHTML = `<div class="site-nav"><b>Волна</b>${m.menu.map(x => `<span>${x}</span>`).join('')}${pinB(4)}</div>
+        <div class="ba-hero"><div class="ba-copy">
+          <div class="ba-row">${pinB(0)}<b class="site-h">${m.h}</b></div>
+          <div class="ba-row">${pinB(1)}<p class="site-s">${m.s}</p></div>
+          <div class="ba-row">${pinB(2)}${m.p ? `<p class="site-p">${m.p}</p>` : '<p class="site-s" style="color:#c8c8c4">— пусто —</p>'}</div>
+          <div class="ba-row">${pinB(3)}<div><div class="site-btns">${m.c.map(([t, k]) => `<span class="u-btn ${k}">${t}</span>`).join('')}</div>${m.after ? `<small class="ba-after">${m.after}</small>` : ''}</div></div>
+        </div><div class="ba-pic ${m.pic}"><span>${m.picT}</span></div></div>`;
+      $$('#ba-mode button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.m === mode)));
+      if (pin < 0) out.innerHTML = mode === 0 ? '<b>Версия «красиво».</b> Выглядит дорого и современно. Нажми на номера: что из этого понимает родитель, который впервые зашёл на сайт?' : '<b>Версия «работает».</b> Тот же стиль и аккуратность, но каждый элемент отвечает на вопрос родителя. Нажми на номера, чтобы увидеть, что изменилось.';
+      else { const [t, e] = E[pin][mode]; out.innerHTML = `<span class="tag ${mode ? 'good' : 'bad'}">${pin + 1} · ${t}</span>${e}`; }
+    }
+    site.addEventListener('click', e => { const b = e.target.closest('.pin'); if (!b) return; pin = +b.dataset.i; render(); const nb = $(`.pin[data-i="${pin}"]`, site); if (nb) nb.focus(); });
+    $$('#ba-mode button').forEach(b => b.addEventListener('click', () => { mode = +b.dataset.m; render(); }));
+    render();
+  }
+
+  // --- 3. Калькулятор воронки ---
+  const fn = $('#fn');
+  if (fn) {
+    const P = [
+      { b: 300000, v: 6000, c1: 2.5, c2: 50, c3: 25, ch: 60000 },
+      { b: 200000, v: 2500, c1: 1.5, c2: 60, c3: 20, ch: 450000 },
+      { b: 300000, v: 6000, c1: 0.7, c2: 50, c3: 25, ch: 60000 }
+    ];
+    const keys = ['b', 'v', 'c1', 'c2', 'c3', 'ch'];
+    const R = {}, Vv = {};
+    keys.forEach(k => { R[k] = $('#fr-' + k); Vv[k] = $('#fv-' + k); });
+    const out = $('#fn-out');
+    let note = '';
+    const get = () => Object.fromEntries(keys.map(k => [k, +R[k].value]));
+    function calc(x) {
+      const leads = x.v * x.c1 / 100, cons = leads * x.c2 / 100, pays = cons * x.c3 / 100, rev = pays * x.ch;
+      return { leads, cons, pays, rev, cpl: leads ? x.b / leads : 0, cac: pays ? x.b / pays : 0, romi: (rev - x.b) / x.b * 100 };
+    }
+    function render() {
+      const x = get(), r = calc(x);
+      Vv.b.textContent = rub(x.b); Vv.v.textContent = fmt(x.v);
+      Vv.c1.textContent = String(x.c1).replace('.', ',') + '%'; Vv.c2.textContent = x.c2 + '%'; Vv.c3.textContent = x.c3 + '%';
+      Vv.ch.textContent = rub(x.ch);
+      const rows = [['Переходы на сайт', x.v, ''], ['Заявки', r.leads, 'design'], ['Консультации', r.cons, ''], ['Оплаты', r.pays, '']];
+      $('#fn-bars').innerHTML = rows.map(([t, n, c], i) => {
+        const w = Math.max(1.5, Math.sqrt(n / x.v) * 100);
+        const drop = i ? `<span class="drop">ушли: ${fmt(rows[i - 1][1] - n)}${c ? ' · здесь работает дизайн сайта' : ''}</span>` : '';
+        return `<div class="fn-bar ${c}"><div class="lbl"><span>${t}</span><b>${n < 10 && n > 0 ? String(Math.round(n * 10) / 10).replace('.', ',') : fmt(n)}</b></div><div class="tr"><i style="width:${w}%"></i></div>${drop}</div>`;
+      }).join('');
+      $('#fn-kpi').innerHTML = `<div class="big"><span class="cap">Выручка</span><b>${rub(r.rev)}</b></div>
+        <div><span class="cap">Заявка стоит (CPL)</span><b>${r.leads ? rub(r.cpl) : '—'}</b></div>
+        <div><span class="cap">Клиент стоит (CAC)</span><b>${r.pays >= .05 ? rub(r.cac) : '—'}</b></div>
+        <div class="big ${r.romi < 0 ? 'neg' : 'pos'}"><span class="cap">Окупаемость рекламы (ROMI)</span><b>${r.romi > 0 ? '+' : ''}${fmt(r.romi)}%</b></div>`;
+      let v = [];
+      if (x.c1 < 1) v.push('<span class="warn">Конверсия сайта ниже 1%.</span> Люди приходят, но почти никто не оставляет заявку. Начни с первого экрана, оффера и формы.');
+      else if (x.c1 <= 6) v.push('Конверсия сайта ' + String(x.c1).replace('.', ',') + '% — обычный диапазон для лендинга с рекламным трафиком. Рост даже на 1 п. п. заметно меняет выручку.');
+      else v.push('<span class="okv">Высокая конверсия сайта.</span> Проверь, целевые ли заявки: если они не доходят до консультации, сайт обещает лишнее.');
+      if (x.c2 < 35) v.push('<span class="warn">Больше половины заявок теряется до консультации.</span> Либо менеджеры долго перезванивают, либо заявки нецелевые — тогда на сайте нужны цена и условия.');
+      if (x.c3 < 15) v.push('<span class="warn">Мало оплат после консультации.</span> Это зона отдела продаж, но сайт может помочь: кейсы и ответы на сомнения, которые человек прочитает перед звонком.');
+      if (r.romi < 0) v.push('<span class="warn">Реклама не окупается:</span> каждый вложенный рубль возвращается меньше чем рублём.');
+      out.innerHTML = (note ? `<p>${note}</p>` : '') + `<p>${v.join(' ')}</p>`;
+    }
+    function setP(i) {
+      const p = P[i]; keys.forEach(k => { R[k].value = p[k]; });
+      $$('#fn-pre button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.p === i)));
+      note = ''; render();
+    }
+    keys.forEach(k => R[k].addEventListener('input', () => { $$('#fn-pre button').forEach(b => b.setAttribute('aria-pressed', 'false')); note = ''; render(); }));
+    $$('#fn-pre button').forEach(b => b.addEventListener('click', () => setP(+b.dataset.p)));
+    $('#fn-design').addEventListener('click', () => {
+      const x = get(), r = calc(x), y = { ...x, c1: x.c1 + 1 }, r2 = calc(y);
+      const adCost = x.b * 1 / x.c1;
+      note = `<b>Дизайн: конверсия ${String(x.c1).replace('.', ',')}% → ${String(Math.round(y.c1 * 10) / 10).replace('.', ',')}%.</b> Заявок станет ${fmt(r2.leads)} вместо ${fmt(r.leads)}, выручка вырастет на <b>${rub(r2.rev - r.rev)}</b> при том же бюджете. Чтобы получить столько же заявок рекламой, пришлось бы доплатить около <b>${rub(adCost)}</b>.`;
+      R.c1.value = Math.min(15, y.c1); render();
+    });
+    $('#fn-ads').addEventListener('click', () => {
+      const x = get(), r = calc(x), y = { ...x, b: Math.round(x.b * 1.2), v: Math.round(x.v * 1.2) }, r2 = calc(y);
+      note = `<b>Реклама: бюджет +20%, ${rub(y.b - x.b)}.</b> Переходов станет ${fmt(y.v)}, выручка вырастет на <b>${rub(r2.rev - r.rev)}</b>. Конверсия сайта та же — ${String(x.c1).replace('.', ',')}%, и каждая заявка стоит столько же: ${rub(r.cpl)}. На практике дополнительный трафик обычно дороже и холоднее.`;
+      R.b.value = Math.min(+R.b.max, y.b); R.v.value = Math.min(+R.v.max, y.v); render();
+    });
+    setP(0);
+  }
+
+  // --- 4. Лестница осведомлённости ---
+  const lad = $('#lad');
+  if (lad) {
+    const BL = ['Контекст', 'Проблема', 'Решение', 'Как работает', 'Преимущества', 'Доказательства', 'Предложение', 'Действие'];
+    const L = [
+      { n: 'Не осознаёт проблему', think: 'Работаю в офисе, вроде нормально. Но скучно.', where: 'Листает ленту, видит Reels или статью', need: 'Ситуацию, в которой он узнаёт себя', h: 'Делаешь презентации лучше всех в отделе? Это уже половина профессии', s: 'Как понять, подходит ли тебе дизайн, за 10 минут', cta: 'Пройти тест', on: [0, 1] },
+      { n: 'Осознаёт проблему', think: 'Хочу сменить профессию, но не знаю на какую.', where: 'Ищет «какую профессию выбрать в 30»', need: 'Объяснение, чем дизайнер занимается и как в это войти', h: 'Как перейти в дизайн за год и не бросать работу', s: 'Разбираем путь от нуля до первых заказов', cta: 'Смотреть бесплатный урок', on: [1, 2] },
+      { n: 'Знает о решениях', think: 'Курсы, YouTube или вуз — что выбрать?', where: 'Читает сравнения, спрашивает в чатах', need: 'Сравнение способов и почему курс с наставником быстрее', h: 'Учиться самому или с наставником: честное сравнение', s: 'Что даёт обратная связь и сколько времени она экономит', cta: 'Сравнить форматы', on: [2, 3, 4] },
+      { n: 'Сравнивает продукты', think: 'Эта школа или другая?', where: 'Открыл 3–4 сайта школ во вкладках', need: 'Отличия, программу, работы студентов, преподавателей', h: 'Веб-дизайн с разбором каждой домашки и проектами в портфолио', s: 'Смотри работы выпускников и программу по неделям', cta: 'Скачать программу', on: [4, 5] },
+      { n: 'Готов купить', think: 'Где оплатить и когда старт?', where: 'Вернулся на сайт по закладке или из рассылки', need: 'Цену, рассрочку, дату старта, гарантии и короткую форму', h: 'Старт потока 1 декабря. Осталось 12 мест', s: 'Рассрочка без переплат, возврат в первые 14 дней', cta: 'Записаться на поток', on: [6, 7] }
+    ];
+    let cur = 0;
+    const steps = $('#lad-steps');
+    steps.innerHTML = L.map((l, i) => `<button type="button" data-i="${i}" style="--h:${56 + i * 18}px;--i:${i}"><i>Уровень ${i + 1}</i>${l.n}</button>`).join('');
+    function render() {
+      const l = L[cur];
+      $$('button', steps).forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.i === cur)));
+      $('#lad-card').innerHTML = `<div class="lv">
+          <div><span>Думает</span><span>«${l.think}»</span></div>
+          <div><span>Где он</span><span>${l.where}</span></div>
+          <div><span>Ему нужно</span><span>${l.need}</span></div>
+          <div><span>Температура</span><span>${['Холодный', 'Холодный', 'Тёплый', 'Тёплый', 'Горячий'][cur]}</span></div>
+        </div>
+        <div class="stage"><div class="site"><div class="site-hero"><b class="site-h">${l.h}</b><p class="site-s">${l.s}</p><div class="site-btns"><span class="u-btn u-primary">${l.cta}</span></div></div></div></div>`;
+      $('#lad-blocks').innerHTML = BL.map((b, i) => `<span class="${l.on.includes(i) ? 'on' : ''}">${b}</span>`).join('');
+    }
+    steps.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; cur = +b.dataset.i; render(); });
+    render();
+  }
+
+  // --- 5. Перевод с языка клиента ---
+  const tr = $('#tr'), tsrc = $('#tr-data');
+  if (tr && tsrc) {
+    const T = JSON.parse(tsrc.textContent);
+    let i = 0, res = [];
+    const say = $('#tr-say'), opts = $('#tr-opts'), out = $('#tr-out'), next = $('#tr-next'), n = $('#tr-n'), dots = $('#tr-dots');
+    function drawDots() { dots.innerHTML = T.map((_, k) => `<i class="${res[k] === true ? 'ok' : res[k] === false ? 'no' : k === i ? 'cur' : ''}"></i>`).join(''); }
+    function show() {
+      if (i >= T.length) return end();
+      const t = T[i];
+      n.textContent = `Задача ${i + 1} из ${T.length}`;
+      say.textContent = t.say; say.hidden = false;
+      opts.innerHTML = t.o.map((o, k) => `<button type="button" data-k="${k}">${esc(o)}</button>`).join('');
+      out.innerHTML = ''; next.hidden = true; drawDots();
+    }
+    opts.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b || b.disabled) return;
+      const t = T[i], k = +b.dataset.k, ok = k === t.a;
+      res[i] = ok;
+      $$('button', opts).forEach((x, j) => { x.disabled = true; if (j === t.a) x.classList.add('right'); else if (j === k) x.classList.add('wrong'); });
+      out.innerHTML = `<b class="${ok ? 'okv' : 'warn'}">${ok ? 'Точно.' : 'Не совсем.'}</b> ${esc(t.e)}<div class="tr-res"><div><span class="cap">Задача бизнеса</span><b>${esc(t.task)}</b></div><div><span class="cap">Чем проверить</span><b>${esc(t.m)}</b></div></div>`;
+      next.hidden = false; next.textContent = i === T.length - 1 ? 'Итог' : 'Следующая задача';
+      drawDots(); next.focus({ preventScroll: true });
+    });
+    next.addEventListener('click', () => { if (i >= T.length) { i = 0; res = []; } else i++; show(); });
+    function end() {
+      const ok = res.filter(Boolean).length;
+      n.textContent = 'Готово'; say.hidden = true; drawDots();
+      opts.innerHTML = '';
+      out.innerHTML = `<div class="tr-end"><span class="big">${ok} из ${T.length}</span><span>${ok === T.length ? 'Ты слышишь задачу бизнеса за словами клиента. На встрече задавай уточняющий вопрос «зачем?», пока не дойдёшь до цифры.' : 'За каждой просьбой клиента стоит задача бизнеса. Спрашивай «зачем?» и «как поймём, что стало лучше?», пока не дойдёшь до метрики.'}</span></div>`;
+      next.hidden = false; next.textContent = 'Пройти заново';
+    }
+    show();
+  }
+})();
+
+</script>
+</body></html>

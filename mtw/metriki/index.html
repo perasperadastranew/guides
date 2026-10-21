@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Метрики сайта</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив только для методички «Метрики сайта» ===== */
+code{font-family:var(--mono);font-size:.85em;background:var(--well);border-radius:4px;padding:1px 5px;color:var(--ink);word-break:break-all}
+.mt-ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px}
+.mt-ghost:hover{border-color:var(--accent)}
+.mt-f{font-family:var(--mono);font-size:12.5px;line-height:1.45;color:var(--ink);background:var(--well);border-radius:6px;padding:8px 10px}
+
+/* воронка */
+.mt-funnel{display:flex;flex-direction:column;gap:6px}
+.mt-funnel>div{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:baseline;padding:10px 14px;border-radius:8px;background:var(--card);border:1px solid var(--stroke);overflow:hidden;z-index:0}
+.mt-funnel>div::before{content:"";position:absolute;inset:0 auto 0 0;width:max(var(--w),6px);background:color-mix(in srgb,var(--accent) 30%,transparent);z-index:-1}
+.mt-funnel span{color:var(--ink);font-size:15px}
+.mt-funnel b{font-weight:400;color:var(--ink);font-variant-numeric:tabular-nums;font-size:17px}
+.mt-funnel em{grid-column:1/-1;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim)}
+.mt-funnel .leak{border-color:var(--bad)}
+.mt-funnel .leak em{color:var(--bad)}
+
+/* источники */
+.mt-src{display:flex;height:44px;border-radius:8px;overflow:hidden;gap:2px}
+.mt-src i{width:var(--w);background:var(--c);color:#101010;font-style:normal;font-family:var(--mono);font-size:12px;display:grid;place-items:center;min-width:0;overflow:hidden}
+.mt-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:8px;vertical-align:1px}
+
+/* калькулятор */
+.mt-inputs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.mt-in{background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.mt-in label{font-size:13px;line-height:1.3;color:var(--dim);min-height:2.6em}
+.mt-in input[type=number]{width:100%;background:var(--panel);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:8px 10px;font:400 20px var(--body);font-variant-numeric:tabular-nums}
+.mt-in input[type=number]:focus{outline:2px solid var(--accent);outline-offset:1px}
+.mt-in input[type=range]{width:100%;margin:0;accent-color:var(--accent)}
+.mt-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.mt-kpi{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.mt-kpi .kind{color:var(--faint)}
+.mt-kpi .v{font-family:var(--display);font-size:34px;line-height:1;color:var(--ink);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.mt-kpi p{font-size:14px;line-height:1.4}
+.mt-kpi.ok{border-color:color-mix(in srgb,var(--good) 60%,var(--stroke))}
+.mt-kpi.mid{border-color:color-mix(in srgb,#f2b33d 60%,var(--stroke))}
+.mt-kpi.bad{border-color:color-mix(in srgb,var(--bad) 60%,var(--stroke))}
+.mt-tag{align-self:flex-start;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:3px 6px;color:#101010}
+.ok .mt-tag{background:var(--good)} .mid .mt-tag{background:#f2b33d} .bad .mt-tag{background:var(--bad)} .na .mt-tag{background:var(--faint)}
+.mt-scale{position:relative;height:6px;border-radius:3px;display:flex;overflow:visible}
+.mt-scale i{display:block;height:100%}
+.mt-scale i:first-child{border-radius:3px 0 0 3px}.mt-scale i:last-child{border-radius:0 3px 3px 0}
+.mt-scale b{position:absolute;top:-4px;width:3px;height:14px;background:var(--ink);border-radius:2px;transform:translateX(-50%);transition:left .25s}
+.mt-norm{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.03em}
+#calc-sum .warn{color:var(--bad)}
+
+/* тепловая карта */
+.mt-heat-ctrl{display:flex;flex-wrap:wrap;gap:10px 20px}
+.mt-heat-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.mt-heat-stage{padding:16px;display:block;min-height:0}
+.mt-page{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.08);max-width:420px;margin-inline:auto;position:relative}
+.mt-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;border-bottom:1px solid #ececea;font-size:11px;color:#5a5a58;position:relative}
+.mt-nav b{color:#101010;font-weight:600}
+.mt-nav span{display:flex;gap:10px}
+.mt-blk{position:relative;display:block;width:100%;border:0;border-bottom:1px solid #ececea;background:#fff;padding:10px 12px;text-align:left;cursor:pointer;font:inherit;color:#101010;border-radius:0}
+.mt-blk:focus-visible{outline:2px solid #3b6ef0;outline-offset:-2px}
+.mt-blk.sel{box-shadow:inset 0 0 0 2px #101010}
+.mt-blk .nm{font-size:11px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#5a5a58;position:relative;z-index:2}
+.mt-blk .ln{display:block;height:6px;border-radius:3px;background:#e4e4e1;margin-top:6px;position:relative;z-index:2}
+.mt-blk .ln.s{width:60%}.mt-blk .ln.m{width:80%}
+.mt-blk .bt{display:inline-block;margin-top:8px;height:14px;width:70px;border-radius:4px;background:#eb7540;position:relative;z-index:2}
+.mt-blk.hero .ln{height:10px;background:#cfcfcb}
+.mt-blk .tint{position:absolute;inset:0;z-index:1;transition:background .35s,opacity .35s;pointer-events:none}
+.mt-blk .pct{position:absolute;right:10px;top:8px;z-index:3;font-family:var(--mono);font-size:12px;font-weight:500;color:#101010;background:rgba(255,255,255,.85);border-radius:4px;padding:2px 6px}
+.mt-spot{position:absolute;z-index:3;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;background:radial-gradient(circle,rgba(229,56,59,.95) 0,rgba(242,179,61,.75) 40%,rgba(242,179,61,0) 72%);transition:opacity .3s}
+.mt-page.m-scroll .mt-spot{opacity:0}
+.mt-page.m-click .tint{opacity:0}
+.mt-page.m-click .pct{display:none}
+.mt-heat-side{display:flex;flex-direction:column;gap:14px;min-width:0;position:sticky;top:16px}
+.mt-legend{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.mt-legend .bar{height:8px;border-radius:4px;background:linear-gradient(90deg,#3b6ef0,#34c7c0,#f2b33d,#e5383b)}
+.mt-legend .ends{display:flex;justify-content:space-between;color:var(--faint);font-family:var(--mono);font-size:11px}
+.mt-heat-kpi{font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--accent);border-top:1px solid var(--stroke);padding-top:12px}
+#heat-out{min-height:5.6em}
+#heat-out ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:14px}
+
+/* AARRR */
+.mt-aarrr{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;counter-reset:a}
+.mt-aarrr>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0;position:relative}
+.mt-aarrr>div.hot{border-color:var(--accent)}
+.mt-aarrr .kind{color:var(--accent)}
+.mt-aarrr b{font-weight:400;font-size:17px}
+.mt-aarrr p{font-size:14px;line-height:1.35;color:var(--ink)}
+.mt-aarrr small{font-size:13px;line-height:1.35;color:var(--dim)}
+
+/* тренажёр гипотез */
+.mt-hyp{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:h}
+.mt-hyp>li{counter-increment:h;background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.mt-hyp>li.right{border-color:color-mix(in srgb,var(--good) 60%,var(--stroke))}
+.mt-hyp>li.wrong{border-color:color-mix(in srgb,var(--bad) 60%,var(--stroke))}
+.mt-hyp .hq{color:var(--ink);font-size:16px;line-height:1.35}
+.mt-hyp .hq::before{content:counter(h,decimal-leading-zero) "  ";font-family:var(--mono);font-size:11px;color:var(--accent);white-space:pre}
+.mt-hyp .seg button{text-align:left;line-height:1.3}
+.mt-hyp .seg button.r{border-color:var(--good);color:var(--ink)}
+.mt-hyp .seg button.w{border-color:var(--bad);color:var(--ink)}
+.mt-hyp .seg button:disabled{cursor:default}
+.mt-hyp .fb{font-size:14px;line-height:1.4}
+.mt-hyp .fb b{font-weight:500}
+.mt-hyp .fb b.g{color:var(--good)}.mt-hyp .fb b.x{color:var(--bad)}
+.mt-hyp-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.mt-count{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+@media (max-width:900px){
+  .mt-inputs,.mt-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mt-aarrr{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .mt-heat-grid{grid-template-columns:minmax(0,1fr)}
+  .mt-heat-side{position:static}
+  .mt-heat-stage{padding:10px}
+}
+@media (max-width:480px){
+  .mt-kpis,.mt-aarrr{grid-template-columns:minmax(0,1fr)}
+  .mt-in{padding:10px}
+  .mt-in input[type=number]{font-size:17px;padding:7px 8px}
+  .mt-src i{font-size:10px}
+}
+@media (prefers-reduced-motion:reduce){.mt-scale b,.mt-blk .tint,.mt-spot{transition:none}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 3 · ВЕБ-ДИЗАЙН</span></div>
+  <div class="series"><span>01 Веб-дизайн и бизнес</span><b>02 Метрики сайта</b><span>03 Принципы веб-дизайна</span><span>04 Типы проектов</span><span>05 Типы страниц</span><span>06 Типы блоков</span><span>07 Конкурентный анализ</span></div>
+  <h1>Метрики сайта</h1>
+  <p class="lead"><b>Сайт оценивают по цифрам: сколько людей пришло, сколько дочитало и сколько оставило заявку.</b> Разбираем главные метрики, считаем их на живых примерах и учимся понимать, на какие из них влияет дизайнер.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#why">Зачем дизайнеру</a><a href="#goals">Целевые действия</a><a href="#traffic">Трафик</a><a href="#conv">Конверсия и отказы</a><a href="#scroll">Карта скролла</a><a href="#speed">Скорость</a><a href="#money">Деньги и удержание</a><a href="#hyp">Гипотезы</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="why">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Зачем дизайнеру метрики</h2></div></div>
+  <p>Для бизнеса сайт — инструмент, который должен приводить заявки, продажи или подписчиков. Метрика — число, по которому видно, справляется ли он с этим. Красивый сайт с конверсией 0,3% проигрывает простому сайту с конверсией 4%, и заказчик это быстро заметит.</p>
+  <p class="quote">Дизайнер не может привести на сайт больше людей. Зато может сделать так, чтобы больше пришедших поняли предложение и оставили заявку.</p>
+  <div class="three">
+    <div class="box hot"><span class="kind">Влияешь напрямую</span><b>Поведение на странице</b><ul><li>нажатия на кнопки (CTR)</li><li>заполнение форм</li><li>докуда дочитывают страницу</li><li>отказы с первого экрана</li><li>вес картинок и скорость загрузки</li></ul></div>
+    <div class="box"><span class="kind">Влияешь вместе с командой</span><b>Результат бизнеса</b><ul><li>конверсия в оплату</li><li>средний чек</li><li>возвращаемость</li></ul><p>Здесь важны и продукт, и цена, и работа отдела продаж.</p></div>
+    <div class="box"><span class="kind">Почти не влияешь</span><b>Привлечение</b><ul><li>количество посетителей</li><li>стоимость рекламы</li></ul><p>Это зона маркетолога. Твой вклад — первый экран, который совпадает с обещанием рекламы.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Где смотрят цифры</h3>
+    <div class="sub-b">
+      <div class="scroll"><table>
+        <thead><tr><th>Сервис</th><th>Что даёт</th><th>Когда открывать</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://metrika.yandex.ru" target="_blank" rel="noopener">Яндекс Метрика</a></td><td>Посетители, источники, цели, отказы. Бесплатно есть Вебвизор (запись действий человека), карта кликов и карта скроллинга</td><td>Основной инструмент для сайтов на рунет-аудиторию. Счётчик ставится в Tilda за пару минут</td></tr>
+          <tr><td><a href="https://analytics.google.com" target="_blank" rel="noopener">Google Analytics 4</a></td><td>Те же базовые отчёты, события и воронки</td><td>Сайты с зарубежной аудиторией</td></tr>
+          <tr><td><a href="https://pagespeed.web.dev" target="_blank" rel="noopener">PageSpeed Insights</a></td><td>Скорость загрузки и подсказки, что её тормозит</td><td>Перед сдачей проекта и после каждой крупной правки</td></tr>
+        </tbody>
+      </table></div>
+      <p class="why">Попроси у заказчика гостевой доступ к Метрике ещё на старте проекта. Цифры «до» покажут, где сайт теряет людей, а цифры «после» станут лучшим аргументом в твоём кейсе.</p>
+    </div>
+  </div>
+</section>
+
+<section id="goals">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Целевые действия и воронка</h2></div></div>
+  <p>Прежде чем что-то считать, договорись с заказчиком, что считается успехом. Целевое действие — то, ради чего сайт существует: заявка, покупка, подписка, звонок. В Метрике его настраивают как <b>цель</b>, и дальше все отчёты показывают, сколько людей до неё дошло.</p>
+  <div class="two">
+    <div class="box"><span class="kind">Макроконверсия</span><b>Главное действие</b><p>Деньги или контакт: оплата заказа, заявка на курс, запись на консультацию, звонок. Обычно одна-две на сайт.</p></div>
+    <div class="box"><span class="kind">Микроконверсия</span><b>Шаг к главному</b><p>Нажатие на кнопку, просмотр тарифов, добавление в корзину, скачивание программы, переход в Telegram. По ним видно, где человек остановился.</p></div>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>Тип сайта</th><th>Главное действие</th><th>Шаги к нему</th></tr></thead>
+    <tbody>
+      <tr><td>Лендинг онлайн-курса</td><td>Заявка или оплата</td><td>Дочитал до программы, открыл тарифы, нажал «Записаться»</td></tr>
+      <tr><td>Интернет-магазин</td><td>Оплаченный заказ</td><td>Открыл карточку, выбрал размер, добавил в корзину, начал оформление</td></tr>
+      <tr><td>Сайт студии или услуг</td><td>Заявка на проект, звонок</td><td>Посмотрел кейсы, открыл контакты, нажал на мессенджер</td></tr>
+      <tr><td>Блог или медиа</td><td>Подписка на рассылку или канал</td><td>Дочитал статью, перешёл на вторую, нажал «Подписаться»</td></tr>
+    </tbody>
+  </table></div>
+  <div class="sub">
+    <h3>Воронка</h3>
+    <div class="sub-b">
+      <p>Если выстроить шаги по порядку, получится воронка. На каждом шаге часть людей уходит. Задача — найти шаг, где уходит больше всего, и чинить его первым. Вот воронка лендинга курса за месяц:</p>
+      <div class="mt-funnel" role="img" aria-label="Воронка лендинга: 10 000 визитов, 7 800 остались дольше 15 секунд, 2 300 дошли до тарифов, 540 нажали Записаться, 260 отправили заявку, 70 оплатили">
+        <div style="--w:100%"><span>Зашли на сайт</span><b>10 000</b><em>100%</em></div>
+        <div style="--w:78%"><span>Остались дольше 15 секунд</span><b>7 800</b><em>78% от прошлого шага</em></div>
+        <div class="leak" style="--w:23%"><span>Дошли до тарифов</span><b>2 300</b><em>29% — главная утечка</em></div>
+        <div style="--w:5.4%"><span>Нажали «Записаться»</span><b>540</b><em>23%</em></div>
+        <div style="--w:2.6%"><span>Отправили заявку</span><b>260</b><em>48%</em></div>
+        <div style="--w:.7%"><span>Оплатили</span><b>70</b><em>27%</em></div>
+      </div>
+      <p class="why">Больше всего людей теряется между первым экраном и тарифами: почти 8 из 10 до цены не доходят. Перекрашивать кнопку бессмысленно, пока её почти никто не видит. Сначала чинят структуру страницы, об этом раздел 05.</p>
+    </div>
+  </div>
+</section>
+
+<section id="traffic">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Трафик и источники</h2></div></div>
+  <p>Трафик — сколько людей приходит на сайт. Сам по себе он мало что говорит о дизайне, но от него считаются все остальные проценты. Три базовых показателя легко перепутать:</p>
+  <div class="three">
+    <div class="box"><span class="kind">Посетители · Users</span><b>1 000</b><p>Уникальные люди за период. Один человек с одного браузера — один посетитель, сколько бы раз он ни заходил.</p></div>
+    <div class="box"><span class="kind">Визиты · Sessions</span><b>1 500</b><p>Сколько раз заходили. Утром посмотрел с телефона, вечером вернулся — два визита.</p></div>
+    <div class="box"><span class="kind">Просмотры · Pageviews</span><b>5 000</b><p>Сколько страниц открыли за все визиты. Делим на визиты — получаем глубину просмотра: 3,3 страницы.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Откуда приходят</h3>
+    <div class="sub-b">
+      <div class="mt-src" role="img" aria-label="Источники трафика: поиск 38%, соцсети 22%, прямые заходы 18%, реклама 14%, ссылки с других сайтов 8%">
+        <i style="--w:38%;--c:#eb7540">38%</i><i style="--w:22%;--c:#5b8def">22%</i><i style="--w:18%;--c:#34c759">18%</i><i style="--w:14%;--c:#b78bff">14%</i><i style="--w:8%;--c:#f2b33d">8%</i>
+      </div>
+      <div class="scroll"><table>
+        <thead><tr><th>Канал</th><th>Что это</th><th>Что может сделать дизайнер</th></tr></thead>
+        <tbody>
+          <tr><td><span class="mt-dot" style="--c:#eb7540"></span>Organic · поиск</td><td>Пришли из Яндекса или Google</td><td>Понятная структура заголовков, отдельные страницы под разные запросы, быстрая загрузка</td></tr>
+          <tr><td><span class="mt-dot" style="--c:#5b8def"></span>Social · соцсети</td><td>Telegram, ВКонтакте, YouTube</td><td>Обложка ссылки (OG-картинка), удобная мобильная версия: из соцсетей приходят с телефона</td></tr>
+          <tr><td><span class="mt-dot" style="--c:#34c759"></span>Direct · прямые</td><td>Ввели адрес или открыли закладку</td><td>Запоминающийся бренд. Много прямых заходов — признак узнаваемости</td></tr>
+          <tr><td><span class="mt-dot" style="--c:#b78bff"></span>Paid · реклама</td><td>Яндекс Директ, посевы, таргет</td><td>Первый экран повторяет обещание из объявления. Обещали «курс за 4 900 ₽» — цена видна сразу</td></tr>
+          <tr><td><span class="mt-dot" style="--c:#f2b33d"></span>Referral · ссылки</td><td>Переходы с других сайтов и статей</td><td>Страница, на которую ведёт ссылка, сразу отвечает на вопрос, с которым человек пришёл</td></tr>
+        </tbody>
+      </table></div>
+      <p class="why">Чтобы отличать, например, посев в канале А от посева в канале Б, к ссылкам добавляют UTM-метки: <code>?utm_source=telegram&amp;utm_campaign=start</code>. Тогда в Метрике видно, какой канал приводит людей, которые оставляют заявки, а какой — только тех, кто сразу закрывает вкладку.</p>
+    </div>
+  </div>
+</section>
+
+<section id="conv">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Конверсия, CTR и отказы</h2></div></div>
+  <p>Три метрики, по которым чаще всего оценивают работу дизайнера. Все считаются как доля от числа визитов.</p>
+  <div class="three">
+    <div class="box hot"><span class="kind">Конверсия · CR</span><div class="mt-f">Целевые действия ÷ визиты × 100%</div><p>1 000 визитов, 40 заявок — конверсия 4%. Главная метрика для бизнеса.</p></div>
+    <div class="box"><span class="kind">Кликабельность · CTR</span><div class="mt-f">Нажатия ÷ показы × 100%</div><p>Сколько людей нажали на кнопку, баннер или ссылку из тех, кто их видел. 1 000 визитов, 120 нажатий на «Записаться» — CTR 12%.</p></div>
+    <div class="box"><span class="kind">Отказы · Bounce rate</span><div class="mt-f">Отказы ÷ визиты × 100%</div><p>В Метрике отказ — визит, в котором человек посмотрел одну страницу и ушёл меньше чем через 15 секунд.</p></div>
+  </div>
+  <p>Высокие отказы обычно значат одно из трёх: сайт долго грузится, первый экран непонятен или реклама привела не тех людей. Если человек прочитал весь лендинг за 3 минуты и ушёл, Метрика отказ не засчитает.</p>
+
+  <div class="demo" id="calc">
+    <span class="cap">Калькулятор · подставь цифры и посмотри, нормально ли это</span>
+    <div class="seg" id="calc-type" aria-label="Тип сайта"><button type="button" data-type="landing">Лендинг курса</button><button type="button" data-type="shop">Интернет-магазин</button><button type="button" data-type="b2b">Сайт услуг</button><button type="button" data-type="blog">Блог</button></div>
+    <div class="mt-inputs" id="calc-in"></div>
+    <div class="mt-kpis" id="calc-out"></div>
+    <output id="calc-sum"></output>
+    <div class="seg"><button type="button" data-cpreset="1000,250,110,40">Средний лендинг</button><button type="button" data-cpreset="1000,520,30,6">Реклама не туда</button><button type="button" data-cpreset="1000,180,140,18">Форма отпугивает</button><button type="button" data-cpreset="1000,150,90,60">Сильный сайт</button></div>
+  </div>
+  <p class="why">Ориентиры в калькуляторе — средние по рунету, у каждой ниши свои. Дорогой B2B-сервис с конверсией 0,8% может быть успешным, а дешёвый вебинар с 15% — средним. Самое надёжное сравнение — сайт с самим собой до и после правок.</p>
+</section>
+
+<section id="scroll">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Вовлечённость: докуда дочитывают</h2></div></div>
+  <p>Вовлечённость показывает, насколько человеку интересно на сайте. Её считают тремя способами, и каждый удобен для своего типа сайта.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Время на сайте</span><p>Среднее время визита. Для статьи 3–4 минуты — хорошо. Для формы оплаты долгое время, наоборот, тревожный знак: человек застрял.</p></div>
+    <div class="box"><span class="kind">Глубина просмотра</span><p>Страниц за визит. 1,2 — человек открыл одну и ушёл. 2–3 — нормально. 4 и больше — изучает каталог или блог.</p></div>
+    <div class="box hot"><span class="kind">Глубина скролла</span><p>Докуда люди долистывают страницу. Для лендинга это самая полезная метрика: все важные блоки на одной странице.</p></div>
+  </div>
+  <p>Карта скроллинга в Метрике раскрашивает страницу: тёплый цвет — сюда доходят почти все, холодный — почти никто. Карта кликов показывает, куда нажимают, в том числе на то, что не нажимается.</p>
+
+  <div class="demo" id="heat">
+    <span class="cap">Тепловая карта лендинга · переключай режим и версию, нажимай на блоки</span>
+    <div class="mt-heat-ctrl">
+      <div class="seg" id="heat-mode" aria-label="Режим карты"><button type="button" data-mode="scroll">Карта скролла</button><button type="button" data-mode="click">Карта кликов</button></div>
+      <div class="seg" id="heat-ver" aria-label="Версия страницы"><button type="button" data-ver="a">Версия A · как было</button><button type="button" data-ver="b">Версия B · после правок</button></div>
+    </div>
+    <div class="mt-heat-grid">
+      <div class="stage mt-heat-stage"><div class="mt-page" id="heat-page"></div></div>
+      <div class="mt-heat-side">
+        <div class="mt-legend" id="heat-legend"></div>
+        <output id="heat-out"></output>
+        <div class="mt-heat-kpi" id="heat-kpi"></div>
+      </div>
+    </div>
+  </div>
+  <div class="dodont">
+    <div class="good"><i>Что обычно поднимает дочитываемость</i><ul><li>Короткий первый экран с ответом «что это, для кого, сколько стоит»</li><li>Цена или «от …» выше середины страницы</li><li>Кнопка действия повторяется после каждых 2–3 блоков</li><li>Заголовки блоков, которые можно пробежать глазами и понять суть</li></ul></div>
+    <div class="bad"><i>Что обрывает чтение</i><ul><li>Огромный первый экран с видео и без текста</li><li>Длинные абзацы без заголовков</li><li>Блок «О нас» на втором экране</li><li>Ложное дно: страница выглядит законченной, хотя ниже ещё 5 блоков</li></ul></div>
+  </div>
+</section>
+
+<section id="speed">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Скорость сайта</h2></div></div>
+  <p>Медленный сайт теряет людей ещё до того, как они увидят дизайн. В исследовании Deloitte для Google «Milliseconds Make Millions» ускорение мобильного сайта всего на 0,1 секунды подняло конверсию в ритейле на 8,4%. Google измеряет скорость тремя метриками Core Web Vitals, проверить их можно в PageSpeed Insights.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Метрика</th><th>Что измеряет</th><th>Хорошо</th><th>Плохо</th><th>Что делает дизайнер</th></tr></thead>
+    <tbody>
+      <tr><td>LCP · Largest Contentful Paint</td><td>Когда отрисовался самый крупный элемент первого экрана</td><td>до 2,5 с</td><td>больше 4 с</td><td>Картинка первого экрана в WebP или AVIF, до 200–300 КБ. Без тяжёлого видео на фоне в мобильной версии</td></tr>
+      <tr><td>INP · Interaction to Next Paint</td><td>Как быстро страница откликается на нажатие</td><td>до 200 мс</td><td>больше 500 мс</td><td>Меньше тяжёлых анимаций и эффектов на скролле, особенно на телефоне</td></tr>
+      <tr><td>CLS · Cumulative Layout Shift</td><td>Насколько прыгает вёрстка во время загрузки</td><td>до 0,1</td><td>больше 0,25</td><td>У картинок и баннеров заданы размеры, шрифт не «перескакивает», поп-ап не сдвигает контент</td></tr>
+    </tbody>
+  </table></div>
+  <p class="why">Раньше вместо INP была метрика FID (First Input Delay). В марте 2024 года Google заменил её на INP, поэтому в старых статьях ты ещё встретишь FID. Отдельно смотрят TTFB — время ответа сервера, но это зона разработчика.</p>
+  <div class="two">
+    <div class="box"><b>Шрифты</b><p>Каждое начертание — отдельный файл. Два шрифта по 4 начертания — уже 8 файлов. Обычно хватает 3–4 начертаний на весь сайт.</p></div>
+    <div class="box"><b>Картинки</b><p>Экспортируй из Figma в 2x, но сжимай перед загрузкой. Фото на 4 МБ и на 250 КБ на экране выглядят одинаково, а грузятся в 16 раз дольше.</p></div>
+  </div>
+</section>
+
+<section id="money">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Деньги и удержание</h2></div></div>
+  <p>Эти метрики считают маркетологи и собственник. Тебе важно их понимать, чтобы говорить с заказчиком на одном языке и показывать, сколько денег принёс твой редизайн.</p>
+  <div class="four">
+    <div class="box"><span class="kind">CAC</span><b>Цена клиента</b><div class="mt-f">Расходы на рекламу ÷ новые клиенты</div></div>
+    <div class="box"><span class="kind">AOV</span><b>Средний чек</b><div class="mt-f">Выручка ÷ число заказов</div></div>
+    <div class="box"><span class="kind">LTV</span><b>Ценность клиента</b><div class="mt-f">Средний чек × покупок за всё время</div></div>
+    <div class="box"><span class="kind">Retention</span><b>Возвращаемость</b><div class="mt-f">Вернувшиеся ÷ все клиенты × 100%</div></div>
+  </div>
+  <div class="sub">
+    <h3>Считаем на примере</h3>
+    <div class="sub-b">
+      <p>Онлайн-школа тратит на рекламу 300 000 ₽ в месяц. Приходит 7 500 человек, конверсия лендинга в заявку 4% — это 300 заявок. Менеджеры продают 20% — получается 60 учеников.</p>
+      <div class="formula"><span>300 000 ₽</span><em>÷</em><span>60 учеников</span><em>=</em><span class="m">CAC 5 000 ₽</span></div>
+      <p>Курс стоит 30 000 ₽, каждый третий ученик потом покупает второй курс. LTV = 30 000 × 1,33 ≈ 40 000 ₽. Нормой считают, когда LTV больше CAC хотя бы в 3 раза. Здесь в 8 — бизнес здоровый.</p>
+      <div class="note"><b>Где здесь дизайнер</b><span>Ты переделал лендинг, и конверсия выросла с 4% до 5%. Реклама та же, но заявок стало 375, учеников 75, а цена ученика упала до 4 000 ₽. Это 15 дополнительных учеников и 450 000 ₽ выручки в месяц. Такой результат стоит класть в кейс.</span></div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Возвращаемость</h3>
+    <div class="sub-b">
+      <p>Retention показывает ценность продукта: если люди возвращаются, им полезно. 1 000 покупателей, 300 вернулись за второй покупкой — retention 30%. Для медиа считают, сколько читателей вернулись в течение месяца, для школы — сколько учеников купили следующий курс.</p>
+      <p>Дизайнер помогает возвращаемости через личный кабинет, понятную историю заказов, письма и уведомления, которые хочется открыть, и кнопку «Повторить заказ».</p>
+    </div>
+  </div>
+</section>
+
+<section id="hyp">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Система метрик и гипотезы</h2></div></div>
+  <p>Чтобы не утонуть в десятках цифр, метрики группируют по пути клиента. Самая известная схема — пиратские метрики AARRR: её придумал инвестор Дэйв Макклюр в 2007 году, а название читается как пиратское «Аррр!». Иногда спереди добавляют Awareness — узнаваемость, и получается AAARRR.</p>
+  <div class="mt-aarrr">
+    <div><span class="kind">A · Acquisition</span><b>Привлечение</b><p>Пришли ли люди</p><small>Посетители, источники, CAC</small></div>
+    <div class="hot"><span class="kind">A · Activation</span><b>Активация</b><p>Поняли ли ценность</p><small>Отказы, скролл, CTR, конверсия</small></div>
+    <div><span class="kind">R · Retention</span><b>Удержание</b><p>Вернулись ли</p><small>Повторные визиты и покупки</small></div>
+    <div><span class="kind">R · Referral</span><b>Рекомендации</b><p>Позвали ли друзей</p><small>Переходы по реферальным ссылкам</small></div>
+    <div><span class="kind">R · Revenue</span><b>Доход</b><p>Принесли ли деньги</p><small>Средний чек, LTV</small></div>
+  </div>
+  <p>Дизайн сильнее всего влияет на второй этап — активацию. Если нужно быстро понять, как работает сайт, смотри пять цифр: посетители, источники, отказы, глубина просмотра или скролла и конверсия в целевое действие.</p>
+  <div class="sub">
+    <h3>Гипотеза → метрика</h3>
+    <div class="sub-b">
+      <p>Любую правку на сайте формулируют как гипотезу: <b>если мы сделаем X, то изменится метрика Y, потому что Z</b>. Без метрики правку невозможно проверить, и спор «стало лучше или хуже» решается вкусом. Потренируйся выбирать метрику.</p>
+      <div class="formula"><span>Если сделаем X</span><em>→</em><span>изменится метрика Y</span><em>→</em><span class="m">потому что Z</span></div>
+    </div>
+  </div>
+  <div class="demo" id="hyp-game">
+    <span class="cap">Тренажёр · для каждой гипотезы выбери метрику, по которой её проверить</span>
+    <ol class="mt-hyp" id="hyp-list"></ol>
+    <div class="mt-hyp-top"><span class="mt-count" id="hyp-n">Верно 0 из 6</span><button type="button" class="mt-ghost" id="hyp-reset">Заново</button></div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Метрики вместе с нейронкой</h2></div></div>
+  <p>Нейронка хорошо помогает разложить сайт на цели и воронку, сформулировать гипотезы и разобрать незнакомый отчёт. Цифры и решения остаются за тобой: она не видит твою Метрику и легко выдумывает «средние по рынку».</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Тип сайта, что продаём, кто приходит и откуда.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не выдаёт готовый план.</div>
+    <div><i>Правило 3</i><b>Цифры только твои</b>Нормы из ответа нейронки перепроверяй. Опирайся на свою Метрику.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Цели</span><b>Целевые действия и воронка</b>
+<pre id="p1">Я дизайнер, работаю над сайтом: <em>[тип сайта, что продаёт, для кого]</em>.
+Помоги определить главное целевое действие и 3–5 шагов воронки к нему, которые можно отследить как цели в Яндекс Метрике.
+Не предлагай готовый список сразу. Задавай мне вопросы по одному и жди ответа, пока не поймёшь, как устроен сайт.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь на вопросы и сам рисуешь воронку с названиями шагов.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Гипотезы</span><b>Правка → метрика</b>
+<pre id="p2">Вот что я хочу изменить на сайте: <em>[3 правки дизайна]</em>.
+Помоги переписать каждую правку в гипотезу «если X, то метрика Y изменится, потому что Z».
+Для каждой спроси меня, какую метрику я бы выбрал сам, и только потом скажи, согласен ли ты и почему.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> выбираешь метрику первым и решаешь, какую гипотезу проверять в первую очередь.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Разбор</span><b>Что говорят цифры</b>
+<pre id="p3">Вот данные моего сайта за месяц: <em>[визиты, источники, отказы, глубина, конверсия по целям]</em>. Можешь посмотреть скриншот карты скроллинга.
+Помоги понять, на каком шаге сайт теряет больше всего людей. Не делай вывод за меня: задай вопросы по одному, которые подведут меня к ответу.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> находишь главную утечку и предлагаешь, что в дизайне её исправит.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">10</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Карта метрик для своего лендинга</b><p>Возьми свой учебный лендинг или сайт, который ты недавно делал. Определи главное целевое действие и нарисуй воронку из 4–6 шагов. Выбери 5 метрик, по которым будешь оценивать сайт, и для каждой напиши, почему она важна. Сформулируй 3 гипотезы по схеме «если X, то метрика Y, потому что Z». Если сайт опубликован, поставь бесплатный счётчик Яндекс Метрики и через неделю приложи скриншот карты скроллинга. Сдай один фрейм в Figma с воронкой, метриками и гипотезами.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>Главное целевое действие одно и сформулировано конкретно</span></label>
+    <label><input type="checkbox"><span>В воронке понятно, где человек может уйти</span></label>
+    <label><input type="checkbox"><span>Среди 5 метрик есть хотя бы две, на которые влияет дизайн</span></label>
+    <label><input type="checkbox"><span>У каждой гипотезы есть метрика, которую можно посчитать</span></label>
+    <label><input type="checkbox"><span>Нормы взяты из своих данных или помечены как ориентир</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Принципы веб-дизайна: на чём держится сайт, который хорошо выглядит и хорошо работает.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 3 · Метрики сайта</footer>
+
+</div>
+<script type="application/json" id="heat-data">{
+"a":{"name":"Версия A","blocks":[
+{"t":"Первый экран","h":96,"r":100,"kind":"hero","note":"Огромное видео на весь экран, заголовок «Твой путь в дизайн». Что за курс и сколько стоит — непонятно, поэтому 26% уходят уже здесь.","clicks":[[78,52,14,"Клик по видео: ждут, что оно запустится"],[50,82,6,"Кнопка «Узнать больше» — нажимают мало"]]},
+{"t":"О школе","h":60,"r":74,"note":"Блок «О нас» на втором экране. Людям пока интересно, что они получат, а не история школы.","clicks":[]},
+{"t":"Программа","h":84,"r":55,"note":"До программы доходит половина. Она длинная и без подзаголовков, на ней теряется ещё треть.","clicks":[[30,40,8,"Пытаются раскрыть модуль — а он не раскрывается"]]},
+{"t":"Отзывы","h":64,"r":38,"note":"Отзывы в слайдере, до третьего слайда почти никто не листает.","clicks":[[86,50,5,"Стрелка слайдера"]]},
+{"t":"Тарифы","h":72,"r":24,"note":"Цену видит только каждый четвёртый. Остальные ищут её в меню и уходят.","clicks":[[50,74,7,"«Записаться» в тарифе"]]},
+{"t":"FAQ","h":56,"r":15,"note":"Вопросы о рассрочке и сроках спрятаны в самом низу.","clicks":[]},
+{"t":"Форма заявки","h":60,"r":11,"note":"До формы доходит 11% — она одна на всю страницу.","clicks":[[50,60,5,"Отправить"]]}],
+"menu":[[84,"Клики по «Цены» в меню: люди ищут стоимость"]],
+"kpi":"Конверсия в заявку 1,4% · до тарифов доходит 24%"},
+"b":{"name":"Версия B","blocks":[
+{"t":"Первый экран","h":76,"r":100,"kind":"hero","note":"Заголовок называет курс и результат, рядом «от 4 900 ₽/мес» и кнопка. Видео ушло вниз и запускается по клику. Отказов стало меньше: 86% листают дальше.","clicks":[[30,72,14,"«Записаться» на первом экране — главный клик страницы"]]},
+{"t":"Программа","h":72,"r":86,"note":"Программа сразу после первого экрана, модули раскрываются. Глаз бежит по заголовкам.","clicks":[[30,40,9,"Раскрывают модули"]]},
+{"t":"Тарифы","h":72,"r":63,"note":"Тарифы подняты выше середины: их видят 63% против 24% раньше.","clicks":[[50,74,12,"«Записаться» в тарифе"]]},
+{"t":"Отзывы","h":56,"r":48,"note":"Отзывы сеткой, а не слайдером: видно сразу 3 истории.","clicks":[]},
+{"t":"FAQ","h":56,"r":36,"note":"Ответы о рассрочке рядом с ценой и здесь.","clicks":[[20,40,5,"Раскрывают вопрос о рассрочке"]]},
+{"t":"Форма заявки","h":60,"r":29,"note":"До формы доходит 29%, но она больше не единственный вход: кнопки ведут к поп-апу с формой из любого места.","clicks":[[50,60,8,"Отправить"]]}],
+"menu":[],
+"kpi":"Конверсия в заявку 3,6% · до тарифов доходит 63%"}
+}</script>
+<script type="application/json" id="hyp-data">[
+{"h":"Если поднять блок с тарифами выше отзывов, больше людей увидят цену.","o":["Количество посетителей","Доля дошедших до тарифов на карте скролла","Средний чек","Retention"],"a":1,"e":"Гипотеза про то, видят ли блок. Это показывает карта скролла: какой процент визитов долистал до тарифов."},
+{"h":"Если переписать кнопку «Отправить» на «Получить программу курса», на неё станут чаще нажимать.","o":["CTR кнопки","Скорость загрузки (LCP)","Глубина просмотра","CAC"],"a":0,"e":"Меняем текст кнопки — смотрим долю тех, кто на неё нажал из видевших. Это CTR."},
+{"h":"Если убрать из формы четыре необязательных поля, больше людей её отправят.","o":["Отказы","Доля трафика из поиска","Конверсия формы: отправили ÷ начали заполнять","Время на сайте"],"a":2,"e":"Правка внутри формы, поэтому считаем от тех, кто до неё дошёл и начал заполнять. Так влияние остальной страницы не смешается с результатом."},
+{"h":"Если сжать фото на первом экране с 3 МБ до 250 КБ, меньше людей уйдут, не дождавшись загрузки.","o":["LCP и отказы","Средний чек","Retention","Конверсия по UTM-метке"],"a":0,"e":"LCP покажет, что первый экран стал грузиться быстрее, а отказы — что люди перестали уходить."},
+{"h":"Если добавить в корзину блок «С этим покупают», средний заказ станет больше.","o":["CTR баннера на главной","Средний чек (AOV)","Количество визитов","Глубина скролла"],"a":1,"e":"Блок допродаж влияет на сумму заказа. Смотрим средний чек и, дополнительно, сколько раз товары из блока добавили в корзину."},
+{"h":"Если через неделю после покупки присылать письмо с подборкой, люди будут чаще возвращаться за вторым заказом.","o":["Отказы","Конверсия первого экрана","Retention: доля повторных покупок","Скорость INP"],"a":2,"e":"Цель — вернуть уже купивших. Это retention: сколько покупателей сделали второй заказ за период."}
+]</script>
+<script type="application/json" id="quiz-data">[
+{"p":"На сайт пришли 2 000 человек, 60 оставили заявку. Какая конверсия?","o":["0,3%","3%","30%"],"a":1,"e":"60 ÷ 2 000 × 100% = 3%."},
+{"p":"Что в Яндекс Метрике считается отказом?","o":["Любой визит, где человек не оставил заявку","Визит с одной страницей короче 15 секунд","Визит с мобильного телефона"],"a":1,"e":"Отказ — одна страница и меньше 15 секунд. Человек, который прочитал лендинг за 3 минуты и ушёл, отказом не считается."},
+{"p":"На какую метрику дизайнер влияет меньше всего?","o":["CTR главной кнопки","Количество посетителей из рекламы","Глубина скролла лендинга"],"a":1,"e":"Сколько людей придёт, решают бюджет и настройки рекламы. Дизайнер влияет на то, что они сделают на сайте."},
+{"p":"Карта скролла показывает, что до тарифов доходят 20% посетителей. Что логичнее сделать первым?","o":["Перекрасить кнопку в тарифах","Поднять тарифы выше или показать цену на первом экране","Добавить ещё один блок отзывов перед тарифами"],"a":1,"e":"Пока цену видит каждый пятый, правка самой кнопки почти ничего не изменит. Сначала чиним путь до блока."},
+{"p":"Какая метрика из Core Web Vitals показывает, что вёрстка прыгает при загрузке?","o":["LCP","INP","CLS"],"a":2,"e":"CLS — Cumulative Layout Shift. Хорошо — до 0,1. Лечится заданными размерами картинок и баннеров."},
+{"p":"Какая гипотеза сформулирована правильно?","o":["Сделаем сайт красивее, и всё станет лучше","Если повторить кнопку после блока программы, CTR кнопки вырастет, потому что людям не нужно будет листать к ней","Добавим анимации, потому что сейчас так модно"],"a":1,"e":"В хорошей гипотезе есть изменение, метрика и причина. Только так правку можно проверить цифрами."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Метрики сайта» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const fmt = n => (Math.round(n * 10) / 10).toLocaleString('ru-RU') + '%';
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  // --- Калькулятор конверсии, CTR и отказов ---
+  const calc = $('#calc');
+  if (calc) {
+    const T = {
+      landing: { click: 'Нажали «Записаться»', conv: 'Отправили заявку', ctrN: 'CTR кнопки', formN: 'Конверсия формы', cr: [1.5, 5], ctr: [4, 10], form: [25, 50], bounce: [20, 35] },
+      shop: { click: 'Добавили в корзину', conv: 'Оплатили заказ', ctrN: 'Добавления в корзину', formN: 'Корзина → оплата', cr: [1, 3], ctr: [4, 9], form: [25, 45], bounce: [25, 40] },
+      b2b: { click: 'Нажали «Обсудить проект»', conv: 'Оставили заявку', ctrN: 'CTR кнопки', formN: 'Конверсия формы', cr: [1, 3], ctr: [3, 8], form: [25, 50], bounce: [25, 40] },
+      blog: { click: 'Нажали «Подписаться»', conv: 'Подписались', ctrN: 'CTR кнопки подписки', formN: 'Подписка после клика', cr: [0.5, 2], ctr: [1, 4], form: [30, 60], bounce: [30, 50] }
+    };
+    const TXT = {
+      bounce: { ok: 'Первый экран держит: люди остаются и читают.', mid: 'Терпимо. Проверь, совпадает ли первый экран с обещанием рекламы.', bad: 'Много людей уходят сразу. Обычные причины: долгая загрузка, непонятный первый экран, нецелевая реклама.' },
+      ctr: { ok: 'Кнопку замечают и охотно нажимают.', mid: 'Нажимают, но могли бы чаще. Проверь, видна ли кнопка и понятно ли, что будет после клика.', bad: 'На кнопку почти не нажимают. Возможно, до неё просто не доходят: открой карту скролла.' },
+      cr: { ok: 'Сильный результат для такого сайта.', mid: 'В пределах нормы, есть куда расти.', bad: 'Ниже обычного. Ищи шаг воронки, где теряется больше всего людей.' },
+      form: { ok: 'Форма не мешает: почти все нажавшие доходят до конца.', mid: 'Часть людей бросает на полпути. Попробуй убрать лишние поля.', bad: 'Начали, но не довели до конца. Форма отпугивает: слишком много полей, ошибки на телефоне или неожиданная цена.' }
+    };
+    const TAG = { ok: 'Хорошо', mid: 'Норма', bad: 'Ниже нормы', na: 'Нет данных' };
+    let type = 'landing';
+    const v = { visits: 1000, bounce: 250, click: 110, conv: 40 };
+    const keys = ['visits', 'bounce', 'click', 'conv'];
+
+    function labels() {
+      const t = T[type];
+      return { visits: 'Визиты за месяц', bounce: 'Отказы: ушли за 15 секунд', click: t.click, conv: t.conv };
+    }
+    function buildInputs() {
+      const L = labels();
+      $('#calc-in').innerHTML = keys.map(k =>
+        '<div class="mt-in"><label for="ci-' + k + '">' + esc(L[k]) + '</label>' +
+        '<input type="number" id="ci-' + k + '" min="0" max="100000" step="1" inputmode="numeric" value="' + v[k] + '">' +
+        '<input type="range" id="cr-' + k + '" min="0" max="' + (k === 'visits' ? 20000 : 3000) + '" step="' + (k === 'visits' ? 100 : 1) + '" value="' + v[k] + '" aria-label="' + esc(L[k]) + '"></div>').join('');
+      keys.forEach(k => {
+        const n = $('#ci-' + k), r = $('#cr-' + k);
+        n.addEventListener('input', () => { v[k] = Math.max(0, Math.round(+n.value || 0)); r.value = v[k]; render(); });
+        r.addEventListener('input', () => { v[k] = +r.value; n.value = v[k]; render(); });
+      });
+    }
+    function level(val, [a, b], lowerBetter) {
+      if (!isFinite(val)) return 'na';
+      if (lowerBetter) return val <= a ? 'ok' : val >= b ? 'bad' : 'mid';
+      return val >= b ? 'ok' : val < a ? 'bad' : 'mid';
+    }
+    function scale(val, [a, b], lowerBetter) {
+      const max = b * 2;
+      const pa = a / max * 100, pb = (b - a) / max * 100, pc = 100 - pa - pb;
+      const c = lowerBetter ? ['var(--good)', '#f2b33d', 'var(--bad)'] : ['var(--bad)', '#f2b33d', 'var(--good)'];
+      const pos = isFinite(val) ? Math.min(val / max, 1) * 100 : 0;
+      return '<div class="mt-scale" aria-hidden="true"><i style="width:' + pa + '%;background:' + c[0] + '"></i><i style="width:' + pb + '%;background:' + c[1] + '"></i><i style="width:' + pc + '%;background:' + c[2] + '"></i><b style="left:' + pos + '%"></b></div>';
+    }
+    function render() {
+      const t = T[type];
+      ['bounce', 'click', 'conv'].forEach(k => { const r = $('#cr-' + k); r.max = Math.max(v.visits, 1); r.value = v[k]; });
+      const m = {
+        bounce: v.visits ? v.bounce / v.visits * 100 : NaN,
+        ctr: v.visits ? v.click / v.visits * 100 : NaN,
+        cr: v.visits ? v.conv / v.visits * 100 : NaN,
+        form: v.click ? v.conv / v.click * 100 : NaN
+      };
+      const cards = [
+        ['bounce', 'Отказы', t.bounce, true, 'ориентир: до ' + t.bounce[0] + '% хорошо, от ' + t.bounce[1] + '% много'],
+        ['ctr', t.ctrN, t.ctr, false, 'ориентир: ' + t.ctr[0] + '–' + t.ctr[1] + '%'],
+        ['cr', 'Конверсия сайта', t.cr, false, 'ориентир: ' + t.cr[0].toLocaleString('ru-RU') + '–' + t.cr[1] + '%'],
+        ['form', t.formN, t.form, false, 'ориентир: ' + t.form[0] + '–' + t.form[1] + '%']
+      ];
+      $('#calc-out').innerHTML = cards.map(([k, name, rng, low, norm]) => {
+        const lv = level(m[k], rng, low);
+        return '<div class="mt-kpi ' + lv + '"><span class="kind">' + esc(name) + '</span><span class="v">' + (isFinite(m[k]) ? fmt(m[k]) : '—') + '</span>' +
+          scale(m[k], rng, low) + '<span class="mt-norm">' + norm + '</span><span class="mt-tag">' + TAG[lv] + '</span><p>' + (lv === 'na' ? 'Нужны визиты и нажатия, чтобы посчитать.' : TXT[k][lv]) + '</p></div>';
+      }).join('');
+      // итог
+      let sum = '';
+      if (v.bounce > v.visits || v.click > v.visits) sum = '<span class="warn">Отказов или нажатий больше, чем визитов. Так не бывает: проверь цифры.</span>';
+      else if (v.conv > v.click && v.click > 0) sum = '<span class="warn">Целевых действий больше, чем нажатий на кнопку. Значит, есть другой вход к форме или цели в Метрике настроены неправильно.</span>';
+      else if (v.visits) {
+        const lostBefore = v.visits - v.click, lostAfter = v.click - v.conv;
+        sum = '<b>Где теряем людей.</b> Из ' + v.visits.toLocaleString('ru-RU') + ' визитов до кнопки не дошли или не нажали ' + lostBefore.toLocaleString('ru-RU') + ', после нажатия бросили ' + lostAfter.toLocaleString('ru-RU') + '. ';
+        const lvCtr = level(m.ctr, t.ctr, false), lvForm = level(m.form, t.form, false);
+        if (lvForm === 'bad' && lvCtr !== 'bad') sum += 'Страница работает, а форма — нет: начни с неё.';
+        else if (lvCtr === 'bad') sum += 'Главная утечка — до кнопки. Сначала проверь первый экран и путь до кнопки, форма тут вторична.';
+        else sum += 'Утечки в пределах нормы. Ищи рост в мелочах: текст кнопки, порядок блоков, скорость.';
+      }
+      $('#calc-sum').innerHTML = sum;
+      $$('#calc-type button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.type === type)));
+    }
+    $$('#calc-type button').forEach(b => b.addEventListener('click', () => { type = b.dataset.type; buildInputs(); render(); }));
+    $$('[data-cpreset]', calc).forEach(b => b.addEventListener('click', () => {
+      b.dataset.cpreset.split(',').forEach((x, i) => { v[keys[i]] = +x; });
+      keys.forEach(k => { $('#ci-' + k).value = v[k]; $('#cr-' + k).value = v[k]; });
+      render();
+    }));
+    buildInputs(); render();
+  }
+
+  // --- Тепловая карта и карта скролла ---
+  const heat = $('#heat'), hd = $('#heat-data');
+  if (heat && hd) {
+    const D = JSON.parse(hd.textContent);
+    let mode = 'scroll', ver = 'a', sel = -1;
+    const page = $('#heat-page'), out = $('#heat-out');
+    const tint = r => 'hsla(' + Math.round((1 - r / 100) * 225) + ',85%,55%,.5)';
+    const spot = (x, y, s, label) => '<span class="mt-spot" title="' + esc(label) + '" style="left:' + x + '%;top:' + y + '%;width:' + (s * 4 + 10) + 'px;height:' + (s * 4 + 10) + 'px"></span>';
+    const linesFor = (b) => b.kind === 'hero'
+      ? '<span class="ln m"></span><span class="ln s"></span>' + (ver === 'a' ? '' : '<span class="bt"></span>')
+      : '<span class="ln m"></span><span class="ln s"></span>' + (/Тарифы|Форма/.test(b.t) || (ver === 'b' && b.t === 'Программа') ? '<span class="bt"></span>' : '');
+    function render() {
+      const V = D[ver];
+      page.className = 'mt-page m-' + mode;
+      const menu = V.menu.map(([x, l]) => spot(x, 50, 11, l)).join('');
+      page.innerHTML = '<div class="mt-nav"><b>Школа</b><span><i>Курсы</i><i>Цены</i><i>Блог</i></span>' + menu + '</div>' +
+        V.blocks.map((b, i) => '<button type="button" class="mt-blk' + (b.kind === 'hero' ? ' hero' : '') + (i === sel ? ' sel' : '') + '" data-i="' + i + '" style="min-height:' + b.h + 'px" aria-label="' + esc(b.t + ', дошли ' + b.r + '%') + '">' +
+          '<span class="tint" style="background:' + tint(b.r) + '"></span><span class="nm">' + esc(b.t) + '</span>' + linesFor(b) +
+          '<span class="pct">' + b.r + '%</span>' + b.clicks.map(c => spot(...c)).join('') + '</button>').join('');
+      $$('.mt-blk', page).forEach(el => el.addEventListener('click', () => { sel = +el.dataset.i; render(); }));
+      $('#heat-legend').innerHTML = mode === 'scroll'
+        ? '<div class="bar"></div><div class="ends"><span>почти никто</span><span>дошли все</span></div>'
+        : '<span>Пятна — где нажимают. Чем крупнее, тем больше кликов.</span>';
+      $('#heat-kpi').textContent = V.name + ' · ' + V.kpi;
+      if (sel >= 0 && V.blocks[sel]) {
+        const b = V.blocks[sel];
+        let html = '<b>' + esc(b.t) + (mode === 'scroll' ? ' · дошли ' + b.r + '%' : '') + '.</b> ' + esc(b.note);
+        if (mode === 'click') {
+          const cl = b.clicks.map(c => c[3]);
+          html += cl.length ? '<ul>' + cl.map(c => '<li>' + esc(c) + '</li>').join('') + '</ul>' : '<ul><li>Кликов почти нет</li></ul>';
+        }
+        out.innerHTML = html;
+      } else {
+        out.innerHTML = mode === 'scroll'
+          ? '<b>Карта скролла.</b> Процент справа — сколько визитов долистали до блока. Нажми на любой блок, чтобы прочитать разбор.'
+          : '<b>Карта кликов.</b> ' + (V.menu.length ? 'Видишь пятно на «Цены» в меню? ' + esc(V.menu[0][1]) + '. ' : '') + 'Нажми на блок, чтобы узнать, куда кликают.';
+      }
+      $$('#heat-mode button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+      $$('#heat-ver button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.ver === ver)));
+    }
+    $$('#heat-mode button').forEach(b => b.addEventListener('click', () => { mode = b.dataset.mode; render(); }));
+    $$('#heat-ver button').forEach(b => b.addEventListener('click', () => { ver = b.dataset.ver; sel = -1; render(); }));
+    render();
+  }
+
+  // --- Тренажёр: гипотеза → метрика ---
+  const hg = $('#hyp-game'), hdata = $('#hyp-data');
+  if (hg && hdata) {
+    const H = JSON.parse(hdata.textContent);
+    let got = 0, ans = 0;
+    function build() {
+      got = 0; ans = 0;
+      const list = $('#hyp-list'); list.innerHTML = '';
+      H.forEach(q => {
+        const li = document.createElement('li');
+        li.innerHTML = '<div class="hq"></div><div class="seg" role="group"></div><div class="fb" hidden></div>';
+        li.querySelector('.hq').textContent = q.h;
+        const seg = li.querySelector('.seg'), fb = li.querySelector('.fb');
+        q.o.forEach((t, j) => {
+          const b = document.createElement('button'); b.type = 'button'; b.textContent = t;
+          b.addEventListener('click', () => {
+            $$('button', seg).forEach((x, k) => { x.disabled = true; if (k === q.a) x.classList.add('r'); });
+            const ok = j === q.a; if (ok) got++; else b.classList.add('w');
+            li.classList.add(ok ? 'right' : 'wrong');
+            fb.innerHTML = '<b class="' + (ok ? 'g' : 'x') + '">' + (ok ? 'Верно. ' : 'Не совсем. ') + '</b>' + esc(q.e);
+            fb.hidden = false; ans++; count();
+          });
+          seg.append(b);
+        });
+        list.append(li);
+      });
+      count();
+    }
+    function count() {
+      const n = $('#hyp-n');
+      n.textContent = 'Верно ' + got + ' из ' + H.length + (ans === H.length ? (got === H.length ? ' · отлично, ты думаешь как продуктовый дизайнер' : ' · нажми «Заново» и попробуй ещё') : '');
+    }
+    $('#hyp-reset').addEventListener('click', build);
+    build();
+  }
+})();
+
+</script>
+</body></html>

@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Иконки</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив и схемы методички «Иконки» ===== */
+.ic{width:24px;height:24px;flex:none;display:block}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover:not(:disabled){border-color:var(--accent)}
+button.ghost:disabled{color:var(--faint);cursor:default}
+button.ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.cap.acc{color:var(--accent)}
+.game-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.meta-acts{display:flex;gap:8px;flex-wrap:wrap}
+.demo .warn{color:var(--bad)} .demo .okv{color:var(--good)}
+
+/* ряды иконок в карточках */
+.ic-row{display:flex;gap:14px;color:var(--ink);padding:4px 0}
+.ic-row .ic{width:26px;height:26px}
+.st-row .okc{color:var(--good)} .st-row .badc{color:var(--bad)} .st-row .infc{color:var(--line2)}
+.roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.styles6{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sty{min-height:110px;padding:20px}
+.sty .ic{width:56px;height:56px}
+.sty.duo{color:#eb7540}
+
+/* панель только иконки / с подписями */
+.tb{gap:18px;justify-content:flex-start;min-height:0;padding:18px}
+.tb.tb-l{gap:10px 16px}
+.tb-l span{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#101010}
+.tb-l .ic{width:20px;height:20px}
+
+/* спека */
+.spec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.spec>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.spec span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.spec b{font-weight:400;font-size:18px;line-height:1.2}
+.spec p{font-size:15px;line-height:1.4}
+
+/* лаборатория */
+.lab-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.lab-view{display:flex;flex-direction:column;gap:10px;min-width:0}
+.lab-stage{padding:14px;min-height:0}
+#lab-big{width:100%;max-width:340px;height:auto;display:block;color:#101010;overflow:visible}
+.lab-ctrls{display:flex;flex-direction:column;gap:14px;min-width:0}
+.bld-row{display:flex;flex-direction:column;gap:6px}
+.sliders{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.sliders label{display:block;font-size:14px;color:var(--dim)}
+.sliders b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.sliders input{display:block;width:100%;margin:8px 0 0;accent-color:var(--accent)}
+.lab-real{flex-direction:column;gap:16px;padding:20px}
+.lab-tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#5a5a58}
+.lab-set{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;align-items:center;color:#101010}
+.lab-set svg,.lab-btn svg{display:block;flex:none}
+.lab-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)} .verdict li.inf::before{color:var(--line2)}
+.verdict b{color:var(--ink);font-weight:400}
+
+/* пиксели */
+.px3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.px3 canvas{display:block;width:100%;max-width:180px;aspect-ratio:1;margin:14px auto 0;image-rendering:pixelated;background:#fff;border-radius:4px}
+.px3 figcaption{font-size:14px}
+
+/* оптика */
+.opt-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.opt-st{flex-direction:column;gap:10px;padding:18px 12px}
+.opt-st svg{width:100%;max-width:170px;height:auto;display:block}
+.opt-st:first-child svg{max-width:96px}
+.opt-st span{font-size:13px;color:#5a5a58}
+.opt-row.is-m .o,.opt-row.is-o .m{display:none}
+.squint-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:15px}
+.mass{gap:22px;color:#101010;transition:filter .3s}
+.mass .ic{width:28px;height:28px}
+.mass.squinted{filter:blur(3px)}
+.mass-ans{font-size:15px;border-left:1px solid var(--accent);padding-left:12px}
+
+/* тест на метафору */
+.meta-card{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px;align-items:start}
+.meta-stage{min-height:200px;color:#101010}
+.meta-stage .ic{width:88px;height:88px}
+.meta-q{display:flex;flex-direction:column;gap:12px;min-width:0}
+.meta-p{color:var(--ink);font-size:19px;line-height:1.3}
+.meta-opts{display:flex;flex-direction:column;gap:6px}
+.meta-opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.meta-opts button:hover:not(:disabled){border-color:var(--accent)}
+.meta-opts button:disabled{cursor:default;color:var(--dim)}
+.meta-opts button.right{border-color:var(--good);color:var(--ink)}
+.meta-opts button.wrong{border-color:var(--bad)}
+.meta .verd{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:4px 8px;margin-bottom:6px}
+.meta .verd.ok{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
+.meta .verd.label{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent)}
+.meta-sum{border:1px solid var(--good);border-radius:10px;padding:14px 16px;color:var(--ink);font-size:15px}
+
+/* найди чужую иконку */
+.odd-stage{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;padding:16px}
+.odd-stage button{background:#fff;border:1.5px solid transparent;border-radius:12px;aspect-ratio:1;display:grid;place-items:center;color:#101010;padding:0;min-width:0;transition:border-color .15s,background .15s}
+.odd-stage button:hover:not(:disabled){border-color:#c9c9c6}
+.odd-stage button svg{width:44%;height:44%;min-width:24px;min-height:24px}
+.odd-stage button.hit{border-color:#2fa84f;background:#e9f7ec}
+.odd-stage button.miss{border-color:#e5383b;background:#fdeceb}
+.odd-stage button:disabled{cursor:default}
+.odd-stage button:focus-visible{outline:2px solid #3b6ef0;outline-offset:2px}
+
+/* размеры, зона нажатия */
+.sizes{gap:20px;min-height:96px}
+.it{display:inline-flex;align-items:center;gap:6px;color:#101010}
+.it16{font-size:14px}.it16 .ic{width:16px;height:16px;color:#5a5a58}
+.it20{font-size:16px;gap:8px}.it20 .ic{width:20px;height:20px}
+.tap{width:44px;height:44px;display:grid;place-items:center;border:1.5px dashed #2fa84f;border-radius:10px;color:#101010;background:rgba(47,168,79,.08)}
+.tap.tap-bad{width:24px;height:24px;border-color:#e5383b;background:rgba(229,56,59,.08);border-radius:4px}
+
+/* таб-бар и состояния */
+.tabbar-st{padding:18px 12px}
+.tabbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;max-width:420px;background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:8px 4px;--icbg:#fff}
+.tabbar button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:4px;font:400 11px var(--body);color:#8e8e8c;padding:6px 2px;border-radius:10px;min-height:52px;min-width:0}
+.tabbar button .s{display:none}
+.tabbar button[aria-selected="true"]{color:#eb7540}
+.tabbar button[aria-selected="true"] .l{display:none}
+.tabbar button[aria-selected="true"] .s{display:block}
+.tabbar button:focus-visible{outline:2px solid #3b6ef0;outline-offset:0}
+.states5{gap:10px 18px;min-height:0;padding:20px 12px}
+.states5>span{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:#5a5a58}
+.st-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#101010;font-style:normal}
+.st-h{background:#e4e4e1}
+.st-p{background:#d2d2ce;transform:scale(.94)}
+.st-d{color:#bdbdba}
+.st-s{color:#eb7540;background:rgba(235,117,64,.12)}
+
+pre.code{margin:0;white-space:pre;font-family:var(--mono);font-size:13px;line-height:1.55;color:var(--ink);background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:16px;overflow-x:auto}
+
+@media (max-width:1000px){.roles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  .lab-grid,.meta-card,.spec,.styles6,.px3,.opt-row{grid-template-columns:minmax(0,1fr)}
+  .styles6,.px3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .roles{grid-template-columns:minmax(0,1fr)}
+  .odd-stage{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .meta-stage{min-height:150px}
+  .meta-stage .ic{width:72px;height:72px}
+  .mass{gap:14px}
+  .tb{gap:14px}
+}
+@media (max-width:420px){.styles6,.px3{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.mass,.odd-stage button{transition:none}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 4 · UI</span></div>
+  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 UI-элементы</span><span>03 UI-кит</span><span>04 Концепция в веб-дизайне</span><span>05 Композиция</span><span>06 Типографика</span><b>07 Иконки</b><span>08 Адаптив</span><span>09 Цвет</span></div>
+  <h1>Иконки</h1>
+  <p class="lead"><b>Иконка — подсказка размером 24 пикселя.</b> Разбираем, когда она помогает, как придумать понятную метафору, построить иконку по сетке и собрать набор, в котором ни одна не выбивается.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#why">Иконка или слово</a><a href="#types">Типы и стили</a><a href="#metaphor">Метафора</a><a href="#grid">Сетка и спека</a><a href="#optics">Оптика и масса</a><a href="#set">Единый набор</a><a href="#ui">В интерфейсе</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="why">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Иконка или слово</h2></div></div>
+  <p>Иконка нужна в двух случаях. Первый — ускорить понимание: лупу человек узнаёт быстрее, чем читает слово «Поиск». Второй — сэкономить место: в нижнем меню телефона или в панели редактора на слова просто нет ширины. Если иконка не делает ни того, ни другого, она украшение, и без неё экран станет чище.</p>
+  <p class="quote">Если смысл иконки не считывается за 1–2 секунды, рядом нужна подпись.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Сигнал действия</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="M8.7 10.7l6.6-3.9M8.7 13.3l6.6 3.9"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14z"/><path d="M10 10.5v6M14 10.5v6"/></svg></div><p>Что произойдёт по клику: добавить, поделиться, удалить. Живёт в кнопках и тулбарах.</p></div>
+    <div class="box"><span class="kind">Сигнал объекта</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20H4z"/><path d="M10 20v-5h4v5"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4M16 3v4"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><p>Что это за раздел или сущность: главная, расписание, файлы. Живёт в меню и списках.</p></div>
+    <div class="box"><span class="kind">Сигнал статуса</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.5l5 5 10-11"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 2.5 20h19z"/><path d="M12 9.5V14"/><path d="M12 17v.2"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.8v.2"/></svg></div><p>Что сейчас происходит: готово, ошибка, обрати внимание. Живёт рядом с полями и в уведомлениях.</p></div>
+  </div>
+
+  <div class="hier">
+    <div class="bad"><i>Только иконки</i><div class="stage tb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2.5 4.5 13.5h7l-1 8 9-11h-7z"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 21V3.5"/><path d="M5.5 4H18l-2.5 4.5L18 13H5.5"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18.5a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 10.5a4 4 0 0 1-.5 8z"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg></div><p>Панель редактора без подписей. Молния — это «ускорить», «опубликовать» или «премиум»? Флаг — «пожаловаться» или «отметить»? Человек начнёт наводить курсор на каждую.</p></div>
+    <div class="good"><i>Иконка + подпись</i><div class="stage tb tb-l"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2.5 4.5 13.5h7l-1 8 9-11h-7z"/></svg>Ускорить</span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 21V3.5"/><path d="M5.5 4H18l-2.5 4.5L18 13H5.5"/></svg>Пожаловаться</span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>Предпросмотр</span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Ссылка</span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18.5a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 10.5a4 4 0 0 1-.5 8z"/></svg>Синхронизация</span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>Вид</span></div><p>Те же иконки, но смысл ясен сразу. Иконка помогает найти кнопку глазами, подпись объясняет, что она делает.</p></div>
+  </div>
+
+  <div class="sub">
+    <h3>Когда без подписи можно</h3>
+    <div class="sub-b">
+      <div class="dodont">
+        <div class="good"><i>Можно только иконкой</i><ul><li>Поиск, закрыть, меню, назад</li><li>Корзина в магазине, плей и пауза</li><li>Плюс «добавить», карандаш «редактировать» в списке</li><li>Иконки в полях: глаз в пароле, календарь в поле даты</li></ul></div>
+        <div class="bad"><i>Нужна подпись</i><ul><li>Нижнее меню приложения: у Apple и Google в таб-баре подписи стоят под иконками</li><li>Новая или редкая функция: экспорт, архив, синхронизация</li><li>Иконка, которая в разных продуктах значит разное: звезда, флаг, молния</li><li>Опасное действие: удалить аккаунт, отменить подписку</li></ul></div>
+      </div>
+      <p class="why">Если подписи нет, на десктопе добавь всплывающую подсказку при наведении, а в коде — <b>aria-label</b>. Скринридер читает незрячему человеку именно этот текст, сама картинка ему ничего не скажет.</p>
+    </div>
+  </div>
+</section>
+
+<section id="types">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Типы и стили иконок</h2></div></div>
+  <p>Иконки делят двумя способами: по роли в интерфейсе и по стилю рисовки. Роль подсказывает, где иконка стоит и нужна ли подпись. Стиль задаёт характер всего набора.</p>
+  <div class="sub">
+    <h3>По роли</h3>
+    <div class="sub-b">
+      <div class="roles">
+        <div class="box"><span class="kind">Навигационные</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20H4z"/><path d="M10 20v-5h4v5"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0z"/></svg></div><p>Вкладки, меню, разделы. Помогают понять, где ты и куда можно перейти.</p></div>
+        <div class="box"><span class="kind">Действия</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="M8.7 10.7l6.6-3.9M8.7 13.3l6.6 3.9"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></div><p>Добавить, поделиться, скачать, удалить. Всегда кликабельны, поэтому им нужна зона нажатия.</p></div>
+        <div class="box"><span class="kind">Статусы</span><div class="ic-row st-row"><span class="okc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.5l5 5 10-11"/></svg></span><span class="badc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 2.5 20h19z"/><path d="M12 9.5V14"/><path d="M12 17v.2"/></svg></span><span class="infc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.8v.2"/></svg></span></div><p>Успех, ошибка, предупреждение, загрузка. Цвет здесь помогает, но форма должна работать и без цвета.</p></div>
+        <div class="box"><span class="kind">Контентные</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4M16 3v4"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8.5 7 10 4h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/></svg></div><p>Подписывают данные в карточках и списках: дата, адрес, количество фото. Обычно некликабельны.</p></div>
+        <div class="box"><span class="kind">Системные</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h8.5M17.5 7H20M4 12h2.5M11.5 12H20M4 17h10.5M19.5 17h.5"/><circle cx="15" cy="7" r="2.5"/><circle cx="9" cy="12" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/><path d="M12 14.5v2.5"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg></div><p>Настройки, безопасность, уведомления. Одинаковые почти во всех продуктах, поэтому их узнают без подписи.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>По стилю</h3>
+    <div class="sub-b">
+      <div class="styles6">
+        <div class="box"><div class="stage sty"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg></div><span class="kind">Контурные · line</span><p>Только линия одной толщины. Лёгкие и спокойные, самый частый стиль в интерфейсах: Lucide, Heroicons Outline.</p></div>
+        <div class="box"><div class="stage sty"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z" fill="currentColor"/><path d="M10 21h4"/></svg></div><span class="kind">Залитые · solid</span><p>Силуэт с заливкой. Тяжелее и заметнее, хорошо читаются на 16 px. Часто — для активного состояния.</p></div>
+        <div class="box"><div class="stage sty duo"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z" fill="currentColor" fill-opacity=".22"/><path d="M10 21h4"/></svg></div><span class="kind">Двухтонные · duotone</span><p>Контур плюс полупрозрачная заливка или второй цвет. Мягче solid, ярче line. Есть в наборе Phosphor.</p></div>
+        <div class="box"><div class="stage sty"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 16v-5a6.5 6.5 0 0 1 13 0v5l1.8 2.2H3.7z" fill="#eb7540"/><path d="M8 11a4 4 0 0 1 2.4-3.7" fill="none" stroke="#ffd2b8" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="20.3" r="1.9" fill="#101010"/><rect x="11" y="2.6" width="2" height="2.4" rx="1" fill="#101010"/><path d="M20.5 6.5a5 5 0 0 1 1 3M3.5 6.5a5 5 0 0 0-1 3" fill="none" stroke="#5b8def" stroke-width="1.4" stroke-linecap="round"/></svg></div><span class="kind">Детализированные</span><p>Несколько цветов, блики, мелкие детали. Работают от 48 px в промо-блоках и онбординге, в кнопке превращаются в пятно.</p></div>
+        <div class="box"><div class="stage sty"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="ik-g3d" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc49c"/><stop offset=".55" stop-color="#eb7540"/><stop offset="1" stop-color="#a8421a"/></linearGradient><radialGradient id="ik-g3s" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs><ellipse cx="12" cy="21.6" rx="8" ry="1.6" fill="url(#ik-g3s)"/><path d="M5.5 16v-5a6.5 6.5 0 0 1 13 0v5l1.8 2.2H3.7z" fill="url(#ik-g3d)"/><ellipse cx="9.2" cy="9.4" rx="1.6" ry="2.6" fill="#fff" opacity=".55" transform="rotate(25 9.2 9.4)"/><circle cx="12" cy="20" r="1.8" fill="#7a2f12"/></svg></div><span class="kind">Объёмные · 3D</span><p>Рендер с объёмом, светом и тенью. Для лендингов, рекламы и пустых состояний. Не для мелких кнопок интерфейса.</p></div>
+        <div class="box"><div class="stage sty"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" shape-rendering="crispEdges"><path d="M10 3h4v2h-4zM8 5h8v2H8zM6 7h12v6H6zM4 13h16v2H4zM2 15h20v2H2zM10 19h4v2h-4z" fill="currentColor"/></svg></div><span class="kind">Пиксельные</span><p>Нарисованы квадратами-пикселями. Это стилизация под игры и ретро-интерфейсы, выбирают её ради настроения сайта.</p></div>
+      </div>
+      <p class="why">В одном интерфейсе все UI-иконки — в одном стиле. Детализированные и объёмные иконки для промо-блоков — отдельный набор со своими правилами, и он не смешивается с иконками в кнопках. Line и solid можно сочетать только по правилу: например, line по умолчанию, solid — у выбранной вкладки.</p>
+    </div>
+  </div>
+</section>
+
+<section id="metaphor">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Метафора</h2></div></div>
+  <p>Метафора — образ, через который иконка передаёт смысл. Лупа значит «поиск», шестерёнка — «настройки», корзина — «удалить» или «покупки», смотря где она стоит. Хорошая метафора опирается на то, что человек уже видел в других продуктах. Оригинальность тут почти всегда проигрывает привычке.</p>
+  <div class="four">
+    <div class="box"><span class="kind">Сам предмет</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8.5 7 10 4h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4M16 3v4"/></svg></div><p>Камера — камера, календарь — дата. Самые понятные.</p></div>
+    <div class="box"><span class="kind">Действие через предмет</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14z"/><path d="M10 10.5v6M14 10.5v6"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div><p>Мусорка — удалить, лупа — найти. Работают за счёт привычки.</p></div>
+    <div class="box"><span class="kind">Условный знак</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></div><p>Плюс и крестик. Абстрактные, но их знают все.</p></div>
+    <div class="box"><span class="kind">Направление</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></div><p>Стрелки: назад, скачать, отправить. Важно, куда смотрит стрелка.</p></div>
+  </div>
+  <div class="three">
+    <div class="box"><span class="kind">Устаревшие</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 3.5h12l3 3v14h-15z"/><path d="M8 3.5v5h7v-5"/><path d="M8 20.5v-6h8v6"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.5l2 5L8 10a11 11 0 0 0 6 6l1.5-2.5 5 2V19a2 2 0 0 1-2 2A16.5 16.5 0 0 1 3 5.5a2 2 0 0 1 2-2z"/></svg></div><p>Дискету большинство студентов в руках не держали, телефонная трубка давно не похожа на телефон. Их понимают по привычке, но для новой функции такие метафоры не бери.</p></div>
+    <div class="box"><span class="kind">Культурные</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 21V3.5"/><path d="M5.5 4H18l-2.5 4.5L18 13H5.5"/></svg></div><p>Жесты рук в разных странах читаются по-разному, а почтовый ящик выглядит по-своему в каждой стране. Делаешь продукт для многих стран — избегай жестов и местных предметов.</p></div>
+    <div class="box"><span class="kind">Контекстные</span><div class="ic-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9l-5.2 2.8 1-5.9-4.3-4.1 5.9-.8z"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></div><p>Звезда — избранное, рейтинг или «важное». Глаз — «показать пароль» или «просмотры». Смысл задаёт место, где иконка стоит.</p></div>
+  </div>
+
+  <div class="demo meta" id="meta">
+    <div class="game-top"><span class="cap acc" id="meta-n">Иконка 1 из 8</span><span class="cap" id="meta-sc">Нужна подпись: 0</span></div>
+    <div class="meta-card">
+      <div class="stage meta-stage" id="meta-ic"></div>
+      <div class="meta-q">
+        <p class="meta-p">Что сделает кнопка с этой иконкой? Подписи нет.</p>
+        <div class="meta-opts" id="meta-opts"></div>
+        <output id="meta-out"></output>
+        <div class="meta-acts"><button type="button" class="ghost" id="meta-next" disabled>Следующая иконка</button></div>
+      </div>
+    </div>
+    <span class="cap">Тест на метафору · выбери, что значит иконка, и посмотри, справилась бы она без подписи</span>
+  </div>
+
+  <div class="sub">
+    <h3>Как искать метафору</h3>
+    <div class="sub-b">
+      <ol class="steps">
+        <li><div><div class="t">Назови функцию глаголом</div><div class="d">Не «история», а «посмотреть прошлые заказы». Так понятнее, что именно нужно показать.</div></div></li>
+        <li><div><div class="t">Выпиши 5 предметов-ассоциаций</div><div class="d">Для «прошлых заказов»: часы, стрелка назад по кругу, чек, коробка, список. Ищи предметы, а не абстракции.</div></div></li>
+        <li><div><div class="t">Проверь, как это рисуют другие</div><div class="d">Открой Material Symbols, Lucide или Phosphor и набери слово в поиске. Если там у всех часы со стрелкой, бери часы со стрелкой.</div></div></li>
+        <li><div><div class="t">Нарисуй 3 эскиза и покажи людям</div><div class="d">Покажи иконку без подписи трём людям и спроси: «Что будет, если нажать?» Если двое ответили не то — меняй метафору или добавляй подпись.</div></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="grid">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Сетка, зона безопасности и спека</h2></div></div>
+  <p>Иконку рисуют на квадратном артборде. Самый частый размер — 24×24 px, реже 20×20 и 16×16. Внутри — сетка с шагом 1 px и несколько базовых фигур, по которым строят все иконки набора. Перед первой иконкой записывают спеку: короткий список правил, которые одинаковы для всех.</p>
+  <div class="spec">
+    <div><span>Артборд</span><b>24×24 px</b><p>Один размер на весь набор. Другие размеры — отдельные версии, а не масштаб.</p></div>
+    <div><span>Зона безопасности</span><b>2 px со всех сторон</b><p>Живая зона 20×20. Основная форма — внутри неё. Поля нужны, чтобы иконки не слипались и одинаково стояли в кнопках.</p></div>
+    <div><span>Кейлайны</span><b>круг 20, квадрат 18, прямоугольники 20×16</b><p>Базовые фигуры. Круглая иконка опирается на круг, квадратная — на квадрат, и визуально они одного размера.</p></div>
+    <div><span>Толщина линии</span><b>1,5 или 2 px</b><p>Одна на весь набор. Просвет между линиями не меньше толщины линии, иначе он залипнет.</p></div>
+    <div><span>Концы и углы</span><b>круглые или острые</b><p>Одинаковые у всех. Круглые концы — мягче и дружелюбнее, острые — строже.</p></div>
+    <div><span>Скругления</span><b>например, 2 px</b><p>Один радиус для всех углов. Наклоны — по 45° или кратно 15°.</p></div>
+  </div>
+
+  <div class="demo lab" id="lab">
+    <span class="cap">Лаборатория иконки · двигай ползунки и смотри, что происходит на реальном размере</span>
+    <div class="lab-grid">
+      <div class="lab-view">
+        <div class="stage lab-stage"><svg id="lab-big" viewBox="-1 -1 26 26" role="img" aria-label="Иконка на сетке 24 на 24"><g id="lab-safe"><path d="M0 0h24v24H0zM2 2v20h20V2z" fill="#eb7540" fill-opacity=".16" fill-rule="evenodd"/></g><g id="lab-gridl" stroke="#c9c9c6" stroke-width=".04"></g><g id="lab-keys" fill="none" stroke="#5b8def" stroke-width=".08"><circle cx="12" cy="12" r="10"/><rect x="3" y="3" width="18" height="18"/><rect x="2" y="4" width="20" height="16"/><rect x="4" y="2" width="16" height="20"/></g><g id="lab-ic"></g></svg></div>
+        <div class="seg" id="lab-ov"><button type="button" data-ov="gridl" aria-pressed="true">Сетка</button><button type="button" data-ov="safe" aria-pressed="true">Зона безопасности</button><button type="button" data-ov="keys" aria-pressed="false">Кейлайны</button></div>
+      </div>
+      <div class="lab-ctrls">
+        <div class="bld-row"><span class="cap">Иконка</span><div class="seg" data-k="ic"><button type="button" data-v="lock">Замок</button><button type="button" data-v="calendar">Календарь</button><button type="button" data-v="mail">Письмо</button><button type="button" data-v="bell">Колокольчик</button></div></div>
+        <div class="sliders">
+          <label>Толщина линии <b id="lv-s">2</b> px из 24<input type="range" id="lr-s" min="0.5" max="3.5" step="0.25" value="2"></label>
+          <label>Скругление углов <b id="lv-r">2</b> px<input type="range" id="lr-r" min="0" max="6" step="0.5" value="2"></label>
+        </div>
+        <div class="bld-row"><span class="cap">Размер на экране</span><div class="seg" data-k="size"><button type="button" data-v="16">16</button><button type="button" data-v="20">20</button><button type="button" data-v="24">24</button><button type="button" data-v="32">32</button><button type="button" data-v="48">48</button></div></div>
+        <div class="bld-row"><span class="cap">Стиль</span><div class="seg" data-k="style"><button type="button" data-v="line">Line</button><button type="button" data-v="solid">Solid</button></div></div>
+        <div class="bld-row"><span class="cap">Концы и углы линий</span><div class="seg" data-k="cap"><button type="button" data-v="round">Круглые</button><button type="button" data-v="sharp">Острые</button></div></div>
+      </div>
+    </div>
+    <div class="stage lab-real">
+      <span class="lab-tag" id="lab-tag">Реальный размер · 24 px</span>
+      <div class="lab-set" id="lab-set"></div>
+      <span class="u-btn u-primary lab-btn" id="lab-btn"></span>
+    </div>
+    <ul class="verdict" id="lab-out"></ul>
+    <div class="seg"><button type="button" data-lp="2,2,24,line,round">Как Lucide</button><button type="button" data-lp="1.5,2,24,line,round">Как Heroicons</button><button type="button" data-lp="0.75,2,16,line,round">Слишком тонко</button><button type="button" data-lp="3.5,5,20,line,sharp">Каша</button><button type="button" data-lp="2,0,24,solid,sharp">Строгий solid</button></div>
+  </div>
+
+  <div class="sub">
+    <h3>Почему иконка мылится</h3>
+    <div class="sub-b">
+      <p>Экран состоит из пикселей. Если линия попадает ровно в столбец пикселей, она чёткая. Если проходит посередине между ними, браузер закрашивает два столбца серым — и иконка выглядит размытой. Ниже одна и та же фигура 16×16, увеличенная в 10 раз.</p>
+      <div class="px3">
+        <figure><canvas width="16" height="16" data-px="0"></canvas><figcaption><b>По сетке</b>Линия 1 px стоит точно в пикселях. Края резкие.</figcaption></figure>
+        <figure><canvas width="16" height="16" data-px="1"></canvas><figcaption><b>Сдвиг на 0,5 px</b>Фигура сдвинута на полпикселя. Каждая линия расплылась на два серых пикселя.</figcaption></figure>
+        <figure><canvas width="16" height="16" data-px="2"></canvas><figcaption><b>Толщина 1,3 px</b>Дробная толщина. Часть линий чёткая, часть с серой бахромой.</figcaption></figure>
+      </div>
+      <ol class="steps">
+        <li><div><div class="t">Рисуй из геометрии, а не по пикселям</div><div class="d">Круги, прямоугольники, ровные дуги. Много мелких ступенек — признак, что иконку рисовали точками.</div></div></li>
+        <li><div><div class="t">Целая толщина и целые координаты</div><div class="d">1,5 или 2 px и точки на сетке. В Figma включи View → Pixel preview и посмотри иконку в 100%.</div></div></li>
+        <li><div><div class="t">Не масштабируй готовую иконку</div><div class="d">24 px, уменьшенная до 16, получит линию 1,33 px. Для 16 px рисуют отдельную версию с меньшим количеством деталей.</div></div></li>
+        <li><div><div class="t">Не мельчи</div><div class="d">Маленькие радиусы и узкие прорези на 16 px превращаются в зазубрины. На 16 px считываются только силуэт и одна-две детали.</div></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="optics">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Оптика и визуальная масса</h2></div></div>
+  <p>Глаз не измеряет координаты. Круг шириной 16 px кажется меньше квадрата 16 px, а треугольник, поставленный точно по центру, кажется сдвинутым влево. Поэтому иконки подгоняют на глаз: где-то чуть больше, где-то чуть в сторону. Это называется оптической компенсацией.</p>
+  <div class="demo" id="opt">
+    <span class="cap">Математика или оптика · переключай и сравнивай</span>
+    <div class="seg"><button type="button" data-o="m" aria-pressed="true">Ровно по координатам</button><button type="button" data-o="o" aria-pressed="false">Ровно на глаз</button></div>
+    <div class="opt-row is-m" id="opt-row">
+      <div class="stage opt-st"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#101010"/><line x1="24" y1="4" x2="24" y2="44" stroke="#eb7540" stroke-width=".5" stroke-dasharray="1.5 1.5"/><path class="m" d="M17 16v16l14-8z" fill="#f4f4f2"/><path class="o" d="M19.3 16v16l14-8z" fill="#f4f4f2"/></svg><span>Плей в кнопке</span></div>
+      <div class="stage opt-st"><svg viewBox="0 0 96 48" aria-hidden="true"><line x1="0" y1="8" x2="96" y2="8" stroke="#eb7540" stroke-width=".5" stroke-dasharray="1.5 1.5"/><line x1="0" y1="40" x2="96" y2="40" stroke="#eb7540" stroke-width=".5" stroke-dasharray="1.5 1.5"/><rect x="10" y="8" width="32" height="32" fill="#101010"/><circle class="m" cx="72" cy="24" r="16" fill="#101010"/><circle class="o" cx="72" cy="24" r="17.6" fill="#101010"/></svg><span>Круг и квадрат</span></div>
+      <div class="stage opt-st"><svg viewBox="0 0 96 48" aria-hidden="true"><line x1="0" y1="8" x2="96" y2="8" stroke="#eb7540" stroke-width=".5" stroke-dasharray="1.5 1.5"/><line x1="0" y1="40" x2="96" y2="40" stroke="#eb7540" stroke-width=".5" stroke-dasharray="1.5 1.5"/><rect x="10" y="8" width="32" height="32" fill="#101010"/><path class="m" d="M72 8 90 40H54z" fill="#101010"/><path class="o" d="M72 4.5 92 42H52z" fill="#101010"/></svg><span>Треугольник и квадрат</span></div>
+    </div>
+    <output id="opt-out"></output>
+  </div>
+  <div class="sub">
+    <h3>Визуальная масса</h3>
+    <div class="sub-b">
+      <p>Даже при одной толщине линии иконки бывают разной тяжести. Залитое сердце рядом с контурными кажется пятном, иконка с тонкой линией — дырой в ряду. Проверка простая: прищурься и посмотри на силуэты. Ряд должен выглядеть ровной строкой без пятен и пустот.</p>
+      <div class="squint-bar"><button type="button" class="ghost" data-squint="mass-row" aria-pressed="false">Прищуриться</button><span>Размой ряд и найди две иконки, которые выбиваются по весу.</span></div>
+      <div class="stage mass" id="mass-row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0z"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20C6 16 3 12.5 3 9a4.5 4.5 0 0 1 9-1 4.5 4.5 0 0 1 9 1c0 3.5-3 7-9 11z" fill="currentColor"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4M16 3v4"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4H5l3 11"/><path d="M6.2 7.5H21l-2.2 7.5H8z"/><circle cx="9" cy="19.5" r="1.5"/><circle cx="17" cy="19.5" r="1.5"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/><path d="M12 14.5v2.5"/></svg></div>
+      <p class="mass-ans" id="mass-ans" hidden>Выбиваются залитое сердце (слишком тяжёлое) и календарь с линией 1 px (слишком лёгкий). У тяжёлых иконок уменьшай площадь заливки и убирай лишние внутренние линии. У лёгких — усиливай контур и увеличивай ключевые элементы до кейлайнов.</p>
+      <div class="three">
+        <div class="box"><span class="kind">Правило 1</span><p>Круглые формы делают чуть больше квадратных. В Material Symbols круг вписан в 20 px, а квадрат — в 18 px.</p></div>
+        <div class="box"><span class="kind">Правило 2</span><p>Острые углы и вершины могут выходить за кейлайн и даже в зону безопасности. Иначе треугольник кажется меньше соседей.</p></div>
+        <div class="box"><span class="kind">Правило 3</span><p>Несимметричную иконку центрируют по её «центру тяжести», а не по рамке. Плей сдвигают вправо на 1–2 px из 24.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="set">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Единый набор</h2></div></div>
+  <p>Набор выглядит цельным, когда у всех иконок одинаковые артборд, толщина, концы линий, радиусы, уровень деталей и перспектива. Стоит нарушить одно правило — и иконка выглядит взятой с чужого сайта, даже если нарисована хорошо. Потренируй глаз: в каждом ряду одна иконка из другого набора.</p>
+  <div class="demo odd" id="odd">
+    <div class="game-top"><span class="cap acc" id="odd-n">Раунд 1 из 7</span><span class="cap" id="odd-sc">С первой попытки: 0</span></div>
+    <div class="stage odd-stage" id="odd-grid"></div>
+    <output id="odd-out"></output>
+    <div class="meta-acts"><button type="button" class="ghost" id="odd-next" disabled>Следующий раунд</button><button type="button" class="ghost" id="odd-reset">Заново</button></div>
+    <span class="cap">Тренажёр · нажми на иконку, которая выбивается из набора</span>
+  </div>
+
+  <div class="sub">
+    <h3>Готовый набор или свой</h3>
+    <div class="sub-b">
+      <p>В большинстве проектов берут готовый набор: в нём уже есть сотни иконок по одной спеке. Свой набор рисуют, когда иконки — часть фирменного стиля или в готовых нет нужных образов. Если в готовом наборе не хватает иконки, дорисуй её по спеке этого набора: та же сетка, толщина и концы.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Набор</th><th>Сетка</th><th>Стили</th><th>Чем полезен</th></tr></thead>
+        <tbody>
+          <tr><td>Material Symbols · Google</td><td>24, живая зона 20</td><td>Outlined, Rounded, Sharp</td><td>Вариативный шрифт: заливка, толщина от 100 до 700 и оптический размер настраиваются ползунками</td></tr>
+          <tr><td>SF Symbols · Apple</td><td>подстраивается под текст</td><td>9 толщин, 3 масштаба</td><td>Толщина совпадает с весом шрифта San Francisco, иконка выравнивается по строке текста</td></tr>
+          <tr><td>Lucide</td><td>24</td><td>line, линия 2 px</td><td>Круглые концы и углы, больше тысячи иконок, открытая лицензия</td></tr>
+          <tr><td>Heroicons · авторы Tailwind</td><td>24, 20, 16</td><td>Outline 1,5 px, Solid, Mini, Micro</td><td>Отдельные версии под каждый размер, а не масштаб одной</td></tr>
+          <tr><td>Phosphor</td><td>любой размер, вектор</td><td>Thin, Light, Regular, Bold, Fill, Duotone</td><td>Шесть весов одного набора: легко сочетать line и solid по правилу</td></tr>
+          <tr><td>Fluent UI System Icons · Microsoft</td><td>16–48</td><td>Regular, Filled</td><td>Пара «контур — заливка» для каждой иконки, удобно для выбранных состояний</td></tr>
+        </tbody>
+      </table></div>
+      <p class="why">Открой любой из этих наборов и поставь рядом 10 иконок. Посмотри, как в них решены круги, наклоны и мелкие детали, — это лучший учебник по оптике. Перед использованием проверь лицензию: у перечисленных она бесплатная и разрешает коммерческие проекты.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ui">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Иконка в интерфейсе</h2></div></div>
+  <p>Нарисовать иконку — половина работы. Вторая половина — поставить её в интерфейс: подобрать размер под текст, дать место для пальца, нарисовать состояния и передать разработчику аккуратные файлы.</p>
+  <div class="sub">
+    <h3>Размер и текст</h3>
+    <div class="sub-b">
+      <div class="scroll"><table>
+        <thead><tr><th>Иконка</th><th>Текст рядом</th><th>Где</th></tr></thead>
+        <tbody>
+          <tr><td>16 px</td><td>12–14 px</td><td>Бейджи, мелкие подписи, иконки внутри полей и чипсов</td></tr>
+          <tr><td>20 px</td><td>15–16 px</td><td>Кнопки, пункты меню, списки</td></tr>
+          <tr><td>24 px</td><td>подпись 11–12 px снизу или без текста</td><td>Таб-бар, тулбар, кнопки-иконки, шапка сайта</td></tr>
+          <tr><td>32–48 px</td><td>заголовок блока</td><td>Преимущества на лендинге, пустые состояния, онбординг</td></tr>
+        </tbody>
+      </table></div>
+      <div class="two">
+        <div class="box"><b>Иконка + текст</b><div class="stage sizes"><span class="it it16"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4M16 3v4"/></svg>12 марта</span><span class="it it20"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Скачать</span></div><ul><li>Расстояние до текста — 6–8 px.</li><li>Иконка выравнивается по центру строки, а не по верху.</li><li>Цвет иконки — как у текста или чуть тусклее.</li></ul></div>
+        <div class="box"><b>Зона нажатия</b><div class="stage sizes"><span class="tap"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span><span class="tap tap-bad"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span></div><ul><li>Иконка 24 px, а кликабельная зона — не меньше 44×44 (Apple) или 48×48 (Google).</li><li>Разница добирается внутренними отступами кнопки.</li><li>Справа — зона 24×24: на телефоне в неё трудно попасть.</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Состояния</h3>
+    <div class="sub-b">
+      <p>Иконка-кнопка проходит те же состояния, что и обычная кнопка: default, hover, pressed, disabled. В навигации добавляется selected. Частый приём — контурная иконка в покое и залитая у выбранной вкладки, как в нижнем меню Instagram. Понажимай вкладки.</p>
+      <div class="demo">
+        <div class="stage tabbar-st"><div class="tabbar" id="tabbar" role="tablist" aria-label="Пример нижнего меню">
+          <button type="button" role="tab" aria-selected="true"><span class="l"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20H4z"/><path d="M10 20v-5h4v5"/></svg></span><span class="s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20H4z" fill="currentColor"/><path d="M10 20v-5h4v5" style="stroke:var(--icbg,#f4f4f2)"/></svg></span>Главная</button>
+          <button type="button" role="tab" aria-selected="false"><span class="l"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span><span class="s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="currentColor"/><path d="m20 20-4-4"/></svg></span>Поиск</button>
+          <button type="button" role="tab" aria-selected="false"><span class="l"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20C6 16 3 12.5 3 9a4.5 4.5 0 0 1 9-1 4.5 4.5 0 0 1 9 1c0 3.5-3 7-9 11z"/></svg></span><span class="s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20C6 16 3 12.5 3 9a4.5 4.5 0 0 1 9-1 4.5 4.5 0 0 1 9 1c0 3.5-3 7-9 11z" fill="currentColor"/></svg></span>Избранное</button>
+          <button type="button" role="tab" aria-selected="false"><span class="l"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span><span class="s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v11H9l-5 4z" fill="currentColor"/><path d="M8 9.5h8M8 12.5h5" style="stroke:var(--icbg,#f4f4f2)"/></svg></span>Чаты</button>
+          <button type="button" role="tab" aria-selected="false"><span class="l"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0z"/></svg></span><span class="s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0z" fill="currentColor"/></svg></span>Профиль</button>
+        </div></div>
+        <div class="stage states5">
+          <span><i class="st-ic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="M8.7 10.7l6.6-3.9M8.7 13.3l6.6 3.9"/></svg></i>Default</span>
+          <span><i class="st-ic st-h"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="M8.7 10.7l6.6-3.9M8.7 13.3l6.6 3.9"/></svg></i>Hover</span>
+          <span><i class="st-ic st-p"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="M8.7 10.7l6.6-3.9M8.7 13.3l6.6 3.9"/></svg></i>Pressed</span>
+          <span><i class="st-ic st-d"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="M8.7 10.7l6.6-3.9M8.7 13.3l6.6 3.9"/></svg></i>Disabled</span>
+          <span><i class="st-ic st-s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17.5" cy="5.5" r="2.5" fill="currentColor"/><circle cx="6.5" cy="12" r="2.5" fill="currentColor"/><circle cx="17.5" cy="18.5" r="2.5" fill="currentColor"/><path d="M8.7 10.7l6.6-3.9M8.7 13.3l6.6 3.9"/></svg></i>Selected</span>
+        </div>
+        <span class="cap">Нижнее меню нажимается · ниже все состояния иконки-кнопки</span>
+      </div>
+      <p class="why">Загрузку показывай отдельным спиннером рядом или вместо иконки, не крути саму иконку. Статусы «ошибка» и «успех» различай формой (крестик и галочка), а не только красным и зелёным: около 8% мужчин плохо различают эти цвета.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Передача в разработку</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><b>Файлы</b><ul><li>Формат — SVG: не пикселит на любом экране и меняет цвет кодом.</li><li>Пути чистые: без масок, эффектов, скрытых слоёв и лишних групп.</li><li>Цвет — <b>currentColor</b>: иконка берёт цвет текста вокруг.</li><li>Линии оставь линиями или переведи в контур (Outline stroke) — договорись с разработчиком заранее.</li><li>PNG — только для маркетинга и соцсетей.</li></ul></div>
+        <div class="box"><b>Компоненты в Figma</b><ul><li>Каждая иконка — компонент на артборде 24×24.</li><li>Имя по схеме <b>icon/24/search</b>, <b>icon/20/search</b>.</li><li>Цвет через стиль или переменную, а не вручную у каждой.</li><li>Рядом — страница со спекой набора и примерами использования.</li></ul></div>
+      </div>
+      <pre class="code" aria-label="Пример SVG-кода иконки">&lt;svg width="24" height="24" viewBox="0 0 24 24"
+     fill="none" stroke="currentColor" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round"&gt;
+  &lt;circle cx="11" cy="11" r="7"/&gt;
+  &lt;path d="m20 20-4-4"/&gt;
+&lt;/svg&gt;</pre>
+      <p>Это вся иконка поиска из ряда в лаборатории: круг и одна линия. Чем короче такой код, тем аккуратнее нарисована иконка.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Иконки вместе с нейронкой</h2></div></div>
+  <p>Нейронка не нарисует набор по твоей спеке, но хорошо помогает подумать: перебрать метафоры, записать спеку и придирчиво проверить готовые иконки. Рисуешь и выбираешь ты.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Продукт, аудитория, стиль сайта и где будут стоять иконки.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не выдаёт список из 50 идей.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Метафору и параметры набора выбираешь сам.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Метафоры</span><b>Придумать образы для сложных функций</b>
+<pre id="p1">Я рисую набор иконок для <em>[продукт и аудитория]</em>. Вот функции, для которых нужны иконки: <em>[список функций глаголами]</em>.
+Помоги найти метафоры для трёх самых сложных. Сначала задай мне вопросы о продукте — по одному, жди ответа.
+Потом для каждой функции предложи 3 предмета-ассоциации словами и скажи, какой образ обычно используют в популярных наборах. Не рисуй и не выбирай за меня.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> выбираешь метафору, рисуешь 3 эскиза и показываешь людям без подписи.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Спека</span><b>Записать правила набора</b>
+<pre id="p2">Хочу зафиксировать спеку своего набора иконок. Стиль сайта: <em>[3 слова]</em>, шрифт: <em>[название]</em>, где стоят иконки: <em>[таб-бар, кнопки, карточки]</em>.
+Задавай вопросы по одному: размер артборда, зона безопасности, толщина линии, концы и углы, радиусы, line или solid и правило их сочетания, размеры для 16 и 20 px.
+После каждого моего ответа коротко скажи, какие риски у этого решения. В конце собери спеку списком из моих ответов.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> принимаешь каждое решение и переносишь спеку на страницу в Figma.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Ревью</span><b>Найти иконки, которые выбиваются</b>
+<pre id="p3">Посмотри на скриншот моего набора иконок: <em>[прикрепи скриншот на 24 px и 16 px]</em>. Спека: <em>[вставь спеку]</em>.
+Проверь по пунктам: одинаковая толщина, концы и радиусы, одинаковая визуальная масса, ничего не вылезает из зоны безопасности, всё читается на 16 px, метафоры понятны без подписи.
+По каждому пункту: ок или проблема и в какой иконке. Не предлагай перерисованные варианты — задай мне вопрос, как я хочу исправить.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь иконки и решаешь, с какими замечаниями согласен.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Набор из 12 иконок для своего проекта</b><p>Выбери 12 функций своего лендинга или приложения: навигация, действия, статусы. Запиши спеку набора (артборд, зона безопасности, толщина, концы, радиусы, стиль). Нарисуй иконки в Figma по сетке 24×24 и сделай для двух самых сложных по 3 эскиза метафоры. Покажи итоговые иконки трём людям без подписи и запиши, что они ответили. Сдай фрейм: спека, набор на 24 и 16 px на светлом и тёмном фоне, один экран с иконками в интерфейсе и результаты мини-теста.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>У всех иконок одна толщина линии, одни концы и радиусы</span></label>
+    <label><input type="checkbox"><span>Основные формы внутри зоны безопасности, кейлайны соблюдены</span></label>
+    <label><input type="checkbox"><span>Если прищуриться, ни одна иконка не выглядит тяжелее или легче остальных</span></label>
+    <label><input type="checkbox"><span>Набор читается на 16 px, нет зазубрин и слипшихся просветов</span></label>
+    <label><input type="checkbox"><span>Неоднозначные иконки подписаны, кликабельная зона не меньше 44×44</span></label>
+    <label><input type="checkbox"><span>Иконки — компоненты с именами icon/24/название</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Адаптив: как интерфейс перестраивается под телефон, планшет и большой экран.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 4 · Иконки</footer>
+
+</div>
+<script type="application/json" id="ic-data">{"search":[["circle",{"cx":11,"cy":11,"r":7},"f"],["path",{"d":"m20 20-4-4"},""]],"home":[["path",{"d":"M4 10.5 12 4l8 6.5V20H4z"},"f"],["path",{"d":"M10 20v-5h4v5"},"i"]],"bell":[["path",{"d":"M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"},"f"],["path",{"d":"M10 21h4"},""]],"user":[["circle",{"cx":12,"cy":8,"r":4},"f"],["path",{"d":"M4.5 20.5a7.5 7.5 0 0 1 15 0z"},"f"]],"mail":[["rect",{"x":3,"y":5,"width":18,"height":14,"rx":2},"f"],["path",{"d":"m3.5 7 8.5 6 8.5-6"},"i"]],"lock":[["rect",{"x":4.5,"y":10.5,"width":15,"height":10.5,"rx":2},"f"],["path",{"d":"M8 10.5V7a4 4 0 0 1 8 0v3.5"},""],["path",{"d":"M12 14.5v2.5"},"i"]],"calendar":[["rect",{"x":3.5,"y":5,"width":17,"height":15.5,"rx":2},"f"],["path",{"d":"M3.5 10h17"},"i"],["path",{"d":"M8 3v4M16 3v4"},""]],"cart":[["path",{"d":"M2.5 4H5l3 11"},""],["path",{"d":"M6.2 7.5H21l-2.2 7.5H8z"},"f"],["circle",{"cx":9,"cy":19.5,"r":1.5},"f"],["circle",{"cx":17,"cy":19.5,"r":1.5},"f"]],"heart":[["path",{"d":"M12 20C6 16 3 12.5 3 9a4.5 4.5 0 0 1 9-1 4.5 4.5 0 0 1 9 1c0 3.5-3 7-9 11z"},"f"]],"star":[["path",{"d":"M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9l-5.2 2.8 1-5.9-4.3-4.1 5.9-.8z"},"f"]],"bookmark":[["path",{"d":"M6.5 3.5h11V21L12 17l-5.5 4z"},"f"]],"trash":[["path",{"d":"M4 6.5h16"},""],["path",{"d":"M9 6.5V4h6v2.5"},""],["path",{"d":"M6 6.5l1 14h10l1-14z"},"f"],["path",{"d":"M10 10.5v6M14 10.5v6"},"i"]],"plus":[["path",{"d":"M12 5v14M5 12h14"},""]],"close":[["path",{"d":"M6 6l12 12M18 6 6 18"},""]],"check":[["path",{"d":"M4.5 12.5l5 5 10-11"},""]],"menu":[["path",{"d":"M4 6.5h16M4 12h16M4 17.5h16"},""]],"arrow":[["path",{"d":"M19 12H5M11 6l-6 6 6 6"},""]],"download":[["path",{"d":"M12 4v11M7 10l5 5 5-5M5 20h14"},""]],"share":[["circle",{"cx":17.5,"cy":5.5,"r":2.5},"f"],["circle",{"cx":6.5,"cy":12,"r":2.5},"f"],["circle",{"cx":17.5,"cy":18.5,"r":2.5},"f"],["path",{"d":"M8.7 10.7l6.6-3.9M8.7 13.3l6.6 3.9"},""]],"sliders":[["path",{"d":"M4 7h8.5M17.5 7H20M4 12h2.5M11.5 12H20M4 17h10.5M19.5 17h.5"},""],["circle",{"cx":15,"cy":7,"r":2.5},"f"],["circle",{"cx":9,"cy":12,"r":2.5},"f"],["circle",{"cx":17,"cy":17,"r":2.5},"f"]],"play":[["path",{"d":"M8 5.5v13l10.5-6.5z"},"f"]],"floppy":[["path",{"d":"M4.5 3.5h12l3 3v14h-15z"},"f"],["path",{"d":"M8 3.5v5h7v-5"},"i"],["path",{"d":"M8 20.5v-6h8v6"},"i"]],"phone":[["path",{"d":"M5 3.5h3.5l2 5L8 10a11 11 0 0 0 6 6l1.5-2.5 5 2V19a2 2 0 0 1-2 2A16.5 16.5 0 0 1 3 5.5a2 2 0 0 1 2-2z"},"f"]],"flag":[["path",{"d":"M5.5 21V3.5"},""],["path",{"d":"M5.5 4H18l-2.5 4.5L18 13H5.5"},"f"]],"eye":[["path",{"d":"M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"},"f"],["circle",{"cx":12,"cy":12,"r":3},"i"]],"info":[["circle",{"cx":12,"cy":12,"r":9},"f"],["path",{"d":"M12 11v5.5"},"i"],["path",{"d":"M12 7.8v.2"},"i"]],"alert":[["path",{"d":"M12 3.5 2.5 20h19z"},"f"],["path",{"d":"M12 9.5V14"},"i"],["path",{"d":"M12 17v.2"},"i"]],"zap":[["path",{"d":"M13 2.5 4.5 13.5h7l-1 8 9-11h-7z"},"f"]],"pin":[["path",{"d":"M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"},"f"],["circle",{"cx":12,"cy":10,"r":2.5},"i"]],"cloud":[["path",{"d":"M7 18.5a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 10.5a4 4 0 0 1-.5 8z"},"f"]],"link":[["path",{"d":"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"},""],["path",{"d":"M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"},""]],"send":[["path",{"d":"M21 3 3 10.5l7.5 3 3 7.5z"},"f"],["path",{"d":"M10.5 13.5 21 3"},"i"]],"camera":[["rect",{"x":3,"y":7,"width":18,"height":13,"rx":2},"f"],["path",{"d":"M8.5 7 10 4h4l1.5 3"},""],["circle",{"cx":12,"cy":13.5,"r":3.5},"i"]],"grid":[["rect",{"x":4,"y":4,"width":6.5,"height":6.5,"rx":1.5},"f"],["rect",{"x":13.5,"y":4,"width":6.5,"height":6.5,"rx":1.5},"f"],["rect",{"x":4,"y":13.5,"width":6.5,"height":6.5,"rx":1.5},"f"],["rect",{"x":13.5,"y":13.5,"width":6.5,"height":6.5,"rx":1.5},"f"]],"refresh":[["path",{"d":"M20 12a8 8 0 1 1-2.3-5.7L20 8.5"},""],["path",{"d":"M20 3.5v5h-5"},""]],"chat":[["path",{"d":"M4 5.5h16v11H9l-5 4z"},"f"],["path",{"d":"M8 9.5h8M8 12.5h5"},"i"]],"folder":[["path",{"d":"M3 6.5a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"},"f"]],"home_detail":[["path",{"d":"M4 10.5 12 4l8 6.5V20H4z"},""],["path",{"d":"M10 20v-5h4v5"},""],["path",{"d":"M15.5 6.5V4h2v4"},""],["rect",{"x":6.2,"y":12,"width":2.3,"height":2.3,"rx":0},""],["rect",{"x":15.5,"y":12,"width":2.3,"height":2.3,"rx":0},""],["path",{"d":"M7 10.5h10"},""],["circle",{"cx":13.2,"cy":17.5,"r":0.4},""]],"box_iso":[["path",{"d":"M12 3l8 4.5v9L12 21l-8-4.5v-9z"},""],["path",{"d":"M4 7.5l8 4.5 8-4.5M12 12v9"},""]]}</script>
+<script type="application/json" id="meta-data">[
+{"ic":"search","o":["Найти","Увеличить масштаб","Посмотреть подробнее"],"a":0,"v":"ok","e":"Лупа — одна из самых устойчивых метафор. Её узнают без подписи почти везде, поэтому поиск в шапке сайта часто оставляют иконкой."},
+{"ic":"floppy","o":["Вставить карту памяти","Сохранить","Распечатать"],"a":1,"v":"ok","e":"Дискета давно исчезла, но значок «Сохранить» остался по привычке. Работает в редакторах, где люди его уже видели. На сайте понятнее кнопка со словом «Сохранить»."},
+{"ic":"star","o":["Добавить в избранное","Поставить оценку","Без контекста не понять"],"a":2,"v":"label","e":"В почте звезда помечает важное письмо, на маркетплейсе показывает рейтинг, на GitHub добавляет в избранное. Одна картинка — три смысла. Нужна подпись или очевидный контекст."},
+{"ic":"bell","o":["Уведомления","Будильник","Позвонить в звонок"],"a":0,"v":"ok","e":"Колокольчик в шапке или в меню прочно закрепился за уведомлениями. Счётчик-бейдж рядом делает смысл ещё яснее."},
+{"ic":"share","o":["Поделиться","Связи и сеть","Структура сайта"],"a":0,"v":"label","e":"Три точки с линиями — «поделиться» в Android. На iPhone эту функцию показывает квадрат со стрелкой вверх, и часть людей узнаёт только один из вариантов. Безопаснее подписать."},
+{"ic":"flag","o":["Пожаловаться","Сменить язык","Без контекста не понять"],"a":2,"v":"label","e":"Флаг — «пожаловаться» в соцсети, «отметить» в почте, «цель» в трекере задач, «язык» в настройках. Без подписи человек будет гадать."},
+{"ic":"menu","o":["Открыть меню","Список","Выровнять текст"],"a":0,"v":"ok","e":"Три полоски — привычный бургер. Но он прячет разделы: на десктопе, где место есть, навигацию лучше показывать открыто."},
+{"ic":"zap","o":["Быстрая доставка","Премиум","Без контекста не понять"],"a":2,"v":"label","e":"Молния может значить скорость, энергию, заряд, премиум-функцию или «горячее предложение». Это красивая, но очень размытая метафора."}
+]</script>
+<script type="application/json" id="quiz-data">[
+{"p":"Когда иконке нужна подпись?","o":["Всегда, без исключений","Когда смысл не считывается за 1–2 секунды или зависит от контекста","Никогда, иконки понятны всем"],"a":1,"e":"Поиск, закрыть, меню можно оставить иконкой. Звезду, флаг, молнию и новые функции подписывай."},
+{"p":"Артборд 24×24, зона безопасности 2 px со всех сторон. Какого размера живая зона?","o":["20×20","22×22","24×24"],"a":0,"e":"По 2 px отнимаем с каждой стороны: 24 − 2 − 2 = 20. Основная форма иконки живёт внутри этой зоны."},
+{"p":"Почему круглую иконку рисуют чуть больше квадратной?","o":["Так требует формат SVG","Круг на глаз кажется меньше квадрата того же размера","Чтобы круглая иконка была главной"],"a":1,"e":"Это оптическая компенсация. В Material Symbols круг вписан в 20 px, а квадрат — в 18 px, и визуально они одного размера."},
+{"p":"В наборе у всех иконок круглые концы линий, а у одной — острые. Что не так?","o":["Всё нормально, концы никто не замечает","Нарушена спека: иконка выглядит взятой из чужого набора","Острые концы всегда читаются хуже"],"a":1,"e":"Концы линий, толщина и радиусы — одни на весь набор. Одна иконка с другим правилом сразу выбивается."},
+{"p":"Иконку 24 px поставили кнопкой в мобильное приложение. Какой должна быть кликабельная зона?","o":["24×24, как сама иконка","Не меньше 44×44","Ровно 30×30"],"a":1,"e":"Apple рекомендует 44×44 pt, Google — 48×48 dp. Разницу добирают внутренними отступами кнопки."},
+{"p":"Что передать разработчику?","o":["SVG с чистыми путями и цветом currentColor","PNG 24 px для каждого цвета","JPG в высоком качестве"],"a":0,"e":"SVG не пикселит, весит мало и красится кодом. С currentColor иконка сама берёт цвет текста."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Иконки» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const src = $('#ic-data');
+  if (!src) return;
+  const ICONS = JSON.parse(src.textContent);
+  const NS = 'http://www.w3.org/2000/svg';
+  const fmt = n => String(Math.round(n * 100) / 100).replace('.', ',');
+
+  // Рисует иконку: o = {sw, cap, join, solid, scale, rx, size, bg}
+  function draw(name, o = {}) {
+    const sw = o.sw ?? 2, scale = o.scale ?? 1;
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('aria-hidden', 'true');
+    if (o.size) { svg.setAttribute('width', o.size); svg.setAttribute('height', o.size); }
+    fill(svg, name, o);
+    return svg;
+    function fill(root) {
+      root.setAttribute('fill', 'none'); root.setAttribute('stroke', 'currentColor');
+      root.setAttribute('stroke-width', sw);
+      root.setAttribute('stroke-linecap', o.cap || 'round'); root.setAttribute('stroke-linejoin', o.join || 'round');
+      let host = root;
+      if (scale !== 1) {
+        host = document.createElementNS(NS, 'g');
+        host.setAttribute('transform', 'translate(12 12) scale(' + scale + ') translate(-12 -12)');
+        host.setAttribute('stroke-width', sw / scale);
+        root.append(host);
+      }
+      ICONS[name].forEach(([tag, a, fl]) => {
+        const el = document.createElementNS(NS, tag);
+        Object.entries(a).forEach(([k, v]) => el.setAttribute(k, v));
+        if (tag === 'rect' && o.rx != null) el.setAttribute('rx', o.rx);
+        if (o.solid && fl === 'f') el.setAttribute('fill', 'currentColor');
+        if (o.solid && fl === 'i') el.setAttribute('stroke', o.bg || '#f4f4f2');
+        host.append(el);
+      });
+    }
+  }
+  // Встроить иконку в существующий <g>
+  function drawInto(g, name, o) {
+    g.textContent = '';
+    const s = draw(name, o);
+    ['fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin'].forEach(k => g.setAttribute(k, s.getAttribute(k)));
+    [...s.childNodes].forEach(n => g.append(n));
+  }
+
+  // --- Лаборатория иконки ---
+  const lab = $('#lab');
+  if (lab) {
+    const st = { ic: 'lock', size: 24, style: 'line', cap: 'round' };
+    const S = $('#lr-s'), Rr = $('#lr-r'), out = $('#lab-out');
+    const gridl = $('#lab-gridl');
+    for (let i = 0; i <= 24; i++) {
+      ['x', 'y'].forEach(ax => {
+        const l = document.createElementNS(NS, 'line');
+        if (ax === 'x') { l.setAttribute('x1', i); l.setAttribute('x2', i); l.setAttribute('y1', 0); l.setAttribute('y2', 24); }
+        else { l.setAttribute('y1', i); l.setAttribute('y2', i); l.setAttribute('x1', 0); l.setAttribute('x2', 24); }
+        if (i % 12 === 0) l.setAttribute('stroke-width', '.08');
+        gridl.append(l);
+      });
+    }
+    const SET = ['search', 'home', 'bell', 'user', 'mail', 'lock', 'calendar', 'cart'];
+    function render() {
+      const sw = +S.value, r = +Rr.value, size = st.size, solid = st.style === 'solid', sharp = st.cap === 'sharp';
+      $('#lv-s').textContent = fmt(sw); $('#lv-r').textContent = fmt(r);
+      const o = { sw, rx: r, solid, cap: sharp ? 'square' : 'round', join: sharp ? 'miter' : 'round', bg: '#f4f4f2' };
+      drawInto($('#lab-ic'), st.ic, o);
+      const set = $('#lab-set'); set.textContent = '';
+      SET.forEach(n => set.append(draw(n, Object.assign({}, o, { size }))));
+      const btn = $('#lab-btn'); btn.textContent = '';
+      btn.append(draw('lock', Object.assign({}, o, { size: Math.min(size, 24), bg: '#eb7540' })), document.createTextNode('Открыть доступ'));
+      $('#lab-tag').textContent = 'Реальный размер · ' + size + ' px';
+      $$('.seg[data-k]', lab).forEach(seg => $$('button', seg).forEach(b => b.setAttribute('aria-pressed', String(String(st[seg.dataset.k]) === b.dataset.v))));
+
+      const real = sw * size / 24, items = [];
+      // толщина
+      if (sw < 1.25) items.push(['bad', '<b>Линия ' + fmt(sw) + ' px из 24.</b> Тонко: рядом с текстом иконка выглядит бледной дырой, а на маленьком размере линия станет меньше пикселя и посереет.']);
+      else if (sw > 2.5) items.push(['bad', '<b>Линия ' + fmt(sw) + ' px из 24.</b> Тяжело: внутренние просветы залипают, иконка спорит с текстом. Посмотри на мелкие детали и просветы внутри.']);
+      else items.push(['ok', '<b>Линия ' + fmt(sw) + ' px из 24.</b> Рабочий диапазон: 1,5 — как у Heroicons, 2 — как у Lucide.']);
+      // реальная толщина на экране
+      const crisp = Math.abs(real - Math.round(real)) < 0.01, half = Math.abs(real * 2 - Math.round(real * 2)) < 0.01;
+      if (real < 1) items.push(['bad', '<b>На экране ' + size + ' px линия выйдет ' + fmt(real) + ' px.</b> Меньше пикселя — браузер нарисует её полупрозрачной, иконка замылится.']);
+      else if (crisp) items.push(['ok', '<b>На экране ' + size + ' px линия выйдет ' + fmt(real) + ' px.</b> Целое число пикселей — чётко на любом экране.']);
+      else if (half) items.push(['inf', '<b>На экране ' + size + ' px линия выйдет ' + fmt(real) + ' px.</b> Половина пикселя: чётко на ретине, чуть мягко на обычном мониторе.']);
+      else items.push(['bad', '<b>На экране ' + size + ' px линия выйдет ' + fmt(real) + ' px.</b> Дробное значение — края размоются. Для этого размера нарисуй отдельную версию, а не масштабируй.']);
+      // размер
+      const sizeTxt = { 16: 'Мелко: читаются только силуэт и 1–2 детали. Для иконок в полях, бейджах и мелких подписях.', 20: 'Для кнопок и пунктов меню рядом с текстом 15–16 px.', 24: 'Базовый размер: таб-бар, тулбар, кнопки-иконки.', 32: 'Крупно: для блоков преимуществ. Линию относительно размера часто делают тоньше.', 48: 'Иллюстративный размер: пустые состояния и промо. Тут уже можно больше деталей.' };
+      items.push([real > 3 ? 'bad' : 'inf', '<b>Размер ' + size + ' px.</b> ' + sizeTxt[size] + (real > 3 ? ' Сейчас линия ' + fmt(real) + ' px — для такого размера тяжеловато.' : '')]);
+      // скругления и концы
+      if (sharp && r > 0.5) items.push(['bad', '<b>Острые концы + скругление ' + fmt(r) + ' px.</b> Правила спорят: углы мягкие, а концы линий рубленые. Выбери что-то одно на весь набор.']);
+      else if (!sharp && r === 0) items.push(['bad', '<b>Круглые концы + острые углы.</b> Петля и линии мягкие, а корпус угловатый. Набор выглядит несобранным — добавь радиус или переключи концы на острые.']);
+      else if (r >= 4.5) items.push(['bad', '<b>Скругление ' + fmt(r) + ' px.</b> Корпус превращается в овал, на 16 px форма теряется. Для 24 px обычно хватает 1–3 px.']);
+      else items.push(['ok', '<b>' + (sharp ? 'Острые концы и углы.' : 'Круглые концы и скругление ' + fmt(r) + ' px.') + '</b> Правила согласованы. ' + (sharp ? 'Строгий, технический характер.' : 'Мягкий, дружелюбный характер.')]);
+      // стиль
+      items.push(['inf', solid ? '<b>Solid.</b> Тяжелее и заметнее, лучше держится на 16 px. Частый приём — solid только у выбранной вкладки, а в покое line.' : '<b>Line.</b> Лёгкий и спокойный стиль, самый частый в интерфейсах. Включи Solid и сравни массу.']);
+      out.innerHTML = items.map(([c, t]) => '<li class="' + c + '"><span>' + t + '</span></li>').join('');
+    }
+    $$('.seg[data-k]', lab).forEach(seg => $$('button', seg).forEach(b => b.addEventListener('click', () => {
+      st[seg.dataset.k] = seg.dataset.k === 'size' ? +b.dataset.v : b.dataset.v; render();
+    })));
+    [S, Rr].forEach(i => i.addEventListener('input', render));
+    $$('#lab-ov button').forEach(b => {
+      const g = $('#lab-' + b.dataset.ov);
+      const set = on => { b.setAttribute('aria-pressed', String(on)); g.style.display = on ? '' : 'none'; };
+      set(b.getAttribute('aria-pressed') === 'true');
+      b.addEventListener('click', () => set(b.getAttribute('aria-pressed') !== 'true'));
+    });
+    $$('[data-lp]', lab).forEach(b => b.addEventListener('click', () => {
+      const [s, r, size, style, cap] = b.dataset.lp.split(',');
+      S.value = s; Rr.value = r; st.size = +size; st.style = style; st.cap = cap; render();
+    }));
+    render();
+  }
+
+  // --- Пиксели: одна фигура на сетке и мимо ---
+  $$('canvas[data-px]').forEach(cv => {
+    const c = cv.getContext('2d'); if (!c) return;
+    const k = +cv.dataset.px;
+    c.fillStyle = '#fff'; c.fillRect(0, 0, 16, 16);
+    c.strokeStyle = '#101010';
+    // k=0: линии в центре пикселей; k=1: вся фигура сдвинута на полпикселя; k=2: дробная толщина
+    const o = k === 1 ? 0 : 0.5;
+    c.lineWidth = k === 2 ? 1.3 : 1;
+    const d = k === 2 ? 0.15 : 0;
+    c.strokeRect(2 + o + d, 2 + o + d, 11, 11);
+    c.beginPath(); c.moveTo(5, 8 + o + d); c.lineTo(11, 8 + o + d); c.stroke();
+    c.beginPath(); c.moveTo(8 + o + d, 5); c.lineTo(8 + o + d, 11); c.stroke();
+  });
+
+  // --- Математика или оптика ---
+  const opt = $('#opt');
+  if (opt) {
+    const row = $('#opt-row'), out = $('#opt-out');
+    const T = {
+      m: '<b>Ровно по координатам.</b> Треугольник плея стоит по центру своей рамки, но кажется сдвинутым влево. Круг такого же диаметра, как квадрат, выглядит меньше. Треугольник той же высоты — тоже.',
+      o: '<b>Ровно на глаз.</b> Плей сдвинут вправо на 2 px из 48, круг увеличен на 10%, треугольник вылезает за линии сверху и снизу. По линейке неровно, на глаз — одинаково.'
+    };
+    $$('.seg button', opt).forEach(b => b.addEventListener('click', () => {
+      $$('.seg button', opt).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      row.className = 'opt-row is-' + b.dataset.o; out.innerHTML = T[b.dataset.o];
+    }));
+    out.innerHTML = T.m;
+  }
+
+  // --- Прищуриться ---
+  $$('[data-squint]').forEach(b => b.addEventListener('click', () => {
+    const t = document.getElementById(b.dataset.squint); const on = !t.classList.contains('squinted');
+    t.classList.toggle('squinted', on); b.setAttribute('aria-pressed', String(on));
+    b.textContent = on ? 'Открыть глаза' : 'Прищуриться';
+    const ans = $('#mass-ans'); if (ans && on) ans.hidden = false;
+  }));
+
+  // --- Тест на метафору ---
+  const meta = $('#meta'), mdata = $('#meta-data');
+  if (meta && mdata) {
+    const M = JSON.parse(mdata.textContent);
+    let i = 0, labels = 0, right = 0;
+    const opts = $('#meta-opts'), out = $('#meta-out'), next = $('#meta-next');
+    function show() {
+      const q = M[i];
+      $('#meta-n').textContent = 'Иконка ' + (i + 1) + ' из ' + M.length;
+      const box = $('#meta-ic'); box.textContent = ''; const s = draw(q.ic); s.classList.add('ic'); box.append(s);
+      opts.textContent = ''; out.textContent = ''; next.disabled = true;
+      next.textContent = i === M.length - 1 ? 'Итог' : 'Следующая иконка';
+      q.o.forEach((t, j) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = t;
+        b.addEventListener('click', () => answer(j, b)); opts.append(b);
+      });
+    }
+    function answer(j, b) {
+      const q = M[i];
+      $$('button', opts).forEach((x, k) => { x.disabled = true; if (k === q.a) x.classList.add('right'); });
+      if (j !== q.a) b.classList.add('wrong'); else right++;
+      if (q.v === 'label') labels++;
+      $('#meta-sc').textContent = 'Нужна подпись: ' + labels;
+      out.textContent = '';
+      const v = document.createElement('span'); v.className = 'verd ' + q.v; v.textContent = q.v === 'ok' ? 'Можно без подписи' : 'Нужна подпись';
+      const p = document.createElement('div'); p.textContent = (j === q.a ? 'Верно. ' : 'Не совсем. ') + q.e;
+      out.append(v, p); next.disabled = false; next.focus({ preventScroll: true });
+    }
+    let finished = false;
+    next.addEventListener('click', () => {
+      if (finished) { finished = false; i = 0; labels = 0; right = 0; $('#meta-sc').textContent = 'Нужна подпись: 0'; show(); return; }
+      if (i < M.length - 1) { i++; show(); return; }
+      finished = true;
+      opts.textContent = ''; $('#meta-ic').textContent = ''; out.textContent = '';
+      next.textContent = 'Пройти заново';
+      const sum = document.createElement('div'); sum.className = 'meta-sum';
+      sum.textContent = 'Угадано ' + right + ' из ' + M.length + '. Подпись нужна ' + labels + ' иконкам из ' + M.length + '. Половина привычных значков без контекста читается по-разному — поэтому новые иконки всегда проверяй на людях.';
+      out.append(sum);
+    });
+    show();
+  }
+
+  // --- Найди иконку из чужого набора ---
+  const odd = $('#odd');
+  if (odd) {
+    const ROUNDS = [
+      { set: ['search', 'home', 'bell', 'user', 'mail', 'cart', 'calendar'], odd: 'heart', mod: { sw: 1 }, hint: 'толщину линий', e: '<b>Толщина.</b> У всех линия 2 px, у сердца — 1 px. Рядом с остальными оно выглядит бледным, будто из другого, более лёгкого набора.' },
+      { set: ['plus', 'close', 'menu', 'arrow', 'check', 'refresh', 'link'], odd: 'download', mod: { cap: 'butt', join: 'miter' }, hint: 'концы линий', e: '<b>Концы линий.</b> У всех круглые, у стрелки «скачать» — рубленые и острые углы. Мелочь, но глаз считывает её как другой характер.' },
+      { set: ['home', 'bell', 'user', 'mail', 'lock', 'calendar', 'folder'], odd: 'chat', mod: { solid: true, bg: '#fff' }, hint: 'заливку', e: '<b>Заливка.</b> Набор контурный, а чат залит. Solid можно сочетать с line только по правилу, например для выбранной вкладки.' },
+      { set: ['search', 'bell', 'user', 'mail', 'heart', 'bookmark', 'cloud'], odd: 'star', mod: { scale: 1.24 }, hint: 'размер и зону безопасности', e: '<b>Размер и масса.</b> Звезда вылезает за зону безопасности и выглядит крупнее соседей. Все иконки должны опираться на одни кейлайны.' },
+      { set: ['mail', 'camera', 'lock', 'grid', 'folder', 'chat', 'bookmark'], odd: 'calendar', mod: { rx: 0, join: 'miter' }, hint: 'углы', e: '<b>Скругления.</b> У всех углы скруглены, у календаря — острые. Один радиус на весь набор.' },
+      { set: ['bell', 'user', 'mail', 'search', 'heart', 'calendar', 'cart'], odd: 'home_detail', mod: {}, hint: 'количество деталей', e: '<b>Детализация.</b> У дома окна, труба и дверная ручка, а остальные иконки — в 1–2 детали. На 16 px такой дом превратится в кашу.' },
+      { set: ['folder', 'calendar', 'mail', 'camera', 'lock', 'cart', 'bell'], odd: 'box_iso', mod: {}, hint: 'перспективу', e: '<b>Перспектива.</b> Набор плоский и фронтальный, а коробка нарисована в изометрии. Один подход к объёму на всё.' }
+    ];
+    let r = 0, first = 0, tries = 0, done = false;
+    const grid = $('#odd-grid'), out = $('#odd-out'), next = $('#odd-next');
+    const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+    function show() {
+      const R = ROUNDS[r]; tries = 0; done = false; grid.hidden = false;
+      $('#odd-n').textContent = 'Раунд ' + (r + 1) + ' из ' + ROUNDS.length;
+      next.disabled = true; next.textContent = r === ROUNDS.length - 1 ? 'Итог' : 'Следующий раунд';
+      out.innerHTML = 'Одна иконка нарушает спеку набора. Какая?';
+      grid.textContent = '';
+      const items = shuffle(R.set.map(n => ({ n, odd: false })).concat([{ n: R.odd, odd: true }]));
+      items.forEach(it => {
+        const b = document.createElement('button'); b.type = 'button';
+        b.setAttribute('aria-label', 'Иконка ' + (grid.children.length + 1));
+        b.append(draw(it.n, it.odd ? R.mod : {}));
+        b.addEventListener('click', () => pick(b, it.odd));
+        grid.append(b);
+      });
+    }
+    function pick(b, isOdd) {
+      if (done) return;
+      tries++;
+      if (isOdd) {
+        done = true; b.classList.add('hit');
+        if (tries === 1) first++;
+        $('#odd-sc').textContent = 'С первой попытки: ' + first;
+        $$('button', grid).forEach(x => x.disabled = true);
+        out.innerHTML = ROUNDS[r].e; next.disabled = false;
+      } else {
+        b.classList.add('miss'); b.disabled = true;
+        out.innerHTML = '<span class="warn">Эта из набора.</span> Подсказка: сравни ' + ROUNDS[r].hint + '.';
+      }
+    }
+    next.addEventListener('click', () => {
+      if (r < ROUNDS.length - 1) { r++; show(); return; }
+      grid.textContent = ''; grid.hidden = true; next.disabled = true;
+      out.innerHTML = '<b>Готово: ' + first + ' из ' + ROUNDS.length + ' с первой попытки.</b> ' + (first >= 6 ? 'Глаз натренирован — проверь так же свой набор.' : 'Нажми «Заново» и пройди ещё раз: иконки в рядах перемешаются.');
+    });
+    $('#odd-reset').addEventListener('click', () => { r = 0; first = 0; $('#odd-sc').textContent = 'С первой попытки: 0'; show(); });
+    show();
+  }
+
+  // --- Таб-бар ---
+  const tb = $('#tabbar');
+  if (tb) {
+    const tabs = $$('button', tb);
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => tabs.forEach(x => x.setAttribute('aria-selected', String(x === t))));
+      t.addEventListener('keydown', e => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; n.focus(); n.click(); }
+      });
+    });
+  }
+})();
+
+</script>
+</body></html>

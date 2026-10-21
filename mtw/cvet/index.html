@@ -1,0 +1,1356 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Цвет</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* ===== Интерактив только для методички «Цвет» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+button.ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+code{font-family:var(--mono);font-size:.88em;color:var(--ink);background:var(--well);border-radius:4px;padding:1px 5px;white-space:nowrap}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)} .verdict li.mid::before{color:#f2b33d}
+.verdict b{color:var(--ink);font-weight:400}
+
+/* пикер цвета */
+.pick{display:inline-flex;align-items:center;gap:8px;background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:6px 10px 6px 6px;min-width:0}
+.pick .cap{color:var(--dim)}
+.pick input[type=color]{width:40px;height:34px;border:0;border-radius:7px;padding:0;background:none;cursor:pointer;flex:none}
+.pick input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+.pick input[type=color]::-webkit-color-swatch{border:1px solid rgba(255,255,255,.18);border-radius:7px}
+.pick input[type=color]::-moz-color-swatch{border:1px solid rgba(255,255,255,.18);border-radius:7px}
+.pick input[type=text]{width:84px;background:transparent;border:0;color:var(--ink);font:14px var(--mono);text-transform:uppercase;outline:none;padding:4px 0}
+.pick input[type=text]:focus{box-shadow:0 1px 0 var(--accent)}
+.pick input[type=text].err{color:var(--bad)}
+.pick-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+/* круг */
+.wh-grid{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:24px;align-items:center}
+.wh-wheel svg{display:block;width:100%;height:auto;max-width:300px;margin:auto;cursor:crosshair;touch-action:none}
+.wh-wheel .mk{stroke:#fff;stroke-width:3}
+.wh-wheel .mk.base{stroke-width:4}
+.wh-wheel .ln{stroke:#fff;stroke-width:1.5;stroke-dasharray:3 3;fill:none;opacity:.8}
+.wh-side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.wh-range{display:block;font-size:14px;color:var(--dim)}
+.wh-range b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.wh-range input{display:block;width:100%;margin:8px 0 0;accent-color:var(--accent)}
+.wh-sw{display:flex;gap:6px}
+.wh-sw div{flex:1;min-width:0;border-radius:8px;overflow:hidden;border:1px solid var(--stroke);background:var(--card)}
+.wh-sw i{display:block;height:44px}
+.wh-sw span{display:block;padding:5px 6px;font:11px var(--mono);color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wh-prev{border-radius:10px;padding:18px;transition:background .25s}
+.wh-card{background:#fff;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;max-width:300px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.wh-card i{display:block;height:54px;border-radius:7px}
+.wh-card b{font-size:16px;font-weight:600;color:#101010}
+.wh-card span{font-size:13px;color:#5a5a58}
+.wh-card em{font-style:normal;align-self:flex-start;font-size:14px;font-weight:500;border-radius:8px;padding:8px 14px;margin-top:4px}
+
+/* свойства */
+.strip{height:18px;border-radius:5px}
+.chips{display:flex;gap:6px}
+.chips span{flex:1;height:44px;border-radius:7px}
+
+/* тинты и шейды */
+.tn-rows{display:flex;flex-direction:column;gap:10px}
+.tn-row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:center}
+.tn-line{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.tn-line i{display:block;height:36px;border-radius:6px}
+.tn-line i:first-child{outline:2px solid var(--ink);outline-offset:-2px}
+.scale{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px}
+.scale button{border:0;border-radius:8px;height:76px;padding:6px 4px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;font:11px var(--mono);cursor:pointer;min-width:0;overflow:hidden;position:relative}
+.scale button b{font-weight:500;color:inherit;font-size:12px}
+.scale button span{font-size:10px;white-space:nowrap}
+.scale button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--panel),0 0 0 4px var(--accent)}
+.scale button.base::after{content:"база";position:absolute;right:5px;top:6px;font-size:9px;opacity:.8}
+
+/* контраст */
+.cc-pick{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.cc-pick button.ghost{align-self:center;font-size:18px;padding:6px 12px}
+.cc-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:start}
+.cc-view{border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px;border:1px solid var(--stroke);min-width:0}
+.cc-h{font-size:clamp(22px,3vw,30px);font-weight:600;line-height:1.1;letter-spacing:-.01em;color:inherit}
+.cc-t{font-size:16px;color:inherit;max-width:none}
+.cc-s{font-size:13px;color:inherit}
+.cc-ui{display:flex;align-items:center;gap:14px}
+.cc-btn{border:2px solid currentColor;border-radius:10px;padding:9px 16px;font-size:15px;font-weight:500}
+.cc-res{display:flex;flex-direction:column;gap:14px;min-width:0}
+.cc-ratio{display:flex;align-items:baseline;gap:6px;color:var(--ink);font-size:22px}
+.cc-ratio .big{font-family:var(--display);font-size:64px;line-height:.9;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.cc-bar{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--bad) 0 36.1%,#f2b33d 36.1% 49.4%,var(--good) 49.4%);margin-bottom:20px}
+.cc-bar span{position:absolute;top:14px;transform:translateX(-50%);font:11px var(--mono);color:var(--faint)}
+.cc-bar i{position:absolute;top:-5px;width:4px;height:20px;border-radius:2px;background:var(--ink);transform:translateX(-50%);transition:left .2s;box-shadow:0 0 0 2px var(--card)}
+.cc-fix{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:15px;border-top:1px solid var(--stroke);padding-top:12px}
+.cc-fix .sw1{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:1px solid rgba(255,255,255,.2)}
+.sem-st{justify-content:flex-start;padding:18px;min-height:0;gap:10px}
+.sem-in{display:flex;align-items:flex-end;width:100%;height:44px;border-radius:9px;border:1.5px solid #c9c9c6;background:#fff;position:relative}
+.sem-in.red{border-color:#e5383b}
+.sem-in small{position:absolute;left:0;top:50px;font-size:13px;color:#c62828;white-space:nowrap}
+.sem-st .sem-in small+*{margin-top:0}
+.pair .good .sem-st{padding-bottom:18px}
+.pair .good .sem-in{margin-bottom:24px}
+.sem-dot{width:14px;height:14px;border-radius:50%}
+.sem-tag{font-size:14px;font-weight:500}
+
+/* схемы и палитра */
+.schemes{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.sch{display:flex;height:56px;border-radius:7px;overflow:hidden;border:1px solid var(--stroke)}
+.sch i{flex:1}
+.ml-picks{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ml-picks button.ghost{align-self:center}
+.ml-modes{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.ml-modes button.ghost{align-self:center}
+.ml-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px;align-items:start}
+.ml-stage{padding:14px;display:block;min-height:0}
+.ml{--a:#f6f1ea;--b:#1f3d36;--c:#eb7540;border-radius:10px;overflow:hidden;font-family:var(--body);transition:filter .3s;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.ml *{transition:background .25s,color .25s}
+.ml.gray{filter:grayscale(1)}
+.ml-nav{display:flex;align-items:center;gap:14px;padding:12px 16px;font-size:12px}
+.ml-nav b{font-size:15px;font-weight:700;margin-right:auto}
+.ml-hero{padding:26px 18px 30px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.ml-tag{font-size:11px;font-weight:600;border-radius:999px;padding:4px 10px;letter-spacing:.02em}
+.ml-h{font-size:clamp(22px,3.2vw,32px);font-weight:700;line-height:1.05;letter-spacing:-.02em;max-width:14ch}
+.ml-p{font-size:13px;line-height:1.4;max-width:34ch;opacity:.82}
+.ml-btn{font-size:14px;font-weight:600;border-radius:9px;padding:11px 18px;margin-top:4px}
+.ml-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:14px}
+.ml-card{border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:2px}
+.ml-card b{font-size:22px;font-weight:700;line-height:1}
+.ml-card span{font-size:11px;opacity:.8}
+.ml-side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ml-share{display:flex;height:30px;border-radius:7px;overflow:hidden;border:1px solid var(--stroke)}
+.ml-share div{display:flex;align-items:center;justify-content:center;font:11px var(--mono);min-width:0;overflow:hidden;transition:flex-grow .3s}
+
+/* таблица ассоциаций */
+.psy td:first-child{white-space:nowrap}
+.psy td i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:8px;vertical-align:-2px}
+.sem4 .box i{display:block;height:34px;border-radius:7px}
+
+/* тренажёр «цвет врёт» */
+.game{display:flex;flex-direction:column;gap:12px}
+.game-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.game-top .cap{color:var(--accent);font-size:12px}
+.game-acts{display:flex;gap:8px;flex-wrap:wrap}
+.game-stage{padding:16px;display:block}
+.lmock{background:#fff;border-radius:12px;overflow:hidden;color:#101010;font-family:var(--body);box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.lmock.cb{filter:url(#deutan)}
+.lm-toast{margin:14px 14px 0;background:#e5383b;color:#fff;font-size:14px;font-weight:500;border-radius:9px;padding:11px 14px;display:flex;gap:10px;align-items:center}
+.lm-body{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:22px;padding:20px 20px 24px}
+.lm-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+.lm-h{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.lm-orders{display:flex;flex-direction:column;gap:2px;padding:4px}
+.lm-orders div{display:flex;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid #ececea;font-size:14px}
+.lm-orders em{font-style:normal;margin-left:auto;color:#5a5a58}
+.lm-dot{width:10px;height:10px;border-radius:50%;flex:none}
+.lm-faint{font-size:12px;color:#d0d0cc;margin:0;padding:4px}
+.lm-field{display:flex;flex-direction:column;gap:6px}
+.lm-field label{font-size:12px;color:#5a5a58}
+.lm-in{height:44px;border:1.5px solid #e5383b;border-radius:9px;display:flex;align-items:center;padding:0 12px;font:14px var(--mono);color:#101010}
+.lm-sum{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:#5a5a58}
+.lm-sum b{font-size:20px;color:#101010;font-weight:600}
+.lm-pay{background:#e4e4e1;color:#a3a3a0;border-radius:10px;padding:13px;text-align:center;font-size:15px;font-weight:500}
+.lm-del{display:flex;gap:8px;padding:4px;justify-content:flex-end;flex-wrap:wrap}
+.lm-b{border-radius:9px;padding:9px 14px;font-size:13px;font-weight:500;color:#fff}
+.lm-red{background:#e5383b}.lm-green{background:#2fa84f}
+.bug{cursor:pointer;transition:box-shadow .2s}
+.lm-orders.bug,.lm-faint.bug,.lm-del.bug{border-radius:8px}
+.bug:hover{box-shadow:0 0 0 2px rgba(59,110,240,.4)}
+.bug:focus-visible{outline:2px solid #3b6ef0;outline-offset:2px}
+.bug.found,.bug.found:hover{box-shadow:0 0 0 3px #101010,0 0 0 5px #f2b33d}
+.game-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.game-list li{background:var(--card);border:1px solid var(--stroke);border-left:2px solid var(--accent);border-radius:10px;padding:12px 14px;font-size:15px;display:flex;flex-direction:column;gap:4px}
+.game-list li b{color:var(--ink);font-weight:400}
+.game-win{border:1px solid var(--good);border-radius:10px;padding:14px 16px;color:var(--ink)}
+
+@media (max-width:760px){
+  .wh-grid,.cc-grid,.ml-grid,.lm-body{grid-template-columns:minmax(0,1fr)}
+  .wh-wheel svg{max-width:240px}
+  .tn-row{grid-template-columns:minmax(0,1fr);gap:6px}
+  .scale{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .schemes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cc-ratio .big{font-size:52px}
+  .cc-view{padding:18px}
+  .ml-nav span{display:none}
+  .ml-cards{padding:10px;gap:6px}
+  .ml-card{padding:9px}
+  .ml-card b{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){.ml,.ml *,.cc-bar i,.wh-prev,.bug,.ml-share div{transition:none}}
+.demo .warn{color:var(--bad)} .demo .okv{color:var(--good)} .demo .midv{color:#f2b33d} .demo .dimv{color:var(--faint)}
+.hint{font-size:14px;line-height:1.45;color:var(--faint);border-left:1px solid var(--accent);padding-left:12px;margin-top:-8px}
+.ml b,.ml span{color:inherit}
+.lmock b{color:#101010}
+.wh-card b{color:#101010}
+.schemes .box p{hyphens:auto;overflow-wrap:break-word}
+@media (max-width:520px){.schemes{grid-template-columns:minmax(0,1fr)}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 4 · UI</span></div>
+  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 UI-элементы</span><span>03 UI-кит</span><span>04 Концепция в веб-дизайне</span><span>05 Композиция</span><span>06 Типографика</span><span>07 Иконки</span><span>08 Адаптив</span><b>09 Цвет</b></div>
+  <h1>Цвет</h1>
+  <p class="lead"><b>Цвет на сайте работает наравне с текстом и структурой.</b> Он задаёт настроение, ведёт взгляд к кнопке и помогает прочитать текст. Разбираем, как собрать палитру, проверить контраст и не сломать смысл цветов.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#why">Как работает цвет</a><a href="#wheel">Круг и схемы</a><a href="#props">Свойства и ступени</a><a href="#contrast">Контраст</a><a href="#system">Палитра сайта</a><a href="#meaning">Смысл цвета</a><a href="#tools">Сервисы</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="why">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Как цвет работает на сайте</h2></div></div>
+  <p>Цвет решает на сайте три задачи: создаёт настроение, расставляет акценты и помогает читать. Если с ним ошибиться, человек не найдёт кнопку, устанет от текста или почувствует, что продукт «не для него». В исследованиях называют разные цифры: от 60 до 90% первого впечатления о товаре связано с цветом. Точность этих цифр спорная, но само влияние цвета на поведение никто всерьёз не оспаривает.</p>
+  <p class="quote">Цвет добавляют в макет последним, но продумывают вместе с концепцией.</p>
+  <div class="sub">
+    <h3>Немного физики</h3>
+    <div class="sub-b">
+      <p>В 1666 году Ньютон пропустил белый свет через стеклянную призму и увидел спектр. Так стало ясно, что белый свет — это все цвета сразу. Из этого выросли две системы смешения, и дизайнеру важно их не путать.</p>
+      <div class="two">
+        <div class="box"><span class="kind">Краски · RYB и CMYK</span><b>Субтрактивное смешение</b><p>Краска поглощает часть света. Чем больше красок смешал, тем темнее результат. Основные цвета художников — красный, жёлтый, синий. По этой логике построен классический цветовой круг.</p></div>
+        <div class="box"><span class="kind">Экран · RGB</span><b>Аддитивное смешение</b><p>Пиксель светит красным, зелёным и синим. Чем больше света, тем светлее: все три на максимуме дают белый. Поэтому на сайте цвета ярче, чем на печати, и описываются числами.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Как цвет записывают в коде</h3>
+    <div class="sub-b">
+      <div class="scroll"><table>
+        <thead><tr><th>Формат</th><th>Пример</th><th>Когда удобен</th></tr></thead>
+        <tbody>
+          <tr><td>HEX</td><td><code>#EB7540</code></td><td>Самый частый формат в Figma и вёрстке. Шесть знаков: по два на красный, зелёный и синий.</td></tr>
+          <tr><td>RGB</td><td><code>rgb(235 117 64)</code></td><td>То же самое числами от 0 до 255. Удобно добавить прозрачность: <code>rgb(235 117 64 / 50%)</code>.</td></tr>
+          <tr><td>HSL</td><td><code>hsl(19 81% 59%)</code></td><td>Тон, насыщенность, светлота. Понятнее человеку: чтобы сделать цвет светлее, меняешь одно число.</td></tr>
+          <tr><td>OKLCH</td><td><code>oklch(70% 0.16 45)</code></td><td>Современный формат CSS. Ступени одной светлоты выглядят одинаково светлыми у любого тона — удобно строить шкалы.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<section id="wheel">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Цветовой круг и схемы</h2></div></div>
+  <p>Цветовой круг собирают из трёх групп. <b>Основные</b> — красный, жёлтый, синий. <b>Вторичные</b> получаются смешением пары основных: зелёный, оранжевый, фиолетовый. <b>Третичные</b> — смесь основного и соседнего вторичного: сине-зелёный, красно-оранжевый, жёлто-зелёный. Цветовая схема — это правило, по которому берёшь цвета с круга, чтобы они сочетались.</p>
+  <div class="demo" id="wheel-demo">
+    <span class="cap">Цветовой круг · выбери схему и крути базовый цвет</span>
+    <div class="seg" id="wh-seg"><button type="button" data-s="mono">Монохромная</button><button type="button" data-s="analog">Аналоговая</button><button type="button" data-s="compl">Комплементарная</button><button type="button" data-s="triad">Триадная</button></div>
+    <div class="wh-grid">
+      <div class="wh-wheel"><svg viewBox="-110 -110 220 220" id="wh-svg" role="img" aria-label="Цветовой круг с отмеченными цветами схемы"></svg></div>
+      <div class="wh-side">
+        <label class="wh-range">Базовый цвет на круге <b id="wh-deg">0</b>°<input type="range" id="wh-hue" min="0" max="359" value="20" aria-label="Положение базового цвета на круге"></label>
+        <div class="wh-sw" id="wh-sw"></div>
+        <div class="wh-prev" id="wh-prev"><div class="wh-card"><i></i><b>Мастер-класс по пасте</b><span>Суббота · 12:00 · 3 часа</span><em>Записаться</em></div></div>
+        <output id="wh-out"></output>
+      </div>
+    </div>
+  </div>
+  <p class="hint">Нажми на круг или двигай ползунок. Справа — та же схема на карточке: первый цвет идёт под фон, акцентный — на кнопку.</p>
+  <div class="four">
+    <div class="box"><span class="kind">Монохромная</span><p>Один тон в разной светлоте. Самая безопасная: спокойно, цельно, легко сделать читаемым.</p></div>
+    <div class="box"><span class="kind">Аналоговая</span><p>Соседи по кругу: синий, сине-фиолетовый, сине-зелёный. Мягко и гармонично, без резких переходов.</p></div>
+    <div class="box"><span class="kind">Комплементарная</span><p>Противоположные цвета: синий и оранжевый, зелёный и красный. Один доминирует, второй подсвечивает кнопки.</p></div>
+    <div class="box"><span class="kind">Триадная</span><p>Три цвета на равном расстоянии: зелёный, оранжевый, фиолетовый. Один под фон, два на контент и акценты.</p></div>
+  </div>
+  <p class="why">Круг даёт гармоничные тона, но не готовую палитру. Схема говорит, какие тона взять, а насыщенность, светлоту и доли каждого цвета подбираешь ты. Об этом следующие разделы.</p>
+</section>
+
+<section id="props">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Свойства цвета и ступени</h2></div></div>
+  <p>У любого цвета три параметра. Их видно в пикере Figma в режиме HSB или HSL. Научись крутить их по отдельности — и из одного фирменного цвета получится вся палитра сайта.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Тон · Hue</span><b>Какой это цвет</b><div class="strip" style="background:linear-gradient(90deg,#e53935,#f2b33d,#43a047,#1e88e5,#8e24aa,#e53935)"></div><p>Положение на круге от 0 до 360°. Красный, оранжевый, синий — это тон.</p></div>
+    <div class="box"><span class="kind">Насыщенность · Saturation</span><b>Насколько он густой</b><div class="strip" style="background:linear-gradient(90deg,#8a8a8a,#c07a55,#eb7540)"></div><p>В ноль — цвет выцветает в серый. На максимуме — сочный и кричащий.</p></div>
+    <div class="box"><span class="kind">Яркость · Brightness</span><b>Насколько он светлый</b><div class="strip" style="background:linear-gradient(90deg,#1a0d06,#7a3a1e,#eb7540,#f9d6c4,#fff)"></div><p>Сколько в цвете света. От неё сильнее всего зависит контраст текста.</p></div>
+  </div>
+  <div class="pair">
+    <div class="bad"><i>Выкручено на 100%</i><div class="chips"><span style="background:#ff0000"></span><span style="background:#00ff00"></span><span style="background:#0000ff"></span><span style="background:#ffff00"></span></div><span>Чистые цвета цепляют на секунду и сразу утомляют. Смотреть на них дольше не хочется.</span></div>
+    <div class="good"><i>Приглушено до 75–85%</i><div class="chips"><span style="background:#d9473f"></span><span style="background:#3fae6a"></span><span style="background:#3b6ef0"></span><span style="background:#f2c443"></span></div><span>Тот же набор, но глазу комфортно. Яркость оставь для одной точки — кнопки или метки.</span></div>
+  </div>
+  <div class="sub">
+    <h3>Тинты, шейды и тоны</h3>
+    <div class="sub-b">
+      <p>Одного фирменного цвета для сайта мало. Нужны светлые подложки, обводки, hover, тёмный текст на цветном. Их получают из базового цвета тремя способами: <b>тинт</b> — добавить белый, <b>шейд</b> — добавить чёрный, <b>тон</b> — добавить серый. Из ступеней собирают шкалу 50–900, как в Tailwind и Material.</p>
+      <div class="demo" id="tints">
+        <span class="cap">Ступени цвета · выбери базовый цвет</span>
+        <div class="pick-row">
+          <label class="pick"><input type="color" id="tn-c" value="#eb7540" aria-label="Базовый цвет"><input type="text" id="tn-hex" value="#EB7540" maxlength="7" spellcheck="false" aria-label="HEX базового цвета"></label>
+          <div class="seg" id="tn-pre"><button type="button" data-c="#eb7540">Оранжевый</button><button type="button" data-c="#3b6ef0">Синий</button><button type="button" data-c="#21a038">Зелёный</button><button type="button" data-c="#8e44ad">Фиолетовый</button><button type="button" data-c="#f2c443">Жёлтый</button></div>
+        </div>
+        <div class="tn-rows">
+          <div class="tn-row"><span class="cap">Тинты · + белый</span><div class="tn-line" id="tn-tint"></div></div>
+          <div class="tn-row"><span class="cap">Шейды · + чёрный</span><div class="tn-line" id="tn-shade"></div></div>
+          <div class="tn-row"><span class="cap">Тоны · + серый</span><div class="tn-line" id="tn-tone"></div></div>
+        </div>
+        <span class="cap">Шкала для UI-кита · нажми на ступень</span>
+        <div class="scale" id="tn-scale" role="group" aria-label="Шкала ступеней 50–900"></div>
+        <output id="tn-out"></output>
+      </div>
+      <div class="scroll"><table>
+        <thead><tr><th>Ступени</th><th>Что из них делают</th></tr></thead>
+        <tbody>
+          <tr><td>50–100</td><td>Фоны секций и карточек, подложка выделенной строки таблицы</td></tr>
+          <tr><td>200–300</td><td>Обводки, разделители, фон тегов, disabled</td></tr>
+          <tr><td>400–600</td><td>Основной фирменный цвет, кнопки, ссылки, иконки, hover на ступень темнее</td></tr>
+          <tr><td>700–900</td><td>Текст на светлом цветном фоне, заголовки, тёмная тема</td></tr>
+        </tbody>
+      </table></div>
+      <p class="why">Жёлтый и голубой в середине шкалы очень светлые: белый текст на них не читается даже на ступени 600. Поэтому у жёлтых кнопок почти всегда тёмный текст. Проверь это в шкале выше.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contrast">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Контраст и доступность</h2></div></div>
+  <p>Контраст — разница между соседними цветами: текстом и фоном, кнопкой и подложкой, иконкой и карточкой. Он решает три вещи сразу: читаемость, иерархию и акценты. Когда контраста не хватает, человек напрягается — при слабом зрении, на дешёвом экране, на солнце — и закрывает вкладку.</p>
+  <p>В вебе контраст измеряют коэффициентом из стандарта <b>WCAG</b> (Web Content Accessibility Guidelines, актуальная версия 2.2). Коэффициент считают по относительной яркости двух цветов: 1:1 — одинаковые цвета, 21:1 — чистый чёрный на чистом белом.</p>
+  <div class="demo" id="cc">
+    <span class="cap">Проверка контраста · выбери цвет текста и фона</span>
+    <div class="cc-pick">
+      <label class="pick"><span class="cap">Текст</span><input type="color" id="cc-fg" value="#8e8e8c" aria-label="Цвет текста"><input type="text" id="cc-fgx" value="#8E8E8C" maxlength="7" spellcheck="false" aria-label="HEX цвета текста"></label>
+      <button type="button" class="ghost" id="cc-swap" aria-label="Поменять местами текст и фон">⇄</button>
+      <label class="pick"><span class="cap">Фон</span><input type="color" id="cc-bg" value="#ffffff" aria-label="Цвет фона"><input type="text" id="cc-bgx" value="#FFFFFF" maxlength="7" spellcheck="false" aria-label="HEX цвета фона"></label>
+    </div>
+    <div class="seg" id="cc-pre">
+      <button type="button" data-p="#8e8e8c,#ffffff">Серый на белом</button>
+      <button type="button" data-p="#ffffff,#eb7540">Белый на оранжевом</button>
+      <button type="button" data-p="#101010,#eb7540">Чёрный на оранжевом</button>
+      <button type="button" data-p="#5a5a58,#101010">Тёмная тема</button>
+      <button type="button" data-p="#ffffff,#21a038">Белый на зелёном</button>
+      <button type="button" data-p="#1a1a1a,#ffffff">Почти чёрный на белом</button>
+    </div>
+    <div class="cc-grid">
+      <div class="cc-view" id="cc-view">
+        <b class="cc-h">Курс по веб-дизайну</b>
+        <p class="cc-t">Старт 1 ноября. 12 недель, 4 проекта в портфолио и разбор каждой домашки с наставником.</p>
+        <small class="cc-s">Мелкий текст 13 px: условия возврата и сноски</small>
+        <div class="cc-ui"><span class="cc-btn">Записаться</span><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="cc-res">
+        <div class="cc-ratio"><span class="big" id="cc-r">3.3</span><span>: 1</span></div>
+        <div class="cc-bar" aria-hidden="true"><i id="cc-mark"></i><span style="left:36.1%">3</span><span style="left:49.4%">4.5</span><span style="left:63.9%">7</span></div>
+        <ul class="verdict" id="cc-list"></ul>
+        <div class="cc-fix" id="cc-fix" hidden><span id="cc-fix-t"></span><button type="button" class="ghost" id="cc-fix-b">Подставить</button></div>
+      </div>
+    </div>
+  </div>
+  <p class="hint">Меняй цвета пикером или впиши HEX. Под шкалой — вердикт по каждому виду текста. Если проверка не пройдена, тренажёр подскажет ближайший цвет, который проходит.</p>
+  <div class="sub">
+    <h3>Нормы WCAG</h3>
+    <div class="sub-b">
+      <div class="scroll"><table>
+        <thead><tr><th>Что проверяем</th><th>AA · норма</th><th>AAA · повышенный</th></tr></thead>
+        <tbody>
+          <tr><td>Обычный текст</td><td>4,5 : 1</td><td>7 : 1</td></tr>
+          <tr><td>Крупный текст: от 24 px или от 19 px жирным</td><td>3 : 1</td><td>4,5 : 1</td></tr>
+          <tr><td>Иконки, обводки полей, границы кнопок, графики</td><td>3 : 1</td><td>—</td></tr>
+          <tr><td>Неактивные элементы, логотипы, декор</td><td colspan="2">Требований нет, но disabled всё равно должен читаться</td></tr>
+        </tbody>
+      </table></div>
+      <div class="three">
+        <div class="box"><span class="kind">Уровень A</span><p>Минимальные требования WCAG: альтернативный текст у картинок, управление с клавиатуры. Отдельной нормы контраста на этом уровне нет.</p></div>
+        <div class="box hot"><span class="kind">Уровень AA</span><p>Рабочий стандарт для сайтов. На него ориентируются законы о доступности в Европе и США. Держи весь основной текст на AA.</p></div>
+        <div class="box"><span class="kind">Уровень AAA</span><p>Повышенный уровень для госуслуг, медицины, сервисов для пожилых. Для всего сайта целиком обычно не требуется.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Не только цветом</h3>
+    <div class="sub-b">
+      <p>Примерно 8% мужчин и 0,5% женщин различают цвета иначе, чаще всего путают красный и зелёный. Поэтому цвет усиливает сигнал, но не несёт его в одиночку. Ошибку в форме дублируй иконкой и текстом, ссылку в тексте — подчёркиванием, статус — подписью.</p>
+      <div class="pair">
+        <div class="bad"><i>Только цвет</i><div class="stage sem-st"><span class="sem-in red"></span><span class="sem-dot" style="background:#e5383b"></span><span class="sem-dot" style="background:#2fa84f"></span></div><span>Красная рамка без текста и цветные точки. Человек с дальтонизмом не поймёт, что не так.</span></div>
+        <div class="good"><i>Цвет + иконка + текст</i><div class="stage sem-st"><span class="sem-in red"><small>✕ Допиши адрес после @</small></span><span class="sem-tag" style="color:#c62828">✕ Отменён</span><span class="sem-tag" style="color:#1b7f3b">✓ Доставлен</span></div><span>Сообщение понятно даже в ч/б и при любом зрении.</span></div>
+      </div>
+      <p>Проверять удобно чекерами: WebAIM Contrast Checker, плагины Stark или Contrast для Figma, панель Accessibility в DevTools Chrome. В DevTools в пикере цвета есть строка Contrast ratio с линиями AA и AAA.</p>
+    </div>
+  </div>
+</section>
+
+<section id="system">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Палитра сайта</h2></div></div>
+  <p>Красивые цвета по отдельности ещё не дают хорошего сайта. Важно, где какой цвет живёт и сколько места занимает. Работу с палитрой делим на три шага: собрать макет в сером, выбрать простую схему, распределить цвета по правилу 60–30–10.</p>
+  <div class="sub">
+    <h3>Сначала в ч/б</h3>
+    <div class="sub-b">
+      <p>Если начать с цвета, он съест работу над композицией: ты будешь спорить с оттенками, а не с иерархией. Собери первый экран в 3–5 оттенках серого: фон, подложки, второстепенный текст, основной текст, главная кнопка. Если в сером понятно, что главное, цвет только усилит это. Если нет — цвет не спасёт.</p>
+      <ol class="steps">
+        <li><div><div class="t">Сетка и тексты в сером</div><div class="d">Расставь блоки, заголовки и кнопки. Акценты делай размером, весом шрифта и светлотой серого.</div></div></li>
+        <li><div><div class="t">Прищурься</div><div class="d">Если на размытом экране видна главная кнопка и заголовок, иерархия работает.</div></div></li>
+        <li><div><div class="t">Добавь цвет по ролям</div><div class="d">Подмени серые ступени цветами палитры: светлый серый — на 60, средний — на 30, самый контрастный акцент — на 10.</div></div></li>
+      </ol>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Простые схемы для сайтов</h3>
+    <div class="sub-b">
+      <p>В 90% сайтов текст либо тёмный на светлом, либо светлый на тёмном. Причина простая: так проще всего держать контраст. Пять схем, которых хватит почти на любой проект:</p>
+      <div class="schemes">
+        <div class="box"><div class="sch"><i style="background:#fff"></i><i style="background:#101010"></i></div><b>Монохром</b><p>Чёрный и белый. Строго, дорого, всё держится на типографике.</p></div>
+        <div class="box"><div class="sch"><i style="background:#f4f4f2"></i><i style="background:#101010"></i><i style="background:#eb7540;flex:.35"></i></div><b>Монохром + акцент</b><p>Самая частая схема. Один яркий цвет только на кнопки и метки.</p></div>
+        <div class="box"><div class="sch"><i style="background:#fff"></i><i style="background:#101010"></i><i style="background:#3b6ef0;flex:.3"></i><i style="background:#f2c443;flex:.3"></i><i style="background:#e5383b;flex:.3"></i></div><b>Монохром + 2–4 акцента</b><p>Для игровых и детских проектов. Акценты делят по смыслу: разделы, категории.</p></div>
+        <div class="box"><div class="sch"><i style="background:#3b6ef0"></i><i style="background:#fff;flex:.4"></i><i style="background:#101010;flex:.4"></i></div><b>Цветной фон + ч/б текст</b><p>Фирменный цвет под фон, текст чёрный или белый. Узнаваемо и громко.</p></div>
+        <div class="box"><div class="sch"><i style="background:#c8f169"></i><i style="background:#5b2bd9"></i></div><b>Пара на акцентах</b><p>Два ярких цвета в паре, часто комплементарных. Смело, подходит молодёжным брендам.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Правило 60–30–10</h3>
+    <div class="sub-b">
+      <p><b>60%</b> площади — основной нейтральный цвет: фон. <b>30%</b> — дополнительный: подложки, карточки, секции, шапка. <b>10%</b> — акцент: главная кнопка, ссылки, метки, важные цифры. Правило пришло из дизайна интерьеров и не требует точности до процента. Оно защищает от главной ошибки: когда акцента так много, что он перестаёт выделяться.</p>
+      <div class="demo" id="ml">
+        <span class="cap">Генератор палитры · перекрась лендинг</span>
+        <div class="seg" id="ml-pre">
+          <button type="button" data-p="#f6f1ea,#1f3d36,#d9541e">Тёплый</button>
+          <button type="button" data-p="#0f1115,#1d2230,#7c5cff">Тех-продукт</button>
+          <button type="button" data-p="#f3f7ef,#cfe3c3,#21a038">Эко</button>
+          <button type="button" data-p="#0b0b0b,#1c1a16,#d6b46a">Премиум</button>
+          <button type="button" data-p="#fdfbe8,#f7f0b8,#f2e46b">Сломанный</button>
+        </div>
+        <div class="ml-picks">
+          <label class="pick"><span class="cap">60 · основной</span><input type="color" id="ml-a" value="#f6f1ea" aria-label="Основной цвет, 60%"></label>
+          <label class="pick"><span class="cap">30 · дополнительный</span><input type="color" id="ml-b" value="#1f3d36" aria-label="Дополнительный цвет, 30%"></label>
+          <label class="pick"><span class="cap">10 · акцент</span><input type="color" id="ml-c" value="#d9541e" aria-label="Акцентный цвет, 10%"></label>
+          <button type="button" class="ghost" id="ml-rot">Поменять роли</button>
+        </div>
+        <div class="ml-modes">
+          <div class="seg" id="ml-mode"><button type="button" data-m="0">60 / 30 / 10</button><button type="button" data-m="1">Поровну</button><button type="button" data-m="2">Акцент везде</button></div>
+          <button type="button" class="ghost" id="ml-gray" aria-pressed="false">Ч/б</button>
+        </div>
+        <div class="ml-grid">
+          <div class="stage ml-stage">
+            <div class="ml" id="ml-page" data-paint="a">
+              <div class="ml-nav" data-paint="b"><b>Тесто</b><span>Курсы</span><span>Шефы</span><span>Цены</span></div>
+              <div class="ml-hero" data-paint="a">
+                <span class="ml-tag" data-paint="c">Новый поток</span>
+                <b class="ml-h">Готовь пасту как в Болонье</b>
+                <span class="ml-p">Шесть вечеров с шефом, свежая паста и соусы. Группа до 10 человек.</span>
+                <span class="ml-btn" data-paint="c">Записаться</span>
+              </div>
+              <div class="ml-cards" data-paint="b">
+                <div class="ml-card" data-paint="a"><b>6</b><span>занятий</span></div>
+                <div class="ml-card" data-paint="a"><b>10</b><span>человек</span></div>
+                <div class="ml-card" data-paint="a"><b>18</b><span>рецептов</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="ml-side">
+            <span class="cap">Реальная площадь цветов</span>
+            <div class="ml-share" id="ml-share"></div>
+            <ul class="verdict" id="ml-list"></ul>
+          </div>
+        </div>
+      </div>
+      <p class="hint">Выбери набор или свои три цвета, переключи распределение и посмотри на вердикт. Кнопка «Ч/б» показывает, держится ли иерархия без цвета. Цвет текста подбирается автоматически: чёрный или белый, где контраст выше.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Тёмная тема</h3>
+    <div class="sub-b">
+      <ul class="box" style="padding-left:34px">
+        <li>Фон — тёмно-серый вроде #121212 или #1c1c1c, а не чистый #000: на чистом чёрном белый текст «звенит» и утомляет.</li>
+        <li>Текст — не чистый белый, а #f4f4f2 или около того. Второстепенный — серый с контрастом от 4,5:1.</li>
+        <li>Глубину показывай светлотой: чем выше слой (карточка, модалка), тем он светлее фона. Тени на тёмном почти не видны.</li>
+        <li>Акцент приглуши на 10–20% по насыщенности: на тёмном фоне он кажется ярче, чем на светлом.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="meaning">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Смысл цвета</h2></div></div>
+  <p>У каждого цвета есть привычный набор ассоциаций. Они зависят от культуры и опыта, и бренды смело нарушают их ради узнаваемости. Но знать базу нужно: она помогает объяснить заказчику выбор и не попасть в чужую нишу случайно.</p>
+  <div class="scroll"><table class="psy">
+    <thead><tr><th>Цвет</th><th>Что передаёт</th><th>Где работает</th><th>Примеры</th></tr></thead>
+    <tbody>
+      <tr><td><i style="background:#e53935"></i>Красный</td><td>Энергия, скорость, «давай быстрее». Самый громкий. Фоном утомляет.</td><td>Кнопки действия, еда, транспорт, одежда</td><td>Coca-Cola, Netflix, МТС</td></tr>
+      <tr><td><i style="background:#1e6ff0"></i>Синий</td><td>Доверие и спокойствие. Скучноватый, зато безотказный.</td><td>Банки, платёжки, медицина, соцсети</td><td>ВКонтакте, Telegram</td></tr>
+      <tr><td><i style="background:#21a038"></i>Зелёный</td><td>Природа, здоровье, деньги. Тёмный — про стабильность, светлый — про свежесть. Нормально живёт фоном.</td><td>Финансы, ЗОЖ, экология</td><td>Сбер</td></tr>
+      <tr><td><i style="background:#f2c443"></i>Жёлтый</td><td>Солнце и оптимизм, но и сигнал осторожности. Много жёлтого вызывает тревогу.</td><td>Фастфуд, такси, детские товары</td><td>Яндекс Go, Т‑Банк</td></tr>
+      <tr><td><i style="background:#f57c1f"></i>Оранжевый</td><td>Задор красного, только мягче и дружелюбнее. Тепло и уют.</td><td>IT, развлечения, магазины, недвижимость</td><td>Fanta, Додо Пицца</td></tr>
+      <tr><td><i style="background:#7b3fb5"></i>Фиолетовый</td><td>Роскошь и творчество. Пурпур когда-то был самым дорогим красителем.</td><td>Бьюти, люкс, креативные проекты</td><td>Milka</td></tr>
+      <tr><td><i style="background:#f06ba8"></i>Розовый</td><td>Нежность и забота. Отлично работает акцентом без привязки к полу.</td><td>Сладости, бьюти, лёгкие сервисы</td><td>Barbie, T-Mobile</td></tr>
+      <tr><td><i style="background:#101010;box-shadow:0 0 0 1px #3a3a3a"></i>Чёрный</td><td>Строгость и дороговизна. Даёт мощный контраст, хорош и фоном, и акцентом.</td><td>Премиум, мода, техника</td><td>Chanel, Nike</td></tr>
+      <tr><td><i style="background:#fff"></i>Белый</td><td>Воздух, честность, фокус на главном.</td><td>Почти любой сайт как базовый фон</td><td>Apple, Notion</td></tr>
+    </tbody>
+  </table></div>
+  <div class="sub">
+    <h3>Служебные цвета</h3>
+    <div class="sub-b">
+      <p>Есть цвета, которые выучены всеми, как светофор: красный — ошибка и опасность, жёлтый — внимание, зелёный — всё хорошо, синий — информация. В UI-ките их выносят отдельно от фирменной палитры и называют по смыслу: <code>error</code>, <code>warning</code>, <code>success</code>, <code>info</code>. Даже если фирменный цвет бренда красный, ошибку всё равно показывай красным, а фирменный оттенок отодвинь от него по тону или светлоте.</p>
+      <div class="four sem4">
+        <div class="box"><i style="background:#e5383b"></i><span class="kind" style="color:#ff6b6e">Error</span><p>Ошибка, удаление, отмена</p></div>
+        <div class="box"><i style="background:#f2b33d"></i><span class="kind" style="color:#f2b33d">Warning</span><p>Внимание, срок истекает</p></div>
+        <div class="box"><i style="background:#2fa84f"></i><span class="kind" style="color:var(--good)">Success</span><p>Готово, оплачено, сохранено</p></div>
+        <div class="box"><i style="background:#3b6ef0"></i><span class="kind" style="color:var(--line2)">Info</span><p>Подсказка, новость, ссылка</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Цвет из концепции</h3>
+    <div class="sub-b">
+      <p>Цвет продолжает проект. Сначала аудитория и идея, потом палитра.</p>
+      <div class="two">
+        <div class="box"><span class="kind">Премиум</span><b>Тёмный фон и немного золота</b><p>Сайты частных банков и ювелирных домов почти всегда тёмные: минимум деталей, чёрный, один тёплый акцент. Ощущение — «это не для всех».</p></div>
+        <div class="box"><span class="kind">Массовый продукт</span><b>Нейтрально, но узнаваемо</b><p>Сбером пользуется почти вся страна. Интерфейс спокойный и белый, а фирменный зелёный узнаётся с любой кнопки.</p></div>
+        <div class="box"><span class="kind">Из предмета</span><b>Палитра подсказана темой</b><p>Сайт мастер-классов по пасте: жёлтый — сама паста, зелёный и красный — флаг Италии. Цвета объясняются за секунду.</p></div>
+        <div class="box"><span class="kind">Из метафоры</span><b>Цвет как часть идеи</b><p>В проекте «Круг помощи» идея построена на спасательном круге, поэтому главный цвет — красный, как у настоящего спасательного круга.</p></div>
+      </div>
+      <p>Один бренд может говорить с разными людьми разными палитрами. У Альфа‑Банка молодёжная карта получила кислотно-зелёный акцент рядом с фирменным красным — дерзко, как её владельцы. А в проекте для старшего поколения дизайнеры выбрали спокойную ч/б палитру: таким людям важно быстро прочитать условия и предложения, а не зацепиться за цвет. Здесь цвет работает на удержание, а привлечение внимания уходит на второй план.</p>
+    </div>
+  </div>
+  <div class="sub wide">
+    <h3>Тренажёр: где цвет врёт</h3>
+    <div class="sub-b">
+      <p>Перед тобой экран оплаты заказа. В нём шесть ошибок с цветом: перепутан смысл, не хватает контраста или сигнал держится только на цвете. Нажимай на подозрительные элементы. Промахи не считаются. Включи «Глазами дальтоника», чтобы увидеть, что теряется при протанопии и дейтеранопии.</p>
+      <div class="game" id="lie-box">
+        <div class="game-top"><span class="cap" id="lie-n">Найдено 0 из 6</span><div class="game-acts"><button type="button" class="ghost" id="lie-cb" aria-pressed="false">Глазами дальтоника</button><button type="button" class="ghost" id="lie-all">Показать все</button><button type="button" class="ghost" id="lie-reset">Заново</button></div></div>
+        <div class="stage game-stage">
+          <div class="lmock" id="lie-mock">
+            <div class="bug lm-toast" data-bug="0" role="button" tabindex="0"><span>✓</span>Оплата прошла, заказ №4521 оформлен</div>
+            <div class="lm-body">
+              <div class="lm-col">
+                <b class="lm-h">Мои заказы</b>
+                <div class="lm-orders bug" data-bug="1" role="button" tabindex="0">
+                  <div><span class="lm-dot" style="background:#2fa84f"></span>Кеды Classic<em>4 990 ₽</em></div>
+                  <div><span class="lm-dot" style="background:#e5383b"></span>Худи оверсайз<em>6 200 ₽</em></div>
+                  <div><span class="lm-dot" style="background:#f2b33d"></span>Рюкзак City<em>3 400 ₽</em></div>
+                </div>
+                <p class="bug lm-faint" data-bug="2" role="button" tabindex="0">Вернуть товар можно в течение 14 дней. Деньги придут на карту за 3–10 рабочих дней.</p>
+              </div>
+              <div class="lm-col">
+                <div class="lm-field"><label>Промокод</label><div class="bug lm-in" data-bug="3" role="button" tabindex="0">LETO2O26</div></div>
+                <div class="lm-sum"><span>Итого</span><b>14 590 ₽</b></div>
+                <span class="bug lm-pay" data-bug="4" role="button" tabindex="0">Оплатить</span>
+                <div class="bug lm-del" data-bug="5" role="button" tabindex="0"><span class="lm-b lm-red">Отмена</span><span class="lm-b lm-green">Удалить карту</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ol class="game-list" id="lie-list"></ol>
+      </div>
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="deutan" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.367 0.861 -0.228 0 0  0.280 0.673 0.047 0 0  -0.012 0.043 0.969 0 0  0 0 0 1 0"/></filter></svg>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Сервисы для палитры</h2></div></div>
+  <p>Подбирать схемы вручную не обязательно. Генераторы дают стартовую точку, а решение о ролях и долях цветов всё равно за тобой. Удобная связка: найти гармонию в одном сервисе, проверить контраст во втором, примерить на макет в третьем.</p>
+  <div class="links">
+    <a href="https://color.adobe.com/ru/create/color-wheel" target="_blank" rel="noopener"><span>Adobe Color</span><span>Выбираешь базовый цвет и правило гармонии: аналоговая, комплементарная, триада. Есть проверка на дальтонизм и разбор палитры из фото.</span></a>
+    <a href="https://coolors.co" target="_blank" rel="noopener"><span>Coolors</span><span>Генератор по пробелу: закрепи нравящиеся цвета замком, остальные подберутся. Большая база популярных палитр и плагин для Figma.</span></a>
+    <a href="http://colormind.io" target="_blank" rel="noopener"><span>Colormind</span><span>Генерирует палитру из пяти цветов с помощью нейросети, можно закрепить цвет и показать палитру на шаблоне сайта.</span></a>
+    <a href="https://www.realtimecolors.com" target="_blank" rel="noopener"><span>Realtime Colors</span><span>Сразу красит шаблон лендинга твоими цветами: текст, фон, основной, дополнительный, акцент. Показывает контраст пар.</span></a>
+    <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener"><span>WebAIM Contrast Checker</span><span>Классическая проверка контраста по WCAG: два цвета, коэффициент и вердикт AA/AAA.</span></a>
+    <a href="http://colorsafe.co" target="_blank" rel="noopener"><span>Color Safe</span><span>Подбирает цвета текста, которые проходят WCAG на твоём фоне. Удобно в паре с генераторами.</span></a>
+    <a href="https://m3.material.io/theme-builder" target="_blank" rel="noopener"><span>Material Theme Builder</span><span>От Google: из одного цвета строит светлую и тёмную схему со всеми ступенями и ролями. Есть плагин для Figma.</span></a>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Цвет вместе с нейронкой</h2></div></div>
+  <p>Нейронка хорошо собирает ассоциации, считает контраст и замечает, где цвет спорит со смыслом. Используй её как собеседника и проверяющего. Цвета выбираешь ты: их нужно защитить перед заказчиком, а для этого надо понимать каждый.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Продукт, аудитория, концепция и где будет сайт: светлая или тёмная тема.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не выдаёт сразу пять палитр.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Нейронка предлагает направления и считает. Цвета и роли выбираешь сам.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Ассоциации</span><b>Откуда взять цвет</b>
+<pre id="p1">Я делаю сайт для <em>[продукт и аудитория]</em>. Концепция проекта: <em>[идея или метафора в 1–2 предложениях]</em>.
+Помоги найти, из чего может вырасти палитра: предметы, материалы, места и состояния, связанные с темой.
+Не предлагай готовые HEX-коды. Задавай мне вопросы по одному и жди ответа. В конце дай 3 направления словами, а я выберу одно сам.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь, выбираешь направление и сам подбираешь цвета в Figma или Adobe Color.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Контраст</span><b>Проверка пар цветов</b>
+<pre id="p2">Вот моя палитра: <em>[HEX и роль каждого цвета: фон, подложка, текст, акцент]</em>.
+Посчитай коэффициент контраста WCAG для пар: текст на фоне, текст на подложке, текст на кнопке, кнопка на фоне.
+Для каждой пары напиши, проходит ли она AA для обычного и крупного текста. Не исправляй цвета сам: для каждой проблемы спроси меня, что я готов поменять.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> правишь цвета и перепроверяешь в WebAIM или DevTools.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Ревью</span><b>Смысл и 60–30–10</b>
+<pre id="p3">Опишу экран: <em>[какие элементы каким цветом и сколько места занимает каждый цвет]</em>. Можешь посмотреть скриншот.
+Проверь: соблюдается ли примерно 60–30–10, одна ли точка акцента, не спорят ли служебные цвета (ошибка, успех, внимание) с фирменными, не держится ли смысл только на цвете.
+По каждому пункту: ок или проблема. Для проблем задай мне вопрос, как я хочу её решить.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> решаешь, с какими замечаниями согласен, и правишь макет.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Цветовая система для своего лендинга</b><p>Возьми первый экран своего лендинга. Сначала собери его в оттенках серого и проверь иерархию прищуром. Затем выбери схему и три цвета по ролям 60–30–10, для основного и акцентного построй шкалу 50–900 и добавь служебные цвета error, warning, success. Проверь контраст всех пар текста и фона. Сдай фрейм в Figma: ч/б и цветная версия первого экрана рядом, лист палитры с HEX каждой ступени и коэффициентами контраста для главных пар.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>Ч/б версия читается: главное видно без цвета</span></label>
+    <label><input type="checkbox"><span>Акцент занимает около 10% и стоит на главном действии</span></label>
+    <label><input type="checkbox"><span>Весь основной текст проходит AA — от 4,5:1</span></label>
+    <label><input type="checkbox"><span>Кнопки, иконки и обводки полей — от 3:1 к фону</span></label>
+    <label><input type="checkbox"><span>Ошибка и успех дублируются иконкой или текстом</span></label>
+    <label><input type="checkbox"><span>Можешь одной фразой объяснить, откуда взялся каждый цвет</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Это последний урок модуля — дальше проектируем лендинг.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 4 · Цвет</footer>
+
+</div>
+<script type="application/json" id="lie-data">[
+{"t":"Успех красным","e":"«Оплата прошла» в красной плашке читается как ошибка. Человек испугается и полезет проверять карту. Успех — зелёный с галочкой."},
+{"t":"Статусы только точками","e":"Зелёная, красная и жёлтая точки без подписи. При дейтеранопии красная и зелёная почти одинаковые. Нужны подписи: «Доставлен», «Отменён», «В пути»."},
+{"t":"Бледный текст условий","e":"Светло-серый на белом — контраст около 1,5:1 при норме 4,5:1. Важные условия возврата прочитать невозможно."},
+{"t":"Ошибка без текста","e":"Поле промокода подсвечено красной рамкой, но не сказано, что не так. Добавь текст под полем: «В коде буква O вместо нуля»."},
+{"t":"Главная кнопка серая","e":"«Оплатить» выглядит как disabled: серый на сером. Человек решит, что нажать нельзя. Акцентный цвет нужен именно здесь."},
+{"t":"Перепутаны красный и зелёный","e":"«Удалить карту» зелёная, как подтверждение, а безопасная «Отмена» красная. Опасное действие — красное, отмена — спокойная вторичная кнопка."}
+]</script>
+<script type="application/json" id="quiz-data">[
+{"p":"Какой минимальный контраст по WCAG AA нужен обычному тексту?","o":["3 : 1","4,5 : 1","7 : 1"],"a":1,"e":"4,5:1 — норма AA для обычного текста. 3:1 хватает крупному тексту и иконкам, 7:1 — уровень AAA."},
+{"p":"Что значит правило 60–30–10?","o":["60% площади — акцент, чтобы сайт запомнился","Основной цвет на 60% площади, дополнительный на 30%, акцент на 10%","Палитра из 60 оттенков, из них 10 главных"],"a":1,"e":"Большая часть — спокойный фон, треть — подложки и секции, маленькая доля — акцент на главных действиях. Так акцент остаётся заметным."},
+{"p":"Ты добавил к фирменному цвету белый. Как называется результат?","o":["Шейд","Тинт","Тон"],"a":1,"e":"Тинт — с белым, шейд — с чёрным, тон — с серым. Из них собирают шкалу 50–900."},
+{"p":"Зачем собирать первый экран сначала в оттенках серого?","o":["Чтобы проверить иерархию без влияния цвета","Так быстрее экспортировать макет","Серые макеты лучше продаются заказчику"],"a":0,"e":"Если главное видно в сером, цвет только усилит иерархию. Если нет — цвет её не спасёт."},
+{"p":"Ошибка в поле формы показана только красной рамкой. Что не так?","o":["Красный слишком яркий, нужен оранжевый","Ничего, красный все понимают","Смысл держится только на цвете: человек с дальтонизмом и без подсказки не поймёт, что исправить"],"a":2,"e":"Цвет усиливает сигнал, но не несёт его один. Дублируй ошибку текстом и иконкой."},
+{"p":"Какие цвета противоположны на художественном цветовом круге и образуют комплементарную пару?","o":["Синий и оранжевый","Синий и фиолетовый","Жёлтый и оранжевый"],"a":0,"e":"Комплементарные — напротив друг друга: синий и оранжевый, зелёный и красный, жёлтый и фиолетовый. Соседи по кругу — это аналоговая схема."}
+]</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+// Переключатели состояний в живых демо: кнопка в .seg ставит класс is-<state> на все [data-target] внутри демо
+document.querySelectorAll('.demo[data-states]').forEach(demo => {
+  const btns = demo.querySelectorAll('.seg button');
+  const targets = demo.querySelectorAll('[data-target]');
+  const out = demo.querySelector('output');
+  const all = [...btns].map(b => 'is-' + b.dataset.state);
+  function set(b) {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    targets.forEach(t => {
+      t.classList.remove(...all);
+      if (b.dataset.state !== 'default') t.classList.add('is-' + b.dataset.state);
+      const txt = t.querySelector('[data-text]');
+      if (txt) {
+        const v = b.dataset['text'];
+        txt.innerHTML = v !== undefined ? v : txt.dataset.text;
+      }
+      const help = t.querySelector('.help');
+      if (help) help.textContent = b.dataset.help || '';
+    });
+    if (out) out.innerHTML = b.dataset.desc || '';
+  }
+  btns.forEach(b => b.addEventListener('click', () => set(b)));
+  if (btns[0]) set(btns[0]);
+});
+// Светлая / тёмная тема на одних и тех же токенах
+document.querySelectorAll('[data-theme-demo]').forEach(box => {
+  const view = box.querySelector('.theme-demo');
+  const T = {
+    light: { bg: '#ffffff', text: '#101010', muted: '#5a5a58', primary: '#eb7540', onPrimary: '#101010', line: '#101010' },
+    dark: { bg: '#141414', text: '#f4f4f2', muted: '#8e8e8c', primary: '#f08a5d', onPrimary: '#101010', line: '#f4f4f2' }
+  };
+  function apply(mode) {
+    const t = T[mode];
+    view.style.background = t.bg; view.style.color = t.text;
+    view.querySelectorAll('p').forEach(p => p.style.color = t.muted);
+    view.querySelectorAll('b').forEach(x => x.style.color = t.text);
+    view.querySelectorAll('.u-primary').forEach(b => { b.style.background = t.primary; b.style.color = t.onPrimary; });
+    view.querySelectorAll('.u-secondary').forEach(b => { b.style.borderColor = t.line; b.style.color = t.text; });
+    box.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === mode ? 'true' : 'false'));
+  }
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => apply(b.dataset.mode)));
+  apply('light');
+});
+
+// ===== Интерактив методички «Цвет» =====
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  // --- Цветовые утилиты ---
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  function hex2rgb(h) {
+    h = String(h).trim().replace('#', '');
+    if (h.length === 3) h = h.split('').map(c => c + c).join('');
+    if (!/^[0-9a-f]{6}$/i.test(h)) return null;
+    return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16));
+  }
+  const rgb2hex = c => '#' + c.map(v => Math.round(clamp(v, 0, 255)).toString(16).padStart(2, '0')).join('').toUpperCase();
+  function lum(c) {
+    const [r, g, b] = c.map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  }
+  function ratio(a, b) { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  function hsl2rgb(h, s, l) {
+    h = ((h % 360) + 360) % 360; s /= 100; l /= 100;
+    const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+    const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+    return [f(0) * 255, f(8) * 255, f(4) * 255];
+  }
+  function rgb2hsl(c) {
+    let [r, g, b] = c.map(v => v / 255);
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; let h = 0, s = 0; const l = (mx + mn) / 2;
+    if (d) {
+      s = d / (1 - Math.abs(2 * l - 1));
+      h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; if (h < 0) h += 360;
+    }
+    return [h, s * 100, l * 100];
+  }
+  const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+  const WHITE = [255, 255, 255], BLACK = [16, 16, 16];
+  const bestText = bg => ratio(bg, WHITE) >= ratio(bg, BLACK) ? WHITE : BLACK;
+  const fmt = r => (Math.floor(r * 100) / 100).toFixed(r >= 10 ? 1 : 2).replace('.', ',');
+
+  // --- 1. Цветовой круг (художественный RYB) ---
+  const wd = $('#wheel-demo');
+  if (wd) {
+    const svg = $('#wh-svg'), hue = $('#wh-hue'), deg = $('#wh-deg'), sw = $('#wh-sw'), prev = $('#wh-prev'), out = $('#wh-out');
+    const P = [[0, 0], [60, 28], [120, 54], [180, 120], [240, 218], [300, 282], [360, 360]];
+    function ryb(a) {
+      a = ((a % 360) + 360) % 360;
+      for (let i = 1; i < P.length; i++) if (a <= P[i][0]) { const [x0, y0] = P[i - 1], [x1, y1] = P[i]; return y0 + (y1 - y0) * (a - x0) / (x1 - x0); }
+      return 0;
+    }
+    const col = (a, s = 82, l = 52) => hsl2rgb(ryb(a), s, l);
+    const NS = 'http://www.w3.org/2000/svg';
+    const pt = (a, r) => [Math.sin(a * Math.PI / 180) * r, -Math.cos(a * Math.PI / 180) * r];
+    let wedges = '';
+    for (let i = 0; i < 36; i++) {
+      const a0 = i * 10 - 5, a1 = a0 + 10, [x0, y0] = pt(a0, 100), [x1, y1] = pt(a1, 100), [x2, y2] = pt(a1, 52), [x3, y3] = pt(a0, 52);
+      wedges += `<path d="M${x0} ${y0}A100 100 0 0 1 ${x1} ${y1}L${x2} ${y2}A52 52 0 0 0 ${x3} ${y3}Z" fill="${rgb2hex(col(i * 10))}"/>`;
+    }
+    svg.innerHTML = wedges + '<g id="wh-mk"></g>';
+    const mkG = $('#wh-mk');
+    const S = {
+      mono: { a: [0], d: '<b>Монохромная.</b> Один тон в разной светлоте. Безопасный выбор для строгих и минималистичных сайтов: цельно и легко держать контраст. Чтобы не было скучно, работай светлотой и одним насыщенным акцентом.' },
+      analog: { a: [-30, 0, 30], d: '<b>Аналоговая.</b> Соседи по кругу. Спокойная гармоничная картинка, хорошо для природы, еды, уюта. Минус — мало контраста: акцент выбери самый насыщенный из трёх или добавь тёмный нейтральный.' },
+      compl: { a: [0, 180], d: '<b>Комплементарная.</b> Цвета напротив друг друга, максимальный контраст тонов. Отдай одному большую площадь, второй оставь на кнопки и метки — так схема расставляет акценты.' },
+      triad: { a: [0, 120, 240], d: '<b>Триадная.</b> Три цвета на равном расстоянии. Ярко и игриво. Один пускай под фон (приглушённый), два других — на контент и акценты. Все три в полную силу почти всегда перебор.' }
+    };
+    let scheme = 'compl';
+    function render() {
+      const b = +hue.value; deg.textContent = b;
+      const angs = S[scheme].a.map(x => b + x);
+      let mk = '';
+      if (angs.length > 1) mk += '<polygon class="ln" points="' + angs.map(a => pt(a, 76).join(',')).join(' ') + '"/>';
+      angs.forEach((a, i) => { const [x, y] = pt(a, 76); mk += `<circle class="mk${i === (scheme === 'analog' ? 1 : 0) ? ' base' : ''}" cx="${x}" cy="${y}" r="${i === (scheme === 'analog' ? 1 : 0) ? 11 : 8}" fill="${rgb2hex(col(a))}"/>`; });
+      mkG.innerHTML = mk;
+      const h0 = ryb(b);
+      let list, bg, pic, btn;
+      if (scheme === 'mono') {
+        list = [hsl2rgb(h0, 40, 18), hsl2rgb(h0, 70, 40), col(b), hsl2rgb(h0, 70, 78), hsl2rgb(h0, 60, 94)];
+        bg = list[4]; pic = list[2]; btn = list[0];
+      } else if (scheme === 'analog') {
+        list = [col(b - 30), col(b), col(b + 30), hsl2rgb(h0, 50, 93), hsl2rgb(h0, 45, 16)];
+        bg = list[3]; pic = mix(list[0], list[2], .5); btn = list[1];
+      } else if (scheme === 'compl') {
+        list = [col(b), col(b + 180), hsl2rgb(h0, 55, 92), hsl2rgb(h0, 45, 18)];
+        bg = list[2]; pic = list[0]; btn = list[1];
+      } else {
+        list = [col(b), col(b + 120), col(b + 240), hsl2rgb(h0, 45, 92)];
+        bg = list[3]; pic = list[1]; btn = list[2];
+      }
+      sw.innerHTML = list.map(c => `<div><i style="background:${rgb2hex(c)}"></i><span>${rgb2hex(c)}</span></div>`).join('');
+      prev.style.background = rgb2hex(bg);
+      $('.wh-card i', prev).style.background = rgb2hex(pic);
+      const em = $('.wh-card em', prev); em.style.background = rgb2hex(btn); em.style.color = rgb2hex(bestText(btn));
+      const r = ratio(btn, WHITE) >= ratio(btn, BLACK) ? ratio(btn, WHITE) : ratio(btn, BLACK);
+      out.innerHTML = S[scheme].d + ' <span style="color:var(--faint)">Текст кнопки: ' + fmt(r) + ':1.</span>';
+      $$('button', $('#wh-seg')).forEach(x => x.setAttribute('aria-pressed', String(x.dataset.s === scheme)));
+    }
+    $$('button', $('#wh-seg')).forEach(x => x.addEventListener('click', () => { scheme = x.dataset.s; render(); }));
+    hue.addEventListener('input', render);
+    function fromPointer(e) {
+      const r = svg.getBoundingClientRect(), x = e.clientX - r.left - r.width / 2, y = e.clientY - r.top - r.height / 2;
+      let a = Math.atan2(x, -y) * 180 / Math.PI; if (a < 0) a += 360;
+      hue.value = Math.round(a) % 360; render();
+    }
+    let drag = false;
+    svg.addEventListener('pointerdown', e => { drag = true; svg.setPointerCapture(e.pointerId); fromPointer(e); });
+    svg.addEventListener('pointermove', e => { if (drag) fromPointer(e); });
+    svg.addEventListener('pointerup', () => { drag = false; });
+    svg.addEventListener('pointercancel', () => { drag = false; });
+    render();
+  }
+
+  // --- связка color + text ---
+  function bindPick(colorEl, textEl, onChange) {
+    colorEl.addEventListener('input', () => { textEl.value = colorEl.value.toUpperCase(); textEl.classList.remove('err'); onChange(); });
+    textEl.addEventListener('input', () => {
+      let v = textEl.value.trim(); if (v && v[0] !== '#') v = '#' + v;
+      const c = hex2rgb(v);
+      if (c && v.length === 7) { colorEl.value = v.toLowerCase(); textEl.classList.remove('err'); onChange(); }
+      else textEl.classList.toggle('err', v.length >= 7);
+    });
+    textEl.addEventListener('blur', () => { textEl.value = colorEl.value.toUpperCase(); textEl.classList.remove('err'); });
+    return v => { colorEl.value = v.toLowerCase(); textEl.value = v.toUpperCase(); textEl.classList.remove('err'); };
+  }
+
+  // --- 2. Тинты, шейды, шкала ---
+  const tn = $('#tints');
+  if (tn) {
+    const c = $('#tn-c'), hx = $('#tn-hex'), out = $('#tn-out'), scale = $('#tn-scale');
+    const STEPS = [[50, WHITE, .9], [100, WHITE, .8], [200, WHITE, .6], [300, WHITE, .4], [400, WHITE, .2], [500, null, 0], [600, [0, 0, 0], .15], [700, [0, 0, 0], .32], [800, [0, 0, 0], .48], [900, [0, 0, 0], .64]];
+    const ROLE = { 50: 'фон секции или карточки', 100: 'фон секции, выделенная строка', 200: 'обводка, разделитель, фон тега', 300: 'обводка, disabled', 400: 'hover светлой кнопки, иконки', 500: 'основной цвет: кнопки, ссылки', 600: 'hover основной кнопки', 700: 'текст на светлом цветном фоне', 800: 'заголовки, тёмная тема', 900: 'текст, фон тёмной темы' };
+    let cur = 5, sc = [];
+    const set = bindPick(c, hx, draw);
+    function line(el, target) {
+      const b = hex2rgb(c.value);
+      el.innerHTML = [0, .15, .3, .5, .7, .85].map(t => `<i style="background:${rgb2hex(mix(b, target, t))}" title="${rgb2hex(mix(b, target, t))}"></i>`).join('');
+    }
+    function draw() {
+      const b = hex2rgb(c.value);
+      line($('#tn-tint'), WHITE); line($('#tn-shade'), [0, 0, 0]); line($('#tn-tone'), [128, 128, 128]);
+      sc = STEPS.map(([n, t, k]) => ({ n, c: t ? mix(b, t, k) : b }));
+      scale.innerHTML = sc.map((s, i) => {
+        const tc = bestText(s.c);
+        return `<button type="button" data-i="${i}" class="${s.n === 500 ? 'base' : ''}" style="background:${rgb2hex(s.c)};color:${rgb2hex(tc)}" aria-pressed="${i === cur}" aria-label="Ступень ${s.n}"><b>${s.n}</b><span>${rgb2hex(s.c).slice(1)}</span></button>`;
+      }).join('');
+      $$('button', scale).forEach(x => x.addEventListener('click', () => { cur = +x.dataset.i; draw(); }));
+      info();
+    }
+    function info() {
+      const s = sc[cur], w = ratio(s.c, WHITE), k = ratio(s.c, BLACK);
+      const grade = r => r >= 7 ? '<span class="okv">AAA</span>' : r >= 4.5 ? '<span class="okv">AA</span>' : r >= 3 ? '<span class="midv">только крупный текст</span>' : '<span class="warn">не читается</span>';
+      const firstW = sc.find(x => ratio(x.c, WHITE) >= 4.5);
+      let msg = `<b>Ступень ${s.n} · ${rgb2hex(s.c)}.</b> ${ROLE[s.n]}. Белый текст ${fmt(w)}:1 — ${grade(w)}. Тёмный текст ${fmt(k)}:1 — ${grade(k)}.<br>`;
+      msg += firstW ? `Белый текст проходит AA начиная со ступени <b>${firstW.n}</b>.` : 'Белый текст не проходит AA ни на одной ступени — на кнопках этого цвета нужен тёмный текст.';
+      out.innerHTML = msg;
+    }
+    $$('button', $('#tn-pre')).forEach(x => x.addEventListener('click', () => { set(x.dataset.c); draw(); }));
+    draw();
+  }
+
+  // --- 3. Проверка контраста ---
+  const cc = $('#cc');
+  if (cc) {
+    const fg = $('#cc-fg'), bg = $('#cc-bg'), view = $('#cc-view'), list = $('#cc-list'), fix = $('#cc-fix');
+    let suggestion = null;
+    const setF = bindPick(fg, $('#cc-fgx'), upd), setB = bindPick(bg, $('#cc-bgx'), upd);
+    function findFix(f, b) {
+      const [h, s, l] = rgb2hsl(f), dark = lum(b) > 0.18;
+      const dirs = dark ? [-1, 1] : [1, -1];
+      for (const d of dirs) for (let L = l; L >= 0 && L <= 100; L += d) { const c = hsl2rgb(h, s, L); if (ratio(c, b) >= 4.6) return c; }
+      return null;
+    }
+    function upd() {
+      const f = hex2rgb(fg.value), b = hex2rgb(bg.value), r = ratio(f, b);
+      view.style.background = bg.value; view.style.color = fg.value;
+      $('.cc-btn', view).style.color = fg.value;
+      $('#cc-r').textContent = fmt(r);
+      $('#cc-mark').style.left = (Math.log(r) / Math.log(21) * 100) + '%';
+      const row = (ok, t) => `<li class="${ok}"><span>${t}</span></li>`;
+      const g = (r, a, aaa) => r >= aaa ? 'ok' : r >= a ? 'mid' : 'bad';
+      const lbl = (r, a, aaa) => r >= aaa ? 'AA и AAA' : r >= a ? 'AA, но не AAA' : 'не проходит';
+      list.innerHTML =
+        row(g(r, 4.5, 7), `<b>Обычный текст:</b> ${lbl(r, 4.5, 7)} <span class="dimv">(AA 4,5 · AAA 7)</span>`) +
+        row(g(r, 3, 4.5), `<b>Крупный текст:</b> ${lbl(r, 3, 4.5)} <span class="dimv">(AA 3 · AAA 4,5)</span>`) +
+        row(r >= 3 ? 'ok' : 'bad', `<b>Иконки и обводки:</b> ${r >= 3 ? 'проходит' : 'не проходит'} <span class="dimv">(3)</span>`) +
+        row(r >= 15 ? 'mid' : 'ok', r >= 15 ? '<b>Почти максимум.</b> Для длинного чтения на тёмном фоне так ярко бывает утомительно — можно чуть смягчить текст.' : r < 3 ? '<b>Итог:</b> так можно делать только декор и неактивные элементы.' : r < 4.5 ? '<b>Итог:</b> подойдёт для заголовков и кнопок с крупным текстом, но не для абзацев.' : '<b>Итог:</b> можно набирать основной текст.');
+      suggestion = r < 4.5 ? findFix(f, b) : null;
+      fix.hidden = !suggestion;
+      if (suggestion) $('#cc-fix-t').innerHTML = `Ближайший цвет текста для AA: <i class="sw1" style="background:${rgb2hex(suggestion)}"></i><b>${rgb2hex(suggestion)}</b> · ${fmt(ratio(suggestion, b))}:1`;
+    }
+    $('#cc-swap').addEventListener('click', () => { const a = fg.value, b = bg.value; setF(b); setB(a); upd(); });
+    $('#cc-fix-b').addEventListener('click', () => { if (suggestion) { setF(rgb2hex(suggestion)); upd(); } });
+    $$('button', $('#cc-pre')).forEach(x => x.addEventListener('click', () => {
+      const [a, b] = x.dataset.p.split(','); setF(a); setB(b); upd();
+      $$('button', $('#cc-pre')).forEach(y => y.setAttribute('aria-pressed', String(y === x)));
+    }));
+    upd();
+  }
+
+  // --- 4. Генератор 60/30/10 ---
+  const ml = $('#ml');
+  if (ml) {
+    const page = $('#ml-page'), A = $('#ml-a'), B = $('#ml-b'), C = $('#ml-c'), list = $('#ml-list'), share = $('#ml-share');
+    let mode = 0;
+    const els = { page, nav: $('.ml-nav', page), hero: $('.ml-hero', page), tag: $('.ml-tag', page), btn: $('.ml-btn', page), cards: $('.ml-cards', page), card: $$('.ml-card', page) };
+    const MODES = [
+      { page: 'a', nav: 'b', hero: 'a', tag: 'c', btn: 'c', cards: 'b', card: 'a' },
+      { page: 'a', nav: 'c', hero: 'a', tag: 'b', btn: 'b', cards: 'b', card: 'c' },
+      { page: 'c', nav: 'c', hero: 'c', tag: 'a', btn: 'c', cards: 'c', card: 'b' }
+    ];
+    const NAMES = { a: 'основной', b: 'дополнительный', c: 'акцент' };
+    function paint() {
+      const col = { a: hex2rgb(A.value), b: hex2rgb(B.value), c: hex2rgb(C.value) }, m = MODES[mode];
+      Object.keys(m).forEach(k => [].concat(els[k]).forEach(el => {
+        const c = col[m[k]]; el.style.background = rgb2hex(c); el.style.color = rgb2hex(bestText(c)); el.dataset.paint = m[k];
+      }));
+      $$('button', $('#ml-mode')).forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.m === mode)));
+      // площадь
+      const area = { a: 0, b: 0, c: 0 };
+      $$('[data-paint]', page).concat([page]).forEach(el => {
+        const r = el.getBoundingClientRect(); let s = r.width * r.height;
+        $$('[data-paint]', el).forEach(ch => { if (ch.parentElement.closest('[data-paint]') === el) { const q = ch.getBoundingClientRect(); s -= q.width * q.height; } });
+        area[el.dataset.paint] += Math.max(0, s);
+      });
+      const tot = area.a + area.b + area.c || 1, pct = { a: area.a / tot * 100, b: area.b / tot * 100, c: area.c / tot * 100 };
+      share.innerHTML = ['a', 'b', 'c'].map(k => `<div style="flex:${Math.max(pct[k], 0.5)} 1 0;background:${rgb2hex(col[k])};color:${rgb2hex(bestText(col[k]))}" title="${NAMES[k]}">${Math.round(pct[k])}%</div>`).join('');
+      // вердикт
+      const items = [];
+      const pc = Math.round(pct.c), pa = Math.round(pct.a);
+      items.push(pc <= 15 ? ['ok', `<b>Акцент ${pc}% площади.</b> Его мало, поэтому он заметен.`] : pc <= 25 ? ['mid', `<b>Акцент ${pc}% площади.</b> Многовато: проверь, что главная кнопка всё ещё выделяется.`] : ['bad', `<b>Акцент ${pc}% площади.</b> Он залил экран и перестал быть акцентом. Глазу не за что зацепиться.`]);
+      items.push(pa >= 45 ? ['ok', `<b>Основной цвет ${pa}%.</b> Спокойная база, на которой всё читается.`] : ['mid', `<b>Основной цвет ${pa}%.</b> Базы мало — экран выглядит пёстрым.`]);
+      let worst = 99, where = '';
+      [['a', 'основном'], ['b', 'дополнительном'], ['c', 'акцентном']].forEach(([k, n]) => {
+        if (pct[k] < 0.5) return; const r = Math.max(ratio(col[k], WHITE), ratio(col[k], BLACK)); if (r < worst) { worst = r; where = n; }
+      });
+      items.push(worst >= 4.5 ? ['ok', `<b>Текст читается везде.</b> Самый слабый контраст ${fmt(worst)}:1 на ${where} цвете.`] : worst >= 3 ? ['mid', `<b>Текст на ${where} цвете — ${fmt(worst)}:1.</b> Подходит только для крупного текста. Сделай цвет светлее или темнее.`] : ['bad', `<b>Текст на ${where} цвете — ${fmt(worst)}:1.</b> Ни чёрный, ни белый не читаются. Цвет средней светлоты под текст не годится.`]);
+      const btnBg = col[MODES[mode].btn], heroBg = col[MODES[mode].hero], rb = ratio(btnBg, heroBg);
+      items.push(rb >= 3 ? ['ok', `<b>Кнопка отделяется от фона:</b> ${fmt(rb)}:1. Её видно даже в ч/б.`] : rb >= 1.6 ? ['mid', `<b>Кнопка и фон — ${fmt(rb)}:1.</b> Кнопку выделяет только тон. Включи «Ч/б»: она почти пропадает. Нужно от 3:1.`] : ['bad', `<b>Кнопка сливается с фоном — ${fmt(rb)}:1.</b> Главное действие не найти.`]);
+      list.innerHTML = items.map(([c, t]) => `<li class="${c}"><span>${t}</span></li>`).join('');
+    }
+    [A, B, C].forEach(i => i.addEventListener('input', () => { $$('button', $('#ml-pre')).forEach(y => y.setAttribute('aria-pressed', 'false')); paint(); }));
+    $$('button', $('#ml-pre')).forEach(x => x.addEventListener('click', () => {
+      const [a, b, c] = x.dataset.p.split(','); A.value = a; B.value = b; C.value = c;
+      $$('button', $('#ml-pre')).forEach(y => y.setAttribute('aria-pressed', String(y === x))); paint();
+    }));
+    $$('button', $('#ml-mode')).forEach(x => x.addEventListener('click', () => { mode = +x.dataset.m; paint(); }));
+    $('#ml-rot').addEventListener('click', () => { const a = A.value, b = B.value, c = C.value; A.value = c; B.value = a; C.value = b; paint(); });
+    const gb = $('#ml-gray');
+    gb.addEventListener('click', () => { const on = !page.classList.contains('gray'); page.classList.toggle('gray', on); gb.setAttribute('aria-pressed', String(on)); });
+    $('#ml-pre button').setAttribute('aria-pressed', 'true');
+    paint();
+    let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(paint, 150); });
+  }
+
+  // --- 5. Тренажёр «Цвет врёт» ---
+  const game = $('#lie-box'), gsrc = $('#lie-data');
+  if (game && gsrc) {
+    const G = JSON.parse(gsrc.textContent), found = new Set();
+    const list = $('#lie-list'), n = $('#lie-n');
+    function draw() {
+      n.textContent = 'Найдено ' + found.size + ' из ' + G.length;
+      list.innerHTML = '';
+      [...found].sort((a, b) => a - b).forEach(i => {
+        const li = document.createElement('li'); const b = document.createElement('b'); b.textContent = G[i].t;
+        li.append(b, document.createTextNode(G[i].e)); list.append(li);
+      });
+      if (found.size === G.length) { const w = document.createElement('li'); w.className = 'game-win'; w.textContent = 'Все шесть ошибок найдены. Проверь так же свой макет: смысл цветов, контраст и подписи у статусов.'; list.append(w); }
+      $$('.bug', game).forEach(el => el.classList.toggle('found', found.has(+el.dataset.bug)));
+    }
+    $$('.bug', game).forEach(el => {
+      const hit = e => { e.stopPropagation(); found.add(+el.dataset.bug); draw(); };
+      el.addEventListener('click', hit);
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hit(e); } });
+    });
+    $('#lie-all').addEventListener('click', () => { G.forEach((_, i) => found.add(i)); draw(); });
+    $('#lie-reset').addEventListener('click', () => { found.clear(); draw(); });
+    const cb = $('#lie-cb'), mock = $('#lie-mock');
+    cb.addEventListener('click', () => { const on = !mock.classList.contains('cb'); mock.classList.toggle('cb', on); cb.setAttribute('aria-pressed', String(on)); });
+    draw();
+  }
+})();
+
+</script>
+</body></html>

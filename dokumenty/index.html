@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Документы дизайнера</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Рабочий стол: слева анкета по шагам, справа «лист бумаги» с готовым документом. Тёмная оболочка школы, светлый документ. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58; --accent:#eb7540; --good:#34c759; --bad:#ff3b4e;
+  --paper:#ffffff; --paper-ink:#101010; --paper-dim:#5a5a58; --paper-line:#e4e4e1;
+  --body:"Onest",-apple-system,"Helvetica Neue",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --doc:Arial,"Helvetica Neue",Helvetica,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--field);color:var(--dim);font:15px/1.45 var(--body);padding:16px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1360px;margin-inline:auto;display:flex;flex-direction:column;gap:14px}
+.mono,.corner,.lbl,.step-n,.cnt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+header{background:var(--panel);border-radius:14px;padding:28px 32px 30px;display:flex;flex-direction:column;gap:14px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.corner{display:flex;justify-content:space-between;gap:16px;color:var(--faint);white-space:pre-line;line-height:1.4}
+.corner span:last-child{text-align:right}
+h1{margin:10px 0 0;font-weight:400;color:var(--ink);font-size:clamp(34px,5.6vw,64px);line-height:.95;letter-spacing:-.03em}
+.lead{margin:0;max-width:62ch;font-size:clamp(16px,1.6vw,19px);color:var(--dim)}
+.lead b{color:var(--ink);font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:6px 11px;font-size:13px;color:var(--ink)}
+.chips span i{font-style:normal;color:var(--accent);margin-right:6px;font-family:var(--mono);font-size:11px}
+.grid{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:14px;align-items:start}
+.form{display:flex;flex-direction:column;gap:10px;min-width:0}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--card);color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 13px;font-size:14px}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);color:#101010;border-color:var(--accent);font-weight:500}
+.btn.pri:hover{filter:brightness(1.06)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+details{background:var(--panel);border-radius:14px;border:1px solid transparent}
+details[open]{border-color:var(--stroke)}
+summary{list-style:none;cursor:pointer;padding:16px 18px;display:grid;grid-template-columns:30px minmax(0,1fr) 16px;gap:10px;align-items:center;color:var(--ink);font-size:17px}
+summary::-webkit-details-marker{display:none}
+summary .step-n{color:var(--accent)}
+summary small{display:block;color:var(--faint);font-size:13px}
+summary::after{content:"+";color:var(--faint);font-size:18px;text-align:right}
+details[open] summary::after{content:"–"}
+.fs{padding:2px 18px 20px;display:flex;flex-direction:column;gap:12px}
+.f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.f>span{font-size:13px;color:var(--dim)}
+.f>small,.hint{font-size:12.5px;color:var(--faint);line-height:1.4}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+input,textarea,select{width:100%;background:var(--card);color:var(--ink);border:1px solid var(--stroke);border-radius:9px;padding:10px 12px;font:15px/1.35 var(--body)}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+textarea{min-height:92px;resize:vertical}
+input[type=date]{color-scheme:dark}
+.seg{display:flex;flex-wrap:wrap;gap:4px;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:3px}
+.seg button{flex:1 1 auto;background:none;border:0;border-radius:7px;padding:8px 10px;color:var(--dim);font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.tg{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;color:var(--ink);font-size:14px;cursor:pointer}
+.tg input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent)}
+.tg small{display:block;color:var(--faint);font-size:12.5px}
+.calc{font-size:13px;color:var(--accent);min-height:1.2em}
+.warn{border:1px solid var(--bad);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.docs{position:sticky;top:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.bar{background:var(--panel);border-radius:14px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;flex:1 1 360px}
+.doc-tab{background:none;border:1px solid transparent;border-radius:9px;padding:8px 11px;color:var(--dim);font-size:14px;display:inline-flex;gap:8px;align-items:center}
+.doc-tab[aria-selected="true"]{background:var(--card);border-color:var(--stroke);color:var(--ink)}
+.cnt{background:var(--well);color:var(--accent);border-radius:999px;padding:2px 7px;font-size:10px}
+.cnt.ok{color:var(--good)}
+.acts{display:flex;flex-wrap:wrap;gap:6px}
+.status{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:space-between;font-size:13px;padding:0 4px}
+.status b{color:var(--accent);font-weight:400}
+#dl-status{color:var(--good)}
+.sheet{background:#2a2a2a;border-radius:14px;padding:22px;max-height:calc(100vh - 150px);overflow:auto}
+#paper{background:var(--paper);color:var(--paper-ink);max-width:820px;margin:0 auto;padding:56px 60px 64px;border-radius:4px;box-shadow:0 10px 40px rgba(0,0,0,.35);font:13.5px/1.55 var(--doc)}
+#paper mark{background:#ffe7d6;color:#b54a14;border-radius:3px;padding:0 3px;font-size:.92em}
+.d-tag{margin:0 0 6px;color:var(--accent);font:500 10.5px/1.4 var(--doc);letter-spacing:.08em;text-transform:uppercase}
+.d-title{margin:0;font:700 22px/1.2 var(--doc);letter-spacing:-.01em;color:var(--paper-ink)}
+.d-sub{margin:4px 0 0;color:var(--paper-dim)}
+.d-title+.d-meta,.d-sub+.d-meta{border-top:2px solid var(--accent);padding-top:10px;margin-top:12px}
+.d-meta{display:flex;justify-content:space-between;gap:12px;color:var(--paper-dim);margin:0 0 18px}
+.d-p{margin:0 0 12px;text-align:justify}
+.d-sec{margin:22px 0 8px;font:700 14.5px/1.3 var(--doc);color:var(--paper-ink)}
+.d-sec span{color:var(--accent)}
+.d-cl{display:grid;grid-template-columns:44px minmax(0,1fr);gap:0;margin:0 0 7px;text-align:justify}
+.d-cl.lv2{grid-template-columns:48px minmax(0,1fr);padding-left:44px}
+.d-cl .n{color:var(--paper-dim);font-variant-numeric:tabular-nums}
+.d-li{display:grid;grid-template-columns:22px minmax(0,1fr);margin:0 0 4px;padding-left:44px}
+.d-tw{overflow-x:auto;margin:8px 0 14px}
+.d-t,.d-kv{border-collapse:collapse;width:100%;font-size:12.5px}
+.d-t th,.d-t td,.d-kv th,.d-kv td{border:1px solid #d4d4d0;padding:7px 9px;text-align:left;vertical-align:top}
+.d-t th,.d-kv th{background:#f4f4f2;font-weight:700}
+.d-kv th{width:28%}
+.d-tot{margin:4px 0 14px auto;border-collapse:collapse;min-width:260px}
+.d-tot th{text-align:left;font-weight:400;padding:3px 18px 3px 0;color:var(--paper-dim)}
+.d-tot td{text-align:right;padding:3px 0;font-variant-numeric:tabular-nums}
+.d-tot tr:last-child th,.d-tot tr:last-child td{font-weight:700;color:var(--paper-ink)}
+.d-sign{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin-top:26px;font-size:12.5px;break-inside:avoid}
+.d-sign.one{grid-template-columns:minmax(0,1fr)}
+.d-sign>div{display:flex;flex-direction:column;gap:2px;min-width:0;overflow-wrap:anywhere}
+.d-sign b{font-size:14px;margin-bottom:6px}
+.d-line{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px;margin-top:18px}
+.d-line i{font-style:normal;width:100%;color:var(--paper-dim)}
+.d-line i.mp{width:auto;color:#a3a3a0;font-size:11px}
+.d-under{display:inline-block;width:120px;border-bottom:1px solid var(--paper-ink);height:18px}
+.d-break{border:0;border-top:1px dashed #c9c9c6;margin:40px -60px 34px;position:relative}
+.d-break::after{content:"новая страница";position:absolute;left:50%;top:-9px;transform:translateX(-50%);background:#fff;padding:0 8px;color:#a3a3a0;font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.note{background:var(--panel);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.note b{color:var(--ink);font-weight:400}
+.note ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+#ds-off{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--ink)}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:6px 4px}
+@media (max-width:980px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .docs{position:static}
+  .sheet{max-height:none;padding:10px}
+  #paper{padding:28px 20px 34px}
+  .d-break{margin-inline:-20px}
+}
+@media (max-width:520px){
+  header{padding:22px 18px}
+  .row2{grid-template-columns:minmax(0,1fr)}
+  .d-sign{grid-template-columns:minmax(0,1fr)}
+  .d-cl{grid-template-columns:38px minmax(0,1fr)}
+  .d-cl.lv2,.d-li{padding-left:16px}
+}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+СТАРТЕР-ПАК ДИЗАЙНЕРА</span><span>ДОКУМЕНТЫ
+ДЛЯ ПЕРВОГО ЗАКАЗА</span></div>
+  <h1>Документы дизайнера</h1>
+  <p class="lead"><b>Заполни данные один раз — получишь договор, задание, акт, допсоглашение и счёт.</b> Номера, даты и суммы совпадают во всех документах сами, сумма пишется прописью. Каждый документ скачивается в Word.</p>
+  <div class="chips"><span><i>01</i>Договор + Задание</span><span><i>02</i>Акт сдачи-приёмки</span><span><i>03</i>Допсоглашение</span><span><i>04</i>Счёт на оплату</span></div>
+</header>
+
+<div class="grid">
+<div class="form">
+  <div class="tools"><button type="button" class="btn" id="ex">Заполнить примером</button><button type="button" class="btn" id="clr">Очистить всё</button></div>
+
+  <details open><summary><span class="step-n">01</span><span>Договор<small>Номер, дата и что делаем</small></span></summary><div class="fs">
+    <div class="row2"><label class="f"><span>Номер договора</span><input data-k="num" id="f-num" placeholder="07/2026"><small>Удобно: порядковый номер / год</small></label>
+    <label class="f"><span>Дата</span><input type="date" data-k="date" id="f-date"></label></div>
+    <label class="f"><span>Город</span><input data-k="city" id="f-city" placeholder="Москва"></label>
+    <label class="f"><span>Что создаём</span><input data-k="subject" id="f-subject" placeholder="дизайн корпоративного сайта"><small>С маленькой буквы: «дизайн лендинга для кофейни», «айдентика и сайт студии»</small></label>
+  </div></details>
+
+  <details><summary><span class="step-n">02</span><span>Подрядчик — это ты<small>Статус, ФИО, банк и контакты</small></span></summary><div class="fs">
+    <div class="f"><span>Статус</span><div class="seg"><button type="button" data-k="p_status" data-v="npd">Самозанятый</button><button type="button" data-k="p_status" data-v="ip">ИП на УСН</button></div>
+      <small data-show="p_status=npd">Лимит дохода самозанятого — 2,4 млн ₽ в год. После каждой оплаты формируй чек в «Мой налог».</small>
+      <small data-show="p_status=ip">ИП на УСН освобождён от НДС, пока доход за год не больше 20 млн ₽. Если больше — уточни формулировку у бухгалтера.</small></div>
+    <div class="f" data-show="p_status=npd"><span>Пол</span><div class="seg"><button type="button" data-k="p_gender" data-v="f">Женский</button><button type="button" data-k="p_gender" data-v="m">Мужской</button></div><small>Нужен, чтобы согласовать «являющаяся / являющийся» в договоре</small></div>
+    <label class="f"><span>ФИО полностью</span><input data-k="p_fio" id="f-pfio" placeholder="Смирнова Анна Сергеевна"></label>
+    <div class="row2"><label class="f"><span>ИНН</span><input data-k="p_inn" id="f-pinn" inputmode="numeric" placeholder="12 цифр"></label>
+    <label class="f" data-show="p_status=ip"><span>ОГРНИП</span><input data-k="p_ogrnip" id="f-pogrnip" inputmode="numeric" placeholder="15 цифр"></label></div>
+    <label class="f" data-show="p_status=ip"><span>Адрес регистрации</span><input data-k="p_addr" id="f-paddr"></label>
+    <div class="row2"><label class="f"><span>Банк</span><input data-k="p_bank" id="f-pbank" placeholder="АО «Т-Банк»"></label><label class="f"><span>Расчётный счёт</span><input data-k="p_acc" id="f-pacc" inputmode="numeric" placeholder="20 цифр"></label></div>
+    <div class="row2"><label class="f"><span>БИК</span><input data-k="p_bik" id="f-pbik" inputmode="numeric"></label><label class="f"><span>Корр. счёт</span><input data-k="p_ks" id="f-pks" inputmode="numeric"></label></div>
+    <small class="hint">Реквизиты счёта есть в приложении банка: «Счёт → Реквизиты». Для самозанятого подойдёт обычный счёт физлица, только не смешивай его с личными тратами.</small>
+    <div class="row2"><label class="f"><span>Телефон</span><input data-k="p_phone" id="f-pphone" inputmode="tel"></label><label class="f"><span>E-mail</span><input data-k="p_email" id="f-pemail" inputmode="email"></label></div>
+    <div class="row2"><label class="f"><span>Telegram</span><input data-k="p_tg" id="f-ptg" placeholder="@username"></label><label class="f"><span>Сайт или портфолио</span><input data-k="p_site" id="f-psite"></label></div>
+  </div></details>
+
+  <details><summary><span class="step-n">03</span><span>Заказчик<small>Компания, ИП или частное лицо</small></span></summary><div class="fs">
+    <div class="f"><span>Кто заказчик</span><div class="seg"><button type="button" data-k="c_type" data-v="org">Компания</button><button type="button" data-k="c_type" data-v="ip">ИП</button><button type="button" data-k="c_type" data-v="person">Частное лицо</button></div></div>
+    <label class="f"><span data-show="c_type=org">Название с формой</span><span data-hide="c_type=org">ФИО полностью</span><input data-k="c_name" id="f-cname" placeholder="ООО «Название»"></label>
+    <div data-show="c_type=org" class="fs" style="padding:0">
+      <label class="f"><span>В лице кого (родительный падеж)</span><input data-k="c_signer_gen" id="f-csg" placeholder="генерального директора Иванова Ивана Ивановича"></label>
+      <div class="row2"><label class="f"><span>Действует на основании</span><input data-k="c_basis" id="f-cbasis" placeholder="Устава"></label><label class="f"><span>Подписант кратко</span><input data-k="c_signer" id="f-csigner" placeholder="Иванов И. И."></label></div>
+      <label class="f"><span>Должность подписанта</span><input data-k="c_post" id="f-cpost" placeholder="Генеральный директор"></label>
+    </div>
+    <div class="f"><span data-show="c_type=org">Пол подписанта</span><span data-hide="c_type=org">Пол</span><div class="seg"><button type="button" data-k="c_gender" data-v="m">Мужской</button><button type="button" data-k="c_gender" data-v="f">Женский</button></div></div>
+    <div class="row2" data-hide="c_type=person"><label class="f"><span>ИНН</span><input data-k="c_inn" id="f-cinn" inputmode="numeric"></label><label class="f" data-show="c_type=org"><span>КПП</span><input data-k="c_kpp" id="f-ckpp" inputmode="numeric"></label></div>
+    <label class="f" data-hide="c_type=person"><span data-show="c_type=org">ОГРН</span><span data-show="c_type=ip">ОГРНИП</span><input data-k="c_ogrn" id="f-cogrn" inputmode="numeric"></label>
+    <label class="f"><span>Адрес</span><input data-k="c_addr" id="f-caddr"></label>
+    <div data-hide="c_type=person" class="fs" style="padding:0">
+      <div class="row2"><label class="f"><span>Банк</span><input data-k="c_bank" id="f-cbank"></label><label class="f"><span>Расчётный счёт</span><input data-k="c_acc" id="f-cacc" inputmode="numeric"></label></div>
+      <div class="row2"><label class="f"><span>БИК</span><input data-k="c_bik" id="f-cbik" inputmode="numeric"></label><label class="f"><span>Корр. счёт</span><input data-k="c_ks" id="f-cks" inputmode="numeric"></label></div>
+      <small class="hint">Реквизиты компании попроси прислать карточкой организации. Проверить компанию можно по ИНН на сайте ФНС.</small>
+    </div>
+    <div class="row2"><label class="f"><span>Телефон</span><input data-k="c_phone" id="f-cphone" inputmode="tel"></label><label class="f"><span>E-mail</span><input data-k="c_email" id="f-cemail" inputmode="email"></label></div>
+    <div class="row2"><label class="f" data-show="c_type=org"><span>Ответственное лицо</span><input data-k="c_resp" id="f-cresp" placeholder="ФИО менеджера"></label><label class="f"><span>Telegram</span><input data-k="c_tg" id="f-ctg" placeholder="@username"></label></div>
+  </div></details>
+
+  <details><summary><span class="step-n">04</span><span>Деньги и сроки<small>Стоимость, оплата, доработки</small></span></summary><div class="fs">
+    <label class="f"><span>Стоимость работ, ₽</span><input data-k="price" id="f-price" inputmode="decimal" placeholder="150000"><small class="calc" id="sum-words"></small></label>
+    <div id="npd-warn" class="warn" hidden>Сумма больше годового лимита самозанятого — 2,4 млн ₽. Такой заказ нужно делать через ИП.</div>
+    <div class="f"><span>Как платит заказчик</span><div class="seg"><button type="button" data-k="pay" data-v="half">Предоплата + остаток</button><button type="button" data-k="pay" data-v="full">100% вперёд</button><button type="button" data-k="pay" data-v="stages">По этапам</button><button type="button" data-k="pay" data-v="post">После сдачи</button></div>
+      <small data-show="pay=post">Постоплату давай только проверенным клиентам.</small><small data-show="pay=stages">Этапы и их стоимость перечисли в задании, в «Составе работ».</small></div>
+    <label class="f" data-show="pay=half"><span>Предоплата, %</span><input data-k="prepay" id="f-prepay" inputmode="numeric" placeholder="50"><small class="calc" id="sum-split"></small></label>
+    <div class="row2"><label class="f"><span>Срок работ, дней</span><input data-k="days" id="f-days" inputmode="numeric" placeholder="30"></label><label class="f"><span>Доработок входит</span><input data-k="rounds" id="f-rounds" inputmode="numeric" placeholder="3"></label></div>
+    <label class="f"><span>Часов на одну доработку</span><input data-k="hours" id="f-hours" inputmode="numeric" placeholder="4"><small>Всё, что сверх, — по допсоглашению и за отдельные деньги</small></label>
+  </div></details>
+
+  <details><summary><span class="step-n">05</span><span>Задание<small>Приложение № 1: что входит в работу</small></span></summary><div class="fs">
+    <label class="f"><span>Состав работ</span><textarea data-k="scope" id="f-scope" placeholder="Каждый пункт с новой строки"></textarea><small>Каждый пункт с новой строки. Чем точнее список, тем проще спорить о «а ещё вот эту страничку».</small></label>
+    <label class="f"><span>Требования к результату</span><textarea data-k="reqs" id="f-reqs" placeholder="Необязательно"></textarea></label>
+    <label class="f"><span>Платные шрифты и фото</span><textarea data-k="licenses" id="f-lic" placeholder="Шрифт Gilroy — https://..."></textarea><small>Формат «объект — ссылка», по строке. Лицензии покупает заказчик.</small></label>
+    <label class="f"><span>Ссылка на коммерческое предложение</span><input data-k="kp" id="f-kp"></label>
+    <label class="tg"><input type="checkbox" data-k="tilda" id="f-tilda"><span>Работаем в Tilda<small>Добавит пункт: заказчик создаёт и оплачивает свой аккаунт</small></span></label>
+    <label class="tg"><input type="checkbox" data-k="credit" id="f-credit"><span>Подпись «Дизайн — …» в подвале сайта<small>Ссылка на тебя на готовом сайте</small></span></label>
+  </div></details>
+
+  <details><summary><span class="step-n">06</span><span>Акт<small>Когда работа сдана</small></span></summary><div class="fs">
+    <div class="row2"><label class="f"><span>Номер акта</span><input data-k="act_num" id="f-anum"></label><label class="f"><span>Дата акта</span><input type="date" data-k="act_date" id="f-adate"></label></div>
+    <div class="row2"><label class="f"><span>Работы начаты</span><input type="date" data-k="act_from" id="f-afrom"></label><label class="f"><span>Работы закончены</span><input type="date" data-k="act_to" id="f-ato"></label></div>
+    <div class="row2"><label class="f"><span>Как передан результат</span><input data-k="act_via" id="f-avia" placeholder="Figma"></label><label class="f"><span>Ссылка на файлы</span><input data-k="act_link" id="f-alink"></label></div>
+  </div></details>
+
+  <details><summary><span class="step-n">07</span><span>Допсоглашение<small>Если проект вырос</small></span></summary><div class="fs">
+    <label class="tg"><input type="checkbox" data-k="ds_on" id="f-dson"><span>Нужно допсоглашение<small>Новая цена попадёт в акт и счёт на доплату</small></span></label>
+    <div data-show="ds_on=true" class="fs" style="padding:0">
+      <div class="row2"><label class="f"><span>Номер</span><input data-k="ds_num" id="f-dsnum"></label><label class="f"><span>Дата</span><input type="date" data-k="ds_date" id="f-dsdate"></label></div>
+      <label class="f"><span>Причина (после «В связи с…»)</span><input data-k="ds_reason" id="f-dsreason" placeholder="увеличением объёма работ: добавлены страницы…"></label>
+      <div class="row2"><label class="f"><span>Новая стоимость, ₽</span><input data-k="ds_price" id="f-dsprice" inputmode="decimal"></label><label class="f"><span>Новый срок, дней</span><input data-k="ds_days" id="f-dsdays" inputmode="numeric" placeholder="если меняется"></label></div>
+      <small class="calc" id="ds-diff"></small>
+      <label class="f"><span>Дополнительные работы</span><textarea data-k="ds_scope" id="f-dsscope" placeholder="Каждый пункт с новой строки"></textarea></label>
+    </div>
+  </div></details>
+
+  <details><summary><span class="step-n">08</span><span>Счёт<small>Чтобы заказчик оплатил</small></span></summary><div class="fs">
+    <div class="row2"><label class="f"><span>Номер счёта</span><input data-k="inv_num" id="f-inum"></label><label class="f"><span>Дата</span><input type="date" data-k="inv_date" id="f-idate"></label></div>
+    <div class="f"><span>За что</span><div class="seg"><button type="button" data-k="inv_kind" data-v="prepay">Предоплата</button><button type="button" data-k="inv_kind" data-v="rest">Остаток</button><button type="button" data-k="inv_kind" data-v="full">Вся сумма</button><button type="button" data-k="inv_kind" data-v="ds">Доплата по ДС</button></div></div>
+  </div></details>
+
+  <div class="note">
+    <b>Что важно знать</b>
+    <ul>
+      <li>Это шаблон школы, а не консультация юриста. Если проект крупный или заказчик присылает свой договор — покажи его юристу.</li>
+      <li>Подписывать можно сканами по почте или в Telegram: это прописано в договоре, раздел 10.</li>
+      <li>Сначала договор и счёт на предоплату, потом работа, в конце акт и счёт на остаток.</li>
+      <li>Данные сохраняются только в этом браузере.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="docs" id="docs">
+  <div class="bar">
+    <div class="tabs" role="tablist">
+      <button type="button" class="doc-tab" role="tab" data-doc="contract" aria-selected="true">Договор + Задание <span class="cnt"></span></button>
+      <button type="button" class="doc-tab" role="tab" data-doc="act" aria-selected="false">Акт <span class="cnt"></span></button>
+      <button type="button" class="doc-tab" role="tab" data-doc="ds" aria-selected="false">Допсоглашение <span class="cnt"></span></button>
+      <button type="button" class="doc-tab" role="tab" data-doc="inv" aria-selected="false">Счёт <span class="cnt"></span></button>
+    </div>
+    <div class="acts"><button type="button" class="btn pri" id="dl-one">Скачать .docx</button><button type="button" class="btn" id="dl-all">Все документы .zip</button><button type="button" class="btn" id="copy">Копировать текст</button></div>
+  </div>
+  <div class="status"><span id="todo"></span><span id="dl-status" aria-live="polite"></span></div>
+  <div id="ds-off" hidden>Допсоглашение выключено: включи его в шаге 07, если проект вырос. Ниже — как оно будет выглядеть.</div>
+  <div class="sheet"><article id="paper" aria-live="polite"></article></div>
+</div>
+</div>
+<footer>Perasperadastra · Стартер-пак дизайнера · Документы</footer>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+// ===== Конструктор документов дизайнера · Perasperadastra =====
+(function () {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+// ---------- Данные по умолчанию (пример) ----------
+const EXAMPLE = {
+  num: '07/2026', date: '2026-10-21', city: 'Москва',
+  subject: 'дизайн корпоративного сайта детской клиники',
+  p_status: 'npd', p_gender: 'f', p_fio: 'Смирнова Анна Сергеевна', p_inn: '771234567890', p_ogrnip: '', p_addr: '',
+  p_bank: 'АО «Т-Банк»', p_acc: '40817810000000000001', p_bik: '044525974', p_ks: '30101810145250000974',
+  p_phone: '+7 900 000-00-00', p_email: 'anna@design.ru', p_tg: '@anna_design', p_site: 'anna-design.ru',
+  c_type: 'org', c_gender: 'm', c_name: 'ООО «Детский доктор»', c_signer_gen: 'генерального директора Иванова Ивана Ивановича',
+  c_basis: 'Устава', c_signer: 'Иванов И. И.', c_post: 'Генеральный директор', c_inn: '7701234567', c_kpp: '770101001', c_ogrn: '1027700000000',
+  c_addr: '123456, г. Москва, ул. Примерная, д. 1', c_bank: 'ПАО Сбербанк', c_acc: '40702810000000000002', c_bik: '044525225', c_ks: '30101810400000000225',
+  c_phone: '+7 495 000-00-00', c_email: 'info@doctor.ru', c_tg: '@doctor_manager', c_resp: 'Петрова Мария Олеговна',
+  price: '150000', pay: 'half', prepay: '50', days: '30', rounds: '3', hours: '4',
+  scope: 'Главная страница\nСтраницы «Врачи» и отдельного врача\nСтраницы «Услуги» и отдельной услуги\nСтраницы «Отзывы» и «Контакты»\nАдаптивная версия всех страниц для мобильных устройств\nНабор фирменной графики: иллюстрации и паттерны',
+  reqs: 'Обратить внимание на пользовательский путь до записи к врачу, проработать возражения родителей. Интегрировать в интерфейс логотип, цветовую палитру и иллюстрации Заказчика.',
+  licenses: 'Шрифт Gilroy — https://www.fontfabric.com\nФотографии — https://stock.adobe.com',
+  kp: 'https://www.figma.com/...', tilda: false, credit: true,
+  act_num: '1', act_date: '2026-11-25', act_from: '2026-10-24', act_to: '2026-11-25', act_via: 'Figma', act_link: 'https://www.figma.com/...',
+  ds_on: true, ds_num: '1', ds_date: '2026-11-10', ds_reason: 'увеличением объёма работ: добавлены страницы «Блог» и «Статья»', ds_price: '185000', ds_days: '40',
+  ds_scope: 'Страница «Блог»\nСтраница отдельной статьи\nАдаптив новых страниц',
+  inv_num: '1', inv_date: '2026-10-21', inv_kind: 'prepay'
+};
+const EMPTY = Object.fromEntries(Object.entries(EXAMPLE).map(([k, v]) => [k, typeof v === 'boolean' ? v : '']));
+Object.assign(EMPTY, { p_status: 'npd', p_gender: 'f', c_type: 'org', c_gender: 'm', pay: 'half', prepay: '50', days: '30', rounds: '3', hours: '4', city: 'Москва', c_basis: 'Устава', c_post: 'Генеральный директор', act_via: 'Figma', ds_num: '1', act_num: '1', inv_num: '1', inv_kind: 'prepay', ds_on: false, credit: true, tilda: false });
+
+let D = {};
+const KEY = 'pad-docs-v1';
+try { D = JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { D = null; }
+if (!D) D = { ...EXAMPLE };
+D = { ...EMPTY, ...D };
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} };
+
+// ---------- Утилиты текста ----------
+const MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+function dt(s) { if (!s) return null; const [y, m, d] = s.split('-').map(Number); return y && m && d ? { y, m, d } : null; }
+const H = '⁠'; // маркер незаполненного поля
+// пустое поле → токен ⟦подсказка⟧
+const v = (x, hint) => (x === undefined || x === null || String(x).trim() === '') ? `⟦${hint}⟧` : String(x).trim();
+function dLong(s, hint = 'дата') { const d = dt(s); return d ? `${d.d} ${MONTHS[d.m - 1]} ${d.y} г.` : `⟦${hint}⟧`; }
+function dQuote(s, hint = 'дата') { const d = dt(s); return d ? `«${String(d.d).padStart(2, '0')}» ${MONTHS[d.m - 1]} ${d.y} г.` : `«⟦день⟧» ⟦месяц⟧ 20⟦год⟧ г.`; }
+function dShort(s) { const d = dt(s); return d ? `${String(d.d).padStart(2,'0')}.${String(d.m).padStart(2,'0')}.${d.y}` : '⟦дата⟧'; }
+const num = x => { const n = Number(String(x || '').replace(/\s/g, '').replace(',', '.')); return isFinite(n) && n > 0 ? n : 0; };
+const money = n => n.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/ /g, ' ');
+
+// сумма прописью
+const U = [['','один','два','три','четыре','пять','шесть','семь','восемь','девять'],['','одна','две','три','четыре','пять','шесть','семь','восемь','девять']];
+const TEENS = ['десять','одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать'];
+const TENS = ['','','двадцать','тридцать','сорок','пятьдесят','шестьдесят','семьдесят','восемьдесят','девяносто'];
+const HUND = ['','сто','двести','триста','четыреста','пятьсот','шестьсот','семьсот','восемьсот','девятьсот'];
+function plural(n, f) { n = Math.abs(n) % 100; const n1 = n % 10; if (n > 10 && n < 20) return f[2]; if (n1 > 1 && n1 < 5) return f[1]; if (n1 === 1) return f[0]; return f[2]; }
+function tri(n, fem) { const w = []; w.push(HUND[Math.floor(n / 100)]); const t = n % 100; if (t >= 10 && t < 20) w.push(TEENS[t - 10]); else { w.push(TENS[Math.floor(t / 10)]); w.push(U[fem ? 1 : 0][t % 10]); } return w.filter(Boolean).join(' '); }
+function words(n) {
+  n = Math.floor(n); if (n === 0) return 'ноль рублей';
+  const groups = [[1e9, ['миллиард','миллиарда','миллиардов'], 0], [1e6, ['миллион','миллиона','миллионов'], 0], [1e3, ['тысяча','тысячи','тысяч'], 1]];
+  const out = []; let r = n;
+  for (const [base, f, fem] of groups) { const k = Math.floor(r / base); if (k) { out.push(tri(k, fem), plural(k, f)); } r %= base; }
+  if (r) out.push(tri(r, 0));
+  return out.join(' ') + ' ' + plural(n, ['рубль','рубля','рублей']);
+}
+function sumText(n) { if (!n) return '⟦сумма⟧ (⟦сумма прописью⟧) рублей 00 копеек'; const k = Math.round((n - Math.floor(n)) * 100); return `${money(n)} (${words(n)} ${String(k).padStart(2,'0')} ${plural(k,['копейка','копейки','копеек'])})`; }
+function shortName(fio) { const p = String(fio || '').trim().split(/\s+/); if (p.length < 2) return fio || ''; return `${p[0]} ${p.slice(1).map(x => x[0] + '.').join(' ')}`; }
+
+// ---------- Модель документа ----------
+// блоки: {t:'title',text,sub} {t:'meta',left,right} {t:'p',text} {t:'sec',n,text} {t:'cl',n,text,lv} {t:'li',text}
+//        {t:'table',head,rows,w} {t:'sign',l,r} {t:'break'} {t:'note',text}
+const P = () => {
+  const npd = D.p_status === 'npd', f = D.p_gender === 'f';
+  return {
+    npd, f,
+    full: npd ? v(D.p_fio, 'ФИО Подрядчика полностью') : `Индивидуальный предприниматель ${v(D.p_fio, 'ФИО полностью')}`,
+    short: v(shortName(D.p_fio), 'Фамилия И. О. Подрядчика'),
+    pre: npd
+      ? `${v(D.p_fio, 'ФИО Подрядчика полностью')}, ${f ? 'являющаяся' : 'являющийся'} плательщиком налога на профессиональный доход, ${f ? 'именуемая' : 'именуемый'} в дальнейшем «Подрядчик»`
+      : `Индивидуальный предприниматель ${v(D.p_fio, 'ФИО полностью')} (ОГРНИП ${v(D.p_ogrnip, 'ОГРНИП')}), именуемый в дальнейшем «Подрядчик»`,
+    vat: npd
+      ? 'НДС не облагается в связи с применением Подрядчиком специального налогового режима «Налог на профессиональный доход» (Федеральный закон от 27.11.2018 № 422-ФЗ).'
+      : 'НДС не облагается: Подрядчик применяет упрощённую систему налогообложения и освобождён от уплаты НДС (п. 1 ст. 145 НК РФ).',
+    req: [
+      npd ? v(D.p_fio, 'ФИО полностью') : `ИП ${v(D.p_fio, 'ФИО полностью')}`,
+      npd ? 'Плательщик налога на профессиональный доход' : `ОГРНИП ${v(D.p_ogrnip, 'ОГРНИП')}`,
+      `ИНН ${v(D.p_inn, 'ИНН')}`,
+      ...(npd ? [] : [`Адрес: ${v(D.p_addr, 'адрес регистрации')}`]),
+      `Р/с ${v(D.p_acc, 'расчётный счёт')}`, `Банк: ${v(D.p_bank, 'банк')}`, `БИК ${v(D.p_bik, 'БИК')}`, `К/с ${v(D.p_ks, 'корр. счёт')}`,
+      `Тел.: ${v(D.p_phone, 'телефон')}`, `E-mail: ${v(D.p_email, 'e-mail')}`, `Telegram: ${v(D.p_tg, 'Telegram')}`
+    ]
+  };
+};
+const C = () => {
+  const t = D.c_type, f = D.c_gender === 'f';
+  const name = t === 'org' ? v(D.c_name, 'название компании') : t === 'ip' ? `Индивидуальный предприниматель ${v(D.c_name, 'ФИО полностью')}` : v(D.c_name, 'ФИО Заказчика полностью');
+  const pre = t === 'org'
+    ? `${v(D.c_name, 'название компании')}, именуемое в дальнейшем «Заказчик», в лице ${v(D.c_signer_gen, 'должность и ФИО подписанта в родительном падеже')}, ${f ? 'действующей' : 'действующего'} на основании ${v(D.c_basis, 'Устава / доверенности')}`
+    : t === 'ip' ? `Индивидуальный предприниматель ${v(D.c_name, 'ФИО полностью')}, именуемый в дальнейшем «Заказчик»`
+    : `${v(D.c_name, 'ФИО Заказчика полностью')}, ${f ? 'именуемая' : 'именуемый'} в дальнейшем «Заказчик»`;
+  const signer = t === 'org' ? v(D.c_signer, 'Фамилия И. О. подписанта') : v(shortName(D.c_name), 'Фамилия И. О.');
+  const post = t === 'org' ? v(D.c_post, 'должность') : '';
+  const req = t === 'org' ? [
+    v(D.c_name, 'название компании'), `ИНН ${v(D.c_inn, 'ИНН')} / КПП ${v(D.c_kpp, 'КПП')}`, `ОГРН ${v(D.c_ogrn, 'ОГРН')}`, `Адрес: ${v(D.c_addr, 'юридический адрес')}`,
+    `Р/с ${v(D.c_acc, 'расчётный счёт')}`, `Банк: ${v(D.c_bank, 'банк')}`, `БИК ${v(D.c_bik, 'БИК')}`, `К/с ${v(D.c_ks, 'корр. счёт')}`,
+    `Тел.: ${v(D.c_phone, 'телефон')}`, `E-mail: ${v(D.c_email, 'e-mail')}`
+  ] : t === 'ip' ? [
+    `ИП ${v(D.c_name, 'ФИО полностью')}`, `ИНН ${v(D.c_inn, 'ИНН')}`, `ОГРНИП ${v(D.c_ogrn, 'ОГРНИП')}`, `Адрес: ${v(D.c_addr, 'адрес')}`,
+    `Р/с ${v(D.c_acc, 'расчётный счёт')}`, `Банк: ${v(D.c_bank, 'банк')}`, `БИК ${v(D.c_bik, 'БИК')}`, `К/с ${v(D.c_ks, 'корр. счёт')}`,
+    `Тел.: ${v(D.c_phone, 'телефон')}`, `E-mail: ${v(D.c_email, 'e-mail')}`
+  ] : [
+    v(D.c_name, 'ФИО полностью'), `Адрес: ${v(D.c_addr, 'адрес')}`, `Тел.: ${v(D.c_phone, 'телефон')}`, `E-mail: ${v(D.c_email, 'e-mail')}`
+  ];
+  return { t, name, pre, signer, post, req };
+};
+const contractRef = () => `Договору № ${v(D.num, 'номер договора')} от ${dLong(D.date, 'дата договора')}`;
+function lines(s) { return String(s || '').split('\n').map(x => x.trim()).filter(Boolean); }
+function signBlock(withReq) {
+  const p = P(), c = C();
+  return { t: 'sign',
+    l: { title: 'Заказчик', req: withReq ? c.req : [c.name], post: c.post, name: c.signer, mp: c.t === 'org' },
+    r: { title: 'Подрядчик', req: withReq ? p.req : [p.npd ? v(D.p_fio, 'ФИО') : `ИП ${v(D.p_fio, 'ФИО')}`], post: '', name: p.short, mp: false } };
+}
+function pre(docWord) { const p = P(), c = C(); return `${c.pre}, с одной стороны, и ${p.pre}, с другой стороны, совместно именуемые «Стороны», ${docWord}`; }
+
+function buildContract() {
+  const p = P(), price = num(D.price), pp = Math.min(100, Math.max(1, num(D.prepay) || 50));
+  const a = Math.round(price * pp) / 100, b = Math.round((price - a) * 100) / 100;
+  const R = v(D.rounds, '3'), Hh = v(D.hours, '4'), days = v(D.days, 'срок');
+  const B = [];
+  B.push({ t: 'title', text: `Договор № ${v(D.num, 'номер')}`, sub: 'на выполнение работ по созданию результата интеллектуальной деятельности' });
+  B.push({ t: 'meta', left: `г. ${v(D.city, 'город')}`, right: dQuote(D.date) });
+  B.push({ t: 'p', text: pre('заключили настоящий договор (далее — Договор) о нижеследующем:') });
+  let s = 0; const sec = t => { s++; B.push({ t: 'sec', n: s, text: t }); let c = 0; return (txt, lv) => { c++; B.push({ t: 'cl', n: `${s}.${c}`, text: txt }); return `${s}.${c}`; }; };
+  let cl = sec('Предмет договора');
+  cl(`Подрядчик по заданию Заказчика выполняет работы по созданию результата интеллектуальной деятельности: ${v(D.subject, 'что создаём')} (далее — РИД, результат работ), а Заказчик обязуется принять и оплатить результат работ.`);
+  cl('Состав работ и требования к результату указаны в Задании (Приложение № 1 к Договору), которое является неотъемлемой частью Договора (далее — Задание).');
+  cl = sec('Выполнение работ');
+  cl('До начала работ Заказчик передаёт Подрядчику сведения и материалы, необходимые для выполнения работ.');
+  cl('Подрядчик вправе в любое время запрашивать у Заказчика сведения и материалы, необходимые для выполнения работ. Заказчик предоставляет их в течение 5 (пяти) календарных дней с момента получения запроса.');
+  cl('Подрядчик вправе привлекать к исполнению Договора третьих лиц без согласия Заказчика, оставаясь ответственным за их действия.');
+  cl('Подрядчик вправе использовать при выполнении работ материалы, размещённые третьими лицами на условиях открытой лицензии.');
+  cl('Заказчик контролирует ход работ, задаёт вопросы и проверяет промежуточные результаты через Ответственных лиц по электронной почте и в мессенджере Telegram.');
+  if (D.tilda) cl('Если работы выполняются на платформе Tilda, Заказчик до окончания срока работ создаёт аккаунт Tilda, оплачивает выбранный тариф и передаёт Подрядчику логин аккаунта.');
+  cl('Каждая Сторона назначает не менее одного представителя для решения вопросов по Договору (далее — Ответственные лица). Ответственные лица вправе согласовывать Задание и требования к результату, бюджет, рабочие вопросы, вести переписку, передавать материалы, сдавать и принимать промежуточные и итоговые результаты работ. Ответственные лица указаны в п. 12.4 Договора.');
+  cl('О замене Ответственного лица Сторона уведомляет другую Сторону не позднее чем за 2 (два) рабочих дня, указывая ФИО, телефон и e-mail нового Ответственного лица.');
+  cl('Стороны общаются по рабочим вопросам в рабочие дни с понедельника по пятницу с 10:00 до 19:00 по московскому времени.');
+  cl = sec('Срок выполнения работ');
+  cl(D.pay === 'post'
+    ? `Подрядчик выполняет работы в течение ${days} календарных дней с даты подписания Договора.`
+    : `Подрядчик выполняет работы в течение ${days} календарных дней с даты поступления предоплаты на счёт Подрядчика.`);
+  cl('Срок выполнения работ автоматически продлевается на время, на которое Заказчик просрочил свои обязательства, в том числе по передаче сведений и материалов, ответам на вопросы, обратной связи и приёмке работ. Подрядчик в этом случае не отвечает за нарушение срока.');
+  cl('Подрядчик вправе выполнить работы досрочно.');
+  cl = sec('Стоимость работ и порядок расчётов');
+  cl(`Стоимость работ по Договору составляет ${price ? sumText(price) : '⟦сумма⟧ (⟦сумма прописью⟧) рублей 00 копеек'}. ${p.vat}`);
+  if (D.pay === 'half') {
+    cl('Заказчик оплачивает работы в два этапа:');
+    B.push({ t: 'cl', n: '4.2.1', text: `предоплата ${pp} % — ${price ? sumText(a) : '⟦сумма⟧'} — в течение 5 (пяти) календарных дней с даты подписания Договора;`, lv: 2 });
+    B.push({ t: 'cl', n: '4.2.2', text: `оставшиеся ${100 - pp} % — ${price ? sumText(b) : '⟦сумма⟧'} — в течение 5 (пяти) календарных дней с даты подписания Акта сдачи-приёмки работ или с даты, когда работы считаются принятыми согласно п. 5.3 Договора.`, lv: 2 });
+  } else if (D.pay === 'full') {
+    cl('Заказчик вносит 100 % предоплаты в течение 5 (пяти) календарных дней с даты подписания Договора на основании счёта Подрядчика.');
+  } else if (D.pay === 'stages') {
+    cl('Работы оплачиваются поэтапно. Этапы и их стоимость указаны в Задании. Заказчик вносит полную предоплату каждого этапа не позднее чем за 7 (семь) рабочих дней до начала его выполнения на основании счёта Подрядчика.');
+  } else {
+    cl('Заказчик оплачивает работы в течение 5 (пяти) рабочих дней с даты подписания Акта сдачи-приёмки работ или с даты, когда работы считаются принятыми согласно п. 5.3 Договора.');
+  }
+  cl('Стоимость работ включает вознаграждение Подрядчика за отчуждение исключительного права на РИД, которое составляет 5 % (пять процентов) от стоимости работ.');
+  cl('Расчёты производятся в российских рублях путём перечисления денежных средств на банковский счёт Подрядчика по реквизитам, указанным в разделе 13 Договора. Обязательство по оплате считается исполненным с момента зачисления денежных средств на счёт Подрядчика.');
+  cl('Стоимость работ изменяется только дополнительным соглашением Сторон. Работы, не предусмотренные Заданием, оплачиваются сверх стоимости по Договору на основании дополнительного соглашения.');
+  cl = sec('Сдача и приёмка работ');
+  cl('По окончании работ (этапа работ) Подрядчик демонстрирует Заказчику результат и направляет подписанный со своей стороны Акт сдачи-приёмки работ (далее — Акт).');
+  cl('В течение 3 (трёх) рабочих дней с даты демонстрации Заказчик рассматривает результат и письменно сообщает Подрядчику о его согласовании либо направляет перечень необходимых доработок.');
+  cl('Если в течение 3 (трёх) рабочих дней с даты направления Акта Подрядчик не получил от Заказчика мотивированных письменных возражений, работы считаются выполненными надлежащим образом и принятыми Заказчиком в объёме, указанном в Акте.');
+  cl('Доработка — приведение результата работ в соответствие с Заданием по замечаниям Заказчика. Все замечания в рамках одной доработки Заказчик направляет единым документом или сообщением; замечания не должны выходить за пределы Задания.');
+  cl(`В стоимость работ входит не более ${R} доработок по Заданию. Объём каждой доработки — не более ${Hh} часов работы Подрядчика.`);
+  cl('Подрядчик в течение 5 (пяти) рабочих дней рассматривает замечания и устраняет обоснованные из них в согласованный Сторонами срок, после чего повторно представляет результат на согласование.');
+  cl(`Доработки сверх указанных в п. 5.5 Договора, а также изменения, выходящие за пределы Задания, выполняются на основании дополнительного соглашения и оплачиваются отдельно.`);
+  cl(`Подрядчик считается исполнившим обязательства после передачи результата работ, если у Заказчика нет замечаний или Подрядчик устранил замечания по ${R} доработкам.`);
+  cl(`Результат работ передаётся в электронном виде: через сервис ${v(D.act_via, 'Figma')}, по электронной почте, в мессенджере, через облачное хранилище или репозиторий.`);
+  cl('По запросу Заказчика, но не ранее чем через 7 (семь) календарных дней после начала работ, Подрядчик в течение 3 (трёх) рабочих дней готовит промежуточный отчёт о фактически выполненных работах.');
+  cl = sec('Интеллектуальные права');
+  cl('Исключительное право на РИД, созданный по Договору, в полном объёме и на весь срок его действия переходит к Заказчику, если иное не предусмотрено приложениями и дополнительными соглашениями к Договору.');
+  cl('Исключительное право переходит к Заказчику по Акту после полной оплаты работ. До этого момента Заказчик не вправе использовать и публиковать результаты работ, в том числе промежуточные.');
+  cl('Заказчик разрешает Подрядчику безвозмездно использовать результаты работ, а также наименование, логотип и товарные знаки Заказчика в портфолио Подрядчика, на его сайте, в социальных сетях и рекламно-информационных материалах. Такое использование не считается нарушением прав Заказчика.');
+  if (D.credit) cl(`Заказчик размещает в подвале сайта надпись «Дизайн — ${v(shortName(D.p_fio), 'имя Подрядчика')}» со ссылкой на сайт ${v(D.p_site, 'сайт Подрядчика')}.`);
+  cl('Подрядчик заранее согласовывает с Заказчиком использование платных объектов третьих лиц: шрифтов, изображений, видео, кода и иного контента. Заказчик приобретает лицензии на них самостоятельно; эти расходы не входят в стоимость работ. Перечень таких объектов указан в Задании.');
+  cl = sec('Ответственность сторон');
+  cl('За просрочку исполнения обязательств по Договору Сторона вправе потребовать от другой Стороны неустойку в размере 0,1 % (одной десятой процента) от стоимости работ за каждый день просрочки, но не более 10 % (десяти процентов) от стоимости работ.');
+  cl('Каждая Сторона отвечает за достоверность и законность информации и материалов, которые она использует при исполнении Договора, и гарантирует соблюдение прав третьих лиц.');
+  cl('Заказчик отвечает за материалы, переданные Подрядчику для выполнения работ, в том числе за наличие прав на их использование. Если к Подрядчику предъявлены претензии в связи с такими материалами, Заказчик урегулирует их своими силами и за свой счёт и возмещает Подрядчику убытки в течение 10 (десяти) дней после получения подтверждающих документов.');
+  cl = sec('Разрешение споров');
+  cl('Споры по Договору Стороны решают путём переговоров.');
+  cl('Претензионный порядок обязателен. Срок ответа на претензию — 15 (пятнадцать) календарных дней с даты её получения.');
+  cl('Если спор не урегулирован в претензионном порядке, он передаётся на рассмотрение суда по месту нахождения Подрядчика, если иное не предусмотрено законом.');
+  cl = sec('Срок действия и расторжение договора');
+  cl('Договор вступает в силу с момента подписания и действует до полного исполнения Сторонами своих обязательств.');
+  cl('Договор может быть расторгнут досрочно по соглашению Сторон или по инициативе одной из Сторон с письменным уведомлением другой Стороны не менее чем за 7 (семь) календарных дней.');
+  cl('Подрядчик вправе отказаться от Договора в одностороннем порядке, если Заказчик не предоставил исходные данные в течение 15 (пятнадцати) календарных дней с даты запроса или нарушил срок оплаты более чем на 15 (пятнадцать) календарных дней.');
+  cl('При расторжении Договора Подрядчик передаёт Заказчику по Акту результаты работ, выполненные на дату расторжения. Если стоимость выполненных работ больше полученной предоплаты, Заказчик доплачивает разницу, а если меньше — Подрядчик возвращает излишне уплаченную сумму. Расчёт производится в течение 3 (трёх) рабочих дней с даты подписания Акта.');
+  cl = sec('Обмен документами');
+  cl('Договор, приложения, акты и иные документы могут подписываться обменом сканами по электронной почте или в мессенджере Telegram с адресов и аккаунтов, указанных в Договоре. Такие документы имеют юридическую силу.');
+  cl('Оригиналы документов направляются почтой, курьером или передаются лично по запросу Стороны.');
+  cl('Переписка по электронной почте и в Telegram с адресов и аккаунтов, указанных в Договоре, признаётся надлежащим согласованием рабочих вопросов, в том числе запросов, результатов, замечаний и отчётов.');
+  cl = sec('Конфиденциальность');
+  cl('Стороны обеспечивают конфиденциальность сведений о предмете Договора, ходе его исполнения и полученных результатах.');
+  cl('Конфиденциальная информация — любые данные в устной, письменной или электронной форме, в том числе идеи, концепции, разработки, сведения о продуктах, бизнес-процессах, сотрудниках, ценах и статистике, имеющие коммерческую ценность.');
+  cl('Сторона, получившая конфиденциальную информацию, не разглашает её третьим лицам без письменного согласия другой Стороны и использует её только для исполнения Договора.');
+  cl('Обязательство о конфиденциальности действует в течение срока действия Договора и 3 (трёх) лет после его прекращения.');
+  cl = sec('Заключительные положения');
+  cl('Электронная переписка Сторон по адресам и аккаунтам, указанным в Договоре, имеет юридическую силу.');
+  cl('Стороны извещают друг друга об изменении реквизитов в течение 2 (двух) рабочих дней. До получения такого извещения сообщения по прежним реквизитам считаются направленными надлежащим образом.');
+  cl('С даты вступления Договора в силу прекращают действие иные договорённости Сторон по его предмету, если они противоречат Договору.');
+  cl('Ответственные лица:');
+  B.push({ t: 'table', head: ['Со стороны Заказчика', 'Со стороны Подрядчика'], rows: [[
+    `${v(D.c_resp || (D.c_type !== 'org' ? D.c_name : ''), 'ФИО')}\nTelegram: ${v(D.c_tg, 'Telegram')}\nE-mail: ${v(D.c_email, 'e-mail')}`,
+    `${v(D.p_fio, 'ФИО')}\nTelegram: ${v(D.p_tg, 'Telegram')}\nE-mail: ${v(D.p_email, 'e-mail')}`
+  ]] });
+  cl('Договор составлен в двух экземплярах, имеющих одинаковую юридическую силу, по одному для каждой из Сторон. Приложение № 1 «Задание» является неотъемлемой частью Договора.');
+  sec('Реквизиты и подписи сторон');
+  B.push(signBlock(true));
+  // Приложение 1
+  B.push({ t: 'break' });
+  B.push({ t: 'tag', text: `Приложение № 1 к ${contractRef()}` });
+  B.push({ t: 'title', text: 'Задание' });
+  B.push({ t: 'meta', left: `г. ${v(D.city, 'город')}`, right: dQuote(D.date) });
+  B.push({ t: 'cl', n: '1.', text: `Подрядчик выполняет работы: ${v(D.subject, 'что создаём')}.` });
+  const sc = lines(D.scope);
+  B.push({ t: 'cl', n: '2.', text: 'Состав работ:' });
+  (sc.length ? sc : ['⟦перечисли страницы, экраны и материалы — по одной строке⟧']).forEach(x => B.push({ t: 'li', text: x }));
+  if (String(D.reqs || '').trim()) B.push({ t: 'cl', n: '3.', text: `Требования к результату: ${D.reqs.trim()}` });
+  const n3 = String(D.reqs || '').trim() ? 4 : 3;
+  B.push({ t: 'cl', n: `${n3}.`, text: `Срок выполнения работ — ${days} календарных дней (п. 3.1 Договора). Стоимость работ — ${price ? sumText(price) : '⟦сумма⟧'} (п. 4.1 Договора).` });
+  B.push({ t: 'cl', n: `${n3 + 1}.`, text: 'Заказчик самостоятельно приобретает права на использование (лицензии) следующих объектов:' });
+  const lic = lines(D.licenses).map(x => { const m = x.split(/\s+[—–-]\s+/); return [m[0], m.slice(1).join(' — ') || '']; });
+  B.push({ t: 'table', head: ['Объект', 'Где приобрести'], rows: lic.length ? lic : [['Нет', '—']] });
+  B.push({ t: 'cl', n: `${n3 + 2}.`, text: `К Заданию прилагается коммерческое предложение Подрядчика. Адрес доступа: ${v(D.kp, 'ссылка на КП')}.` });
+  B.push(signBlock(false));
+  return B;
+}
+
+function buildAct() {
+  const p = P(), total = D.ds_on && num(D.ds_price) ? num(D.ds_price) : num(D.price);
+  const B = [];
+  B.push({ t: 'tag', text: `к ${contractRef()}` });
+  B.push({ t: 'title', text: `Акт сдачи-приёмки работ № ${v(D.act_num, 'номер')}` });
+  B.push({ t: 'meta', left: `г. ${v(D.city, 'город')}`, right: dQuote(D.act_date) });
+  B.push({ t: 'p', text: pre(`составили настоящий Акт к ${contractRef()} (далее — Договор) о нижеследующем:`) });
+  const ds = D.ds_on ? ` и Дополнительным соглашением № ${v(D.ds_num, '1')} от ${dLong(D.ds_date)}` : '';
+  B.push({ t: 'cl', n: '1.', text: `В период с ${dLong(D.act_from, 'начало')} по ${dLong(D.act_to, 'окончание')} Подрядчик выполнил работы: ${v(D.subject, 'что создано')} — в соответствии с Заданием (Приложение № 1 к Договору)${ds}.` });
+  B.push({ t: 'cl', n: '2.', text: `Стоимость выполненных работ составляет ${total ? sumText(total) : '⟦сумма⟧'}. ${p.vat}` });
+  B.push({ t: 'cl', n: '3.', text: 'Работы выполнены в срок, в полном объёме и с надлежащим качеством. Заказчик претензий по объёму, качеству и срокам выполнения работ не имеет.' });
+  B.push({ t: 'cl', n: '4.', text: 'Исключительное право на результат работ переходит к Заказчику с даты подписания настоящего Акта при условии полной оплаты работ (п. 6.2 Договора).' });
+  B.push({ t: 'cl', n: '5.', text: `Результат работ передан в электронном виде через ${v(D.act_via, 'Figma')}. Адрес доступа: ${v(D.act_link, 'ссылка на файлы')}.` });
+  B.push({ t: 'cl', n: '6.', text: 'Акт составлен в двух экземплярах, имеющих одинаковую юридическую силу, по одному для каждой из Сторон.' });
+  B.push(signBlock(false));
+  return B;
+}
+
+function buildDS() {
+  const p = P(), old = num(D.price), nw = num(D.ds_price), diff = nw && old ? nw - old : 0;
+  const B = []; const N = v(D.ds_num, '1');
+  B.push({ t: 'tag', text: `к ${contractRef()}` });
+  B.push({ t: 'title', text: `Дополнительное соглашение № ${N}`, sub: 'об увеличении объёма работ и стоимости' });
+  B.push({ t: 'meta', left: `г. ${v(D.city, 'город')}`, right: dQuote(D.ds_date) });
+  B.push({ t: 'p', text: pre(`заключили настоящее Дополнительное соглашение (далее — Соглашение) к ${contractRef()} (далее — Договор) о нижеследующем:`) });
+  let i = 0; const c = t => { i++; B.push({ t: 'cl', n: `${i}.`, text: t }); };
+  c(`В связи с ${v(D.ds_reason, 'причина: например, увеличением объёма работ')} Стороны договорились изложить п. 4.1 Договора в следующей редакции: «Стоимость работ по Договору составляет ${nw ? sumText(nw) : '⟦новая сумма⟧'}. ${p.vat}»`);
+  if (num(D.ds_days)) c(`Изложить п. 3.1 Договора в следующей редакции: «Подрядчик выполняет работы в течение ${num(D.ds_days)} календарных дней с даты поступления предоплаты на счёт Подрядчика».`);
+  c(`Подрядчик выполняет дополнительные работы в соответствии с Заданием (Приложение № 1 к Соглашению).`);
+  if (diff > 0) c(`Стоимость дополнительных работ составляет ${sumText(diff)}. Заказчик оплачивает её в течение 5 (пяти) календарных дней с даты подписания Соглашения, если Стороны не договорились иначе.`);
+  c('Соглашение вступает в силу с момента подписания и является неотъемлемой частью Договора. В остальном Стороны руководствуются условиями Договора.');
+  c('Соглашение составлено в двух экземплярах, имеющих одинаковую юридическую силу, по одному для каждой из Сторон.');
+  B.push(signBlock(false));
+  B.push({ t: 'break' });
+  B.push({ t: 'tag', text: `Приложение № 1 к Дополнительному соглашению № ${N} от ${dLong(D.ds_date)} к ${contractRef()}` });
+  B.push({ t: 'title', text: 'Задание на дополнительные работы' });
+  const sc = lines(D.ds_scope);
+  B.push({ t: 'cl', n: '1.', text: 'Состав дополнительных работ:' });
+  (sc.length ? sc : ['⟦перечисли новые страницы и материалы⟧']).forEach(x => B.push({ t: 'li', text: x }));
+  B.push({ t: 'cl', n: '2.', text: `Стоимость дополнительных работ — ${diff > 0 ? sumText(diff) : '⟦сумма⟧'}. Общая стоимость работ по Договору — ${nw ? sumText(nw) : '⟦сумма⟧'}.` });
+  B.push(signBlock(false));
+  return B;
+}
+
+function buildInvoice() {
+  const p = P(), c = C(), price = num(D.price), pp = Math.min(100, Math.max(1, num(D.prepay) || 50));
+  const total = D.ds_on && num(D.ds_price) ? num(D.ds_price) : price;
+  const kinds = {
+    prepay: [`Предоплата ${D.pay === 'full' ? 100 : pp} % по ${contractRef()}: ${v(D.subject, 'работы')}`, D.pay === 'full' ? price : Math.round(price * pp) / 100],
+    rest: [`Окончательный расчёт по ${contractRef()}: ${v(D.subject, 'работы')}`, Math.round((total - Math.round(price * pp) / 100) * 100) / 100],
+    full: [`Оплата работ по ${contractRef()}: ${v(D.subject, 'работы')}`, total],
+    ds: [`Оплата дополнительных работ по Дополнительному соглашению № ${v(D.ds_num, '1')} к ${contractRef()}`, Math.max(0, num(D.ds_price) - price)]
+  };
+  const [what, sum] = kinds[D.inv_kind] || kinds.prepay;
+  const B = [];
+  B.push({ t: 'title', text: `Счёт на оплату № ${v(D.inv_num, 'номер')} от ${dLong(D.inv_date)}` });
+  B.push({ t: 'kv', rows: [
+    ['Получатель', p.req.slice(0, 3).join(', ')],
+    ['Банк получателя', `${v(D.p_bank, 'банк')}, БИК ${v(D.p_bik, 'БИК')}, к/с ${v(D.p_ks, 'корр. счёт')}`],
+    ['Счёт получателя', v(D.p_acc, 'расчётный счёт')],
+    ['Плательщик', c.t === 'org' ? `${v(D.c_name, 'название')}, ИНН ${v(D.c_inn, 'ИНН')}, КПП ${v(D.c_kpp, 'КПП')}` : c.name],
+    ['Основание', `${contractRef().replace(/^Договору/, 'Договор')}`]
+  ] });
+  B.push({ t: 'table', head: ['№', 'Наименование работ', 'Кол-во', 'Сумма, ₽'], w: [6, 64, 10, 20], rows: [['1', what, '1', sum ? money(sum) : '⟦сумма⟧']] });
+  B.push({ t: 'total', rows: [['Итого', sum ? money(sum) : '⟦сумма⟧'], ['Без НДС', '—'], ['Всего к оплате', sum ? money(sum) : '⟦сумма⟧']] });
+  B.push({ t: 'p', text: `Всего к оплате: ${sum ? sumText(sum) : '⟦сумма прописью⟧'}. ${p.vat}` });
+  B.push({ t: 'p', text: `Оплатить в течение 5 (пяти) календарных дней. В назначении платежа укажите номер счёта и договора.${p.npd ? ' После оплаты Подрядчик формирует чек в приложении «Мой налог» и направляет его Заказчику.' : ''}` });
+  B.push({ t: 'signone', title: p.npd ? 'Подрядчик' : 'Индивидуальный предприниматель', name: p.short });
+  return B;
+}
+
+const DOCS = {
+  contract: { label: 'Договор + Задание', file: () => `Договор ${D.num || ''}`.trim(), build: buildContract },
+  act: { label: 'Акт', file: () => `Акт ${D.act_num || ''} к договору ${D.num || ''}`.trim(), build: buildAct },
+  ds: { label: 'Допсоглашение', file: () => `Допсоглашение ${D.ds_num || ''} к договору ${D.num || ''}`.trim(), build: buildDS },
+  inv: { label: 'Счёт', file: () => `Счёт ${D.inv_num || ''} по договору ${D.num || ''}`.trim(), build: buildInvoice }
+};
+const fileName = s => s.replace(/[\/\\:*?"<>|]+/g, '-').replace(/\s+/g, ' ').trim();
+
+// ---------- HTML-превью ----------
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const inl = s => esc(s).replace(/⟦([^⟧]*)⟧/g, '<mark title="Заполни поле слева">$1</mark>').replace(/\n/g, '<br>');
+function toHTML(B) {
+  return B.map(b => {
+    switch (b.t) {
+      case 'title': return `<h3 class="d-title">${inl(b.text)}</h3>${b.sub ? `<p class="d-sub">${inl(b.sub)}</p>` : ''}`;
+      case 'tag': return `<p class="d-tag">${inl(b.text)}</p>`;
+      case 'meta': return `<p class="d-meta"><span>${inl(b.left)}</span><span>${inl(b.right)}</span></p>`;
+      case 'p': return `<p class="d-p">${inl(b.text)}</p>`;
+      case 'sec': return `<h4 class="d-sec"><span>${b.n}.</span> ${inl(b.text)}</h4>`;
+      case 'cl': return `<p class="d-cl${b.lv === 2 ? ' lv2' : ''}"><span class="n">${b.n}</span><span>${inl(b.text)}</span></p>`;
+      case 'li': return `<p class="d-li"><span>—</span><span>${inl(b.text)}</span></p>`;
+      case 'table': return `<div class="d-tw"><table class="d-t"><thead><tr>${b.head.map(h => `<th>${inl(h)}</th>`).join('')}</tr></thead><tbody>${b.rows.map(r => `<tr>${r.map(c => `<td>${inl(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+      case 'kv': return `<div class="d-tw"><table class="d-kv">${b.rows.map(r => `<tr><th>${inl(r[0])}</th><td>${inl(r[1])}</td></tr>`).join('')}</table></div>`;
+      case 'total': return `<table class="d-tot">${b.rows.map(r => `<tr><th>${inl(r[0])}</th><td>${inl(r[1])}</td></tr>`).join('')}</table>`;
+      case 'sign': return `<div class="d-sign">${['l', 'r'].map(k => { const s = b[k]; return `<div><b>${s.title}</b>${s.req.map(x => `<span>${inl(x)}</span>`).join('')}<div class="d-line">${s.post ? `<i>${inl(s.post)}</i>` : ''}<span class="d-under"></span><span>/ ${inl(s.name)}</span>${s.mp ? '<i class="mp">М. П.</i>' : ''}</div></div>`; }).join('')}</div>`;
+      case 'signone': return `<div class="d-sign one"><div><b>${b.title}</b><div class="d-line"><span class="d-under"></span><span>/ ${inl(b.name)}</span></div></div></div>`;
+      case 'break': return '<hr class="d-break">';
+    }
+    return '';
+  }).join('');
+}
+
+// ---------- DOCX ----------
+const xe = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const plainTok = s => String(s).replace(/⟦[^⟧]*⟧/g, '__________');
+const ACC = 'EB7540';
+function runs(text, o = {}) {
+  const t = plainTok(text).split('\n');
+  const rp = `<w:rPr>${o.b ? '<w:b/>' : ''}${o.i ? '<w:i/>' : ''}${o.color ? `<w:color w:val="${o.color}"/>` : ''}${o.sz ? `<w:sz w:val="${o.sz}"/><w:szCs w:val="${o.sz}"/>` : ''}${o.caps ? '<w:caps/>' : ''}${o.sp ? `<w:spacing w:val="${o.sp}"/>` : ''}</w:rPr>`;
+  return t.map((x, i) => `${i ? '<w:r><w:br/></w:r>' : ''}<w:r>${rp}<w:t xml:space="preserve">${xe(x)}</w:t></w:r>`).join('');
+}
+function para(content, o = {}) {
+  const pp = [];
+  if (o.style) pp.push(`<w:pStyle w:val="${o.style}"/>`);
+  if (o.keep) pp.push('<w:keepNext/>');
+  if (o.tabs) pp.push(`<w:tabs>${o.tabs}</w:tabs>`);
+  if (o.border) pp.push(`<w:pBdr><w:bottom w:val="single" w:sz="8" w:space="6" w:color="${ACC}"/></w:pBdr>`);
+  pp.push(`<w:spacing w:before="${o.before || 0}" w:after="${o.after ?? 100}" w:line="${o.line || 288}" w:lineRule="auto"/>`);
+  if (o.ind) pp.push(`<w:ind w:left="${o.ind[0]}" w:hanging="${o.ind[1]}"/>`);
+  pp.push(`<w:jc w:val="${o.jc || 'both'}"/>`);
+  return `<w:p><w:pPr>${pp.join('')}</w:pPr>${content}</w:p>`;
+}
+const W = 9638; // ширина текста в twips (A4, поля 2 см/1.5 см)
+function cell(content, w, o = {}) {
+  return `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${o.fill ? `<w:shd w:val="clear" w:color="auto" w:fill="${o.fill}"/>` : ''}<w:tcMar><w:top w:w="80" w:type="dxa"/><w:bottom w:w="80" w:type="dxa"/><w:left w:w="110" w:type="dxa"/><w:right w:w="110" w:type="dxa"/></w:tcMar></w:tcPr>${content}</w:tc>`;
+}
+function tbl(rows, widths, o = {}) {
+  const b = o.noBorder ? '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>'
+    : '<w:tblBorders><w:top w:val="single" w:sz="4" w:color="BDBDBA"/><w:left w:val="single" w:sz="4" w:color="BDBDBA"/><w:bottom w:val="single" w:sz="4" w:color="BDBDBA"/><w:right w:val="single" w:sz="4" w:color="BDBDBA"/><w:insideH w:val="single" w:sz="4" w:color="BDBDBA"/><w:insideV w:val="single" w:sz="4" w:color="BDBDBA"/></w:tblBorders>';
+  return `<w:tbl><w:tblPr><w:tblW w:w="${W}" w:type="dxa"/>${o.right ? '<w:jc w:val="right"/>' : ''}${b}<w:tblLayout w:type="fixed"/></w:tblPr><w:tblGrid>${widths.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>${rows}</w:tbl>`;
+}
+function toDocxBody(B) {
+  const out = [];
+  const tabR = `<w:tab w:val="right" w:pos="${W}"/>`;
+  for (const b of B) {
+    switch (b.t) {
+      case 'title': out.push(para(runs(b.text, { b: true, sz: 30 }), { jc: 'left', before: 60, after: b.sub ? 40 : 160, keep: true, border: !b.sub }));
+        if (b.sub) out.push(para(runs(b.sub, { color: '5A5A58', sz: 21 }), { jc: 'left', after: 160, border: true })); break;
+      case 'tag': out.push(para(runs(b.text, { color: ACC, sz: 17, caps: true, sp: 10 }), { jc: 'left', after: 60 })); break;
+      case 'meta': out.push(para(runs(b.left, { color: '5A5A58' }) + '<w:r><w:tab/></w:r>' + runs(b.right, { color: '5A5A58' }), { jc: 'left', tabs: tabR, after: 200 })); break;
+      case 'p': out.push(para(runs(b.text), { after: 140 })); break;
+      case 'sec': out.push(para(runs(`${b.n}. ${b.text}`, { b: true, sz: 23 }), { jc: 'left', before: 220, after: 100, keep: true })); break;
+      case 'cl': out.push(para(runs(b.n + '\t') + runs(b.text), { ind: b.lv === 2 ? [1420, 700] : [700, 700], after: 80, tabs: `<w:tab w:val="left" w:pos="${b.lv === 2 ? 1420 : 700}"/>` })); break;
+      case 'li': out.push(para(runs('—\t' + b.text), { ind: [1100, 400], after: 40, tabs: '<w:tab w:val="left" w:pos="1100"/>' })); break;
+      case 'table': {
+        const n = b.head.length, ws = b.w ? b.w.map(p => Math.round(W * p / 100)) : Array(n).fill(Math.floor(W / n));
+        const hr = `<w:tr><w:trPr><w:tblHeader/></w:trPr>${b.head.map((h, i) => cell(para(runs(h, { b: true, sz: 19 }), { jc: 'left', after: 0 }), ws[i], { fill: 'F4F4F2' })).join('')}</w:tr>`;
+        const rr = b.rows.map(r => `<w:tr>${r.map((c, i) => cell(String(c).split('\n').map(x => para(runs(x, { sz: 19 }), { jc: 'left', after: 0 })).join(''), ws[i])).join('')}</w:tr>`).join('');
+        out.push(tbl(hr + rr, ws)); out.push(para('', { after: 120 })); break; }
+      case 'kv': {
+        const ws = [Math.round(W * .28), W - Math.round(W * .28)];
+        out.push(tbl(b.rows.map(r => `<w:tr>${cell(para(runs(r[0], { b: true, sz: 19 }), { jc: 'left', after: 0 }), ws[0], { fill: 'F4F4F2' })}${cell(para(runs(r[1], { sz: 19 }), { jc: 'left', after: 0 }), ws[1])}</w:tr>`).join(''), ws)); out.push(para('', { after: 160 })); break; }
+      case 'total': {
+        out.push(b.rows.map((r, i) => para(runs(r[0] + ':', { b: i === 2 }) + '<w:r><w:tab/></w:r>' + runs(r[1], { b: i === 2 }), { jc: 'left', tabs: `<w:tab w:val="right" w:pos="${W}"/>`, ind: [W - 4200, 0], after: 40 })).join('')); out.push(para('', { after: 120 })); break; }
+      case 'sign': {
+        const ws = [Math.floor(W / 2), W - Math.floor(W / 2)];
+        const side = s => [para(runs(s.title, { b: true, sz: 21 }), { jc: 'left', after: 80 }), ...s.req.map(x => para(runs(x, { sz: 19 }), { jc: 'left', after: 0, line: 264 })),
+          ...(s.post ? [para(runs(s.post, { sz: 19 }), { jc: 'left', before: 240, after: 0 })] : [para('', { before: 240, after: 0 })]),
+          para(runs('____________________ / ' + s.name, { sz: 19 }), { jc: 'left', before: 200, after: 0 }), ...(s.mp ? [para(runs('М. П.', { sz: 17, color: '8E8E8C' }), { jc: 'left', before: 60, after: 0 })] : [])].join('');
+        out.push(para('', { after: 120 }));
+        out.push(tbl(`<w:tr><w:trPr><w:cantSplit/></w:trPr>${cell(side(b.l), ws[0])}${cell(side(b.r), ws[1])}</w:tr>`, ws, { noBorder: true })); break; }
+      case 'signone': out.push(para(runs(b.title, { b: true }), { jc: 'left', before: 400, after: 200 })); out.push(para(runs('____________________ / ' + b.name), { jc: 'left' })); break;
+      case 'break': out.push('<w:p><w:r><w:br w:type="page"/></w:r></w:p>'); break;
+    }
+  }
+  return out.join('');
+}
+function docxFiles(B, title) {
+  const body = toDocxBody(B);
+  const doc = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>${body}<w:sectPr><w:footerReference w:type="default" r:id="rIdF"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="851" w:bottom="1134" w:left="1417" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:eastAsia="Arial" w:cs="Arial"/><w:color w:val="101010"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="ru-RU"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="100" w:line="288" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style><w:style w:type="table" w:default="1" w:styleId="TableNormal"><w:name w:val="Normal Table"/><w:tblPr><w:tblInd w:w="0" w:type="dxa"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style></w:styles>`;
+  const footer = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:pPr><w:tabs><w:tab w:val="right" w:pos="${W}"/></w:tabs><w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:color w:val="8E8E8C"/><w:sz w:val="16"/></w:rPr><w:t xml:space="preserve">${xe(title)}</w:t></w:r><w:r><w:rPr><w:color w:val="8E8E8C"/><w:sz w:val="16"/></w:rPr><w:tab/><w:t xml:space="preserve">Стр. </w:t></w:r><w:r><w:rPr><w:color w:val="8E8E8C"/><w:sz w:val="16"/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:color w:val="8E8E8C"/><w:sz w:val="16"/></w:rPr><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r><w:r><w:rPr><w:color w:val="8E8E8C"/><w:sz w:val="16"/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:color w:val="8E8E8C"/><w:sz w:val="16"/></w:rPr><w:t>1</w:t></w:r><w:r><w:rPr><w:color w:val="8E8E8C"/><w:sz w:val="16"/></w:rPr><w:fldChar w:fldCharType="end"/></w:r></w:p></w:ftr>`;
+  return {
+    '[Content_Types].xml': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>`,
+    '_rels/.rels': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`,
+    'word/_rels/document.xml.rels': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdS" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdF" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/></Relationships>`,
+    'word/document.xml': doc, 'word/styles.xml': styles, 'word/footer1.xml': footer
+  };
+}
+async function makeDocx(key) {
+  const z = new JSZip(); const files = docxFiles(DOCS[key].build(), DOCS[key].file());
+  for (const [k, val] of Object.entries(files)) z.file(k, val);
+  return z.generateAsync({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+}
+window.__padDocx = async key => { const z = new JSZip(); const f = docxFiles(DOCS[key].build(), DOCS[key].file()); for (const [k, val] of Object.entries(f)) z.file(k, val); return z.generateAsync({ type: 'base64' }); };
+
+// ---------- Скачивание ----------
+let dlCap; // undefined — ещё не спрашивали
+async function getDl() {
+  if (dlCap !== undefined) return dlCap;
+  try { dlCap = window.claude && window.claude.use ? await Promise.race([window.claude.use('downloads'), new Promise(r => setTimeout(() => r(null), 4000))]) : null; } catch (e) { dlCap = null; }
+  return dlCap;
+}
+async function offer(blob, name) {
+  const st = $('#dl-status');
+  const dl = await getDl();
+  if (dl) {
+    try { await dl.save({ filename: name, data: blob }); st.textContent = `Сохранено: ${name}`; }
+    catch (e) { st.textContent = e && e.code === 'declined' ? 'Сохранение отменено.' : e && e.code === 'rate_limited' ? 'Окно сохранения уже открыто. Подожди и попробуй снова.' : 'Скачать здесь не получилось. Открой страницу в браузере.'; }
+    return;
+  }
+  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = name; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000); st.textContent = `Файл ${name} отправлен на скачивание.`;
+}
+
+// ---------- Форма ----------
+function syncForm() {
+  $$('[data-k]').forEach(el => {
+    const k = el.dataset.k;
+    if (el.type === 'checkbox') el.checked = !!D[k];
+    else if (el.tagName === 'BUTTON') el.setAttribute('aria-pressed', String(D[k] === el.dataset.v));
+    else el.value = D[k] ?? '';
+  });
+  $$('[data-show]').forEach(el => { const [k, vals] = el.dataset.show.split('='); el.hidden = !vals.split('|').includes(String(D[k])); });
+  $$('[data-hide]').forEach(el => { const [k, vals] = el.dataset.hide.split('='); el.hidden = vals.split('|').includes(String(D[k])); });
+}
+let cur = 'contract';
+function render() {
+  syncForm();
+  const B = DOCS[cur].build();
+  $('#paper').innerHTML = toHTML(B);
+  // счётчики незаполненного
+  for (const k of Object.keys(DOCS)) {
+    const html = JSON.stringify(DOCS[k].build()); const n = (html.match(/⟦/g) || []).length;
+    const tab = $(`.doc-tab[data-doc="${k}"] .cnt`); tab.textContent = n ? n : '✓'; tab.classList.toggle('ok', !n);
+  }
+  const n = $$('#paper mark').length;
+  $('#todo').innerHTML = n ? `В документе <b>${n}</b> ${plural(n, ['пустое поле', 'пустых поля', 'пустых полей'])} — они подсвечены. Заполни данные слева или впиши от руки после скачивания.` : 'Все поля заполнены. Проверь текст и скачивай.';
+  // сводка
+  const price = num(D.price), pp = Math.min(100, Math.max(1, num(D.prepay) || 50));
+  $('#sum-words').textContent = price ? words(price) : '';
+  $('#sum-split').textContent = price && D.pay === 'half' ? `Предоплата ${money(Math.round(price * pp) / 100)} ₽ · остаток ${money(price - Math.round(price * pp) / 100)} ₽` : '';
+  $('#ds-diff').textContent = num(D.ds_price) && price ? (num(D.ds_price) > price ? `Доплата по допсоглашению: ${money(num(D.ds_price) - price)} ₽` : 'Новая стоимость должна быть больше старой.') : '';
+  $('#npd-warn').hidden = !(D.p_status === 'npd' && price > 2400000);
+  $('#ds-off').hidden = cur !== 'ds' || D.ds_on;
+  save();
+}
+function bind() {
+  $$('input[data-k], textarea[data-k], select[data-k]').forEach(el => el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', () => {
+    D[el.dataset.k] = el.type === 'checkbox' ? el.checked : el.value; render();
+  }));
+  $$('button[data-k]').forEach(b => b.addEventListener('click', () => { D[b.dataset.k] = b.dataset.v; render(); }));
+  $$('.doc-tab').forEach(t => t.addEventListener('click', () => { cur = t.dataset.doc; $$('.doc-tab').forEach(x => x.setAttribute('aria-selected', String(x === t))); render(); if (window.matchMedia('(max-width:980px)').matches) $('#docs').scrollIntoView({ behavior: 'smooth' }); }));
+  $('#ex').addEventListener('click', () => { D = { ...EMPTY, ...EXAMPLE }; render(); });
+  $('#clr').addEventListener('click', () => { if ($('#clr').dataset.armed) { D = { ...EMPTY }; delete $('#clr').dataset.armed; $('#clr').textContent = 'Очистить всё'; render(); } else { $('#clr').dataset.armed = '1'; $('#clr').textContent = 'Точно очистить? Нажми ещё раз'; setTimeout(() => { delete $('#clr').dataset.armed; $('#clr').textContent = 'Очистить всё'; }, 3000); } });
+  $('#dl-one').addEventListener('click', async () => {
+    if (typeof JSZip === 'undefined') { $('#dl-status').textContent = 'Не загрузилась библиотека для Word. Обнови страницу.'; return; }
+    $('#dl-status').textContent = 'Собираю файл…';
+    offer(await makeDocx(cur), fileName(DOCS[cur].file()) + '.docx');
+  });
+  $('#dl-all').addEventListener('click', async () => {
+    if (typeof JSZip === 'undefined') { $('#dl-status').textContent = 'Не загрузилась библиотека для Word. Обнови страницу.'; return; }
+    $('#dl-status').textContent = 'Собираю архив…';
+    const z = new JSZip(); const keys = Object.keys(DOCS).filter(k => k !== 'ds' || D.ds_on);
+    for (const k of keys) z.file(fileName(DOCS[k].file()) + '.docx', await makeDocx(k));
+    offer(await z.generateAsync({ type: 'blob' }), fileName(`Документы по договору ${D.num || ''}`) + '.zip');
+  });
+  $('#copy').addEventListener('click', () => {
+    const t = $('#paper').innerText; const b = $('#copy'), o = b.textContent;
+    const done = () => { b.textContent = 'Скопировано'; setTimeout(() => b.textContent = o, 1600); };
+    const sel = () => { const r = document.createRange(); r.selectNodeContents($('#paper')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Выделено, нажми Ctrl+C'; setTimeout(() => b.textContent = o, 2400); };
+    try { navigator.clipboard.writeText(t).then(done, sel); } catch (e) { sel(); }
+  });
+}
+bind(); render();
+getDl();
+})();
+
+</script>
+
+</body>
+</html>
