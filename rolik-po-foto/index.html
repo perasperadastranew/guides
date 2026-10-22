@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ролик по реальным фото</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500&display=swap">
+<style>
+/* Layout: одна колонка чтения 680px; кадры, карточки и схема шире текста и идут на всю обёртку 1040px */
+@font-face{font-family:"Classic Russian";src:url(a/01.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"W3iP";src:url(a/02.ttf) format("truetype");font-display:swap}
+:root{
+  --bg:#F1EFEA; --surface:#E5E2DB; --fg:#0C0B0D; --muted:#625E5B; --line:#CFCBC3; --accent:#B0141C; --on-accent:#FFFFFF;
+  --sans:-apple-system,"SF Pro Text","Golos Text","Helvetica Neue",Arial,sans-serif;
+  --serif:"Classic Russian","Times New Roman",Georgia,serif;
+  --mono:"W3iP","SF Mono",ui-monospace,Menlo,monospace;
+  --c:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C0B0D;--surface:#1B191C;--fg:#F1EFEA;--muted:#A5A09B;--line:#302D31;--accent:#EE3A40;--on-accent:#0C0B0D;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0C0B0D;--surface:#1B191C;--fg:#F1EFEA;--muted:#A5A09B;--line:#302D31;--accent:#EE3A40;--on-accent:#0C0B0D;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1040px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 96px;display:flex;flex-direction:column;gap:88px}
+.micro{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+header{display:flex;flex-direction:column;gap:36px}
+h1{font-weight:300;font-size:clamp(44px,8.2vw,104px);line-height:.92;letter-spacing:-.035em;margin:0;text-wrap:balance}
+h1 span{display:block}
+h1 span+span{padding-left:.9em}
+.s{font-family:var(--serif);font-weight:400;letter-spacing:-.02em;font-size:1.12em}
+.lead{max-width:34em;font-size:clamp(18px,2.1vw,22px);color:var(--fg);margin:0;text-indent:2.2em}
+figure{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+figure img{display:block;width:100%;max-width:100%;height:auto;background:var(--surface);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+figcaption{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.need{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;border-top:1px solid var(--line)}
+.need div{padding:18px 18px 18px 0;border-bottom:1px solid var(--line);min-width:0}
+.need b{display:block;font-weight:500}
+.need span{color:var(--muted);font-size:15px}
+section.step{display:flex;flex-direction:column;gap:28px}
+.head{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 40px;align-items:start}
+.num{font-family:var(--serif);font-size:clamp(72px,11vw,128px);line-height:.8;color:var(--accent)}
+.num small{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:14px;line-height:1.3}
+h2{font-weight:300;font-size:clamp(30px,4.6vw,54px);line-height:1;letter-spacing:-.03em;margin:0 0 18px;text-wrap:balance}
+.txt{max-width:680px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.txt p{margin:0}
+.txt p:first-of-type{text-indent:2.2em}
+.txt ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.sub{margin:0;display:flex;gap:12px;align-items:baseline}
+.sub b{color:var(--accent);font-weight:400}
+.tpl{background:var(--surface);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c));padding:20px 22px;display:flex;flex-direction:column;gap:12px;max-width:680px;min-width:0}
+.tpl .bar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.tpl pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:14px;line-height:1.5;color:var(--fg)}
+button.copy{font:inherit;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;border:0;padding:8px 14px;cursor:pointer;background:var(--fg);color:var(--bg);flex:none;clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px)}
+button.copy:hover{background:var(--accent);color:var(--on-accent)}
+button.copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tip{max-width:680px;border-left:2px solid var(--accent);padding:2px 0 2px 18px;color:var(--muted);font-size:16px;margin:0}
+.tip b{color:var(--fg);font-weight:500}
+/* референсы, которые уходят в промпт */
+.rf{display:flex;gap:8px;margin-bottom:2px}
+.rf span{flex:1;min-width:0}
+.rf img{aspect-ratio:4/3;object-fit:contain;clip-path:none}
+.rf b{display:block;margin-top:4px;font:400 10px/1.3 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.rf.sm span{flex:0 1 calc(33.333% - 6px)}
+/* схема пайплайна с подсветкой зон */
+.board{gap:14px}
+.board .bd{position:relative;background:#0f0f12;clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.board .z{position:absolute;border:2px solid #EE3A40;box-shadow:0 0 0 2000px rgba(8,8,10,.62);opacity:0;transition:opacity .35s;pointer-events:none}
+.board .z.on{opacity:1}
+.board ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
+.board li{padding:14px 14px 14px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:15px;transition:color .3s}
+.board li b{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:400;margin-bottom:4px}
+.board li.on{color:var(--fg)}
+.board li.on b{color:var(--accent)}
+.board .bd .in{position:relative}
+/* места под будущие примеры */
+.mk{display:grid;gap:8px;padding:12px;background:var(--surface);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.mk i{display:flex;align-items:flex-end;padding:8px;min-height:130px;border:1px dashed var(--muted);font:normal 11px/1.25 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mk i b{color:var(--accent);font-weight:400;margin-right:.5em}
+.mk.tr{grid-template-columns:repeat(3,minmax(0,1fr))}
+.who{display:flex;flex-direction:column;gap:12px}
+.end{display:flex;flex-direction:column;gap:28px;border-top:1px solid var(--line);padding-top:40px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:24px}
+.facts b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(44px,6vw,72px);line-height:1;font-variant-numeric:tabular-nums}
+.facts span{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+ol.check{margin:0;padding-left:1.3em;max-width:680px;display:flex;flex-direction:column;gap:8px}
+.recap{list-style:none;counter-reset:r;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,auto);grid-auto-flow:column;gap:0 40px;border-top:1px solid var(--line)}
+.recap li{counter-increment:r;display:grid;grid-template-columns:44px minmax(0,1fr);gap:2px 8px;padding:16px 0;border-bottom:1px solid var(--line)}
+.recap li:before{content:counter(r);grid-row:1/3;font-family:var(--serif);font-size:34px;line-height:1;color:var(--accent)}
+.recap b{font-weight:500}.recap span{color:var(--muted);font-size:15px}
+/* единый блок: референсы -> промпт -> результат */
+.flow{display:flex;flex-direction:column;gap:14px}
+.inp,.out,.pair{display:grid;gap:12px}
+.c1{grid-template-columns:minmax(0,1fr)}.c2{grid-template-columns:repeat(2,minmax(0,1fr))}.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.inp.c1{max-width:calc(50% - 6px)}.out.c1.half{max-width:calc(50% - 6px)}
+.flow figure img{aspect-ratio:var(--ar,16/9);object-fit:cover;object-position:var(--op,50% 50%);height:auto}
+.flow figure video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--surface);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.mk.tr.one{grid-template-columns:minmax(0,1fr)}
+@media (max-width:640px){
+  body{font-size:17px}
+  .wrap{gap:64px}
+  .head{grid-template-columns:1fr}
+  .grid2,.grid3,.mk.tr{grid-template-columns:1fr}
+  .out.c2,.out.c3,.pair.c2{grid-template-columns:1fr}.inp.c3{grid-template-columns:repeat(2,minmax(0,1fr))}.inp.c1,.out.c1.half{max-width:100%}.recap{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
+  :root{--c:10px}
+  .board{margin-inline:calc(max(16px,env(safe-area-inset-left,0px))*-1)}
+  .board .bd{clip-path:none;overflow-x:auto}
+  .board .bd .in{width:230%}
+  .board ol{grid-template-columns:repeat(2,minmax(0,1fr));margin-inline:16px}
+  .board figcaption{padding-inline:16px}
+}
+@media (prefers-reduced-motion:reduce){.board .z{transition:none}}
+.ft{display:flex;flex-direction:column;gap:56px;border-top:1px solid var(--line);padding-top:44px;min-width:0}
+.ft-intro{display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:680px}
+.ft-intro h2{margin:6px 0 4px}.ft-intro p{margin:0}.ft-intro h2+p{text-indent:2.2em}
+.btn{display:inline-block;background:var(--accent);color:var(--on-accent);font:12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:16px 20px;margin-top:8px;border-radius:2px}
+.btn:hover{filter:brightness(1.12)}.btn:focus-visible,.mta-img:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.ph{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.ph img{display:block;width:100%;height:auto;object-fit:cover;border-radius:14px;background:var(--surface)}
+.ph-hero img{aspect-ratio:2.33/1}.ph-s img{aspect-ratio:16/10}
+.ph figcaption{display:flex;justify-content:space-between;gap:12px;font:11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ph2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 8px}
+.ft-photos{display:flex;flex-direction:column;gap:20px;min-width:0}
+.partners{display:flex;flex-direction:column;gap:24px;align-items:center;min-width:0}
+.tag{font:12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--fg);padding:13px 28px;background:
+ linear-gradient(var(--muted),var(--muted)) 0 0/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 0 0/1px 9px no-repeat,
+ linear-gradient(var(--muted),var(--muted)) 100% 0/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 100% 0/1px 9px no-repeat,
+ linear-gradient(var(--muted),var(--muted)) 0 100%/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 0 100%/1px 9px no-repeat,
+ linear-gradient(var(--muted),var(--muted)) 100% 100%/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 100% 100%/1px 9px no-repeat}
+.mq{width:100%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.mq-track{display:flex;width:max-content;animation:mq 34s linear infinite}
+.mq:hover .mq-track{animation-play-state:paused}
+.mq-set{display:flex;gap:12px;padding-right:12px}
+.lgo{width:176px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.lgo i{display:flex;align-items:center;justify-content:center;width:100%;height:88px;background:#EDEBE6;border-radius:10px}
+.lgo img{max-width:72%;max-height:52%;width:auto;height:auto;mix-blend-mode:multiply}
+.lgo span{font:11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+@keyframes mq{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.mq{-webkit-mask-image:none;mask-image:none}.mq-track{animation:none;width:auto;flex-wrap:wrap;justify-content:center}.mq-set{flex-wrap:wrap;justify-content:center;gap:16px 12px;padding:0}.mq-set[aria-hidden]{display:none}}
+.mta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-radius:14px;overflow:hidden;background:var(--surface);min-width:0}
+.mta-t{display:flex;flex-direction:column;gap:14px;align-items:flex-start;justify-content:center;padding:40px 36px}
+.mta-t h2{margin:0}.mta-t p{margin:0;color:var(--muted);font-size:17px}
+.mta-img{display:flex;align-items:center;justify-content:center;min-height:280px;background:var(--accent);color:#fff;text-decoration:none;font-family:var(--serif);font-size:clamp(34px,5vw,56px);letter-spacing:-.02em;text-align:center;padding:24px}
+.mta-img:hover{filter:brightness(1.08)}
+@media(max-width:640px){.ph2,.mta{grid-template-columns:1fr}.ft{gap:44px}.mta-t{padding:28px 22px}.mta-img{min-height:200px;order:-1}.ph-s img{aspect-ratio:4/3}}
+
+</style>
+<div class="wrap">
+<header><div class="top micro"><span>Гайд · Видео на нейросетях</span><span>Пайплайн</span></div>
+<h1><span>Ролик</span><span><span class="s" style="display:inline">по реальным фото</span></span></h1>
+<p class="lead">Нейросеть отлично масштабирует существующую графику и может увеличить её качество. Это помогает нам оживлять настоящие снимки. Разбираем весь пайплайн создания ИИ-ролика.</p></header>
+
+<div><p class="micro" style="margin:0 0 12px">Что понадобится</p><div class="need"><div><b>Сценарий</b><span>О чём ролик: события и герои</span></div><div><b>Реальные фото</b><span>Люди, архив, панорамы улиц из Google Карт</span></div><div><b>Генератор картинок</b><span>Для карточек героев и локаций</span></div><div><b>Seedance</b><span>Видеомодель, принимает карточки как референсы</span></div><div><b>Агент</b><span>Пишет промпты для карточек и для Seedance. Подойдёт любая нейросеть</span></div></div></div>
+
+<figure class="board" id="board"><div class="bd"><div class="in"><svg viewBox="0 0 1000 400" style="display:block;width:100%" role="img" aria-label="Схема: сценарий, фото и карты ведут к карточкам и сценарию, затем к Seedance и к монтажу"><rect width="1000" height="400" fill="#0f0f12"/><g fill="#1f1d22" stroke="#4a464d"><rect x="30" y="50" width="200" height="90"/><rect x="30" y="155" width="200" height="90"/><rect x="30" y="260" width="200" height="90"/><rect x="290" y="150" width="190" height="100"/><rect x="540" y="140" width="190" height="120"/><rect x="790" y="140" width="180" height="120"/></g><path d="M230 95C260 95 260 200 290 200M230 200H290M230 305C260 305 260 200 290 200M480 200H540M730 200H790" stroke="#EE3A40" stroke-width="2" fill="none"/><g fill="#F1EFEA" font-family="monospace" font-size="20" text-anchor="middle"><text x="130" y="102">Сценарий</text><text x="130" y="207">Реальные фото</text><text x="130" y="312">Google Карты</text><text x="385" y="196">Карточки</text><text x="385" y="222">+ сценарий</text><text x="635" y="206">Seedance</text><text x="880" y="206">Монтаж</text></g></svg>
+<span class="z" style="left:1.5%;top:8%;width:22.5%;height:84%"></span><span class="z" style="left:27%;top:30%;width:22%;height:42%"></span><span class="z" style="left:52%;top:27%;width:22%;height:48%"></span><span class="z" style="left:77%;top:27%;width:21%;height:48%"></span></div></div>
+<ol><li><b>01 Материал</b>История, фото, места</li><li><b>02 Карточки</b>Как выглядят герои и места</li><li><b>03 Генерация</b>Seedance делает сцены</li><li><b>04 Монтаж</b>Лучшие куски в один ролик</li></ol><figcaption><span>Схема</span><span>Слева направо: от материала к ролику</span></figcaption></figure>
+
+<section class="step" id="step-1"><div class="head"><div class="num">1<small>Источники</small></div><div class="txt"><h2>Две опоры: сценарий и <span class="s">снимки</span></h2><p>Ролик состоит из двух вещей: это сценарий (что происходит) и материалы, с которыми мы работаем. В нашем случае это реальные изображения (как всё выглядит). Мы собираем их, а дальнейшее движение, камеру и мелкие детали придумывает нейросеть. Мы лишь даём ей материалы, с которыми следует работать.</p><ul><li>Люди: фото лица и фото одежды, лучше с разных ракурсов.</li><li>Места: свои снимки, архив, панорамы улиц из Google Карт.</li><li>Предметы и схемы: всё, что должно остаться узнаваемым.</li></ul><p>Качество не обязано быть хорошим: плёнка, зерно, пересвет, обрезанный кадр. Из такого материала получаются рабочие карточки, примеры ниже.</p></div></div>
+<p class="tip"><b>Проверка шага.</b> Для каждого героя есть фото лица и фото одежды, для каждого места хотя бы один снимок.</p></section>
+
+<section class="step" id="step-2"><div class="head"><div class="num">2<small>Сценарий</small></div><div class="txt"><h2>Каркас из <span class="s">сцен</span></h2><p>Сценарий определяет три вещи: какие моменты войдут в ролик, в каком порядке они идут и что происходит в каждой сцене. Под него подбираются фото, делаются карточки и идут генерации.</p><p>Перед сценарием стоит посмотреть похожие работы. Процесс генерации довольно итеративный, поэтому нормально делать несколько попыток на одну и ту же генерацию.</p><p>Как таковая раскадровка не нужна. Достаточно написанного сценария: на его основе ты консультируешься с агентом, который пишет промпты для Seedance, и получаешь конкретные видеофрагменты. Но некоторые ключевые сцены можно сделать отдельными картинками, чтобы Seedance лучше понял конкретные видеофрагменты.</p></div></div>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон сцены · заполни для каждой</span><button class="copy" type="button" data-copy="t-scene">Скопировать</button></div><pre id="t-scene" tabindex="0">Сцена [N] · [название]
+Место: [какая локация из карточек]
+Герои: [кто в кадре, какой образ]
+Что происходит: [одно-два предложения, одно главное действие]
+Шоты: [какие кадры нужны: общий, крупный, деталь]
+Звук: [что слышно]</pre></div>
+<p class="tip"><b>Проверка шага.</b> Для каждой сцены записаны место, герои и одно действие. Если не хватает любого из трёх, сцена пока не готова.</p>
+</section>
+
+<section class="step" id="step-3"><div class="head"><div class="num">3<small>Карточка героя</small></div><div class="txt"><h2>От фото к <span class="s">карточке</span></h2><p>Карточка героя — это изображение, где персонаж показан с разных сторон. В основном это в полный рост спереди и сзади, плюс лицо в профиль. Seedance потом получает её как референс и держит лицо, причёску и одежду одинаковыми от сцены к сцене.</p></div></div>
+<div class="flow"><p class="sub micro"><b>Референсы</b>Реальные фото героя</p><div class="inp c2"><figure><img src="a/03.webp" alt="@image1" style="--ar:4/3;--op:50% 20%" loading="lazy"><figcaption><span>@image1</span><span>Лицо, причёска, костюм</span></figcaption></figure><figure><img src="a/04.webp" alt="@image2" style="--ar:4/3;--op:50% 12%" loading="lazy"><figcaption><span>@image2</span><span>Костюм целиком</span></figcaption></figure></div><p class="sub micro"><b>Промпт</b>Карточка по фото</p><div class="tpl"><div class="bar"><span class="micro">Рабочий промпт · карточка по фото</span><button class="copy" type="button" data-copy="t-card-b">Скопировать</button></div><pre id="t-card-b" tabindex="0">Character reference sheet. @image1 and @image2 show the SAME man: combine the evidence.
+Face and haircut: @image1. Suit, shirt and tie: @image1 and @image2. Ignore backgrounds, lighting and crops.
+Layout: one 16:9 image on a plain light seamless background. Left: a large head-and-shoulders close-up, three-quarter turn. Right: three full-length views of the same man, same size, same ground line, soft contact shadow: front, side profile, back.
+Match the medium of the reference: real skin and fabric texture, no waxy look, no beautifying or slimming. Keep face, hair, proportions and clothing exactly as in the reference and add nothing that is not there. Relaxed neutral stance, calm expression.
+Soft even studio light, 85-100mm lens, sharp focus everywhere. No text, borders or labels.</pre></div><p class="sub micro"><b>Результат</b>Карточка героя</p><div class="out c1"><figure><img src="a/05.webp" alt="Карточка героя" loading="lazy"><figcaption><span>Карточка героя</span><span>Портрет и три вида: спереди, сбоку, со спины</span></figcaption></figure></div></div>
+<p class="tip"><b>Раскладка.</b> Её выбирают под задачу. Если на костюме важна спина, нужен вид сзади, как здесь. Если важнее лицо с разных сторон, подойдёт шесть видов из следующего шага.</p>
+<p class="tip"><b>Проверка шага.</b> Лицо и причёска совпадают с фото, одежда сидит так же, а на спине нет придуманных деталей.</p>
+</section>
+
+<section class="step" id="step-4"><div class="head"><div class="num">4<small>Образы</small></div><div class="txt"><h2>Один человек, несколько <span class="s">образов</span></h2><p>Герой в ролике редко ходит в одном и том же. Для другой одежды или другого времени делай отдельные карточки: лицо берётся с одного фото, цвет волос с другого, одежда с третьего. Роли фото меняй от образа к образу.</p><p>Эта раскладка даёт шесть видов: сверху три в полный рост (анфас, три четверти, профиль), снизу крупные портреты тех же ракурсов.</p></div></div>
+<div class="flow"><p class="sub micro"><b>Референсы</b>Реальные фото героини</p><div class="inp c3"><figure><img src="a/06.webp" alt="@image1" style="--ar:1/1;--op:50% 22%" loading="lazy"><figcaption><span>@image1</span><span>Студийный портрет</span></figcaption></figure><figure><img src="a/07.webp" alt="@image2" style="--ar:1/1;--op:50% 28%" loading="lazy"><figcaption><span>@image2</span><span>Другие годы</span></figcaption></figure><figure><img src="a/08.webp" alt="@image3" style="--ar:1/1;--op:50% 38%" loading="lazy"><figcaption><span>@image3</span><span>Свадебный образ</span></figcaption></figure></div><p class="sub micro"><b>Промпт</b>Шесть видов, роли фото в первых строках</p><div class="tpl"><div class="bar"><span class="micro">Рабочий промпт · карточка из шести видов</span><button class="copy" type="button" data-copy="t-card-a">Скопировать</button></div><pre id="t-card-a" tabindex="0">Character reference sheet. The attached images show ONE woman: combine the evidence.
+Face and haircut: @image1. Hair colour: @image2. Clothing: @image3. Ignore backgrounds, lighting and crops.
+Layout: one 16:9 image, six studio views in a 3x2 grid on a flat neutral mid-grey seamless background, no text, borders or labels. Top row: three full-length views, same size, same ground line, soft contact shadow: front (0°), half-turn (45°), true side profile (90°). Bottom row: head-and-shoulders close-ups of the same three angles, same head size, eyes at the same height.
+Checks: at 0° both ears visible; at 45° the far ear hidden; at 90° only one eye visible.
+Real skin and fabric texture, no waxy look, no beautifying. Soft even studio light, 85-100mm lens, sharp focus everywhere.</pre></div><p class="sub micro"><b>Результат</b>Три образа одной героини</p><div class="out c3"><figure><img src="a/09.webp" alt="Образ 1" loading="lazy"><figcaption><span>Образ 1</span><span>Свадьба</span></figcaption></figure><figure><img src="a/10.webp" alt="Образ 2" loading="lazy"><figcaption><span>Образ 2</span><span>Платье с воротником</span></figcaption></figure><figure><img src="a/11.webp" alt="Образ 3" loading="lazy"><figcaption><span>Образ 3</span><span>Повседневная одежда</span></figcaption></figure></div></div>
+<p class="tip"><b>Проверка шага.</b> Во всех образах это один человек: лицо, возраст и пропорции не поплыли, меняется только то, что ты менял сам.</p>
+</section>
+
+<section class="step" id="step-5"><div class="head"><div class="num">5<small>Без фото</small></div><div class="txt"><h2>Люди, которых нет в <span class="s">архиве</span></h2><p>В кадре нужны и прохожие, и друзья, и просто люди рядом, а их фото нет. Для них карточки делают без исходных снимков: берут готовую карточку как образец стиля и просят сгенерировать новых людей в той же раскладке. Так весь набор карточек выглядит одинаково.</p></div></div>
+<div class="flow"><p class="sub micro"><b>Референсы</b>Готовая карточка как образец</p><div class="inp c1"><figure><img src="a/12.webp" alt="@image1" loading="lazy"><figcaption><span>@image1</span><span>Готовая карточка героя</span></figcaption></figure></div><p class="sub micro"><b>Промпт</b>Четыре человека без фото</p><div class="tpl"><div class="bar"><span class="micro">Рабочий промпт · четыре человека без фото</span><button class="copy" type="button" data-copy="t-men">Скопировать</button></div><pre id="t-men" tabindex="0">Сгенерируй четырёх мужчин, сетка 4 на 2. Как на @image1: сверху в полный рост, снизу лицо крупно.
+Сделай четырёх других мужчин в том же стиле, что и мужчина на @image1: четыре разных советских человека, одежда летняя и простая, все в белых майках или футболках, на ком-то ещё клетчатая рубашка, на ком-то тёмные спортивные штаны, разная простая советская обувь.
+Сделай им разные причёски, черты лица и цвет глаз. Мужчинам около 22 лет, разное телосложение: кто-то худощавый, кто-то чуть более мускулистый.</pre></div><p class="sub micro"><b>Результат</b>Карточки новых людей</p><div class="out c2"><figure><img src="a/13.webp" alt="Мужские герои" loading="lazy"><figcaption><span>Мужские герои</span><span>Четыре человека на одной карточке</span></figcaption></figure><figure><img src="a/14.webp" alt="Женские герои" loading="lazy"><figcaption><span>Женские герои</span><span>Тот же приём</span></figcaption></figure></div></div>
+<p class="tip"><b>Как адаптировать.</b> В промпте меняй возраст, эпоху, сезон, одежду и обувь. Количество людей на карточке подбирай так, чтобы лица оставались крупными и читались.</p>
+</section>
+
+<section class="step" id="step-6"><div class="head"><div class="num">6<small>Локации</small></div><div class="txt"><h2>Места из реальных <span class="s">снимков</span></h2><p>Карточка локации — это четыре вида одной и той же локации без героев. Если это помещение, то общий показ сцены с разных планов. Если открытое место, то ключевые фрагменты, которые будут участвовать в ролике. Это могут быть и детали или определённые ракурсы.</p><p>Источник — любые реальные изображения места: свои снимки, фото из отзывов, панорамы Google Карт. Плохое качество не мешает: генератор дорисовывает нужные детали, понимая контекст. Важные нюансы лучше прописывать в промпте.</p></div></div>
+<p class="sub micro"><b>Промпт</b>Один для панорам и фото мест</p><div class="tpl"><div class="bar"><span class="micro">Рабочий промпт · карточка локации</span><button class="copy" type="button" data-copy="t-loc">Скопировать</button></div><pre id="t-loc" tabindex="0">Location reference sheet. @image1 is a real photo or street panorama of one place. Keep its layout, proportions, materials and architecture exactly as in the photo. Ignore people, cars, watermarks and haze.
+Layout: one 16:9 image, four views of the SAME place in a 2x2 grid, no text, borders or labels, each looking in a different direction and showing the key area of the scene up close.
+Season: [лето]. Light: [мягкое дневное солнце]. Same light and colour in all four views, no people.
+Real photographic texture, natural colour, sharp focus.</pre></div>
+<div class="flow"><p class="sub micro"><b>Пример 1</b>Панорама → карточка</p><div class="pair c2"><figure><img src="a/15.webp" alt="Панорама Google" style="--ar:16/9" loading="lazy"><figcaption><span>Панорама Google</span><span>Исходник</span></figcaption></figure><figure><img src="a/16.webp" alt="Карточка локации" loading="lazy"><figcaption><span>Карточка локации</span><span>Четыре ракурса, летний свет</span></figcaption></figure></div></div>
+<div class="flow"><p class="sub micro"><b>Пример 2</b>Фото из отзывов → карточка озера → карточка домика</p><div class="inp c2"><figure><img src="a/17.webp" alt="Фото из отзывов" style="--ar:16/9;--op:50% 55%" loading="lazy"><figcaption><span>Фото из отзывов</span><span>Реальный снимок 1</span></figcaption></figure><figure><img src="a/18.webp" alt="Фото из отзывов" style="--ar:16/9;--op:50% 50%" loading="lazy"><figcaption><span>Фото из отзывов</span><span>Реальный снимок 2</span></figcaption></figure></div><div class="out c2"><figure><img src="a/19.webp" alt="Карточка локации" loading="lazy"><figcaption><span>Карточка локации</span><span>Озеро: четыре кадра</span></figcaption></figure><figure><img src="a/20.webp" alt="Карточка переработана" loading="lazy"><figcaption><span>Карточка переработана</span><span>Под домик, где идёт действие</span></figcaption></figure></div></div>
+<div class="flow"><p class="sub micro"><b>Пример 3</b>Реальная схема → чистая версия</p><div class="pair c2"><figure><img src="a/21.webp" alt="Реальное фото" style="--ar:16/9;--op:50% 55%" loading="lazy"><figcaption><span>Реальное фото</span><span>Потёртая схема на стене</span></figcaption></figure><figure><img src="a/22.webp" alt="Переработанная версия" loading="lazy"><figcaption><span>Переработанная версия</span><span>Читаемая, в хорошем качестве</span></figcaption></figure></div></div>
+<div class="txt"><p>Если исходника нет совсем, место придумывают. Тогда вся работа в продуманном промпте: ты заранее решаешь, какие предметы в кадре, какой они формы, из какого времени и где стоят. Чем точнее список, тем меньше генератор додумывает сам. Для сложных предметов подбирают референсы: обычно это просто картинки из интернета.</p></div>
+<div class="flow"><p class="sub micro"><b>Пример 4</b>Интерьер без исходника: описание и референсы</p><div class="inp c3"><figure><img src="a/20.webp" alt="@image1" style="--ar:16/9" loading="lazy"><figcaption><span>@image1</span><span>Домик: тот же сруб</span></figcaption></figure><figure><img src="a/23.webp" alt="@image2" style="--ar:16/9;--op:50% 40%" loading="lazy"><figcaption><span>@image2</span><span>Референс: бревенчатая гостиная, камин, лестница</span></figcaption></figure><figure><img src="a/24.webp" alt="@image3" style="--ar:16/9;--op:50% 30%" loading="lazy"><figcaption><span>@image3</span><span>Референс: часы с маятником</span></figcaption></figure></div><p class="sub micro"><b>Промпт</b>Предметы, свет и ракурсы продуманы заранее</p><div class="tpl"><div class="bar"><span class="micro">Рабочий промпт · интерьер по описанию</span><button class="copy" type="button" data-copy="t-room">Скопировать</button></div><pre id="t-room" tabindex="0">Сгенерируй интерьер домика с @image1. Формат: 4 кадра сеткой 2 на 2, только основная большая комната-гостиная в разных ракурсах.
+Стены из сруба, потолок с балками, лестница на чердак и окна как на @image2.
+Интерьер советский, уютный, немного старый. Простая мебель, несколько кресел, ковёр на полу, телевизор, небольшая кухня в углу.
+На столе чаепитие: самовар, эмалированный чайник, гранёные стаканы в подстаканниках, сахарница, вазочка с вареньем, бублики на тарелке.
+На одной из стен большие часы с маятником, как на @image3.
+Свет: вечерний, тёплый, от окон и настольной лампы. Реальная фотографичная текстура, один и тот же интерьер во всех четырёх кадрах, без людей.</pre></div><p class="sub micro"><b>Результат</b>Карточка интерьера</p><div class="out c1 half"><figure><img src="a/25.webp" alt="Интерьер домика" loading="lazy"><figcaption><span>Интерьер домика</span><span>Четыре ракурса одной комнаты</span></figcaption></figure></div></div>
+<div class="flow"><p class="sub micro"><b>Пример 5</b>Рабочий стол без исходника: описание и референсы</p><div class="inp c2"><figure><img src="a/26.webp" alt="@image1" style="--ar:4/3;--op:50% 75%" loading="lazy"><figcaption><span>@image1</span><span>Референс: стол, книга, свет</span></figcaption></figure><figure><img src="a/27.webp" alt="@image2" style="--ar:4/3;--op:50% 62%" loading="lazy"><figcaption><span>@image2</span><span>Референс: гербарные листы с этикетками</span></figcaption></figure></div><p class="sub micro"><b>Промпт</b>Каждый предмет назван</p><div class="tpl"><div class="bar"><span class="micro">Рабочий промпт · рабочий стол по описанию</span><button class="copy" type="button" data-copy="t-desk">Скопировать</button></div><pre id="t-desk" tabindex="0">Сгенерируй локацию: рабочий стол внутри небольшого деревянного домика из сруба. Формат 2 на 2: четыре изображения. Кадр 1: стол целиком. Кадры 2–4: близкие планы гербария, заметок и мелких предметов.
+На столе: большая раскрытая книга с засушенными растениями, листы гербария с этикетками как на @image2, блокноты, карандаши, ножницы, катушка бечёвки, засушенные цветы. Расположение и свет как на @image1.
+Лампа: старая советская настольная лампа с металлическим абажуром, а не современная, как на @image1.
+Стены из сруба, тёплый вечерний свет. Все надписи на русском. Реальная фотографичная текстура, один и тот же стол во всех кадрах, без людей.</pre></div><p class="sub micro"><b>Результат</b>Карточка рабочего стола</p><div class="out c1 half"><figure><img src="a/28.webp" alt="Рабочий стол и гербарий" loading="lazy"><figcaption><span>Рабочий стол и гербарий</span><span>Стол целиком и крупные планы для сцен</span></figcaption></figure></div></div>
+<p class="tip"><b>Что видно по примерам.</b> Реальный снимок не обязан быть красивым: из него получается либо готовая карточка локации, либо конкретный кадр по сюжету. Один и тот же источник можно переделывать под нужное время года, свет и действие.</p>
+<p class="tip"><b>Проверка шага.</b> Планировка, материалы и свет одинаковы на всех ракурсах карточки, а место в кадре узнаётся по исходному снимку.</p>
+</section>
+
+<section class="step" id="step-7"><div class="head"><div class="num">7<small>Seedance</small></div><div class="txt"><h2>Карточки и сюжет в одну <span class="s">генерацию</span></h2><p>Карточки героев и локаций служат основой для Seedance: он не придумывает людей и места, а берёт их с карточек. Дальше нужен промпт. Его пишет отдельный агент для Seedance: ему даёшь сцену из сценария и список приложенных карточек, он возвращает готовый промпт.</p><p>Из одной сцены получается несколько вариаций с разными кадрами. Ниже одна и та же сцена в двух вариантах.</p><ul><li>Каждому референсу своя роль: герой, место, предметы.</li><li>В промпте только действие и камера, внешность уже в карточках.</li><li>На сцену делай 2–3 генерации: результат каждый раз немного разный.</li></ul></div></div>
+<div class="flow"><p class="sub micro"><b>Референсы</b>Карточки сцены по порядку</p><div class="inp c3"><figure><img src="a/14.webp" alt="@image1" style="--ar:16/9" loading="lazy"><figcaption><span>@image1</span><span>Люди без фото</span></figcaption></figure><figure><img src="a/11.webp" alt="@image2" style="--ar:16/9" loading="lazy"><figcaption><span>@image2</span><span>Героиня</span></figcaption></figure><figure><img src="a/20.webp" alt="@image3" style="--ar:16/9" loading="lazy"><figcaption><span>@image3</span><span>Домик снаружи</span></figcaption></figure><figure><img src="a/25.webp" alt="@image4" style="--ar:16/9" loading="lazy"><figcaption><span>@image4</span><span>Интерьер</span></figcaption></figure><figure><img src="a/28.webp" alt="@image5" style="--ar:16/9" loading="lazy"><figcaption><span>@image5</span><span>Предметы</span></figcaption></figure><figure><img src="a/22.webp" alt="@image6" style="--ar:16/9" loading="lazy"><figcaption><span>@image6</span><span>Схема на стене</span></figcaption></figure></div><p class="sub micro"><b>Промпт</b>Пишет агент по сценарию</p><div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-vid">Скопировать</button></div><pre id="t-vid" tabindex="0">References:
+@image1 — the group of people: keep faces, hair and clothing.
+@image2 — the heroine: keep face, hairstyle and costume.
+@image3 — the cabin exterior, @image4 — the interior, @image5 — props and details, @image6 — the wall map: keep layout, materials and light.
+
+Visual style: [реалистичное кино, плёночное зерно, мягкий естественный свет].
+Location and atmosphere: [где и когда идёт сцена, погода, время суток].
+Sound design: [шаги, ветер, голоса, тишина].
+
+Scene, 15 seconds:
+0-4 s — [общий план: что видно в кадре].
+4-9 s — [средний план: главное действие].
+9-15 s — [крупный план: деталь или реакция].
+
+Camera: [план и движение камеры по шотам].
+Rules: no new characters, no text overlays, stable faces, no morphing, keep the space consistent with the cards.</pre></div><p class="sub micro"><b>Результат</b>Две вариации одной сцены</p><div class="out c2"><figure><video autoplay src="a/29.mp4" poster="a/30.webp" muted loop playsinline preload="auto"></video><figcaption><span>Вариант 1</span><span>15 секунд, свои шоты</span></figcaption></figure><figure><video autoplay src="a/31.mp4" poster="a/32.webp" muted loop playsinline preload="auto"></video><figcaption><span>Вариант 2</span><span>15 секунд, другие шоты</span></figcaption></figure></div></div>
+<p class="tip"><b>Проверка шага.</b> Лица, одежда и место в клипе совпадают с карточками. Если плывёт, сначала правь карточку, потом промпт.</p>
+</section>
+
+<section class="step" id="step-8"><div class="head"><div class="num">8<small>Монтаж</small></div><div class="txt"><h2>Лучшее из <span class="s">попыток</span></h2><p>Из вариантов каждой сцены выбери удачные шоты, вырежи их и собери в один ролик. Один клип редко получается идеальным целиком, зато среди нескольких вариаций почти всегда находится нужный кусок.</p></div></div>
+<div class="flow"><p class="sub micro"><b>Результат</b>Отобранные шоты в одном ролике</p><div class="out c1"><figure><video autoplay src="a/33.mp4" poster="a/34.webp" muted loop playsinline preload="auto"></video><figcaption><span>Монтаж</span><span>Удачные шоты, неудачные вырезаны</span></figcaption></figure></div></div>
+<p class="tip"><b>Проверка шага.</b> Герои выглядят одинаково на стыках сцен, а переходы между клипами не заметны.</p>
+</section>
+
+<div class="end"><p class="micro" style="margin:0">Рекап</p><ol class="recap">
+<li><b>Источники</b><span>Напиши сценарий и собери реальные снимки людей и мест: фото лиц и одежды, архив, панорамы.</span></li>
+<li><b>Сценарий</b><span>Напиши сцены: место, герои, одно действие, нужные шоты.</span></li>
+<li><b>Карточка героя</b><span>Реальные фото плюс промпт дают карточку с несколькими видами человека.</span></li>
+<li><b>Образы</b><span>Для другой одежды и времени делай отдельные карточки того же человека.</span></li>
+<li><b>Без фото</b><span>Незнакомых людей генерируй по готовой карточке как образцу стиля.</span></li>
+<li><b>Локации</b><span>Из снимков и панорам или из подробного описания с референсами получаются карточки мест.</span></li>
+<li><b>Seedance</b><span>Агент пишет промпт по сценарию, ты прикладываешь карточки и получаешь несколько вариаций сцены.</span></li>
+<li><b>Монтаж</b><span>Выбери удачные шоты из вариаций и собери в один ролик.</span></li>
+</ol></div>
+<footer class="ft">
+ <div class="ft-intro">
+  <p class="micro">Спасибо, что посмотрели наш гайд</p>
+  <h2>Давайте <span class="s">знакомиться</span></h2>
+  <p>Мы — студия дизайна Perasperadastra. Сотрудничали с Яндексом, ТБанком, Альфой, Сбером, «Победой», Музеем космонавтики, 2ГИС и другими. Делаем UX/UI-дизайн, моушн и работаем с нейросетями.</p>
+  <p>Ещё у нас есть образовательное направление: мы учим тому, что умеем сами.</p>
+  <a class="btn" href="https://t.me/perasperagram" target="_blank" rel="noopener noreferrer">Наш Telegram-канал</a>
+ </div>
+ <div class="ft-photos">
+  <figure class="ph ph-hero"><img src="a/35.webp" width="1600" height="662" alt="Команда и ученики студии Perasperadastra на Dprofile Awards 2025" loading="lazy"><figcaption><span>Dprofile Awards 2025</span><span>Команда и ученики</span></figcaption></figure>
+  <div class="ph2">
+   <figure class="ph ph-s"><img src="a/36.webp" width="900" height="675" alt="Офлайн-встреча со студентами на фоне зелёной стены" loading="lazy"><figcaption><span>Офлайн-встреча</span><span>Ученики</span></figcaption></figure>
+   <figure class="ph ph-s"><img src="a/37.webp" width="900" height="675" alt="Групповое фото после дизайн-лектория" loading="lazy"><figcaption><span>Дизайн-лекторий</span><span>18 апреля</span></figcaption></figure>
+  </div>
+ </div>
+ <div class="partners">
+  <span class="tag">С кем мы сотрудничали</span>
+  <div class="mq"><div class="mq-track"><div class="mq-set"><div class="lgo"><i><img src="a/38.png" width="360" height="104" alt="Яндекс"></i><span>Яндекс</span></div><div class="lgo"><i><img src="a/39.png" width="360" height="97" alt="Сбер"></i><span>Сбер</span></div><div class="lgo"><i><img src="a/40.png" width="360" height="124" alt="2ГИС"></i><span>2ГИС</span></div><div class="lgo"><i><img src="a/41.png" width="360" height="128" alt="ВТБ"></i><span>ВТБ</span></div><div class="lgo"><i><img src="a/42.png" width="338" height="66" alt="Билайн"></i><span>Билайн</span></div><div class="lgo"><i><img src="a/43.png" width="188" height="130" alt="Нацпроекты"></i><span>Нацпроекты</span></div></div><div class="mq-set" aria-hidden="true"><div class="lgo"><i><img src="a/38.png" width="360" height="104" alt=""></i><span>Яндекс</span></div><div class="lgo"><i><img src="a/39.png" width="360" height="97" alt=""></i><span>Сбер</span></div><div class="lgo"><i><img src="a/40.png" width="360" height="124" alt=""></i><span>2ГИС</span></div><div class="lgo"><i><img src="a/41.png" width="360" height="128" alt=""></i><span>ВТБ</span></div><div class="lgo"><i><img src="a/42.png" width="338" height="66" alt=""></i><span>Билайн</span></div><div class="lgo"><i><img src="a/43.png" width="188" height="130" alt=""></i><span>Нацпроекты</span></div></div></div></div>
+ </div>
+ <div class="mta">
+  <div class="mta-t">
+   <p class="micro">А если хотите прокачаться в нейросетях</p>
+   <h2>Mission to AI</h2>
+   <p>Программа, где учим генерировать графику и видео. Много обратной связи от наших кураторов.</p>
+   <a class="btn" href="https://perasperadastra.ru/mission-to-ai" target="_blank" rel="noopener noreferrer">Подробнее о программе</a>
+  </div>
+  <a class="mta-img" href="https://perasperadastra.ru/mission-to-ai" target="_blank" rel="noopener noreferrer" aria-label="Mission to AI — подробнее о программе">Mission to AI</a>
+ </div>
+</footer>
+</div>
+
+<script>(function(){var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var bd=document.querySelector('.board .bd'),zs=[].slice.call(document.querySelectorAll('.board .z')),ls=[].slice.call(document.querySelectorAll('.board li')),cur=-2;
+function board(){var r=bd.getBoundingClientRect(),vh=window.innerHeight||1;if(r.bottom<-200||r.top>vh+200)return;var p=1-(r.top+r.height/2)/vh;p=(p-.22)/.5;var i=p<0?-1:Math.min(3,Math.floor(p*4));if(still)i=-1;if(i===cur)return;cur=i;
+  zs.forEach(function(z,k){z.classList.toggle('on',k===i);});ls.forEach(function(l,k){l.classList.toggle('on',k===i||i<0);});
+  if(i>=0&&bd.scrollWidth>bd.clientWidth+4){var z=zs[i],x=z.offsetLeft+z.offsetWidth/2-bd.clientWidth/2;bd.scrollTo({left:Math.max(0,x),behavior:'smooth'});}}
+var tk=false;function on(){if(tk)return;tk=true;requestAnimationFrame(function(){tk=false;board();});}
+window.addEventListener('scroll',on,{passive:true});window.addEventListener('resize',on);on();})();
+try{var vs=[].slice.call(document.querySelectorAll('.flow video'));if('IntersectionObserver' in window&&!still){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var p=e.target.play();if(p&&p.catch)p.catch(function(){});}else e.target.pause();});},{threshold:.5});vs.forEach(function(v){io.observe(v);});}}catch(e){}
+document.querySelectorAll('button.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy), t=el.textContent;
+    var done=function(){b.textContent='Скопировано'; setTimeout(function(){b.textContent='Скопировать';},1600);};
+    var fallback=function(){var r=document.createRange(); r.selectNodeContents(el); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent='Выделено — скопируй';};
+    try{navigator.clipboard.writeText(t).then(done,fallback);}catch(e){fallback();}
+  });
+});
+</script>
+<script>(function(){if(window.parent===window)return;function s(){parent.postMessage({type:'pad-height',h:document.documentElement.scrollHeight},'*')}
+addEventListener('load',s);addEventListener('resize',s);if(window.ResizeObserver)new ResizeObserver(s).observe(document.body);setInterval(s,1500)})();</script>
+
+</html>
