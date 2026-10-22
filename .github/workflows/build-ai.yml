@@ -1,0 +1,34 @@
+name: Сборка методичек Mission to AI
+
+on:
+  push:
+    branches: [main]
+    paths: ['ai-metodichki/src/**', 'ai-metodichki/img/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-ai
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Проверка и сборка
+        run: python3 ai-metodichki/src/build.py
+      - name: Публикация index.html
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add ai-metodichki/index.html
+          if git diff --cached --quiet; then echo "index.html не изменился"; exit 0; fi
+          git commit -m "Сборка методичек Mission to AI"
+          git pull --rebase
+          git push
