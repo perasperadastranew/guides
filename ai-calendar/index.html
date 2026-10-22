@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<script>if(window.parent!==window)document.documentElement.classList.add("embed")</script><style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Календарь Mission to AI</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-слайды на чуть более светлом поле, как в методичках. Диаграмма: под каждым модулем своя строка ДЗ; слева названия, справа дорожка на 20 недель; на телефоне название стоит над своей полосой. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010; --accent-soft:#5a2d18; --accent-wash:rgba(235,117,64,.14);
+  --good:#34c759; --done:#333332;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+  --label:300px; --weeks:20;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:16px;line-height:1.45;padding-inline:16px;padding-block:16px 64px}
+.wrap{max-width:2200px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em;font-size:clamp(38px,6.4vw,76px);line-height:.95}
+h1 em{font-style:normal;color:var(--dim)}
+p{margin:0}
+.mono,.corner,.fact i,.wk,.num,.tag,.meta time,.legend,.today i,.tip .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 30px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:26px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:36ch;letter-spacing:-.01em}
+
+.now{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-top:6px}
+.fact{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:22px;justify-content:space-between;min-width:0;min-height:112px}
+.fact i{font-style:normal}
+.fact span{color:var(--ink);font-family:var(--display);font-size:20px;line-height:1.15;letter-spacing:-.01em}
+.fact small{display:block;color:var(--dim);font-size:14px;margin-top:4px;font-family:var(--body);letter-spacing:0}
+.fact.on{background:var(--accent);border-color:var(--accent)}
+.fact.on i,.fact.on span,.fact.on small{color:var(--accent-ink)}
+
+.ctrl{flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px 14px;padding-block:18px}
+.ctrl button{font:500 15px var(--body);border-radius:10px;padding:10px 14px;cursor:pointer;background:var(--ink);color:var(--panel);border:1px solid var(--ink)}
+.ctrl button.ghost{background:transparent;color:var(--ink);border-color:var(--stroke)}
+.ctrl button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctrl p{flex:1 1 260px;min-width:0;font-size:15px}
+
+.scroll{overflow-x:auto;padding-bottom:6px}
+.chart{position:relative;min-width:calc(var(--label) + var(--weeks) * 60px);padding-bottom:36px}
+.overlay{position:absolute;left:var(--label);right:0;top:0;bottom:0;pointer-events:none;
+  background:repeating-linear-gradient(to right,var(--stroke) 0 1px,transparent 1px calc(100% / var(--weeks)))}
+.today{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--accent);z-index:3}
+.today i{position:absolute;bottom:0;left:50%;transform:translateX(-50%);white-space:nowrap;font-style:normal;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:5px 8px}
+.today.r i{left:auto;right:0;transform:none}
+.today.l i{left:0;transform:none}
+
+.axis,.row{display:grid;grid-template-columns:var(--label) minmax(0,1fr);position:relative}
+.axis{margin-bottom:6px}
+.months{display:flex;height:30px}
+.months div{font-family:var(--display);font-size:17px;letter-spacing:-.01em;color:var(--ink);padding:3px 6px;overflow:hidden;white-space:nowrap;min-width:0}
+.wk{display:grid;grid-template-columns:repeat(var(--weeks),minmax(0,1fr));font-variant-numeric:tabular-nums}
+.wk span{padding:6px 0 6px 6px}
+
+.row{align-items:center}
+.row.first{border-top:1px solid var(--stroke)}
+.lab{display:grid;grid-template-columns:30px minmax(0,1fr);gap:3px 8px;padding:10px 14px 4px 0;z-index:2;min-width:0}
+.hw .lab{padding:2px 14px 10px 0}
+.num{color:var(--dim);padding-top:4px;font-variant-numeric:tabular-nums}
+.name{color:var(--ink);font-size:17px;line-height:1.2;display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.hw .name{font-size:15px}
+.tag{border:1px solid var(--faint);color:var(--dim);border-radius:6px;padding:2px 6px;font-size:10px}
+.tag.hwt{border-color:var(--accent);color:var(--accent)}
+.meta{grid-column:2;font-size:14px;line-height:1.3;display:flex;flex-wrap:wrap;gap:0 10px;align-items:baseline}
+.meta time{white-space:nowrap}
+.meta b{font-weight:500;color:var(--ink)}
+.lvm{display:inline-flex;align-items:center;gap:6px;color:var(--accent)}
+.lvm::before{content:"";width:17px;height:12px;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2017%22%3E%3Crect%20width%3D%2224%22%20height%3D%2217%22%20rx%3D%225%22%20fill%3D%22%23eb7540%22/%3E%3Cpath%20d%3D%22M9.6%205.1v6.8c0%20.6.6.9%201.1.6l5.3-3.4c.4-.3.4-.9%200-1.2l-5.3-3.4c-.5-.3-1.1%200-1.1.6z%22%20fill%3D%22%23101010%22/%3E%3C/svg%3E") center/100% 100% no-repeat;flex:none}
+.track{position:relative;height:52px}
+.hw .track{height:40px}
+
+.bar{position:absolute;top:13px;height:28px;border-radius:8px;background:var(--card);border:1px solid var(--faint);z-index:1;overflow:hidden;cursor:pointer;
+  font-family:var(--mono);font-size:11px;color:var(--ink);display:flex;align-items:center;padding-left:9px;white-space:nowrap;--hatch:rgba(255,255,255,.09)}
+.bar:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bar:hover{border-color:var(--ink)}
+a.bar{text-decoration:none}
+.bar .bk{position:absolute;right:7px;top:50%;transform:translateY(-50%);font-family:var(--body);font-size:13px;color:inherit;opacity:.75}
+.mod a.bar:hover{border-color:var(--accent)}
+.hl{margin-left:auto;align-self:flex-start;padding-top:3px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-decoration:none;white-space:nowrap}
+.hl:hover,.hl:focus-visible{color:var(--accent);border-color:var(--accent);outline:none}
+.hw .bar{top:8px;height:22px;background:transparent;border-style:dashed;color:var(--dim)}
+.project .bar::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 6px,var(--hatch) 6px 8px);pointer-events:none}
+.done .bar{background:var(--done);border-color:var(--done);border-style:solid;color:var(--dim);--hatch:rgba(0,0,0,.3)}
+.done .name{color:var(--dim)}
+.mod.current .bar{border-color:var(--accent);color:var(--accent-ink);--hatch:rgba(16,16,16,.22)}
+.hw.current .bar{border:1px solid var(--accent);color:var(--accent);--hatch:rgba(235,117,64,.18)}
+.dl{position:absolute;top:13px;width:10px;height:10px;margin-left:-5px;background:var(--panel);border:2px solid var(--ink);transform:rotate(45deg);z-index:2;pointer-events:none}
+.done .dl{border-color:var(--faint)}
+.live{position:absolute;top:39px;width:22px;height:16px;margin-left:-11px;border-radius:6px;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2017%22%3E%3Crect%20width%3D%2224%22%20height%3D%2217%22%20rx%3D%225%22%20fill%3D%22%23eb7540%22/%3E%3Cpath%20d%3D%22M9.6%205.1v6.8c0%20.6.6.9%201.1.6l5.3-3.4c.4-.3.4-.9%200-1.2l-5.3-3.4c-.5-.3-1.1%200-1.1.6z%22%20fill%3D%22%23101010%22/%3E%3C/svg%3E") center/100% 100% no-repeat;z-index:3;cursor:pointer;transition:transform .12s}
+.live:hover,.live:focus-visible{transform:scale(1.15);outline:none;filter:drop-shadow(0 0 6px rgba(235,117,64,.55))}
+.mod .live{top:49px}
+.haslive .track{height:72px}
+.hw.haslive .track{height:64px}
+.live.past{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2017%22%3E%3Crect%20width%3D%2224%22%20height%3D%2217%22%20rx%3D%225%22%20fill%3D%22%235a5a58%22/%3E%3Cpath%20d%3D%22M9.6%205.1v6.8c0%20.6.6.9%201.1.6l5.3-3.4c.4-.3.4-.9%200-1.2l-5.3-3.4c-.5-.3-1.1%200-1.1.6z%22%20fill%3D%22%23101010%22/%3E%3C/svg%3E")}
+.current .dl{border-color:var(--accent);background:var(--accent)}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;flex-basis:100%;padding-top:14px;border-top:1px solid var(--stroke)}
+html.embed{color-scheme:normal;background:transparent}html.embed body{background:transparent;padding:0}html.embed .scroll{scrollbar-color:#3a3a3a transparent}html.embed .wrap{max-width:none}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.sw{width:22px;height:12px;border-radius:3px;display:inline-block;background:var(--card);border:1px solid var(--faint)}
+.sw.d{background:var(--done);border-color:var(--done)}
+.sw.c{border-color:var(--accent);background:linear-gradient(to right,var(--accent) 55%,var(--accent-soft) 55%)}
+.sw.h{background:transparent;border-style:dashed}
+.sw.p{background:var(--card) repeating-linear-gradient(135deg,transparent 0 4px,rgba(255,255,255,.22) 4px 6px)}
+.sw.lv{width:22px;height:16px;border:0;border-radius:5px;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2017%22%3E%3Crect%20width%3D%2224%22%20height%3D%2217%22%20rx%3D%225%22%20fill%3D%22%23eb7540%22/%3E%3Cpath%20d%3D%22M9.6%205.1v6.8c0%20.6.6.9%201.1.6l5.3-3.4c.4-.3.4-.9%200-1.2l-5.3-3.4c-.5-.3-1.1%200-1.1.6z%22%20fill%3D%22%23101010%22/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.sw.k{width:9px;height:9px;border-radius:0;background:var(--panel);border:2px solid var(--ink);transform:rotate(45deg);margin-inline:3px}
+
+.tip{position:fixed;z-index:20;width:min(360px,calc(100vw - 32px));background:var(--card);border:1px solid var(--faint);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 12px 32px rgba(0,0,0,.5);pointer-events:none}
+.tip b{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.15;color:var(--ink);letter-spacing:-.01em}
+.tip dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;font-size:14px;line-height:1.3}
+.tip dt{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding-top:2px}
+.tip dd{margin:0;color:var(--ink);white-space:pre-line}
+.tip dd.hot{color:var(--accent)}
+.tip.pin{pointer-events:auto}
+.tip .files{display:grid;gap:8px;grid-template-columns:minmax(0,1fr)}
+.tip .files.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.tip .files a{display:flex;flex-direction:column;gap:6px;text-decoration:none;min-width:0}
+.tip .shot{display:block;border-radius:8px;overflow:hidden;border:1px solid var(--stroke);background:var(--panel);aspect-ratio:16/10}
+.tip .shot img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.tip .files a:hover .shot,.tip .files a:focus-visible .shot{border-color:var(--accent)}
+.tip .files a:focus-visible{outline:none}
+.tip .fl{font-size:13px;line-height:1.2;color:var(--ink)}
+.tip .files.c1 .fl{display:inline-block;align-self:flex-start;background:var(--ink);color:var(--panel);border-radius:8px;padding:7px 12px;font-weight:500}
+.tip .hint{font-size:12px;color:var(--faint)}
+.parts{grid-column:2;display:flex;flex-wrap:wrap;gap:4px 6px}
+.tip .parts{grid-column:auto}
+.parts span{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--stroke);border-radius:6px;padding:2px 8px 2px 4px}
+.parts i{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--accent-wash);border-radius:4px;padding:1px 5px}
+.done .parts span{color:var(--dim)}
+
+@media (max-width:540px){
+  :root{--label:0px}
+  header,section{padding:18px 16px 24px}
+  .chart{min-width:calc(var(--weeks) * 52px)}
+  .live{width:19px;height:14px;margin-left:-9.5px}
+  .axis,.row{grid-template-columns:minmax(0,1fr)}
+  .axis>div:first-child{display:none}
+  .row.first{padding-top:10px}
+  .lab,.hw .lab{position:sticky;left:0;justify-self:start;width:min(100%,calc(100vw - 64px));padding:0 8px 0 0;background:var(--panel);z-index:4}
+  .hw .lab{padding-top:4px}
+  .track{height:44px}.mod .bar{top:8px}.mod .live{top:42px}.hw .live{top:36px}.haslive .track,.hw.haslive .track{height:68px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="corner"><span>Perasperadastra
+Mission to AI</span><span><b id="weeks" style="font-weight:inherit">7 недель</b>
+<span id="flowname">поток</span></span></div>
+    <h1>Календарь обучения <em>Mission to AI</em></h1>
+    <p class="lead">Модули, воркшопы, проекты в портфолио и сроки сдачи на одной шкале. Первые недели — картинки: Midjourney, Nano Banana, предметка, модель и key visual. Дальше — видео и упаковка кейсов.</p>
+    <div class="now" id="now" aria-live="polite"></div>
+  </header>
+
+  <section class="ctrl">
+    <span class="mono">Поток</span>
+    <span id="cohorts"></span>
+    <p>Наведите или нажмите на полосу, чтобы увидеть подробности. Полоса модуля или проекта открывает методичку.</p>
+    <div class="legend">
+      <span><i class="sw"></i>уроки модуля</span>
+      <span><i class="sw h"></i>домашнее задание</span>
+      <span><i class="sw p"></i>проект</span>
+      <span><i class="sw c"></i>идёт сейчас</span>
+      <span><i class="sw d"></i>пройдено</span>
+      <span><i class="sw k"></i>срок сдачи: загрузить до 23:59 накануне</span>
+      <span><i class="sw lv"></i>воркшоп</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="scroll" role="group" aria-label="Диаграмма Ганта по курсу Mission to AI">
+      <div class="chart" id="chart"></div>
+    </div>
+  </section>
+
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script src="data.js"></script>
+<script>
+var LT=(window.parent!==window)?"_top":"_self";
+(function(){
+  // Смещения в днях от понедельника старта; e — последний день (воскресенье), сдача до следующего понедельника.
+  // s/e — расписание сентябрьского потока Mission to Motion, старт в понедельник.
+  // hs/he — когда делается ДЗ, если не совпадает с модулем.
+  var CAL=window.AI_CAL;
+  // Названия методичек для подсказок (собраны из ai-metodichki).
+  var TITLES={"l4_1": "4.1. Концепт-продукт и карточка продукта: фиксируем форму", "l0_4": "0.4. Текстовые нейросети в генерации: агенты пайплайна и бортовой компьютер", "l5_1": "5.1. AI-модель и консистентность лица", "l1_1": "1.1. Иерархия и контраст: куда смотрит зритель", "l9_1": "9.1. Seedance: структура промпта и простая сцена", "l7_1": "7.1. Идея: тема, конфликт, ход", "l11_1": "11.1. Оформление кейса", "l6_5": "6.5. Мокапы, упаковка и мерч", "pr_illu": "П3. Проект «Иллюстрации»", "pr_motion": "П4. Проект «Моушн-дизайн»", "l2_2": "2.2. Промпты: формула кадра и правило одной ручки", "l9_3": "9.3. Higgsfield и агрегаторы: где генерировать и как редактировать видео", "l1_3": "1.3. Ракурсы и планы", "l3_4": "3.4. Лайв: генерация и правки в Nano Banana со всеми советами", "l5_2": "5.2. Реализм: почему кадр выглядит «нейронкой» и как это лечить", "pay_video": "С3. Видео и звук: Kling, Seedance, Suno, CapCut", "pr_product": "П2. Проект «AI-продукт»", "l0_3": "0.3. Дизайн-процесс с AI: задача → платформа бренда → концепция → сюжеты → генерация → финализация", "l2_4": "2.4. Edit и референсы: дорисовка, замена, свои картинки", "l2_1": "2.1. Интерфейс, тарифы и версии Midjourney", "pr_photo": "П1. Проект «Фотостиль»", "l6_2": "6.2. 2D key visual: иллюстрация для бренда", "l2_5": "2.5. Лайв: от идеи до финального кадра в Midjourney", "pr_video": "П5. Проект «AI-видео»", "l9_2": "9.2. Kling: физика, первый и последний кадр", "l3_2": "3.2. Точечные правки: что меняем → что сохраняем", "l11_3": "11.3. Клиенты, цены и права", "pay_mj": "С1. Midjourney: тарифы и оплата", "l8_1": "8.1. Персонаж: карточка, маркеры внешности, анти-дрейф", "l1_5": "1.5. Сюжет кадра: как придумать, что генерировать", "l6_3": "6.3. 3D key visual", "pay_text": "С4. Claude, ChatGPT и Gemini", "l4_4": "4.4. Реальное фото + AI: телефонный снимок → студийный кадр", "l0_1": "0.1. Профессия AI-креатора: что заказывают, сколько стоит, где работать", "l2_3": "2.3. Мудборды, sref и персонализация", "l3_1": "3.1. Nano Banana: интерфейс и сценарии использования", "l3_5": "3.5. Финализация: артефакты, апскейл, цвет, права", "l8_2": "8.2. Локация и ассеты", "l7_2": "7.2. Сценарий и хук: кривые, текст, из текста в кадры", "l5_4": "5.4. Модель + продукт и этика", "l10_2": "10.2. Монтаж и титры в CapCut: Кулешов, склейки, буфер кадра", "l1_4": "1.4. Свет и цвет", "l5_3": "5.3. Fashion и лукбук: одежда, позы, смена образа", "l1_2": "1.2. Баланс, ритм и композиционные приёмы", "l9_4": "9.4. Рекламный ролик с продуктом", "l4_2": "4.2. Hero-кадры: свет, материал, фактура, макро", "l8_3": "8.3. Раскадровка: из сценария в кадры", "l3_3": "3.3. Сборка из референсов и консистентность серии", "l7_3": "7.3. Стиль видео: три оси и нейрослоп", "l6_4": "6.4. Адаптации, текст и типографика", "l10_1": "10.1. Звук: музыка в Suno, голос, шумы", "l11_2": "11.2. Продвижение: виральные форматы и выход на артистов и бренды", "pay_budget": "С5. Бюджет на курс", "l6_1": "6.1. Key visual: тема, бриф и классификация графики", "l4_3": "4.3. Lifestyle и сет-дизайн: продукт в контексте, сезоны без пересъёмки", "l0_2": "0.2. Карта нейросетей и стек", "pay_agg": "С2. Higgsfield и Syntx: агрегаторы"};
+  var G="../ai-metodichki/#/";
+  function ho(ids){return ids&&ids.length?{url:G+ids[0],list:ids.map(function(i){return TITLES[i]||i})}:null}
+  var BLOCKS=CAL.blocks.map(function(b){var o={};for(var k in b)o[k]=b[k];o.ho=ho(b.lessons);if(b.live)o.modLive={name:b.liveName||"Воркшопы"};delete o.live;return o});
+  var FLOWS={},LABELS={};for(var fk in CAL.flows){FLOWS[fk]=CAL.flows[fk].start;LABELS[fk]=CAL.flows[fk].label}
+  var cur=CAL.current;
+  var TOTAL=84, WEEKS=12, DAY=864e5;
+  var MS=["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];
+  var MF=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+  var $=function(id){return document.getElementById(id)};
+  function parse(s){var p=s.split("-");return Date.UTC(+p[0],p[1]-1,+p[2])}
+  function fmt(t){var d=new Date(t);return d.getUTCDate()+" "+MS[d.getUTCMonth()]}
+  function plural(n,a,b,c){var m=n%100,k=n%10;return (m>10&&m<20)?c:k===1?a:(k>1&&k<5)?b:c}
+  function days(n){return n+" "+plural(n,"день","дня","дней")}
+  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+  function todayUTC(){var d=new Date();return Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())}
+
+  // Плоский список строк: модуль, под ним его ДЗ; проекты без модуля идут одной строкой.
+  var ROWS=[];
+  function build(k){
+    ROWS=[]; TOTAL=0;
+    BLOCKS.forEach(function(b){
+      var o=(k==="aug"&&b.aug)||b, s=o.s, e=o.e, hs=o.hs!=null?o.hs:s, he=o.he!=null?o.he:e;
+      TOTAL=Math.max(TOTAL,e+1);
+      if(b.projectOnly){ROWS.push({kind:"hw",first:true,project:true,b:b,title:b.name,type:"Проект",ho:b.ho,files:b.files,s:s,e:e});return}
+      ROWS.push({kind:"mod",first:true,b:b,title:b.name,ho:b.ho,live:mkLive(b.modLive,s,e),liveName:b.modLive&&b.modLive.name,liveSpec:b.modLive,s:s,e:e});
+      if(b.hw)ROWS.push({kind:"hw",b:b,title:b.hw,type:b.hwProject?"Проект":"ДЗ",project:!!b.hwProject,parts:b.parts,files:b.files,live:mkLive(b.live,hs,he),liveName:b.live&&b.live.name,liveSpec:b.live,s:hs,e:he});
+    });
+    WEEKS=TOTAL/7;
+    document.documentElement.style.setProperty("--weeks",WEEKS);
+    $("weeks").textContent=WEEKS+" "+plural(WEEKS,"неделя","недели","недель");
+  }
+
+  // Воркшопы: в дни недели из data.js (liveDays), пока идёт модуль.
+  function lives(s,e){var a=[],st=parse(FLOWS[cur]);for(var d=s;d<=e;d++)if(CAL.liveDays.indexOf(new Date(st+d*DAY).getUTCDay())>-1)a.push(d);return a}
+  function mkLive(sp,s,e){if(!sp)return null;return sp.rel?sp.rel.map(function(x){return s+x}):lives(s,e)}
+  function liveWhen(r){return r.liveSpec.rule?r.liveSpec.rule:r.live.map(liveDay).join(", ")}
+  var WD=["вс","пн","вт","ср","чт","пт","сб"];
+  function liveDay(d){var t=t0+d*DAY;return WD[new Date(t).getUTCDay()]+", "+fmt(t)}
+
+  // Неразрывные пробелы после коротких слов, чтобы предлоги не висели в конце строки.
+  function typo(root){
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n;
+    while(n=w.nextNode()){var t=n.nodeValue,u=t.replace(/(^|[\s(«])([А-Яа-яЁёA-Za-z]{1,2}|\d+)\s(?=\S)/g,"$1$2 ");
+      if(u!==t)n.nodeValue=u;}
+  }
+
+  var t0=0, off=0;
+  function state(r){return off>r.e?"done":off>=r.s?"current":"next"}
+  var WG=["воскресенья","понедельника","вторника","среды","четверга","пятницы","субботы"];
+  function wd(d){return new Date(t0+d*DAY).getUTCDay()}
+  function due(r){return fmt(t0+(r.e+1)*DAY)}
+  function dueText(r){return "до "+WG[wd(r.e+1)]+", "+due(r)}
+  function lastText(r){return "загрузить до 23:59 "+WG[wd(r.e)]+", "+fmt(t0+r.e*DAY)}
+  function sunday(r){return fmt(t0+r.e*DAY)}
+
+  function render(start){
+    t0=start; off=Math.round((todayUTC()-t0)/DAY);
+    var h="", months="", i=0;
+    while(i<TOTAL){var m=new Date(t0+i*DAY).getUTCMonth(),j=i;
+      while(j<TOTAL&&new Date(t0+j*DAY).getUTCMonth()===m)j++;
+      months+='<div style="flex:'+(j-i)+' 1 0">'+((j-i)>=5?MF[m]:'')+'</div>';i=j}
+    var wk="";for(i=0;i<WEEKS;i++)wk+="<span>"+new Date(t0+i*7*DAY).getUTCDate()+"</span>";
+    h+='<div class="axis"><div></div><div><div class="months">'+months+'</div><div class="wk">'+wk+'</div></div></div>';
+
+    ROWS.forEach(function(r,idx){
+      var st=state(r), len=r.e-r.s+1, w=len/7, style="", inner="", p;
+      if(r.kind==="mod"){
+        if(st==="current"){p=Math.round((off-r.s+1)/len*100);style="background:linear-gradient(to right,var(--accent) "+p+"%,var(--accent-soft) "+p+"%);"}
+        inner=w>=2?w+" нед":"";
+      }else{
+        if(st==="current"){p=Math.round((off-r.s+1)/len*100);style="background:linear-gradient(to right,var(--accent-wash) "+p+"%,transparent "+p+"%);"}
+        inner=(w>=2&&!r.live)?"до "+due(r):"";
+      }
+      var lab;
+      if(r.kind==="mod"){
+        lab='<span class="num">'+r.b.n+'</span><div class="name">'+esc(r.title)+(r.ho?'<a class="hl" href="'+esc(r.ho.url)+'" target="'+LT+'" title="'+esc(r.ho.list.length>1?r.ho.list.length+' методичек модуля':'Методичка модуля')+'">'+(r.ho.list.length>1?'методички':'методичка')+' ↗</a>':'')+'</div>'+
+            '<div class="meta"><time>Уроки · '+fmt(t0+r.s*DAY)+' – '+sunday(r)+'</time>'+(r.live?'<span class="lvm">'+esc(r.liveName)+': '+liveWhen(r)+'</span>':'')+'</div>';
+      }else{
+        lab='<span class="num">'+(r.first?r.b.n:'')+'</span><div class="name"><span class="tag hwt">'+r.type+'</span>'+esc(r.title)+'</div>'+
+            (r.parts?'<div class="parts">'+r.parts.map(function(p,k){return '<span><i>'+(k+1)+'</i>'+esc(p)+'</span>'}).join("")+'</div>':'')+
+            '<div class="meta"><span>Сдать до '+WG[wd(r.e+1)]+', <b>'+due(r)+'</b></span>'+(r.live?'<span class="lvm">'+esc(r.liveName)+': '+liveWhen(r)+'</span>':'')+'</div>';
+      }
+      h+='<div class="row '+r.kind+' '+st+(r.first?' first':'')+(r.project?' project':'')+(r.live?' haslive':'')+'">'+
+         '<div class="lab">'+lab+'</div>'+
+         '<div class="track">'+(r.ho?'<a class="bar link" href="'+esc(r.ho.url)+'" target="'+LT+'" data-i="'+idx+'" aria-label="'+esc(r.title)+': открыть методичку" style="'+style+'left:'+(r.s/TOTAL*100)+'%;width:'+(len/TOTAL*100)+'%">'+inner+'<span class="bk">↗</span></a>':
+         '<div class="bar" tabindex="0" role="button" data-i="'+idx+'" aria-label="'+esc(r.title)+', подробности" style="'+style+'left:'+(r.s/TOTAL*100)+'%;width:'+(len/TOTAL*100)+'%">'+inner+'</div>')+
+         (r.kind==="hw"?'<i class="dl" style="left:'+((r.e+1)/TOTAL*100)+'%"></i>':'')+
+         (r.live?r.live.map(function(d){return '<i class="live'+(d<off?' past':'')+'" tabindex="0" role="button" aria-label="'+esc(r.liveName+', '+liveDay(d))+'" data-i="'+idx+'" data-d="'+d+'" style="left:max(14px,'+((d+.5)/TOTAL*100)+'%)"></i>'}).join(""):'')+'</div></div>';
+    });
+
+    var today="";
+    if(off>=0&&off<TOTAL){var x=(off+.5)/TOTAL*100;today='<div class="today'+(x>88?" r":x<12?" l":"")+'" style="left:'+x+'%"><i>сегодня, '+fmt(todayUTC())+'</i></div>'}
+    h+='<div class="overlay">'+today+'</div>';
+    $("chart").innerHTML=h;
+    var ax=$("chart").querySelector(".axis"), ov=$("chart").querySelector(".overlay");
+    ov.style.top=(ax.offsetTop+ax.offsetHeight)+"px";
+    var sc=$("chart").parentNode, tl=sc.querySelector(".today");
+    sc.scrollLeft=(tl&&sc.scrollWidth>sc.clientWidth)?Math.max(0,tl.offsetLeft+tl.offsetParent.offsetLeft-sc.clientWidth*.6):0;
+
+    var hws=ROWS.filter(function(r){return r.kind==="hw"}), next=null;
+    hws.forEach(function(r){if(r.e>=off&&(!next||r.e<next.e))next=r});
+    var tiles;
+    if(off<0){
+      tiles=[["До старта",days(-off),"первый урок "+fmt(t0),1],
+             (ROWS[0].live?["Первый воркшоп",ROWS[0].liveName,liveDay(ROWS[0].live[0])]:["Первый модуль",BLOCKS[0].name,"уроки "+fmt(t0)+" – "+sunday(ROWS[0])]),
+             ["Первая сдача","ДЗ: "+hws[0].title,dueText(hws[0])]];
+    }else if(off>=TOTAL){
+      tiles=[["Статус","Курс пройден","",1],["Старт",fmt(t0),""],["Финиш",sunday({e:TOTAL-1}),""]];
+    }else{
+      var now=ROWS.filter(function(r){return off>=r.s&&off<=r.e&&(r.kind==="mod"||r.first)});
+      tiles=[["Сейчас идёт",now.map(function(r){return r.title}).join(", "),"неделя "+(Math.floor(off/7)+1)+" из "+WEEKS,1]];
+      if(next){var left=next.e-off;
+        tiles.push(["Ближайшая сдача",next.type+": "+next.title,dueText(next)+" · "+(left===0?"сегодня до 23:59":"осталось "+days(left))]);}
+      var nl=null;ROWS.forEach(function(r){(r.live||[]).forEach(function(d){if(d>=off&&(!nl||d<nl.d))nl={d:d,n:r.liveName}})});
+      if(nl)tiles.push(["Ближайший воркшоп",nl.n,(nl.d===off?"сегодня · ":"")+liveDay(nl.d)]);
+      else tiles.push(["Финиш курса",sunday({e:TOTAL-1}),""]);
+    }
+    $("now").innerHTML=tiles.map(function(t){return '<div class="fact'+(t[3]?" on":"")+'"><i>'+t[0]+'</i><span>'+esc(t[1])+(t[2]?'<small>'+esc(t[2])+'</small>':'')+'</span></div>'}).join("");
+    [].forEach.call(document.querySelectorAll(".cohort"),function(b){b.classList.toggle("ghost",b.dataset.k!==cur)});
+    hideTip();
+    typo(document.querySelector(".wrap"));
+  }
+
+  var tip=$("tip"), pinned=null;
+  function tipHTML(r){
+    var st=state(r), lines=[], hw=null;
+    if(r.kind==="mod"){
+      if(r.ho)lines.push([r.ho.list.length>1?"Методички":"Методичка",r.ho.list.map(function(t,k){return (r.ho.list.length>1?(k+1)+". ":"")+t}).join("\n")]);
+      lines.push(["Уроки",fmt(t0+r.s*DAY)+" – "+sunday(r)+" · "+(r.e-r.s+1)/7+" нед"]);
+      hw=ROWS.filter(function(x){return x.kind==="hw"&&x.b===r.b})[0];
+      lines.push(["Задание",hw?hw.type+": "+hw.title:"без домашнего задания"]);
+      if(hw)lines.push(["Сдать",dueText(hw)]);
+      if(r.live)lines.push(["Воркшопы",r.liveName+": "+r.live.map(liveDay).join(" · ")]);
+      if(hw&&hw.live)lines.push(["Эфиры",hw.liveName+": "+hw.live.map(liveDay).join(" · ")]);
+    }else{
+      lines.push(["Делаем",fmt(t0+r.s*DAY)+" – "+sunday(r)]);
+      lines.push(["Сдать",dueText(r)+": "+lastText(r),1]);
+      if(r.live)lines.push([r.live.length>1?"Эфиры":"Эфир",r.live.map(liveDay).join(" · ")]);
+      if(!r.first)lines.push(["Модуль",r.b.n+". "+r.b.name]);
+    }
+    var s=st==="done"?(r.kind==="hw"?"срок сдачи прошёл":"модуль пройден"):
+          st==="current"?(r.kind==="hw"?(r.e===off?"сдать сегодня до 23:59":"идёт, до сдачи "+days(r.e-off)):"идёт сейчас"):
+          "начнётся "+fmt(t0+r.s*DAY);
+    lines.push(["Статус",s,st==="current"]);
+    var extra="", fl=r.kind==="hw"?(r.files||null):null;
+    if(fl){extra='<div class="files c'+fl.length+'">'+fl.map(function(f){
+        return '<a href="'+esc(f.url)+'" target="_blank" rel="noopener"><span class="shot"><img src="'+f.img+'" alt=""></span><span class="fl">'+(fl.length===1?"Открыть в Figma":esc(f.label))+' ↗</span></a>'}).join("")+'</div>'+
+        (pinned?'':'<span class="hint">Нажмите на полосу, чтобы открыть задание в Figma</span>');}
+    if(r.kind==="mod"&&r.ho)extra+='<span class="hint">Нажмите на полосу модуля, чтобы открыть методичку. Вернуться можно кнопкой внизу методички</span>';
+    return '<span class="k">'+(r.kind==="mod"?"Модуль "+r.b.n:r.type)+'</span><b>'+esc(r.title)+'</b>'+
+      (r.parts?'<div class="parts">'+r.parts.map(function(p,k){return '<span><i>'+(k+1)+'</i>'+esc(p)+'</span>'}).join("")+'</div>':'')+
+      '<dl>'+lines.map(function(l){return '<dt>'+l[0]+'</dt><dd'+(l[2]?' class="hot"':'')+'>'+esc(l[1])+'</dd>'}).join("")+'</dl>'+extra;
+  }
+  function liveTip(r,d){
+    var left=d-off, st=left<0?"воркшоп прошёл":left===0?"сегодня":"через "+days(left);
+    return '<span class="k">Воркшоп</span><b>'+esc(r.liveName.replace(/^Эфиры/,"Эфир"))+'</b><dl>'+
+      '<dt>Когда</dt><dd>'+esc(liveDay(d))+'</dd><dt>Время</dt><dd>уточняется</dd>'+
+      '<dt>Модуль</dt><dd>'+esc(r.b.n+". "+r.b.name)+'</dd><dt>Статус</dt><dd'+(left>=0?' class="hot"':'')+'>'+esc(st)+'</dd></dl>';
+  }
+  function showTip(el){
+    tip.innerHTML=el.classList.contains("live")?liveTip(ROWS[+el.dataset.i],+el.dataset.d):tipHTML(ROWS[+el.dataset.i]); typo(tip); tip.hidden=false; tip.classList.toggle("pin",!!pinned);
+    var b=el.getBoundingClientRect(), tw=tip.offsetWidth, th=tip.offsetHeight, vw=document.documentElement.clientWidth, vh=window.innerHeight;
+    var x=Math.min(Math.max(16,b.left),vw-tw-16), y=b.bottom+8;
+    if(y+th>vh-8)y=Math.max(8,b.top-th-8);
+    tip.style.left=x+"px"; tip.style.top=y+"px";
+  }
+  function hideTip(){tip.hidden=true;pinned=null}
+  var chart=$("chart");
+  chart.addEventListener("mouseover",function(e){var el=e.target.closest(".bar,.live");if(el&&!pinned)showTip(el)});
+  chart.addEventListener("mouseout",function(e){var el=e.target.closest(".bar,.live");if(el&&!pinned&&!el.contains(e.relatedTarget))tip.hidden=true});
+  chart.addEventListener("focusin",function(e){var el=e.target.closest(".bar,.live");if(el)showTip(el)});
+  chart.addEventListener("focusout",function(){if(!pinned)tip.hidden=true});
+  chart.addEventListener("click",function(e){var el=e.target.closest(".bar,.live");if(!el)return;if(el.tagName==="A"){hideTip();return}e.stopPropagation();
+    if(pinned===el){hideTip();return} pinned=el; showTip(el)});
+  chart.addEventListener("keydown",function(e){if(e.key==="Escape")hideTip()});
+  document.addEventListener("click",function(){if(pinned)hideTip()});
+  tip.addEventListener("click",function(e){e.stopPropagation()});
+  window.addEventListener("scroll",function(){if(pinned)showTip(pinned)},true);
+
+  function pick(k){if(!FLOWS[k])return;cur=k;var fn=$("flowname");if(fn)fn.textContent=LABELS[k].split(" · ")[0].toLowerCase()+"ский поток";try{localStorage.setItem("ai-flow",k)}catch(e){}build(k);render(parse(FLOWS[k]))}
+  function apply(){var h=location.hash.slice(1),saved=null;try{saved=localStorage.getItem("ai-flow")}catch(e){}
+    pick(FLOWS[h]?h:FLOWS[saved]?saved:cur)}
+  $("cohorts").innerHTML=Object.keys(FLOWS).map(function(k){return '<button type="button" class="cohort" data-k="'+k+'">'+esc(LABELS[k])+'</button>'}).join("");
+  [].forEach.call(document.querySelectorAll(".cohort"),function(b){b.addEventListener("click",function(){pick(b.dataset.k)})});
+  window.addEventListener("hashchange",apply);
+  apply();
+})();
+
+/* auto-height for iframe embeds (Zenclass) */
+(function(){if(window.parent===window)return;var last=0;function send(){var h=Math.ceil(document.documentElement.scrollHeight);if(Math.abs(h-last)>2){last=h;parent.postMessage({mtwH:h},"*")}}
+window.addEventListener("load",send);window.addEventListener("resize",send);setInterval(send,1000);send()})();
+</script>
+
+</body>
+</html>
