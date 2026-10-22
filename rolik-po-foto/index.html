@@ -286,7 +286,7 @@ Rules: no new characters, no text overlays, stable faces, no morphing, keep the 
 </footer>
 </div>
 
-<script>(function(){var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+<script>(function(){var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches||window.parent!==window;
 var bd=document.querySelector('.board .bd'),zs=[].slice.call(document.querySelectorAll('.board .z')),ls=[].slice.call(document.querySelectorAll('.board li')),cur=-2;
 function board(){var r=bd.getBoundingClientRect(),vh=window.innerHeight||1;if(r.bottom<-200||r.top>vh+200)return;var p=1-(r.top+r.height/2)/vh;p=(p-.22)/.5;var i=p<0?-1:Math.min(3,Math.floor(p*4));if(still)i=-1;if(i===cur)return;cur=i;
   zs.forEach(function(z,k){z.classList.toggle('on',k===i);});ls.forEach(function(l,k){l.classList.toggle('on',k===i||i<0);});
