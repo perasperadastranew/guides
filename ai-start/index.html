@@ -1,0 +1,563 @@
+<title>Как начать в AI-индустрии</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=Source+Serif+4:ital,opsz,wght@1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Тёмный журнальный разворот: номер блока слева, текст справа, таблицы во всю ширину. Одна тема, как на сайте. */
+:root{color-scheme:dark}
+body{background:#0c0c0c;margin:0}
+.pai{
+  --bg:#0c0c0c; --line:#262626; --line2:#1b1b1b; --ink:#f2f0ec; --dim:#a19e98; --faint:#6b6964;
+  --red:#ec3b3b; --ok:#45c46e; --warn:#e6a23c; --no:#ec5b5b;
+  --sans:"Onest",-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  background:var(--bg);color:var(--dim);font:400 17px/1.55 var(--sans);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 0;
+  -webkit-font-smoothing:antialiased;
+}
+.pai *{box-sizing:border-box}
+.pai .w{max-width:1120px;margin:0 auto}
+.pai p{margin:0;max-width:62ch}
+.pai b{color:var(--ink);font-weight:500}
+.pai a{color:var(--ink)}
+.pai em{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.01em}
+.pai .lab{font:500 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.pai .top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.pai h1{margin:56px 0 28px;font:400 clamp(44px,8.6vw,104px)/.95 var(--sans);letter-spacing:-.035em;color:var(--ink);text-wrap:balance}
+.pai h1 em{display:block;padding-left:.9em;color:var(--ink)}
+.pai .lead{font-size:clamp(18px,2vw,21px);line-height:1.45;color:var(--ink);text-indent:2.2em;max-width:44ch}
+.pai .toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:36px}
+.pai .toc a{font:400 14px/1 var(--sans);color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:9px 14px}
+.pai .toc a span{color:var(--red);font-family:var(--serif);font-style:italic;margin-right:6px}
+.pai .toc a:hover,.pai .toc a:focus-visible{color:var(--ink);border-color:#555;outline:none}
+
+.pai section{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:12px 40px;padding:72px 0 0;scroll-margin-top:16px}
+.pai .num{display:flex;flex-direction:column;gap:10px}
+.pai .num i{font:400 clamp(64px,8vw,96px)/.8 var(--serif);font-style:italic;color:var(--red)}
+.pai .body{display:flex;flex-direction:column;gap:20px;min-width:0}
+.pai h2{margin:0;font:400 clamp(32px,4.4vw,48px)/1.05 var(--sans);letter-spacing:-.025em;color:var(--ink);text-wrap:balance}
+.pai .full{grid-column:1/-1;min-width:0}
+
+.pai .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--ink)}
+.pai .two>div{padding:16px 16px 18px 0;border-bottom:1px solid var(--line)}
+.pai .two>div+div{padding-left:16px;border-left:1px solid var(--line)}
+.pai .two b{display:block;margin-bottom:6px}
+.pai .two span{font-size:15px}
+
+.pai .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:1px solid var(--line)}
+.pai table{width:100%;border-collapse:collapse;min-width:760px;font-size:15px;font-variant-numeric:tabular-nums}
+.pai th{text-align:left;font:500 10.5px/1.3 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--faint);padding:14px 12px 12px 0;white-space:nowrap;border-bottom:1px solid var(--line)}
+.pai td{padding:13px 12px 13px 0;border-bottom:1px solid var(--line2);vertical-align:top;color:var(--ink)}
+.pai td small{display:block;font-size:12.5px;color:var(--faint);margin-top:2px}
+.pai td.n{color:var(--dim)}
+.pai tr.grp td{padding-top:22px;border-bottom:1px solid var(--line)}
+.pai tr.best td{background:rgba(236,59,59,.07)}
+.pai .svc{display:inline-flex;align-items:center;gap:10px;font-weight:500;font-size:16px}
+.pai .svc i{width:26px;height:26px;border-radius:6px;display:inline-grid;place-items:center;font:600 13px/1 var(--sans);font-style:normal;color:#0c0c0c}
+.pai .ok{color:var(--ok)} .pai .warn{color:var(--warn)} .pai .no{color:var(--no)}
+.pai .fn{font-size:14px;color:var(--faint);margin-top:12px;max-width:80ch}
+.pai .call{border-left:3px solid var(--red);padding:4px 0 4px 18px;color:var(--dim);max-width:66ch}
+.pai .call b{margin-right:4px}
+
+.pai .calc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pai label.f{display:flex;flex-direction:column;gap:8px}
+.pai select{appearance:none;-webkit-appearance:none;width:100%;background:#151515 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23a19e98' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 14px center;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:13px 38px 13px 14px;font:400 16px var(--sans)}
+.pai select:focus-visible{outline:2px solid var(--red);outline-offset:1px}
+.pai .res{margin-top:4px}
+
+.pai ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.pai ol.steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);padding:14px 0;border-bottom:1px solid var(--line2);color:var(--ink)}
+.pai ol.steps li::before{content:counter(s);font-family:var(--serif);font-style:italic;color:var(--red);font-size:22px;line-height:1.1}
+
+.pai .src{margin-top:80px;padding-top:24px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.pai .src ul{margin:0;padding-left:18px;font-size:15px;display:flex;flex-direction:column;gap:6px}
+.pai .end{margin-top:72px;padding:56px 0 64px;border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px 48px;align-items:end}
+.pai .end h2{font-size:clamp(36px,5vw,60px)}
+.pai .end .txt{display:flex;flex-direction:column;gap:14px}
+.pai .btns{display:flex;flex-wrap:wrap;gap:10px}
+.pai .btn{display:inline-block;text-decoration:none;font:500 12px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;padding:15px 18px;border-radius:4px;background:var(--red);color:#fff}
+.pai .btn.ghost{background:transparent;border:1px solid #444;color:var(--ink)}
+.pai .btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+@media (max-width:760px){
+  .pai section{grid-template-columns:minmax(0,1fr);padding-top:56px}
+  .pai .num{flex-direction:row;align-items:baseline;gap:14px}
+  .pai .calc,.pai .end,.pai .two{grid-template-columns:minmax(0,1fr)}
+  .pai .two>div+div{padding-left:0;border-left:0}
+  .pai h1 em{padding-left:0}
+}
+@media (prefers-reduced-motion:no-preference){.pai .toc a,.pai .btn{transition:color .15s,border-color .15s}}
+
+.pai .toc{display:flex;flex-direction:column;gap:14px;margin-top:40px}
+.pai .tg{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pai .tg>.lab{width:100%;margin-bottom:2px}
+.pai .part{margin-top:128px;padding-top:20px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;scroll-margin-top:16px}
+.pai .part h2{font-size:clamp(40px,6vw,72px)}
+.pai .part p{color:var(--dim);max-width:46ch}
+.pai .part+section{padding-top:48px}
+.pai .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px 12px}
+.pai .gal.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pai .gal.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pai .gal figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pai .gal img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#151515}
+.pai .gal.one{grid-template-columns:minmax(0,1fr)}
+.pai .gal.one img{aspect-ratio:auto}
+.pai .gal figcaption{font-size:14px;line-height:1.45;color:var(--faint)}
+.pai .gal figcaption b{display:block;font-size:15px;margin-bottom:2px}
+.pai .five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--ink)}
+.pai .five>div{padding:16px 14px 18px 0;border-bottom:1px solid var(--line)}
+.pai .five>div+div{padding-left:14px;border-left:1px solid var(--line)}
+.pai .five i{display:block;font:400 26px/1 var(--serif);font-style:italic;color:var(--red);margin-bottom:12px}
+.pai .five b{display:block;margin-bottom:6px}
+.pai .five span{font-size:14.5px}
+.pai .two.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pai .two.three>div+div{padding-left:16px;border-left:1px solid var(--line)}
+.pai .two .big{display:block;font:400 34px/1.1 var(--sans);letter-spacing:-.02em;color:var(--ink);margin:4px 0 8px}
+.pai .formula{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:baseline;font:400 clamp(18px,2.2vw,24px)/1.3 var(--sans);color:var(--ink)}
+.pai .formula span{border:1px solid var(--line);border-radius:6px;padding:8px 12px}
+.pai .formula em{color:var(--red)}
+@media (max-width:760px){
+  .pai .gal.g2,.pai .gal.g3,.pai .five,.pai .two.three{grid-template-columns:minmax(0,1fr)}
+  .pai .five>div+div,.pai .two.three>div+div{padding-left:0;border-left:0}
+  .pai .part{margin-top:96px}
+}
+</style>
+
+<div class="pai"><div class="w">
+
+<div class="top"><span class="lab">Гайд · октябрь 2026</span><span class="lab">Perasperadastra</span></div>
+<h1>Как начать <em>в AI-индустрии</em></h1>
+<p class="lead">Разбираем, что заказывают AI-креаторам, сколько это стоит и с чего начинают наши студенты. Потом смотрим, какая нейросеть за что отвечает. В конце считаем подписки: какую взять под свою работу и во сколько она обойдётся.</p>
+<nav class="toc" aria-label="Разделы">
+  <div class="tg"><span class="lab">Часть I · Профессия</span><a href="#pai-1"><span>1</span>Кто такой AI-креатор</a><a href="#pai-2"><span>2</span>Какие проекты</a><a href="#pai-3"><span>3</span>Сколько стоят</a><a href="#pai-4"><span>4</span>Где работать</a><a href="#pai-5"><span>5</span>Работы студентов</a><a href="#pai-6"><span>6</span>Как стартовать</a></div>
+  <div class="tg"><span class="lab">Часть II · Нейросети</span><a href="#pai-7"><span>7</span>Пять задач</a><a href="#pai-8"><span>8</span>Сравнение</a><a href="#pai-9"><span>9</span>Стек на старт</a></div>
+  <div class="tg"><span class="lab">Часть III · Подписки</span><a href="#pai-10"><span>10</span>Агрегаторы</a><a href="#pai-11"><span>11</span>Две категории</a><a href="#pai-12"><span>12</span>Только картинки</a><a href="#pai-13"><span>13</span>Картинки + видео</a><a href="#pai-14"><span>14</span>Оплата</a><a href="#pai-15"><span>15</span>Год или месяц</a><a href="#pai-16"><span>16</span>Первые два месяца</a><a href="#pai-17"><span>17</span>Калькулятор</a><a href="#pai-18"><span>18</span>Выбор за минуту</a></div>
+</nav>
+
+<div class="part" id="pai-p1"><h2>Часть I. <em>Профессия</em></h2><p>Что заказывают, сколько платят и как выглядит путь от первой картинки до первого заказа.</p></div>
+
+<section id="pai-1">
+  <div class="num"><i>1</i><span class="lab">Профессия</span></div>
+  <div class="body">
+    <h2>Кто такой <em>AI-креатор</em></h2>
+    <p><b>AI-креатор продаёт решённую визуальную задачу бренда, а не картинки.</b> Нейросеть делает варианты, а креатор принимает решения: что сделать, в каком стиле, что выбрать и как сдать. За эти решения и платят.</p>
+    <p>То, что раньше делали фотограф, дизайнер и монтажёр, теперь может закрыть один человек с нейросетями. Технические навыки при этом занимают около 20% работы. Остальное — насмотренность, концепция, отбор и вкус. Поэтому сильнее всех в нейросетях фотографы, режиссёры и видеографы: они уже умеют ставить свет, кадр и историю.</p>
+  </div>
+  <div class="full gal g3">
+    <figure><img src="../ai-metodichki/img/pres-delali-troe.webp" alt="Слайд «Что раньше делали трое»: фотограф, дизайнер и монтажёр" loading="lazy"><figcaption><b>Что раньше делали трое</b>Фотограф, дизайнер и монтажёр теперь в одном человеке.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-tech-20.webp" alt="Слайд «Технические навыки — 20% того, что нужно знать»" loading="lazy"><figcaption><b>Кнопки — 20%</b>Остальное — вкус, концепция и отбор.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-proekt-2022-2026.webp" alt="Слайд «Проект 2022 и проект 2026»" loading="lazy"><figcaption><b>Проект 2022 и 2026</b>Заказ стал шире: веб-дизайн, анимация, 3D и нейросети в одном проекте.</figcaption></figure>
+  </div>
+</section>
+
+<section id="pai-2">
+  <div class="num"><i>2</i><span class="lab">Заказы</span></div>
+  <div class="body">
+    <h2>Какие <em>проекты</em> заказывают</h2>
+    <p>Всё, что заказывают AI-креатору, укладывается в три семейства: графика, фотосессия и видео. У каждого заказа есть вторая ось — <b>реализм или иллюстрация</b>. Предметку лимонада можно решить как фото на мху или как плоскую иллюстрацию бутылки среди ягод для упаковки. Услуга одна, стиль разный.</p>
+  </div>
+  <div class="full"><div class="tw"><table>
+    <thead><tr><th>Тип проекта</th><th>Пример задачи</th><th>Что на выходе</th></tr></thead>
+    <tbody>
+      <tr class="grp"><td colspan="3"><b>Графика</b></td></tr>
+      <tr><td>Одна картинка</td><td class="n">Обложка анонса, пост, история</td><td class="n">1 кадр и 1–2 адаптации</td></tr>
+      <tr><td>Набор иллюстраций</td><td class="n">Иллюстрации для статьи, лендинга или видео</td><td class="n">Серия из 5–15 кадров в одном стиле</td></tr>
+      <tr><td>Key visual (KV)</td><td class="n">Главный образ кампании, из него делают баннеры и наружку</td><td class="n">KV и адаптации под форматы</td></tr>
+      <tr><td>Айдентика бренда</td><td class="n">Визуальный язык: образы, палитра, стиль, мокапы</td><td class="n">Лайт-брендбук и набор визуалов</td></tr>
+      <tr class="grp"><td colspan="3"><b>Фотосессия</b></td></tr>
+      <tr><td>Предметная</td><td class="n">Продукт в разных сетах без студии, карточки маркетплейса</td><td class="n">Карточка продукта, hero и lifestyle</td></tr>
+      <tr><td>AI-модель</td><td class="n">Создать лицо бренда и держать его в разных образах</td><td class="n">Карточка модели и серия кадров</td></tr>
+      <tr><td>Съёмка с моделью</td><td class="n">Смена одежды, окружения, позы, внедрение продукта</td><td class="n">Серия кадров одной модели</td></tr>
+      <tr class="grp"><td colspan="3"><b>Видео</b></td></tr>
+      <tr><td>Тематический ролик</td><td class="n">Исторический, художественный или мемный ролик на 20–60 секунд</td><td class="n">Ролик со звуком и титрами</td></tr>
+      <tr><td>Рекламный ролик</td><td class="n">Продукт через рекламный приём, пэкшот в финале</td><td class="n">Ролик и нарезки под площадки</td></tr>
+      <tr><td>Клип</td><td class="n">Визуальный ряд под трек артиста</td><td class="n">Клип или визуалайзер</td></tr>
+    </tbody></table></div></div>
+  <div class="full gal">
+    <figure><img src="../ai-metodichki/img/pres-t-prodshoot.webp" alt="Продуктовая фотосессия" loading="lazy"><figcaption><b>Продуктовая фотосессия</b>Продукт в разных сетах без студии.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-t-aimodel.webp" alt="Генерация AI-моделей" loading="lazy"><figcaption><b>AI-модель</b>Одно лицо бренда в разных ракурсах и образах.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-t-outfit.webp" alt="Замена одежды" loading="lazy"><figcaption><b>Замена одежды</b>Та же модель, другой образ и продукт в кадре.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-t-2dkv.webp" alt="2D key visual" loading="lazy"><figcaption><b>Key visual</b>Главный образ кампании.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-t-ident.webp" alt="Иллюстрации для айдентики" loading="lazy"><figcaption><b>Иллюстрации для айдентики</b>Свой графический язык бренда.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-t-concept3d.webp" alt="Визуализация концепций" loading="lazy"><figcaption><b>Визуализация концепций</b>Продукт или объект, которого ещё нет.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-t-interior.webp" alt="Визуализация интерьера" loading="lazy"><figcaption><b>Интерьер</b>Пространство до ремонта и стройки.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-t-mock-ui.webp" alt="Мокапы для интерфейсов" loading="lazy"><figcaption><b>Мокапы</b>Интерфейс или упаковка в живой сцене.</figcaption></figure>
+  </div>
+  <div class="full call"><b>Правило портфолио.</b> Каждый тип проекта показывай серией на одном бренде, а не одиночной картинкой. Одна картинка доказывает удачу, серия доказывает метод.</div>
+</section>
+
+<section id="pai-3">
+  <div class="num"><i>3</i><span class="lab">Цены</span></div>
+  <div class="body">
+    <h2>Сколько это <em>стоит</em></h2>
+    <p>Вилки ниже взяты с сайта школы и студии Perasperadastra. Это ориентир для старта: рынок движется, поэтому перед первым заказом сверься с актуальными ценами.</p>
+  </div>
+  <div class="full"><div class="tw"><table style="min-width:640px">
+    <thead><tr><th>Услуга</th><th>Вилка</th><th>От чего зависит цена</th></tr></thead>
+    <tbody>
+      <tr><td>Креативные ролики</td><td>5–50 тыс ₽</td><td class="n">Длина, число шотов, звук, правки</td></tr>
+      <tr><td>Генерация концептов</td><td>5–15 тыс ₽</td><td class="n">Число направлений и итераций</td></tr>
+      <tr><td>3D-графика</td><td>5–30 тыс ₽</td><td class="n">Сложность объекта, число ракурсов</td></tr>
+      <tr><td>Иллюстрации</td><td>5–30 тыс ₽</td><td class="n">Одна или серия, стиль, адаптации</td></tr>
+      <tr><td>Фотоконтент для сайта</td><td>5–25 тыс ₽</td><td class="n">Число кадров, единый стиль</td></tr>
+      <tr><td>Фотосессия с продуктом</td><td>5–25 тыс ₽</td><td class="n">Число сетов, карточки, адаптации</td></tr>
+      <tr><td>Фотосессия с AI-моделями</td><td>5–20 тыс ₽</td><td class="n">Число образов, одно лицо во всех кадрах</td></tr>
+      <tr><td>Мокапы</td><td>1–5 тыс ₽</td><td class="n">Число сцен, сложность вставки</td></tr>
+    </tbody></table></div>
+    <p class="fn">Внизу вилки — один кадр или короткий ролик, один круг правок, один формат. Вверху — серия кадров, адаптации под форматы, несколько кругов правок и передача прав.</p>
+  </div>
+  <div class="body" style="grid-column:2">
+    <p>Большой проект для портфолио стоит дороже отдельной услуги. Обрати внимание на часы: генерация занимает меньшую часть, остальное — задача, стиль, отбор, правки, финализация и упаковка.</p>
+  </div>
+  <div class="full"><div class="tw"><table style="min-width:640px">
+    <thead><tr><th>Проект</th><th>Сколько работы</th><th>Цена на рынке</th><th>Что продаёшь потом</th></tr></thead>
+    <tbody>
+      <tr><td>AI-фотосессия бренда<small>фотостиль, предметка</small></td><td class="n">10–20 ч</td><td>5–50 тыс ₽</td><td class="n">Предметку, карточки, контент для сайта и соцсетей</td></tr>
+      <tr><td>AI-продукт<small>продукт, которого нет</small></td><td class="n">10–30 ч</td><td>30–100 тыс ₽</td><td class="n">Концепты продуктов, KV, презентации идей</td></tr>
+      <tr><td>AI-видео<small>рекламный или тематический ролик</small></td><td class="n">20–40 ч</td><td>30–100 тыс ₽</td><td class="n">Рекламные ролики, ролики для соцсетей, клипы</td></tr>
+    </tbody></table></div></div>
+  <div class="body" style="grid-column:2">
+    <p>Цену считают от часов, а не от числа генераций:</p>
+    <div class="formula"><span>часы + 20% запаса</span><em>×</em><span>ставка</span><em>+</em><span>расходы</span><em>+</em><span>надбавки</span></div>
+    <p>Например, 18,5 часа × 1 100 ₽ ≈ 20 350 ₽ плюс расходы на подписки около 1 650 ₽ — получается 22 000 ₽ за средний пакет фотосессии. В расходы входит доля подписок на проект, а в надбавки — срочность, расширенное использование и дополнительные правки.</p>
+  </div>
+  <div class="full gal g2">
+    <figure><img src="../ai-metodichki/img/pres-stoimost.webp" alt="Слайд «Считайте стоимость своей работы»" loading="lazy"><figcaption><b>Пять минут генерации — не пять рублей</b>За кадром стоят часы работы и месяцы обучения.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-video-portfolio.webp" alt="Видео для портфолио и соцсетей" loading="lazy"><figcaption><b>Видео дороже картинок</b>Ролик — самый дорогой формат и самый заметный в портфолио.</figcaption></figure>
+  </div>
+  <div class="full call"><b>Правки — отдельная строка.</b> В пакет входят два круга правок, дальше — по часовой ставке. Если этого нет в договоре, проект за 10 тысяч превращается в месяц работы.</div>
+</section>
+
+<section id="pai-4">
+  <div class="num"><i>4</i><span class="lab">Где работать</span></div>
+  <div class="body">
+    <h2>Где <em>работать</em></h2>
+    <p>Выбери одно-два направления: от этого зависит, что класть в портфолио. Агентству нужны KV с адаптациями, селлеру — карточки и предметка, артисту — клип.</p>
+  </div>
+  <div class="full"><div class="tw"><table>
+    <thead><tr><th>Где</th><th>Что делаешь</th><th>Плюс</th><th>Что показать в портфолио</th></tr></thead>
+    <tbody>
+      <tr><td>Студия, продакшн</td><td class="n">Кадры и шоты по раскадровке арт-директора</td><td class="n">Большие проекты, быстрый рост</td><td class="n">Серии в заданном стиле, ролики</td></tr>
+      <tr><td>Агентство<small>реклама, SMM</small></td><td class="n">KV, адаптации, креативы под кампании</td><td class="n">Поток задач, бренды</td><td class="n">KV с адаптациями, рекламный ролик</td></tr>
+      <tr><td>Фриланс</td><td class="n">Проекты целиком: от брифа до сдачи</td><td class="n">Сам выбираешь клиентов и цену</td><td class="n">Кейсы с задачей, процессом и результатом</td></tr>
+      <tr><td>In-house<small>бренд, селлер, медиа</small></td><td class="n">Контент одного бренда потоком</td><td class="n">Стабильность, глубина бренда</td><td class="n">Предметка, карточки, серии для соцсетей</td></tr>
+      <tr><td>Свой контент</td><td class="n">Авторские ролики, соцсети, заказы артистов</td><td class="n">Имя и входящие заказы</td><td class="n">Тематические ролики, узнаваемый стиль</td></tr>
+    </tbody></table></div></div>
+</section>
+
+<section id="pai-5">
+  <div class="num"><i>5</i><span class="lab">Наши студенты</span></div>
+  <div class="body">
+    <h2>Что делают <em>наши студенты</em></h2>
+    <p>Работы студентов курса Mission to AI. Посмотри на них как клиент: какую услугу здесь можно купить и что получишь на выходе. Почти у всех один и тот же ход: одна ясная идея и серия кадров на одном бренде, часто выдуманном.</p>
+  </div>
+  <div class="full gal">
+    <figure><img src="../ai-metodichki/img/pres-case-eaglips.webp" alt="Eaglips — прищепка через метафору орла" loading="lazy"><figcaption><b>Eaglips · Милана Гавриченко</b>AI-продукт: прищепка через метафору орла. Одна идея держит всю серию.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-case-lumera.webp" alt="Lumera — выдуманный гаджет" loading="lazy"><figcaption><b>Lumera · Лейла Исхакова</b>Выдуманный гаджет с легендой. Серия от предметки до лайфстайла.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-case-form101.webp" alt="FORM 101 — скульптурный объект" loading="lazy"><figcaption><b>FORM 101 · Яна Саввина</b>Скульптурный объект: серия ракурсов, детали и процесс.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-case-mechta.webp" alt="МЕЧТА — бутылка для воды в разных стихиях" loading="lazy"><figcaption><b>МЕЧТА · София Семина</b>Бутылка для воды в разных стихиях: продукт один, сюжеты разные.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-case-boreal.webp" alt="Boréal — фотостиль бренда" loading="lazy"><figcaption><b>Boréal · Мария Тетерина</b>Фотостиль, который передаёт философию бренда.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/case-chess-camp-2.webp" alt="Chess Camp — рекламная кампания" loading="lazy"><figcaption><b>Chess Camp</b>Рекламная кампания: вид сверху, чёрное и белое, один красный акцент.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/case-simple-knives-3.webp" alt="Simple Knives — key visual" loading="lazy"><figcaption><b>Simple Knives</b>Key visual: продукт в деле и место под текст.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/case-pohjola-herbs-2.webp" alt="Pohjola Herbs — фотостиль бренда" loading="lazy"><figcaption><b>Pohjola Herbs</b>Фотоконтент для сайта и соцсетей в одном мире бренда.</figcaption></figure>
+  </div>
+</section>
+
+<section id="pai-6">
+  <div class="num"><i>6</i><span class="lab">Старт</span></div>
+  <div class="body">
+    <h2>Как <em>стартовать</em></h2>
+    <p>Примерно так проходят путь до первого заказа наши студенты.</p>
+    <ol class="steps">
+      <li>Выбери одно-два направления и опиши три услуги: для кого, какая задача, что на выходе, срок, цена и что не входит.</li>
+      <li>Собери минимальный стек: бесплатный Claude или ChatGPT и Midjourney Basic. Агрегатор подключай, когда дойдёшь до правок и видео.</li>
+      <li>Сделай серию на одном бренде, можно на выдуманном: фотосессию, AI-продукт или ролик.</li>
+      <li>Оформи кейс: задача, идея, процесс, результат, контакты. Честно отметь, что сделала нейросеть, а что ты.</li>
+      <li>Публикуй работы сериями в одном формате, по выпуску и посту о процессе в неделю. Пиши брендам и артистам, прикладывая готовую работу для них.</li>
+      <li>На первый заказ: бриф, расчёт, коммерческое предложение с тремя пакетами и два круга правок в договоре.</li>
+    </ol>
+  </div>
+  <div class="full call"><b>Не гоняйся за каждой новой нейросетью.</b> Выдели на обновления час в неделю и работай. Версии меняются каждые пару месяцев, а метод остаётся.</div>
+</section>
+
+<div class="part" id="pai-p2"><h2>Часть II. <em>Нейросети</em></h2><p>Какая нейросеть за что отвечает и чем они отличаются друг от друга.</p></div>
+
+<section id="pai-7">
+  <div class="num"><i>7</i><span class="lab">Карта</span></div>
+  <div class="body">
+    <h2>Пять задач — <em>пять ролей</em></h2>
+    <p>Генераторов много, а задач всего пять. Под каждую есть свой инструмент. Спорить, какая нейросеть лучшая, — всё равно что спорить, что лучше: кисть или молоток.</p>
+  </div>
+  <div class="full five">
+    <div><i>1</i><b>Придумать</b><span>Как это выглядит: стиль, образ, мудборд. Midjourney.</span></div>
+    <div><i>2</i><b>Сохранить и поправить</b><span>То, что уже есть: продукт, лицо, одну деталь. Nano Banana.</span></div>
+    <div><i>3</i><b>Написать буквами</b><span>Текст, схемы, инфографика. Картинки в ChatGPT или вёрстка в Figma.</span></div>
+    <div><i>4</i><b>Оживить</b><span>Кадр становится шотом. Seedance — атмосфера, Kling — физика.</span></div>
+    <div><i>5</i><b>Сформулировать</b><span>Сценарий, промпты, план. Claude или ChatGPT.</span></div>
+  </div>
+  <div class="full gal one"><figure><img src="../ai-metodichki/img/pres-klassifikaciya.webp" alt="Слайд «Классификация нейросетей»: текстовые модели, изображения, видео" loading="lazy"><figcaption><b>Три семейства моделей</b>Текстовые (ChatGPT, Claude, Gemini), генераторы изображений (Midjourney, Nano Banana, Flux) и видео (Kling, Veo, Seedance).</figcaption></figure></div>
+  <div class="full gal g3">
+    <figure><img src="../ai-metodichki/img/pres-midjourney.webp" alt="Интерфейс Midjourney" loading="lazy"><figcaption><b>Midjourney</b>Оригинальные фото и графика, поиск стиля.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-nanobanana.webp" alt="Интерфейс Nano Banana" loading="lazy"><figcaption><b>Nano Banana</b>Правка по фото: «до» и «после» на одном экране.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-kling.webp" alt="Интерфейс Kling" loading="lazy"><figcaption><b>Kling</b>Оживляет готовые изображения.</figcaption></figure>
+  </div>
+</section>
+
+<section id="pai-8">
+  <div class="num"><i>8</i><span class="lab">Сравнение</span></div>
+  <div class="body">
+    <h2>Сравнение <em>нейросетей</em></h2>
+    <p>Чем сильна каждая нейросеть, для чего её не брать и сколько она стоит. Цены официальные, в рублях — по курсу около 83 ₽ за доллар с комиссией посредника там, где российские карты не принимают.</p>
+  </div>
+  <div class="full"><div class="tw"><table style="min-width:900px">
+    <thead><tr><th>Нейросеть</th><th>Задача</th><th>Сильная сторона</th><th>Не бери для</th><th>Сколько стоит</th><th>Карта РФ</th></tr></thead>
+    <tbody>
+      <tr><td><b>Midjourney</b></td><td class="n">Придумать</td><td>Стиль, эстетика, key visual, мудборд</td><td class="n">Точных правок, текста, сохранения продукта</td><td>Basic $10<small>≈ 1 100 ₽ через посредника</small></td><td><span class="no">нет</span></td></tr>
+      <tr><td><b>Nano Banana</b><small>Pro и 2, от Google</small></td><td class="n">Сохранить и поправить</td><td>Правка по фото, сборка кадра из референсов, одно лицо и продукт во всей серии, мокапы</td><td class="n">Поиска стиля с нуля: без референса картинка часто плоская</td><td>В агрегаторе<small>Syntx Basic 890 ₽ ≈ 130 картинок</small></td><td><span class="warn">через агрегатор</span></td></tr>
+      <tr><td><b>Картинки в ChatGPT</b></td><td class="n">Буквы и схемы</td><td>Текст на картинке, схемы, черновики инфографики</td><td class="n">Финальной эстетики бренда</td><td>В ChatGPT Plus $20<small>≈ 1 900–2 400 ₽</small></td><td><span class="no">нет</span></td></tr>
+      <tr><td><b>Seedance</b></td><td class="n">Оживить: атмосфера</td><td>Несколько шотов подряд, диалог и звук, спокойное движение</td><td class="n">Резкой физики удара и контакта</td><td>В агрегаторе<small>Syntx VIP 3 990 ₽ ≈ 19 клипов</small></td><td><span class="warn">через агрегатор</span></td></tr>
+      <tr><td><b>Kling</b></td><td class="n">Оживить: физика</td><td>Удар, контакт, спорт, первый и последний кадр</td><td class="n">Длинных атмосферных сцен с диалогом</td><td>Standard $10<small>≈ 1 100–1 200 ₽ или в агрегаторе</small></td><td><span class="warn">через посредника</span></td></tr>
+      <tr><td><b>Suno</b></td><td class="n">Музыка</td><td>Трек под ролик по описанию жанра и настроения</td><td class="n">Точного попадания в склейки без правок</td><td>Бесплатно<small>Pro $8 ≈ 1 000 ₽ — права на трек для коммерции</small></td><td><span class="warn">через посредника</span></td></tr>
+      <tr><td><b>Claude, ChatGPT</b></td><td class="n">Сформулировать</td><td>Сценарий, стиль, раскадровка, промпты для других нейросетей</td><td class="n">Итоговой картинки: это мозг, а не кисть</td><td>Бесплатно<small>Pro или Plus $20 ≈ 1 900–2 400 ₽</small></td><td><span class="warn">через посредника</span></td></tr>
+      <tr><td><b>CapCut, Figma</b></td><td class="n">Собрать</td><td>Монтаж ролика, вёрстка текста и логотипа поверх кадра</td><td class="n">Генерации</td><td>Бесплатно</td><td><span class="ok">не нужна</span></td></tr>
+    </tbody></table></div>
+    <p class="fn">«Через агрегатор» — сама модель карты РФ не принимает, но в Syntx или GIVON её можно оплатить картой «Мир» или по СБП. Подробно — в части III.</p>
+  </div>
+  <div class="full call"><b>Один кадр проходит через три инструмента.</b> Claude пишет промпт, Midjourney находит образ, Nano Banana правит детали. Это нормальный конвейер, а не «не получилось с первого раза».</div>
+</section>
+
+<section id="pai-9">
+  <div class="num"><i>9</i><span class="lab">Стек</span></div>
+  <div class="body">
+    <h2>Стек <em>на старт</em></h2>
+    <p>Модель можно открыть на её родном сайте или через агрегатор — один кабинет, где собрано много моделей с общим балансом. На старте агрегатор удобнее: не нужно оплачивать каждую модель отдельно, и многие принимают российские карты.</p>
+  </div>
+  <div class="full gal g3">
+    <figure><img src="../ai-metodichki/img/pres-modeli-agregatory.webp" alt="Схема «Модели и агрегаторы»" loading="lazy"><figcaption><b>Модели и агрегаторы</b>Модель — сам генератор, агрегатор — оболочка с несколькими моделями.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-syntx.webp" alt="Интерфейс Syntx" loading="lazy"><figcaption><b>Syntx</b>Русский интерфейс: Midjourney, Nano Banana и видео в одном окне.</figcaption></figure>
+    <figure><img src="../ai-metodichki/img/pres-higgsfield.webp" alt="Интерфейс Higgsfield" loading="lazy"><figcaption><b>Higgsfield</b>Упор на визуал и готовые пресеты. Нужна зарубежная карта.</figcaption></figure>
+  </div>
+  <div class="full two three">
+    <div><span class="lab">Первые недели</span><span class="big">≈ 1 100 ₽</span><span>Midjourney Basic и бесплатный Claude или ChatGPT. Хватает, чтобы искать стиль и делать первые серии.</span></div>
+    <div><span class="lab">Рабочий стек</span><span class="big">≈ 5 100 ₽</span><span>Midjourney Basic и Syntx VIP. Текст, музыка и монтаж бесплатно. На нём проходят весь курс.</span></div>
+    <div><span class="lab">С заказами</span><span class="big">≈ 10–11,5 тыс ₽</span><span>Midjourney Standard, Syntx VIP или Higgsfield Plus, Claude Pro и Suno Pro.</span></div>
+  </div>
+  <div class="full call"><b>Подписки — по задачам.</b> Платишь за инструмент, когда для него появилась задача. Четыре видеоподписки в первую неделю — это кредиты, сгоревшие на анимации кадров, которые ещё никто не утвердил. И не покупай «общие» аккаунты у третьих лиц: их блокируют вместе с твоими генерациями.</div>
+</section>
+
+<div class="part" id="pai-p3"><h2>Часть III. <em>Подписки</em></h2><p>Какой агрегатор взять под свой объём и сколько выйдет в месяц. Цены на 12 октября 2026.</p></div>
+
+<section id="pai-10">
+  <div class="num"><i>10</i><span class="lab">Агрегаторы</span></div>
+  <div class="body">
+    <h2>Что такое <em>агрегаторы</em></h2>
+    <p>Агрегатор — это сервис, где в одной подписке доступно сразу много нейросетей: Nano Banana, Seedance, Kling и другие. Не нужно оформлять отдельную подписку на каждую модель.</p>
+    <p>Платишь не за картинку, а за токены или кредиты, и каждая модель тратит их по-своему. Поэтому ниже всё пересчитано на одинаковые условия: <b>картинка 2K в Nano Banana Pro</b> и <b>видео 720p на 5 секунд в Seedance 2.5</b>.</p>
+  </div>
+</section>
+
+<section id="pai-11">
+  <div class="num"><i>11</i><span class="lab">Категории</span></div>
+  <div class="body">
+    <h2>Две <em>категории</em></h2>
+    <p>Подписки разобраны для двух типов работы: только картинки и картинки плюс видео. Под свой объём их можно подобрать в калькуляторе в блоке 17.</p>
+    <div class="two">
+      <div><b>А. Только картинки</b><span>Референсы, концепты, текстуры, обложки. Видео не нужно. Таблица в блоке 12.</span></div>
+      <div><b>Б. Картинки + видео</b><span>Картинки и клипы по 5 секунд. Таблица в блоке 13.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="pai-12">
+  <div class="num"><i>12</i><span class="lab">Категория А · месяц</span></div>
+  <div class="body">
+    <h2>Только <em>картинки</em></h2>
+    <p>Месячные планы. В таблице указано, сколько 2K-картинок в Nano Banana Pro даёт план за месяц, если тратить его только на них. Считаются все генерации, включая неудачные. Обычно нужно 60–100 картинок в месяц.</p>
+  </div>
+  <div class="full"><div class="tw"><table>
+    <thead><tr><th>План</th><th>Цена в месяц</th><th>Картинок</th><th>₽ за картинку</th><th>Карта РФ</th><th>Заметка</th></tr></thead>
+    <tbody id="pai-t3"></tbody></table></div>
+    <p class="fn">Расчёт: Nano Banana Pro в 2K стоит у Syntx 2 токена, у Higgsfield 2 кредита, у Utopy около 67 токенов, у GIVON около 3 токенов по данным их страницы. GPT-Image 2 у Syntx тратит 6 токенов, то есть втрое больше.</p>
+  </div>
+  <div class="full call"><b>Вывод для категории А.</b> Для картинок на Nano Banana Pro выгоднее всего Syntx: около 7 ₽ за картинку на Basic, которого хватает на 60–100 картинок в месяц, и около 5 ₽ на Pro с большим запасом. Если работаешь на Nano Banana 2, выгоднее GIVON: около 3,7 ₽ за картинку против 7,5 ₽ у Syntx. Utopy дороже везде. У Higgsfield хорошие модели, но нужна зарубежная карта.</div>
+</section>
+
+<section id="pai-13">
+  <div class="num"><i>13</i><span class="lab">Категория Б · месяц</span></div>
+  <div class="body">
+    <h2>Картинки <em>+ видео</em></h2>
+    <p>Видео тратит в разы больше токенов, чем картинка. В колонке «80 картинок + 15 клипов» видно, хватит ли плана на типичный месяц работы с роликами.</p>
+  </div>
+  <div class="full"><div class="tw"><table>
+    <thead><tr><th>План</th><th>Цена в месяц</th><th>Картинок</th><th>Клипов</th><th>80 картинок + 15 клипов</th><th>Карта РФ</th><th>Заметка</th></tr></thead>
+    <tbody id="pai-t4"></tbody></table></div>
+    <p class="fn">«Картинок» и «Клипов» — сколько даёт план, если тратить его только на картинки или только на клипы.</p>
+  </div>
+  <div class="full call"><b>Вывод для категории Б.</b> Самый дешёвый вариант — Phygital+ Старт с докупкой, около 1 850 ₽, но модели там слабее. На Seedance 2.5 в 720p почти поровну выходят Syntx VIP (3 990 ₽) и GIVON Creator с докупкой (около 4 200 ₽). Utopy Максимальный дешевле (3 590 ₽), но модели проще. На Seedance 2.0 хватит Syntx Pro (1 690 ₽), у GIVON нужен Creator (2 490 ₽). В Full HD GIVON выгоднее Syntx примерно на 25%.</div>
+</section>
+
+<section id="pai-14">
+  <div class="num"><i>14</i><span class="lab">Оплата</span></div>
+  <div class="body">
+    <h2>Чем можно <em>заплатить</em></h2>
+    <p>Выбор сервиса часто решает именно оплата.</p>
+  </div>
+  <div class="full"><div class="tw"><table style="min-width:640px">
+    <thead><tr><th>Сервис</th><th>Оплата</th><th>Что учесть</th></tr></thead>
+    <tbody id="pai-t5"></tbody></table></div></div>
+  <div class="full call"><b>Перед оплатой.</b> Проверь реальную стоимость токенов на нужную модель в бесплатном аккаунте. Автопродление есть у большинства сервисов, обычно его отключают в кабинете до следующего списания. Если платить дальше не собираешься, отключи автопродление или привязку карты.</div>
+</section>
+
+<section id="pai-15">
+  <div class="num"><i>15</i><span class="lab">Год или месяц</span></div>
+  <div class="body">
+    <h2>Когда выгоден <em>годовой</em></h2>
+    <p>Годовой тариф платится сразу за 12 месяцев и в пересчёте на месяц стоит на 15–20% дешевле. Он выгоден, только если ты будешь пользоваться сервисом не меньше 10 месяцев из 12.</p>
+  </div>
+  <div class="full"><div class="tw"><table style="min-width:640px">
+    <thead><tr><th>План</th><th>В месяц, помесячно</th><th>В месяц, при оплате за год</th><th>Экономия</th><th>Платишь сразу</th></tr></thead>
+    <tbody id="pai-t6"></tbody></table></div>
+    <p class="fn">У годовых планов Utopy и Syntx весь пакет токенов выдаётся сразу. У Higgsfield кредиты годового плана обновляются каждые 30 дней и не копятся.</p>
+  </div>
+  <div class="full call"><b>Правило.</b> Первые 1–2 месяца платишь помесячно. Если сервис вошёл в работу и ты точно будешь им пользоваться почти весь год, переходи на годовой. Если не уверен, оставайся на месячном: переплата меньше, чем деньги за неиспользованный год.</div>
+</section>
+
+<section id="pai-16">
+  <div class="num"><i>16</i><span class="lab">Первые два месяца</span></div>
+  <div class="body">
+    <h2>Сколько выйдет <em>на старте</em></h2>
+    <p>Считаем два месяца подряд на месячной оплате. Для категории А берём 80 картинок в месяц, для категории Б — 80 картинок и 15 клипов Seedance 2.5.</p>
+  </div>
+  <div class="full"><p class="lab" style="margin-bottom:10px">Категория А · 80 картинок в месяц</p><div class="tw"><table style="min-width:640px">
+    <thead><tr><th>План</th><th>1-й месяц</th><th>2-й месяц</th><th>Итого</th><th>Заметка</th></tr></thead>
+    <tbody id="pai-t7a"></tbody></table></div></div>
+  <div class="full"><p class="lab" style="margin:28px 0 10px">Категория Б · 80 картинок и 15 клипов в месяц</p><div class="tw"><table style="min-width:640px">
+    <thead><tr><th>План</th><th>1-й месяц</th><th>2-й месяц</th><th>Итого</th><th>Заметка</th></tr></thead>
+    <tbody id="pai-t7b"></tbody></table></div></div>
+  <div class="full call"><b>Что брать на первые два месяца.</b> Категория А: на Nano Banana Pro — Syntx Basic, на Nano Banana 2 — GIVON Start. Категория Б: на Seedance 2.5 — Syntx VIP; если важна цена, а не модели, — Phygital+ Старт с докупкой. На Seedance 2.0 хватит Syntx Pro (3 380 ₽ за два месяца) или GIVON Creator (4 980 ₽).</div>
+</section>
+
+<section id="pai-17">
+  <div class="num"><i>17</i><span class="lab">Калькулятор</span></div>
+  <div class="body">
+    <h2>Подбери <em>свой план</em></h2>
+    <p>Выбери, сколько картинок и клипов тебе нужно в месяц и чем платишь. Калькулятор покажет подходящие месячные планы от дешёвых к дорогим. Если плана немного не хватает, показываем цену с докупкой токенов. Цены примерные.</p>
+  </div>
+  <div class="full calc">
+    <label class="f" for="pai-lvl"><span class="lab">Картинок в месяц</span>
+      <select id="pai-lvl"><option value="40">Начинаю: ~40 картинок</option><option value="80" selected>Уже делал(а) картинки: ~80</option><option value="150">Работаю с клиентами: ~150</option></select></label>
+    <label class="f" for="pai-clp"><span class="lab">Клипов по 5 секунд в месяц</span>
+      <select id="pai-clp"><option value="0">Без видео</option><option value="5">~5 клипов</option><option value="15" selected>~15 клипов</option><option value="30">~30 клипов</option></select></label>
+    <label class="f" for="pai-pay"><span class="lab">Чем платишь</span>
+      <select id="pai-pay"><option value="ru" selected>Карта РФ, Мир или СБП</option><option value="any">Есть зарубежная карта</option></select></label>
+  </div>
+  <div class="full res">
+    <div class="call" id="pai-best" aria-live="polite"></div>
+    <div class="tw" style="margin-top:18px"><table style="min-width:640px">
+      <thead><tr><th>План</th><th>Цена в месяц</th><th>Уйдёт плана</th><th>Хватит?</th><th>Заметка</th></tr></thead>
+      <tbody id="pai-t8"></tbody></table></div>
+  </div>
+</section>
+
+<section id="pai-18">
+  <div class="num"><i>18</i><span class="lab">Итог</span></div>
+  <div class="body">
+    <h2>Выбор за <em>минуту</em></h2>
+    <ol class="steps">
+      <li>Определи категорию: только картинки или картинки + видео.</li>
+      <li>Реши, чем будешь платить: карта РФ, Мир или зарубежная карта.</li>
+      <li>Возьми помесячный план из выделенных строк своей таблицы или из калькулятора.</li>
+      <li>В первый день сделай 5 пробных генераций и проверь, сколько токенов ушло.</li>
+      <li>Через 1–2 месяца реши, оставаться на месячном или платить за год.</li>
+    </ol>
+  </div>
+</section>
+
+<div class="src">
+  <span class="lab">Что проверено и что посчитано</span>
+  <ul>
+    <li>Вилки цен на услуги и проекты — с сайта школы и студии Perasperadastra, октябрь 2026. Работы — студентов курса Mission to AI.</li>
+    <li>Цены нейросетей в части II — с тарифных страниц сервисов в октябре 2026, по курсу около 83 ₽ за доллар с комиссией посредника.</li>
+    <li>Цены и количество токенов в части III взяты с тарифных страниц сервисов 12 октября 2026. Цены Higgsfield в долларах пересчитаны по курсу ЦБ 85,5 ₽/$; при другом курсе они немного меняются.</li>
+    <li>Все расчёты сделаны для Nano Banana Pro в 2K и Seedance 2.5 в 720p на 5 секунд. Другие модели тратят токены иначе.</li>
+  </ul>
+  <span class="lab">Сервисы: syntx.ai · higgsfield.ai · utopy.ai · phygital.plus · givon.ai</span>
+</div>
+
+<div class="end">
+  <div class="txt">
+    <span class="lab">Спасибо, что дочитали гайд</span>
+    <h2>Давайте <em>знакомиться</em></h2>
+  </div>
+  <div class="txt">
+    <p>Мы — студия дизайна Perasperadastra. Работали с Яндексом, ТБанком, Альфой, Сбером, «Победой», Музеем космонавтики, 2ГИС и другими. Делаем UX/UI-дизайн, моушн и работаем с нейросетями.</p>
+    <p>Ещё у нас есть школа: учим тому, что умеем сами. На курсе Mission to AI за несколько недель собираешь портфолио из коммерческих проектов с нейросетями.</p>
+    <div class="btns"><a class="btn" href="https://t.me/perasperagram" target="_blank" rel="noopener">Наш Telegram-канал</a><a class="btn ghost" href="https://perasperadastra.ru/mission-to-ai" target="_blank" rel="noopener">Курс Mission to AI</a></div>
+  </div>
+</div>
+
+</div></div>
+
+<script>
+(function(){
+var C={hf:['Higgsfield','#d7f64a','H'],sx:['Syntx','#ff7a45','S'],ut:['Utopy','#f2f0ec','U'],ph:['Phygital+','#a98bff','P'],gv:['GIVON','#7cc4ff','G']};
+function sv(k,n){var c=C[k];return '<span class="svc"><i style="background:'+c[1]+'">'+c[2]+'</i>'+(n||c[0])+'</span>'}
+function rub(x){return String(Math.round(x)).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' ₽'}
+var pay={ru:'<span class="ok">да</span>',mir:'<span class="warn">Мир, СБП</span>',no:'<span class="no">нет</span>'};
+/* план: сервис, имя, пакет, цена, картинок, клипов, оплата, докупка за 100% плана (₽) или 0, заметка А, заметка Б, лучший в А/Б */
+var P=[
+ ['hf','Lite','250 кредитов',855,125,7,'no',0,'Нужна зарубежная карта',''],
+ ['hf','Plus','1 200 кредитов',5045,600,36,'no',0,'Дорого без видео','Лучшие модели видео'],
+ ['sx','Basic','260 токенов',890,130,3,'mir',936,'Хватает на 60–100 картинок','',1],
+ ['sx','Pro','680 токенов',1690,340,8,'mir',2540,'Хватает с большим запасом','Докупка 3,6 ₽ за токен'],
+ ['sx','VIP','1 700 токенов',3990,850,19,'mir',6120,'Для большого объёма','Запас небольшой',0,1],
+ ['ut','Старт','1 500 токенов',740,22,3,'ru',0,'Хватит ненадолго',''],
+ ['ut','Профессиональный','4 500 токенов',1590,67,9,'ru',0,'Модели проще',''],
+ ['ut','Максимальный','14 000 токенов',3590,209,28,'ru',0,'Модели проще','Модели проще'],
+ ['ph','Старт','10 000 кредитов',1499,200,18,'ru',1500,'Модели слабее','Модели слабее'],
+ ['ph','Pro','',5899,914,82,'ru',5900,'Модели слабее','Модели слабее'],
+ ['gv','Start','300 токенов',990,100,4,'mir',960,'Дорого на входе',''],
+ ['gv','Creator','900 токенов',2490,330,11,'mir',2810,'Хватает с запасом','Нужна докупка токенов'],
+ ['gv','Ultima','2 200 токенов',5490,860,31,'mir',7040,'Для большого объёма','Хватает с запасом']
+];
+function grp(rows,cols){var h='',last='';rows.forEach(function(r){if(r.k!==last){h+='<tr class="grp"><td colspan="'+cols+'">'+sv(r.k)+'</td></tr>';last=r.k}h+=r.h});return h}
+function need(p,img,clp){return img/p[4]+clp/p[5]}
+function verdict(p,img,clp){var f=need(p,img,clp);if(f<=.8)return {t:'<span class="ok">да</span>',c:p[3],f:f};if(f<=1)return {t:'<span class="warn">впритык</span>',c:p[3],f:f};if(p[7]){var c=p[3]+(f-1)*p[7];return {t:'<span class="warn">с докупкой ≈ '+rub(Math.round(c/50)*50)+'</span>',c:c,f:f}}return {t:'<span class="no">не хватит</span>',c:Infinity,f:f}}
+/* 3 */
+document.getElementById('pai-t3').innerHTML=grp(P.filter(function(p){return p[1]!=='Pro'||p[0]!=='ph'}).map(function(p){return {k:p[0],h:'<tr'+(p[10]?' class="best"':'')+'><td>'+p[1]+(p[2]?'<small>'+p[2]+'</small>':'')+'</td><td>'+(p[0]==='hf'?'~':'')+rub(p[3])+'</td><td class="n">~'+p[4]+' шт.</td><td class="n">~'+(p[3]/p[4]).toFixed(p[3]/p[4]<10?1:0).replace('.0','').replace('.',',')+' ₽</td><td>'+pay[p[6]]+'</td><td class="n">'+p[8]+'</td></tr>'}}),6);
+/* 4 */
+var b4=P.filter(function(p){return p[9]&&!(p[0]==='ph'&&p[1]==='Pro')});
+document.getElementById('pai-t4').innerHTML=grp(b4.map(function(p){var v=verdict(p,80,15);return {k:p[0],h:'<tr'+(p[11]?' class="best"':'')+'><td>'+p[1]+'</td><td>'+(p[0]==='hf'?'~':'')+rub(p[3])+'</td><td class="n">~'+p[4]+' шт.</td><td class="n">~'+p[5]+' шт.</td><td>'+v.t+'</td><td>'+pay[p[6]]+'</td><td class="n">'+p[9]+'</td></tr>'}}),7);
+/* 5 */
+document.getElementById('pai-t5').innerHTML=[
+ ['ut','<span class="ok">Карты РФ, СБП, SberPay, Яндекс Пэй</span>','Модели проще, чем у Syntx и Higgsfield'],
+ ['sx','<span class="warn">Мир, СБП, Telegram Stars</span>','Токены не сгорают, но тратить их можно только при активной подписке'],
+ ['ph','<span class="ok">Карты РФ</span>','Цены с НДС. Модели слабее'],
+ ['hf','<span class="no">Карты РФ не принимает</span>','Кредиты подписки сгорают при продлении'],
+ ['gv','<span class="warn">Мир, СБП</span>','Дороже Syntx на Nano Banana Pro, дешевле на Nano Banana 2']
+].map(function(r){return '<tr><td>'+sv(r[0])+'</td><td>'+r[1]+'</td><td class="n">'+r[2]+'</td></tr>'}).join('');
+/* 6 */
+document.getElementById('pai-t6').innerHTML=[
+ ['ut','Utopy Профессиональный',1590,1271,15250],['ut','Utopy Максимальный',3590,2871,34450],['sx','Syntx Pro',1690,1436,17230],
+ ['ph','Phygital+ Старт',1499,1200,14400],['hf','Higgsfield Plus',5045,4020,48200],['gv','GIVON Creator',2490,2090,25080],['gv','GIVON Ultima',5490,4590,55080]
+].map(function(r){var t=r[0]==='hf'||r[1]==='Syntx Pro'?'~':'';return '<tr><td>'+sv(r[0],r[1])+'</td><td>'+(r[0]==='hf'?'~':'')+rub(r[2])+'</td><td>'+(r[0]==='hf'?'~':'')+rub(r[3])+'</td><td class="n">'+Math.round((1-r[3]/r[2])*100)+'%</td><td>'+t+rub(r[4])+'</td></tr>'}).join('');
+/* 7 */
+function two(rows){return rows.map(function(r){var a=r[2],ap=r[3]?'≈ ':'';return '<tr'+(r[5]?' class="best"':'')+'><td>'+sv(r[0],r[1])+'</td><td>'+ap+rub(a)+'</td><td>'+ap+rub(a)+'</td><td>'+ap+rub(a*2)+'</td><td class="n">'+r[4]+'</td></tr>'}).join('')}
+document.getElementById('pai-t7a').innerHTML=two([
+ ['sx','Syntx Basic',890,0,'Хватает на ~130 картинок. Самый дешёвый на Nano Banana Pro',1],['gv','GIVON Start',990,0,'Хватает на ~100 картинок. Выгоднее на Nano Banana 2'],
+ ['sx','Syntx Pro',1690,0,'Хватает на ~340 картинок'],['ut','Utopy Максимальный',3590,0,'Хватает на ~209 картинок, модели проще']]);
+document.getElementById('pai-t7b').innerHTML=two([
+ ['ph','Phygital+ Старт + докупка',1850,1,'Самый дешёвый, но модели слабее'],['ut','Utopy Максимальный',3590,0,'Модели проще'],
+ ['sx','Syntx VIP',3990,0,'Хватает с небольшим запасом',1],['gv','GIVON Creator + докупка',4200,1,'Нужна докупка токенов'],
+ ['sx','Syntx Pro + докупка',4500,1,'Докупка по 3,6 ₽ за токен делает его дороже VIP'],['hf','Higgsfield Plus',5045,1,'Лучшие модели, нужна зарубежная карта'],
+ ['gv','GIVON Ultima',5490,0,'Хватает с большим запасом']]);
+/* 8 */
+var L=document.getElementById('pai-lvl'),K=document.getElementById('pai-clp'),Y=document.getElementById('pai-pay');
+function calc(){var img=+L.value,clp=+K.value,ru=Y.value==='ru';
+ var r=P.filter(function(p){return !ru||p[6]!=='no'}).map(function(p){var v=verdict(p,img,clp);v.p=p;return v}).filter(function(v){return isFinite(v.c)}).sort(function(a,b){return a.c-b.c}).slice(0,7);
+ document.getElementById('pai-t8').innerHTML=r.map(function(v,i){var p=v.p;return '<tr'+(i===0?' class="best"':'')+'><td>'+sv(p[0],C[p[0]][0]+' '+p[1])+'</td><td>'+(p[0]==='hf'?'~':'')+rub(p[3])+'</td><td class="n">'+Math.round(v.f*100)+'%</td><td>'+v.t+'</td><td class="n">'+(clp?(p[9]||p[8]):p[8])+'</td></tr>'}).join('');
+ var b=r[0];document.getElementById('pai-best').innerHTML=b?'<b>Самый дешёвый вариант: '+C[b.p[0]][0]+' '+b.p[1]+', ≈ '+rub(Math.round(b.c/10)*10)+' в месяц'+(b.c>b.p[3]?' с докупкой токенов':'')+'.</b> Считаем '+img+' картинок'+(clp?' и '+clp+' клипов':'')+' в месяц. Если нужен запас или модели лучше, смотри следующие строки.':'Ни один план не подходит. Попробуй уменьшить объём.'}
+[L,K,Y].forEach(function(s){s.addEventListener('change',calc)});calc();
+})();
+</script>
