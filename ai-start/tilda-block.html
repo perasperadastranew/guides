@@ -132,6 +132,12 @@ body{background:#0c0c0c;margin:0}
 .pai .stage .cl b{display:block;font:400 clamp(20px,2.6vw,30px)/1.1 var(--sans);letter-spacing:-.02em}
 .pai .stage.s-roles,.pai .stage.s-coins{height:clamp(360px,40vw,500px)}
 @media (max-width:760px){.pai .stage .cap{display:none}.pai .stage .cl b{font-size:15px}.pai .stage .cl .lab{font-size:9px;letter-spacing:.04em}}
+.pai .stage.vid{height:auto;background:#050505;cursor:pointer;margin:40px 0 0}
+.pai .stage.vid video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#050505}
+.pai .stage.vid.wide video{aspect-ratio:1600/760}
+.pai .stage.vid figcaption{position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;gap:16px;align-items:flex-end;pointer-events:none;color:var(--dim);font-size:14px}
+.pai .stage.vid figcaption span:last-child{text-align:right;max-width:46ch}
+@media (max-width:760px){.pai .stage.vid{border-radius:6px;background:transparent}.pai .stage.vid figcaption{position:static;padding:10px 0 0;flex-direction:column;align-items:flex-start;gap:4px}.pai .stage.vid figcaption span:last-child{text-align:left}}
 </style>
 
 <div class="pai"><div class="w">
@@ -139,7 +145,7 @@ body{background:#0c0c0c;margin:0}
 <div class="top"><span class="lab">Гайд · октябрь 2026</span><span class="lab">Perasperadastra</span></div>
 <h1>Как начать <em>в AI-индустрии</em></h1>
 <p class="lead">Разбираем, что заказывают AI-креаторам, сколько это стоит и с чего начинают наши студенты. Потом смотрим, какая нейросеть за что отвечает. В конце считаем подписки: какую взять под свою работу и во сколько она обойдётся.</p>
-<div class="stage" data-scene="tower" tabindex="0" role="img" aria-label="3D-сцена: башня проекта 2022 из двух блоков и высокая башня 2026 из семи — веб-дизайн, фото, монтаж, анимация, 3D, промпты, нейросети"><span class="yr y22">2022</span><span class="yr y26">2026</span><span class="hint lab">Нажми, чтобы собрать заново</span><span class="cap">Проект 2022 — веб-дизайн. Проект 2026 — всё сразу, и собирает это один человек.</span></div>
+<figure class="stage vid" data-v="once"><video src="https://perasperadastranew.github.io/guides/ai-start/v/tower.mp4" poster="https://perasperadastranew.github.io/guides/ai-start/v/tower.webp" muted playsinline preload="metadata" aria-label="Анимация из Blender: невысокая серая башня 2022 из блоков «Веб-дизайн» и «Графика» и высокая башня 2026 из блоков «Веб-дизайн», «Фото», «Монтаж», «Анимация», «3D», «Промпты» и красного «Нейросети»"></video><figcaption><span class="lab">Нажми, чтобы собрать заново</span><span>Проект 2022 — веб-дизайн. Проект 2026 — всё сразу, и собирает это один человек.</span></figcaption></figure>
 <nav class="toc" aria-label="Разделы">
   <div class="tg"><span class="lab">Часть I · Профессия</span><a href="#pai-1"><span>1</span>Кто такой AI-креатор</a><a href="#pai-2"><span>2</span>Какие проекты</a><a href="#pai-3"><span>3</span>Сколько стоят</a><a href="#pai-4"><span>4</span>Где работать</a><a href="#pai-5"><span>5</span>Работы студентов</a><a href="#pai-6"><span>6</span>Как стартовать</a></div>
   <div class="tg"><span class="lab">Часть II · Нейросети</span><a href="#pai-7"><span>7</span>Пять задач</a><a href="#pai-8"><span>8</span>Сравнение</a><a href="#pai-9"><span>9</span>Стек на старт</a></div>
@@ -293,7 +299,7 @@ body{background:#0c0c0c;margin:0}
 </section>
 
 <div class="part" id="pai-p2"><h2>Часть II. <em>Нейросети</em></h2><p>Какая нейросеть за что отвечает и чем они отличаются друг от друга.</p></div>
-<div class="stage s-roles" data-scene="roles" tabindex="0" role="img" aria-label="3D-сцена: пять ролей нейросетей — придумать (Midjourney), сохранить (Nano Banana), буквы (ChatGPT, Figma), оживить (Seedance, Kling), сформулировать (Claude, ChatGPT)"><span class="hint lab">Нажми, чтобы повернуть</span></div>
+<figure class="stage vid wide" data-v="loop"><video src="https://perasperadastranew.github.io/guides/ai-start/v/roles.mp4" poster="https://perasperadastranew.github.io/guides/ai-start/v/roles.webp" muted playsinline preload="metadata" loop aria-label="Анимация из Blender: пять ролей нейросетей — придумать (Midjourney), сохранить (Nano Banana), буквы (ChatGPT, Figma), оживить (Seedance, Kling), сформулировать (Claude, ChatGPT)"></video></figure>
 
 <section id="pai-7">
   <div class="num"><i>7</i><span class="lab">Карта</span></div>
@@ -359,7 +365,7 @@ body{background:#0c0c0c;margin:0}
 </section>
 
 <div class="part" id="pai-p3"><h2>Часть III. <em>Подписки</em></h2><p>Какой агрегатор взять под свой объём и сколько выйдет в месяц. Цены на 12 октября 2026.</p></div>
-<div class="stage s-coins" data-scene="coins" tabindex="0" role="img" aria-label="3D-сцена: три стопки монет — около 1 100, 5 100 и 10–11,5 тысяч рублей в месяц"><span class="cl"><b>≈ 1 100 ₽</b><span class="lab">первые недели</span></span><span class="cl"><b>≈ 5 100 ₽</b><span class="lab">рабочий стек</span></span><span class="cl"><b>≈ 10–11,5 тыс ₽</b><span class="lab">с заказами</span></span><span class="hint lab">Нажми, чтобы пересчитать</span></div>
+<figure class="stage vid wide" data-v="once"><video src="https://perasperadastranew.github.io/guides/ai-start/v/coins.mp4" poster="https://perasperadastranew.github.io/guides/ai-start/v/coins.webp" muted playsinline preload="metadata" aria-label="Анимация из Blender: монеты падают в три стопки — около 1 100 ₽ на первые недели, 5 100 ₽ рабочий стек и 10–11,5 тысяч ₽ с заказами"></video><figcaption><span class="lab">Нажми, чтобы пересчитать</span></figcaption></figure>
 
 <section id="pai-10">
   <div class="num"><i>10</i><span class="lab">Агрегаторы</span></div>
@@ -575,105 +581,12 @@ function calc(){var img=+L.value,clp=+K.value,ru=Y.value==='ru';
 })();
 </script>
 
-<script>/* Три 3D-сцены гайда: башня 2022/2026, пять ролей, бюджет монетами. Рисуем только видимые сцены. */
-(function(){
-var hosts=document.querySelectorAll('.pai .stage');if(!hosts.length)return;
-var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-var INK=0xe9e5de,RED=0xec3b3b,DARK=0x0c0c0c,GREY=0x3b3a38;
-function go(){if(window.THREE)return boot();var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';s.onload=boot;s.onerror=function(){hosts.forEach(function(h){h.classList.add('off')})};document.head.appendChild(s)}
-function ready(f){var d=false;function once(){if(!d){d=true;f()}}(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(once,once);setTimeout(once,1200)}
-if('IntersectionObserver' in window){var pre=new IntersectionObserver(function(es){if(es.some(function(e){return e.isIntersecting})){pre.disconnect();ready(go)}},{rootMargin:'600px'});hosts.forEach(function(h){pre.observe(h)})}else ready(go);
-
-function bounce(t){var n=7.5625,d=2.75;if(t<1/d)return n*t*t;if(t<2/d)return n*(t-=1.5/d)*t+.75;if(t<2.5/d)return n*(t-=2.25/d)*t+.9375;return n*(t-=2.625/d)*t+.984375}
-function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
-function tex(lines,w,h,bg){var T=THREE,c=document.createElement('canvas');c.width=w;c.height=h;var g=c.getContext('2d');if(bg){g.fillStyle=bg;g.fillRect(0,0,w,h)}
-  lines.forEach(function(l){g.font=l.f;g.fillStyle=l.c;g.textAlign=l.a||'center';g.textBaseline='middle';g.fillText(l.t,l.x==null?w/2:l.x,l.y)});
-  var t=new T.CanvasTexture(c);t.anisotropy=4;if(T.sRGBEncoding)t.encoding=T.sRGBEncoding;return t}
-function L(h){return new THREE.Color(h).convertSRGBToLinear()}
-var SANS='"Onest",-apple-system,Arial,sans-serif';
-
-var stages=[];
-function boot(){var T=THREE;
-  hosts.forEach(function(el){
-    var R;try{R=new T.WebGLRenderer({antialias:true,alpha:true})}catch(e){el.classList.add('off');return}
-    R.setPixelRatio(Math.min(window.devicePixelRatio||1,2));R.outputEncoding=T.sRGBEncoding;R.shadowMap.enabled=true;R.shadowMap.type=T.PCFSoftShadowMap;
-    el.insertBefore(R.domElement,el.firstChild);
-    var S=new T.Scene(),C=new T.PerspectiveCamera(35,1,.1,100);
-    S.add(new T.HemisphereLight(0xffffff,0x2a1414,.5));
-    var D=new T.DirectionalLight(0xffffff,1.0);D.position.set(4,9,6);D.castShadow=true;D.shadow.mapSize.set(1024,1024);D.shadow.radius=4;
-    var sc=D.shadow.camera;sc.left=-8;sc.right=8;sc.top=10;sc.bottom=-4;sc.near=1;sc.far=30;S.add(D);
-    var P=new T.PointLight(RED,.7,30);P.position.set(-6,4,-3);S.add(P);
-    var g=new T.Mesh(new T.PlaneGeometry(60,60),new T.ShadowMaterial({opacity:.4}));g.rotation.x=-Math.PI/2;g.receiveShadow=true;S.add(g);
-    var st={el:el,R:R,S:S,C:C,T:T,t:0,vis:false,px:0,py:0,w:1,h:1,dirty:true};
-    var kind=el.getAttribute('data-scene');st.api=(kind==='tower'?tower:kind==='roles'?roles:coins)(st);
-    function size(){st.w=el.clientWidth;st.h=el.clientHeight;R.setSize(st.w,st.h,false);C.aspect=st.w/st.h;st.api.fit();C.updateProjectionMatrix();st.dirty=true}
-    size();if(window.ResizeObserver)new ResizeObserver(size).observe(el);else addEventListener('resize',size);
-    new IntersectionObserver(function(es){st.vis=es[0].isIntersecting;if(st.vis&&!st.started){st.started=true;st.api.start()}},{threshold:.2}).observe(el);
-    el.addEventListener('pointermove',function(e){var r=el.getBoundingClientRect();st.px=(e.clientX-r.left)/r.width*2-1;st.py=(e.clientY-r.top)/r.height*2-1;st.dirty=true});
-    el.addEventListener('pointerleave',function(){st.px=0;st.py=0});
-    el.addEventListener('click',function(){st.api.click();st.dirty=true});
-    el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();st.api.click();st.dirty=true}});
-    stages.push(st);
-  });
-  var last=performance.now();
-  (function loop(now){var dt=Math.min(.05,(now-last)/1000);last=now;
-    stages.forEach(function(st){if(!st.vis)return;st.t+=dt;var moving=st.api.tick(dt,st.t);if(moving||st.dirty||!RM){st.R.render(st.S,st.C);st.api.post&&st.api.post();st.dirty=false}});
-    requestAnimationFrame(loop)})(last);
-}
-function fitCam(st,W,H,ty,elev){var C=st.C,f=Math.tan(C.fov*Math.PI/360),d=Math.max(H/2/f,W/2/(f*C.aspect));C.position.set(0,ty+elev*d,d);C.lookAt(0,ty,0);return d}
-function screen(st,v){var p=v.clone().project(st.C);return [(p.x+1)/2*st.w,(1-p.y)/2*st.h]}
-function drop(items,now,instant){items.forEach(function(b){b.t0=now+b.delay;b.m.position.y=instant?b.y:b.y+7;b.m.visible=instant})}
-function fall(items,t){var moving=false;items.forEach(function(b){var p=clamp((t-b.t0)/b.dur,0,1);if(t<b.t0){b.m.visible=false;moving=true;return}b.m.visible=true;b.m.position.y=b.y+7*(1-bounce(p));if(p<1)moving=true});return moving}
-
-/* 1. Башня: проект 2022 и проект 2026 */
-function tower(st){var T=st.T,G=new T.Group();st.S.add(G);var H=.62,Wd=2.5,Dp=1.25,items=[];
-  var edge=new T.LineBasicMaterial({color:L(DARK),transparent:true,opacity:.35});
-  function block(x,i,label,col,txt,delay){var geo=new T.BoxGeometry(Wd,H,Dp),m=new T.Mesh(geo,new T.MeshStandardMaterial({color:L(col),roughness:.75,metalness:0}));
-    m.castShadow=m.receiveShadow=true;m.add(new T.LineSegments(new T.EdgesGeometry(geo),edge));
-    var lab=new T.Mesh(new T.PlaneGeometry(Wd*.92,H*.8),new T.MeshBasicMaterial({map:tex([{t:label,f:'500 58px '+SANS,c:txt,y:64}],512,128),transparent:true}));lab.position.z=Dp/2+.002;m.add(lab);
-    var y=H/2+i*H;m.position.set(x+(Math.random()-.5)*.08,y,0);m.rotation.y=(Math.random()-.5)*.06;G.add(m);items.push({m:m,y:y,delay:delay,dur:.7})}
-  var old=['Веб-дизайн','Графика'],neu=['Веб-дизайн','Фото','Монтаж','Анимация','3D','Промпты','Нейросети'];
-  old.forEach(function(l,i){block(-2.1,i,l,GREY,'#cfcac2',i*.25)});
-  neu.forEach(function(l,i){var r=l==='Нейросети';block(1.7,i,l,r?RED:INK,r?'#ffffff':'#0c0c0c',.9+i*.3)});
-  var y22=st.el.querySelector('.y22'),y26=st.el.querySelector('.y26'),done=0;
-  drop(items,0,true);
-  return{fit:function(){fitCam(st,st.w<560?8.6:10.5,7.0,2.55,.18)},
-    start:function(){if(RM)return;drop(items,st.t+.2,false)},
-    click:function(){if(RM)return;drop(items,st.t,false)},
-    tick:function(dt,t){var mv=fall(items,t);var ty=st.px*.45+(RM?0:Math.sin(t*.35)*.1);G.rotation.y+=(ty-G.rotation.y)*Math.min(1,dt*4);G.rotation.x+=(st.py*.06-G.rotation.x)*Math.min(1,dt*4);
-      done=mv?0:Math.min(1,done+dt*2);return mv||Math.abs(ty-G.rotation.y)>.001},
-    post:function(){var a=items[old.length-1].m,b=items[items.length-1].m;function put(el,m){var v=new T.Vector3();m.getWorldPosition(v);v.y+=H*.9;var s=screen(st,v);el.style.left=s[0]+'px';el.style.top=s[1]+'px'}
-      put(y22,a);put(y26,b);y22.style.opacity=y26.style.opacity=done}}}
-
-/* 2. Пять ролей */
-function roles(st){var T=st.T,G=new T.Group();st.S.add(G);var list=[
-  ['Придумать','Midjourney',function(){return new T.Mesh(new T.IcosahedronGeometry(.62,0),new T.MeshStandardMaterial({color:L(RED),roughness:.5,flatShading:true}))}],
-  ['Сохранить','Nano Banana',function(){return new T.Mesh(new T.BoxGeometry(.95,.95,.95),new T.MeshStandardMaterial({color:L(INK),roughness:.7}))}],
-  ['Буквы','ChatGPT, Figma',function(){var m=new T.MeshStandardMaterial({color:L(INK),roughness:.7}),f=new T.MeshStandardMaterial({map:tex([{t:'Aa',f:'400 150px '+SANS,c:'#0c0c0c',y:136}],256,256,'#e9e5de'),roughness:.7});return new T.Mesh(new T.BoxGeometry(1.05,1.05,.16),[m,m,m,m,f,f])}],
-  ['Оживить','Seedance, Kling',function(){return new T.Mesh(new T.TorusGeometry(.48,.17,20,48),new T.MeshStandardMaterial({color:L(RED),roughness:.45}))}],
-  ['Сформулировать','Claude, ChatGPT',function(){var m=new T.Mesh(new T.SphereGeometry(.52,32,24),new T.MeshStandardMaterial({color:L(INK),roughness:.6}));var s=new T.Mesh(new T.SphereGeometry(.13,16,12),new T.MeshStandardMaterial({color:L(RED)}));s.name='moon';m.add(s);return m}]
- ],objs=[],rad=2.45,turn=0,goal=0,pop=0;
- list.forEach(function(r,i){var o=r[2]();o.castShadow=true;var a=i/5*Math.PI*2,p=new T.Group();p.position.set(Math.sin(a)*rad,0,Math.cos(a)*rad);o.position.y=1.05;p.add(o);
-   var sp=new T.Sprite(new T.SpriteMaterial({map:tex([{t:r[0],f:'500 54px '+SANS,c:'#f2f0ec',y:52},{t:r[1],f:'500 44px '+SANS,c:'#ff5a5a',y:112}],512,150),transparent:true,depthWrite:false}));
-   sp.position.y=2.05;p.add(sp);G.add(p);objs.push({o:o,i:i,sp:sp})});
- return{fit:function(){fitCam(st,st.w<560?7.0:8.2,4.6,1.0,.55);var k=st.w<560?2.5:1.9;objs.forEach(function(b){b.sp.scale.set(k,k*.293,1)})},
-  start:function(){pop=RM?1:0},click:function(){goal-=Math.PI*2/5},
-  tick:function(dt,t){pop=Math.min(1,pop+dt*1.4);if(!RM)goal-=dt*.12;turn+=(goal+st.px*.5-turn)*Math.min(1,dt*3);G.rotation.y=turn;
-   objs.forEach(function(b){var o=b.o,k=bounce(clamp(pop*1.6-b.i*.12,0,1));o.scale.setScalar(Math.max(.001,k));if(RM)return;o.rotation.y+=dt*(b.i===3?1.8:.6);o.rotation.x+=dt*(b.i===0?.5:b.i===3?.9:.15);
-    o.position.y=1.05+Math.sin(t*1.3+b.i)*.08;var mn=o.getObjectByName('moon');if(mn)mn.position.set(Math.cos(t*2)*.8,Math.sin(t*2)*.25,Math.sin(t*2)*.8)});return true}}}
-
-/* 3. Бюджет монетами */
-function coins(st){var T=st.T,G=new T.Group();st.S.add(G);var items=[],xs=st.el.clientWidth<560?[-2.15,0,2.15]:[-2.6,0,2.6],cnt=[3,10,21],h=.15,
-  side=new T.MeshStandardMaterial({color:L(RED),roughness:.45,metalness:.2}),
-  face=new T.MeshStandardMaterial({map:tex([{t:'₽',f:'500 150px '+SANS,c:'#0c0c0c',y:136}],256,256,'#e9e5de'),roughness:.55}),geo=new T.CylinderGeometry(.62,.62,h,48);
- var order=[];cnt.forEach(function(n,s){for(var i=0;i<n;i++)order.push([s,i])});
- order.sort(function(a,b){return a[1]-b[1]||a[0]-b[0]});
- order.forEach(function(o,k){var m=new T.Mesh(geo,[side,face,face]);m.castShadow=m.receiveShadow=true;var y=h/2+o[1]*h;
-  m.position.set(xs[o[0]]+(Math.random()-.5)*.07,y,(Math.random()-.5)*.07);m.rotation.y=Math.random()*6;G.add(m);items.push({m:m,y:y,delay:k*.045,dur:.55})});
- var labs=st.el.querySelectorAll('.cl'),done=0;drop(items,0,true);
- return{fit:function(){fitCam(st,st.w<560?7.4:9.2,4.6,1.25,.22)},
-  start:function(){if(RM)return;drop(items,st.t+.15,false)},click:function(){if(RM)return;drop(items,st.t,false)},
-  tick:function(dt,t){var mv=fall(items,t);var ty=st.px*.3+(RM?0:Math.sin(t*.4)*.06);G.rotation.y+=(ty-G.rotation.y)*Math.min(1,dt*4);done=mv?Math.max(0,done-dt*4):Math.min(1,done+dt*2);return mv||Math.abs(ty-G.rotation.y)>.001},
-  post:function(){xs.forEach(function(x,i){var v=new T.Vector3(x,0,.9);G.localToWorld(v);var s=screen(st,v);labs[i].style.left=s[0]+'px';labs[i].style.top=(s[1]+10)+'px';labs[i].style.opacity=.35+.65*done})}}}
-})();
+<script>/* Ролики из Blender: играют, когда видны; «once» останавливаются на последнем кадре, клик — заново */
+(function(){var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('.pai .stage.vid').forEach(function(f){var v=f.querySelector('video'),once=f.getAttribute('data-v')==='once',played=false;
+  function play(){var p=v.play();if(p&&p.catch)p.catch(function(){})}
+  if(!RM&&'IntersectionObserver' in window){new IntersectionObserver(function(es){var on=es[0].isIntersecting;if(on){if(!once||!played){played=true;play()}}else if(!once)v.pause()},{threshold:.45}).observe(f)}
+  f.addEventListener('click',function(){v.currentTime=0;play()});
+  f.setAttribute('tabindex','0');f.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();v.currentTime=0;play()}});
+});})();
 </script>
