@@ -196,6 +196,18 @@
   .pg .wants td{display:block;border:0;padding:0 0 6px;width:auto!important}
 }
 
+/* цифры: 01 02 03, SF Pro */
+.pg{--num:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif}
+.pg .num,.pg .facts b,.pg .donut .big,.pg .bat .t,.pg .five i,.pg .need i,.pg .dir .wide b,.pg ol.check li::before{font-family:var(--num);font-weight:300;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+.pg .num{font-size:clamp(64px,9.5vw,112px);line-height:.85}
+.pg ol.check li::before{content:counter(s,decimal-leading-zero);font-size:22px;line-height:1.15;letter-spacing:-.02em}
+.pg .need i{font-size:15px;letter-spacing:0;margin-right:8px;font-weight:400}
+.pg .five i{font-size:30px}
+.pg .bat .t{letter-spacing:-.02em}
+.pg .dir .wide b{letter-spacing:-.02em}
+
+.pg .facts.mk b{font-size:clamp(34px,4.2vw,52px);white-space:nowrap}
+
 .pg .ft{display:flex;flex-direction:column;gap:56px;border-top:1px solid var(--line);padding-top:44px;min-width:0}
 .pg .ft-intro{display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:680px}
 .pg .ft-intro h2{margin:6px 0 4px}
@@ -252,21 +264,21 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 <figure class="dio" aria-label="Дизеринг-рендер из Blender: невысокая башня 2022 из двух блоков и высокая башня 2026 с красным верхним блоком. Поворачивается при прокрутке"><canvas width="480" height="270" data-d="tower" data-h="0"></canvas><figcaption><span>Проект 2022 и проект 2026</span><span>Был веб-дизайн, стало всё сразу</span></figcaption></figure>
 
 <div><p class="micro" style="margin:0 0 12px">Что внутри</p><nav class="need" aria-label="Разделы">
-<a href="#pg-1"><b><i>I</i>Профессия</b><span>Рынок, заказы, цены</span></a>
-<a href="#pg-6"><b><i>6</i>Твоё направление</b><span>Как внедрить AI в то, что умеешь</span></a>
-<a href="#pg-p2"><b><i>II</i>Нейросети</b><span>Пять задач и сравнение</span></a>
-<a href="#pg-p3"><b><i>III</i>Подписки</b><span>Таблицы, оплата, калькулятор</span></a>
-<a href="#pg-8"><b><i>8</i>План старта</b><span>Шесть шагов до первого заказа</span></a>
+<a href="#pg-1"><b><i>01</i>Профессия</b><span>Рынок, заказы, цены</span></a>
+<a href="#pg-6"><b><i>06</i>Твоё направление</b><span>Как внедрить AI в то, что умеешь</span></a>
+<a href="#pg-p2"><b><i>09</i>Нейросети</b><span>Пять задач и сравнение</span></a>
+<a href="#pg-p3"><b><i>12</i>Подписки</b><span>Таблицы, оплата, калькулятор</span></a>
+<a href="#pg-8"><b><i>08</i>План старта</b><span>Шесть шагов до первого заказа</span></a>
 </nav></div>
 
 <div class="part" id="pg-p1"><h2>Часть I. <span class="s">Профессия</span></h2><p>Что заказывают, сколько платят и как выглядит путь от первой картинки до первого заказа.</p></div>
 
-<section class="step" id="pg-1"><div class="head"><div class="num">1<small>Профессия</small></div><div class="txt"><h2>Кто такой <span class="s">AI-креатор</span></h2>
+<section class="step" id="pg-1"><div class="head"><div class="num">01<small>Профессия</small></div><div class="txt"><h2>Кто такой <span class="s">AI-креатор</span></h2>
 <p><b>AI-креатор продаёт решённую визуальную задачу бренда, а не картинки.</b> Нейросеть делает варианты, а креатор решает: что сделать, в каком стиле, что выбрать и как сдать. За эти решения и платят.</p>
 <p>Сильнее всех в нейросетях фотографы, режиссёры и видеографы: они уже умеют ставить свет, кадр и историю. Нейросеть только ускоряет.</p></div></div>
 <div class="eq"><span>Фотограф</span><em>+</em><span>дизайнер</span><em>+</em><span>монтажёр</span><em>=</em><span class="r">AI-креатор</span></div>
 <div class="donut"><svg viewBox="0 0 200 200" role="img" aria-label="Диаграмма: технические навыки — 20%, вкус, концепция и отбор — 80%"><circle cx="100" cy="100" r="80" fill="none" stroke="var(--line)" stroke-width="22"/><circle cx="100" cy="100" r="80" fill="none" stroke="var(--accent)" stroke-width="22" stroke-dasharray="100.5 402.1" transform="rotate(-90 100 100)"/></svg>
-<div class="txt"><span class="big">20%</span><p style="text-indent:0">Столько в работе занимают кнопки и параметры. Остальные <b>80% — насмотренность, концепция, отбор и вкус</b>. Поэтому не гоняйся за каждой новой нейросетью: выдели на обновления час в неделю и работай.</p></div></div>
+<div class="txt"><span class="big">20%</span><p style="text-indent:0">Столько занимают технические навыки работы в нейросетях — обычно только их и дают на курсах. Остальные <b>80% — визуальный опыт, дизайн-процесс, графдизайн и понимание кино</b>: то, что по-настоящему даёт результат. Поэтому не гоняйся за каждой новой нейросетью: выдели на обновления час в неделю и работай.</p></div></div>
 <div class="ba"><p class="micro">Было и стало: одни и те же задачи</p>
 <div class="tw"><table class="bat"><thead><tr><th>Задача</th><th>Раньше</th><th>С нейросетями</th><th>Разница</th></tr></thead><tbody>
 <tr><td><b>Предметная фотосессия</b><small>карточка, hero и lifestyle</small></td><td class="n"><span class="t">12–14 рабочих дней</span>Студия, фотограф, реквизит и ретушёр, вместе с доставкой продукта и ретушью</td><td class="nn"><span class="t a">10–20 часов</span>Один креатор, это 2–3 рабочих дня</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:19%"></i></div><span class="x">≈ в 5 раз быстрее</span></td></tr>
@@ -275,10 +287,10 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 <tr><td><b>Команда на проект</b></td><td class="n"><span class="t">3 человека</span>Фотограф, дизайнер и монтажёр</td><td class="nn"><span class="t a">1 человек</span>AI-креатор с нейросетями</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:33%"></i></div><span class="x">3 человека → 1</span></td></tr>
 </tbody></table></div>
 <p class="fn">Раньше: сроки студийной предметки — по <a href="https://help.squareshot.com/en/articles/1455633-how-does-it-work" target="_blank" rel="noopener">Squareshot</a>, рекламного ролика — по <a href="https://www.moonb.io/blog/tv-commercial-production" target="_blank" rel="noopener">Moonb</a>, кадр в Blender — из лекции курса. С нейросетями: часы проектов курса Mission to AI. Разница посчитана по серединам вилок, рабочий день — 8 часов.</p>
-<p class="tip"><b>Быстрее — не значит без работы.</b> Нейросеть сжимает производство, но бриф, идея, отбор, правки и согласования с клиентом остаются. Поэтому цена считается от твоих часов и результата, а не от минут генерации.</p></div>
+<p class="tip"><b>Быстрее — не значит без работы.</b> Если считать всю работу целиком, а не отдельные этапы, ускорение обычно в 2–5 раз. Нейросеть сжимает производство, но бриф, идея, отбор, правки и согласования с клиентом остаются. Поэтому цена считается от твоих часов и результата, а не от минут генерации.</p></div>
 </section>
 
-<section class="step" id="pg-2"><div class="head"><div class="num">2<small>Рынок</small></div><div class="txt"><h2>Что происходит <span class="s">на рынке</span></h2>
+<section class="step" id="pg-2"><div class="head"><div class="num">02<small>Рынок</small></div><div class="txt"><h2>Что происходит <span class="s">на рынке</span></h2>
 <p>Рынок неоднозначный, и это стоит знать до старта. Компании режут бюджеты и чаще берут исполнителей подешевле. Но тех, кто умеет работать с нейросетями, ищут активнее, чем остальных.</p></div></div>
 <div class="facts mk">
 <div><b>16%</b><span class="micro">Дизайнеры на hh.ru</span><span>вакансий дизайнеров и художников в первой половине 2026 требуют навыков работы с нейросетями — больше, чем у любой другой профессии</span></div>
@@ -300,7 +312,7 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 <p class="tip"><b>Главный вывод.</b> Нейросети не отменяют дизайнеров, но меняют, за что платят. Дешёвую «просто картинку» клиент теперь может сделать сам. Платят за задачу, вкус, серию и ответственность за результат.</p>
 </section>
 
-<section class="step" id="pg-3"><div class="head"><div class="num">3<small>Заказы</small></div><div class="txt"><h2>Какие проекты <span class="s">заказывают</span></h2>
+<section class="step" id="pg-3"><div class="head"><div class="num">03<small>Заказы</small></div><div class="txt"><h2>Какие проекты <span class="s">заказывают</span></h2>
 <p>Всё, что заказывают AI-креатору, укладывается в три семейства: графика, фотосессия и видео. У каждого заказа есть вторая ось — <b>реализм или иллюстрация</b>. Предметку лимонада можно решить как фото на мху или как плоскую иллюстрацию для упаковки.</p></div></div>
 <div class="tw"><table style="min-width:640px"><thead><tr><th>Тип проекта</th><th>Пример задачи</th><th>Что на выходе</th></tr></thead><tbody>
 <tr class="grp"><td colspan="3">Графика</td></tr>
@@ -330,7 +342,7 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 <p class="tip"><b>Правило портфолио.</b> Каждый тип проекта показывай серией на одном бренде. Одна картинка доказывает удачу, серия доказывает метод.</p>
 </section>
 
-<section class="step" id="pg-4"><div class="head"><div class="num">4<small>Цены</small></div><div class="txt"><h2>Сколько это <span class="s">стоит</span></h2>
+<section class="step" id="pg-4"><div class="head"><div class="num">04<small>Цены</small></div><div class="txt"><h2>Сколько это <span class="s">стоит</span></h2>
 <p>Вилки взяты с сайта школы и студии Perasperadastra. Это ориентир для старта: рынок движется, перед первым заказом сверься с актуальными ценами. Внизу вилки — один кадр, один круг правок и один формат, вверху — серия, адаптации и передача прав.</p></div></div>
 <div class="chart" id="pg-rng"><p class="micro">Вилки цен на услуги, тысяч рублей</p>
 <div class="rng"><span class="l">Креативные ролики</span><span class="bar"><i style="--a:10%;--w:90%"></i></span><span class="v">5–50 тыс</span></div>
@@ -361,7 +373,7 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 <p class="tip"><b>Правки — отдельная строка.</b> В пакет входят два круга правок, дальше — по часовой ставке. Если этого нет в договоре, проект за 10 тысяч превращается в месяц работы.</p>
 </section>
 
-<section class="step" id="pg-5"><div class="head"><div class="num">5<small>Где работать</small></div><div class="txt"><h2>Где <span class="s">работать</span></h2>
+<section class="step" id="pg-5"><div class="head"><div class="num">05<small>Где работать</small></div><div class="txt"><h2>Где <span class="s">работать</span></h2>
 <p>Выбери одно-два места: от этого зависит, что класть в портфолио. Агентству нужны KV с адаптациями, селлеру — карточки и предметка, артисту — клип.</p></div></div>
 <div class="tw"><table><thead><tr><th>Где</th><th>Что делаешь</th><th>Плюс</th><th>Что показать в портфолио</th></tr></thead><tbody>
 <tr><td>Студия, продакшн</td><td class="n">Кадры и шоты по раскадровке арт-директора</td><td class="n">Большие проекты, быстрый рост</td><td class="n">Серии в заданном стиле, ролики</td></tr>
@@ -372,7 +384,7 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 </tbody></table></div>
 </section>
 
-<section class="step" id="pg-6"><div class="head"><div class="num">6<small>Направления</small></div><div class="txt"><h2>Откуда ты <span class="s">пришёл</span></h2>
+<section class="step" id="pg-6"><div class="head"><div class="num">06<small>Направления</small></div><div class="txt"><h2>Откуда ты <span class="s">пришёл</span></h2>
 <p>В AI-индустрию не приходят с нуля: почти у всех уже есть профессия. Выбери свою — покажем, что в ней остаётся за тобой, что отдать нейросети и с какого проекта начать портфолио.</p></div></div>
 <div class="dirs">
 <div class="tabs" role="tablist" aria-label="Направление">
@@ -430,13 +442,13 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 <p class="tip"><b>Как выбрать.</b> Иди туда, где ты уже сильнее большинства. Нейросеть одинаково доступна всем, а твоя прошлая профессия — нет.</p>
 </section>
 
-<section class="step" id="pg-7"><div class="head"><div class="num">7<small>Студенты</small></div><div class="txt"><h2>Что делают <span class="s">наши студенты</span></h2>
+<section class="step" id="pg-7"><div class="head"><div class="num">07<small>Студенты</small></div><div class="txt"><h2>Что делают <span class="s">наши студенты</span></h2>
 <p>Работы студентов курса Mission to AI. Посмотри на них как клиент: какую услугу здесь можно купить. Почти у всех один ход — ясная идея и серия кадров на одном, часто выдуманном, бренде.</p></div></div>
 <div class="grid4 gal">
 <figure><img src="img/case-eaglips-4.webp" alt="Eaglips: упаковка-скала и прищепки на верёвке в лесу" loading="lazy"><figcaption><b>Eaglips · Милана Гавриченко</b>AI-продукт: прищепка через метафору орла</figcaption></figure>
 <figure><img src="img/case-lumera-1.webp" alt="Lumera: выдуманный гаджет" loading="lazy"><figcaption><b>Lumera · Лейла Исхакова</b>Гаджет с легендой, от предметки до лайфстайла</figcaption></figure>
 <figure><img src="img/case-chess-camp-2.webp" alt="Chess Camp: вид сверху" loading="lazy"><figcaption><b>Chess Camp</b>Кампания: вид сверху и один красный акцент</figcaption></figure>
-<figure><img src="img/case-simple-knives-3.webp" alt="Simple Knives: Meet the chef" loading="lazy"><figcaption><b>Simple Knives</b>Key visual с текстом вёрсткой</figcaption></figure>
+<figure><img src="img/case-simple-knives-3.webp" alt="Simple Knives: Meet the chef" loading="lazy"><figcaption><b>Simple Knives · Анастасия Грачева</b>Key visual с текстом вёрсткой</figcaption></figure>
 <figure><img src="img/case-pohjola-herbs-2.webp" alt="Pohjola Herbs: сушильня трав" loading="lazy"><figcaption><b>Pohjola Herbs</b>Фотостиль бренда трав</figcaption></figure>
 <figure><img src="img/case-fight-club-3.webp" alt="Fight Club: мыло в пене" loading="lazy"><figcaption><b>Fight Club</b>Предметка: продукт на чёрном</figcaption></figure>
 <figure><img src="img/case-dragonfly-2.webp" alt="Rain Cloak Dragonfly: туман" loading="lazy"><figcaption><b>Rain Cloak Dragonfly</b>Фотостиль одежды в тумане</figcaption></figure>
@@ -444,8 +456,9 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 </div>
 </section>
 
-<section class="step" id="pg-8"><div class="head"><div class="num">8<small>Старт</small></div><div class="txt"><h2>План до первого <span class="s">заказа</span></h2>
+<section class="step" id="pg-8"><div class="head"><div class="num">08<small>Старт</small></div><div class="txt"><h2>План до первого <span class="s">заказа</span></h2>
 <p>Примерно так проходят путь наши студенты.</p></div></div>
+<div class="facts"><div><b>Любой</b><span class="micro">Компьютер</span><span>Обычный ноутбук без мощной видеокарты: нейросети работают в браузере</span></div><div><b>2–5 тыс ₽</b><span class="micro">Подписки в месяц</span><span>Midjourney, Nano Banana и Kling. Подробно — в части III</span></div><div><b>6–8 часов</b><span class="micro">В неделю</span><span>Хватает, чтобы за полтора-два месяца собрать первые кейсы</span></div></div>
 <ol class="check">
 <li>Выбери одно-два направления и опиши три услуги: для кого, какая задача, что на выходе, срок, цена и что не входит.</li>
 <li>Собери минимальный стек: бесплатный Claude или ChatGPT и Midjourney Basic. Агрегатор подключай, когда дойдёшь до правок и видео.</li>
@@ -458,7 +471,7 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 
 <div class="part" id="pg-p2"><h2>Часть II. <span class="s">Нейросети</span></h2><p>Какая нейросеть за что отвечает и чем они отличаются.</p></div>
 
-<section class="step" id="pg-9"><div class="head"><div class="num">9<small>Карта</small></div><div class="txt"><h2>Пять задач — <span class="s">пять ролей</span></h2>
+<section class="step" id="pg-9"><div class="head"><div class="num">09<small>Карта</small></div><div class="txt"><h2>Пять задач — <span class="s">пять ролей</span></h2>
 <p>Генераторов много, а задач всего пять. Спорить, какая нейросеть лучшая, — всё равно что спорить, что лучше: кисть или молоток.</p></div></div>
 <figure class="dio" aria-label="Дизеринг-рендер из Blender: пять объектов по кругу — многогранник, куб, карточка Aa, кольцо и сфера со спутником. Поворачиваются при прокрутке"><canvas width="480" height="270" data-d="roles" data-h="0"></canvas>
 <ol class="legend"><li><em>01</em><b>Многогранник</b> — придумать</li><li><em>02</em><b>Куб</b> — сохранить</li><li><em>03</em><b>Aa</b> — буквы</li><li><em>04</em><b>Кольцо</b> — оживить</li><li><em>05</em><b>Сфера</b> — сформулировать</li></ol></figure>
