@@ -185,6 +185,14 @@
   .pg .bat td:nth-child(3)::before{content:"С нейросетями";display:block;font:400 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
   .pg .bat .t{font-size:21px}
 }
+.pg .facts.mk{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.pg .facts.mk b{color:var(--accent)}
+.pg .wants{min-width:760px}.pg .wants td:first-child{width:22%}.pg .wants td:last-child{width:38%}
+@media (max-width:640px){
+  .pg .wants{min-width:0}.pg .wants thead{display:none}.pg .wants,.pg .wants tbody{display:block}.pg .tw:has(.wants){overflow:visible}
+  .pg .wants tr{display:block;padding:14px 0;border-bottom:1px solid var(--line)}
+  .pg .wants td{display:block;border:0;padding:0 0 6px;width:auto!important}
+}
 
 .pg .ft{display:flex;flex-direction:column;gap:56px;border-top:1px solid var(--line);padding-top:44px;min-width:0}
 .pg .ft-intro{display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:680px}
@@ -240,11 +248,11 @@
 <figure class="dio" aria-label="Дизеринг-рендер из Blender: невысокая башня 2022 из двух блоков и высокая башня 2026 с красным верхним блоком. Поворачивается при прокрутке"><canvas width="480" height="270" data-d="tower" data-h="0"></canvas><figcaption><span>Проект 2022 и проект 2026</span><span>Был веб-дизайн, стало всё сразу</span></figcaption></figure>
 
 <div><p class="micro" style="margin:0 0 12px">Что внутри</p><nav class="need" aria-label="Разделы">
-<a href="#pg-1"><b><i>I</i>Профессия</b><span>Заказы, цены и где работать</span></a>
-<a href="#pg-5"><b><i>5</i>Твоё направление</b><span>Как внедрить AI в то, что умеешь</span></a>
+<a href="#pg-1"><b><i>I</i>Профессия</b><span>Рынок, заказы, цены</span></a>
+<a href="#pg-6"><b><i>6</i>Твоё направление</b><span>Как внедрить AI в то, что умеешь</span></a>
 <a href="#pg-p2"><b><i>II</i>Нейросети</b><span>Пять задач и сравнение</span></a>
 <a href="#pg-p3"><b><i>III</i>Подписки</b><span>Таблицы, оплата, калькулятор</span></a>
-<a href="#pg-7"><b><i>7</i>План старта</b><span>Шесть шагов до первого заказа</span></a>
+<a href="#pg-8"><b><i>8</i>План старта</b><span>Шесть шагов до первого заказа</span></a>
 </nav></div>
 
 <div class="part" id="pg-p1"><h2>Часть I. <span class="s">Профессия</span></h2><p>Что заказывают, сколько платят и как выглядит путь от первой картинки до первого заказа.</p></div>
@@ -266,7 +274,29 @@
 <p class="tip"><b>Быстрее — не значит без работы.</b> Нейросеть сжимает производство, но бриф, идея, отбор, правки и согласования с клиентом остаются. Поэтому цена считается от твоих часов и результата, а не от минут генерации.</p></div>
 </section>
 
-<section class="step" id="pg-2"><div class="head"><div class="num">2<small>Заказы</small></div><div class="txt"><h2>Какие проекты <span class="s">заказывают</span></h2>
+<section class="step" id="pg-2"><div class="head"><div class="num">2<small>Рынок</small></div><div class="txt"><h2>Что происходит <span class="s">на рынке</span></h2>
+<p>Рынок неоднозначный, и это стоит знать до старта. Компании режут бюджеты и чаще берут исполнителей подешевле. Но тех, кто умеет работать с нейросетями, ищут активнее, чем остальных.</p></div></div>
+<div class="facts mk">
+<div><b>16%</b><span class="micro">Дизайнеры на hh.ru</span><span>вакансий дизайнеров и художников в первой половине 2026 требуют навыков работы с нейросетями — больше, чем у любой другой профессии</span></div>
+<div><b>21,6 тыс</b><span class="micro">Вакансии с нейросетями</span><span>столько вакансий на hh.ru за полгода прямо упоминают навык работы с нейросетями</span></div>
+<div><b>88%</b><span class="micro">Агентства и фрилансеры</span><span>в маркетинге уже используют ИИ, а 72% из них — для создания контента</span></div>
+<div><b>49%</b><span class="micro">Маркетологи в мире</span><span>каждый день генерируют нейросетями картинки и видео</span></div>
+</div>
+<div class="two"><div><b>Что мешает</b><span>Конкуренция: до 11 резюме на вакансию — максимум за восемь лет. 40% агентств сообщили о падении оборота в 2025 году, годом раньше таких было 24%. Селлеры маркетплейсов урезают бюджеты на съёмки и дизайн карточек.</span></div>
+<div><b>Что помогает</b><span>Рекламодатели уходят к исполнителям подешевле, в том числе к фрилансерам — а AI-креатор как раз делает за неделю то, на что раньше нанимали команду. Клиенты, которые пробуют нейросети сами, часто возвращаются к специалистам: инструмент есть у всех, а умение получить результат — нет.</span></div></div>
+<div class="txt"><p>Чего хотят клиенты — и что это значит для тебя:</p></div>
+<div class="tw"><table class="wants"><thead><tr><th>Клиент хочет</th><th>Почему</th><th>Что делать тебе</th></tr></thead><tbody>
+<tr><td><b>Быстрее и дешевле съёмки</b></td><td class="n">Бюджеты урезаны, и нанять студию, модель и фотографа могут не все</td><td>Продавай пакеты с понятным сроком и результатом: «7 кадров за 4 дня», а не «генерация картинок»</td></tr>
+<tr><td><b>Чтобы не выглядело как нейросеть</b></td><td class="n">80% россиян замечали ошибки в сгенерированных материалах, 20% жалуются брендам на некачественный ИИ-контент</td><td>Отбор и финализация — твоя главная ценность. Сдавай кадры, про которые непонятно, что это генерация</td></tr>
+<tr><td><b>Результат для бизнеса</b></td><td class="n">Клиент покупает продажи, узнаваемость или карточку, которая конвертирует, а не картинки</td><td>Начинай с брифа: задача, площадка, формат. В кейсе показывай, какую задачу решил</td></tr>
+<tr><td><b>Серию в одном стиле</b></td><td class="n">Карточки, кампании и соцсети живут сериями, а нейросеть без опоры рисует каждый кадр заново</td><td>Делай карточки продукта и персонажа, держи стиль-якорь — так серия выглядит единой</td></tr>
+<tr><td><b>Спокойствие по правам</b></td><td class="n">67% россиян считают, что ИИ-контент нужно маркировать. Закон об ИИ обязывает платформы дать возможность маркировки с 1 марта 2027</td><td>Обсуждай права и маркировку до старта и фиксируй в договоре. Маркируй, если кадр может ввести покупателя в заблуждение</td></tr>
+</tbody></table></div>
+<p class="fn">Источники: <a href="https://www.tks.ru/technology/2026/07/17/0005/dizajneryi-i-kontent-menedzheryi-vozglavili-rejting-ii-professij-v-rossii/" target="_blank" rel="noopener">hh.ru через ТАСС, июль 2026</a> · <a href="https://www.comnews.ru/content/247308/2026-09-10/2026-w37/1010/iskusstvennyy-intellekt-izmenil-rynok-kreativnogo-biznesa" target="_blank" rel="noopener">опрос eLama, ComNews, сентябрь 2026</a> · <a href="https://emarketer.com/content/almost-majority-of-marketers-use-ai-create-images-videos" target="_blank" rel="noopener">Canva и Morning Consult, EMARKETER, 2025</a> · <a href="https://incrussia.ru/news/tolko-10-rossiyan-negativno-otnosyatsya-k-ii-kontentu-ot-brendov-opros/" target="_blank" rel="noopener">опрос «Анкетолога», Inc., 2025</a> · <a href="https://novayagazeta.eu/articles/2026/08/03/ekonomika-sgorela-i-ei-ne-nuzhny-dizainery" target="_blank" rel="noopener">hh.ru о конкуренции, «Новая газета Европа», август 2026</a> · <a href="https://ppc.world/articles/zakon-o-regulirovanii-ii-obyazatelna-li-markirovka-ii-kontenta-s-1-sentyabrya/" target="_blank" rel="noopener">закон об ИИ, ppc.world</a></p>
+<p class="tip"><b>Главный вывод.</b> Нейросети не отменяют дизайнеров, но меняют, за что платят. Дешёвую «просто картинку» клиент теперь может сделать сам. Платят за задачу, вкус, серию и ответственность за результат.</p>
+</section>
+
+<section class="step" id="pg-3"><div class="head"><div class="num">3<small>Заказы</small></div><div class="txt"><h2>Какие проекты <span class="s">заказывают</span></h2>
 <p>Всё, что заказывают AI-креатору, укладывается в три семейства: графика, фотосессия и видео. У каждого заказа есть вторая ось — <b>реализм или иллюстрация</b>. Предметку лимонада можно решить как фото на мху или как плоскую иллюстрацию для упаковки.</p></div></div>
 <div class="tw"><table style="min-width:640px"><thead><tr><th>Тип проекта</th><th>Пример задачи</th><th>Что на выходе</th></tr></thead><tbody>
 <tr class="grp"><td colspan="3">Графика</td></tr>
@@ -296,7 +326,7 @@
 <p class="tip"><b>Правило портфолио.</b> Каждый тип проекта показывай серией на одном бренде. Одна картинка доказывает удачу, серия доказывает метод.</p>
 </section>
 
-<section class="step" id="pg-3"><div class="head"><div class="num">3<small>Цены</small></div><div class="txt"><h2>Сколько это <span class="s">стоит</span></h2>
+<section class="step" id="pg-4"><div class="head"><div class="num">4<small>Цены</small></div><div class="txt"><h2>Сколько это <span class="s">стоит</span></h2>
 <p>Вилки взяты с сайта школы и студии Perasperadastra. Это ориентир для старта: рынок движется, перед первым заказом сверься с актуальными ценами. Внизу вилки — один кадр, один круг правок и один формат, вверху — серия, адаптации и передача прав.</p></div></div>
 <div class="chart" id="pg-rng"><p class="micro">Вилки цен на услуги, тысяч рублей</p>
 <div class="rng"><span class="l">Креативные ролики</span><span class="bar"><i style="--a:10%;--w:90%"></i></span><span class="v">5–50 тыс</span></div>
@@ -327,7 +357,7 @@
 <p class="tip"><b>Правки — отдельная строка.</b> В пакет входят два круга правок, дальше — по часовой ставке. Если этого нет в договоре, проект за 10 тысяч превращается в месяц работы.</p>
 </section>
 
-<section class="step" id="pg-4"><div class="head"><div class="num">4<small>Где работать</small></div><div class="txt"><h2>Где <span class="s">работать</span></h2>
+<section class="step" id="pg-5"><div class="head"><div class="num">5<small>Где работать</small></div><div class="txt"><h2>Где <span class="s">работать</span></h2>
 <p>Выбери одно-два места: от этого зависит, что класть в портфолио. Агентству нужны KV с адаптациями, селлеру — карточки и предметка, артисту — клип.</p></div></div>
 <div class="tw"><table><thead><tr><th>Где</th><th>Что делаешь</th><th>Плюс</th><th>Что показать в портфолио</th></tr></thead><tbody>
 <tr><td>Студия, продакшн</td><td class="n">Кадры и шоты по раскадровке арт-директора</td><td class="n">Большие проекты, быстрый рост</td><td class="n">Серии в заданном стиле, ролики</td></tr>
@@ -338,7 +368,7 @@
 </tbody></table></div>
 </section>
 
-<section class="step" id="pg-5"><div class="head"><div class="num">5<small>Направления</small></div><div class="txt"><h2>Откуда ты <span class="s">пришёл</span></h2>
+<section class="step" id="pg-6"><div class="head"><div class="num">6<small>Направления</small></div><div class="txt"><h2>Откуда ты <span class="s">пришёл</span></h2>
 <p>В AI-индустрию не приходят с нуля: почти у всех уже есть профессия. Выбери свою — покажем, что в ней остаётся за тобой, что отдать нейросети и с какого проекта начать портфолио.</p></div></div>
 <div class="dirs">
 <div class="tabs" role="tablist" aria-label="Направление">
@@ -396,7 +426,7 @@
 <p class="tip"><b>Как выбрать.</b> Иди туда, где ты уже сильнее большинства. Нейросеть одинаково доступна всем, а твоя прошлая профессия — нет.</p>
 </section>
 
-<section class="step" id="pg-6"><div class="head"><div class="num">6<small>Студенты</small></div><div class="txt"><h2>Что делают <span class="s">наши студенты</span></h2>
+<section class="step" id="pg-7"><div class="head"><div class="num">7<small>Студенты</small></div><div class="txt"><h2>Что делают <span class="s">наши студенты</span></h2>
 <p>Работы студентов курса Mission to AI. Посмотри на них как клиент: какую услугу здесь можно купить. Почти у всех один ход — ясная идея и серия кадров на одном, часто выдуманном, бренде.</p></div></div>
 <div class="grid4 gal">
 <figure><img src="https://perasperadastranew.github.io/guides/ai-start/img/case-eaglips-4.webp" alt="Eaglips: упаковка-скала и прищепки на верёвке в лесу" loading="lazy"><figcaption><b>Eaglips · Милана Гавриченко</b>AI-продукт: прищепка через метафору орла</figcaption></figure>
@@ -410,7 +440,7 @@
 </div>
 </section>
 
-<section class="step" id="pg-7"><div class="head"><div class="num">7<small>Старт</small></div><div class="txt"><h2>План до первого <span class="s">заказа</span></h2>
+<section class="step" id="pg-8"><div class="head"><div class="num">8<small>Старт</small></div><div class="txt"><h2>План до первого <span class="s">заказа</span></h2>
 <p>Примерно так проходят путь наши студенты.</p></div></div>
 <ol class="check">
 <li>Выбери одно-два направления и опиши три услуги: для кого, какая задача, что на выходе, срок, цена и что не входит.</li>
@@ -424,7 +454,7 @@
 
 <div class="part" id="pg-p2"><h2>Часть II. <span class="s">Нейросети</span></h2><p>Какая нейросеть за что отвечает и чем они отличаются.</p></div>
 
-<section class="step" id="pg-8"><div class="head"><div class="num">8<small>Карта</small></div><div class="txt"><h2>Пять задач — <span class="s">пять ролей</span></h2>
+<section class="step" id="pg-9"><div class="head"><div class="num">9<small>Карта</small></div><div class="txt"><h2>Пять задач — <span class="s">пять ролей</span></h2>
 <p>Генераторов много, а задач всего пять. Спорить, какая нейросеть лучшая, — всё равно что спорить, что лучше: кисть или молоток.</p></div></div>
 <figure class="dio" aria-label="Дизеринг-рендер из Blender: пять объектов по кругу — многогранник, куб, карточка Aa, кольцо и сфера со спутником. Поворачиваются при прокрутке"><canvas width="480" height="270" data-d="roles" data-h="0"></canvas>
 <ol class="legend"><li><em>01</em><b>Многогранник</b> — придумать</li><li><em>02</em><b>Куб</b> — сохранить</li><li><em>03</em><b>Aa</b> — буквы</li><li><em>04</em><b>Кольцо</b> — оживить</li><li><em>05</em><b>Сфера</b> — сформулировать</li></ol></figure>
@@ -442,7 +472,7 @@
 </div>
 </section>
 
-<section class="step" id="pg-9"><div class="head"><div class="num">9<small>Сравнение</small></div><div class="txt"><h2>Сравнение <span class="s">нейросетей</span></h2>
+<section class="step" id="pg-10"><div class="head"><div class="num">10<small>Сравнение</small></div><div class="txt"><h2>Сравнение <span class="s">нейросетей</span></h2>
 <p>Чем сильна каждая нейросеть, для чего её не брать и сколько она стоит. Цены официальные, в рублях — по курсу около 83 ₽ за доллар с комиссией посредника там, где российские карты не принимают.</p></div></div>
 <div class="tw"><table style="min-width:900px"><thead><tr><th>Нейросеть</th><th>Задача</th><th>Сильная сторона</th><th>Не бери для</th><th>Сколько стоит</th><th>Карта РФ</th></tr></thead><tbody>
 <tr><td><b>Midjourney</b></td><td class="n">Придумать</td><td>Стиль, эстетика, key visual, мудборд</td><td class="n">Точных правок, текста, сохранения продукта</td><td>Basic $10<small>≈ 1 100 ₽ через посредника</small></td><td><span class="no">нет</span></td></tr>
@@ -457,7 +487,7 @@
 <p class="tip"><b>Один кадр проходит через три инструмента.</b> Claude пишет промпт, Midjourney находит образ, Nano Banana правит детали. Это нормальный конвейер, а не «не получилось с первого раза».</p>
 </section>
 
-<section class="step" id="pg-10"><div class="head"><div class="num">10<small>Стек</small></div><div class="txt"><h2>Стек <span class="s">на старт</span></h2>
+<section class="step" id="pg-11"><div class="head"><div class="num">11<small>Стек</small></div><div class="txt"><h2>Стек <span class="s">на старт</span></h2>
 <p>Модель можно открыть на её сайте или через агрегатор — один кабинет, где собрано много моделей с общим балансом. На старте агрегатор удобнее: не нужно оплачивать каждую модель отдельно, и многие принимают российские карты.</p></div></div>
 <div class="grid2 gal">
 <figure><img src="https://perasperadastranew.github.io/guides/ai-start/img/c-syntx.webp" alt="Интерфейс Syntx" loading="lazy"><figcaption><b>Syntx</b>Русский интерфейс: Midjourney, Nano Banana и видео в одном окне</figcaption></figure>
@@ -474,46 +504,46 @@
 
 <div class="part" id="pg-p3"><h2>Часть III. <span class="s">Подписки</span></h2><p>Какой агрегатор взять под свой объём и сколько выйдет в месяц. Цены на 12 октября 2026.</p></div>
 
-<section class="step" id="pg-11"><div class="head"><div class="num">11<small>Агрегаторы</small></div><div class="txt"><h2>Как считаем <span class="s">агрегаторы</span></h2>
+<section class="step" id="pg-12"><div class="head"><div class="num">12<small>Агрегаторы</small></div><div class="txt"><h2>Как считаем <span class="s">агрегаторы</span></h2>
 <p>В агрегаторе платишь не за картинку, а за токены или кредиты, и каждая модель тратит их по-своему. Поэтому всё пересчитано на одинаковые условия: <b>картинка 2K в Nano Banana Pro</b> и <b>видео 720p на 5 секунд в Seedance 2.5</b>.</p>
-<p>Подписки разобраны для двух типов работы. Под свой объём их можно подобрать в калькуляторе в блоке 17.</p></div></div>
-<div class="two"><div><b>А. Только картинки</b><span>Референсы, концепты, текстуры, обложки. Видео не нужно. Таблица в блоке 12.</span></div><div><b>Б. Картинки + видео</b><span>Картинки и клипы по 5 секунд. Таблица в блоке 13.</span></div></div>
+<p>Подписки разобраны для двух типов работы. Под свой объём их можно подобрать в калькуляторе в блоке 18.</p></div></div>
+<div class="two"><div><b>А. Только картинки</b><span>Референсы, концепты, текстуры, обложки. Видео не нужно. Таблица в блоке 13.</span></div><div><b>Б. Картинки + видео</b><span>Картинки и клипы по 5 секунд. Таблица в блоке 14.</span></div></div>
 </section>
 
-<section class="step" id="pg-12"><div class="head"><div class="num">12<small>Категория А</small></div><div class="txt"><h2>Только <span class="s">картинки</span></h2>
+<section class="step" id="pg-13"><div class="head"><div class="num">13<small>Категория А</small></div><div class="txt"><h2>Только <span class="s">картинки</span></h2>
 <p>Месячные планы. Сколько 2K-картинок в Nano Banana Pro даёт план за месяц, если тратить его только на них. Считаются все генерации, включая неудачные. Обычно нужно 60–100 картинок в месяц.</p></div></div>
 <div><div class="tw"><table><thead><tr><th>План</th><th>Цена в месяц</th><th>Картинок</th><th>₽ за картинку</th><th>Карта РФ</th><th>Заметка</th></tr></thead><tbody id="pai-t3"></tbody></table></div>
 <p class="fn">Расчёт: Nano Banana Pro в 2K стоит у Syntx 2 токена, у Higgsfield 2 кредита, у Utopy около 67 токенов, у GIVON около 3 токенов по данным их страницы. GPT-Image 2 у Syntx тратит 6 токенов, то есть втрое больше.</p></div>
 <p class="tip"><b>Вывод.</b> На Nano Banana Pro выгоднее всего Syntx: около 7 ₽ за картинку на Basic, которого хватает на 60–100 картинок в месяц, и около 5 ₽ на Pro. На Nano Banana 2 выгоднее GIVON: около 3,7 ₽ против 7,5 ₽ у Syntx. Utopy дороже везде. У Higgsfield хорошие модели, но нужна зарубежная карта.</p>
 </section>
 
-<section class="step" id="pg-13"><div class="head"><div class="num">13<small>Категория Б</small></div><div class="txt"><h2>Картинки <span class="s">и видео</span></h2>
+<section class="step" id="pg-14"><div class="head"><div class="num">14<small>Категория Б</small></div><div class="txt"><h2>Картинки <span class="s">и видео</span></h2>
 <p>Видео тратит в разы больше токенов, чем картинка. Колонка «80 картинок + 15 клипов» показывает, хватит ли плана на типичный месяц работы с роликами.</p></div></div>
 <div><div class="tw"><table><thead><tr><th>План</th><th>Цена в месяц</th><th>Картинок</th><th>Клипов</th><th>80 картинок + 15 клипов</th><th>Карта РФ</th><th>Заметка</th></tr></thead><tbody id="pai-t4"></tbody></table></div>
 <p class="fn">«Картинок» и «Клипов» — сколько даёт план, если тратить его только на картинки или только на клипы.</p></div>
 <p class="tip"><b>Вывод.</b> Самый дешёвый вариант — Phygital+ Старт с докупкой, около 1 850 ₽, но модели там слабее. На Seedance 2.5 в 720p почти поровну выходят Syntx VIP (3 990 ₽) и GIVON Creator с докупкой (около 4 200 ₽). На Seedance 2.0 хватит Syntx Pro (1 690 ₽). В Full HD GIVON выгоднее Syntx примерно на 25%.</p>
 </section>
 
-<section class="step" id="pg-14"><div class="head"><div class="num">14<small>Оплата</small></div><div class="txt"><h2>Чем можно <span class="s">заплатить</span></h2><p>Выбор сервиса часто решает именно оплата.</p></div></div>
+<section class="step" id="pg-15"><div class="head"><div class="num">15<small>Оплата</small></div><div class="txt"><h2>Чем можно <span class="s">заплатить</span></h2><p>Выбор сервиса часто решает именно оплата.</p></div></div>
 <div class="tw"><table style="min-width:640px"><thead><tr><th>Сервис</th><th>Оплата</th><th>Что учесть</th></tr></thead><tbody id="pai-t5"></tbody></table></div>
 <p class="tip"><b>Перед оплатой.</b> Проверь реальную стоимость токенов на нужную модель в бесплатном аккаунте. Автопродление есть у большинства сервисов — если платить дальше не собираешься, отключи его в кабинете до следующего списания.</p>
 </section>
 
-<section class="step" id="pg-15"><div class="head"><div class="num">15<small>Год или месяц</small></div><div class="txt"><h2>Когда выгоден <span class="s">годовой</span></h2>
+<section class="step" id="pg-16"><div class="head"><div class="num">16<small>Год или месяц</small></div><div class="txt"><h2>Когда выгоден <span class="s">годовой</span></h2>
 <p>Годовой тариф платится сразу за 12 месяцев и в пересчёте на месяц стоит на 15–20% дешевле. Он выгоден, только если ты будешь пользоваться сервисом не меньше 10 месяцев из 12.</p></div></div>
 <div><div class="tw"><table style="min-width:640px"><thead><tr><th>План</th><th>В месяц, помесячно</th><th>В месяц, при оплате за год</th><th>Экономия</th><th>Платишь сразу</th></tr></thead><tbody id="pai-t6"></tbody></table></div>
 <p class="fn">У годовых планов Utopy и Syntx весь пакет токенов выдаётся сразу. У Higgsfield кредиты годового плана обновляются каждые 30 дней и не копятся.</p></div>
 <p class="tip"><b>Правило.</b> Первые 1–2 месяца плати помесячно. Если сервис вошёл в работу и ты точно будешь им пользоваться почти весь год — переходи на годовой.</p>
 </section>
 
-<section class="step" id="pg-16"><div class="head"><div class="num">16<small>Первые месяцы</small></div><div class="txt"><h2>Сколько выйдет <span class="s">на старте</span></h2>
+<section class="step" id="pg-17"><div class="head"><div class="num">17<small>Первые месяцы</small></div><div class="txt"><h2>Сколько выйдет <span class="s">на старте</span></h2>
 <p>Два месяца подряд на месячной оплате. Для категории А — 80 картинок в месяц, для категории Б — 80 картинок и 15 клипов Seedance 2.5.</p></div></div>
 <div><p class="micro" style="margin:0 0 10px">Категория А · 80 картинок в месяц</p><div class="tw"><table style="min-width:640px"><thead><tr><th>План</th><th>1-й месяц</th><th>2-й месяц</th><th>Итого</th><th>Заметка</th></tr></thead><tbody id="pai-t7a"></tbody></table></div></div>
 <div><p class="micro" style="margin:0 0 10px">Категория Б · 80 картинок и 15 клипов в месяц</p><div class="tw"><table style="min-width:640px"><thead><tr><th>План</th><th>1-й месяц</th><th>2-й месяц</th><th>Итого</th><th>Заметка</th></tr></thead><tbody id="pai-t7b"></tbody></table></div></div>
 <p class="tip"><b>Что брать.</b> Категория А: на Nano Banana Pro — Syntx Basic, на Nano Banana 2 — GIVON Start. Категория Б: на Seedance 2.5 — Syntx VIP; если важна цена, а не модели, — Phygital+ Старт с докупкой.</p>
 </section>
 
-<section class="step" id="pg-17"><div class="head"><div class="num">17<small>Калькулятор</small></div><div class="txt"><h2>Подбери <span class="s">свой план</span></h2>
+<section class="step" id="pg-18"><div class="head"><div class="num">18<small>Калькулятор</small></div><div class="txt"><h2>Подбери <span class="s">свой план</span></h2>
 <p>Выбери, сколько картинок и клипов нужно в месяц и чем платишь. Калькулятор покажет подходящие месячные планы от дешёвых к дорогим. Если плана немного не хватает, показываем цену с докупкой токенов.</p></div></div>
 <div class="calc">
 <label class="f" for="pai-lvl"><span class="micro">Картинок в месяц</span><select id="pai-lvl"><option value="40">Начинаю: ~40 картинок</option><option value="80" selected>Уже делал(а) картинки: ~80</option><option value="150">Работаю с клиентами: ~150</option></select></label>
@@ -524,7 +554,7 @@
 <div class="tw"><table style="min-width:640px"><thead><tr><th>План</th><th>Цена в месяц</th><th>Уйдёт плана</th><th>Хватит?</th><th>Заметка</th></tr></thead><tbody id="pai-t8"></tbody></table></div>
 </section>
 
-<section class="step" id="pg-18"><div class="head"><div class="num">18<small>Итог</small></div><div class="txt"><h2>Выбор за <span class="s">минуту</span></h2></div></div>
+<section class="step" id="pg-19"><div class="head"><div class="num">19<small>Итог</small></div><div class="txt"><h2>Выбор за <span class="s">минуту</span></h2></div></div>
 <ol class="check">
 <li>Определи категорию: только картинки или картинки и видео.</li>
 <li>Реши, чем будешь платить: карта РФ, Мир или зарубежная карта.</li>
