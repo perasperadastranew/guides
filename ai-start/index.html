@@ -163,6 +163,30 @@
   .pg .plot svg{min-width:620px}
 }
 @media (prefers-reduced-motion:reduce){.pg .rng .bar i{transition:none}}
+.pg .ba{display:flex;flex-direction:column;gap:14px}
+.pg .bat{min-width:820px}
+.pg .bat td{font-size:15px}
+.pg .bat td:first-child{width:22%}.pg .bat td:last-child{width:22%}
+.pg .bat .t{display:block;font-family:var(--serif);font-size:24px;line-height:1.1;color:var(--fg);margin:0 0 6px}
+.pg .bat td.nn{color:var(--muted)}
+.pg .bat .t.a{color:var(--accent)}
+.pg .bb{position:relative;height:30px;margin-top:4px}
+.pg .bb i{position:absolute;left:0;height:12px;width:var(--w);background:var(--line)}
+.pg .bb i:first-child{top:0}.pg .bb i.a{top:16px;background:var(--accent)}
+.pg .bat .x{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg)}
+.pg .fn a{color:inherit}
+@media (max-width:640px){
+  .pg .ba .tw{overflow:visible}
+  .pg .bat{min-width:0}
+  .pg .bat thead{display:none}
+  .pg .bat,.pg .bat tbody{display:block}
+  .pg .bat tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 16px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .pg .bat td{display:block;border:0;padding:0;width:auto!important}
+  .pg .bat td:first-child,.pg .bat td:last-child{grid-column:1/-1}
+  .pg .bat td:nth-child(2)::before{content:"Раньше";display:block;font:400 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .pg .bat td:nth-child(3)::before{content:"С нейросетями";display:block;font:400 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .pg .bat .t{font-size:21px}
+}
 
 .pg .ft{display:flex;flex-direction:column;gap:56px;border-top:1px solid var(--line);padding-top:44px;min-width:0}
 .pg .ft-intro{display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:680px}
@@ -235,6 +259,15 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 <div class="eq"><span>Фотограф</span><em>+</em><span>дизайнер</span><em>+</em><span>монтажёр</span><em>=</em><span class="r">AI-креатор</span></div>
 <div class="donut"><svg viewBox="0 0 200 200" role="img" aria-label="Диаграмма: технические навыки — 20%, вкус, концепция и отбор — 80%"><circle cx="100" cy="100" r="80" fill="none" stroke="var(--line)" stroke-width="22"/><circle cx="100" cy="100" r="80" fill="none" stroke="var(--accent)" stroke-width="22" stroke-dasharray="100.5 402.1" transform="rotate(-90 100 100)"/></svg>
 <div class="txt"><span class="big">20%</span><p style="text-indent:0">Столько в работе занимают кнопки и параметры. Остальные <b>80% — насмотренность, концепция, отбор и вкус</b>. Поэтому не гоняйся за каждой новой нейросетью: выдели на обновления час в неделю и работай.</p></div></div>
+<div class="ba"><p class="micro">Было и стало: одни и те же задачи</p>
+<div class="tw"><table class="bat"><thead><tr><th>Задача</th><th>Раньше</th><th>С нейросетями</th><th>Разница</th></tr></thead><tbody>
+<tr><td><b>Предметная фотосессия</b><small>карточка, hero и lifestyle</small></td><td class="n"><span class="t">12–14 рабочих дней</span>Студия, фотограф, реквизит и ретушёр, вместе с доставкой продукта и ретушью</td><td class="nn"><span class="t a">10–20 часов</span>Один креатор, это 2–3 рабочих дня</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:19%"></i></div><span class="x">≈ в 5 раз быстрее</span></td></tr>
+<tr><td><b>Один кадр продукта</b><small>рендер против генерации</small></td><td class="n"><span class="t">2 часа на кадр</span>3D-визуализатор в Blender, плюс месяцы на освоение программы</td><td class="nn"><span class="t a">5 минут на вариант</span>Генерация, потом отбор и правки</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:4%"></i></div><span class="x">≈ в 24 раза быстрее</span></td></tr>
+<tr><td><b>Рекламный ролик</b><small>30 секунд</small></td><td class="n"><span class="t">6–12 недель</span>Режиссёр, оператор, актёры, площадка и монтажёр: подготовка, 1–3 дня съёмки, постпродакшн</td><td class="nn"><span class="t a">20–40 часов</span>Один креатор, это 3–5 рабочих дней</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:9%"></i></div><span class="x">≈ в 10 раз быстрее</span></td></tr>
+<tr><td><b>Команда на проект</b></td><td class="n"><span class="t">3 человека</span>Фотограф, дизайнер и монтажёр</td><td class="nn"><span class="t a">1 человек</span>AI-креатор с нейросетями</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:33%"></i></div><span class="x">3 человека → 1</span></td></tr>
+</tbody></table></div>
+<p class="fn">Раньше: сроки студийной предметки — по <a href="https://help.squareshot.com/en/articles/1455633-how-does-it-work" target="_blank" rel="noopener">Squareshot</a>, рекламного ролика — по <a href="https://www.moonb.io/blog/tv-commercial-production" target="_blank" rel="noopener">Moonb</a>, кадр в Blender — из лекции курса. С нейросетями: часы проектов курса Mission to AI. Разница посчитана по серединам вилок, рабочий день — 8 часов.</p>
+<p class="tip"><b>Быстрее — не значит без работы.</b> Нейросеть сжимает производство, но бриф, идея, отбор, правки и согласования с клиентом остаются. Поэтому цена считается от твоих часов и результата, а не от минут генерации.</p></div>
 </section>
 
 <section class="step" id="pg-2"><div class="head"><div class="num">2<small>Заказы</small></div><div class="txt"><h2>Какие проекты <span class="s">заказывают</span></h2>
