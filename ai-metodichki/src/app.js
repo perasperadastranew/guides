@@ -299,6 +299,7 @@ function bind(L,ctx){
   /* тест */
   var root=document.getElementById('quiz'); if(!root)return;
   var Q=L.quiz, i=0, firstTry=0, missed=false;
+  function shuf(a){for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)),t=a[k];a[k]=a[j];a[j]=t}return a} /* верный ответ не стоит всегда на одном месте */
   function render(){
     root.textContent=''; if(i>=Q.length){return finish()}
     var q=Q[i]; missed=false;
@@ -307,7 +308,7 @@ function bind(L,ctx){
     root.appendChild(el('div','qtext',q.q));
     if(q.quote)root.appendChild(el('div','qquote',q.quote));
     var opts=el('div','opts'), fb=el('div'), foot=el('div','qfoot');
-    q.opts.forEach(function(o,n){
+    shuf(q.opts.slice()).forEach(function(o,n){
       var b=el('button','opt',o.t); b.type='button'; b.setAttribute('data-k','АБВГД'.charAt(n));
       b.addEventListener('click',function(){
         fb.className='fb '+(o.ok?'ok':'no'); fb.textContent='';
