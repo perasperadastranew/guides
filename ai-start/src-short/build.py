@@ -80,13 +80,17 @@ ev = ''.join('<li style="--k:%d"><b>%d</b><em>%s</em><span>%s</span></li>' % (k,
 growth = '<figure class="gw"><span class="micro">Насколько нейросети стали сильнее</span><div class="hsc">%s</div><figcaption>Длина задачи, которую нейросеть выполняет сама без человека: от нескольких секунд у GPT-3 до примерно 12 часов работы эксперта у Opus 4.6. Шкала логарифмическая — каждое деление в 10 раз больше. Удвоение примерно каждые 4 месяца. По данным METR.</figcaption><ol class="ev">%s</ol></figure>' % (''.join(g), ev)
 th = ''.join('<li><div class="tl"><span class="micro">%02d</span><h3>%s</h3><b>%s</b></div><p>%s</p></li>' % (i + 1, t, b, d) for i, (t, b, d) in enumerate(TH))
 
+towers = """<figure class="tw3" id="pg-tw"><div class="abh"><span class="micro">Насколько сложнее стал проект</span><button type="button" class="ab-re">↻ Ещё раз</button></div>
+<div class="twv"><canvas width="480" height="270" data-src="d/towers.png" data-n="62" role="img" aria-label="Слева маленькая башенка из трёх блоков — проект раньше. Справа строится большая башня в семь ярусов — проект сейчас"></canvas>
+<div class="twc"><div class="l"><b>Раньше</b><span>Одна картинка, один формат</span></div><div class="r"><b>Сейчас</b><span>Фото, графика, 3D, моушн, видео и адаптации — в одном проекте</span></div></div></div></figure>"""
+
 birds = """<figure class="ab" id="pg-birds"><div class="abh"><span class="micro">Почему одних нейросетей мало</span><button type="button" class="ab-re">↻ Ещё раз</button></div>
 <div class="abg"><div class="ab-a"><span class="micro">Только нейросети</span><div class="abv"><canvas width="480" height="270" data-src="d/birds-a.png" role="img" aria-label="Одна и та же птица трижды отскакивает от крепости — проект стоит"></canvas><span class="cap"></span></div><p>Новичок умеет только генерировать — и бьёт этим раз за разом. Тот же удар, тот же результат.</p></div>
 <div class="ab-b"><span class="micro">Набор навыков</span><div class="abv"><canvas width="480" height="270" data-src="d/birds-b.png" role="img" aria-label="Четыре птицы-навыка по очереди: насмотренность, база дизайна, работа с заказчиком и нейросети — крепость падает"></canvas><span class="cap"></span></div><p>У профи каждый навык бьёт по-своему, а нейросети — один из них. Вместе они берут любой проект.</p></div></div>
 <ol class="abl"><li><i class="k s"></i><b>Насмотренность</b><span>Видит, куда бить: референсы, идея, понимание, что сработает</span></li><li><i class="k r"></i><b>База дизайна</b><span>Композиция, цвет, типографика, визуальный ритм — бьёт сразу по нескольким фронтам</span></li><li><i class="k d"></i><b>Работа с заказчиком</b><span>Понимает задачу, договаривается и попадает точно в то, что нужно бизнесу</span></li><li><i class="k h"></i><b>Нейросети</b><span>Производство: быстро делают картинки и видео и добивают проект</span></li></ol></figure>"""
 out.append(section(1, '01', 'Что происходит', 'Что происходит <span class="s">на рынке</span>',
   '<p>Пять тезисов о том, что сейчас на самом деле происходит с профессией: как быстро пришли нейросети, что с увольнениями, какими стали проекты и кто нужен рынку.</p>',
-  growth + '\n<ol class="th">' + th + '</ol>\n' + birds + '\n<p class="tip"><b>Вывод.</b> «Всех сокращают из-за ИИ» — часто отговорка. Нейросети не отменяют дизайнеров, они отменяют средний результат. Людей, которые умеют с ними работать, ищут активнее остальных.</p>'))
+  growth + '\n<ol class="th">' + th + '</ol>\n' + towers + '\n' + birds + '\n<p class="tip"><b>Вывод.</b> «Всех сокращают из-за ИИ» — часто отговорка. Нейросети не отменяют дизайнеров, они отменяют средний результат. Людей, которые умеют с ними работать, ищут активнее остальных.</p>'))
 
 # --- I.02 Перепись населения
 ST = [
@@ -374,7 +378,7 @@ res = s[:a] + body + s[b:]
 res = res.replace('<title>Как начать в AI-индустрии, короткая версия</title>', '<title>Как начать в AI-индустрии</title>')
 
 css = open(os.path.join(D, 'add.css'), encoding='utf-8').read()
-js = open(os.path.join(D, 'add.js'), encoding='utf-8').read() + '\n' + open(os.path.join(D, 'birds3d.js'), encoding='utf-8').read()
+js = open(os.path.join(D, 'add.js'), encoding='utf-8').read() + '\n' + open(os.path.join(D, 'birds3d.js'), encoding='utf-8').read() + '\n' + open(os.path.join(D, 'towers.js'), encoding='utf-8').read()
 i = res.index('</style>'); res = res[:i] + css + res[i:]
 i = res.rindex('</body>'); res = res[:i] + '<script>' + js + '</script>\n' + res[i:]
 open(OUT, 'w', encoding='utf-8').write(res)

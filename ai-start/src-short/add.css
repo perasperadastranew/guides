@@ -316,3 +316,16 @@
 .pg .abg>div.end .cap{color:#F2F2F0}
 .pg .abg>.ab-b.end .cap{color:#F0303B}
 @media (max-width:640px){.pg .abv .cap{font-size:13px}}
+/* две башни */
+.pg .tw3{margin:48px 0 0}
+.pg .twv{position:relative;background:#0B0B0B;color:#F2F2F0;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}
+.pg .twv canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;image-rendering:pixelated}
+.pg .twc{position:absolute;left:0;right:0;bottom:6%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:0 4%;pointer-events:none}
+.pg .twc>div{display:flex;flex-direction:column;gap:4px;max-width:30ch}
+.pg .twc .r{justify-self:end;text-align:right;opacity:0;transition:opacity .6s}
+.pg .tw3.big .twc .r{opacity:1}
+.pg .twc b{font:400 clamp(18px,2.4vw,30px)/1 "PG W3",var(--sans);text-transform:uppercase}
+.pg .twc .r b{color:#F0303B}
+.pg .twc span{font-size:clamp(11px,1.3vw,14px);line-height:1.35;color:#A3A39D}
+@media (max-width:640px){.pg .twc{position:static;padding:14px 16px 16px;gap:12px}.pg .twc .r{opacity:1}}
+.pg .twc{position:static;padding:4px 4% 22px}
