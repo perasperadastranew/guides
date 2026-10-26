@@ -81,8 +81,8 @@ growth = '<figure class="gw"><span class="micro">Насколько нейрос
 th = ''.join('<li><div class="tl"><span class="micro">%02d</span><h3>%s</h3><b>%s</b></div><p>%s</p></li>' % (i + 1, t, b, d) for i, (t, b, d) in enumerate(TH))
 
 birds = """<figure class="ab" id="pg-birds"><div class="abh"><span class="micro">Почему одних нейросетей мало</span><button type="button" class="ab-re">↻ Ещё раз</button></div>
-<div class="abg"><div class="ab-a"><span class="micro">Только нейросети</span><svg viewBox="0 0 400 250" role="img" aria-label="Одна и та же птица трижды отскакивает от крепости — проект стоит"></svg><p>Новичок умеет только генерировать — и бьёт этим раз за разом. Тот же удар, тот же результат.</p></div>
-<div class="ab-b"><span class="micro">Набор навыков</span><svg viewBox="0 0 400 250" role="img" aria-label="Четыре птицы-навыка по очереди: насмотренность находит слабые места, база дизайна бьёт в нескольких местах, работа с заказчиком выбивает главную опору, нейросети добивают — крепость падает"></svg><p>У профи каждый навык бьёт по-своему, а нейросети — один из них. Вместе они берут любой проект.</p></div></div>
+<div class="abg"><div class="ab-a"><span class="micro">Только нейросети</span><div class="abv"><canvas width="480" height="270" data-src="d/birds-a.png" role="img" aria-label="Одна и та же птица трижды отскакивает от крепости — проект стоит"></canvas><span class="cap"></span></div><p>Новичок умеет только генерировать — и бьёт этим раз за разом. Тот же удар, тот же результат.</p></div>
+<div class="ab-b"><span class="micro">Набор навыков</span><div class="abv"><canvas width="480" height="270" data-src="d/birds-b.png" role="img" aria-label="Четыре птицы-навыка по очереди: насмотренность, база дизайна, работа с заказчиком и нейросети — крепость падает"></canvas><span class="cap"></span></div><p>У профи каждый навык бьёт по-своему, а нейросети — один из них. Вместе они берут любой проект.</p></div></div>
 <ol class="abl"><li><i class="k s"></i><b>Насмотренность</b><span>Видит, куда бить: референсы, идея, понимание, что сработает</span></li><li><i class="k r"></i><b>База дизайна</b><span>Композиция, цвет, типографика, визуальный ритм — бьёт сразу по нескольким фронтам</span></li><li><i class="k d"></i><b>Работа с заказчиком</b><span>Понимает задачу, договаривается и попадает точно в то, что нужно бизнесу</span></li><li><i class="k h"></i><b>Нейросети</b><span>Производство: быстро делают картинки и видео и добивают проект</span></li></ol></figure>"""
 out.append(section(1, '01', 'Что происходит', 'Что происходит <span class="s">на рынке</span>',
   '<p>Пять тезисов о том, что сейчас на самом деле происходит с профессией: как быстро пришли нейросети, что с увольнениями, какими стали проекты и кто нужен рынку.</p>',
@@ -374,7 +374,7 @@ res = s[:a] + body + s[b:]
 res = res.replace('<title>Как начать в AI-индустрии, короткая версия</title>', '<title>Как начать в AI-индустрии</title>')
 
 css = open(os.path.join(D, 'add.css'), encoding='utf-8').read()
-js = open(os.path.join(D, 'add.js'), encoding='utf-8').read() + '\n' + open(os.path.join(D, 'birds.js'), encoding='utf-8').read()
+js = open(os.path.join(D, 'add.js'), encoding='utf-8').read() + '\n' + open(os.path.join(D, 'birds3d.js'), encoding='utf-8').read()
 i = res.index('</style>'); res = res[:i] + css + res[i:]
 i = res.rindex('</body>'); res = res[:i] + '<script>' + js + '</script>\n' + res[i:]
 open(OUT, 'w', encoding='utf-8').write(res)

@@ -306,3 +306,13 @@
 .pg .abl .k.h{width:26px;height:26px}
 @media (max-width:760px){.pg .abg{grid-template-columns:minmax(0,1fr)}.pg .abl{grid-template-columns:repeat(2,minmax(0,1fr))}.pg .ab .cap{font-size:15px}}
 .pg .abl li{display:grid;grid-template-rows:30px auto auto;align-items:start}.pg .abl .k{align-self:center;margin:0}
+/* птицы в 3D-дизеринге */
+.pg .abg>div{background:#0B0B0B;color:#F2F2F0}
+.pg .abg>div p{color:#A3A39D}
+.pg .abg>div>.micro{color:#A3A39D}
+.pg .abv{position:relative}
+.pg .abv canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;image-rendering:pixelated}
+.pg .abv .cap{position:absolute;left:0;right:0;top:4%;text-align:center;font:500 14px/1.3 var(--sans);color:#A3A39D;transition:color .3s}
+.pg .abg>div.end .cap{color:#F2F2F0}
+.pg .abg>.ab-b.end .cap{color:#F0303B}
+@media (max-width:640px){.pg .abv .cap{font-size:13px}}

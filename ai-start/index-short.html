@@ -667,6 +667,16 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 .pg .abl .k.h{width:26px;height:26px}
 @media (max-width:760px){.pg .abg{grid-template-columns:minmax(0,1fr)}.pg .abl{grid-template-columns:repeat(2,minmax(0,1fr))}.pg .ab .cap{font-size:15px}}
 .pg .abl li{display:grid;grid-template-rows:30px auto auto;align-items:start}.pg .abl .k{align-self:center;margin:0}
+/* птицы в 3D-дизеринге */
+.pg .abg>div{background:#0B0B0B;color:#F2F2F0}
+.pg .abg>div p{color:#A3A39D}
+.pg .abg>div>.micro{color:#A3A39D}
+.pg .abv{position:relative}
+.pg .abv canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;image-rendering:pixelated}
+.pg .abv .cap{position:absolute;left:0;right:0;top:4%;text-align:center;font:500 14px/1.3 var(--sans);color:#A3A39D;transition:color .3s}
+.pg .abg>div.end .cap{color:#F2F2F0}
+.pg .abg>.ab-b.end .cap{color:#F0303B}
+@media (max-width:640px){.pg .abv .cap{font-size:13px}}
 </style>
 </head><body>
 <div class="pg"><div class="wrap">
@@ -691,8 +701,8 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 <figure class="gw"><span class="micro">Насколько нейросети стали сильнее</span><div class="hsc"><svg viewBox="0 0 760 330" role="img" aria-label="График: длина задачи, которую нейросеть выполняет сама, выросла с нескольких секунд в 2020 году до примерно 12 часов в 2026"><line x1="92" y1="296.0" x2="736" y2="296.0" class="gl"/><text x="84" y="300.0" class="ax" text-anchor="end">6 сек</text><line x1="92" y1="230.6" x2="736" y2="230.6" class="gl"/><text x="84" y="234.6" class="ax" text-anchor="end">1 мин</text><line x1="92" y1="165.2" x2="736" y2="165.2" class="gl"/><text x="84" y="169.2" class="ax" text-anchor="end">10 мин</text><line x1="92" y1="114.3" x2="736" y2="114.3" class="gl"/><text x="84" y="118.3" class="ax" text-anchor="end">1 час</text><line x1="92" y1="48.9" x2="736" y2="48.9" class="gl"/><text x="84" y="52.9" class="ax" text-anchor="end">10 часов</text><line x1="111.5" y1="24" x2="111.5" y2="296" class="gl v"/><text x="111.5" y="320" class="ax yr" text-anchor="middle">2020</text><line x1="209.1" y1="24" x2="209.1" y2="296" class="gl v"/><text x="209.1" y="320" class="ax yr" text-anchor="middle">2021</text><line x1="306.7" y1="24" x2="306.7" y2="296" class="gl v"/><text x="306.7" y="320" class="ax yr" text-anchor="middle">2022</text><line x1="404.2" y1="24" x2="404.2" y2="296" class="gl v"/><text x="404.2" y="320" class="ax yr" text-anchor="middle">2023</text><line x1="501.8" y1="24" x2="501.8" y2="296" class="gl v"/><text x="501.8" y="320" class="ax yr" text-anchor="middle">2024</text><line x1="599.4" y1="24" x2="599.4" y2="296" class="gl v"/><text x="599.4" y="320" class="ax yr" text-anchor="middle">2025</text><line x1="697.0" y1="24" x2="697.0" y2="296" class="gl v"/><text x="697.0" y="320" class="ax yr" text-anchor="middle">2026</text><path d="M155.4 287.8 L326.2 245.1 L423.8 184.9 L579.9 135.9 L614.0 114.8 L657.9 90.8 L706.7 43.7" class="cv" pathLength="1"/><g class="mp" style="--k:0"><circle cx="155.4" cy="287.8" r="4"/><text x="163.4" y="303.8" text-anchor="start">GPT-3</text></g><g class="mp" style="--k:1"><circle cx="326.2" cy="245.1" r="4"/><text x="334.2" y="261.1" text-anchor="start">GPT-3.5</text></g><g class="mp" style="--k:2"><circle cx="423.8" cy="184.9" r="4"/><text x="431.8" y="200.9" text-anchor="start">GPT-4</text></g><g class="mp" style="--k:3"><circle cx="579.9" cy="135.9" r="4"/><text x="587.9" y="151.9" text-anchor="start">Claude 3.5</text></g><g class="mp" style="--k:4"><circle cx="614.0" cy="114.8" r="4"/><text x="622.0" y="130.8" text-anchor="start">Claude 3.7</text></g><g class="mp" style="--k:5"><circle cx="657.9" cy="90.8" r="4"/><text x="665.9" y="106.8" text-anchor="start">GPT-5</text></g><g class="mp a" style="--k:6"><circle cx="706.7" cy="43.7" r="6"/><text x="696.7" y="31.7" text-anchor="end">Opus 4.6 ≈ 12 часов</text></g></svg></div><figcaption>Длина задачи, которую нейросеть выполняет сама без человека: от нескольких секунд у GPT-3 до примерно 12 часов работы эксперта у Opus 4.6. Шкала логарифмическая — каждое деление в 10 раз больше. Удвоение примерно каждые 4 месяца. По данным METR.</figcaption><ol class="ev"><li style="--k:0"><b>2020</b><em>GPT-3</em><span>текст по запросу</span></li><li style="--k:1"><b>2021</b><em>DALL·E</em><span>картинки по описанию</span></li><li style="--k:2"><b>2022</b><em>Midjourney, ChatGPT</em><span>нейросети для всех</span></li><li style="--k:3"><b>2023</b><em>GPT-4, Firefly</em><span>ИИ в рабочих программах</span></li><li style="--k:4"><b>2024</b><em>Sora, Kling</em><span>видео по описанию</span></li><li style="--k:5"><b>2025</b><em>Nano Banana, Veo 3</em><span>правка по фото, видео со звуком</span></li><li style="--k:6"><b>2026</b><em>Агенты</em><span>ИИ сам ведёт задачу часами</span></li></ol></figure>
 <ol class="th"><li><div class="tl"><span class="micro">01</span><h3>Нейросети пришли в каждую профессию</h3><b>5 дней</b></div><p>Столько понадобилось ChatGPT, чтобы набрать первый миллион пользователей. Сейчас у него около 900 млн человек в неделю. А длина задач, которые ИИ выполняет сам, удваивается примерно каждые 4 месяца.</p></li><li><div class="tl"><span class="micro">02</span><h3>Сокращения — часто отговорка</h3><b>9%</b></div><p>Только 9% компаний говорят, что ИИ действительно заменил какие-то роли. При этом к маю 2026 года 102 000 человек потеряли работу в технологических компаниях, и почти 6 из 10 компаний называют причиной ИИ, хотя причина финансовая. Сэм Альтман называет это AI washing. А Klarna, которая хвасталась, что бот заменил 700 операторов, снова нанимает людей: качество упало.</p></li><li><div class="tl"><span class="micro">03</span><h3>Проекты стали сложнее</h3><b>всё сразу</b></div><p>Раньше заказывали одну картинку или один формат. Теперь в одном проекте фото, графика, 3D, моушн и видео: клиент ждёт серию, адаптации под площадки и ролик — и всё это в одном стиле.</p></li><li><div class="tl"><span class="micro">04</span><h3>Ценятся Т‑специалисты</h3><b>Т</b></div><p>Глубоко в одном — дизайне, моушне, монтаже — и широко в смежном. Нейросети дают доступ к 3D, видео и звуку без отдельной команды, но собрать это в сильный проект может только тот, у кого есть база.</p></li><li><div class="tl"><span class="micro">05</span><h3>Рынок ищет тех, кто умеет</h3><b>16%</b></div><p>16% вакансий дизайнеров и художников на hh.ru в 2026 году требуют навыков работы с нейросетями — больше, чем в любой другой профессии.</p></li></ol>
 <figure class="ab" id="pg-birds"><div class="abh"><span class="micro">Почему одних нейросетей мало</span><button type="button" class="ab-re">↻ Ещё раз</button></div>
-<div class="abg"><div class="ab-a"><span class="micro">Только нейросети</span><svg viewBox="0 0 400 250" role="img" aria-label="Одна и та же птица трижды отскакивает от крепости — проект стоит"></svg><p>Новичок умеет только генерировать — и бьёт этим раз за разом. Тот же удар, тот же результат.</p></div>
-<div class="ab-b"><span class="micro">Набор навыков</span><svg viewBox="0 0 400 250" role="img" aria-label="Четыре птицы-навыка по очереди: насмотренность находит слабые места, база дизайна бьёт в нескольких местах, работа с заказчиком выбивает главную опору, нейросети добивают — крепость падает"></svg><p>У профи каждый навык бьёт по-своему, а нейросети — один из них. Вместе они берут любой проект.</p></div></div>
+<div class="abg"><div class="ab-a"><span class="micro">Только нейросети</span><div class="abv"><canvas width="480" height="270" data-src="d/birds-a.png" role="img" aria-label="Одна и та же птица трижды отскакивает от крепости — проект стоит"></canvas><span class="cap"></span></div><p>Новичок умеет только генерировать — и бьёт этим раз за разом. Тот же удар, тот же результат.</p></div>
+<div class="ab-b"><span class="micro">Набор навыков</span><div class="abv"><canvas width="480" height="270" data-src="d/birds-b.png" role="img" aria-label="Четыре птицы-навыка по очереди: насмотренность, база дизайна, работа с заказчиком и нейросети — крепость падает"></canvas><span class="cap"></span></div><p>У профи каждый навык бьёт по-своему, а нейросети — один из них. Вместе они берут любой проект.</p></div></div>
 <ol class="abl"><li><i class="k s"></i><b>Насмотренность</b><span>Видит, куда бить: референсы, идея, понимание, что сработает</span></li><li><i class="k r"></i><b>База дизайна</b><span>Композиция, цвет, типографика, визуальный ритм — бьёт сразу по нескольким фронтам</span></li><li><i class="k d"></i><b>Работа с заказчиком</b><span>Понимает задачу, договаривается и попадает точно в то, что нужно бизнесу</span></li><li><i class="k h"></i><b>Нейросети</b><span>Производство: быстро делают картинки и видео и добивают проект</span></li></ol></figure>
 <p class="tip"><b>Вывод.</b> «Всех сокращают из-за ИИ» — часто отговорка. Нейросети не отменяют дизайнеров, они отменяют средний результат. Людей, которые умеют с ними работать, ищут активнее остальных.</p>
 </section>
@@ -1055,94 +1065,19 @@ function align(){document.querySelectorAll('.pg .head .txt').forEach(function(t)
 align();addEventListener('resize',align);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(align);
 })();
 
-/* «Одной птицей проект не взять»: две сцены — одна птица против стаи со скиллами */
+/* «Почему одних нейросетей мало»: две 3D-сцены в дизеринге, кадры из спрайтов 12×9 по 480×270, 12 кадров в секунду */
 (function(){
 var root=document.getElementById('pg-birds');if(!root)return;
-var NS='http://www.w3.org/2000/svg',still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
-var GROUND=230,SX=62,SY=166;
-var BL={b1:[252,170,12,60],b2:[338,170,12,60],b3:[244,158,114,12],b4:[266,110,12,48],b5:[324,110,12,48],b6:[258,98,86,12]};
-function scene(svg,id){
-  var d=el('defs',{},svg),pt=el('pattern',{id:'dt'+id,width:4,height:4,patternUnits:'userSpaceOnUse'},d);el('circle',{cx:2,cy:2,r:1.15,'class':'dtc'},pt);
-  el('line',{x1:0,y1:GROUND,x2:400,y2:GROUND,'class':'gr'},svg);
-  /* рогатка */
-  el('path',{d:'M60 '+GROUND+' L60 192 L50 166 M60 192 L70 166','class':'sl'},svg);
-  var fort=el('g',{'class':'fort'},svg),B={};
-  Object.keys(BL).forEach(function(k){var b=BL[k],g=el('g',{},fort);el('rect',{x:b[0],y:b[1],width:b[2],height:b[3],rx:2,fill:'url(#dt'+id+')','class':'bk'},g);B[k]={g:g,cx:b[0]+b[2]/2,cy:b[1]+b[3]/2,s:[0,0,0],e:[0,0,0],t0:0,t1:0}});
-  var rg=el('g',{},fort);el('polygon',{points:'268,98 301,70 334,98',fill:'url(#dt'+id+')','class':'bk'},rg);el('line',{x1:301,y1:70,x2:301,y2:46,'class':'pole'},rg);el('path',{d:'M301 46 L322 52 L301 58 Z','class':'flag'},rg);
-  B.roof={g:rg,cx:301,cy:84,s:[0,0,0],e:[0,0,0],t0:0,t1:0};
-  var cg=el('g',{},fort);el('rect',{x:288,y:134,width:26,height:24,rx:3,'class':'core'},cg);B.core={g:cg,cx:301,cy:146,s:[0,0,0],e:[0,0,0],t0:0,t1:0};
-  var fx=el('g',{},svg),txt=el('text',{x:200,y:28,'text-anchor':'middle','class':'cap'},svg);
-  return {svg:svg,B:B,fort:fort,fx:fx,txt:txt};
-}
-function bird(p,kind,cls){
-  var g=el('g',{'class':'bird '+cls},p.svg),r=kind==='heavy'?13:kind==='scout'?6:kind==='mini'?5:9;
-  if(kind==='drill'){el('path',{d:'M-9 -7 Q4 -10 14 0 Q4 10 -9 7 Q-12 0 -9 -7 Z','class':'bb'},g)}else el('circle',{r:r,'class':'bb'},g);
-  el('circle',{cx:r*.35,cy:-r*.3,r:Math.max(1.8,r*.28),'class':'ey'},g);el('circle',{cx:r*.45,cy:-r*.3,r:Math.max(.9,r*.13),'class':'pu'},g);
-  el('path',{d:'M'+(r*.8)+' '+(-r*.05)+' l'+(r*.55)+' '+(r*.18)+' l'+(-r*.55)+' '+(r*.2)+' Z','class':'bk2'},g);
-  if(kind==='split'){el('circle',{cx:-r*.4,cy:r*.45,r:1.6,'class':'ey'},g);el('circle',{cx:0,cy:r*.55,r:1.6,'class':'ey'},g)}
-  g.style.opacity=0;return g}
-function put(g,x,y,rot,op){g.setAttribute('transform','translate('+x+' '+y+') rotate('+(rot||0)+')');if(op!=null)g.style.opacity=op}
-function arc(t,a,b,h){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t-4*h*t*(1-t)]}
-function ease(t){return t<0?0:t>1?1:1-Math.pow(1-t,3)}
-function fall(t){return t<0?0:t>1?1:t*t}
-function setB(blk,t){var k=blk.t1>blk.t0?fall((t-blk.t0)/(blk.t1-blk.t0)):(t>=blk.t0?1:0);var s=blk.s,e=blk.e;
-  var dx=s[0]+(e[0]-s[0])*k,dy=s[1]+(e[1]-s[1])*k,r=s[2]+(e[2]-s[2])*k;
-  blk.g.setAttribute('transform','translate('+dx+' '+dy+') rotate('+r+' '+blk.cx+' '+blk.cy+')')}
-function hit(B,k,t0,dur,e){var b=B[k];b.s=b.e.slice?b.e.slice():[0,0,0];b.s=[b.cur?b.cur[0]:b.e[0],b.cur?b.cur[1]:b.e[1],b.cur?b.cur[2]:b.e[2]];b.e=e;b.t0=t0;b.t1=t0+dur}
-function ring(p,x,y,t,t0){var c=p._rings||(p._rings={}),key=x+'_'+y;if(!c[key])c[key]=el('circle',{cx:x,cy:y,r:6,'class':'ring'},p.fx);var k=(t-t0);c[key].style.opacity=k<0?0:Math.max(0,.9-((k%1.2)/1.2)*.6);c[key].setAttribute('r',6+((k>0?k:0)%1.2)*8)}
-
-/* ---------- сцена А: одна птица */
-function A(svg){var p=scene(svg,'a'),b=bird(p,'round','g');var D=8.6;
-  p.draw=function(t){var tries=[0,2.4,4.8],shown=false;
-    tries.forEach(function(t0){var k=t-t0;if(k<0||shown&&k>2.4)return;
-      if(k>=0&&k<1){var q=arc(ease(k),[SX,SY],[244,196],70);put(b,q[0],q[1],k*200,1);shown=true}
-      else if(k>=1&&k<2.2){var j=(k-1)/1.2;put(b,244-j*40,196+Math.min(1,j*1.6)*25,200-j*300,1-j*.2);shown=true;
-        p.fort.setAttribute('transform','translate('+(k<1.25?Math.sin(k*60)*1.6:0)+' 0)')}});
-    if(!shown)put(b,SX,SY,0,t<7.2?1:1);
-    p.txt.textContent=t<1?'':t<7.2?'Попытка '+Math.min(3,1+Math.floor(t/2.4))+' — снова только генерация':'Проект стоит. Одним навыком его не взять';
-    p.txt.setAttribute('class','cap'+(t>=7.2?' end':''))};
-  p.D=D;return p}
-
-/* ---------- сцена Б: стая со скиллами */
-function Bscene(svg){var p=scene(svg,'b'),B=p.B,D=9.2;
-  var sc=bird(p,'scout','s'),sp=bird(p,'split','r'),m=[bird(p,'mini','r'),bird(p,'mini','r'),bird(p,'mini','r')],dr=bird(p,'drill','r'),hv=bird(p,'heavy','r');
-  var path=el('path',{d:'','class':'trail'},p.fx);
-  /* сценарий разрушения: [время, длительность, dx, dy, поворот] */
-  var plan={b6:[3.0,.9,46,118,78],roof:[3.0,1.0,72,118,115],core:[6.45,.7,-6,72,8],b1:[4.6,.6,-42,26,-90],b3:[6.4,.8,18,64,-10],b4:[6.45,.8,-34,92,-90],b5:[6.5,.8,42,92,90],b2:[6.6,.8,30,26,90]};
-  var sag={b3:[4.7,.4,0,8,-7]};
-  p.draw=function(t){
-    /* блоки */
-    Object.keys(B).forEach(function(k){var b=B[k],pl=plan[k],sg=sag[k],cur=[0,0,0];
-      if(sg&&t>=sg[0]){var q=fall((t-sg[0])/sg[1]);cur=[sg[2]*q,sg[3]*q,sg[4]*q]}
-      if(t>=pl[0]){var q2=fall((t-pl[0])/pl[1]);var s0=cur.slice();cur=[s0[0]+(pl[2]-s0[0])*q2,s0[1]+(pl[3]-s0[1])*q2,s0[2]+(pl[4]-s0[2])*q2]}
-      b.g.setAttribute('transform','translate('+cur[0]+' '+cur[1]+') rotate('+cur[2]+' '+b.cx+' '+b.cy+')')});
-    /* 1. разведчик: пролетает над крепостью, оставляет пунктир, отмечает слабые места */
-    if(t<1.6){var q=arc(ease(t/1.4),[SX,SY],[390,120],110);put(sc,q[0],q[1],0,t<1.4?1:0)}else put(sc,0,0,0,0);
-    var pts=[];for(var i=0;i<=24;i++){var u=i/24;if(u>Math.min(1,t/1.4))break;var r=arc(ease(u),[SX,SY],[390,120],110);pts.push(r[0].toFixed(1)+' '+r[1].toFixed(1))}
-    path.setAttribute('d',pts.length>1?'M'+pts.join(' L'):'');path.style.opacity=t<6.8?.9:Math.max(0,1-(t-6.8));
-    if(t>1.2&&t<3)ring(p,301,104,t,1.2);else ring(p,301,104,-1,0);
-    if(t>1.2&&t<4.6)ring(p,258,214,t,1.3);else ring(p,258,214,-1,0);
-    /* 2. «стиль»: летит и делится на три */
-    if(t>=1.8&&t<2.5){var q3=arc(ease((t-1.8)/.9),[SX,SY],[230,80],80);put(sp,q3[0],q3[1],0,1)}else put(sp,0,0,0,0);
-    var tg=[[300,100],[290,82],[320,96]];
-    m.forEach(function(b,i){if(t>=2.5&&t<3.1){var k=(t-2.5)/.5,st=arc(ease(.7/.9),[SX,SY],[230,80],80);var q4=[st[0]+(tg[i][0]-st[0])*k,st[1]+(tg[i][1]-st[1])*k+(i-1)*14*Math.sin(k*Math.PI)];put(b,q4[0],q4[1],k*180,1)}else if(t>=3.1&&t<4){var j=(t-3.1)/.9;put(b,tg[i][0]+j*30,tg[i][1]+fall(j)*(GROUND-6-tg[i][1]),j*300,1-j)}else put(b,0,0,0,0)});
-    /* 3. «точность»: низко и точно в левую опору */
-    if(t>=3.8&&t<4.6){var q5=arc(ease((t-3.8)/.8),[SX,SY],[252,206],18);put(dr,q5[0],q5[1],8,1)}else if(t>=4.6&&t<5.4){var j2=(t-4.6)/.8;put(dr,252-j2*20,206+fall(j2)*18,40*j2,1-j2)}else put(dr,0,0,0,0);
-    /* 4. «тяжёлый»: финальный удар в центр */
-    if(t>=5.4&&t<6.4){var q6=arc(ease((t-5.4)/1),[SX,SY],[300,160],60);put(hv,q6[0],q6[1],(t-5.4)*120,1)}else if(t>=6.4&&t<7.4){var j3=(t-6.4);put(hv,300+j3*20,160+fall(j3)*57,120+j3*90,1)}else if(t>=7.4){put(hv,320,217,210,1)}else put(hv,0,0,0,0);
-    p.txt.textContent=t<1.6?'Насмотренность: видит, куда бить':t<3.6?'База дизайна: бьёт сразу по трём фронтам':t<5.4?'Работа с заказчиком: точно в главное':t<7.2?'Нейросети: быстро добивают':'Проект взят';
-    p.txt.setAttribute('class','cap'+(t>=7.2?' end ok':''))};
-  p.D=D;return p}
-
-var sa=A(root.querySelector('.ab-a svg')),sb=Bscene(root.querySelector('.ab-b svg'));
-var t0=null,raf=null,run=false;
-function frame(ts){if(t0===null)t0=ts;var t=(ts-t0)/1000;sa.draw(Math.min(t,sa.D));sb.draw(Math.min(t,sb.D));if(t<Math.max(sa.D,sb.D))raf=requestAnimationFrame(frame);else run=false}
-function play(){if(raf)cancelAnimationFrame(raf);t0=null;run=true;raf=requestAnimationFrame(frame)}
-function end(){sa.draw(sa.D);sb.draw(sb.D)}
-sa.draw(0);sb.draw(0);
-root.querySelector('.ab-re').addEventListener('click',function(){still?end():play()});
-if(still||!('IntersectionObserver' in window)){end()}else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){play();io.disconnect()}})},{threshold:.45});io.observe(root)}
+var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,N=108,COLS=12,W=480,H=270,FPS=12;
+function capA(f){return f>=196?'Проект стоит. Одним навыком его не взять':'Попытка '+(f<72?1:f<144?2:3)+' — снова только генерация'}
+function capB(f){return f<40?'Насмотренность: видит, куда бить':f<88?'База дизайна: бьёт сразу по трём фронтам':f<128?'Работа с заказчиком: точно в главное':f<176?'Нейросети: быстро добивают':'Проект взят'}
+var S=[['a',capA],['b',capB]].map(function(d){var box=root.querySelector('.ab-'+d[0]),cv=box.querySelector('canvas'),cap=box.querySelector('.cap'),im=new Image(),s={cv:cv,x:cv.getContext('2d'),cap:cap,im:im,ok:false,fn:d[1],box:box};im.onload=function(){s.ok=true;draw(s,still?N-1:0)};im.src=cv.dataset.src;return s});
+function draw(s,i){if(!s.ok)return;s.x.clearRect(0,0,W,H);s.x.imageSmoothingEnabled=false;s.x.drawImage(s.im,(i%COLS)*W,Math.floor(i/COLS)*H,W,H,0,0,W,H);var f=1+2*i;s.cap.textContent=s.fn(f);s.box.classList.toggle('end',i>=N-12)}
+var raf=null,t0=0;
+function frame(ts){if(!t0)t0=ts;var i=Math.min(N-1,Math.floor((ts-t0)/1000*FPS));S.forEach(function(s){draw(s,i)});if(i<N-1)raf=requestAnimationFrame(frame)}
+function play(){if(raf)cancelAnimationFrame(raf);t0=0;raf=requestAnimationFrame(frame)}
+root.querySelector('.ab-re').addEventListener('click',function(){still?S.forEach(function(s){draw(s,N-1)}):play()});
+if(still||!('IntersectionObserver' in window)){S.forEach(function(s){draw(s,N-1)})}else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var go=function(){if(S.every(function(s){return s.ok}))play();else setTimeout(go,150)};go();io.disconnect()}})},{threshold:.45});io.observe(root)}
 })();
 </script>
 </body></html>
