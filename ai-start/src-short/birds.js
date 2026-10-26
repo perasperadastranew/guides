@@ -43,7 +43,7 @@ function A(svg){var p=scene(svg,'a'),b=bird(p,'round','g');var D=8.6;
       else if(k>=1&&k<2.2){var j=(k-1)/1.2;put(b,244-j*40,196+Math.min(1,j*1.6)*25,200-j*300,1-j*.2);shown=true;
         p.fort.setAttribute('transform','translate('+(k<1.25?Math.sin(k*60)*1.6:0)+' 0)')}});
     if(!shown)put(b,SX,SY,0,t<7.2?1:1);
-    p.txt.textContent=t<1?'':t<7.2?'Попытка '+Math.min(3,1+Math.floor(t/2.4))+' — снова та же птица':'Проект стоит. Одной птицей его не взять';
+    p.txt.textContent=t<1?'':t<7.2?'Попытка '+Math.min(3,1+Math.floor(t/2.4))+' — снова только генерация':'Проект стоит. Одним навыком его не взять';
     p.txt.setAttribute('class','cap'+(t>=7.2?' end':''))};
   p.D=D;return p}
 
@@ -74,7 +74,7 @@ function Bscene(svg){var p=scene(svg,'b'),B=p.B,D=9.2;
     if(t>=3.8&&t<4.6){var q5=arc(ease((t-3.8)/.8),[SX,SY],[252,206],18);put(dr,q5[0],q5[1],8,1)}else if(t>=4.6&&t<5.4){var j2=(t-4.6)/.8;put(dr,252-j2*20,206+fall(j2)*18,40*j2,1-j2)}else put(dr,0,0,0,0);
     /* 4. «тяжёлый»: финальный удар в центр */
     if(t>=5.4&&t<6.4){var q6=arc(ease((t-5.4)/1),[SX,SY],[300,160],60);put(hv,q6[0],q6[1],(t-5.4)*120,1)}else if(t>=6.4&&t<7.4){var j3=(t-6.4);put(hv,300+j3*20,160+fall(j3)*57,120+j3*90,1)}else if(t>=7.4){put(hv,320,217,210,1)}else put(hv,0,0,0,0);
-    p.txt.textContent=t<1.6?'Разведка: где слабое место':t<3.6?'Стиль: бьёт сразу в трёх местах':t<5.4?'Точность: одна опора — и всё шатается':t<7.2?'Сила: финальный удар':'Проект взят';
+    p.txt.textContent=t<1.6?'Насмотренность: видит, куда бить':t<3.6?'База дизайна: бьёт сразу по трём фронтам':t<5.4?'Работа с заказчиком: точно в главное':t<7.2?'Нейросети: быстро добивают':'Проект взят';
     p.txt.setAttribute('class','cap'+(t>=7.2?' end ok':''))};
   p.D=D;return p}
 
