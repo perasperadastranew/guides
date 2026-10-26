@@ -182,6 +182,8 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
 footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+.tocal{display:block;width:fit-content;max-width:100%;margin:0 0 14px;padding:11px 16px;background:var(--card);border:1px solid var(--stroke);border-radius:10px;color:var(--ink);text-decoration:none;font-family:var(--body);font-size:15px;letter-spacing:0;text-transform:none}
+.tocal:hover,.tocal:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
 
 @media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){
@@ -431,7 +433,7 @@ figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06e
 ПРОСТРАНСТВО</span></div>
   <div class="head"><h2>3D-слои и пространство</h2></div>
   <p class="quote">Ключевое слово — иллюзия. Мы не создаём объём, мы его имитируем.</p>
-  <p>В After Effects нет объёмных моделей, как в Cinema 4D или Blender. Зато плоские слои можно расставить на разной глубине и посмотреть на них камерой. Это называется 2.5D.</p>
+  <p>AE с версии 24.1 открывает модели GLB/glTF, но параллакс из иллюстраций всё равно делаем плоскими слоями — это 2.5D. Плоские слои расставляем на разной глубине и смотрим на них камерой.</p>
   <h3>Что такое 3D-слой</h3>
   <dl>
     <dt>Включение</dt><dd>Иконка куба в колонке слоя на таймлайне. У слоя появляется третья координата Z — глубина.</dd>
@@ -476,7 +478,7 @@ figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06e
     <div class="demo-bot"><button class="playb" type="button" data-play>▶ Пролёт камеры</button><label class="tg"><input type="checkbox" data-mb> Motion Blur</label><span class="hint">Сравни скорость планов. Потом поставь все слои на одну глубину — пространство пропадёт.</span></div>
   </div>
   <dl>
-    <dt>Объектив</dt><dd>Пресет камеры: 15, 20, 35, 50, 135mm. Чем больше число, тем дальше камера отходит и сильнее зумирует — перспектива сплющивается, параллакс слабеет. Широкий угол усиливает глубину и искажения. Чаще всего берут 35 или 50mm — близко к глазу.</dd>
+    <dt>Объектив</dt><dd>Пресеты камеры от 15 до 200mm. Чем больше число, тем дальше камера отходит и сильнее зумирует — перспектива сплющивается, параллакс слабеет. Широкий угол усиливает глубину и искажения. Чаще всего берут 35 или 50mm — близко к глазу.</dd>
   </dl>
 </section>
 
@@ -541,7 +543,7 @@ figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06e
   <ol class="steps">
     <li><div><div class="t">Все слои в 3D</div><div class="d">Перенеси ассеты, включи куб у каждого. Перекрась слои по планам, чтобы не путаться.</div></div></li>
     <li><div><div class="t">Разложи по Z на виде сверху</div><div class="d">Фон — дальше всех, Земля чуть ближе, первый космонавт и тарелка — средний план, луна, корабль, второй космонавт и флаг — передний.</div></div></li>
-    <li><div><div class="t">Расширь фон</div><div class="d">Эффект Repetile, около 2000 по каждой стороне — камера не упрётся в край.</div></div></li>
+    <li><div><div class="t">Расширь фон</div><div class="d">Эффект CC RepeTile, около 2000 по каждой стороне — камера не упрётся в край.</div></div></li>
     <li><div><div class="t">Камера и Null</div><div class="d">Camera со стандартными настройками, Null «Camera Target» в 3D, камера привязана к нему.</div></div></li>
     <li><div><div class="t">Траектория</div><div class="d">Отъезд назад за 1,5 секунды, чтобы показать Землю, потом длинный пролёт к переднему плану. Финальный ключ повтори на последнем кадре для цикла. Сгладь путь Convert Vertex Tool.</div></div></li>
     <li><div><div class="t">Скорость и доворот</div><div class="d">В графе скоростей — резкий вход, небольшая прибавка в середине, торможение у переднего плана. Ключи Y и Z Rotation с Easy Ease.</div></div></li>
@@ -600,7 +602,7 @@ figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06e
   </div>
 </section>
 
-<footer>Perasperadastra · Mission to Motion · 3D-камера и параллакс</footer>
+<footer><a class="tocal" href="../mtm-calendar/" target="_top">← К календарю курса</a>Perasperadastra · Mission to Motion · 3D-камера и параллакс</footer>
 </div>
 
 <script type="application/json" id="quiz-data">[

@@ -182,6 +182,8 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
 footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+.tocal{display:block;width:fit-content;max-width:100%;margin:0 0 14px;padding:11px 16px;background:var(--card);border:1px solid var(--stroke);border-radius:10px;color:var(--ink);text-decoration:none;font-family:var(--body);font-size:15px;letter-spacing:0;text-transform:none}
+.tocal:hover,.tocal:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
 
 @media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){
@@ -429,7 +431,7 @@ figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06e
 ГАЙД ДЛЯ СТУДЕНТОВ</span><span>MISSION TO MOTION
 МОНТАЖ</span></div>
   <h1>Монтаж: склейки, переходы, крупности</h1>
-  <p class="lead"><b>Склейка отвечает на вопрос «почему следующий кадр именно такой». Переход — «как это будет выглядеть».</b> Словарь крупностей, девять склеек, семь переходов, правила выбора и базовый Premiere для моушн-дизайнера.</p>
+  <p class="lead"><b>Склейка отвечает на вопрос «почему следующий кадр именно такой». Переход — «как это будет выглядеть».</b> Словарь крупностей, десять склеек, семь переходов, правила выбора и базовый Premiere для моушн-дизайнера.</p>
   <span class="save">Сохрани, чтобы не потерять</span>
   <nav aria-label="Разделы">
     <a href="#u1" data-n="01">Крупность кадра</a><a href="#u2" data-n="02">Склейки</a><a href="#u3" data-n="03">Переходы</a><a href="#u4" data-n="04">Как выбирать</a><a href="#u5" data-n="05">Premiere</a><a href="#u6" data-n="06">Задание</a><a href="#quiz" data-n="07">Квиз</a>
@@ -599,7 +601,7 @@ PREMIERE</span></div>
   </div>
 </section>
 
-<footer>Perasperadastra · Mission to Motion · монтаж</footer>
+<footer><a class="tocal" href="../mtm-calendar/" target="_top">← К календарю курса</a>Perasperadastra · Mission to Motion · монтаж</footer>
 </div>
 
 <script type="application/json" id="quiz-data">[

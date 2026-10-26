@@ -88,7 +88,8 @@ header{padding-bottom:36px;background-image:radial-gradient(#262626 1.2px,transp
 .bar:hover{border-color:var(--ink)}
 a.bar{text-decoration:none}
 .bar .bk{position:absolute;right:7px;top:50%;transform:translateY(-50%);font-family:var(--body);font-size:13px;color:inherit;opacity:.75}
-.mod a.bar:hover{border-color:var(--accent)}
+.mod a.bar:hover,.mod .bar.many:hover{border-color:var(--accent)}
+button.hl{background:none;border:0;padding:3px 0 0;cursor:pointer}
 .hl{margin-left:auto;align-self:flex-start;padding-top:3px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-decoration:none;white-space:nowrap}
 .hl:hover,.hl:focus-visible{color:var(--accent);border-color:var(--accent);outline:none}
 .hw .bar{top:8px;height:22px;background:transparent;border-style:dashed;color:var(--dim)}
@@ -124,6 +125,8 @@ html.embed{color-scheme:normal;background:transparent}html.embed body{background
 .tip dt{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding-top:2px}
 .tip dd{margin:0;color:var(--ink);white-space:pre-line}
 .tip dd.hot{color:var(--accent)}
+.tip dd a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--faint);text-underline-offset:3px}
+.tip dd a:hover,.tip dd a:focus-visible{color:var(--accent);text-decoration-color:var(--accent);outline:none}
 .tip.pin{pointer-events:auto}
 .tip .files{display:grid;gap:8px;grid-template-columns:minmax(0,1fr)}
 .tip .files.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -170,7 +173,7 @@ html.embed{color-scheme:normal;background:transparent}html.embed body{background
   <section class="ctrl">
     <span class="mono">Поток</span>
     <button type="button" class="cohort" data-k="sep">Сентябрь · с 14 сен</button>
-    <p>Наведите или нажмите на полосу, чтобы увидеть подробности. Полоса модуля открывает методичку.</p>
+    <p>Наведи или нажми на полосу, чтобы увидеть подробности. Полоса модуля открывает методичку, а если их несколько — список со ссылками.</p>
     <div class="legend">
       <span><i class="sw"></i>уроки модуля</span>
       <span><i class="sw h"></i>домашнее задание</span>
@@ -194,26 +197,26 @@ html.embed{color-scheme:normal;background:transparent}html.embed body{background
 <script>
 var LT=(window.parent!==window)?"_top":"_self";
 (function(){
-  // Смещения в днях от понедельника старта; e — последний день (воскресенье), сдача до следующего понедельника.
+  // Смещения в днях от понедельника старта; e — последний день (воскресенье), сдача до 23:59 этого дня.
   // s/e — расписание сентябрьского потока Mission to Motion, старт в понедельник.
   // hs/he — когда делается ДЗ, если не совпадает с модулем.
   var F={};
-  // Методички по модулям: клик по полосе модуля открывает первую.
+  // Методички по модулям: [название, ссылка]. Одна методичка — полоса модуля открывает её; несколько — полоса открывает подсказку со ссылкой на каждую.
   var G="../";
   var HO={
-    prof:{url:G+"professiya/",list:["Профессия и процесс"]},
-    ae:{url:G+"osnovy-ae/",list:["Основы After Effects","Графики и принципы"]},
-    style:{url:G+"stilizaciya/",list:["Стилизация и эффекты"]},
-    kin:{url:G+"kineticheskaya-tipografika/",list:["Кинетическая типографика"]},
-    cam:{url:G+"3d-kamera/",list:["3D-камера и параллакс","Трекинг, ротоскоп, композитинг"]},
-    extra:{url:G+"ekspresheny-skripty/",list:["Экспрешены, плагины и скрипты","Анимация интерфейсов"]},
-    concept:{url:G+"koncepciya-scenarij/",list:["Концепция и сценарий","Работа с референсами"]},
-    sb:{url:G+"raskadrovka/",list:["Раскадровка"]},
-    anim:{url:G+"grafiki-i-principy/",list:["Графики и принципы","Стилизация и эффекты"]},
-    mont:{url:G+"montazh/",list:["Монтаж: склейки, переходы, крупности","Разговорное видео"]},
-    snd:{url:G+"zvuk-i-ritm/",list:["Саунд-дизайн и визуальный ритм"]},
-    ai:{url:G+"nejroseti-v-moushne/",list:["Нейросети в моушне"]},
-    dip:{url:G+"diplom/",list:["Дипломный проект и портфолио","Личный бренд дизайнера"]}
+    prof:{url:G+"professiya/",list:[["Профессия и процесс",G+"professiya/"]]},
+    ae:{url:G+"osnovy-ae/",list:[["Основы After Effects",G+"osnovy-ae/"],["Графики и принципы",G+"grafiki-i-principy/"]]},
+    style:{url:G+"stilizaciya/",list:[["Стилизация и эффекты",G+"stilizaciya/"]]},
+    kin:{url:G+"kineticheskaya-tipografika/",list:[["Кинетическая типографика",G+"kineticheskaya-tipografika/"]]},
+    cam:{url:G+"3d-kamera/",list:[["3D-камера и параллакс",G+"3d-kamera/"],["Трекинг, ротоскоп, композитинг",G+"treking-kompoziting/"]]},
+    extra:{url:G+"ekspresheny-skripty/",list:[["Экспрешены, плагины и скрипты",G+"ekspresheny-skripty/"],["Анимация интерфейсов",G+"animaciya-interfejsov/"]]},
+    concept:{url:G+"koncepciya-scenarij/",list:[["Концепция и сценарий",G+"koncepciya-scenarij/"],["Работа с референсами",G+"referensy/"]]},
+    sb:{url:G+"raskadrovka/",list:[["Раскадровка",G+"raskadrovka/"]]},
+    anim:{url:G+"grafiki-i-principy/",list:[["Графики и принципы",G+"grafiki-i-principy/"],["Стилизация и эффекты",G+"stilizaciya/"]]},
+    mont:{url:G+"montazh/",list:[["Монтаж: склейки, переходы, крупности",G+"montazh/"],["Разговорное видео",G+"razgovornoe-video/"]]},
+    snd:{url:G+"zvuk-i-ritm/",list:[["Саунд-дизайн и визуальный ритм",G+"zvuk-i-ritm/"]]},
+    ai:{url:G+"nejroseti-v-moushne/",list:[["Нейросети в моушне",G+"nejroseti-v-moushne/"]]},
+    dip:{url:G+"diplom/",list:[["Дипломный проект и портфолио",G+"diplom/"],["Личный бренд дизайнера",G+"lichnyj-brend/"]]}
   };
   var BLOCKS=[
     {n:"1",name:"Профессия и процесс",ho:HO.prof,s:0,e:6,modLive:{name:"Эфиры: профессия и фундамент дизайна",rel:[0,2]}},
@@ -277,9 +280,8 @@ var LT=(window.parent!==window)?"_top":"_self";
   function state(r){return off>r.e?"done":off>=r.s?"current":"next"}
   var WG=["воскресенья","понедельника","вторника","среды","четверга","пятницы","субботы"];
   function wd(d){return new Date(t0+d*DAY).getUTCDay()}
-  function due(r){return fmt(t0+(r.e+1)*DAY)}
-  function dueText(r){return "до "+WG[wd(r.e+1)]+", "+due(r)}
-  function lastText(r){return "загрузить до 23:59 "+WG[wd(r.e)]+", "+fmt(t0+r.e*DAY)}
+  function due(r){return fmt(t0+r.e*DAY)}
+  function dueText(r){return "до 23:59 "+WG[wd(r.e)]+", "+due(r)}
   function sunday(r){return fmt(t0+r.e*DAY)}
 
   function render(start){
@@ -298,21 +300,21 @@ var LT=(window.parent!==window)?"_top":"_self";
         inner=w>=2?w+" нед":"";
       }else{
         if(st==="current"){p=Math.round((off-r.s+1)/len*100);style="background:linear-gradient(to right,var(--accent-wash) "+p+"%,transparent "+p+"%);"}
-        inner=(w>=2&&!r.live)?"до "+due(r):"";
+        inner=(w>=2&&!r.live)?"до 23:59, "+due(r):"";
       }
       var lab;
       if(r.kind==="mod"){
-        lab='<span class="num">'+r.b.n+'</span><div class="name">'+esc(r.title)+(r.ho?'<a class="hl" href="'+esc(r.ho.url)+'" target="'+LT+'" title="'+esc(r.ho.list.length>1?r.ho.list.length+' методичек модуля':'Методичка модуля')+'">'+(r.ho.list.length>1?'методички':'методичка')+' ↗</a>':'')+'</div>'+
+        lab='<span class="num">'+r.b.n+'</span><div class="name">'+esc(r.title)+(r.ho?(r.ho.list.length>1?'<button type="button" class="hl" data-i="'+idx+'" title="'+r.ho.list.length+' '+plural(r.ho.list.length,'методичка','методички','методичек')+' модуля">методички ↗</button>':'<a class="hl" href="'+esc(r.ho.url)+'" target="'+LT+'" title="Методичка модуля">методичка ↗</a>'):'')+'</div>'+
             '<div class="meta"><time>Уроки · '+fmt(t0+r.s*DAY)+' – '+sunday(r)+'</time>'+(r.live?'<span class="lvm">'+esc(r.liveName)+': '+liveWhen(r)+'</span>':'')+'</div>';
       }else{
         lab='<span class="num">'+(r.first?r.b.n:'')+'</span><div class="name"><span class="tag hwt">'+r.type+'</span>'+esc(r.title)+'</div>'+
             (r.parts?'<div class="parts">'+r.parts.map(function(p,k){return '<span><i>'+(k+1)+'</i>'+esc(p)+'</span>'}).join("")+'</div>':'')+
-            '<div class="meta"><span>Сдать до '+WG[wd(r.e+1)]+', <b>'+due(r)+'</b></span>'+(r.live?'<span class="lvm">'+esc(r.liveName)+': '+liveWhen(r)+'</span>':'')+'</div>';
+            '<div class="meta"><span>Сдать до 23:59 '+WG[wd(r.e)]+', <b>'+due(r)+'</b></span>'+(r.live?'<span class="lvm">'+esc(r.liveName)+': '+liveWhen(r)+'</span>':'')+'</div>';
       }
       h+='<div class="row '+r.kind+' '+st+(r.first?' first':'')+(r.project?' project':'')+(r.live?' haslive':'')+'">'+
          '<div class="lab">'+lab+'</div>'+
-         '<div class="track">'+(r.ho?'<a class="bar link" href="'+esc(r.ho.url)+'" target="'+LT+'" data-i="'+idx+'" aria-label="'+esc(r.title)+': открыть методичку" style="'+style+'left:'+(r.s/TOTAL*100)+'%;width:'+(len/TOTAL*100)+'%">'+inner+'<span class="bk">↗</span></a>':
-         '<div class="bar" tabindex="0" role="button" data-i="'+idx+'" aria-label="'+esc(r.title)+', подробности" style="'+style+'left:'+(r.s/TOTAL*100)+'%;width:'+(len/TOTAL*100)+'%">'+inner+'</div>')+
+         '<div class="track">'+(r.ho&&r.ho.list.length===1?'<a class="bar link" href="'+esc(r.ho.url)+'" target="'+LT+'" data-i="'+idx+'" aria-label="'+esc(r.title)+': открыть методичку" style="'+style+'left:'+(r.s/TOTAL*100)+'%;width:'+(len/TOTAL*100)+'%">'+inner+'<span class="bk">↗</span></a>':
+         '<div class="bar'+(r.ho?' many':'')+'" tabindex="0" role="button" data-i="'+idx+'" aria-label="'+esc(r.title)+(r.ho?', выбрать методичку':', подробности')+'" style="'+style+'left:'+(r.s/TOTAL*100)+'%;width:'+(len/TOTAL*100)+'%">'+inner+(r.ho?'<span class="bk">↗</span>':'')+'</div>')+
          (r.kind==="hw"?'<i class="dl" style="left:'+((r.e+1)/TOTAL*100)+'%"></i>':'')+
          (r.live?r.live.map(function(d){return '<i class="live'+(d<off?' past':'')+'" tabindex="0" role="button" aria-label="'+esc(r.liveName+', '+liveDay(d))+'" data-i="'+idx+'" data-d="'+d+'" style="left:max(14px,'+((d+.5)/TOTAL*100)+'%)"></i>'}).join(""):'')+'</div></div>';
     });
@@ -354,7 +356,7 @@ var LT=(window.parent!==window)?"_top":"_self";
   function tipHTML(r){
     var st=state(r), lines=[], hw=null;
     if(r.kind==="mod"){
-      if(r.ho)lines.push([r.ho.list.length>1?"Методички":"Методичка",r.ho.list.map(function(t,k){return (r.ho.list.length>1?(k+1)+". ":"")+t}).join("\n")]);
+      if(r.ho)lines.push([r.ho.list.length>1?"Методички":"Методичка",r.ho.list.map(function(t,k){return '<a href="'+esc(t[1])+'" target="'+LT+'">'+(r.ho.list.length>1?(k+1)+". ":"")+esc(t[0])+' ↗</a>'}).join("\n"),0,1]);
       lines.push(["Уроки",fmt(t0+r.s*DAY)+" – "+sunday(r)+" · "+(r.e-r.s+1)/7+" нед"]);
       hw=ROWS.filter(function(x){return x.kind==="hw"&&x.b===r.b})[0];
       lines.push(["Задание",hw?hw.type+": "+hw.title:"без домашнего задания"]);
@@ -363,7 +365,7 @@ var LT=(window.parent!==window)?"_top":"_self";
       if(hw&&hw.live)lines.push(["Эфиры",hw.liveName+": "+hw.live.map(liveDay).join(" · ")]);
     }else{
       lines.push(["Делаем",fmt(t0+r.s*DAY)+" – "+sunday(r)]);
-      lines.push(["Сдать",dueText(r)+": "+lastText(r),1]);
+      lines.push(["Сдать","загрузить "+dueText(r),1]);
       if(r.live)lines.push([r.live.length>1?"Эфиры":"Эфир",r.live.map(liveDay).join(" · ")]);
       if(!r.first)lines.push(["Модуль",r.b.n+". "+r.b.name]);
     }
@@ -374,11 +376,11 @@ var LT=(window.parent!==window)?"_top":"_self";
     var extra="", fl=r.kind==="hw"?(r.files||null):null;
     if(fl){extra='<div class="files c'+fl.length+'">'+fl.map(function(f){
         return '<a href="'+esc(f.url)+'" target="_blank" rel="noopener"><span class="shot"><img src="'+f.img+'" alt=""></span><span class="fl">'+(fl.length===1?"Открыть в Figma":esc(f.label))+' ↗</span></a>'}).join("")+'</div>'+
-        (pinned?'':'<span class="hint">Нажмите на полосу, чтобы открыть задание в Figma</span>');}
-    if(r.kind==="mod"&&r.ho)extra+='<span class="hint">Нажмите на полосу модуля, чтобы открыть методичку. Вернуться можно кнопкой внизу методички</span>';
+        (pinned?'':'<span class="hint">Нажми на полосу, чтобы открыть задание в Figma</span>');}
+    if(r.kind==="mod"&&r.ho)extra+='<span class="hint">'+(r.ho.list.length>1?(pinned?'':'Нажми на полосу, чтобы выбрать методичку. '):'Нажми на полосу модуля, чтобы открыть методичку. ')+'Вернуться можно кнопкой внизу методички</span>';
     return '<span class="k">'+(r.kind==="mod"?"Модуль "+r.b.n:r.type)+'</span><b>'+esc(r.title)+'</b>'+
       (r.parts?'<div class="parts">'+r.parts.map(function(p,k){return '<span><i>'+(k+1)+'</i>'+esc(p)+'</span>'}).join("")+'</div>':'')+
-      '<dl>'+lines.map(function(l){return '<dt>'+l[0]+'</dt><dd'+(l[2]?' class="hot"':'')+'>'+esc(l[1])+'</dd>'}).join("")+'</dl>'+extra;
+      '<dl>'+lines.map(function(l){return '<dt>'+l[0]+'</dt><dd'+(l[2]?' class="hot"':'')+'>'+(l[3]?l[1]:esc(l[1]))+'</dd>'}).join("")+'</dl>'+extra;
   }
   function liveTip(r,d){
     var left=d-off, st=left<0?"эфир прошёл":left===0?"сегодня":"через "+days(left);
@@ -399,9 +401,10 @@ var LT=(window.parent!==window)?"_top":"_self";
   chart.addEventListener("mouseout",function(e){var el=e.target.closest(".bar,.live");if(el&&!pinned&&!el.contains(e.relatedTarget))tip.hidden=true});
   chart.addEventListener("focusin",function(e){var el=e.target.closest(".bar,.live");if(el)showTip(el)});
   chart.addEventListener("focusout",function(){if(!pinned)tip.hidden=true});
-  chart.addEventListener("click",function(e){var el=e.target.closest(".bar,.live");if(!el)return;if(el.tagName==="A"){hideTip();return}e.stopPropagation();
+  chart.addEventListener("click",function(e){var el=e.target.closest(".bar,.live,.hl[data-i]");if(!el)return;if(el.tagName==="A"){hideTip();return}e.stopPropagation();
     if(pinned===el){hideTip();return} pinned=el; showTip(el)});
-  chart.addEventListener("keydown",function(e){if(e.key==="Escape")hideTip()});
+  chart.addEventListener("keydown",function(e){if(e.key==="Escape"){hideTip();return}
+    if((e.key==="Enter"||e.key===" ")&&e.target.matches(".bar.many")){e.preventDefault();e.target.click();var a=pinned&&tip.querySelector("a");if(a)a.focus()}});
   document.addEventListener("click",function(){if(pinned)hideTip()});
   tip.addEventListener("click",function(e){e.stopPropagation()});
   window.addEventListener("scroll",function(){if(pinned)showTip(pinned)},true);

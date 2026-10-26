@@ -182,6 +182,8 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
 footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+.tocal{display:block;width:fit-content;max-width:100%;margin:0 0 14px;padding:11px 16px;background:var(--card);border:1px solid var(--stroke);border-radius:10px;color:var(--ink);text-decoration:none;font-family:var(--body);font-size:15px;letter-spacing:0;text-transform:none}
+.tocal:hover,.tocal:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
 
 @media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){
@@ -423,7 +425,7 @@ SPEED И VALUE GRAPH</span></div>
   </ol>
 
   <h3>Подвох с Position и Scale</h3>
-  <div class="note"><b>Value Graph не двигается? Разделяй измерения</b><p>У объединённого Position Value Graph заблокирован: ручки не тянутся, кажется, что всё сломалось. Правый клик по Position → Separate Dimensions, и X с Y станут отдельными свойствами. Со Scale так же: раздели его, и сможешь растягивать по горизонтали и сжимать по вертикали — это Squash and Stretch из части 03.</p></div>
+  <div class="note"><b>Value Graph не двигается? Разделяй измерения</b><p>У объединённого Position Value Graph заблокирован: ручки не тянутся, кажется, что всё сломалось. Правый клик по Position → Separate Dimensions, и X с Y станут отдельными свойствами. Scale на измерения не разделяется. У Scale сними связь пропорций (значок цепочки) и ставь разные X и Y. В Value Graph у Scale и так две кривые. Так растягиваешь по горизонтали и сжимаешь по вертикали — это Squash and Stretch из части 03.</p></div>
 
   <h3>Какой график выбирать</h3>
   <div class="two">
@@ -487,7 +489,7 @@ SPEED И VALUE GRAPH</span></div>
     <thead><tr><th>Принцип</th><th>Как выглядит на графике</th><th>Что делать в After Effects</th></tr></thead>
     <tbody>
       <tr><td>Замедление начала и конца</td><td>Горб на Speed Graph, ноль у ключей</td><td>F9, затем тянуть ручки Influence</td></tr>
-      <tr><td>Сжатие и растяжение</td><td>Scale X и Y расходятся в разные стороны</td><td>Separate Dimensions у Scale, произведение X·Y около 100%</td></tr>
+      <tr><td>Сжатие и растяжение</td><td>Scale X и Y расходятся в разные стороны</td><td>У Scale сними связь пропорций (значок цепочки) и ставь разные X и Y, произведение X·Y около 100%. В Value Graph у Scale и так две кривые</td></tr>
       <tr><td>Тайминг</td><td>Ширина кривой: узкая — легко, широкая — тяжело</td><td>Раздвигать или сдвигать ключи на таймлайне</td></tr>
       <tr><td>Дуги</td><td>Изогнутая траектория в кадре</td><td>Гнуть путь ручками ключей или Pen Tool</td></tr>
       <tr><td>Подготовка</td><td>Небольшой провал перед основным подъёмом</td><td>Добавить ключ с отходом назад на 5–15%</td></tr>
@@ -536,7 +538,7 @@ SPEED И VALUE GRAPH</span></div>
   </div>
 </section>
 
-<footer>Perasperadastra · Mission to Motion · графики и принципы анимации</footer>
+<footer><a class="tocal" href="../mtm-calendar/" target="_top">← К календарю курса</a>Perasperadastra · Mission to Motion · графики и принципы анимации</footer>
 </div>
 
 <script>
@@ -1752,7 +1754,7 @@ var M = (function(){
 
   { ttl: "Логотип собирается из частей", prop: "Position · Value Graph", T: 2.8, modes: M3, ref: "lin", lo: -.05, hi: 1.25,
     note: { lin: "Части съезжаются вместе и одновременно, как по рельсам. Механика без характера.", ease: "Плавно, но всё ещё единым блоком: части стартуют и встают в одну секунду.", pro: "Части приезжают волной со сдвигом в 3 кадра, перелетают место и затухают. Захлёст и сквозное движение на реальной задаче." },
-    how: "У каждой части свои ключи Position. Сдвинь слои на 2–4 кадра. Перелёт — лишним ключом на 5–10% за финальной позицией или expression inertia на Position.",
+    how: "У каждой части свои ключи Position. Сдвинь слои на 2–4 кадра. Перелёт — лишним ключом на 5–10% за финальной позицией или готовый экспрешен inertial bounce (ищется по названию, вставляется на Position).",
     v: function(u, i, k){ if(k === "pro"){ return spring(cl((u - .08 - .05 * i) / .42, 0, 1)); } return seg(u, .08, .42, k === "lin" ? LIN : F9); },
     ser: function(k){ var s = this; return (k === "pro" ? [0, 1, 2, 3] : [0]).map(function(i){ return function(u){ return s.v(u, i, k); }; }); },
     alpha: [1, .75, .5, .3],
@@ -1870,7 +1872,7 @@ var M = (function(){
     } },
   { n: "01", g: "phys", en: "Squash & stretch", ru: "Сжатие и растяжение", T: 1.3,
     text: "Объект меняет форму в движении, и зритель чувствует массу и упругость. Главное условие — сохранение объёма: мяч при ударе сплющивается, но не теряет массу. В моушне принцип применяют к простым формам, иконкам, буквам и кнопкам. Деформация может быть даже гротескной, но не случайной.",
-    ae: "Раздели Scale на измерения. У земли X около 130%, Y около 70%, в быстром полёте наоборот. Следи, чтобы X·Y оставалось около 100%.",
+    ae: "У Scale сними связь пропорций (значок цепочки) и ставь разные X и Y. В Value Graph у Scale и так две кривые. У земли X около 130%, Y около 70%, в быстром полёте наоборот. Следи, чтобы X·Y оставалось около 100%.",
     cap: "Scale Y · высота", lo: .55, hi: 1.3,
     sy: function(u, on){ if(!on) return 1; var d = Math.min(u, 1 - u), vv = Math.abs(1 - 2 * u); return d < .06 ? 1 - .35 * (1 - d / .06) + .2 * (d / .06) * vv : 1 + .2 * vv; },
     ser: function(on){ var s = this; return [function(u){ return s.sy(u, on); }]; },
@@ -1929,7 +1931,7 @@ var M = (function(){
     } },
   { n: "05", g: "act", en: "Follow through & overlapping", ru: "Сквозное движение и захлёст", T: 2.8,
     text: "После остановки основного тела части продолжают двигаться по инерции, а разные части стартуют и останавливаются не одновременно. Ничто в жизни не движется единым жёстким блоком. В моушне это спасает от «роботизированности»: буквы появляются со смещением, часть логотипа чуть запаздывает, карточки в системе приезжают волной.",
-    ae: "Сдвинь слои на 2–4 кадра друг от друга. В финале поставь ключ с перелётом на 5–10% и вернись к значению — или используй expression inertia.",
+    ae: "Сдвинь слои на 2–4 кадра друг от друга. В финале поставь ключ с перелётом на 5–10% и вернись к значению — или используй готовый экспрешен inertial bounce (ищется по названию, вставляется на Position).",
     cap: "Position X трёх строк", lo: -1.15, hi: 1.25,
     v: function(u, i, on){ var dl = on ? .055 * i : 0, x = cl((u - .05 - dl) / .4, 0, 1), y = on ? 1 - Math.exp(-6 * x) * Math.cos(11 * x) : e5(x); if(x >= 1) y = 1; var x2 = cl((u - .7 - dl) / .2, 0, 1); return -1 + y + Math.pow(x2, 2.4); },
     ser: function(on){ var s = this; return [0, 1, 2].map(function(i){ return function(u){ return s.v(u, i, on); }; }); },

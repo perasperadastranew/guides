@@ -182,6 +182,8 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
 footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+.tocal{display:block;width:fit-content;max-width:100%;margin:0 0 14px;padding:11px 16px;background:var(--card);border:1px solid var(--stroke);border-radius:10px;color:var(--ink);text-decoration:none;font-family:var(--body);font-size:15px;letter-spacing:0;text-transform:none}
+.tocal:hover,.tocal:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
 
 @media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){
@@ -563,7 +565,7 @@ figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06e
     <li><div><div class="t">Проверь на ярком Solid</div><div class="d">Подложи контрастный цвет: ореолы и дыры сразу видно. Feather, Contrast, Reduce Chatter — осторожно.</div></div></li>
   </ol>
   <dl>
-    <dt>Object Matte Tool</dt><dd>В новых версиях: кликаешь по объекту, программа сама находит и ведёт его. Логика та же, ручной работы меньше.</dd>
+    <dt>Object Matte Tool</dt><dd>С AE 26.2 (апрель 2026): кликаешь по объекту, программа сама находит и ведёт его. Логика та же, ручной работы меньше.</dd>
     <dt>Pre-render</dt><dd>Тяжёлый проект тормозит даже после Freeze — Composition → Pre-render в Lossless with Alpha. Файл сам подставится вместо композиции.</dd>
     <dt>Не подходит</dt><dd>Стекло, дым, вода, тонкая ткань, всплески. Там режимы наложения, хромакей или ручные маски.</dd>
   </dl>
@@ -654,7 +656,7 @@ figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06e
   </div>
 </section>
 
-<footer>Perasperadastra · Mission to Motion · трекинг, ротоскоп, композитинг</footer>
+<footer><a class="tocal" href="../mtm-calendar/" target="_top">← К календарю курса</a>Perasperadastra · Mission to Motion · трекинг, ротоскоп, композитинг</footer>
 </div>
 
 <script type="application/json" id="quiz-data">[

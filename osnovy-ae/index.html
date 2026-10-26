@@ -182,6 +182,8 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
 footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+.tocal{display:block;width:fit-content;max-width:100%;margin:0 0 14px;padding:11px 16px;background:var(--card);border:1px solid var(--stroke);border-radius:10px;color:var(--ink);text-decoration:none;font-family:var(--body);font-size:15px;letter-spacing:0;text-transform:none}
+.tocal:hover,.tocal:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
 
 @media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){
@@ -463,7 +465,7 @@ AFTER EFFECTS</span><span>ЧАСТЬ 01
   <h3>Сохранение и рендер</h3>
   <ol class="steps">
     <li><div><div class="t">Ctrl+S каждые несколько минут</div><div class="d">After Effects может подвиснуть или закрыться, особенно на тяжёлых сценах.</div></div></li>
-    <li><div><div class="t">Добавь композицию в очередь</div><div class="d">Composition → Add to Render Queue или <span class="kbd">Ctrl+M</span>. Для сжатых форматов — Adobe Media Encoder, <span class="kbd">Ctrl+Alt+M</span>.</div></div></li>
+    <li><div><div class="t">Добавь композицию в очередь</div><div class="d">Composition → Add to Render Queue или <span class="kbd">Ctrl+M</span>. MP4 H.264 — прямо из Render Queue. Media Encoder — для очереди и пресетов площадок, <span class="kbd">Ctrl+Alt+M</span>.</div></div></li>
     <li><div><div class="t">Задай формат и папку и нажми Render</div><div class="d">Рендер просчитывает эффекты, анимацию и слои в один файл.</div></div></li>
   </ol>
 </section>
@@ -641,7 +643,7 @@ AFTER EFFECTS</span><span>ЧЕК-ЛИСТ</span></div>
   </div>
 </section>
 
-<footer>Perasperadastra · Mission to Motion · основы After Effects</footer>
+<footer><a class="tocal" href="../mtm-calendar/" target="_top">← К календарю курса</a>Perasperadastra · Mission to Motion · основы After Effects</footer>
 </div>
 
 <script type="application/json" id="quiz-data">[
@@ -738,7 +740,7 @@ AFTER EFFECTS</span><span>ЧЕК-ЛИСТ</span></div>
   // горячие клавиши
   var HK = [
     ["Инструменты", [["V", "Выделение"], ["H", "Рука, перемещение по окну"], ["Z", "Масштаб"], ["W", "Вращение"], ["Y", "Pan Behind, перенос Anchor Point"], ["C", "Камера"], ["Q", "Фигуры"], ["G", "Перо"], ["Ctrl+T", "Текст"]]],
-    ["Проект и композиции", [["Ctrl+I", "Импорт файла"], ["Ctrl+N", "Новая композиция"], ["Ctrl+K", "Настройки композиции"], ["Ctrl+Y", "Новый Solid"], ["Ctrl+Alt+Shift+N", "Новый Null Object"], ["Ctrl+Alt+Shift+Y", "Новая камера"], ["Ctrl+Alt+Shift+C", "Новый свет"]]],
+    ["Проект и композиции", [["Ctrl+I", "Импорт файла"], ["Ctrl+N", "Новая композиция"], ["Ctrl+K", "Настройки композиции"], ["Ctrl+Y", "Новый Solid"], ["Ctrl+Alt+Y", "Новый Adjustment Layer"], ["Ctrl+Alt+Shift+Y", "Новый Null Object"], ["Ctrl+Alt+Shift+C", "Новая камера"], ["Ctrl+Alt+Shift+L", "Новый свет"]]],
     ["Таймлайн", [["Space", "Воспроизведение"], ["Home / End", "В начало / в конец"], ["Ctrl+PgUp / PgDn", "Кадр назад / вперёд"], ["J / K", "Предыдущий / следующий ключ"], ["B / N", "Начало / конец рабочей области"], ["Alt+колесо", "Масштаб таймлайна"]]],
     ["Параметры слоя", [["A", "Anchor Point"], ["P", "Position"], ["S", "Scale"], ["R", "Rotation"], ["T", "Opacity"], ["U", "Анимированные параметры"], ["UU", "Все изменённые параметры"], ["E", "Эффекты слоя"], ["M / MM", "Маска / все маски"], ["F", "Mask Feather"], ["L / LL", "Громкость / waveform"]]],
     ["Работа со слоями", [["Ctrl+D", "Дублировать"], ["Ctrl+Shift+D", "Разрезать по плейхеду"], ["Alt+[ / Alt+]", "Обрезать начало / конец"], ["[ / ]", "Перенести начало / конец к плейхеду"], ["Ctrl+[ / Ctrl+]", "Слой ниже / выше"], ["F2", "Снять выделение"], ["Ctrl+Shift+C", "Pre-compose"], ["Enter", "Переименовать"]]],

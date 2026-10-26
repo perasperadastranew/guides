@@ -182,6 +182,8 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
 footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+.tocal{display:block;width:fit-content;max-width:100%;margin:0 0 14px;padding:11px 16px;background:var(--card);border:1px solid var(--stroke);border-radius:10px;color:var(--ink);text-decoration:none;font-family:var(--body);font-size:15px;letter-spacing:0;text-transform:none}
+.tocal:hover,.tocal:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
 
 @media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){
@@ -623,7 +625,7 @@ table.combo td:last-child{width:40px;text-align:right}
     <dt>48 кГц</dt><dd>Стандарт частоты дискретизации для видео. Не конвертируй готовый материал из одной частоты в другую без причины.</dd>
     <dt>24 бита</dt><dd>Записывай и работай в 24 битах: большой запас, промах с уровнем можно спасти.</dd>
     <dt>Моно и стерео</dt><dd>Голос — моно и по центру. Эффекты и атмосфера живут в стерео.</dd>
-    <dt>Громкость</dt><dd>Ориентир для финального микса: около −14 LUFS для YouTube, −16 LUFS для соцсетей.</dd>
+    <dt>Громкость</dt><dd>Ориентир для финального микса: −14 LUFS integrated, пики не выше −1 dBTP.</dd>
     <dt>Экспорт</dt><dd>WAV или AIFF для мастера, MP3 для предпросмотра.</dd>
     <dt>Проверка</dt><dd>Наушники, колонки и телефон. Смотреть будут с телефона, а там низов почти нет.</dd>
   </dl>
@@ -698,12 +700,12 @@ table.combo td:last-child{width:40px;text-align:right}
     <label><input type="checkbox" id="c7"><span>В каждый момент понятно, что главное: речь, музыка или эффекты</span></label>
     <label><input type="checkbox" id="c8"><span>Музыка уходит под речь, голос разборчив</span></label>
     <label><input type="checkbox" id="c9"><span>На каждом клипе фейды, нет щелчков и перегруза</span></label>
-    <label><input type="checkbox" id="c10"><span>Проект в 48 кГц, громкость около −14…−16 LUFS</span></label>
+    <label><input type="checkbox" id="c10"><span>Проект в 48 кГц, громкость −14 LUFS integrated, пики не выше −1 dBTP</span></label>
     <label><input type="checkbox" id="c11"><span>Проверено на наушниках, колонках и телефоне</span></label>
   </div>
 </section>
 
-<footer>Perasperadastra · Mission to Motion · саунд-дизайн и ритм</footer>
+<footer><a class="tocal" href="../mtm-calendar/" target="_top">← К календарю курса</a>Perasperadastra · Mission to Motion · саунд-дизайн и ритм</footer>
 </div>
 
 <script>

@@ -182,6 +182,8 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
 footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+.tocal{display:block;width:fit-content;max-width:100%;margin:0 0 14px;padding:11px 16px;background:var(--card);border:1px solid var(--stroke);border-radius:10px;color:var(--ink);text-decoration:none;font-family:var(--body);font-size:15px;letter-spacing:0;text-transform:none}
+.tocal:hover,.tocal:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
 
 @media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){
@@ -545,17 +547,17 @@ code{font-family:var(--mono);font-size:.88em;background:var(--well);border-radiu
     <li><div><div class="t">File → Scripts → Install ScriptUI Panel</div><div class="d">После перезапуска скрипт появится внизу меню Window. Или положи файл в Support Files → Scripts → ScriptUI Panels.</div></div></li>
     <li><div><div class="t">Разреши скриптам работать</div><div class="d">Edit → Preferences → Scripting &amp; Expressions → Allow Scripts to Write Files and Access Network.</div></div></li>
   </ol>
-  <h3>Бесплатный минимум и точечные скрипты</h3>
+  <h3>Точечные скрипты</h3>
   <div class="kv">
-    <div><b>FX Console</b><span>Ctrl+Space — поиск любого эффекта за секунду. Свои шорткаты, скриншот кадра.</span></div>
-    <div><b>EaseCopy</b><span>Копирует только изинг, значения остаются свои. Довёл кривую — раздал всем анимациям.</span></div>
-    <div><b>Flow</b><span>Библиотека кривых для ключей.</span></div>
-    <div><b>Text Exploder</b><span>Текст на слои по буквам, словам, строкам.</span></div>
-    <div><b>Explode Shape Layers</b><span>Шейп из Illustrator на слои по группам.</span></div>
-    <div><b>Reposition Anchor Point</b><span>Якорь в центр или угол объекта.</span></div>
-    <div><b>Rift</b><span>Раскидывает слои или ключи по времени с шагом.</span></div>
-    <div><b>Motion Tools</b><span>Бесплатный комбайн: изинги, якоря, распределение.</span></div>
-    <div><b>KBar</b><span>Весь арсенал на одной панели кнопок, включая свои скрипты.</span></div>
+    <div><b>FX Console · бесплатно</b><span>Ctrl+Space — поиск любого эффекта за секунду. Свои шорткаты, скриншот кадра.</span></div>
+    <div><b>EaseCopy · бесплатно</b><span>Копирует только изинг, значения остаются свои. Довёл кривую — раздал всем анимациям.</span></div>
+    <div><b>Flow · ~$35</b><span>Библиотека кривых для ключей.</span></div>
+    <div><b>Text Exploder · $19.99</b><span>Текст на слои по буквам, словам, строкам.</span></div>
+    <div><b>Explode Shape Layers · $29.99</b><span>Шейп из Illustrator на слои по группам.</span></div>
+    <div><b>Reposition Anchor Point · бесплатно</b><span>Якорь в центр или угол объекта.</span></div>
+    <div><b>Rift · $29.99</b><span>Раскидывает слои или ключи по времени с шагом.</span></div>
+    <div><b>Motion Tools Pro · $40</b><span>Изинги, якоря, распределение.</span></div>
+    <div><b>KBar · $39.99</b><span>Весь арсенал на одной панели кнопок, включая свои скрипты.</span></div>
   </div>
   <p>Главная площадка — aescripts.com. Подход: маленькие точечные инструменты под регулярные задачи, а не комбайн, где из ста функций нужны три.</p>
   <h3>Свой скрипт вместе с нейросетью</h3>
@@ -656,7 +658,7 @@ code{font-family:var(--mono);font-size:.88em;background:var(--well);border-radiu
   </div>
 </section>
 
-<footer>Perasperadastra · Mission to Motion · экспрешены, плагины и скрипты</footer>
+<footer><a class="tocal" href="../mtm-calendar/" target="_top">← К календарю курса</a>Perasperadastra · Mission to Motion · экспрешены, плагины и скрипты</footer>
 </div>
 
 <script type="application/json" id="quiz-data">[
