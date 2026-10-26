@@ -372,16 +372,17 @@ CON = [('Рынок новый — и это возможность', 'Прав�
        ('Учись вести проект', 'Понимать задачу, договариваться о сроках и правках, сдавать вовремя. На это почти никто не делает ставку — и зря.'),
        ('Развивай личный бренд', 'Показывай работы и процесс. Заказчик выбирает того, кого видит и кому доверяет, а выделиться через блог сейчас проще, чем когда-либо.')]
 con = '<ol class="con">' + ''.join('<li><span class="cnum">%02d</span><b>%s</b><p>%s</p></li>' % (k + 1, c[0], c[1]) for k, c in enumerate(CON)) + '</ol>'
-GD = [('https://perasperadastra.ru/klip', None, 'https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4', 'Гайд', 'AI-клип', 'Клип с персонажем без съёмки: от идеи до монтажа'),
-      ('https://perasperadastranew.github.io/guides/rolik-po-foto/', 'img/g-rolik.webp', None, 'Гайд', 'AI-фильм с реальными героями', 'Фильм по семейным фото: реальные люди и локации')]
+CLOSED = 'https://t.me/perasperagram'  # TODO: ссылка на закрытый канал
+GD = [(CLOSED, None, 'https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4', 'Гайд · в закрытом канале', 'AI-клип', 'Клип с персонажем без съёмки: от идеи до монтажа'),
+      (CLOSED, 'img/g-rolik.webp', None, 'Гайд · в закрытом канале', 'AI-фильм с реальными героями', 'Фильм по семейным фото: реальные люди и локации')]
 def gcard(u, img, vid, k, t, d):
     med = ('<img src="%s" alt="" loading="lazy">' % img) if img else ('<span class="ty" aria-hidden="true">%s</span><video muted loop playsinline preload="metadata" data-src="%s"></video>' % (t[0], vid))
     return '<a class="gd%s" href="%s" target="_blank" rel="noopener"><div class="cm">%s</div><div class="cb"><span class="micro">%s</span><b>%s <i aria-hidden="true">↗</i></b><span>%s</span></div></a>' % ('' if img else ' t', u, med, k, t, d)
-gd = '<div class="gds">' + ''.join(gcard(*g) for g in GD) + '<a class="gd t tg" href="https://t.me/perasperagram" target="_blank" rel="noopener"><div class="cm"><span class="ty" aria-hidden="true">TG</span></div><div class="cb"><span class="micro">Telegram</span><b>Наш канал <i aria-hidden="true">↗</i></b><span>Новые гайды, разборы проектов и анонсы эфиров</span></div></a></div><p class="gdl">Все гайды и методички школы — в <a href="https://t.me/perasperagram" target="_blank" rel="noopener">нашем Telegram-канале ↗</a></p>'
+gd = '<div class="gds">' + ''.join(gcard(*g) for g in GD) + '</div>'
 out.append('''<section class="step fin" id="pg-end">%s
 %s
 <div class="live"><span class="micro">Прямой эфир · 28 октября, 19:00 по Москве</span><h3>Разберём всё это вживую</h3><p>Покажем, как мы работаем с нейросетями: идеи и решения на нас, рутина на ИИ. Ответим на вопросы и разберём, что дизайнеру нужно уметь в 2027 году. Ссылка на эфир, вся информация и другие методички — в нашем закрытом канале.</p><a class="btn" href="https://t.me/perasperagram" target="_blank" rel="noopener">Вступить в закрытый канал ↗</a></div>
-<p class="micro" style="margin:56px 0 14px">Открытые гайды школы · остальные методички в <a href="https://t.me/perasperagram" target="_blank" rel="noopener" style="color:var(--accent)">нашем канале ↗</a></p>
+<p class="micro" style="margin:56px 0 14px">Гайды школы — в закрытом Telegram-канале</p>
 %s
 </section>
 
