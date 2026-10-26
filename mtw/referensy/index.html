@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Референсы</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейросетью */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* Обложка: точки тише и растворяются, сверху мягкие круги градиента */
+header{background-image:none;overflow:hidden;isolation:isolate}
+header::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(#2c2c2c 1.1px,transparent 1.2px);background-size:18px 18px;
+  -webkit-mask-image:radial-gradient(120% 90% at 0% 0%,#000 0%,rgba(0,0,0,.55) 35%,transparent 75%);
+  mask-image:radial-gradient(120% 90% at 0% 0%,#000 0%,rgba(0,0,0,.55) 35%,transparent 75%)}
+header::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:900px;height:900px;right:-360px;top:-420px;border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(235,117,64,.30) 0,rgba(235,117,64,.10) 22%,transparent 46%),
+    radial-gradient(circle at 30% 72%,rgba(196,72,110,.16) 0,transparent 32%),
+    repeating-radial-gradient(circle at 50% 50%,transparent 0 58px,rgba(244,244,242,.035) 59px 60px);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 30%,transparent 68%);
+  mask-image:radial-gradient(circle at 50% 50%,#000 30%,transparent 68%);
+  animation:hdrift 22s ease-in-out infinite alternate}
+@keyframes hdrift{from{transform:translate(0,0) scale(1)}to{transform:translate(-60px,40px) scale(1.08)}}
+@media (max-width:700px){header::after{width:560px;height:560px;right:-260px;top:-260px}}
+@media (prefers-reduced-motion:reduce){header::after{animation:none}}
+
+/* Внутри урока ZenClass: фон прозрачный, без боковых отступов, прокручивает сама страница урока */
+html.embed body{background:transparent;padding:0 0 8px}
+html.embed .wrap{max-width:none}
+
+/* Режим ?fit=1: страница-оболочка показывает только масштабируемый фрейм */
+html.shell body>*:not(iframe.shell-f){display:none!important}
+html.embed{color-scheme:normal;background:transparent}
+
+/* ===== Интерактив только для методички «Конкурентный анализ» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+.demo .warn{color:var(--bad)}
+.demo .okv{color:var(--good)}
+
+/* сортировка карточек */
+.cls-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.demo output.cls-n{min-height:0;color:var(--accent);font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.cls-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cls-card{background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0;transition:border-color .2s}
+.cls-card b{color:var(--ink);font-weight:400;font-size:16px;line-height:1.3}
+.cls-card .d{font-size:14px;line-height:1.4}
+.cls-card .seg button{background:var(--card)}
+.cls-card .seg button:disabled{cursor:default;opacity:.55}
+.cls-card .seg button.right{border-color:var(--good);color:var(--ink);opacity:1}
+.cls-card .seg button.wrong{border-color:var(--bad);color:var(--ink);opacity:1}
+.cls-card.is-right{border-color:color-mix(in srgb,var(--good) 55%,var(--stroke))}
+.cls-card.is-wrong{border-color:color-mix(in srgb,var(--bad) 55%,var(--stroke))}
+.cls-card .e{font-size:14px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.cls-card .e b{font-size:14px}
+.cls-win{grid-column:1/-1;border:1px solid var(--good);border-radius:10px;padding:14px 16px;color:var(--ink);font-size:15px}
+
+/* конструктор шаблона */
+.tplb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:20px;align-items:start}
+.tplb-ctrls{display:flex;flex-direction:column;gap:16px;min-width:0}
+.tplb-ctrls>div{display:flex;flex-direction:column;gap:8px}
+.tplb-f{display:flex;flex-direction:column;gap:8px}
+.tplb-f textarea{font:15px/1.45 var(--body);background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:10px 12px;resize:vertical;width:100%}
+.tplb-f textarea:focus{outline:none;border-color:var(--accent)}
+.tplb-crit{display:flex;flex-wrap:wrap;gap:6px}
+.tplb-crit label{display:inline-flex;align-items:center;gap:6px;background:var(--well);border:1px solid var(--stroke);border-radius:999px;padding:6px 12px 6px 9px;font-size:14px;color:var(--dim);cursor:pointer}
+.tplb-crit input{accent-color:var(--accent);margin:0;width:16px;height:16px}
+.tplb-crit label:has(input:checked){border-color:var(--accent);color:var(--ink)}
+.tplb-crit label:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.tplb-view{display:flex;flex-direction:column;gap:12px;min-width:0;position:sticky;top:16px}
+.tplb-view pre{margin:0;background:#f4f4f2;color:#101010;border-radius:8px;padding:16px;font:12.5px/1.55 var(--mono);white-space:pre-wrap;word-break:break-word;tab-size:14;max-height:420px;overflow:auto}
+
+/* таблица оценок */
+table.st{min-width:640px;font-size:14px}
+table.st th,table.st td{padding:6px 8px 6px 0;vertical-align:middle}
+table.st thead th{vertical-align:bottom}
+.st-in{font:14px var(--body);background:transparent;color:var(--ink);border:1px solid transparent;border-radius:6px;padding:6px 8px;width:100%;min-width:0}
+.st-in:hover{border-color:var(--stroke)}
+.st-in:focus{outline:none;border-color:var(--accent);background:var(--well)}
+thead .st-in{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);text-align:center}
+td.st-crit{width:34%}
+.st-cell{width:100%;min-width:52px;height:38px;border-radius:8px;border:1px solid var(--stroke);font:500 15px var(--mono);color:var(--ink);background:var(--well);transition:background .15s}
+.st-cell[data-v="1"]{background:color-mix(in srgb,var(--accent) 22%,var(--well))}
+.st-cell[data-v="2"]{background:color-mix(in srgb,var(--accent) 50%,var(--well))}
+.st-cell[data-v="3"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.st-tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;border-radius:6px;padding:4px 7px;white-space:nowrap;color:var(--faint);border:1px solid var(--stroke)}
+.st-tag.niche{color:var(--good);border-color:var(--good)}
+.st-tag.std{color:var(--ink);border-color:var(--faint)}
+.st-tag.spread{color:var(--line2);border-color:var(--line2)}
+tr.r-niche td.st-crit .st-in{color:var(--good)}
+tfoot td{font-family:var(--mono);font-size:13px;color:var(--ink);text-align:center;border-bottom:0;padding-top:12px}
+tfoot td:first-child{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+tfoot td.lead-c{color:var(--accent)}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px;color:var(--faint)}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)} .verdict li.inf::before{color:var(--line2)} .verdict li.acc::before{color:var(--accent)}
+.verdict b{color:var(--ink);font-weight:400}
+
+/* карта позиционирования */
+.pm-wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:start}
+.pm-stage{padding:34px 34px;display:block}
+.pm{position:relative;width:100%;max-width:440px;margin:0 auto;aspect-ratio:1;touch-action:none;cursor:crosshair}
+.pm::before,.pm::after{content:"";position:absolute;background:#9a9a96;pointer-events:none}
+.pm::before{left:50%;top:0;bottom:0;width:1.5px;transform:translateX(-50%)}
+.pm::after{top:50%;left:0;right:0;height:1.5px;transform:translateY(-50%)}
+.pm-q{position:absolute;width:50%;height:50%;border-radius:4px;transition:background .25s;pointer-events:none}
+.pm-q.q0{left:0;top:0}.pm-q.q1{left:50%;top:0}.pm-q.q2{left:0;top:50%}.pm-q.q3{left:50%;top:50%}
+.pm-q.empty{background:repeating-linear-gradient(45deg,rgba(47,168,79,.13) 0 8px,transparent 8px 16px)}
+.pm-q span{position:absolute;inset:auto 8px 8px auto;font:11px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:#2fa84f;opacity:0;transition:opacity .25s}
+.pm-q.q0 span,.pm-q.q2 span{inset:auto auto 8px 8px}
+.pm-q.q0 span,.pm-q.q1 span{bottom:auto;top:8px}
+.pm-q.empty span{opacity:1}
+.pm-ax{position:absolute;font:11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#5a5a58;white-space:nowrap;pointer-events:none;z-index:1}
+.pm-top{left:50%;top:-24px;transform:translateX(-50%)}
+.pm-bot{left:50%;bottom:-24px;transform:translateX(-50%)}
+.pm-l{left:-24px;top:50%;transform:translate(-50%,-50%) rotate(-90deg)}
+.pm-r{right:-24px;top:50%;transform:translate(50%,-50%) rotate(90deg)}
+.pm-dot{position:absolute;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;border:2px solid #101010;background:#fff;color:#101010;font:500 14px var(--body);display:grid;place-items:center;cursor:grab;touch-action:none;z-index:2;padding:0;box-shadow:0 2px 6px rgba(0,0,0,.15);transition:box-shadow .15s}
+.pm-dot:active{cursor:grabbing}
+.pm-dot:focus-visible{outline:none;box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.pm-dot.you{width:46px;height:46px;margin:-23px 0 0 -23px;background:#eb7540;border-color:#eb7540;font-size:13px;z-index:3}
+.pm-dot.drag{box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.pm-side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.pm-legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.35}
+.pm-legend li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;align-items:center}
+.pm-legend i{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-style:normal;font-size:12px;color:var(--ink)}
+.pm-legend li.you i{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-size:9px}
+
+/* польза × усилия */
+.ie{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ie>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.ie>div.hot{border-color:var(--accent)}
+.ie .kind{color:var(--accent)}
+.ie b{font-weight:400;font-size:18px}
+.ie p{font-size:15px}
+
+@media (max-width:760px){
+  .cls-list,.tplb-grid,.pm-wrap{grid-template-columns:minmax(0,1fr)}
+  .tplb-view{position:static}
+  .pm-stage{padding:30px 28px}
+  .pm-dot{width:32px;height:32px;margin:-16px 0 0 -16px;font-size:13px}
+  .pm-dot.you{width:40px;height:40px;margin:-20px 0 0 -20px;font-size:12px}
+  .pm-q span{font-size:9.5px}
+  .pm-l{left:-15px}.pm-r{right:-15px}.pm-top{top:-20px}.pm-bot{bottom:-20px}
+}
+@media (max-width:420px){.ie{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.pm-q,.pm-q span,.st-cell,.cls-card{transition:none}}
+
+</style>
+<style>
+.rf-funnel{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.rf-funnel li{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px 14px;display:flex;flex-direction:column;gap:4px;position:relative}
+.rf-funnel li:nth-child(4){border-color:var(--accent)}
+.rf-funnel b{font-family:var(--display);font-weight:400;font-size:clamp(30px,4vw,44px);line-height:1;color:var(--ink);letter-spacing:-.03em}
+.rf-funnel span{color:var(--ink);font-size:15px}
+.rf-funnel small{font-size:13px;line-height:1.35;color:var(--dim)}
+@media (max-width:760px){.rf-funnel{grid-template-columns:minmax(0,1fr)}}
+.rf-tr{display:flex;flex-direction:column;gap:12px}
+.rf-card{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.rf-card .n{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.rf-card .t{color:var(--ink);font-size:18px;line-height:1.35;max-width:62ch}
+.rf-opts{display:flex;flex-wrap:wrap;gap:6px}
+.rf-opts button{background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:999px;padding:9px 14px;font:400 15px var(--body);cursor:pointer}
+.rf-opts button:hover:not(:disabled){border-color:var(--accent)}
+.rf-opts button:disabled{cursor:default;color:var(--dim)}
+.rf-opts button.right{border-color:var(--good);color:var(--ink)}
+.rf-opts button.wrong{border-color:var(--bad)}
+.rf-fb{font-size:15px;line-height:1.4}
+.rf-fb b{color:var(--ink);font-weight:500}
+.rf-nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rf-nav button{background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:10px 16px;font:500 15px var(--body);cursor:pointer}
+.rf-nav span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+</style>
+</head>
+<body>
+<script>if(/fit=/.test(location.search)){window.PAAA_SHELL=1;(function(){var D=900,d=document,f=d.createElement('iframe');d.documentElement.style.cssText=d.body.style.cssText='margin:0;padding:0;height:100%;overflow:hidden;background:transparent;color-scheme:normal';f.className='shell-f';f.title='Методичка';f.src=location.pathname+'?embed=1'+location.hash;d.documentElement.className+=' shell';f.style.cssText='border:0;display:block;transform-origin:0 0;width:'+D+'px;height:100%';d.body.appendChild(f);function lay(){var w=innerWidth,h=innerHeight,c=f.contentDocument;if(!c||!c.body)return;if(w<600){f.style.width=w+'px';f.style.height=h+'px';f.style.transform='';f.style.marginLeft='0';return}c.documentElement.style.overflow='hidden';var H=c.body.offsetHeight,s=Math.min(w/D,h/H);f.style.width=D+'px';f.style.height=H+'px';f.style.transform='scale('+s+')';f.style.marginLeft=Math.max(0,(w-D*s)/2)+'px'}f.onload=function(){lay();try{new ResizeObserver(lay).observe(f.contentDocument.body)}catch(e){}setTimeout(lay,500);setTimeout(lay,2000)};addEventListener('resize',lay)})()}</script>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
+МОДУЛЬ 5 · РЕФЕРЕНСЫ</span></div>
+  <div class="series"><b>01 Референсы</b><span>02 Конкурентный анализ</span></div>
+  <h1>Референсы</h1>
+  <p class="lead"><b>Хороший макет начинается с подборки референсов.</b> Разбираем, где их искать, сколько нужно на лендинг, как отсеять лишнее и перенести решение в свой проект без копирования.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#why">Зачем</a><a href="#where">Где и сколько</a><a href="#filter">Фильтр</a><a href="#mistakes">Ошибки</a><a href="#adapt">Адаптация</a><a href="#trainer">Тренажёр</a><a href="#steps">По шагам</a><a href="#ai">С нейросетью</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="why">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Зачем нужны референсы</h2></div></div>
+  <p>Если рисовать блок из головы, выходит самый очевидный вариант или копия соседнего блока в твоём же проекте. Референс показывает, как ту же задачу уже решили другие дизайнеры, и даёт тебе несколько вариантов на выбор.</p>
+  <p class="quote">Качество дизайна зависит от того, сколько референсов ты перебрал.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Принцип 1</span><b>У референса есть основа</b><p>Найди, на чём он держится: крупная фотография, контраст шрифтов, ритм карточек. Если основу упростить, референс перестанет работать.</p></div>
+    <div class="box"><span class="kind">Принцип 2</span><b>Рефы разной сложности</b><p>Смешивай коммерческий и концептуальный дизайн. Пара смелых решений хорошо смотрится на фоне спокойных блоков. Десять смелых решений подряд перегружают страницу.</p></div>
+    <div class="box"><span class="kind">Принцип 3</span><b>Менять рефы по ходу можно</b><p>На вайрфрейме или в дизайне выяснится, что какой-то блок не встаёт. Тогда меняй референс и сохраняй композицию страницы.</p></div>
+  </div>
+  <div class="note"><b>Не бери рефы с сайта школы</b><p>Работы и блоки с сайта школы и из её библиотеки блоков копировать нельзя. Собирай свою базу и согласовывай её с куратором.</p></div>
+</section>
+
+<section id="where">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Где искать и сколько</h2></div></div>
+  <p>На один блок нужно 5–7 сильных референсов. Лендинг из 7–10 блоков — это 60–100 референсов. Новичку стоит перебрать ещё больше: так быстрее растёт насмотренность.</p>
+  <ol class="rf-funnel" aria-label="Фильтр референсов">
+    <li><b>100</b><span>понравились</span><small>Всё, что цепляет: Awwwards, Land-book, Godly, Pinterest, постеры и полиграфия</small></li>
+    <li><b>30</b><span>по смыслу</span><small>Реф решает ту же задачу блока и вмещает твой объём контента</small></li>
+    <li><b>10</b><span>по ритму</span><small>Реф сочетается с остальными блоками и держит общий ритм макета</small></li>
+    <li><b>5–7</b><span>на блок</span><small>Оцениваешь каждый по трём критериям и выбираешь лучший</small></li>
+    <li><b>3</b><span>варианта макета</span><small>Собираешь страницу из рефов в нескольких вариантах и смотришь издалека</small></li>
+  </ol>
+  <p class="why">Из 100 понравившихся референсов обычно остаётся около 10. Это нормальная пропорция: отсев входит в работу.</p>
+  <div class="sub">
+    <h3>Три подборки</h3>
+    <div class="sub-b">
+      <div class="lv">
+        <div><span>По блокам</span><span>Главная подборка: 5–7 рефов на каждый блок смыслового прототипа.</span></div>
+        <div><span>По стилю</span><span>Какое ощущение должен вызывать сайт. Ставь референсы на карту стилей из урока «Стили в веб-дизайне».</span></div>
+        <div><span>По приёмам</span><span>Отдельная доска с интересными UI-решениями: кнопки, карточки, переходы, графика. Из неё потом пробуешь адаптировать один-два приёма.</span></div>
+      </div>
+      <p class="why">С постерами и полиграфией осторожно: они дают настроение и графику, но почти ничего не говорят о том, как разложить текст и кнопки на экране.</p>
+    </div>
+  </div>
+</section>
+
+<section id="filter">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Тройной фильтр</h2></div></div>
+  <p>Каждый референс проверяй по трём вопросам. Если он не проходит хотя бы один, оставь его в общей папке и не тащи в макет.</p>
+  <div class="three">
+    <div class="box"><span class="kind">1 · Смысл</span><b>Та же задача</b><p>Реф решает ту же задачу, что и твой блок: показать несколько равнозначных вещей, провести по шагам, доказать цифрами.</p><p class="ask">Что должен понять человек после этого блока?</p></div>
+    <div class="box"><span class="kind">2 · Контент</span><b>Тот же объём</b><p>В рефе примерно столько же текста, карточек и картинок, сколько у тебя. Сверяй со смысловым прототипом.</p><p class="ask">Влезут ли сюда мои заголовок, три абзаца и кнопка?</p></div>
+    <div class="box"><span class="kind">3 · Ритм</span><b>Сочетается со страницей</b><p>Блок отличается от соседей, но стоит на тех же силовых линиях и колонках.</p><p class="ask">Не повторяет ли он предыдущий блок?</p></div>
+  </div>
+  <div class="note"><b>А чем докажешь?</b><p>Уже на этапе подборки подумай, каким визуальным контентом ты подтвердишь каждый тезис со смыслового прототипа: фото продукта, скриншоты, цифры, отзывы. Реф, который держится на материалах, которых у тебя нет, не подойдёт.</p></div>
+</section>
+
+<section id="mistakes">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Четыре ошибки адаптации</h2></div></div>
+  <p>Эти ошибки куратор чаще всего видит на разборах подборок.</p>
+  <div class="pair"><div class="bad"><i>Передизайн</i><span>Взять эффектный шот с Dribbble, где в одну картинку уместили 3D, пять шрифтов и сложную анимацию.</span></div><div class="good"><i>Лучше</i><span>Брать живые сайты с понятной структурой блоков и умеренным количеством приёмов. Шот делают ради одной картинки, в настоящий лендинг он не переносится.</span></div></div>
+  <div class="pair"><div class="bad"><i>Пустой реф</i><span>Выбрать блок, где всё держится на иллюстрации, а текста почти нет.</span></div><div class="good"><i>Лучше</i><span>Сначала сравнить объём контента в рефе со своим блоком. Из пустого рефа непонятно, как разложить твой заголовок, текст и кнопки.</span></div></div>
+  <div class="pair"><div class="bad"><i>Блок мимо</i><span>Взять реф, который по смыслу решает другую задачу, только потому что он красивый.</span></div><div class="good"><i>Лучше</i><span>Смотреть на задачу блока. Для отзывов подойдут карточки преимуществ: там тоже нужно показать несколько равнозначных сущностей.</span></div></div>
+  <div class="pair"><div class="bad"><i>Неактуальный дизайн</i><span>Взять сайт, который выглядит как десять лет назад: мелкий текст на всю ширину, тяжёлые тени, стоковые фото.</span></div><div class="good"><i>Лучше</i><span>Сверять реф со свежими подборками Awwwards и Land-book. Если он сильно выбивается из них по виду, ищи дальше.</span></div></div>
+</section>
+
+<section id="adapt">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Как адаптировать без копирования</h2></div></div>
+  <p>Из референса забираешь устройство блока: сетку, иерархию, ритм. Оформление, тексты и картинки остаются автору.</p>
+  <ol class="steps">
+    <li><div><div class="t">Найди основу</div><div class="d">Подпиши на доске, на чём держится реф. Эту основу сохраняешь в своём блоке.</div></div></li>
+    <li><div><div class="t">Масштабируй под свой контейнер</div><div class="d">Реф из чужого кейса свёрстан под другую ширину. Подгони его под свою сетку, силовые линии и колонки, иначе блоки не соберутся в одну страницу.</div></div></li>
+    <li><div><div class="t">Подставь свой контент</div><div class="d">Заголовки и тексты из смыслового прототипа. Если формулировка ломает композицию, можно немного её сократить.</div></div></li>
+    <li><div><div class="t">Собери страницу целиком</div><div class="d">Сложи 2–3 варианта страницы из рефов и посмотри издалека. Блоки должны отличаться друг от друга и держаться на одних силовых линиях.</div></div></li>
+  </ol>
+  <div class="two">
+    <div class="box"><b>Разные типы подачи</b><p>Для динамики чередуй подачу блоков: галерея, плитки, крупная цифра, список. Человеку не скучно, а страница не превращается в хаос.</p></div>
+    <div class="box"><b>Один акцент</b><p>Когда соединяешь решения из разных рефов, оставь акцент на чём-то одном. Если каждый блок кричит, страница выглядит как люстра со всеми лампочками сразу.</p></div>
+  </div>
+</section>
+
+<section id="trainer">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Тренажёр: брать или нет</h2></div></div>
+  <p>Ты подбираешь рефы для лендинга. Прочитай описание найденного блока и реши, что с ним делать.</p>
+  <div class="rf-tr" id="rf-tr" aria-live="polite"></div>
+</section>
+
+<section id="steps">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>По шагам</h2></div></div>
+  <ol class="steps">
+    <li><div><div class="t">Разбери смысловой прототип</div><div class="d">Для каждого блока выпиши задачу, тип и объём контента.</div></div></li>
+    <li><div><div class="t">Определи стиль</div><div class="d">По карте стилей реши, какое ощущение должен вызывать сайт.</div></div></li>
+    <li><div><div class="t">Собери широкую подборку</div><div class="d">Сначала всё, что цепляет. Потом прогони через фильтр: смысл, контент, ритм. Оставь 5–7 рефов на блок.</div></div></li>
+    <li><div><div class="t">Подпиши рефы</div><div class="d">У каждого отметь, насколько он подходит, и на чём он держится.</div></div></li>
+    <li><div><div class="t">Собери 2–3 варианта страницы</div><div class="d">Подгони рефы под ширину своего контейнера и оцени ритм издалека.</div></div></li>
+    <li><div><div class="t">Покажи куратору</div><div class="d">До вайрфрейма. На этом этапе куратор — твой арт-директор.</div></div></li>
+  </ol>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Референсы вместе с нейросетью</h2></div></div>
+  <p>Нейросеть помогает составить поисковые запросы, проверить реф на «пустоту» и разобрать ритм страницы. Выбирать рефы и решать, что войдёт в макет, будешь ты с куратором.</p>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Смысловой прототип, стиль проекта, задача блока.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа.</div>
+    <div><i>Правило 3</i><b>Выбираешь ты</b>Нейросеть объясняет, финальный выбор за тобой и куратором.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Шаг 1 · Поиск</span><b>Запросы для каждого блока</b>
+<pre id="p1">Вот смысловой прототип моего лендинга: <em>[блоки по порядку с заголовками]</em>. Стиль проекта: <em>[3 слова]</em>.
+Для каждого блока задай мне по одному вопросу: какую задачу он решает и сколько в нём контента. Жди ответа.
+После ответов предложи 5–7 поисковых запросов на английском для Awwwards, Land-book и Pinterest на каждый блок.</pre>
+      <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь про блоки и сам ищешь рефы по запросам.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 2 · Проверка</span><b>Не пустой ли реф</b>
+<pre id="p2">Прикладываю скриншот референса для блока <em>[название блока]</em>. В моём блоке: <em>[заголовок, сколько абзацев, карточек, картинок]</em>.
+Скажи, на чём держится композиция рефа, сколько текста он выдержит и какие материалы для него нужны: фото, иллюстрация, 3D.
+Потом спроси меня, есть ли у меня такие материалы. Вывод, брать ли реф, не делай.</pre>
+      <button class="copy" type="button" data-copy="p2">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> решаешь, оставить реф или искать другой.</p>
+    </div>
+    <div class="prompt"><span class="kind">Шаг 3 · Ритм</span><b>Разбор вариантов страницы</b>
+<pre id="p3">Вот три варианта моей страницы, собранные из референсов: <em>[скриншоты или описание блоков по порядку]</em>.
+По каждому варианту отметь, где блоки повторяют друг друга и где нет смысловых пауз. Не выбирай лучший вариант: спроси, какой нравится мне и почему.</pre>
+      <button class="copy" type="button" data-copy="p3">Скопировать промпт</button>
+      <p class="you"><b>Что делаешь ты:</b> выбираешь вариант и несёшь его куратору.</p>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Подборка референсов для своего лендинга</b><p>Для каждого блока смыслового прототипа собери 5–7 референсов, всего 60–100 на макет. У каждого подпиши основу и оценку по трём критериям: смысл, контент, ритм. Масштабируй рефы под ширину своего контейнера, собери 2–3 варианта страницы и выбери лучший. Сдай доску в Figma с подборкой и вариантами страницы.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>У каждого блока 5–7 рефов</span></label>
+    <label><input type="checkbox"><span>Нет шотов с Dribbble, неактуального дизайна и пустых рефов</span></label>
+    <label><input type="checkbox"><span>Нет работ с сайта школы и из её библиотеки блоков</span></label>
+    <label><input type="checkbox"><span>Есть и смелые, и спокойные блоки</span></label>
+    <label><input type="checkbox"><span>Блоки отличаются друг от друга и держат один ритм</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Следующий урок — Конкурентный анализ: как изучить сайты конкурентов и найти, чем выделиться.</p>
+</section>
+<footer>Perasperadastra · Mission to Web · Модуль 5 · Референсы</footer>
+
+</div>
+<script type="application/json" id="quiz-data">[{"p": "Сколько референсов нужно собрать на лендинг из 7–10 блоков?", "o": ["10–15, по одному-два на блок", "60–100, примерно 5–7 на каждый блок", "Один идеальный сайт целиком"], "a": 1, "e": "Одного-двух рефов мало: не из чего выбирать, и блок выйдет банальным. Копировать один сайт целиком — это уже не адаптация."}, {"p": "Тебе нужно сделать блок отзывов. Нашёлся сильный реф блока преимуществ с тремя карточками. Что делать?", "o": ["Отказаться: тип блока не совпадает", "Взять: он решает ту же задачу, показывает несколько равнозначных сущностей", "Взять и поменять отзывы на преимущества"], "a": 1, "e": "Важно не название блока, а задача. «Блок мимо» — это реф, который не подходит по смыслу."}, {"p": "Реф держится на крупной фотографии, а в своём блоке ты ставишь вместо неё маленькую иконку. Что будет?", "o": ["Ничего, композиция та же", "Станет лучше: меньше шума", "Реф перестанет работать: ты упростил его основу"], "a": 2, "e": "Сначала найди основу рефа и сохрани её. Без основы композиция теряет смысл."}, {"p": "Ты нашёл блок, где всё держится на иллюстрации, а текста почти нет. Как называется такой реф?", "o": ["Пустой", "Концептуальный", "Передизайн"], "a": 0, "e": "Из пустого рефа непонятно, как разложить твой контент. Сначала сверяй объём текста со своим блоком."}, {"p": "Реф взят из чужого кейса: другая ширина контейнера и свои отступы. Что делать?", "o": ["Оставить как есть", "Масштабировать под свой контейнер и подогнать под свои силовые линии и колонки", "Взять только цвета и шрифты"], "a": 1, "e": "Из рефа нужно устройство блока. Если оставить чужие размеры, блоки не соберутся в одну страницу."}, {"p": "Тебе понравился блок на сайте школы. Можно взять его референсом?", "o": ["Да, если поменять цвета", "Нет: работы и блоки с сайта школы брать нельзя", "Да, это проверенный пример"], "a": 1, "e": "Базу собираешь свою и согласовываешь с куратором."}, {"p": "На вайрфрейме выяснилось, что блок по выбранному рефу не встаёт в композицию. Что делать?", "o": ["Подогнать под него всю страницу", "Заменить референс", "Оставить, реф ведь утвердили"], "a": 1, "e": "Менять рефы по ходу — нормально. Ради одного рефа ломать композицию страницы не стоит."}]</script>
+<script type="application/json" id="rf-data">{"items": [{"t": "Шот с Dribbble: на одном экране 3D-объект, пять шрифтов, неоновые градиенты и анимация. Ты ищешь первый экран для сайта стоматологии.", "a": "over", "e": "Это передизайн. Шот делали ради одной картинки, в живой лендинг он не переносится."}, {"t": "Блок с Awwwards: крупная иллюстрация на весь экран и одна строка подписи. В твоём блоке заголовок, три абзаца и кнопка.", "a": "empty", "e": "Это пустой реф: он ничего не говорит о раскладке текста. Ищи блок с похожим объёмом контента."}, {"t": "Сайт агентства: три карточки команды с фото, именем и короткой цитатой. Тебе нужен блок отзывов.", "a": "take", "e": "Берём. Задача та же: показать несколько равнозначных людей. Название блока роли не играет."}, {"t": "Сайт банка, который не обновлялся много лет: мелкий текст на всю ширину, тяжёлые тени, стоковое фото с рукопожатием.", "a": "old", "e": "Неактуальный дизайн. Сверь с подборками Land-book и Awwwards — такой реф сильно выбивается из них."}, {"t": "Блок с Land-book: тарифы в три колонки, выделена средняя. Тебе нужен блок «Как мы работаем» в четыре шага.", "a": "miss", "e": "Блок мимо: у тарифов другая задача — сравнить варианты. Для шагов ищи рефы с процессом или таймлайном."}, {"t": "Сайт студии: крупная цифра слева, три коротких факта справа, всё на 12-колоночной сетке. Тебе нужен блок «О компании в цифрах».", "a": "take", "e": "Берём. Совпадают и задача, и объём контента. Осталось подогнать под свой контейнер."}], "labels": {"take": "Беру", "empty": "Пустой реф", "over": "Передизайн", "miss": "Блок мимо", "old": "Неактуальный"}}</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+<script>
+(function(){var e=false;try{e=window.self!==window.top;if(e&&window.parent.document.getElementById('view'))e=false}catch(x){e=true}if(e)document.documentElement.classList.add('embed')})();
+</script>
+<script>
+(function(){
+  var box=document.getElementById('rf-tr'),D=JSON.parse(document.getElementById('rf-data').textContent),L=D.labels,K=Object.keys(L),i=0,ok=0;
+  function draw(){
+    box.textContent='';
+    if(i>=D.items.length){var c=document.createElement('div');c.className='rf-card';c.innerHTML='<span class="n">Готово</span><div class="t"></div><div class="rf-nav"><button type="button">Пройти заново</button></div>';c.querySelector('.t').textContent='С первой попытки: '+ok+' из '+D.items.length+'.';c.querySelector('button').onclick=function(){i=0;ok=0;draw()};box.append(c);return}
+    var it=D.items[i],c=document.createElement('div');c.className='rf-card';
+    c.innerHTML='<span class="n"></span><div class="t"></div><div class="rf-opts"></div><div class="rf-fb" hidden></div><div class="rf-nav" hidden><button type="button"></button></div>';
+    c.querySelector('.n').textContent='Референс '+(i+1)+'\u00a0из\u00a0'+D.items.length;c.querySelector('.t').textContent=it.t;
+    var opts=c.querySelector('.rf-opts'),fb=c.querySelector('.rf-fb'),nav=c.querySelector('.rf-nav'),miss=false;
+    K.forEach(function(k){var b=document.createElement('button');b.type='button';b.textContent=L[k];b.onclick=function(){
+      if(k===it.a){b.classList.add('right');opts.querySelectorAll('button').forEach(function(x){x.disabled=true});if(!miss)ok++;
+        fb.textContent='';var s=document.createElement('b');s.textContent='Верно. ';fb.append(s,it.e);fb.hidden=false;
+        nav.querySelector('button').textContent=i===D.items.length-1?'Показать итог':'Следующий референс';nav.hidden=false;nav.querySelector('button').focus()}
+      else{miss=true;b.classList.add('wrong');b.disabled=true;fb.textContent='Не совсем. Подумай ещё: подходит ли реф по смыслу, объёму контента и актуальности?';fb.hidden=false}};opts.append(b)});
+    nav.querySelector('button').onclick=function(){i++;draw()};box.append(c)}
+  draw();
+})();
+</script>
+</body></html>
