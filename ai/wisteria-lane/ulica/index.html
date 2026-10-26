@@ -60,6 +60,10 @@ main,.pins{transition:opacity .8s ease .2s}
 .guide{background:var(--hl);padding:5px 12px}
 .ink{padding:5px 12px}
 .ink span::before{content:"✎ "}
+.fall{padding:5px 12px}
+.fall span::before{content:"";display:inline-block;width:9px;height:9px;margin-right:7px;border-radius:0 60% 0 60%;background:#d4682a;transform:rotate(-20deg)}
+.fall[aria-pressed="true"]{background:#d4682a;color:#fff;border-color:#d4682a}
+.fall[aria-pressed="true"] span::before{background:#fff}
 .guide[hidden]{display:none}
 .seasons{display:flex;align-items:center;gap:3px;padding:0;overflow-x:auto;max-width:100%;scrollbar-width:none}
 .seasons span{font:500 11px var(--type);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);background:var(--hl);padding:5px 8px;margin-right:4px}
@@ -329,6 +333,7 @@ section:not(.act) .sheet{transform:translateY(18px) rotate(1.5deg)}
   <div class="right">
     <a class="mode guide" id="guideLink" href="#" target="_blank" rel="noopener" hidden>Как сделано<span>&nbsp;· гайд</span></a>
     <button type="button" class="mode snd" id="sndBtn" aria-pressed="false" aria-label="Звук"><s aria-hidden="true"><b></b><b></b><b></b></s><span>Звук</span></button>
+    <button type="button" class="mode fall" id="fallBtn" aria-pressed="false" title="Клавиша O"><span>Осень</span></button>
     <button type="button" class="mode ink" id="inkBtn" aria-pressed="false" title="Клавиша D"><span>Рисунок</span></button>
     <button type="button" class="mode" id="nightBtn" aria-pressed="false"><i aria-hidden="true"></i><span>Ночь</span></button>
     <div class="seasons" role="group" aria-label="Сезон" id="seasons"><span>Сезон</span></div>
@@ -345,7 +350,7 @@ section:not(.act) .sheet{transform:translateY(18px) rotate(1.5deg)}
         <div><dt>Период</dt><dd>8 сезонов</dd></div><div><dt>Улик найдено</dt><dd><span class="yes" id="introCount">0 / 15</span></dd></div></dl>
       <div class="sec"><b>1</b><div><h3>Обстоятельства</h3><p>Улица из «Отчаянных домохозяек», <mark>собранная дом за домом в Blender</mark>. Листайте вниз: камера по очереди подлетит к каждому дому, а папка расскажет, кто в нём жил.</p></div></div>
       <div class="sec"><b>2</b><div><h3>Задание</h3><p class="hint">На улице спрятаны <mark>15 улик</mark>. Наводите лупу на предметы у домов и кликайте. Часть улик появляется только в своём сезоне, а ночью улица выглядит совсем иначе.</p></div></div>
-      <p class="keys"><kbd>←</kbd> <kbd>→</kbd> соседний дом · <kbd>N</kbd> ночь · <kbd>D</kbd> рисунок · <kbd>E</kbd> опись улик</p>
+      <p class="keys"><kbd>←</kbd> <kbd>→</kbd> соседний дом · <kbd>N</kbd> ночь · <kbd>D</kbd> рисунок · <kbd>O</kbd> осень · <kbd>E</kbd> опись улик</p>
     </div>
   </div></div></section>
 </main>
@@ -630,7 +635,7 @@ QUAL.dpr=QUAL.dprMax;
 
 // ---- shared uniforms
 const AO={tex:null,x0:-165,z0:-225,w:340,d:400};
-const U={ink:{value:0},dec:{value:null},ao:{value:null},t:{value:0}, night:{value:0}, hc:{value:new THREE.Vector2()}, hr:{value:new THREE.Vector2(200,360)}, hcol:{value:new THREE.Color(0xe6ede8)}};
+const U={autumn:{value:0},ink:{value:0},dec:{value:null},ao:{value:null},t:{value:0}, night:{value:0}, hc:{value:new THREE.Vector2()}, hr:{value:new THREE.Vector2(200,360)}, hcol:{value:new THREE.Color(0xe6ede8)}};
 // Procedural ground relief: tileable fBm height, baked into a normal map (rgb) + height (a).
 const GRASSN=(()=>{ const S=256, Hh=new Float32Array(S*S);
   const rnd=(i,j)=>{ const v=Math.sin(((i%S+S)%S)*127.1+((j%S+S)%S)*311.7)*43758.5453; return v-Math.floor(v); };
@@ -646,6 +651,7 @@ const GRASSN=(()=>{ const S=256, Hh=new Float32Array(S*S);
 // ---- one shader patch for every material in the world:
 //  world position (instancing-aware) → radial haze around the frame centre, drifting cloud shadows,
 //  wind sway for foliage, lit windows and lamps at night, relief on lawns, and a hover glow per house.
+const DECID=/^(leaf|leaf2|leaf_lt|oak|oak_lt|wisteria|wisteria2|jacaranda|jacaranda_lt|magnolia|magnolia_lt|bloom|bloom2)(_dk)?$/;   // these turn in autumn
 const SWAY=/^(leaf|leaf2|leaf_lt|oak|oak_lt|pine|pine_lt|cypress|wisteria|wisteria2|jacaranda|jacaranda_lt|magnolia|magnolia_lt|palm_leaf|hedge_lt|grass_tuft|flower|flower2|bloom|bloom2)(_dk)?$/;
 const GROUND=/^(lawn|lawn_lt|lawn2|meadow|meadow_dk|hill_dry|road|walk|curb|mark|drive|path|paving|shell|grass_field)$/;
 const LAWN=/^(lawn|lawn_lt|meadow|meadow_dk)$/, TERR=/^(meadow|meadow_dk|hill_dry)$/;
@@ -653,8 +659,9 @@ function patch(m,opt){ opt=opt||{}; if(m.userData.patched) return; m.userData.pa
   const cut=opt.cut||null;
   const sway=opt.sway!==undefined?opt.sway:SWAY.test(m.name), glow=m.name==='glass'?1:(m.name==='lamp'?2:0), lawn=LAWN.test(m.name)?1:0, terr=TERR.test(m.name)?1:0, hi=opt.hi||null, extra=opt.extra||null;
   const veg=!!opt.veg, water=m.name==='water', road=/^(road|walk|curb|mark|drive)$/.test(m.name);
+  const decid=DECID.test(m.name), straw=LAWN.test(m.name)||TERR.test(m.name)||m.name==='shell'||m.name==='grass_field';
   const gnd=opt.ground!==undefined?opt.ground:GROUND.test(m.name), lift=!!(hi||opt.lift)&&!gnd;
-  m.onBeforeCompile=sh=>{ Object.assign(sh.uniforms,{uNight:U.night,uHazeC:U.hc,uHazeR:U.hr,uHazeCol:U.hcol,uT:U.t,uGN:{value:GRASSN},uAO:U.ao,uDec:U.dec,uInk:U.ink}); if(hi) sh.uniforms.uHi=hi; if(cut){ sh.uniforms.uCutY=cut.y; sh.uniforms.uCutInv=cut.inv; sh.uniforms.uCutBox=cut.box; }
+  m.onBeforeCompile=sh=>{ Object.assign(sh.uniforms,{uNight:U.night,uHazeC:U.hc,uHazeR:U.hr,uHazeCol:U.hcol,uT:U.t,uGN:{value:GRASSN},uAO:U.ao,uDec:U.dec,uInk:U.ink,uAutumn:U.autumn}); if(hi) sh.uniforms.uHi=hi; if(cut){ sh.uniforms.uCutY=cut.y; sh.uniforms.uCutInv=cut.inv; sh.uniforms.uCutBox=cut.box; }
     let v=sh.vertexShader, f=sh.fragmentShader;
     v='uniform float uT;\nvarying vec3 vW;\n'+(veg?'attribute float aH;varying float vH;\n':'')+v.replace('#include <begin_vertex>',`#include <begin_vertex>${veg?'\n vH=aH;':''}
       mat4 wM=modelMatrix;
@@ -666,7 +673,7 @@ function patch(m,opt){ opt=opt||{}; if(m.userData.patched) return; m.userData.pa
         vec3 off=vec3((sin(uT*1.7+wp.x*.21+wp.z*.13)*.09+.1*g)*k,0.,cos(uT*1.3+wp.z*.19)*.06*k);
         transformed+=vec3(dot(wM[0].xyz,off),dot(wM[1].xyz,off),dot(wM[2].xyz,off))/(sc*sc); }`:''}`)
       .replace('#include <worldpos_vertex>','#include <worldpos_vertex>\n vW=(wM*vec4(transformed,1.)).xyz;');
-    f='uniform float uNight;uniform float uT;varying vec3 vW;uniform vec2 uHazeC;uniform vec2 uHazeR;uniform vec3 uHazeCol;uniform sampler2D uGN;uniform sampler2D uAO;uniform sampler2D uDec;\n'+(veg?'varying float vH;\n':'')+(hi?'uniform float uHi;\n':'')+(cut?'uniform float uCutY;uniform mat4 uCutInv;uniform vec4 uCutBox;\n':'')+f;
+    f='uniform float uNight;uniform float uT;varying vec3 vW;uniform vec2 uHazeC;uniform vec2 uHazeR;uniform vec3 uHazeCol;uniform sampler2D uGN;uniform sampler2D uAO;uniform sampler2D uDec;uniform float uAutumn;\n'+(veg?'varying float vH;\n':'')+(hi?'uniform float uHi;\n':'')+(cut?'uniform float uCutY;uniform mat4 uCutInv;uniform vec4 uCutBox;\n':'')+f;
     if(cut) f=f.replace('#include <clipping_planes_fragment>',`#include <clipping_planes_fragment>
       float cutEdge=0.; { vec3 lp=(uCutInv*vec4(vW,1.)).xyz; bool inb=lp.x>uCutBox.x&&lp.x<uCutBox.y&&lp.z>uCutBox.z&&lp.z<uCutBox.w;
         if(inb&&lp.y>uCutY) discard; if(inb) cutEdge=smoothstep(uCutY-.09,uCutY-.03,lp.y)*step(uCutY,40.); }`)
@@ -706,16 +713,27 @@ function patch(m,opt){ opt=opt||{}; if(m.userData.patched) return; m.userData.pa
     if(water) f=f.replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
       { vec2 q=vW.xz*2.2; float c1=sin(q.x+uT*1.3+sin(q.y*1.7+uT))*sin(q.y*1.3-uT*1.1+sin(q.x*1.1)); float cs=pow(abs(c1),6.);
         totalEmissiveRadiance+=vec3(.75,.95,1.)*(cs*.55+.08)*(1.-.6*uNight)+vec3(.2,.55,.75)*uNight*.5; diffuseColor.rgb*=vec3(.75,.95,1.05); }`);
+    // autumn: each tree picks its colour from a hash of where it stands; lawns go to straw; leaves pile up under the trees
+    if(decid) f=f.replace('#include <color_fragment>',`#include <color_fragment>
+      if(uAutumn>.001){ float hh=fract(sin(dot(floor(vW.xz/3.2),vec2(41.3,289.1)))*43758.5453);
+        vec3 a=hh<.3?vec3(.85,.26,.04):hh<.55?vec3(.95,.52,.06):hh<.72?vec3(.6,.09,.05):hh<.9?vec3(.82,.64,.12):vec3(.32,.4,.08);
+        float l=dot(diffuseColor.rgb,vec3(.3,.59,.11)); diffuseColor.rgb=mix(diffuseColor.rgb,a*(l*2.3+.06),uAutumn); }`);
+    if(straw) f=f.replace('#include <color_fragment>','#include <color_fragment>\n diffuseColor.rgb=mix(diffuseColor.rgb,diffuseColor.rgb*vec3(1.28,1.,.5),.6*uAutumn);');
     if(gnd) f=f.replace('#include <color_fragment>',`#include <color_fragment>
-      { float ao=texture2D(uAO,vec2((vW.x-(${AO.x0}.))/${AO.w}.,(vW.z-(${AO.z0}.))/${AO.d}.)).r; diffuseColor.rgb*=mix(.5,1.,ao); }`);
+      { float ao=texture2D(uAO,vec2((vW.x-(${AO.x0}.))/${AO.w}.,(vW.z-(${AO.z0}.))/${AO.d}.)).r; diffuseColor.rgb*=mix(.5,1.,ao);
+        if(uAutumn>.001){ vec2 c=floor(vW.xz*3.); float r1=fract(sin(dot(c,vec2(12.99,78.23)))*43758.55), r2=fract(r1*91.7);
+          float dens=.05+1.1*(1.-ao); vec2 q=fract(vW.xz*3.)-.5;
+          float leaf=step(1.-dens,r1)*step(length(q*vec2(1.,1.8)),.32);
+          vec3 lc=r2<.33?vec3(.8,.24,.04):r2<.66?vec3(.9,.55,.08):vec3(.55,.12,.05);
+          diffuseColor.rgb=mix(diffuseColor.rgb,lc,leaf*uAutumn); } }`);
     if(lift) f=f.replace('#include <color_fragment>',`#include <color_fragment>
       diffuseColor.rgb*=mix(.74,1.,smoothstep(0.,.4,vW.y));`);
     f=f.replace('#include <dithering_fragment>',`#include <dithering_fragment>
       { float cl=smoothstep(.5,.6,texture2D(uGN,vW.xz*.0031+uT*vec2(.0021,.0012)).a); gl_FragColor.rgb*=1.-.13*cl*(1.-uNight);
         float hd=distance(vW.xz,uHazeC); float hf=smoothstep(uHazeR.x,uHazeR.y,hd)+.12*smoothstep(uHazeR.x*.55,uHazeR.y,hd)*clamp(vW.y/30.,0.,1.);
-        hf=clamp(hf,0.,1.); gl_FragColor.rgb=mix(gl_FragColor.rgb,mix(uHazeCol*vec3(1.035,1.,.92),uHazeCol,hf),hf); }`);
+        hf=clamp(hf,0.,1.); vec3 hc=uHazeCol*mix(vec3(1.),vec3(1.04,.98,.88),uAutumn); gl_FragColor.rgb=mix(gl_FragColor.rgb,mix(hc*vec3(1.035,1.,.92),hc,hf),hf); }`);
     sh.vertexShader=v; sh.fragmentShader=f; };
-  m.customProgramCacheKey=()=>'wl'+(sway?1:0)+glow+lawn+terr+(gnd?'g':'')+(lift?'l':'')+(veg?'v':'')+(water?'w':'')+(road?'r':'')+(hi?'h':'')+(cut?'c':'')+(opt.key||''); m.needsUpdate=true; }
+  m.customProgramCacheKey=()=>'wl'+(sway?1:0)+glow+lawn+terr+(decid?'d':'')+(straw?'s':'')+(gnd?'g':'')+(lift?'l':'')+(veg?'v':'')+(water?'w':'')+(road?'r':'')+(hi?'h':'')+(cut?'c':'')+(opt.key||''); m.needsUpdate=true; }
 
 const camera=new THREE.OrthographicCamera(-1,1,1,-1,1,1400);
 const UP=new THREE.Vector3(0,1,0), DIR=new THREE.Vector3(), RIGHT=new THREE.Vector3(), CUP=new THREE.Vector3();
@@ -1083,6 +1101,22 @@ function updateRooms(){
     pv.copy(r.p).applyMatrix4(h.root.matrixWorld).project(camera); const x=(pv.x+1)/2*vw, y=(1-pv.y)/2*vh;
     r.el.style.transform='translate3d('+(x-r.el.offsetWidth/2)+'px,'+(y-r.el.offsetHeight-12)+'px,0) rotate(-2deg)'; r.el.classList.toggle('hide',x<0||x>vw||y<0||y>vh); }); }
 
+// falling leaves: points that drift down and loop, only in autumn
+const FALL=(()=>{ const n=mobile0?220:520, P=new Float32Array(n*3), A=new Float32Array(n); let k=0, tries=0;
+  while(k<n&&tries<n*20){ tries++; const x=-75+Math.random()*150, z=-120+Math.random()*220, d=roadDist(x,z); if(d<4||d>40) continue;
+    P[k*3]=x; P[k*3+1]=Math.random()*9; P[k*3+2]=z; A[k]=Math.random(); k++; }
+  const geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.BufferAttribute(P,3)); geo.setAttribute('aP',new THREE.BufferAttribute(A,1)); geo.setDrawRange(0,k);
+  const mat=new THREE.ShaderMaterial({uniforms:{uT:U.t,uA:U.autumn,uScale:FF.scale,uNight:U.night},transparent:true,depthWrite:false,
+    vertexShader:`attribute float aP;uniform float uT,uA,uScale;varying float vP;varying float vRot;
+      void main(){ vec3 p=position; float fall=mod(p.y-uT*(.55+.5*aP),9.); p.y=fall+.05; p.x+=sin(uT*.8+aP*20.)*1.1+uT*.35*(.5+aP); p.z+=cos(uT*.6+aP*13.)*.8;
+        p.x=mod(p.x+75.,150.)-75.; vP=aP; vRot=uT*(1.5+aP*3.)+aP*30.;
+        gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.); gl_PointSize=uA>.01?uScale*(.35+.25*aP):0.; }`,
+    fragmentShader:`uniform float uA,uNight;varying float vP;varying float vRot;
+      void main(){ vec2 q=gl_PointCoord-.5; float c=cos(vRot),s=sin(vRot); q=vec2(c*q.x-s*q.y,s*q.x+c*q.y); float d=length(q*vec2(1.,2.1));
+        if(d>.42) discard; vec3 col=vP<.33?vec3(.86,.38,.08):vP<.66?vec3(.95,.66,.2):vec3(.7,.2,.08);
+        gl_FragColor=vec4(col*(1.-.6*uNight)*(.85+.3*smoothstep(.42,0.,d)),uA); }`});
+  const pts=new THREE.Points(geo,mat); pts.frustumCulled=false; pts.renderOrder=7; scene.add(pts); return pts; })();
+
 // ================================================================ day / night
 const DAYC={hs:new THREE.Color(0xdde7ff),hg:new THREE.Color(0xc2c79e),sun:new THREE.Color(0xffdcae),bg:new THREE.Color(0xe9ebe3)};
 const NIC={hs:new THREE.Color(0x5a6db0),hg:new THREE.Color(0x141a2a),sun:new THREE.Color(0x9fb4ff),bg:new THREE.Color(0x151c2e)};
@@ -1095,6 +1129,10 @@ let inkTarget=store.get('wl-ink',0)?1:0; const inkBtn=$('inkBtn');
 function setInkUI(){ inkBtn.setAttribute('aria-pressed',String(!!inkTarget)); }
 function toggleInk(){ inkTarget=inkTarget?0:1; store.set('wl-ink',inkTarget); setInkUI(); Sound.tick(); if(inkTarget&&!QUAL.post){ QUAL.level=Math.min(QUAL.level,2); applyQuality(); } }
 inkBtn.onclick=toggleInk; setInkUI();
+let fallTarget=store.get('wl-autumn',0)?1:0; const fallBtn=$('fallBtn');
+function setFallUI(){ fallBtn.setAttribute('aria-pressed',String(!!fallTarget)); }
+function toggleFall(){ fallTarget=fallTarget?0:1; store.set('wl-autumn',fallTarget); setFallUI(); Sound.whoosh(); }
+fallBtn.onclick=toggleFall; setFallUI();
 const tmpC=new THREE.Color();
 function applyNight(n){ U.night.value=n;
   hemi.color.copy(DAYC.hs).lerp(NIC.hs,n); hemi.groundColor.copy(DAYC.hg).lerp(NIC.hg,n); hemi.intensity=.56-.3*n;
@@ -1146,7 +1184,7 @@ addEventListener('keydown',e=>{ if(e.target.closest&&e.target.closest('input,tex
   if(e.key==='Escape'){ noteEl.hidden=true; finalEl.hidden=true; toggleBook(false); }
   if(!started) return;
   if(e.key==='ArrowRight'){ e.preventDefault(); jump(1); } else if(e.key==='ArrowLeft'){ e.preventDefault(); jump(-1); }
-  else if(e.key==='n'||e.key==='N'||e.key==='т'||e.key==='Т') toggleNight(); else if(e.key==='d'||e.key==='D'||e.key==='в'||e.key==='В') toggleInk(); else if(e.key==='e'||e.key==='E'||e.key==='у'||e.key==='У') toggleBook(); });
+  else if(e.key==='n'||e.key==='N'||e.key==='т'||e.key==='Т') toggleNight(); else if(e.key==='d'||e.key==='D'||e.key==='в'||e.key==='В') toggleInk(); else if(e.key==='o'||e.key==='O'||e.key==='щ'||e.key==='Щ') toggleFall(); else if(e.key==='e'||e.key==='E'||e.key==='у'||e.key==='У') toggleBook(); });
 
 // ================================================================ pointer: magnifier cursor, hover, click
 const ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
@@ -1279,14 +1317,14 @@ function tick(){
   updateInside(reduce?1:dt);
   animateDetails(dt,T); if(funnel&&funnel.visible){ funnel.rotation.y+=dt*2.2; funnel.position.x+=Math.sin(T*.6)*dt*.8; shadowDirty=1; }
   { const z=Math.max(0,Math.min(1,(70-cur.h)/45)); POST.focus(fxs,1-fys,.34-.12*z,.95-.3*z); }
-  U.ink.value+=(inkTarget-U.ink.value)*Math.min(1,dt*3);
+  U.ink.value+=(inkTarget-U.ink.value)*Math.min(1,dt*3); U.autumn.value+=(fallTarget-U.autumn.value)*Math.min(1,dt*1.6); FALL.visible=U.autumn.value>.01;
   if(QUAL.post) POST.render(U.night.value,T); else { renderer.setRenderTarget(null); renderer.render(scene,camera); }
   if(snapQ.length) capture(snapQ.shift());
   updatePins(); updateRooms(); if(fine) updateCursor(dt); Sound.update(dt); govern();
   PERF.ft=PERF.ft*.9+(performance.now()-t0)*.1;
   requestAnimationFrame(tick);
 }
-if(false) window.__wl={toggleInk,setInside:(n,on)=>setInside(H.find(h=>h.n==n),on),setVersion:(n,v)=>setVersion(H.find(h=>h.n==n),v),perf:()=>({ft:PERF.ft,frames:frameN,q:QUAL}),ARTS,H,discover,QUAL,setSeason,toggleNight,cur:()=>cur,openFinal};
+if(false) window.__wl={toggleInk,toggleFall,setInside:(n,on)=>setInside(H.find(h=>h.n==n),on),setVersion:(n,v)=>setVersion(H.find(h=>h.n==n),v),perf:()=>({ft:PERF.ft,frames:frameN,q:QUAL}),ARTS,H,discover,QUAL,setSeason,toggleNight,cur:()=>cur,openFinal};
 applyNight(nightTarget);
 if(store.get('wl-sound',0)) sndBtn.setAttribute('aria-pressed','false');
 requestAnimationFrame(tick);
