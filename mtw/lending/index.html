@@ -1018,11 +1018,16 @@ const FULL="https://perasperadastranew.github.io/guides/mtw/lending/";
 const STAGE_NS=((new URLSearchParams(location.search).get("stage"))||"").split(",").map(Number).filter(n=>n>=1&&n<=6);
 if(STAGE_NS.length){
   document.documentElement.classList.add("stagemode");
-  const EXTRA={1:["start","concept"],3:["styles"]};
-  const keep=new Set(["stages","quiz"]); STAGE_NS.forEach(n=>(EXTRA[n]||[]).forEach(id=>keep.add(id)));
+  const EXTRA={1:["how","paths","cost","start","concept","slop"],3:["styles"]};
+  const keep=new Set(["stages","review","quiz"]); STAGE_NS.forEach(n=>(EXTRA[n]||[]).forEach(id=>keep.add(id)));
   document.querySelectorAll("section.sec").forEach(sec=>{if(!keep.has(sec.id))sec.hidden=true});
   const nav=document.querySelector(".nav"); if(nav) nav.hidden=true;
   document.querySelectorAll("details.stage").forEach(d=>{const n=+d.id.split("-")[1]; if(!STAGE_NS.includes(n)) d.remove(); else d.open=true});
+  /* v4: в каждом этапе — правила сдачи и своя точка проверки; сравнение «без/с нейросетью» только в этапе 1 */
+  const rv=document.getElementById("review");
+  if(rv){rv.querySelectorAll("ol.checks li").forEach(li=>{const n=+li.querySelector(".num").textContent; if(!STAGE_NS.includes(n)) li.remove()});
+    if(!STAGE_NS.includes(1)){const duo=rv.querySelector(".duo"); if(duo) duo.remove()}
+    const ch=rv.querySelector("ol.checks")?.previousElementSibling?.querySelector("h3"); if(ch) ch.textContent=STAGE_NS.length>1?"Точки проверки этапов":"Точка проверки этапа";}
   const st=STAGES.filter(x=>STAGE_NS.includes(x.n));
   const hd=document.querySelector("header.hd");
   hd.innerHTML=`<div class="corner"><span>PERASPERADASTRA\nMISSION TO WEB</span><span>ПРОЕКТ №1 «ЛЕНДИНГ»\nЭТАП ${STAGE_NS.join(" И ")} ИЗ 6</span></div>
