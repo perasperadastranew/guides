@@ -494,3 +494,4 @@
 .pg .ph{position:absolute;inset:0;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--surface) 0 10px,color-mix(in srgb,var(--surface) 80%,var(--line)) 10px 20px);border:1px dashed var(--line)}
 .pg .ph span{font-size:14px;color:var(--muted);padding:6px 10px;background:var(--bg)}
 .pg .prt td.pd .pc{bottom:58px}
+html.in-frame .pg .tonav{display:none!important}

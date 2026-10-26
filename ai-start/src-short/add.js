@@ -20,3 +20,6 @@ function align(){document.querySelectorAll('.pg .head .txt').forEach(function(t)
  lim=Math.min(lim,pr.width*.22);p.style.textIndent=(x!==null&&top<20&&x<lim)?Math.round(x)+'px':'2.2em'})}
 align();addEventListener('resize',align);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(align);
 })();
+/* во встроенном iframe (Тильда): якоря прокручивают родительскую страницу, кнопка навигации скрыта */
+(function(){if(window.parent===window)return;document.documentElement.classList.add('in-frame');
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;var el=document.getElementById(a.getAttribute('href').slice(1));if(!el)return;e.preventDefault();parent.postMessage({type:'pad-scroll',y:el.getBoundingClientRect().top+window.scrollY},'*')})})();
