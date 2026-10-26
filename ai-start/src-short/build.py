@@ -90,7 +90,7 @@ tshape = """<figure class="tsp" id="pg-tsp"><span class="micro">Кто сейч�
 <div class="tc wide"><div class="tl2"><span class="micro">Горизонталь</span><b>Широкий кругозор</b></div><div class="tfx"><i class="tax h" aria-hidden="true"></i><i class="m" style="--w:424;--h:440;-webkit-mask-image:url(img/t-wide.png);mask-image:url(img/t-wide.png)"></i></div><p>Понимание смежных областей: 3D, видео, звук, текст. Нейросети дают эту ширину без отдельной команды.</p></div></div>
 <p class="tsum"><b>Вместе это и есть Т-специалист.</b> Одной ширины мало: без глубины получается средний результат.</p></figure>"""
 
-birds = """<figure class="ab" id="pg-birds"><div class="abh"><span class="micro">Почему одних нейросетей мало</span><q class="abq">Успех не в силе натяжения, а в том, куда приложить усилие</q><button type="button" class="ab-re">↻ Ещё раз</button></div>
+birds = """<figure class="ab" id="pg-birds"><div class="abh"><span class="micro">Почему одних нейросетей мало</span><button type="button" class="ab-re">↻ Ещё раз</button></div><q class="abq">Успех не в силе натяжения, а в том, куда приложить усилие</q>
 <div class="abg"><div class="ab-a"><span class="micro">Только нейросети</span><div class="abv"><canvas width="480" height="270" data-src="d/birds-a.png" role="img" aria-label="Одна и та же птица трижды отскакивает от крепости — проект стоит"></canvas><span class="cap"></span></div><p>Новичок умеет только генерировать — и бьёт этим раз за разом. Тот же удар, тот же результат.</p></div>
 <div class="ab-b"><span class="micro">Набор навыков</span><div class="abv"><canvas width="480" height="270" data-src="d/birds-b.png" role="img" aria-label="Четыре птицы-навыка по очереди: насмотренность, база дизайна, работа с заказчиком и нейросети — крепость падает"></canvas><span class="cap"></span></div><p>У профи каждый навык бьёт по-своему, а нейросети — один из них. Вместе они берут любой проект.</p></div></div>
 <ol class="abl"><li><i class="k s"></i><b>Насмотренность</b><span>Видит, куда бить: референсы, идея, понимание, что сработает</span></li><li><i class="k r"></i><b>База дизайна</b><span>Композиция, цвет, типографика, визуальный ритм — бьёт сразу по нескольким фронтам</span></li><li><i class="k d"></i><b>Работа с заказчиком</b><span>Понимает задачу, договаривается и попадает точно в то, что нужно бизнесу</span></li><li><i class="k h"></i><b>Нейросети</b><span>Производство: быстро делают картинки и видео и добивают проект</span></li></ol></figure>"""
@@ -177,12 +177,11 @@ CATS = [
    ('Объясняющий ролик', 'Как работает продукт или сервис, за 30–90 секунд', 'Ролик с графикой и озвучкой', 'по объёму'),
    ('Тематический ролик', 'Исторический, художественный или мемный ролик на 20–60 секунд', 'Ролик со звуком и титрами', '5–50 тыс ₽')]),
 ]
-tabsc = '<div class="tabs" role="tablist" aria-label="Тип работы" style="margin:0 0 18px">' + ''.join('<button role="tab" aria-selected="%s" aria-controls="cp-%s" id="ct-%s">%s</button>' % ('true' if i == 0 else 'false', k, k, n) for i, (k, n, _, _, _) in enumerate(CATS)) + '</div>'
 pans = ''
 for i, (k, n, who, figs, rows) in enumerate(CATS):
-    rr = ''.join('<tr><td><b>%s</b></td><td class="n">%s</td><td class="n">%s</td><td>%s</td></tr>' % r for r in rows)
-    pans += '<div class="gp%s" role="tabpanel" id="cp-%s" aria-labelledby="ct-%s"><div class="grp2"><div class="gh"><h3>%s</h3><p><span class="micro">Кто заказывает</span> %s</p></div><div class="grid4 gal sq">%s</div><div class="tw"><table class="pt"><thead><tr><th>Проект</th><th>Пример задачи</th><th>Что сдаёшь</th><th>Вилка</th></tr></thead><tbody>%s</tbody></table></div></div></div>' % (' on' if i == 0 else '', k, k, n, who, ''.join(figs), rr)
-b3 = tabsc + pans
+    rr = ''.join('<tr><td><b>%s</b></td><td class="n">%s</td><td class="n">%s</td><td class="pr">%s</td></tr>' % r for r in rows)
+    pans += '<div class="cat" id="cp-%s"><div class="cath"><span class="cn2">%02d</span><h3>%s</h3><p>%s</p></div><div class="grid4 gal w169">%s</div><div class="tw"><table class="pt"><thead><tr><th>Проект</th><th>Пример задачи</th><th>Что сдаёшь</th><th>Вилка</th></tr></thead><tbody>%s</tbody></table></div></div>' % (k, i + 1, n, who, ''.join(figs), rr)
+b3 = pans
 PJ = [  # название, часы от-до, цена от-до (тыс ₽), подпись: dx, dy, якорь
  ('Мокапы', 2, 6, 1, 5, 10, 4, 'start'),
  ('Фотосессия', 10, 20, 5, 25, -12, 4, 'end'),
@@ -211,7 +210,7 @@ for i, (n, h1, h2, p1, p2, dx, dy, an) in enumerate(PJ):
         ' hot' if hot else '', i, X(hm), Y(pm_), X(hm) + dx, Y(pm_) + dy, an, n, format(int(round(rate, -2)), ',').replace(',', ' ')))
 g.append('</svg>')
 chart = '<figure class="hp"><div class="hsc">%s</div><figcaption><span class="micro">Часы × цена</span><span>Точка — середина вилки по часам и цене. Чем выше точка над линиями, тем дороже час. <b>Красным</b> — где час стоит дороже всего: в рекламе платят за идею и ответственность, а не за генерацию.</span></figcaption></figure>' % ''.join(g)
-t3 = '<p>Удобнее делить проекты по типу работы: фото, графика, продукты и видео. В каждой вкладке — кто заказывает, что ты сдаёшь и вилка цен на 2026 год. Внизу вилки — один кадр, один круг правок и один формат, вверху — набор кадров, адаптации и передача прав.</p>'
+t3 = '<p>Удобнее делить проекты по типу работы: фото, графика, продукты и видео. Для каждого — кто заказывает, что ты сдаёшь и вилка цен на 2026 год. Внизу вилки — один кадр, один круг правок и один формат, вверху — набор кадров, адаптации и передача прав.</p>'
 out.append(section(4, '04', 'Заказы и цены', 'Какие проекты заказывают <span class="s">и сколько они стоят</span>', t3, b3 + '\n<p class="micro" style="margin:56px 0 14px">Сколько стоит час в разных проектах</p>\n' + chart))
 
 # --- I.05 Что изменили нейросети — по категориям
