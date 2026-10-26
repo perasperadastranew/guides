@@ -266,7 +266,9 @@ footer{border:0;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text
 kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;margin:0 1px;vertical-align:.08em;font:500 12px/1 var(--mono);color:var(--fg);background:linear-gradient(#2c2c2c,#1f1f1f);border:1px solid #3a3a3a;border-bottom-width:3px;border-radius:6px;white-space:nowrap}
 .lessons{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .lessons .tag{margin-right:4px}
-.lessons span:not(.tag){border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:13px;color:var(--fg);background:var(--panel-2)}
+.lessons span:not(.tag),.lessons a{border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:13px;color:var(--fg);background:var(--panel-2)}
+.lessons a{text-decoration:none}
+.lessons a:hover{border-color:var(--accent)}
 .xbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .xbox article{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;font-size:14.5px;min-width:0}
 .xbox article .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
@@ -993,11 +995,12 @@ function promptBlock(key){
   <div class="in"><p class="io">${p.io}</p><pre id="t-${key}"></pre><button class="copy" type="button" data-copy="${key}" id="c-${key}">Скопировать инструкцию</button></div></details>`;
 }
 document.getElementById("agent-grid").innerHTML=AGENTS.map(a=>`<a class="agent" href="#stage-${a.stage}" data-stage="${a.stage}">${face(a)}<h3>${a.name}</h3><p>${a.does}</p><span class="tag">Этап ${a.stage}</span></a>`).join("");
+const LESSON_IDS={"Креативные методологии":"creative-methods-concept","Концепция в веб-дизайне":"concept-in-web-design","Мудборд":"moodboard-task","Веб-дизайн и бизнес":"web-and-business","Типы проектов":"project-types","Метрики сайта":"site-metrics","Типы страниц":"page-types","Типы блоков":"block-types","Смысловой прототип":"semantic-prototype","Стили в веб-дизайне":"web-styles","Референсы: искать, отбирать, адаптировать":"references-search-select-adapt","Силовая линия":"composition","Композиция":"composition","Типографика":"typography","Цвет":"color","UI-элементы":"ui-elements","Иконки":"icons","Адаптив":"adaptive","UI-кит":"ui-kit","Автолейаут":"figma-auto-layout","Компоненты и варианты":"figma-components","Кейс: как упаковать проект":"case-packaging"};
 document.getElementById("stage-list").innerHTML=STAGES.map(s=>`<details class="stage" id="stage-${s.n}"${s.n===1?" open":""}>
  <summary><span class="num">0${s.n}</span><h3>${s.title}</h3><span class="time">по регламенту <b>${s.reg}</b><br>с Claude <b>${s.ai}</b></span><span class="chev"></span></summary>
  <div class="body"><p class="lead">${s.lead}</p>
  <div class="tbl"><table><thead><tr>${s.head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${s.rows.map(r=>`<tr>${r.map((c,i)=>`<td${i===3?' class="t"':""}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
- ${s.note?`<p class="note">${s.note}</p>`:""}${s.extra||""}${s.map?mapBlock():""}${s.check?`<div class="chk"><h3>Проверь перед сдачей куратору</h3>${s.check.map((c,i)=>`<label><input type="checkbox" data-ck="${s.n}-${i}"><span>${c}</span></label>`).join("")}</div>`:""}${s.lessons?`<div class="lessons"><span class="tag">Методички к этапу</span>${s.lessons.map(l=>`<span>${l}</span>`).join("")}</div>`:""}${s.prompts.map(promptBlock).join("")}</div></details>`).join("");
+ ${s.note?`<p class="note">${s.note}</p>`:""}${s.extra||""}${s.map?mapBlock():""}${s.check?`<div class="chk"><h3>Проверь перед сдачей куратору</h3>${s.check.map((c,i)=>`<label><input type="checkbox" data-ck="${s.n}-${i}"><span>${c}</span></label>`).join("")}</div>`:""}${s.lessons?`<div class="lessons"><span class="tag">Методички к этапу</span>${s.lessons.map(l=>LESSON_IDS[l]?`<a href="../../mtw-metodichki/#${LESSON_IDS[l]}" target="_blank" rel="noopener">${l}</a>`:`<span>${l}</span>`).join("")}</div>`:""}${s.prompts.map(promptBlock).join("")}</div></details>`).join("");
 document.querySelectorAll(".prompt-slot").forEach(el=>{el.outerHTML=promptBlock(el.dataset.prompt)});
 Object.keys(P).forEach(k=>{const el=document.getElementById("t-"+k); if(el) el.textContent=P[k].text});
 document.addEventListener("click",e=>{

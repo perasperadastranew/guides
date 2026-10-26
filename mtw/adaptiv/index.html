@@ -193,7 +193,7 @@ footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transfor
 .series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
 .series b{color:var(--accent);font-weight:400}
 
-/* соавторство с нейронкой */
+/* соавторство с нейросетью */
 .ai{display:flex;flex-direction:column;gap:10px}
 .prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .prompt .kind{color:var(--line2)}
@@ -652,7 +652,7 @@ button.ad-next{align-self:flex-start;background:var(--ink);color:var(--panel);bo
   <h1>Адаптив</h1>
   <p class="lead"><b>Один сайт — сотни разных экранов.</b> Разбираем, как выбрать брейкпоинты, настроить сетку, перестроить блоки под телефон и собрать всё это в Figma так, чтобы разработчик понял тебя без созвона.</p>
   <span class="save">Сохрани, чтобы не потерять</span>
-  <nav class="toc" aria-label="Разделы"><a href="#what">Что такое адаптив</a><a href="#screens">Экраны и пиксели</a><a href="#bp">Брейкпоинты</a><a href="#grid">Сетка и размеры</a><a href="#reflow">Перестройка блоков</a><a href="#figma">Адаптив в Figma</a><a href="#handoff">Передача в разработку</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+  <nav class="toc" aria-label="Разделы"><a href="#what">Что такое адаптив</a><a href="#screens">Экраны и пиксели</a><a href="#bp">Брейкпоинты</a><a href="#grid">Сетка и размеры</a><a href="#reflow">Перестройка блоков</a><a href="#figma">Адаптив в Figma</a><a href="#handoff">Передача в разработку</a><a href="#ai">С нейросетью</a><a href="#practice">Задание и квиз</a></nav>
 </header>
 
 <section id="what">
@@ -693,14 +693,16 @@ button.ad-next{align-self:flex-start;background:var(--ink);color:var(--panel);bo
   <div class="sub">
     <h3>Популярные ширины</h3>
     <div class="sub-b">
-      <p>Самые частые ширины телефонов лежат между 320 и 430 px. В статистике StatCounter обычно лидирует <b>360×800</b> — середина этого диапазона и база большинства Android. Второе место — 375–393 px, это iPhone. Если у заказчика нет своей аналитики, рисуй мобильную версию в 360 или 375 и проверяй на 320 и 430.</p>
+      <p>Самые частые ширины телефонов лежат между 320 и 440 px. В статистике StatCounter обычно лидирует <b>360×800</b> — середина этого диапазона и база большинства Android. Второе место — 375–393 px, это iPhone. Если у заказчика нет своей аналитики, рисуй мобильную версию в 360 или 375 и проверяй на 320 и 440.</p>
       <div class="scroll"><table>
         <thead><tr><th>Устройство</th><th>Ширина, pt</th><th>Плотность</th><th>Что с этим делать</th></tr></thead>
         <tbody>
           <tr><td>Маленький Android, старые iPhone SE</td><td>320</td><td>@2x</td><td>Самый узкий экран, на котором всё должно работать. Проверочная ширина</td></tr>
           <tr><td>Большинство Android</td><td>360</td><td>@3x</td><td>Основной макет мобильной версии</td></tr>
           <tr><td>iPhone 12–15</td><td>390–393</td><td>@3x</td><td>Второй по популярности, тоже частая база</td></tr>
-          <tr><td>iPhone Pro Max, Plus</td><td>428–430</td><td>@3x</td><td>Верх мобильного диапазона, проверочная ширина</td></tr>
+          <tr><td>iPhone 16 Pro, 17, 17 Pro</td><td>402</td><td>@3x</td><td>Чуть шире 390–393: проверь, что макет тянется</td></tr>
+          <tr><td>iPhone Air</td><td>420</td><td>@3x</td><td>Между базовыми и Max-моделями</td></tr>
+          <tr><td>iPhone 16 Pro Max, 17 Pro Max</td><td>440</td><td>@3x</td><td>Верх мобильного диапазона, проверочная ширина</td></tr>
           <tr><td>iPad, планшеты вертикально</td><td>768–834</td><td>@2x</td><td>Планшетный брейкпоинт</td></tr>
           <tr><td>Ноутбуки</td><td>1280–1536</td><td>@1x–@2x</td><td>Десктоп. Самая частая ширина ноутбука — около 1366–1536</td></tr>
           <tr><td>Мониторы</td><td>1920 и шире</td><td>@1x</td><td>Контейнер упирается в максимум, растут поля</td></tr>
@@ -837,9 +839,9 @@ button.ad-next{align-self:flex-start;background:var(--ink);color:var(--panel);bo
 
 <section id="figma">
   <div class="head"><div class="head-l"><span class="num">06</span><h2>Адаптив в Figma</h2></div></div>
-  <p>В Figma адаптив держится на трёх инструментах. Layout Grid показывает колонки. Constraints говорят, к чему привязан элемент, когда фрейм меняет ширину. Auto Layout решает, кто тянется, кто подстраивается под содержимое, а кто стоит на месте. Если всё настроено, ты тянешь фрейм с 360 до 767 — и макет живёт сам, без ручного двигания слоёв.</p>
+  <p>В Figma адаптив держится на трёх инструментах. Layout guide (раньше Layout grid) показывает колонки. Constraints говорят, к чему привязан элемент, когда фрейм меняет ширину. Auto Layout решает, кто тянется, кто подстраивается под содержимое, а кто стоит на месте. Если всё настроено, ты тянешь фрейм с 360 до 767 — и макет живёт сам, без ручного двигания слоёв.</p>
   <div class="three">
-    <div class="box"><span class="kind">Layout Grid</span><b>Колонки</b><p>Тип Columns, Stretch для mobile и tablet, Center с шириной колонки для десктопа. Count 4 / 8 / 12, Margin 16 / 24 / 32, Gutter 16 / 20 / 24.</p></div>
+    <div class="box"><span class="kind">Layout guide</span><b>Колонки</b><p>Тип Columns, Stretch для mobile и tablet, Center с шириной колонки для десктопа. Count 4 / 8 / 12, Margin 16 / 24 / 32, Gutter 16 / 20 / 24.</p></div>
     <div class="box"><span class="kind">Constraints</span><b>Привязки</b><p>Left — держится за левый край. Right — за правый. Left &amp; Right — тянется вместе с фреймом. Center — остаётся по центру. Scale — масштабируется, для адаптива почти не нужен.</p></div>
     <div class="box hot"><span class="kind">Auto Layout</span><b>Fixed, Hug, Fill</b><p>Fixed — ширина задана руками. Hug — по содержимому. Fill — занимает всё свободное место. Попробуй ниже, как они ведут себя при изменении ширины.</p></div>
   </div>
@@ -871,7 +873,7 @@ button.ad-next{align-self:flex-start;background:var(--ink);color:var(--panel);bo
     <div class="sub-b">
       <ol class="steps">
         <li><div><div class="t">Три фрейма</div><div class="d">Mobile 360, Tablet 768, Desktop 1440. Высоту не фиксируй: Auto Layout по вертикали, Hug contents.</div></div></li>
-        <li><div><div class="t">Сетка на каждый</div><div class="d">Layout Grid по таблице из раздела 04. Сохрани её как стиль, чтобы не настраивать заново.</div></div></li>
+        <li><div><div class="t">Сетка на каждый</div><div class="d">Layout guide по таблице из раздела 04. Сохрани её как стиль, чтобы не настраивать заново.</div></div></li>
         <li><div><div class="t">Блоки на Auto Layout</div><div class="d">Хедер, hero и карточки собери через Auto Layout. Секции — Fill по ширине, тексты — Fill, кнопки — Hug, на мобильном главная — Fill.</div></div></li>
         <li><div><div class="t">Компоненты с вариантами</div><div class="d">Карточка и хедер — компоненты с вариантами mobile, tablet, desktop. Правишь один раз — меняется везде.</div></div></li>
         <li><div><div class="t">Проверка резины</div><div class="d">Потяни каждый фрейм до края его диапазона: mobile до 767, tablet до 1279. Где поехало — там нужен Fill, Constraint или ещё один брейкпоинт.</div></div></li>
@@ -895,12 +897,12 @@ button.ad-next{align-self:flex-start;background:var(--ink);color:var(--panel);bo
 </section>
 
 <section id="ai">
-  <div class="head"><div class="head-l"><span class="num">08</span><h2>Адаптив вместе с нейронкой</h2></div></div>
-  <p>Нейронка хорошо помогает разложить блоки по брейкпоинтам и найти места, которые сломаются. Используй её как напарника, который задаёт неудобные вопросы. Макет рисуешь и решения принимаешь ты.</p>
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Адаптив вместе с нейросетью</h2></div></div>
+  <p>Нейросеть хорошо помогает разложить блоки по брейкпоинтам и найти места, которые сломаются. Используй её как напарника, который задаёт неудобные вопросы. Макет рисуешь и решения принимаешь ты.</p>
   <div class="rule">
     <div><i>Правило 1</i><b>Сначала контекст</b>Что за сайт, кто аудитория, с каких устройств заходят.</div>
     <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не выдаёт готовую спеку.</div>
-    <div><i>Правило 3</i><b>Решаешь ты</b>Нейронка предлагает варианты, выбираешь и рисуешь сам.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Нейросеть предлагает варианты, выбираешь и рисуешь сам.</div>
   </div>
   <div class="ai">
     <div class="prompt"><span class="kind">Шаг 1 · Брейкпоинты</span><b>Ядро брейкпоинтов и сетка</b>

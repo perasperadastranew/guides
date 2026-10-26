@@ -193,7 +193,7 @@ footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transfor
 .series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
 .series b{color:var(--accent);font-weight:400}
 
-/* соавторство с нейронкой */
+/* соавторство с нейросетью */
 .ai{display:flex;flex-direction:column;gap:10px}
 .prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .prompt .kind{color:var(--line2)}
@@ -420,7 +420,7 @@ html.embed{color-scheme:normal;background:transparent}
   <h1>Стили в веб-дизайне</h1>
   <p class="lead"><b>Семь стилей, на которые можно разложить почти любой сайт.</b> Разбираем, на чём держится каждый и кому он подходит, — чтобы ты мог работать в любом из них.</p>
   <span class="save">Сохрани, чтобы не потерять</span>
-  <nav class="toc" aria-label="Разделы"><a href="#why">Зачем стиль</a><a href="#formula">Формула</a><a href="#map">Карта стилей</a><a href="#minimal">Минимализм</a><a href="#tech">Технологичный</a><a href="#industrial">Индустриальный</a><a href="#playful">Playful</a><a href="#typo">Типографический</a><a href="#brutal">Брутализм</a><a href="#retro">Ретро</a><a href="#emotion">Эмоция и шаблон</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+  <nav class="toc" aria-label="Разделы"><a href="#why">Зачем стиль</a><a href="#formula">Формула</a><a href="#map">Карта стилей</a><a href="#minimal">Минимализм</a><a href="#tech">Технологичный</a><a href="#industrial">Индустриальный</a><a href="#playful">Playful</a><a href="#typo">Типографический</a><a href="#brutal">Брутализм</a><a href="#retro">Ретро</a><a href="#emotion">Эмоция и шаблон</a><a href="#ai">С нейросетью</a><a href="#practice">Задание и квиз</a></nav>
 </header>
 
 <section id="why">
@@ -638,12 +638,12 @@ html.embed{color-scheme:normal;background:transparent}
 </section>
 
 <section id="ai">
-  <div class="head"><div class="head-l"><span class="num">12</span><h2>Стиль вместе с нейронкой</h2></div></div>
-  <p>Нейронка помогает разложить референс по инструментам и проверить, совпадает ли выбранный стиль с характером бренда. Решение о стиле остаётся за тобой.</p>
+  <div class="head"><div class="head-l"><span class="num">12</span><h2>Стиль вместе с нейросетью</h2></div></div>
+  <p>Нейросеть помогает разложить референс по инструментам и проверить, совпадает ли выбранный стиль с характером бренда. Решение о стиле остаётся за тобой.</p>
   <div class="rule">
     <div><i>Правило 1</i><b>Сначала бренд</b>Позиционирование, аудитория и эмоция до разговора о стиле.</div>
     <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа.</div>
-    <div><i>Правило 3</i><b>Выбираешь ты</b>Нейронка даёт аргументы, стиль выбираешь сам.</div>
+    <div><i>Правило 3</i><b>Выбираешь ты</b>Нейросеть даёт аргументы, стиль выбираешь сам.</div>
   </div>
   <div class="ai">
     <div class="prompt"><span class="kind">Шаг 1 · Разбор референса</span><b>На чём держится сайт</b>
@@ -651,7 +651,7 @@ html.embed{color-scheme:normal;background:transparent}
 Разложи его по шести инструментам: композиция, типографика, цвет, UI-элементы, графика, фото. По каждому — 1–2 наблюдения.
 Потом спроси меня, к какому стилю я бы его отнёс: минимализм, технологичный, индустриальный, playful, типографический, брутализм, ретро. Свой вариант не называй, пока я не отвечу.</pre>
       <button class="copy" type="button" data-copy="p1">Скопировать промпт</button>
-      <p class="you"><b>Что делаешь ты:</b> ставишь референс на карту стилей и сравниваешь с ответом нейронки.</p>
+      <p class="you"><b>Что делаешь ты:</b> ставишь референс на карту стилей и сравниваешь с ответом нейросети.</p>
     </div>
     <div class="prompt"><span class="kind">Шаг 2 · Стиль под бренд</span><b>Совпадает ли стиль с характером</b>
 <pre id="p2">Бренд: <em>[кто, для кого, позиционирование]</em>. Эмоция, которую хотим вызвать: <em>[2–3 слова]</em>.
@@ -671,6 +671,12 @@ html.embed{color-scheme:normal;background:transparent}
 <section id="practice">
   <div class="head"><div class="head-l"><span class="num">13</span><h2>Задание и квиз</h2></div></div>
   <div class="task"><i>Задание</i><b>Классифицируй пять сайтов</b><p>Открой подборки Land-book, Awwwards или Lapa. Найди по одному сайту на пять разных стилей из нашей классификации. Для каждого заполни шаблон из раздела 11, поставь сайт на карту стилей и выпиши, что ты заберёшь в свой проект. Сдай доску в Figma: скриншоты, заполненные шаблоны и карту.</p></div>
+  <div class="check">
+    <label><input type="checkbox"><span>5 стилей разные, а не варианты одного</span></label>
+    <label><input type="checkbox"><span>Для каждого стиля заполнен шаблон</span></label>
+    <label><input type="checkbox"><span>У каждого стиля есть пример живого сайта</span></label>
+    <label><input type="checkbox"><span>Точка на карте стилей объяснена одной фразой</span></label>
+  </div>
   <div class="quiz" id="quiz"></div>
   <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
   <p class="next">Следующий урок — UI-элементы: кнопки, поля, карточки и их состояния.</p>

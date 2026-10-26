@@ -266,7 +266,9 @@ footer{border:0;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text
 kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;margin:0 1px;vertical-align:.08em;font:500 12px/1 var(--mono);color:var(--fg);background:linear-gradient(#2c2c2c,#1f1f1f);border:1px solid #3a3a3a;border-bottom-width:3px;border-radius:6px;white-space:nowrap}
 .lessons{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .lessons .tag{margin-right:4px}
-.lessons span:not(.tag){border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:13px;color:var(--fg);background:var(--panel-2)}
+.lessons span:not(.tag),.lessons a{border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:13px;color:var(--fg);background:var(--panel-2)}
+.lessons a{text-decoration:none}
+.lessons a:hover{border-color:var(--accent)}
 .xbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .xbox article{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;font-size:14.5px;min-width:0}
 .xbox article .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
@@ -305,6 +307,13 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px
 .qnav button{font:500 14px var(--body);background:var(--accent);color:#101010;border:0;border-radius:99px;padding:9px 18px;cursor:pointer}
 .qnav button:disabled{opacity:.35;cursor:default}
 .qnav span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.stagebar{display:flex;flex-wrap:wrap;gap:6px}
+.stagebar span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:6px;padding:6px 9px;color:var(--dim);background:var(--panel)}
+.stagebar span.on{background:var(--accent);border-color:var(--accent);color:#101010}
+html.stagemode .stage>summary .chev{display:none}
+html.stagemode .stage{border:0;background:transparent}
+html.stagemode .stage>summary{padding:0 0 18px;cursor:default}
+html.stagemode .stage .body{padding:22px 0 0}
 @media (max-width:760px){.hero-grid,.split{grid-template-columns:1fr}.sec,header.hd{padding:18px 16px 26px}}
 </style>
 
@@ -1010,11 +1019,12 @@ function promptBlock(key){
   <div class="in"><p class="io">${p.io}</p><pre id="t-${key}"></pre><button class="copy" type="button" data-copy="${key}" id="c-${key}">Скопировать инструкцию</button></div></details>`;
 }
 document.getElementById("agent-grid").innerHTML=AGENTS.map(a=>`<a class="agent" href="#stage-${a.stage}" data-stage="${a.stage}">${face(a)}<h3>${a.name}</h3><p>${a.does}</p><span class="tag">Этап ${a.stage}</span></a>`).join("");
+const LESSON_IDS={"Креативные методологии":"creative-methods-concept","Концепция в веб-дизайне":"concept-in-web-design","Мудборд":"moodboard-task","Веб-дизайн и бизнес":"web-and-business","Типы проектов":"project-types","Метрики сайта":"site-metrics","Типы страниц":"page-types","Типы блоков":"block-types","Смысловой прототип":"semantic-prototype","Стили в веб-дизайне":"web-styles","Референсы: искать, отбирать, адаптировать":"references-search-select-adapt","Силовая линия":"composition","Композиция":"composition","Типографика":"typography","Цвет":"color","UI-элементы":"ui-elements","Иконки":"icons","Адаптив":"adaptive","UI-кит":"ui-kit","Автолейаут":"figma-auto-layout","Компоненты и варианты":"figma-components","Кейс: как упаковать проект":"case-packaging"};
 document.getElementById("stage-list").innerHTML=STAGES.map(s=>`<details class="stage" id="stage-${s.n}"${s.n===1?" open":""}>
  <summary><span class="num">0${s.n}</span><h3>${s.title}</h3><span class="time">по регламенту <b>${s.reg}</b><br>с Claude <b>${s.ai}</b></span><span class="chev"></span></summary>
  <div class="body"><p class="lead">${s.lead}</p>
  <div class="tbl"><table><thead><tr>${s.head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${s.rows.map(r=>`<tr>${r.map((c,i)=>`<td${i===3?' class="t"':""}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
- ${s.note?`<p class="note">${s.note}</p>`:""}${s.extra||""}${s.map?mapBlock():""}${s.lessons?`<div class="lessons"><span class="tag">Методички к этапу</span>${s.lessons.map(l=>`<span>${l}</span>`).join("")}</div>`:""}${s.prompts.map(promptBlock).join("")}</div></details>`).join("");
+ ${s.note?`<p class="note">${s.note}</p>`:""}${s.extra||""}${s.map?mapBlock():""}${s.lessons?`<div class="lessons"><span class="tag">Методички к этапу</span>${s.lessons.map(l=>LESSON_IDS[l]?`<a href="../../mtw-metodichki/#${LESSON_IDS[l]}" target="_blank" rel="noopener">${l}</a>`:`<span>${l}</span>`).join("")}</div>`:""}${s.prompts.map(promptBlock).join("")}</div></details>`).join("");
 document.querySelectorAll(".prompt-slot").forEach(el=>{el.outerHTML=promptBlock(el.dataset.prompt)});
 Object.keys(P).forEach(k=>{const el=document.getElementById("t-"+k); if(el) el.textContent=P[k].text});
 document.addEventListener("click",e=>{
@@ -1026,8 +1036,32 @@ document.addEventListener("click",e=>{
   if(a){const d=document.getElementById("stage-"+a.dataset.stage); if(d) d.open=true}
 });
 
+/* v3: режим одного этапа (?stage=N или ?stage=3,4) — для уроков ZenClass */
+const FULL="https://perasperadastranew.github.io/guides/mtw/longrid/";
+const STAGE_NS=((new URLSearchParams(location.search).get("stage"))||"").split(",").map(Number).filter(n=>n>=1&&n<=6);
+if(STAGE_NS.length){
+  document.documentElement.classList.add("stagemode");
+  const EXTRA={1:["start","concept"],3:["styles"],4:["compose"],5:["typo"]};
+  const keep=new Set(["stages","quiz"]); STAGE_NS.forEach(n=>(EXTRA[n]||[]).forEach(id=>keep.add(id)));
+  document.querySelectorAll("section.sec").forEach(sec=>{if(!keep.has(sec.id))sec.hidden=true});
+  const nav=document.querySelector(".nav"); if(nav) nav.hidden=true;
+  document.querySelectorAll("details.stage").forEach(d=>{const n=+d.id.split("-")[1]; if(!STAGE_NS.includes(n)) d.remove(); else d.open=true});
+  const st=STAGES.filter(x=>STAGE_NS.includes(x.n));
+  const hd=document.querySelector("header.hd");
+  hd.innerHTML=`<div class="corner"><span>PERASPERADASTRA\nMISSION TO WEB</span><span>ПРОЕКТ №2 «ЛОНГРИД»\nЭТАП ${STAGE_NS.join(" И ")} ИЗ 6</span></div>
+   <div class="hero" style="display:flex;flex-direction:column;gap:20px"><h1 style="font-size:clamp(34px,6vw,64px)">${st.map(x=>x.title).join(" и ")}</h1>
+   <p>${st[0].lead}</p>
+   <div class="stagebar">${STAGES.map(x=>`<span class="${STAGE_NS.includes(x.n)?"on":""}">${String(x.n).padStart(2,"0")} ${x.title.split(":")[0]}</span>`).join("")}</div>
+   <p class="note">Это часть гайда «Лонгрид с нейросетями». Остальные этапы, карта агентов и квиз по всему проекту — <a href="${FULL}" target="_blank" rel="noopener">в полном гайде</a>.</p></div>`;
+  document.querySelectorAll("details.stage .lead").forEach(p=>{if(st.length===1)p.remove()});
+  const sh=document.querySelector("#stages .sec-head"); if(sh){sh.querySelector("h2").textContent=st.length>1?"Шаги этапов":"Шаги этапа"; const m=sh.querySelector("p"); if(m) m.textContent="Что делаешь сам, что можно отдать нейросети и готовые инструкции агентов."}
+  for(let i=QUIZ.length-1;i>=0;i--) if(!STAGE_NS.includes(QUIZ[i].st)) QUIZ.splice(i,1);
+  const qh=document.querySelector("#quiz h2"); if(qh) qh.textContent="Проверь себя";
+  if(!QUIZ.length) document.getElementById("quiz").hidden=true;
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{const t=document.getElementById(a.getAttribute("href").slice(1)); if(!t||t.closest("[hidden]")){a.href=FULL+a.getAttribute("href");a.target="_blank";a.rel="noopener"}});
+}
 /* v2: уголки на разделах */
-document.querySelectorAll("section.sec").forEach((sec,i)=>{
+[...document.querySelectorAll("section.sec")].filter(x=>!x.hidden).forEach((sec,i)=>{
   const tag=(sec.querySelector(".sec-head .tag")||{}).textContent||"";
   const c=document.createElement("div");c.className="corner";
   c.innerHTML=`<span>PERASPERADASTRA\n${GUIDE.corner}</span><span>${String(i+1).padStart(2,"0")} · ${tag}</span>`;

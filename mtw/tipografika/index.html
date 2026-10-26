@@ -193,7 +193,7 @@ footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transfor
 .series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
 .series b{color:var(--accent);font-weight:400}
 
-/* соавторство с нейронкой */
+/* соавторство с нейросетью */
 .ai{display:flex;flex-direction:column;gap:10px}
 .prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .prompt .kind{color:var(--line2)}
@@ -593,7 +593,7 @@ code{font-family:var(--mono);font-size:.88em;background:var(--well);border-radiu
   <h1>Типографика</h1>
   <p class="lead"><b>Типографика — это то, как буквы выглядят на экране и как они работают вместе.</b> Разбираем шрифт по частям, настраиваем текст под чтение, собираем шкалу заголовков и шрифтовую пару, а в конце чистим текст от типографских ошибок.</p>
   <span class="save">Сохрани, чтобы не потерять</span>
-  <nav class="toc" aria-label="Разделы"><a href="#what">Зачем</a><a href="#anatomy">Анатомия шрифта</a><a href="#classes">Классы шрифтов</a><a href="#body">Наборный текст</a><a href="#hier">Иерархия и заголовки</a><a href="#pairs">Шрифтовые пары</a><a href="#micro">Микротипографика</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+  <nav class="toc" aria-label="Разделы"><a href="#what">Зачем</a><a href="#anatomy">Анатомия шрифта</a><a href="#classes">Классы шрифтов</a><a href="#body">Наборный текст</a><a href="#hier">Иерархия и заголовки</a><a href="#pairs">Шрифтовые пары</a><a href="#micro">Микротипографика</a><a href="#ai">С нейросетью</a><a href="#practice">Задание и квиз</a></nav>
 </header>
 
 <section id="what">
@@ -666,7 +666,7 @@ code{font-family:var(--mono);font-size:.88em;background:var(--well);border-radiu
     <div class="sub-b">
       <p><b>Гарнитура</b> — семья шрифтов с общим рисунком, например Helvetica или Onest. <b>Начертание</b> — вариант внутри семьи. <b>Шрифт</b> — конкретный набор: Onest Medium 16 px. Когда говорят «фирменный шрифт бренда», обычно имеют в виду гарнитуру целиком.</p>
       <div class="stage ty-weights">
-        <span style="font-weight:300">Light 300</span><span style="font-weight:400">Regular 400</span><span style="font-weight:500">Medium 500</span><span style="font-weight:600">SemiBold 600</span><span style="font-weight:800">Black 800</span><span style="font-family:Georgia,'Times New Roman',serif;font-style:italic">Italic</span>
+        <span style="font-weight:300">Light 300</span><span style="font-weight:400">Regular 400</span><span style="font-weight:500">Medium 500</span><span style="font-weight:600">SemiBold 600</span><span style="font-weight:800">ExtraBold 800</span><span style="font-family:Georgia,'Times New Roman',serif;font-style:italic">Italic</span>
       </div>
       <div class="three">
         <div class="box"><span class="kind">Насыщенность</span><p>Thin, Light, Regular, Medium, SemiBold, Bold, Black. Bold — для заголовков, Regular — для чтения.</p></div>
@@ -952,7 +952,7 @@ code{font-family:var(--mono);font-size:.88em;background:var(--well);border-radiu
     <div class="sub-b">
       <div class="two">
         <div class="box"><b>Минимальные размеры</b><ul><li>Основной текст на телефоне — от 16 px.</li><li>Подписи, теги, даты — от 12 px.</li><li>Текст в полях ввода — 16 px, иначе iOS приблизит страницу при касании.</li></ul></div>
-        <div class="box"><b>Контраст по WCAG</b><ul><li>Обычный текст — контраст с фоном не ниже 4.5:1.</li><li>Крупный (от 24 px или от 18.7 px жирным) — от 3:1.</li><li>Текст на фото — только с подложкой или затемнением.</li></ul></div>
+        <div class="box"><b>Контраст по WCAG</b><ul><li>Обычный текст — контраст с фоном не ниже 4,5:1.</li><li>Крупный (от 24 px или от 18,7 px жирным) — от 3:1.</li><li>Текст на фото — только с подложкой или затемнением.</li></ul></div>
       </div>
       <p>В интерфейсе текст приходит из базы данных, и дизайнер не знает его длину заранее. Поэтому сразу рисуй, что будет с длинным именем, ценой в 7 знаков или названием на три строки.</p>
       <div class="stage ty-ui">
@@ -965,12 +965,12 @@ code{font-family:var(--mono);font-size:.88em;background:var(--well);border-radiu
 </section>
 
 <section id="ai">
-  <div class="head"><div class="head-l"><span class="num">08</span><h2>Типографика вместе с нейронкой</h2></div></div>
-  <p>Нейронка не видит шрифт так, как ты, но хорошо проверяет системы и правила: считает шкалу, находит дефисы вместо тире, напоминает про кириллицу. Используй её как придирчивого редактора, а выбор шрифта оставь себе.</p>
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Типографика вместе с нейросетью</h2></div></div>
+  <p>Нейросеть не видит шрифт так, как ты, но хорошо проверяет системы и правила: считает шкалу, находит дефисы вместо тире, напоминает про кириллицу. Используй её как придирчивого редактора, а выбор шрифта оставь себе.</p>
   <div class="rule">
     <div><i>Правило 1</i><b>Сначала контекст</b>Проект, аудитория, 3 прилагательных о характере и где будут читать.</div>
     <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не выдаёт готовую пару.</div>
-    <div><i>Правило 3</i><b>Проверяй глазами</b>Название шрифта от нейронки ещё ничего не значит. Набери текст и посмотри сам.</div>
+    <div><i>Правило 3</i><b>Проверяй глазами</b>Название шрифта от нейросети ещё ничего не значит. Набери текст и посмотри сам.</div>
   </div>
   <div class="ai">
     <div class="prompt"><span class="kind">Шаг 1 · Направление</span><b>Какой класс шрифта нужен проекту</b>

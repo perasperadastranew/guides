@@ -193,7 +193,7 @@ footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transfor
 .series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
 .series b{color:var(--accent);font-weight:400}
 
-/* соавторство с нейронкой */
+/* соавторство с нейросетью */
 .ai{display:flex;flex-direction:column;gap:10px}
 .prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .prompt .kind{color:var(--line2)}
@@ -600,7 +600,7 @@ code{font-family:var(--mono);font-size:.88em;color:var(--ink);background:var(--w
   <h1>Цвет</h1>
   <p class="lead"><b>Цвет на сайте работает наравне с текстом и структурой.</b> Он задаёт настроение, ведёт взгляд к кнопке и помогает прочитать текст. Разбираем, как собрать палитру, проверить контраст и не сломать смысл цветов.</p>
   <span class="save">Сохрани, чтобы не потерять</span>
-  <nav class="toc" aria-label="Разделы"><a href="#why">Как работает цвет</a><a href="#wheel">Круг и схемы</a><a href="#props">Свойства и ступени</a><a href="#contrast">Контраст</a><a href="#system">Палитра сайта</a><a href="#meaning">Смысл цвета</a><a href="#tools">Сервисы</a><a href="#ai">С нейронкой</a><a href="#practice">Задание и квиз</a></nav>
+  <nav class="toc" aria-label="Разделы"><a href="#why">Как работает цвет</a><a href="#wheel">Круг и схемы</a><a href="#props">Свойства и ступени</a><a href="#contrast">Контраст</a><a href="#system">Палитра сайта</a><a href="#meaning">Смысл цвета</a><a href="#tools">Сервисы</a><a href="#ai">С нейросетью</a><a href="#practice">Задание и квиз</a></nav>
 </header>
 
 <section id="why">
@@ -732,7 +732,7 @@ code{font-family:var(--mono);font-size:.88em;color:var(--ink);background:var(--w
       </div>
       <div class="cc-res">
         <div class="cc-ratio"><span class="big" id="cc-r">3.3</span><span>: 1</span></div>
-        <div class="cc-bar" aria-hidden="true"><i id="cc-mark"></i><span style="left:36.1%">3</span><span style="left:49.4%">4.5</span><span style="left:63.9%">7</span></div>
+        <div class="cc-bar" aria-hidden="true"><i id="cc-mark"></i><span style="left:36.1%">3</span><span style="left:49.4%">4,5</span><span style="left:63.9%">7</span></div>
         <ul class="verdict" id="cc-list"></ul>
         <div class="cc-fix" id="cc-fix" hidden><span id="cc-fix-t"></span><button type="button" class="ghost" id="cc-fix-b">Подставить</button></div>
       </div>
@@ -745,9 +745,9 @@ code{font-family:var(--mono);font-size:.88em;color:var(--ink);background:var(--w
       <div class="scroll"><table>
         <thead><tr><th>Что проверяем</th><th>AA · норма</th><th>AAA · повышенный</th></tr></thead>
         <tbody>
-          <tr><td>Обычный текст</td><td>4,5 : 1</td><td>7 : 1</td></tr>
-          <tr><td>Крупный текст: от 24 px или от 19 px жирным</td><td>3 : 1</td><td>4,5 : 1</td></tr>
-          <tr><td>Иконки, обводки полей, границы кнопок, графики</td><td>3 : 1</td><td>—</td></tr>
+          <tr><td>Обычный текст</td><td>4,5:1</td><td>7:1</td></tr>
+          <tr><td>Крупный текст: от 24 px или от 18,7 px жирным</td><td>3:1</td><td>4,5:1</td></tr>
+          <tr><td>Иконки, обводки полей, границы кнопок, графики</td><td>3:1</td><td>—</td></tr>
           <tr><td>Неактивные элементы, логотипы, декор</td><td colspan="2">Требований нет, но disabled всё равно должен читаться</td></tr>
         </tbody>
       </table></div>
@@ -953,12 +953,12 @@ code{font-family:var(--mono);font-size:.88em;color:var(--ink);background:var(--w
 </section>
 
 <section id="ai">
-  <div class="head"><div class="head-l"><span class="num">08</span><h2>Цвет вместе с нейронкой</h2></div></div>
-  <p>Нейронка хорошо собирает ассоциации, считает контраст и замечает, где цвет спорит со смыслом. Используй её как собеседника и проверяющего. Цвета выбираешь ты: их нужно защитить перед заказчиком, а для этого надо понимать каждый.</p>
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>Цвет вместе с нейросетью</h2></div></div>
+  <p>Нейросеть хорошо собирает ассоциации, считает контраст и замечает, где цвет спорит со смыслом. Используй её как собеседника и проверяющего. Цвета выбираешь ты: их нужно защитить перед заказчиком, а для этого надо понимать каждый.</p>
   <div class="rule">
     <div><i>Правило 1</i><b>Сначала контекст</b>Продукт, аудитория, концепция и где будет сайт: светлая или тёмная тема.</div>
     <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть спрашивает и ждёт ответа, а не выдаёт сразу пять палитр.</div>
-    <div><i>Правило 3</i><b>Решаешь ты</b>Нейронка предлагает направления и считает. Цвета и роли выбираешь сам.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Нейросеть предлагает направления и считает. Цвета и роли выбираешь сам.</div>
   </div>
   <div class="ai">
     <div class="prompt"><span class="kind">Шаг 1 · Ассоциации</span><b>Откуда взять цвет</b>
@@ -998,7 +998,7 @@ code{font-family:var(--mono);font-size:.88em;color:var(--ink);background:var(--w
   </div>
   <div class="quiz" id="quiz"></div>
   <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
-  <p class="next">Это последний урок модуля — дальше проектируем лендинг.</p>
+  <p class="next">Это последний урок модуля. Дальше — референсы и концепция, потом проект «Лендинг».</p>
 </section>
 <footer>Perasperadastra · Mission to Web · Модуль 4 · Цвет</footer>
 
@@ -1012,7 +1012,7 @@ code{font-family:var(--mono);font-size:.88em;color:var(--ink);background:var(--w
 {"t":"Перепутаны красный и зелёный","e":"«Удалить карту» зелёная, как подтверждение, а безопасная «Отмена» красная. Опасное действие — красное, отмена — спокойная вторичная кнопка."}
 ]</script>
 <script type="application/json" id="quiz-data">[
-{"p":"Какой минимальный контраст по WCAG AA нужен обычному тексту?","o":["3 : 1","4,5 : 1","7 : 1"],"a":1,"e":"4,5:1 — норма AA для обычного текста. 3:1 хватает крупному тексту и иконкам, 7:1 — уровень AAA."},
+{"p":"Какой минимальный контраст по WCAG AA нужен обычному тексту?","o":["3:1","4,5:1","7:1"],"a":1,"e":"4,5:1 — норма AA для обычного текста. 3:1 хватает крупному тексту и иконкам, 7:1 — уровень AAA."},
 {"p":"Что значит правило 60–30–10?","o":["60% площади — акцент, чтобы сайт запомнился","Основной цвет на 60% площади, дополнительный на 30%, акцент на 10%","Палитра из 60 оттенков, из них 10 главных"],"a":1,"e":"Большая часть — спокойный фон, треть — подложки и секции, маленькая доля — акцент на главных действиях. Так акцент остаётся заметным."},
 {"p":"Ты добавил к фирменному цвету белый. Как называется результат?","o":["Шейд","Тинт","Тон"],"a":1,"e":"Тинт — с белым, шейд — с чёрным, тон — с серым. Из них собирают шкалу 50–900."},
 {"p":"Зачем собирать первый экран сначала в оттенках серого?","o":["Чтобы проверить иерархию без влияния цвета","Так быстрее экспортировать макет","Серые макеты лучше продаются заказчику"],"a":0,"e":"Если главное видно в сером, цвет только усилит иерархию. Если нет — цвет её не спасёт."},
