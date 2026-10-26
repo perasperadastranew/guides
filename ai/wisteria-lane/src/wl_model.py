@@ -779,6 +779,19 @@ def _clip_back(ok, x, z0, z1, margin, step=.4):
     return z1
 
 PUMPKINS = []   # world spots for the site's Halloween pumpkins: [x, z, scale, carved]
+DRIVES = {}     # hid -> world points along each driveway (+ the parked car), so street trees keep off them
+
+def _drive_pts():
+    """All driveway/car points of the street; builds the houses once if the lots haven't been laid out yet."""
+    if len(DRIVES) < len(PLAN):
+        keep = PUMPKINS[:]
+        for hid, *_ in PLAN: BUILDERS[hid]()
+        PUMPKINS[:] = keep
+    return [p for pts in DRIVES.values() for p in pts]
+
+def clear_of_drives(x, z, r):
+    """True when a tree crown of radius r at (x, z) stays off every driveway and parked car."""
+    return all(math.hypot(x - a, z - b) >= r for a, b in _drive_pts())
 
 def yard(h, W, D, walk_u=0.0, lot_w=22.0, fence=False, hedges=True, drive_side=1, car_mat=None,
          trees=(), mailbox=True, flowers="rose", lot_front=None):
@@ -810,6 +823,9 @@ def yard(h, W, D, walk_u=0.0, lot_w=22.0, fence=False, hedges=True, drive_side=1
     m.box("drive", dx - 1.6, 0, -D/2 + 1, dx + 1.6, .05, zd)
     if car_mat:
         car(m, dx, zf + 3.2, 0.0, car_mat)
+    X0, Z0, R0 = _lot_world(h.id); c0, s0 = math.cos(R0), math.sin(R0)
+    DRIVES[h.id] = [(X0 + (dx + u) * c0 + (zf + t) * s0, Z0 - (dx + u) * s0 + (zf + t) * c0)
+                    for t in [i * .8 for i in range(int((zd - zf) / .8) + 1)] for u in (-1.6, 0, 1.6)]
     def fence_run(x0, x1, z):
         a, b = min(x0, x1), max(x0, x1); xs = [a + (b - a) * i / 24 for i in range(25)]
         run = None
@@ -1913,7 +1929,7 @@ def build_land(scatter=None):
         d = hw + WALK_W + 2.4
         x, z = p[0] + nn[0]*d*side, p[1] + nn[1]*d*side
         if min(math.hypot(x - a, z - b) for a, b in lots) > 9:
-            oak(L, x, z, .85 + (k % 3) * .1, k * 1.7)
+            if clear_of_drives(x, z, 3.4): oak(L, x, z, .85 + (k % 3) * .1, k * 1.7)
         s += 21.0; k += 1
     # the white wisteria pergola at Circle Drive
     a = math.atan2(_tend[1], _tend[0])
@@ -1966,7 +1982,8 @@ def build_land(scatter=None):
                 x, z = p[0] + nn[0] * d * side, p[1] + nn[1] * d * side
                 if dist_main(x, z) < hw + WALK_W + 1.6: d += 1.7; k += 1; continue     # a bend brings the road back: keep off it
                 bush(L, x + t[0] * .4 * (k % 2), z + t[1] * .4 * (k % 2), .95 + .25 * ((k * 7) % 3) / 2, ms + k, ("rose", None, None, "berry")[k % 4])
-                if k % 5 == 2 and dist_main(x + t[0] * 2.2, z + t[1] * 2.2) > hw + WALK_W + 3: (oak if k % 2 else tree)(L, x + t[0] * 2.2, z + t[1] * 2.2, .95, ms + k)
+                tx, tz = x + t[0] * 2.2, z + t[1] * 2.2
+                if k % 5 == 2 and dist_main(tx, tz) > hw + WALK_W + 3 and clear_of_drives(tx, tz, 3.4 if k % 2 else 2.6): (oak if k % 2 else tree)(L, x + t[0] * 2.2, z + t[1] * 2.2, .95, ms + k)
                 d += 1.7; k += 1
     # verge & meadow dressing: tufts, wildflowers, rocks and shrubs everywhere near the street
     dress = 0; tries = 0
@@ -1978,7 +1995,9 @@ def build_land(scatter=None):
         if min(math.hypot(x - a, z - b) for a, b in lots) < 13: continue
         y = ground_h(x, z); r = rnd.random()
         if r > .9 and dr > 12 and y < 5:
-            with L.at(0, y - .1, 0): (oak if dress % 3 == 0 else tree)(L, x, z, .8 + rnd.random() * .3, dress)
+            sc = .8 + rnd.random() * .3
+            if clear_of_drives(x, z, 3.4):
+                with L.at(0, y - .1, 0): (oak if dress % 3 == 0 else tree)(L, x, z, sc, dress)
             dress += 1; continue
         with L.at(0, y - .05, 0):
             if r < .45: grass(L, x, z, dress, 1.0 + rnd.random() * .4)
