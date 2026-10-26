@@ -407,3 +407,13 @@
 /* скосы: меньше и асимметричные — только левый верхний и правый нижний */
 .pg .gal img,.pg .gal figure video,.pg .cm{clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}
 .pg .pc{padding-right:6px}
+/* башни: две рамки, текст под каждой */
+.pg .twv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;background:none;clip-path:none}
+.pg .twp{background:#0B0B0B;color:#F2F2F0;display:flex;flex-direction:column;align-items:center;padding:28px 20px 26px;clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}
+.pg .twp canvas{display:block;width:min(100%,300px);height:auto;aspect-ratio:170/270;image-rendering:pixelated}
+.pg .twp .twc{position:static;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:16px 0 0;max-width:32ch}
+.pg .twp .twc b{font:600 clamp(20px,2.4vw,28px)/1 var(--num);letter-spacing:-.02em}
+.pg .twp.r .twc b{color:#F0303B}
+.pg .twp .twc span{font-size:14px;color:#A3A39D;line-height:1.4}
+.pg .twp.r .twc{opacity:1}
+@media (max-width:640px){.pg .twp{padding:18px 10px}.pg .twp .twc span{font-size:12px}}
