@@ -1,0 +1,178 @@
+{
+ "course": "Mission to Web",
+ "default": "ui-start",
+ "hub": "https://perasperadastranew.github.io/guides/mtw/",
+ "stages": [
+  {
+   "n": 1,
+   "name": "Тема и концепция",
+   "what": "Выбираем бизнес, разбираем аудиторию и придумываем идею лендинга"
+  },
+  {
+   "n": 2,
+   "name": "Смысловой прототип",
+   "what": "Блоки страницы и настоящие тексты вместо «рыбы»"
+  },
+  {
+   "n": 3,
+   "name": "Стайлборд",
+   "what": "Стиль, референсы и правила визуала"
+  },
+  {
+   "n": 4,
+   "name": "Вайрфрейм",
+   "what": "Серый каркас страницы по сетке"
+  },
+  {
+   "n": 5,
+   "name": "Дизайн",
+   "what": "Типографика, цвет, графика, адаптив и UI-кит"
+  },
+  {
+   "n": 6,
+   "name": "Кейс",
+   "what": "Упаковываем проект в портфолио и публикуем"
+  }
+ ],
+ "later": [
+  "Mission to AI",
+  "Карьера и фриланс",
+  "Tilda и Taptop",
+  "Анимация в Jitter"
+ ],
+ "modules": [
+  {
+   "name": "Figma",
+   "short": "Figma",
+   "stage": 4,
+   "lessons": [
+    "figma-basics",
+    "figma-auto-layout",
+    "figma-components"
+   ]
+  },
+  {
+   "name": "Веб-дизайн",
+   "short": "Веб-дизайн",
+   "stage": 2,
+   "lessons": [
+    "web-biznes",
+    "tipy-proektov",
+    "metriki",
+    "tipy-stranic",
+    "tipy-blokov",
+    "principy",
+    "semantic-prototype"
+   ]
+  },
+  {
+   "name": "UI-дизайн",
+   "short": "UI-дизайн",
+   "stage": 5,
+   "lessons": [
+    "ui-start",
+    "stili",
+    "tipografika",
+    "cvet",
+    "kompoziciya",
+    "ui-elementy",
+    "ikonki",
+    "adaptiv",
+    "ui-kit"
+   ]
+  },
+  {
+   "name": "Референсы",
+   "short": "Референсы",
+   "stage": 3,
+   "lessons": [
+    "referensy"
+   ]
+  },
+  {
+   "name": "Концепция",
+   "short": "Концепция",
+   "stage": 1,
+   "lessons": [
+    "metodologii",
+    "koncepciya-web",
+    "moodboard"
+   ]
+  }
+ ],
+ "titles": {
+  "figma-basics": "Основы Figma",
+  "figma-auto-layout": "Автолейаут",
+  "figma-components": "Компоненты и варианты",
+  "web-biznes": "Веб-дизайн и бизнес",
+  "tipy-proektov": "Типы проектов",
+  "metriki": "Метрики сайта",
+  "tipy-stranic": "Типы страниц",
+  "tipy-blokov": "Типы блоков",
+  "principy": "Принципы веб-дизайна",
+  "semantic-prototype": "Смысловой прототип",
+  "ui-start": "UI-дизайн",
+  "stili": "Стили в веб-дизайне",
+  "tipografika": "Типографика",
+  "cvet": "Цвет",
+  "kompoziciya": "Композиция",
+  "ui-elementy": "UI-элементы",
+  "ikonki": "Иконки",
+  "adaptiv": "Адаптив",
+  "ui-kit": "UI-кит",
+  "referensy": "Работа с референсами",
+  "metodologii": "Креативные методологии",
+  "koncepciya-web": "Концепция в веб-дизайне",
+  "moodboard": "Мудборд"
+ },
+ "short": {
+  "figma-basics": "Основы",
+  "figma-auto-layout": "Автолейаут",
+  "figma-components": "Компоненты",
+  "web-biznes": "Бизнес",
+  "tipy-proektov": "Типы проектов",
+  "metriki": "Метрики",
+  "tipy-stranic": "Типы страниц",
+  "tipy-blokov": "Типы блоков",
+  "principy": "Принципы",
+  "semantic-prototype": "Прототип",
+  "ui-start": "Старт",
+  "stili": "Стили",
+  "tipografika": "Типографика",
+  "cvet": "Цвет",
+  "kompoziciya": "Композиция",
+  "ui-elementy": "UI-элементы",
+  "ikonki": "Иконки",
+  "adaptiv": "Адаптив",
+  "ui-kit": "UI-кит",
+  "referensy": "Референсы",
+  "metodologii": "Методологии",
+  "koncepciya-web": "Концепция в вебе",
+  "moodboard": "Мудборд"
+ },
+ "ext": {
+  "figma-basics": "https://perasperadastranew.github.io/guides/mtw-metodichki/#figma-basics",
+  "figma-auto-layout": "https://perasperadastranew.github.io/guides/mtw-metodichki/#figma-auto-layout",
+  "figma-components": "https://perasperadastranew.github.io/guides/mtw-metodichki/#figma-components",
+  "web-biznes": "https://perasperadastranew.github.io/guides/mtw/web-biznes/",
+  "tipy-proektov": "https://perasperadastranew.github.io/guides/mtw/tipy-proektov/",
+  "metriki": "https://perasperadastranew.github.io/guides/mtw/metriki/",
+  "tipy-stranic": "https://perasperadastranew.github.io/guides/mtw/tipy-stranic/",
+  "tipy-blokov": "https://perasperadastranew.github.io/guides/mtw/tipy-blokov/",
+  "principy": "https://perasperadastranew.github.io/guides/mtw/principy/",
+  "semantic-prototype": "https://perasperadastranew.github.io/guides/mtw-metodichki/#semantic-prototype",
+  "stili": "https://perasperadastranew.github.io/guides/mtw/stili/",
+  "tipografika": "https://perasperadastranew.github.io/guides/mtw/tipografika/",
+  "cvet": "https://perasperadastranew.github.io/guides/mtw/cvet/",
+  "kompoziciya": "https://perasperadastranew.github.io/guides/mtw/kompoziciya/",
+  "ui-elementy": "https://perasperadastranew.github.io/guides/mtw/ui-elementy/",
+  "ikonki": "https://perasperadastranew.github.io/guides/mtw/ikonki/",
+  "adaptiv": "https://perasperadastranew.github.io/guides/mtw/adaptiv/",
+  "ui-kit": "https://perasperadastranew.github.io/guides/mtw/ui-kit/",
+  "referensy": "https://perasperadastranew.github.io/guides/referensy/",
+  "metodologii": "https://perasperadastranew.github.io/guides/brending/metodologii/",
+  "koncepciya-web": "https://perasperadastranew.github.io/guides/mtw/koncepciya-web/",
+  "moodboard": "https://perasperadastranew.github.io/guides/mtw-metodichki/#moodboard-task"
+ },
+ "lnum": "04"
+}
