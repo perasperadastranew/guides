@@ -349,11 +349,11 @@ GD = [('https://perasperadastra.ru/klip', None, 'https://static.tildacdn.com/vid
 def gcard(u, img, vid, k, t, d):
     med = ('<img src="%s" alt="" loading="lazy">' % img) if img else ('<span class="ty" aria-hidden="true">%s</span><video muted loop playsinline preload="metadata" data-src="%s"></video>' % (t[0], vid))
     return '<a class="gd%s" href="%s" target="_blank" rel="noopener"><div class="cm">%s</div><div class="cb"><span class="micro">%s</span><b>%s <i aria-hidden="true">↗</i></b><span>%s</span></div></a>' % ('' if img else ' t', u, med, k, t, d)
-gd = '<div class="gds">' + ''.join(gcard(*g) for g in GD) + '</div>'
+gd = '<div class="gds">' + ''.join(gcard(*g) for g in GD) + '<a class="gd t tg" href="https://t.me/perasperagram" target="_blank" rel="noopener"><div class="cm"><span class="ty" aria-hidden="true">TG</span></div><div class="cb"><span class="micro">Telegram</span><b>Наш канал <i aria-hidden="true">↗</i></b><span>Новые гайды, разборы проектов и анонсы эфиров</span></div></a></div><p class="gdl">Все гайды и методички школы — в <a href="https://t.me/perasperagram" target="_blank" rel="noopener">нашем Telegram-канале ↗</a></p>'
 out.append('''<section class="step fin" id="pg-end">%s
 %s
 <div class="live"><span class="micro">Прямой эфир · 28 октября, 19:00 по Москве</span><h3>Разберём всё это вживую</h3><p>Покажем, как мы работаем с нейросетями: идеи и решения на нас, рутина на ИИ. Ответим на вопросы и разберём, что дизайнеру нужно уметь в 2027 году. Ссылка на эфир, вся информация и другие методички — в нашем закрытом канале.</p><a class="btn" href="https://t.me/perasperagram" target="_blank" rel="noopener">Вступить в закрытый канал ↗</a></div>
-<p class="micro" style="margin:56px 0 14px">Открытые гайды школы · остальные методички в закрытом канале</p>
+<p class="micro" style="margin:56px 0 14px">Открытые гайды школы · остальные методички в <a href="https://t.me/perasperagram" target="_blank" rel="noopener" style="color:var(--accent)">нашем канале ↗</a></p>
 %s
 </section>
 

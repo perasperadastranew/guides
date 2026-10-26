@@ -329,3 +329,8 @@
 .pg .twc span{font-size:clamp(11px,1.3vw,14px);line-height:1.35;color:#A3A39D}
 @media (max-width:640px){.pg .twc{position:static;padding:14px 16px 16px;gap:12px}.pg .twc .r{opacity:1}}
 .pg .twc{position:static;padding:4px 4% 22px}
+.pg .gds{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pg .gd.tg .ty{font:400 clamp(60px,8vw,110px)/1 "PG W3",var(--sans);letter-spacing:.02em}
+.pg .gdl{margin:22px 0 0;font-size:16px;color:var(--muted)}
+.pg .gdl a{color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
+@media (max-width:640px){.pg .gds{grid-template-columns:minmax(0,1fr)}}
