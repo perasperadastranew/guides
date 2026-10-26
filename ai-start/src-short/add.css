@@ -470,3 +470,4 @@
 .pg .prt tbody th .by{margin-top:10px}
 .pg .prt td.pd p.gv{margin-top:10px}
 .pg .prt .duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.pg .prt tbody th .by{display:block}
+.pg .prt .th3.wt{background:#1a1a1a;display:block}.pg .prt .th3.wt .ty{position:absolute;inset:0;display:grid;place-items:center;font:600 clamp(18px,2vw,26px)/1 var(--num);color:#F2F2F0;letter-spacing:-.02em}.pg .prt .th3.wt .pl2{position:absolute;right:10px;bottom:8px;color:var(--accent);font-size:14px}

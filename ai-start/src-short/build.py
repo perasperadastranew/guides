@@ -195,6 +195,9 @@ for i, (k, n, who, rows) in enumerate(CATS):
             wd = '<span class="th3"><img src="%s" alt="%s" loading="lazy"></span>' % (w2, name)
         else:
             wd = tb.replace('class="th2"', 'class="th3"')
+        if name == 'Мультфильм и анимация персонажа':
+            wd = '<div class="duo">%s<a class="th3 wt" href="https://t.me/perasperagram/2173" target="_blank" rel="noopener"><span class="ty" aria-hidden="true">Ведьмак</span><span class="pl2" aria-hidden="true">▶</span></a></div>' % wd
+            by += '<a class="by" href="https://t.me/perasperagram/2173" target="_blank" rel="noopener">Ведьмак · кураторы школы ↗</a>'
         if name == 'Маскот':
             u2, who2 = CASE['lappi']
             wd = '<div class="duo">%s<a class="th3" href="%s" target="_blank" rel="noopener"><img src="cases/lappi-2.webp" alt="Лаппи" loading="lazy"></a></div>' % (wd, u2)
