@@ -391,3 +391,18 @@
 .pg .abv{display:flex;flex-direction:column-reverse}
 .pg .abg p{font-size:14px;color:#8f8f8a}
 @media (prefers-color-scheme:light){.pg .abg>div{background:#161616;border-color:#161616}}
+/* проекты: строки с квадратной картинкой */
+.pg .prl{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.pg .prl li{display:grid;grid-template-columns:132px minmax(0,1fr) auto;gap:20px 28px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.pg .th2{display:block;width:132px;aspect-ratio:1;overflow:hidden;background:var(--surface);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}
+.pg .th2 img,.pg .th2 video{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.pg a.th2:hover img,.pg a.th2:hover video{transform:scale(1.06)}
+.pg .pd b{display:block;font:600 19px/1.25 var(--num);letter-spacing:-.01em;margin-bottom:6px}
+.pg .pd p{margin:0;font-size:15px;line-height:1.45;color:var(--muted)}
+.pg .pd p.gv{margin-top:2px}.pg .pd p.gv span{color:var(--fg)}
+.pg .pd .by{display:inline-block;margin-top:6px;font-size:13px;color:var(--muted);text-decoration:none}
+.pg .pd .by:hover{color:var(--accent)}
+.pg .pc{font:600 clamp(20px,2.2vw,26px)/1.1 var(--num);letter-spacing:-.02em;white-space:nowrap;text-align:right}
+@media (max-width:640px){.pg .prl li{grid-template-columns:84px minmax(0,1fr);gap:10px 14px;align-items:start}.pg .th2{width:84px}.pg .pc{grid-column:2;text-align:left;font-size:20px}.pg .pd b{font-size:17px}.pg .pd p{font-size:14px}}
+/* скосы: меньше и асимметричные — только левый верхний и правый нижний */
+.pg .gal img,.pg .gal figure video,.pg .cm{clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}
