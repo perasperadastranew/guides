@@ -348,7 +348,7 @@ footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transfor
 .layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
 .layers>div b{font-weight:400;color:var(--ink)}
 .layers>div.hot{border-color:var(--accent)}
-.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants{display:grid;grid-template-columns:110px repeat(5,minmax(0,1fr));gap:8px;align-items:center;min-width:660px}
 .variants .cap{color:var(--faint)}
 .variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
 .varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
@@ -416,7 +416,7 @@ html.embed{color-scheme:normal;background:transparent}
   <div class="corner"><span>PERASPERADASTRA
 МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
 МОДУЛЬ 4 · UI</span></div>
-  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 UI-элементы</span><b>03 UI-кит</b><span>04 Концепция в веб-дизайне</span><span>05 Композиция</span><span>06 Типографика</span><span>07 Иконки</span><span>08 Адаптив</span><span>09 Цвет</span></div>
+  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 Типографика</span><span>03 Цвет</span><span>04 Композиция</span><span>05 UI-элементы</span><span>06 Иконки</span><span>07 Адаптив</span><b>08 UI-кит</b></div>
   <h1>UI-кит и консистентность</h1>
   <p class="lead"><b>Система правил, по которой собирается интерфейс.</b> Шрифты, цвета, компоненты и отступы в одном месте — чтобы каждый новый экран не рисовать с нуля.</p>
   <span class="save">Сохрани, чтобы не потерять</span>
@@ -454,15 +454,15 @@ html.embed{color-scheme:normal;background:transparent}
   <div class="head"><div class="head-l"><span class="num">03</span><h2>Типографика</h2></div></div>
   <p>Каждый вариант текста — заголовки, основной текст, подписи — сохраняем как <b>стиль текста</b> в Figma. Стиль хранит гарнитуру, начертание, кегль, межстрочный интервал и трекинг. Поменял стиль — поменялся весь текст этого уровня во всём файле.</p>
   <div class="typescale">
-    <div><span class="cap">H1 · 64/64</span><span style="font-size:clamp(34px,5vw,56px);line-height:1;letter-spacing:-.03em">Заголовок</span></div>
-    <div><span class="cap">H2 · 40/44</span><span style="font-size:clamp(26px,3.6vw,40px);line-height:1.1;letter-spacing:-.02em">Заголовок раздела</span></div>
+    <div><span class="cap">H1 · 56/62</span><span style="font-size:clamp(34px,5vw,56px);line-height:1;letter-spacing:-.03em">Заголовок</span></div>
+    <div><span class="cap">H2 · 32/38</span><span style="font-size:clamp(24px,3vw,32px);line-height:1.2;letter-spacing:-.02em">Заголовок раздела</span></div>
     <div><span class="cap">H3 · 24/30</span><span style="font-size:24px;line-height:1.25">Подзаголовок блока</span></div>
-    <div><span class="cap">Body · 17/26</span><span style="font-size:17px">Основной текст, который читают абзацами</span></div>
+    <div><span class="cap">Body · 18/28</span><span style="font-size:18px">Основной текст, который читают абзацами</span></div>
     <div><span class="cap">Caption · 13/18</span><span style="font-size:13px">Подписи, даты, вспомогательный текст</span></div>
     <div><span class="cap">Button · 16/20</span><span style="font-size:16px;font-weight:500">Текст на кнопке</span></div>
   </div>
   <ul class="box" style="padding-left:34px">
-    <li>Для большинства сайтов хватает 5–7 стилей. Если их 20, системы уже нет.</li>
+    <li>Заголовки здесь из одной шкалы 18 × 1,333: 18 → 24 → 32 → 43 → 56. H3, H2 и H1 стоят на её ступенях, одну ступень мы пропустили, чтобы H1 был заметно крупнее. Подписи и текст на кнопке — фиксированные размеры вне шкалы.</li><li>Для большинства сайтов хватает 5–7 стилей. Если их 20, системы уже нет.</li>
     <li>Называй стили по роли, а не по размеру: «H2», «Body», «Caption», а не «Inter 40».</li>
     <li>Сделай мобильную версию шкалы: заголовки на телефоне меньше, основной текст почти тот же.</li>
     <li>Длина строки основного текста — примерно 45–75 знаков.</li>
@@ -507,11 +507,11 @@ html.embed{color-scheme:normal;background:transparent}
   <div class="sub">
     <h3>Показываем все состояния</h3>
     <div class="sub-b">
-      <p>В ките видны все состояния элемента: default, hover, focus, pressed, disabled. Чтобы не плодить отдельные компоненты, объединяем их в <b>набор вариантов</b>: выделяешь компоненты, нажимаешь «Combine as variants» — и они собираются в одну группу с переключателями свойств справа.</p>
+      <p>В ките видны все состояния элемента: default, hover, focus, pressed, disabled. Чтобы не плодить отдельные компоненты, объединяем их в <b>набор вариантов</b>: выделяешь компоненты, нажимаешь «Combine as variants» — и они собираются в одну группу с переключателями свойств справа.</p>
       <div class="varwrap"><div class="variants">
-        <span class="cap">Type \ State</span><span class="cap">Default</span><span class="cap">Hover</span><span class="cap">Focus</span><span class="cap">Disabled</span>
-        <span class="cap">Primary</span><span class="u-btn u-primary">Купить</span><span class="u-btn u-primary is-hover">Купить</span><span class="u-btn u-primary is-focus">Купить</span><span class="u-btn u-primary is-disabled">Купить</span>
-        <span class="cap">Secondary</span><span class="u-btn u-secondary">Купить</span><span class="u-btn u-secondary is-hover">Купить</span><span class="u-btn u-secondary is-focus">Купить</span><span class="u-btn u-secondary is-disabled">Купить</span>
+        <span class="cap">Type \ State</span><span class="cap">Default</span><span class="cap">Hover</span><span class="cap">Focus</span><span class="cap">Pressed</span><span class="cap">Disabled</span>
+        <span class="cap">Primary</span><span class="u-btn u-primary">Купить</span><span class="u-btn u-primary is-hover">Купить</span><span class="u-btn u-primary is-focus">Купить</span><span class="u-btn u-primary is-active">Купить</span><span class="u-btn u-primary is-disabled">Купить</span>
+        <span class="cap">Secondary</span><span class="u-btn u-secondary">Купить</span><span class="u-btn u-secondary is-hover">Купить</span><span class="u-btn u-secondary is-focus">Купить</span><span class="u-btn u-secondary is-active">Купить</span><span class="u-btn u-secondary is-disabled">Купить</span>
       </div></div>
       <p>Здесь у набора два свойства: <b>Type</b> и <b>State</b>. Нужен размер? Нажимаешь плюс в панели свойств набора и добавляешь третье — <b>Size</b>: L, M, S.</p>
     </div>
@@ -536,8 +536,8 @@ html.embed{color-scheme:normal;background:transparent}
     <span class="cap">Пример системы для лендинга</span>
     <div class="space">
       <div><i style="width:120px;height:120px"></i><span>120 · между блоками</span></div>
-      <div><i style="width:60px;height:60px"></i><span>60 · между группами</span></div>
-      <div><i style="width:30px;height:30px"></i><span>30 · заголовок → текст</span></div>
+      <div><i style="width:64px;height:64px"></i><span>64 · между группами</span></div>
+      <div><i style="width:32px;height:32px"></i><span>32 · заголовок → текст</span></div>
       <div><i style="width:16px;height:16px"></i><span>16</span></div>
       <div><i style="width:8px;height:8px"></i><span>8</span></div>
     </div>
@@ -545,7 +545,7 @@ html.embed{color-scheme:normal;background:transparent}
   <ul class="box" style="padding-left:34px">
     <li>Внутри компонентов используй шаги, кратные 4 или 8: 4, 8, 12, 16, 24, 32.</li>
     <li>Сохрани значения как числовые переменные (spacing/8, spacing/16) и подставляй их в Auto Layout — тогда верстальщик увидит токен, а не случайное 23 px.</li>
-    <li>Для удобства вёрстки можно держать в ките квадраты-шаблоны 120, 60, 30 и прикладывать их между блоками, чтобы не запутаться в логике.</li>
+    <li>Для удобства вёрстки можно держать в ките квадраты-шаблоны 120, 64, 32 и прикладывать их между блоками, чтобы не запутаться в логике.</li>
     <li>Сюда же добавь <b>стили сетки</b>: например, 12 колонок с полями 40 px на десктопе и 4 колонки с полями 16 px на телефоне.</li>
   </ul>
 </section>
@@ -606,7 +606,7 @@ html.embed{color-scheme:normal;background:transparent}
   </div>
   <div class="quiz" id="quiz"></div>
   <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
-  <p class="next">Следующий урок — концепция в веб-дизайне.</p>
+  <p class="next">Это последний урок модуля. Дальше — модуль «Референсы».</p>
 </section>
 <footer>Perasperadastra · Mission to Web · Модуль 4 · UI-кит</footer>
 

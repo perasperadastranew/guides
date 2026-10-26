@@ -473,7 +473,7 @@ button.ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)
 .s-burger i{display:block;width:22px;height:2px;background:#101010;border-radius:1px}
 .s-hero .s-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--gap);padding-block:56px;align-items:center}
 .s-copy{display:flex;flex-direction:column;gap:18px;min-width:0}
-.s-h{font-size:48px;line-height:1.1;font-weight:600;letter-spacing:-.02em;color:#101010;overflow-wrap:normal}
+.s-h{font-size:56px;line-height:1.1;font-weight:600;letter-spacing:-.02em;color:#101010;overflow-wrap:normal}
 .s-p{font-size:18px;line-height:1.55;color:#4a4a48;max-width:34em}
 .s-btn{align-self:flex-start;background:#eb7540;color:#101010;border-radius:12px;height:56px;padding:0 28px;display:inline-flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;white-space:nowrap}
 .s-pic{aspect-ratio:4/3;border-radius:16px;background:radial-gradient(circle at 35% 40%,#7fb48a 0 18%,transparent 19%),radial-gradient(circle at 62% 55%,#4f8f60 0 22%,transparent 23%),linear-gradient(160deg,#e9efe1,#cfdcc5)}
@@ -491,7 +491,7 @@ button.ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)
 .fl-screen.bp-t .s-menu{display:none}
 .fl-screen.bp-t .s-burger{display:flex;margin-left:0}
 .fl-screen.bp-t .s-nav .s-in{height:64px}
-.fl-screen.bp-t .s-h{font-size:36px}
+.fl-screen.bp-t .s-h{font-size:38px}
 .fl-screen.bp-t .s-p{font-size:16px}
 .fl-screen.bp-t .s-hero .s-in{padding-block:40px}
 .fl-screen.bp-t .s-h2{font-size:28px}
@@ -502,7 +502,7 @@ button.ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)
 .fl-screen.bp-m .s-burger{display:flex}
 .fl-screen.bp-m .s-nav .s-in{height:56px}
 .fl-screen.bp-m .s-hero .s-in{grid-template-columns:minmax(0,1fr);padding-block:28px 32px;gap:24px}
-.fl-screen.bp-m .s-h{font-size:28px;line-height:1.2}
+.fl-screen.bp-m .s-h{font-size:32px;line-height:1.125}
 .fl-screen.bp-m .s-p{font-size:16px;line-height:1.5}
 .fl-screen.bp-m .s-btn{align-self:stretch;height:48px}
 .fl-screen.bp-m .s-h2{font-size:22px}
@@ -648,7 +648,7 @@ button.ad-next{align-self:flex-start;background:var(--ink);color:var(--panel);bo
   <div class="corner"><span>PERASPERADASTRA
 МЕТОДИЧКА К УРОКУ</span><span>MISSION TO WEB
 МОДУЛЬ 4 · UI</span></div>
-  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 UI-элементы</span><span>03 UI-кит</span><span>04 Концепция в веб-дизайне</span><span>05 Композиция</span><span>06 Типографика</span><span>07 Иконки</span><b>08 Адаптив</b><span>09 Цвет</span></div>
+  <div class="series"><span>01 Стили в веб-дизайне</span><span>02 Типографика</span><span>03 Цвет</span><span>04 Композиция</span><span>05 UI-элементы</span><span>06 Иконки</span><b>07 Адаптив</b><span>08 UI-кит</span></div>
   <h1>Адаптив</h1>
   <p class="lead"><b>Один сайт — сотни разных экранов.</b> Разбираем, как выбрать брейкпоинты, настроить сетку, перестроить блоки под телефон и собрать всё это в Figma так, чтобы разработчик понял тебя без созвона.</p>
   <span class="save">Сохрани, чтобы не потерять</span>
@@ -754,22 +754,22 @@ button.ad-next{align-self:flex-start;background:var(--ink);color:var(--panel);bo
     <thead><tr><th>Параметр</th><th>Mobile 360–767</th><th>Tablet 768–1279</th><th>Desktop 1280+</th></tr></thead>
     <tbody>
       <tr><td>Контейнер</td><td>100% ширины</td><td>100% ширины</td><td>max 1200 px по центру</td></tr>
-      <tr><td>Колонки</td><td>4</td><td>8</td><td>12</td></tr>
-      <tr><td>Поля от края</td><td>16 px</td><td>24 px</td><td>32–40 px</td></tr>
-      <tr><td>Gutter</td><td>16 px</td><td>16–24 px</td><td>24 px</td></tr>
-      <tr><td>H1</td><td>28 / 34</td><td>36 / 44</td><td>48 / 56</td></tr>
-      <tr><td>H2</td><td>22 / 28</td><td>28 / 36</td><td>32 / 40</td></tr>
-      <tr><td>H3</td><td>18 / 24</td><td>20 / 26</td><td>22 / 28</td></tr>
+      <tr><td>Колонки</td><td>4</td><td>8</td><td>12 (на простом лендинге можно 4–6)</td></tr>
+      <tr><td>Поля от края</td><td>16 px</td><td>24 px</td><td>от 40 px (на 1440 с контейнером 1200 — по 120)</td></tr>
+      <tr><td>Gutter</td><td>16 px</td><td>16–24 px</td><td>20–24 px</td></tr>
+      <tr><td>H1</td><td>32 / 36</td><td>38 / 42</td><td>56 / 62</td></tr>
+      <tr><td>H2</td><td>24 / 30</td><td>28 / 34</td><td>32 / 38</td></tr>
+      <tr><td>H3</td><td>20 / 26</td><td>22 / 28</td><td>24 / 30</td></tr>
       <tr><td>Основной текст</td><td>16 / 24</td><td>16 / 24</td><td>18 / 28</td></tr>
       <tr><td>Подписи</td><td>12 / 16</td><td>12–13 / 16–18</td><td>14 / 20</td></tr>
-      <tr><td>Между блоками</td><td>24–32 px</td><td>32–48 px</td><td>48–80 px</td></tr>
+      <tr><td>Между блоками</td><td>48–64 px</td><td>64–96 px</td><td>100–160 px</td></tr>
       <tr><td>Padding карточки</td><td>16 px</td><td>20–24 px</td><td>24–32 px</td></tr>
       <tr><td>Кнопка, поле</td><td>высота 48</td><td>48–52</td><td>48–56</td></tr>
       <tr><td>Хедер</td><td>56 px, бургер</td><td>64 px, часть меню + «Ещё»</td><td>72–80 px, всё меню</td></tr>
     </tbody>
   </table></div>
   <div class="two">
-    <div class="box"><b>Текст</b><ul><li>Основной текст на телефоне не меньше 16 px. Если в поле ввода шрифт меньше 16, iPhone приближает страницу, когда человек тапает в поле.</li><li>Длина строки — 60–75 символов. На десктопе ограничивай ширину абзаца, а не только контейнер.</li><li>Заголовки уменьшаются сильнее, чем текст: H1 с 48 до 28, а основной — с 18 до 16.</li></ul></div>
+    <div class="box"><b>Текст</b><ul><li>Основной текст на телефоне не меньше 16 px. Если в поле ввода шрифт меньше 16, iPhone приближает страницу, когда человек тапает в поле.</li><li>Длина строки — 45–75 символов. На десктопе ограничивай ширину абзаца, а не только контейнер.</li><li>Заголовки уменьшаются сильнее, чем текст: H1 с 56 до 32, а основной — с 18 до 16. Все заголовки взяты из одной шкалы: на телефоне 16 × 1,25, на планшете 16 × 1,333, на десктопе 18 × 1,333, с округлением до чётных.</li></ul></div>
     <div class="box"><b>Отступы</b><ul><li>На телефоне поля 16 px. На экранах шире 375 можно 20–24.</li><li>Расстояние между блоками сокращается, но не до нуля: блоки должны отделяться друг от друга.</li><li>Отступ внутри карточки меньше, чем между карточками, иначе группы не читаются.</li></ul></div>
   </div>
 
@@ -942,7 +942,7 @@ button.ad-next{align-self:flex-start;background:var(--ink);color:var(--panel);bo
   </div>
   <div class="quiz" id="quiz"></div>
   <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
-  <p class="next">Следующий урок — Цвет: как собрать палитру и проверить контраст.</p>
+  <p class="next">Следующий урок — UI-кит: как собрать все элементы в систему.</p>
 </section>
 <footer>Perasperadastra · Mission to Web · Модуль 4 · Адаптив</footer>
 
@@ -1127,13 +1127,13 @@ document.querySelectorAll('[data-theme-demo]').forEach(box => {
       if (mode === 'adaptive') {
         if (bp === 'm') {
           items.push(li('ok', '<b>Меню ушло в бургер.</b> Пять пунктов и кнопка в строку на ' + W + ' px не помещаются.'));
-          items.push(li('ok', '<b>Заголовок 28 px вместо 48,</b> текст 16 px. Hero в одну колонку: текст, кнопка, картинка.'));
+          items.push(li('ok', '<b>Заголовок 32 px вместо 56,</b> текст 16 px. Hero в одну колонку: текст, кнопка, картинка.'));
           items.push(li('ok', '<b>Кнопка на всю ширину,</b> высота 48 px — легко попасть большим пальцем.'));
           items.push(li('ok', '<b>Карточки ушли в ленту:</b> видно 1,3 карточки, поэтому понятно, что её можно листать.'));
           if (W < 360) items.push(li('info', '<b>Меньше 360 — редкие маленькие экраны.</b> Отдельный макет не нужен, но проверь, что длинные слова и кнопки не вылезают.'));
         } else if (bp === 't') {
           items.push(li('ok', '<b>Меню всё ещё в бургере,</b> но кнопка «Подобрать растение» вернулась в шапку: место есть.'));
-          items.push(li('ok', '<b>Hero снова в две колонки,</b> заголовок 36 px.'));
+          items.push(li('ok', '<b>Hero снова в две колонки,</b> заголовок 38 px.'));
           items.push(li('ok', '<b>Карточки в 2 колонки,</b> каждая ' + cw + ' px.'));
           if (W >= 1100) items.push(li('info', '<b>Ближе к 1280 карточки становятся широкими.</b> Если тебе не нравится, как это выглядит, — это повод для брейкпоинта 1024.'));
         } else {
@@ -1145,7 +1145,7 @@ document.querySelectorAll('[data-theme-demo]').forEach(box => {
       } else if (mode === 'fluid') {
         if (menu.scrollWidth > menu.clientWidth + 1) items.push(li('bad', '<b>Пункты меню налезают друг на друга и на кнопку.</b> Резина сжимает расстояния, а текст сжаться не может.'));
         items.push(li(cw < 140 ? 'bad' : 'ok', '<b>Карточка ' + cw + ' px.</b> ' + (cw < 140 ? 'Четыре колонки в узком окне — названия обрезаются, картинки с ноготь.' : 'Пока помещается.')));
-        if (h.scrollWidth > h.clientWidth + 1 || (W < 700)) items.push(li('bad', '<b>Заголовок 48 px в узкой колонке</b> — по одному слову в строке, слова вылезают за край.'));
+        if (h.scrollWidth > h.clientWidth + 1 || (W < 700)) items.push(li('bad', '<b>Заголовок 56 px в узкой колонке</b> — по одному слову в строке, слова вылезают за край.'));
         items.push(li(chars > 80 ? 'bad' : 'info', '<b>Строка абзаца ≈ ' + chars + ' символов.</b> ' + (chars > 80 ? 'Без max-width на широком экране текст растягивается, читать тяжело.' : 'Здесь нормально, но на 1920 будет за 100.')));
         if (W >= 1100) items.push(li('info', '<b>На широком экране резина выглядит прилично.</b> Проблемы начинаются ниже 1000 px. Потяни ползунок влево.'));
       } else {
