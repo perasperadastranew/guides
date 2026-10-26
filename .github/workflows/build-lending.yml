@@ -1,0 +1,34 @@
+name: Сборка этапов гайда «Лендинг с нейросетями»
+
+on:
+  push:
+    branches: [main]
+    paths: ['mtw/lending/index.html', 'mtw/lending/build_stages.py']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-lending
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Сборка страниц этапов
+        run: python3 mtw/lending/build_stages.py
+      - name: Публикация
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add mtw/lending/etap-*/index.html
+          if git diff --cached --quiet; then echo "Этапы не изменились"; exit 0; fi
+          git commit -m "Сборка этапов гайда «Лендинг с нейросетями»"
+          git pull --rebase
+          git push

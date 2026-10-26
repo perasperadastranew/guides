@@ -1015,7 +1015,7 @@ document.addEventListener("click",e=>{
 
 /* v3: режим одного этапа (?stage=N или ?stage=3,4) — для уроков ZenClass */
 const FULL="https://perasperadastranew.github.io/guides/mtw/lending/";
-const STAGE_NS=((new URLSearchParams(location.search).get("stage"))||"").split(",").map(Number).filter(n=>n>=1&&n<=6);
+const STAGE_NS=(String(window.LEND_STAGE||"")||(new URLSearchParams(location.search).get("stage"))||"").split(",").map(Number).filter(n=>n>=1&&n<=6);
 if(STAGE_NS.length){
   document.documentElement.classList.add("stagemode");
   const EXTRA={1:["how","paths","cost","start","concept","slop"],3:["styles"]};
