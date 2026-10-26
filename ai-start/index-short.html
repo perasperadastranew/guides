@@ -814,6 +814,11 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 .pg .prt thead th:nth-child(1){width:24%}.pg .prt thead th:nth-child(2){width:38%}.pg .prt thead th:nth-child(3){width:38%}
 .pg .prt td.pd .pc{bottom:18px}
 @media (max-width:760px){.pg .prt tr{grid-template-columns:minmax(0,1fr)}}
+/* 4 равные колонки сетки: проект | задача и цена | пример на 2 колонки */
+.pg .prt thead th:nth-child(1),.pg .prt thead th:nth-child(2){width:25%}.pg .prt thead th:nth-child(3){width:50%}
+/* надёжная обрезка картинок (Safari) */
+.pg .prt .th2,.pg .prt .th3{position:relative;height:auto}
+.pg .prt .th2 img,.pg .prt .th2 video,.pg .prt .th3 img,.pg .prt .th3 video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none}
 </style>
 </head><body>
 <div class="pg"><div class="wrap">
