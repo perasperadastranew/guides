@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Как начать в AI-индустрии, короткая версия</title><meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500&display=swap">
+<style>
+@font-face{font-family:"PG Classic";src:url(f/classic.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"PG W3";src:url(f/w3.woff2) format("woff2");font-display:swap}
+.pg{
+  --bg:#F2F2F0;--surface:#E7E7E3;--fg:#0B0B0B;--muted:#5E5E5A;--line:#CFCFC9;--accent:#C8101B;--on-accent:#FFFFFF;
+  --ok:#1E8A45;--warn:#A86A00;--no:#C8101B;--best:rgba(200,16,27,.07);
+  --sans:"Golos Text",-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --serif:"PG Classic","Classic Russian","Times New Roman",Georgia,serif;
+  --mono:"PG W3","SF Mono",ui-monospace,Menlo,monospace;
+  --c:14px;--dio-f:invert(1) hue-rotate(180deg);
+}
+@media (prefers-color-scheme: dark){.pg{--dio-f:none;--bg:#0B0B0B;--surface:#1A1A1A;--fg:#F2F2F0;--muted:#A3A39D;--line:#2E2E2C;--accent:#F0303B;--on-accent:#0B0B0B;--ok:#45c46e;--warn:#e6a23c;--no:#F0303B;--best:rgba(240,48,59,.09);color-scheme:dark}}
+.pg,.pg *{box-sizing:border-box}
+.pg{display:block;width:100%;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow-x:hidden}
+.pg .wrap{max-width:1040px;margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-block:28px 96px;display:flex;flex-direction:column;gap:88px}
+.pg .micro{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pg .top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.pg header{display:flex;flex-direction:column;gap:36px}
+.pg h1{font-weight:300;font-size:clamp(44px,8.2vw,104px);line-height:.92;letter-spacing:-.035em;margin:0;text-wrap:balance;color:var(--fg)}
+.pg h1>span{display:block}.pg h1>span+span{padding-left:.9em}
+.pg .s{font-family:var(--serif);font-weight:400;letter-spacing:-.02em;font-size:1.12em}
+.pg .lead{max-width:34em;font-size:clamp(18px,2.1vw,22px);margin:0;text-indent:2.2em}
+.pg h2{font-weight:300;font-size:clamp(30px,4.6vw,54px);line-height:1;letter-spacing:-.03em;margin:0 0 18px;text-wrap:balance;color:var(--fg)}
+.pg p{margin:0}
+.pg b{font-weight:500}
+.pg a{color:inherit}
+.pg .chf{clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.pg figure{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+.pg figure>img,.pg .gal img{display:block;width:100%;height:auto;background:var(--surface);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.pg figcaption{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pg .need{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px}
+.pg .need a{display:block;padding:20px 18px 22px;background:var(--surface);min-width:0;text-decoration:none;clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px)}
+.pg .need b{display:block;font-weight:500;font-size:18px;margin-bottom:6px}
+.pg .need span{color:var(--muted);font-size:15px}
+.pg .need i{font-style:normal;font-family:var(--serif);color:var(--accent);font-size:22px;margin-right:6px}
+.pg .need a{transition:background .15s,color .15s}
+.pg .need a:hover,.pg .need a:focus-visible,.pg .need a:active{background:var(--accent);color:var(--on-accent)}
+.pg .need a:hover b,.pg .need a:hover span,.pg .need a:focus-visible b,.pg .need a:focus-visible span,.pg .need a:active b,.pg .need a:active span{color:var(--on-accent)}
+.pg .need a:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.pg .tonav{position:fixed;z-index:30;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));font:400 12px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:14px 18px;background:var(--accent);color:var(--on-accent);clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px)}
+.pg .tonav[hidden]{display:none}
+.pg .tonav:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.pg .part{display:flex;justify-content:space-between;align-items:flex-end;gap:16px 40px;flex-wrap:wrap;border-top:1px solid var(--fg);padding-top:20px;scroll-margin-top:16px}
+.pg .part h2{margin:0;font-size:clamp(40px,6vw,72px)}
+.pg .part p{max-width:30em;color:var(--muted)}
+.pg .pbtn{font:400 12px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;text-decoration:none;white-space:nowrap;padding:14px 18px;background:var(--accent);color:var(--on-accent);clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px);transition:background .15s,color .15s}
+.pg .pbtn:hover,.pg .pbtn:active{background:var(--fg);color:var(--bg)}
+.pg .pbtn:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.pg section.step{display:flex;flex-direction:column;gap:28px;scroll-margin-top:16px;min-width:0}
+.pg .head{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 40px;align-items:start}
+.pg .num{font-family:var(--serif);font-size:clamp(72px,11vw,128px);line-height:.8;color:var(--accent)}
+.pg .num small{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:14px;line-height:1.3}
+.pg .txt{max-width:680px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.pg .txt p:first-of-type{text-indent:2.2em}
+.pg .txt ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px}
+.pg .tip{max-width:680px;border-left:2px solid var(--accent);padding:2px 0 2px 18px;color:var(--muted);font-size:16px}
+.pg .tip b{color:var(--fg)}
+.pg .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pg .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pg .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 12px}
+.pg .gal figure img{aspect-ratio:16/10;object-fit:cover}
+.pg .gal.sq figure img{aspect-ratio:1/1}
+.pg .gal figcaption{display:block;text-transform:none;letter-spacing:0;font-family:var(--sans);font-size:14px;line-height:1.4}
+.pg .gal figcaption b{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;font-weight:400;color:var(--fg);margin-bottom:4px}
+/* дизеринг-сцены из Blender */
+.pg .dio{align-items:center;margin-block:-24px}
+.pg .dio canvas{display:block;width:100%;max-width:880px;height:auto;aspect-ratio:16/9;image-rendering:pixelated;filter:var(--dio-f)}
+.pg .dio figcaption{width:100%;max-width:880px}
+.pg .legend{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;padding:0;list-style:none;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);width:100%;max-width:880px;justify-content:center}
+.pg .legend em{font-style:normal;color:var(--accent);margin-right:6px}
+.pg .legend b{color:var(--fg);font-weight:400}
+/* таблицы */
+.pg .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:1px solid var(--line)}
+.pg table{width:100%;border-collapse:collapse;min-width:720px;font-size:15px;font-variant-numeric:tabular-nums}
+.pg th{text-align:left;font:400 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:14px 12px 12px 0;white-space:nowrap;border-bottom:1px solid var(--line)}
+.pg td{padding:13px 12px 13px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.pg td small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.pg td.n{color:var(--muted)}
+.pg tr.grp td{padding-top:24px;font-weight:500}
+.pg tr.best td{background:var(--best)}
+.pg .svc{display:inline-flex;align-items:center;gap:10px;font-weight:500;font-size:16px}
+.pg .svc i{width:24px;height:24px;display:inline-grid;place-items:center;font:500 12px/1 var(--mono);font-style:normal;color:#0B0B0B;clip-path:polygon(5px 0,calc(100% - 5px) 0,100% 5px,100% calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,0 calc(100% - 5px),0 5px)}
+.pg .ok{color:var(--ok)}.pg .warn{color:var(--warn)}.pg .no{color:var(--no)}
+.pg .tcap{margin:0 0 10px}
+.pg .fn{font-size:14px;color:var(--muted);margin-top:12px;max-width:80ch}
+/* графики */
+.pg .chart{display:flex;flex-direction:column;gap:14px}
+.pg .rng{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr) 92px;gap:6px 16px;align-items:center}
+.pg .rng .l{font-size:15px}
+.pg .rng .bar{position:relative;height:22px;border-left:1px solid var(--line)}
+.pg .rng .bar::before{content:"";position:absolute;inset:50% 0 auto 0;border-top:1px dashed var(--line)}
+.pg .rng .bar i{position:absolute;top:3px;bottom:3px;background:var(--accent);left:var(--a);width:0;transition:width 1s cubic-bezier(.2,.7,.2,1)}
+.pg .rng.on .bar i{width:var(--w)}
+.pg .rng .v{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--muted);text-align:right;white-space:nowrap}
+.pg .axis{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr) 92px;gap:16px}
+.pg .axis div{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.pg .plot svg{display:block;width:100%;height:auto;max-width:880px;overflow:visible}
+.pg .plot text{font-family:var(--mono);font-size:11px;letter-spacing:.04em;fill:var(--muted)}
+.pg .plot .lb{fill:var(--fg);font-family:var(--sans);font-size:14px;letter-spacing:0}
+.pg .plot .gl{stroke:var(--line);stroke-width:1}
+.pg .plot .rc{fill:var(--accent);stroke:var(--accent);stroke-width:1.5}.pg .plot .r1{fill-opacity:.28}.pg .plot .r2{fill-opacity:0;stroke-dasharray:6 5}.pg .plot .r3{fill-opacity:.12}
+.pg .plot .pw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pg .donut{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:24px 40px;align-items:center}
+.pg .donut svg{width:100%;height:auto;max-width:240px}
+.pg .donut .big{font-family:var(--serif);font-size:clamp(56px,8vw,88px);line-height:.9;color:var(--accent)}
+.pg .eq{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;font-size:clamp(22px,3vw,34px);font-weight:300;letter-spacing:-.02em;line-height:1.15}
+.pg .eq em{font-style:normal;font-family:var(--serif);color:var(--accent);font-size:1.1em}
+.pg .eq .r{font-family:var(--serif);font-size:1.12em}
+.pg .formula{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:baseline;font-size:clamp(17px,2.1vw,22px)}
+.pg .formula span{background:var(--surface);padding:8px 14px;clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px)}
+.pg .formula em{font-style:normal;font-family:var(--serif);color:var(--accent);font-size:1.3em}
+.pg .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;border-top:1px solid var(--line);padding-top:24px}
+.pg .facts b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(40px,5.4vw,64px);line-height:1;font-variant-numeric:tabular-nums;color:var(--fg)}
+.pg .facts .micro{display:block;margin:10px 0 6px}
+.pg .facts span{font-size:15px;color:var(--muted)}
+/* роли */
+.pg .five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line)}
+.pg .five>div{padding:16px 14px 18px 0;border-bottom:1px solid var(--line)}
+.pg .five>div+div{padding-left:14px;border-left:1px solid var(--line)}
+.pg .five>div{display:grid;grid-row:span 4;grid-template-rows:subgrid;align-content:start}
+.pg .five i{display:block;font:400 30px/1 var(--serif);font-style:normal;color:var(--accent);margin-bottom:12px}
+.pg .five b{display:block;margin-bottom:6px}
+.pg .five span{font-size:14.5px;color:var(--muted)}
+.pg .five .tl{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.pg .five .tl b{margin-bottom:4px;color:var(--fg)}
+.pg .five .tl span{color:var(--fg)}
+/* направления */
+.pg .gp{display:none}.pg .gp.on{display:block}
+.pg .dirs{display:flex;flex-direction:column;gap:22px}
+.pg .tabs{display:flex;flex-wrap:wrap;gap:8px}
+.pg .tabs button{font:400 12px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;border:0;padding:12px 16px;cursor:pointer;background:var(--surface);color:var(--fg);clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px)}
+.pg .tabs button[aria-selected="true"]{background:var(--accent);color:var(--on-accent)}
+.pg .tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pg .dir{display:none;background:var(--surface);padding:28px 30px 30px;clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.pg .dir.on{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px 40px}
+.pg .dir h3{grid-column:1/-1;margin:0;font-weight:300;font-size:clamp(26px,3.4vw,38px);letter-spacing:-.025em;line-height:1.05}
+.pg .dir h3 .s{color:var(--accent)}
+.pg .dir .k{display:flex;flex-direction:column;gap:6px}
+.pg .dir .k .micro{color:var(--accent)}
+.pg .dir .k p,.pg .dir .k li{font-size:16px}
+.pg .dir ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px}
+.pg .dir .wide{grid-column:1/-1;border-top:1px solid var(--line);padding-top:16px;display:flex;flex-wrap:wrap;gap:8px 28px;align-items:baseline}
+.pg .dir .wide b{font-family:var(--serif);font-weight:400;font-size:26px}
+/* шаги */
+.pg ol.check{margin:0;padding:0;list-style:none;counter-reset:s;max-width:760px;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.pg ol.check li{counter-increment:s;display:grid;grid-template-columns:48px minmax(0,1fr);padding:14px 0;border-bottom:1px solid var(--line)}
+.pg ol.check li::before{content:counter(s);font-family:var(--serif);color:var(--accent);font-size:26px;line-height:1}
+/* калькулятор */
+.pg .calc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pg label.f{display:flex;flex-direction:column;gap:8px}
+.pg select{appearance:none;-webkit-appearance:none;width:100%;background:var(--surface);color:var(--fg);border:0;border-radius:0;padding:14px 38px 14px 14px;font:400 16px var(--sans);clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px);background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 52%,calc(100% - 15px) 52%;background-size:5px 5px;background-repeat:no-repeat}
+.pg select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.pg .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line)}
+.pg .two>div{padding:16px 16px 18px 0;border-bottom:1px solid var(--line)}
+.pg .two>div+div{padding-left:16px;border-left:1px solid var(--line)}
+.pg .two b{display:block;margin-bottom:6px}.pg .two span{font-size:15px;color:var(--muted)}
+.pg .src{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:24px}
+.pg .src ul{margin:0;padding-left:18px;font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+@media (max-width:640px){
+  .pg{font-size:17px;--c:10px}
+  .pg .wrap{gap:64px}
+  .pg .head,.pg .donut,.pg .dir.on,.pg .two,.pg .calc{grid-template-columns:minmax(0,1fr)}
+  .pg .two>div+div{padding-left:0;border-left:0}
+  .pg .grid2,.pg .grid3{grid-template-columns:minmax(0,1fr)}
+  .pg .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pg .five{grid-template-columns:minmax(0,1fr)}
+  .pg .five>div+div{padding-left:0;border-left:0}
+  .pg .dio{margin-inline:-20px;overflow:hidden}
+  .pg .dio canvas{width:134%;max-width:none;flex:none}
+  .pg .dio figcaption,.pg .dio .legend{padding-inline:20px}
+  .pg .rng,.pg .axis{grid-template-columns:minmax(0,1fr) 84px}
+  .pg .rng .l{grid-column:1/-1;margin-top:6px}
+  .pg .axis>span{display:none}
+  .pg .dir{padding:22px 18px 24px}
+  .pg .plot svg{min-width:620px}
+}
+@media (prefers-reduced-motion:reduce){.pg .rng .bar i{transition:none}}
+.pg .ba{display:flex;flex-direction:column;gap:14px}
+.pg .bat{min-width:820px}
+.pg .bat td{font-size:15px}
+.pg .bat td:first-child{width:22%}.pg .bat td:last-child{width:22%}
+.pg .bat .t{display:block;font-family:var(--serif);font-size:24px;line-height:1.1;color:var(--fg);margin:0 0 6px}
+.pg .bat td.nn{color:var(--muted)}
+.pg .bat .t.a{color:var(--accent)}
+.pg .bb{position:relative;height:30px;margin-top:4px}
+.pg .bb i{position:absolute;left:0;height:12px;width:var(--w);background:var(--line)}
+.pg .bb i:first-child{top:0}.pg .bb i.a{top:16px;background:var(--accent)}
+.pg .bat .x{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg)}
+.pg .fn a{color:inherit}
+@media (max-width:640px){
+  .pg .ba .tw{overflow:visible}
+  .pg .bat{min-width:0}
+  .pg .bat thead{display:none}
+  .pg .bat,.pg .bat tbody{display:block}
+  .pg .bat tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 16px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .pg .bat td{display:block;border:0;padding:0;width:auto!important}
+  .pg .bat td:first-child,.pg .bat td:last-child{grid-column:1/-1}
+  .pg .bat td:nth-child(2)::before{content:"Раньше";display:block;font:400 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .pg .bat td:nth-child(3)::before{content:"С нейросетями";display:block;font:400 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .pg .bat .t{font-size:21px}
+}
+.pg .facts.mk{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.pg .facts.mk b{color:var(--accent)}
+.pg .wants{min-width:760px}.pg .wants td:first-child{width:22%}.pg .wants td:last-child{width:38%}
+@media (max-width:640px){
+  .pg .wants{min-width:0}.pg .wants thead{display:none}.pg .wants,.pg .wants tbody{display:block}.pg .tw:has(.wants){overflow:visible}
+  .pg .wants tr{display:block;padding:14px 0;border-bottom:1px solid var(--line)}
+  .pg .wants td{display:block;border:0;padding:0 0 6px;width:auto!important}
+}
+
+/* цифры: 01 02 03, SF Pro */
+.pg{--num:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif}
+.pg .num,.pg .facts b,.pg .donut .big,.pg .bat .t,.pg .five i,.pg .need i,.pg .dir .wide b,.pg ol.check li::before{font-family:var(--num);font-weight:300;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+.pg .num{font-size:clamp(64px,9.5vw,112px);line-height:.85}
+.pg ol.check li::before{content:counter(s,decimal-leading-zero);font-size:22px;line-height:1.15;letter-spacing:-.02em}
+.pg .need i{font-size:15px;letter-spacing:0;margin-right:8px;font-weight:400}
+.pg .five i{font-size:30px}
+.pg .bat .t{letter-spacing:-.02em}
+.pg .dir .wide b{letter-spacing:-.02em}
+
+.pg .facts.mk b{font-size:clamp(34px,4.2vw,52px);white-space:nowrap}
+/* группы заказчиков и примеры */
+.pg .grp2{display:flex;flex-direction:column;gap:18px;padding-top:28px;border-top:1px solid var(--line)}
+.pg .gh{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:8px 40px;align-items:baseline}
+.pg .gh h3{margin:0;font-weight:300;font-size:clamp(26px,3.2vw,36px);letter-spacing:-.025em;line-height:1.05}
+.pg .gh p{color:var(--muted);font-size:16px}
+.pg .pt{min-width:720px}.pg .pt td:last-child{white-space:nowrap;font-family:var(--num);font-variant-numeric:tabular-nums}
+.pg .exs{display:flex;flex-direction:column;gap:10px}
+.pg .exg{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.pg .exl{display:flex;flex-direction:column;gap:2px;padding:14px 16px;background:var(--surface);text-decoration:none;color:var(--fg);clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px)}
+.pg .exl b{font-weight:500}.pg .exl b::after{content:" ↗";color:var(--accent)}
+.pg .exl span{font-size:14px}
+.pg .exl small{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.pg .exl:hover b,.pg .exl:focus-visible b{color:var(--accent)}
+.pg .exl:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pg .six{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.pg .six>div{padding:14px 14px 16px 0;border-bottom:1px solid var(--line)}
+.pg .six b{display:block}.pg .six span{font-size:15px;color:var(--muted)}
+.pg .tpl{background:var(--surface);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c));padding:20px 22px;display:flex;flex-direction:column;gap:12px;max-width:760px}
+.pg .tpl .bar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pg .tpl p{font-size:16px}
+.pg .tpl pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:14px;line-height:1.5}
+.pg button.copy{font:12px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;border:0;padding:9px 14px;cursor:pointer;background:var(--fg);color:var(--bg);clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px)}
+.pg button.copy:hover{background:var(--accent);color:var(--on-accent)}
+.pg button.copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pg .pipe{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.pg .pipe>div{background:var(--surface);padding:16px 16px 18px;clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px)}
+.pg .pipe i{display:block;font:300 26px/1 var(--num);font-style:normal;color:var(--accent);margin-bottom:12px;letter-spacing:-.03em}
+.pg .pipe b{display:block;margin-bottom:4px}.pg .pipe span{font-size:14.5px;color:var(--muted)}
+.pg ol.check li b{font-weight:500}
+.pg .grp2 .gal.sq figure img{aspect-ratio:4/3}
+@media (max-width:640px){
+  .pg .gh,.pg .six,.pg .pipe{grid-template-columns:minmax(0,1fr)}
+  .pg .pt{min-width:0}.pg .pt thead{display:none}.pg .pt,.pg .pt tbody{display:block}.pg .tw:has(.pt){overflow:visible}
+  .pg .pt tr{display:block;padding:12px 0;border-bottom:1px solid var(--line)}.pg .pt td{display:block;border:0;padding:0 0 4px}
+}
+.pg ol.check li{display:block;position:relative;padding:14px 0 14px 48px}
+.pg ol.check li::before{position:absolute;left:0;top:15px}
+.pg .facts b{font-size:clamp(34px,4.4vw,52px)}
+/* проблема → решение */
+.pg .ps{margin:40px 0 8px;border-top:1px solid var(--fg)}
+.pg .psh{display:grid;grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);padding:12px 0;border-bottom:1px solid var(--line)}
+.pg .psh span+span{grid-column:3;color:var(--accent)}
+.pg .ps ol{list-style:none;margin:0;padding:0;counter-reset:ps}
+.pg .ps li{display:grid;grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);align-items:start;padding:20px 0;border-bottom:1px solid var(--line);counter-increment:ps}
+.pg .ps .pr{position:relative;padding-left:44px}
+.pg .ps .pr::before{content:counter(ps,decimal-leading-zero);position:absolute;left:0;top:2px;font:500 14px/1 var(--num);color:var(--muted)}
+.pg .ps .pr b{display:block;font-size:18px;margin-bottom:4px}
+.pg .ps .pr span{color:var(--muted);font-size:15px}
+.pg .ps li>i{font-style:normal;color:var(--accent);font:400 22px/1 var(--num);padding-top:1px;transition:transform .3s}
+.pg .ps li:hover>i{transform:translateX(6px)}
+.pg .ps .so{font-size:16px;line-height:1.5;padding-left:14px;border-left:2px solid var(--accent)}
+@media (max-width:640px){.pg .psh{display:none}.pg .ps li{grid-template-columns:minmax(0,1fr);gap:10px}.pg .ps li>i{display:none}.pg .ps .so{margin-left:44px}}
+/* слайдер кейсов */
+.pg .sl{margin:36px 0 64px}
+.pg .slh{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.pg .cts{display:flex;flex-wrap:wrap;gap:6px}
+.pg .ct{font:400 12px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;border:0;padding:11px 14px;cursor:pointer;background:var(--surface);color:var(--fg);clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px)}
+.pg .ct sup{font:500 9px/1 var(--num);margin-left:4px;opacity:.6}
+.pg .ct[aria-pressed=true]{background:var(--accent);color:var(--on-accent,#fff)}
+.pg .sln{display:flex;align-items:center;gap:6px}
+.pg .slc{font:400 14px/1 var(--num);color:var(--muted);margin-right:10px;font-variant-numeric:tabular-nums}
+.pg .slc b{color:var(--fg);font-weight:600}
+.pg .ar{width:44px;height:44px;border:0;cursor:pointer;background:var(--fg);color:var(--bg);font:400 18px/1 var(--num);clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px);transition:background .2s}
+.pg .ar:hover{background:var(--accent)}
+.pg .ar:disabled{opacity:.25;cursor:default;background:var(--fg)}
+.pg .trk{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px;outline:none;overscroll-behavior-x:contain}
+.pg .trk::-webkit-scrollbar{display:none}
+.pg .cs{flex:0 0 clamp(250px,30%,340px);scroll-snap-align:start;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:12px}
+.pg .cs[hidden]{display:none}
+.pg .cm{position:relative;aspect-ratio:4/5;background:var(--surface);overflow:hidden;clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.pg .cm img,.pg .cm video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .4s}
+.pg .cs:hover .cm img,.pg .cs:hover .cm video{transform:scale(1.04)}
+.pg .cn{position:absolute;left:12px;top:12px;font:600 13px/1 var(--num);color:#fff;background:rgba(11,11,11,.55);padding:6px 8px;backdrop-filter:blur(6px)}
+.pg .pl{position:absolute;right:12px;top:12px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(240,48,59,.25);animation:pgpl 1.6s infinite}
+@keyframes pgpl{50%{opacity:.35}}
+.pg .cs.t .cm{background:var(--accent);display:grid;place-items:center}
+.pg .cs.t .ty{font:400 clamp(90px,12vw,150px)/.9 "PG Classic",var(--serif);color:#0B0B0B;letter-spacing:-.04em;transition:transform .5s}
+.pg .cs.t:hover .ty{transform:scale(1.06) rotate(-3deg)}
+.pg .cs.t .cn{background:rgba(11,11,11,.85)}
+.pg .cb{display:flex;flex-direction:column;gap:4px}
+.pg .cb b{font-size:20px;line-height:1.2;font-weight:500}
+.pg .cb b i{font-style:normal;color:var(--accent);display:inline-block;transition:transform .25s}
+.pg .cs:hover .cb b i{transform:translate(3px,-3px)}
+.pg .cb>span:not(.micro){color:var(--muted);font-size:15px;line-height:1.4}
+.pg .cb small{font-size:12px;color:var(--muted);opacity:.8}
+.pg .slb{height:2px;background:var(--line);margin-top:20px;position:relative}
+.pg .slb i{position:absolute;left:0;top:0;height:100%;width:20%;background:var(--accent);transition:left .15s,width .15s}
+.pg .cs:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+@media (max-width:640px){.pg .cs{flex-basis:78%}.pg .slc{display:none}.pg .sln{margin-left:auto}.pg .cts{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%}.pg .ct{flex:0 0 auto}}
+@media (prefers-reduced-motion:reduce){.pg .pl{animation:none}.pg .cm img,.pg .cm video,.pg .cs.t .ty{transition:none}}
+
+.pg .ft{display:flex;flex-direction:column;gap:56px;border-top:1px solid var(--line);padding-top:44px;min-width:0}
+.pg .ft-intro{display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:680px}
+.pg .ft-intro h2{margin:6px 0 4px}
+.pg .ft-intro p{margin:0}
+.pg .ft-intro h2+p{text-indent:2.2em}
+.pg .btn{display:inline-block;background:var(--accent);color:var(--on-accent);font:12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:16px 20px;margin-top:8px;border-radius:2px}
+.pg .btn:hover{filter:brightness(1.12)}
+.pg .btn:focus-visible,.pg .mta-img:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.pg .ph{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pg .ph img{display:block;width:100%;height:auto;object-fit:cover;border-radius:14px;background:var(--surface)}
+.pg .ph-hero img{aspect-ratio:2.33/1}
+.pg .ph-s img{aspect-ratio:16/10}
+.pg .ph figcaption{display:flex;justify-content:space-between;gap:12px;font:11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pg .ph2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 8px}
+.pg .ft-photos{display:flex;flex-direction:column;gap:20px;min-width:0}
+.pg .partners{display:flex;flex-direction:column;gap:24px;align-items:center;min-width:0}
+.pg .tag{font:12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--fg);padding:13px 28px;background:
+ linear-gradient(var(--muted),var(--muted)) 0 0/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 0 0/1px 9px no-repeat,
+ linear-gradient(var(--muted),var(--muted)) 100% 0/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 100% 0/1px 9px no-repeat,
+ linear-gradient(var(--muted),var(--muted)) 0 100%/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 0 100%/1px 9px no-repeat,
+ linear-gradient(var(--muted),var(--muted)) 100% 100%/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 100% 100%/1px 9px no-repeat}
+.pg .mq{width:100%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.pg .mq-track{display:flex;width:max-content;animation:mq 34s linear infinite}
+.pg .mq:hover .mq-track{animation-play-state:paused}
+.pg .mq-set{display:flex;gap:12px;padding-right:12px}
+.pg .lgo{width:176px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.pg .lgo i{display:flex;align-items:center;justify-content:center;width:100%;height:88px;background:#EDEBE6;border-radius:10px}
+.pg .lgo img{max-width:72%;max-height:52%;width:auto;height:auto;mix-blend-mode:multiply}
+.pg .lgo span{font:11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pg .mta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-radius:14px;overflow:hidden;background:var(--surface);min-width:0}
+.pg .mta-t{display:flex;flex-direction:column;gap:14px;align-items:flex-start;justify-content:center;padding:40px 36px}
+.pg .mta-t h2{margin:0}
+.pg .mta-t p{margin:0;color:var(--muted);font-size:17px}
+.pg .mta-img{display:flex;align-items:center;justify-content:center;min-height:280px;background:var(--accent);color:#fff;text-decoration:none;font-family:var(--serif);font-size:clamp(34px,5vw,56px);letter-spacing:-.02em;text-align:center;padding:24px}
+.pg .mta-img:hover{filter:brightness(1.08)}
+@media(prefers-reduced-motion:reduce){.pg .mq{-webkit-mask-image:none;mask-image:none}
+.pg .mq-track{animation:none;width:auto;flex-wrap:wrap;justify-content:center}
+.pg .mq-set{flex-wrap:wrap;justify-content:center;gap:16px 12px;padding:0}
+.pg .mq-set[aria-hidden]{display:none}}
+@media(max-width:640px){.pg .ph2,.pg .mta{grid-template-columns:1fr}
+.pg .ft{gap:44px}
+.pg .mta-t{padding:28px 22px}
+.pg .mta-img{min-height:200px;order:-1}
+.pg .ph-s img{aspect-ratio:4/3}}
+@keyframes mq{to{transform:translateX(-50%)}}
+html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,body{background:#F2F2F0}}
+</style>
+</head><body>
+<div class="pg"><div class="wrap">
+<header><div class="top micro"><span>Гайд · Perasperadastra</span><span>Старт в нейросетях</span></div>
+<h1><span>Как начать</span><span><span class="s">в AI-индустрии</span></span></h1>
+<p class="lead">Пошаговый гайд для старта в AI-креативе: что происходит на рынке и какие проекты заказывают, как собрать портфолио и получить первый заказ, какие нейросети за что отвечают и какую подписку взять.</p></header>
+
+<figure class="dio" aria-label="Дизеринг-рендер из Blender: невысокая башня 2022 из двух блоков и высокая башня 2026 с красным верхним блоком. Поворачивается при прокрутке"><canvas width="480" height="270" data-d="tower" data-h="0"></canvas><figcaption><span>Проект 2022 и проект 2026</span><span>Был веб-дизайн, стало всё сразу</span></figcaption></figure>
+
+<div id="pg-nav"><p class="micro" style="margin:0 0 12px">Что внутри</p><nav class="need" aria-label="Разделы">
+<a href="#pg-p1"><b>Рынок</b><span>Ситуация, заказы, цены, клиенты</span></a>
+<a href="#pg-p2"><b>Пошаговая инструкция</b><span>От выбора направления до первого заказа</span></a>
+<a href="#pg-p3"><b>Нейронки</b><span>Какая за что отвечает</span></a>
+<a href="#pg-p4"><b>Подписки</b><span>Таблицы, оплата, калькулятор</span></a>
+</nav></div>
+<a class="tonav" href="#pg-nav" hidden aria-label="Вернуться к навигации">↑ Навигация</a>
+
+<div class="part" id="pg-p1"><h2>Часть I. <span class="s">Рынок</span></h2><p>Что происходит, что изменили нейросети, какие проекты заказывают и сколько они стоят.</p></div>
+
+<section class="step" id="pg-1"><div class="head"><div class="num">01<small>Рынок</small></div><div class="txt"><h2>Что происходит <span class="s">на рынке</span></h2><p>Рынок неоднозначный. Компании режут бюджеты и чаще берут исполнителей подешевле, но тех, кто умеет работать с нейросетями, ищут активнее остальных. Ниже — главные проблемы рынка и что с ними делать.</p></div></div>
+<div class="facts mk">
+<div><b>16%</b><span class="micro">Дизайнеры на hh.ru</span><span>вакансий дизайнеров и художников в первой половине 2026 требуют навыков работы с нейросетями — больше, чем у любой другой профессии</span></div>
+<div><b>21,6 тыс</b><span class="micro">Вакансии с нейросетями</span><span>столько вакансий на hh.ru за полгода прямо упоминают навык работы с нейросетями</span></div>
+<div><b>88%</b><span class="micro">Агентства и фрилансеры</span><span>в маркетинге уже используют ИИ, а 72% из них — для создания контента</span></div>
+<div><b>49%</b><span class="micro">Маркетологи в мире</span><span>каждый день генерируют нейросетями картинки и видео</span></div>
+</div>
+
+<div class="ps"><div class="psh"><span class="micro">Проблема</span><span class="micro">Решение</span></div><ol><li><div class="pr"><b>«AI-креаторов» стало много, а бюджеты режут</b><span>Заказчик выбирает из десятков одинаковых портфолио, а у большинства нет вкуса, базы дизайна и понимания, зачем бизнесу картинка.</span></div><i aria-hidden="true">→</i><div class="so">Продавай дизайн-решение, а не генерацию: композиция, типографика, единый стиль, задача клиента. Выбери нишу и собери портфолио под один тип заказчика.</div></li><li><div class="pr"><b>Клиенты уже обожглись</b><span>Лишние пальцы, кривой текст, персонаж меняется от кадра к кадру.</span></div><i aria-hidden="true">→</i><div class="so">Делай консистентно и доводи руками: референсы, карточка персонажа, ретушь и сборка в макете.</div></li><li><div class="pr"><b>«Это же нейросеть, пять минут»</b><span>Генерацию считают дешёвой и давят на цену.</span></div><i aria-hidden="true">→</i><div class="so">Показывай процесс и считай в результате: сколько стоили бы съёмка, студия и команда. Продавай пакетами.</div></li><li><div class="pr"><b>Права и маркировка</b><span>Непонятно, кому принадлежит результат и можно ли его использовать в рекламе.</span></div><i aria-hidden="true">→</i><div class="so">Пиши условия в договоре, работай в сервисах с коммерческой лицензией, не используй чужие лица и бренды без разрешения.</div></li></ol></div>
+<div class="donut"><svg viewBox="0 0 200 200" role="img" aria-label="Диаграмма: технические навыки — 20%, вкус, концепция и отбор — 80%"><circle cx="100" cy="100" r="80" fill="none" stroke="var(--line)" stroke-width="22"/><circle cx="100" cy="100" r="80" fill="none" stroke="var(--accent)" stroke-width="22" stroke-dasharray="100.5 402.1" transform="rotate(-90 100 100)"/></svg>
+<div class="txt"><span class="big">20%</span><p style="text-indent:0">Столько занимают технические навыки работы в нейросетях — обычно только их и дают на курсах. Остальные <b>80% — визуальный опыт, дизайн-процесс, графдизайн и понимание кино</b>: то, что по-настоящему даёт результат. Поэтому не гоняйся за каждой новой нейросетью: выдели на обновления час в неделю и работай.</p></div></div>
+<p class="fn">Источники: <a href="https://www.tks.ru/technology/2026/07/17/0005/dizajneryi-i-kontent-menedzheryi-vozglavili-rejting-ii-professij-v-rossii/" target="_blank" rel="noopener">hh.ru через ТАСС, июль 2026</a> · <a href="https://www.comnews.ru/content/247308/2026-09-10/2026-w37/1010/iskusstvennyy-intellekt-izmenil-rynok-kreativnogo-biznesa" target="_blank" rel="noopener">опрос eLama, ComNews, сентябрь 2026</a> · <a href="https://emarketer.com/content/almost-majority-of-marketers-use-ai-create-images-videos" target="_blank" rel="noopener">Canva и Morning Consult, EMARKETER, 2025</a> · <a href="https://incrussia.ru/news/tolko-10-rossiyan-negativno-otnosyatsya-k-ii-kontentu-ot-brendov-opros/" target="_blank" rel="noopener">опрос «Анкетолога», Inc., 2025</a> · <a href="https://novayagazeta.eu/articles/2026/08/03/ekonomika-sgorela-i-ei-ne-nuzhny-dizainery" target="_blank" rel="noopener">hh.ru о конкуренции, «Новая газета Европа», август 2026</a> · <a href="https://ppc.world/articles/zakon-o-regulirovanii-ii-obyazatelna-li-markirovka-ii-kontenta-s-1-sentyabrya/" target="_blank" rel="noopener">закон об ИИ, ppc.world</a></p>
+</section>
+
+<section class="step" id="pg-2"><div class="head"><div class="num">02<small>Было и стало</small></div><div class="txt"><h2>Сколько занимали <span class="s">задачи</span></h2><p>Одни и те же задачи — с командой и съёмкой и с нейросетями.</p></div></div>
+<div class="ba"><div class="tw"><table class="bat"><thead><tr><th>Задача</th><th>Раньше</th><th>С нейросетями</th><th>Разница</th></tr></thead><tbody>
+<tr><td><b>Предметная фотосессия</b><small>карточка, hero и lifestyle</small></td><td class="n"><span class="t">12–14 рабочих дней</span>Студия, фотограф, реквизит и ретушёр, вместе с доставкой продукта и ретушью</td><td class="nn"><span class="t a">10–20 часов</span>Один креатор, это 2–3 рабочих дня</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:19%"></i></div><span class="x">≈ в 5 раз быстрее</span></td></tr>
+<tr><td><b>Один кадр продукта</b><small>рендер против генерации</small></td><td class="n"><span class="t">2 часа на кадр</span>3D-визуализатор в Blender, плюс месяцы на освоение программы</td><td class="nn"><span class="t a">5 минут на вариант</span>Генерация, потом отбор и правки</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:4%"></i></div><span class="x">≈ в 24 раза быстрее</span></td></tr>
+<tr><td><b>Рекламный ролик</b><small>30 секунд</small></td><td class="n"><span class="t">6–12 недель</span>Режиссёр, оператор, актёры, площадка и монтажёр: подготовка, 1–3 дня съёмки, постпродакшн</td><td class="nn"><span class="t a">20–40 часов</span>Один креатор, это 3–5 рабочих дней</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:9%"></i></div><span class="x">≈ в 10 раз быстрее</span></td></tr>
+<tr><td><b>Команда на проект</b></td><td class="n"><span class="t">3 человека</span>Фотограф, дизайнер и монтажёр</td><td class="nn"><span class="t a">1 человек</span>AI-креатор с нейросетями</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:33%"></i></div><span class="x">3 человека → 1</span></td></tr>
+</tbody></table></div>
+<p class="fn">Разница посчитана по серединам вилок, рабочий день — 8 часов. Источники по срокам «раньше»: <a href="https://help.squareshot.com/en/articles/1455633-how-does-it-work" target="_blank" rel="noopener">Squareshot</a> · <a href="https://www.moonb.io/blog/tv-commercial-production" target="_blank" rel="noopener">Moonb</a>.</p>
+<p class="tip"><b>Быстрее — не значит без работы.</b> Если считать всю работу целиком, а не отдельные этапы, ускорение обычно в 2–5 раз. Нейросеть сжимает производство, но бриф, идея, отбор, правки и согласования с клиентом остаются. Поэтому цена считается от твоих часов и результата, а не от минут генерации.</p></div>
+</section>
+
+<section class="step" id="pg-3"><div class="head"><div class="num">03<small>Заказы и цены</small></div><div class="txt"><h2>Какие проекты заказывают <span class="s">и сколько они стоят</span></h2><p>Удобнее думать не о нейросетях, а о заказчиках: у каждого свои задачи и форматы. Ниже пять типичных групп заказчиков и вилки цен на 2026 год. Вилки взяты с сайта школы и студии Perasperadastra: внизу один кадр, один круг правок и один формат, вверху набор кадров, адаптации и передача прав. Рынок движется, перед первым заказом сверься с актуальными ценами.</p></div></div>
+<div class="tabs" role="tablist" aria-label="Тип заказчика" style="margin:0 0 18px"><button role="tab" aria-selected="true" aria-controls="gp-0" id="g-0">Маркетплейсы и e-com</button><button role="tab" aria-selected="false" aria-controls="gp-1" id="g-1">Бренды и агентства</button><button role="tab" aria-selected="false" aria-controls="gp-2" id="g-2">Стартапы и продуктовые команды</button><button role="tab" aria-selected="false" aria-controls="gp-3" id="g-3">Сайты и digital</button><button role="tab" aria-selected="false" aria-controls="gp-4" id="g-4">Видео: реклама, медиа и артисты</button></div>
+<div class="gp on" role="tabpanel" id="gp-0" aria-labelledby="g-0"><div class="grp2"><div class="gh"><h3>Маркетплейсы и e-com</h3><p>Селлеры и небольшие бренды. Нужно много кадров быстро и дешевле съёмки.</p></div><div class="grid4 gal sq"><figure><img src="img/c-t-prodshoot.webp" alt="Предметка" loading="lazy"><figcaption><b>Предметка</b></figcaption></figure><figure><img src="img/c-t-aimodel.webp" alt="AI-модель" loading="lazy"><figcaption><b>AI-модель</b></figcaption></figure><figure><img src="img/c-t-outfit.webp" alt="Замена одежды" loading="lazy"><figcaption><b>Замена одежды</b></figcaption></figure><figure><img src="img/c-t-mock-ui.webp" alt="Мокап интерфейса" loading="lazy"><figcaption><b>Мокап интерфейса</b></figcaption></figure></div><div class="tw"><table class="pt"><thead><tr><th>Проект</th><th>Пример задачи</th><th>Что сдаёшь</th><th>Вилка</th></tr></thead><tbody><tr><td><b>Предметная фотосессия</b></td><td class="n">Продукт в нескольких сетах без студии</td><td class="n">Карточка продукта, 3 hero и 3 lifestyle</td><td>5–25 тыс ₽</td></tr><tr><td><b>Фотосессия с AI-моделью</b></td><td class="n">Модель бренда в разных образах и с продуктом</td><td class="n">Карточка модели и серия кадров</td><td>5–20 тыс ₽</td></tr><tr><td><b>Мокапы</b></td><td class="n">Упаковка или продукт в живой сцене</td><td class="n">1–5 сцен</td><td>1–5 тыс ₽</td></tr></tbody></table></div><div class="exs"><span class="micro">Примеры</span><div class="exg"><a class="exl" href="https://dprofile.ru/case/179478/kvas-drinks-collection" target="_blank" rel="noopener"><b>Drinks Collection</b><span>Квас: предметные кадры</span><small>Вероника Саттарова · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/174167/boreal" target="_blank" rel="noopener"><b>Boréal</b><span>Фотостиль бренда</span><small>Мария Тетерина · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/189600/zoluska-ai-vizualnaia-koncepciia-dlia-tancevalnoi-obuvi" target="_blank" rel="noopener"><b>Золушка AI</b><span>Концепция для танцевальной обуви</span><small>Наталья Ромашова · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/184467/ame-brend-kastomiziruemyx-ockov" target="_blank" rel="noopener"><b>âme</b><span>Бренд кастомизируемых очков</span><small>Владимир Козлов · студент Mission to AI</small></a></div></div></div></div>
+<div class="gp" role="tabpanel" id="gp-1" aria-labelledby="g-1"><div class="grp2"><div class="gh"><h3>Бренды и агентства</h3><p>Кампании, запуски и айдентика. Нужен узнаваемый стиль на всех материалах, а не одна картинка.</p></div><div class="grid4 gal sq"><figure><img src="cases/v-knives.jpg" alt="Simple Knives" loading="lazy"><figcaption><b>Key visual</b></figcaption></figure><figure><img src="cases/mako.webp" alt="Мако" loading="lazy"><figcaption><b>AI-маскот</b></figcaption></figure><figure><img src="cases/v-lappi.jpg" alt="Лаппи" loading="lazy"><figcaption><b>Иллюстрации для бренда</b></figcaption></figure><figure><img src="cases/hronos-box.webp" alt="Хронос" loading="lazy"><figcaption><b>Упаковка</b></figcaption></figure></div><div class="tw"><table class="pt"><thead><tr><th>Проект</th><th>Пример задачи</th><th>Что сдаёшь</th><th>Вилка</th></tr></thead><tbody><tr><td><b>Key visual и адаптации</b></td><td class="n">Главный образ кампании для баннеров и наружки</td><td class="n">KV и адаптации под форматы</td><td>5–30 тыс ₽</td></tr><tr><td><b>Иллюстрации для бренда</b></td><td class="n">Графический язык, набор иллюстраций</td><td class="n">Серия из 5–15 кадров в одном стиле</td><td>5–30 тыс ₽</td></tr><tr><td><b>Маскот</b></td><td class="n">Персонаж бренда в разных позах и ситуациях</td><td class="n">Карточка персонажа и серия сцен</td><td>по объёму</td></tr><tr><td><b>Генерация концептов</b></td><td class="n">Варианты визуального направления до запуска</td><td class="n">2–3 направления с мудбордами</td><td>5–15 тыс ₽</td></tr></tbody></table></div><div class="exs"><span class="micro">Примеры</span><div class="exg"><a class="exl" href="https://dprofile.ru/case/178358/simple-knives-kollekciia-nozei" target="_blank" rel="noopener"><b>Simple Knives</b><span>Коллекция ножей, key visual</span><small>Анастасия Грачева · студент Mission to AI</small></a><a class="exl" href="https://www.behance.net/gallery/255746473/MAKO-AI-Mascot" target="_blank" rel="noopener"><b>Мако</b><span>AI-маскот</span><small>Диана Херман · студент Mission to AI</small></a><a class="exl" href="https://perasperadastra.ru/sreda-lappi" target="_blank" rel="noopener"><b>Лаппи</b><span>Персонаж бренда: карточка, сцены, анимация</span><small>студент Mission to AI</small></a><a class="exl" href="https://perasperadastra.ru/sreda-hronos" target="_blank" rel="noopener"><b>Хронос</b><span>Упаковка и презентация продукта</span><small>студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/179778/bewatt-sozdan-dlia-podvigov" target="_blank" rel="noopener"><b>BEWATT</b><span>Бренд «создан для подвигов»</span><small>Софи Бурмистрова · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/178387/kastomizaciia-vinilovyx-plastinok" target="_blank" rel="noopener"><b>Пластинки</b><span>Кастомизация виниловых пластинок</span><small>Елизавета Демидова · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/180003/dobrik-maskot-brenda-dobryi" target="_blank" rel="noopener"><b>Добрик</b><span>Маскот бренда</span><small>Анна Сидельникова · студент Mission to AI</small></a></div></div></div></div>
+<div class="gp" role="tabpanel" id="gp-2" aria-labelledby="g-2"><div class="grp2"><div class="gh"><h3>Стартапы и продуктовые команды</h3><p>Продукта ещё нет или он в разработке. Нужно показать идею инвесторам, покупателям или команде.</p></div><div class="grid4 gal sq"><figure><img src="img/c-t-concept3d.webp" alt="Концепт продукта" loading="lazy"><figcaption><b>Концепт продукта</b></figcaption></figure><figure><img src="cases/eaglips.webp" alt="Eaglips" loading="lazy"><figcaption><b>AI-продукт</b></figcaption></figure><figure><img src="img/case-lumera-1.webp" alt="Lumera" loading="lazy"><figcaption><b>AI-продукт</b></figcaption></figure><figure><img src="cases/mofu.webp" alt="mofu-mofu" loading="lazy"><figcaption><b>Маскот</b></figcaption></figure></div><div class="tw"><table class="pt"><thead><tr><th>Проект</th><th>Пример задачи</th><th>Что сдаёшь</th><th>Вилка</th></tr></thead><tbody><tr><td><b>AI-продукт</b></td><td class="n">Придумать и показать продукт, которого нет</td><td class="n">Метафора, карточка продукта, KV, мокапы</td><td>30–100 тыс ₽</td></tr><tr><td><b>3D-графика и концепты</b></td><td class="n">Форма, материалы, ракурсы</td><td class="n">Серия ракурсов и деталей</td><td>5–30 тыс ₽</td></tr></tbody></table></div><div class="exs"><span class="micro">Примеры</span><div class="exg"><a class="exl" href="https://dprofile.ru/case/173955/eaglips" target="_blank" rel="noopener"><b>Eaglips</b><span>Прищепка через метафору орла</span><small>Милана Гавриченко · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/174067/lumera" target="_blank" rel="noopener"><b>Lumera</b><span>Выдуманный гаджет с легендой</span><small>Лейла Исхакова · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/179802/mofu-mofu-pusistye-obvesy" target="_blank" rel="noopener"><b>mofu-mofu</b><span>Пушистые обвесы</span><small>Арина Галимова · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/172259/form-101" target="_blank" rel="noopener"><b>FORM — 1.01</b><span>Скульптурный объект, серия ракурсов</span><small>Яна Саввина · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/190871/pill-pet-seriia-tabletkorezok" target="_blank" rel="noopener"><b>PILL-PET</b><span>Серия таблеткорезок</span><small>Владимир Шаповал · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/178174/dofaminovye-cemodany-pazly" target="_blank" rel="noopener"><b>Чемоданы-пазлы</b><span>Дофаминовые чемоданы</span><small>Арина Галимова · студент Mission to AI</small></a></div></div></div></div>
+<div class="gp" role="tabpanel" id="gp-3" aria-labelledby="g-3"><div class="grp2"><div class="gh"><h3>Сайты и digital</h3><p>Лендинги, приложения, сервисы. Нужен визуал в одном стиле на всех экранах.</p></div><div class="grid4 gal sq"><figure><img src="img/c-t-interior.webp" alt="Интерьер" loading="lazy"><figcaption><b>Интерьер</b></figcaption></figure><figure><img src="img/c-t-mock-ui.webp" alt="Мокап интерфейса" loading="lazy"><figcaption><b>Мокап интерфейса</b></figcaption></figure><figure><img src="img/c-t-services.webp" alt="Сервисы" loading="lazy"><figcaption><b>Сервисы</b></figcaption></figure><figure><img src="img/c-t-app.webp" alt="Приложение" loading="lazy"><figcaption><b>Приложение</b></figcaption></figure></div><div class="tw"><table class="pt"><thead><tr><th>Проект</th><th>Пример задачи</th><th>Что сдаёшь</th><th>Вилка</th></tr></thead><tbody><tr><td><b>Фотоконтент для сайта</b></td><td class="n">Фото для лендинга без съёмки</td><td class="n">Серия кадров в одном стиле</td><td>5–25 тыс ₽</td></tr><tr><td><b>Мокапы интерфейсов</b></td><td class="n">Экраны в живой сцене для презентации</td><td class="n">1–5 сцен</td><td>1–5 тыс ₽</td></tr><tr><td><b>Визуализация интерьера</b></td><td class="n">Пространство до ремонта или стройки</td><td class="n">Серия ракурсов</td><td>по объёму</td></tr></tbody></table></div></div></div>
+<div class="gp" role="tabpanel" id="gp-4" aria-labelledby="g-4"><div class="grp2"><div class="gh"><h3>Видео: реклама, медиа и артисты</h3><p>Ролики для соцсетей, рекламы и музыкантов.</p></div><div class="tw"><table class="pt"><thead><tr><th>Проект</th><th>Пример задачи</th><th>Что сдаёшь</th><th>Вилка</th></tr></thead><tbody><tr><td><b>Рекламный ролик</b></td><td class="n">Продукт через рекламный приём, пэкшот в финале</td><td class="n">Ролик и нарезки под площадки</td><td>30–100 тыс ₽</td></tr><tr><td><b>Тематический ролик</b></td><td class="n">Исторический, художественный или мемный ролик на 20–60 секунд</td><td class="n">Ролик со звуком и титрами</td><td>5–50 тыс ₽</td></tr><tr><td><b>Клип и визуалайзер</b></td><td class="n">Визуальный ряд под трек артиста</td><td class="n">Клип или визуалайзер</td><td>по объёму</td></tr></tbody></table></div><div class="exs"><span class="micro">Примеры</span><div class="exg"><a class="exl" href="https://dprofile.ru/case/188022/koncept-tizera-101-dalmatinec" target="_blank" rel="noopener"><b>101 Долматинец</b><span>Концепт тизера</span><small>Елизавета Демидова · студент Mission to AI</small></a><a class="exl" href="https://dprofile.ru/case/182659/opening-garri-potter-i-kubok-ognia" target="_blank" rel="noopener"><b>Гарри Поттер</b><span>Опенинг «Кубок огня»</span><small>Арина Галимова · студент Mission to AI</small></a><a class="exl" href="https://t.me/perasperagram/1829" target="_blank" rel="noopener"><b>«Маленький»</b><span>Ролик</span><small>Тома Лепаловская · студент Mission to AI</small></a><a class="exl" href="https://t.me/perasperagram/2173" target="_blank" rel="noopener"><b>Ведьмак</b><span>Ролик</span><small>кураторы школы</small></a><a class="exl" href="https://perasperadastra.ru/klip" target="_blank" rel="noopener"><b>Хаски</b><span>AI-клип: один персонаж в разных сценах</span><small>студия Perasperadastra</small></a><a class="exl" href="https://perasperadastranew.github.io/guides/rolik-po-foto/" target="_blank" rel="noopener"><b>Годовщина родителей</b><span>Фильм по семейным фото: реальные герои и локации</span></a></div></div></div></div>
+<p class="tip"><b>Правило портфолио.</b> Показывай каждый тип проекта на нескольких работах для одного бренда. Одна картинка доказывает удачу, несколько работ в одном стиле доказывают метод.</p>
+<p class="micro" style="margin:36px 0 12px">Сколько это стоит</p>
+<div class="chart" id="pg-rng"><p class="micro">Вилки цен на услуги, тысяч рублей</p>
+<div class="rng"><span class="l">Креативные ролики</span><span class="bar"><i style="--a:10%;--w:90%"></i></span><span class="v">5–50 тыс</span></div>
+<div class="rng"><span class="l">3D-графика</span><span class="bar"><i style="--a:10%;--w:50%"></i></span><span class="v">5–30 тыс</span></div>
+<div class="rng"><span class="l">Иллюстрации</span><span class="bar"><i style="--a:10%;--w:50%"></i></span><span class="v">5–30 тыс</span></div>
+<div class="rng"><span class="l">Фотосессия с продуктом</span><span class="bar"><i style="--a:10%;--w:40%"></i></span><span class="v">5–25 тыс</span></div>
+<div class="rng"><span class="l">Фотоконтент для сайта</span><span class="bar"><i style="--a:10%;--w:40%"></i></span><span class="v">5–25 тыс</span></div>
+<div class="rng"><span class="l">Фотосессия с AI-моделями</span><span class="bar"><i style="--a:10%;--w:30%"></i></span><span class="v">5–20 тыс</span></div>
+<div class="rng"><span class="l">Генерация концептов</span><span class="bar"><i style="--a:10%;--w:20%"></i></span><span class="v">5–15 тыс</span></div>
+<div class="rng"><span class="l">Мокапы</span><span class="bar"><i style="--a:2%;--w:8%"></i></span><span class="v">1–5 тыс</span></div>
+<div class="axis"><span></span><div><span>0</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span></div><span></span></div>
+</div>
+<div class="txt"><p>Проекты в портфолио стоят дороже отдельных услуг. На графике видно, сколько часов уходит на каждый и сколько он стоит на рынке. Генерация — меньшая часть часов, остальное — задача, стиль, отбор, правки и упаковка.</p></div>
+<figure class="plot"><div class="pw"><svg viewBox="0 0 880 380" role="img" aria-label="График часы и цена: AI-фотосессия 10–20 часов и 5–50 тысяч, AI-продукт 10–30 часов и 30–100 тысяч, AI-видео 20–40 часов и 30–100 тысяч">
+<g class="gl"><line x1="60" y1="340" x2="860" y2="340"/><line x1="60" y1="267.3" x2="860" y2="267.3" stroke-dasharray="2 4"/><line x1="60" y1="194.5" x2="860" y2="194.5" stroke-dasharray="2 4"/><line x1="60" y1="121.8" x2="860" y2="121.8" stroke-dasharray="2 4"/><line x1="60" y1="49.1" x2="860" y2="49.1" stroke-dasharray="2 4"/><line x1="60" y1="20" x2="60" y2="340"/></g>
+<g text-anchor="end"><text x="50" y="344">0</text><text x="50" y="271">25</text><text x="50" y="198">50</text><text x="50" y="126">75</text><text x="50" y="53">100 тыс</text></g>
+<g text-anchor="middle"><text x="60" y="362">0</text><text x="237.8" y="362">10</text><text x="415.6" y="362">20</text><text x="593.3" y="362">30</text><text x="771.1" y="362">40 ч</text></g>
+<rect class="rc r1" x="237.8" y="194.5" width="177.8" height="131"/>
+<rect class="rc r2" x="237.8" y="49.1" width="355.5" height="203.6"/>
+<rect class="rc r3" x="415.6" y="49.1" width="355.5" height="203.6"/>
+<text class="lb" x="248" y="216">AI-фотосессия</text><text x="248" y="234">10–20 ч · 5–50 тыс</text>
+<text class="lb" x="248" y="72">AI-продукт</text><text x="248" y="90">10–30 ч · 30–100 тыс</text>
+<text class="lb" x="606" y="72">AI-видео</text><text x="606" y="90">20–40 ч · 30–100 тыс</text>
+</svg></div><figcaption><span>По горизонтали часы, по вертикали цена</span></figcaption></figure>
+<div class="txt"><p>Цену считают от часов, а не от числа генераций:</p>
+<div class="formula"><span>часы + 20% запаса</span><em>×</em><span>ставка</span><em>+</em><span>расходы</span><em>+</em><span>надбавки</span></div>
+<p>Например, 18,5 часа × 1 100 ₽ ≈ 20 350 ₽ плюс около 1 650 ₽ на подписки — получается 22 000 ₽ за средний пакет фотосессии. Ставку на старте можно прикинуть по графику: нижняя граница видео — 30 000 ₽ за 20 часов, то есть 1 500 ₽ в час.</p></div>
+<p class="tip"><b>Правки — отдельная строка.</b> В пакет входят два круга правок, дальше — по часовой ставке. Если этого нет в договоре, проект за 10 тысяч превращается в месяц работы.</p>
+</section>
+
+<section class="step" id="pg-5"><div class="head"><div class="num">04<small>Клиенты</small></div><div class="txt"><h2>Чего хотят клиенты и <span class="s">где работать</span></h2><p>Четыре запроса, которые встречаются почти в каждом брифе, и что из них следует для тебя.</p></div></div>
+<div class="tw"><table class="wants"><thead><tr><th>Клиент хочет</th><th>Почему</th><th>Что делать тебе</th></tr></thead><tbody>
+<tr><td><b>Быстрее и дешевле съёмки</b></td><td class="n">Бюджеты урезаны, и нанять студию, модель и фотографа могут не все</td><td>Продавай пакеты с понятным сроком и результатом: «7 кадров за 4 дня», а не «генерация картинок»</td></tr>
+<tr><td><b>Чтобы не выглядело как нейросеть</b></td><td class="n">80% россиян замечали ошибки в сгенерированных материалах, 20% жалуются брендам на некачественный ИИ-контент</td><td>Отбор и финализация — твоя главная ценность. Сдавай кадры, про которые непонятно, что это генерация</td></tr>
+<tr><td><b>Результат для бизнеса</b></td><td class="n">Клиент покупает продажи, узнаваемость или карточку, которая конвертирует, а не картинки</td><td>Начинай с брифа: задача, площадка, формат. В кейсе показывай, какую задачу решил</td></tr>
+<tr><td><b>Спокойствие по правам</b></td><td class="n">67% россиян считают, что ИИ-контент нужно маркировать. Закон об ИИ обязывает платформы дать возможность маркировки с 1 марта 2027</td><td>Обсуждай права и маркировку до старта и фиксируй в договоре. Маркируй, если кадр может ввести покупателя в заблуждение</td></tr>
+</tbody></table></div>
+<div class="txt"><p>Где искать такие задачи. Выбери одно-два места — от этого зависит, что класть в портфолио.</p></div>
+<div class="tw"><table><thead><tr><th>Где</th><th>Что делаешь</th><th>Что показать в портфолио</th></tr></thead><tbody>
+<tr><td>Студия, продакшн</td><td class="n">Кадры и шоты по раскадровке арт-директора</td><td class="n">Кадры в заданном стиле, ролики</td></tr>
+<tr><td>Агентство<small>реклама, SMM</small></td><td class="n">KV, адаптации, креативы под кампании</td><td class="n">KV с адаптациями, рекламный ролик</td></tr>
+<tr><td>Фриланс</td><td class="n">Проекты целиком: от брифа до сдачи</td><td class="n">Кейсы с задачей, процессом и результатом</td></tr>
+<tr><td>In-house<small>бренд, селлер, медиа</small></td><td class="n">Контент одного бренда потоком</td><td class="n">Предметка, карточки, наборы кадров для соцсетей</td></tr>
+<tr><td>Свой контент</td><td class="n">Авторские ролики, соцсети, заказы артистов</td><td class="n">Тематические ролики, узнаваемый стиль</td></tr>
+</tbody></table></div>
+</section>
+
+<div class="part" id="pg-p2"><h2>Часть II. <span class="s">Пошагово</span></h2><p>Семь шагов от выбора направления до первого оплаченного заказа.</p></div>
+
+<section class="step" id="pg-6"><div class="head"><div class="num">05<small>Шаг 1</small></div><div class="txt"><h2>Определи, откуда <span class="s">заходишь</span></h2><p>Почти у всех уже есть профессия, и в ней ты сильнее большинства. Выбери свою: что остаётся за тобой, что отдать нейросети и с какого проекта начать.</p></div></div>
+<div class="dirs">
+<div class="tabs" role="tablist" aria-label="Направление">
+<button role="tab" aria-selected="true" aria-controls="dir-gd" id="t-gd">Графдизайн</button><button role="tab" aria-selected="false" aria-controls="dir-mo" id="t-mo">Моушн</button><button role="tab" aria-selected="false" aria-controls="dir-ed" id="t-ed">Монтаж и видео</button><button role="tab" aria-selected="false" aria-controls="dir-web" id="t-web">Веб и UX/UI</button><button role="tab" aria-selected="false" aria-controls="dir-pr" id="t-pr">Продукт и 3D</button><button role="tab" aria-selected="false" aria-controls="dir-ph" id="t-ph">Фото</button><button role="tab" aria-selected="false" aria-controls="dir-smm" id="t-smm">Маркетинг и SMM</button><button role="tab" aria-selected="false" aria-controls="dir-0" id="t-0">С нуля</button>
+</div>
+<div class="dir on" role="tabpanel" id="dir-gd" aria-labelledby="t-gd"><h3>Графический дизайн → <span class="s">KV и айдентика с AI</span></h3>
+<div class="k"><span class="micro">Твоя сила</span><p>Композиция, типографика, сетка, понимание бренда. Именно этого не хватает тем, кто пришёл в нейросети без дизайна.</p></div>
+<div class="k"><span class="micro">Отдай нейросети</span><ul><li>Поиск образа и формирование стиля</li><li>Иллюстрации, фоны, текстуры</li><li>Мокапы и адаптации — Nano Banana</li></ul></div>
+<div class="k"><span class="micro">Оставь себе</span><ul><li>Идею и метафору</li><li>Логотип, текст и вёрстку в Figma</li><li>Отбор и финальную подачу</li></ul></div>
+<div class="k"><span class="micro">Первый проект</span><p>Key visual и три адаптации для выдуманного бренда: KV, баннер, пост и мокапы.</p></div>
+<div class="wide"><span class="micro">Растёшь в</span><b>иллюстрации · 5–30 тыс ₽</b><span class="micro">дальше — айдентика кампаний</span></div></div>
+<div class="dir" role="tabpanel" id="dir-mo" aria-labelledby="t-mo"><h3>Моушн-дизайн → <span class="s">ролики из сгенерированных шотов</span></h3>
+<div class="k"><span class="micro">Твоя сила</span><p>Тайминг, ритм, анимация текста и сборка в After Effects. Сгенерированный шот без этого остаётся просто шотом.</p></div>
+<div class="k"><span class="micro">Отдай нейросети</span><ul><li>Ассеты, фоны и персонажей</li><li>Оживление кадров: Kling — физика, Seedance — атмосфера</li><li>Текстуры и переходы-вставки</li></ul></div>
+<div class="k"><span class="micro">Оставь себе</span><ul><li>Раскадровку и тайминг</li><li>Анимацию текста и графики</li><li>Композитинг и финальную сборку</li></ul></div>
+<div class="k"><span class="micro">Первый проект</span><p>Анимированный key visual или рекламный ролик на 10–20 секунд с пэкшотом в финале.</p></div>
+<div class="wide"><span class="micro">Растёшь в</span><b>креативные ролики · 5–50 тыс ₽</b><span class="micro">дальше — AI-видео и клипы</span></div></div>
+<div class="dir" role="tabpanel" id="dir-ed" aria-labelledby="t-ed"><h3>Монтаж и видео → <span class="s">AI-видео целиком</span></h3>
+<div class="k"><span class="micro">Твоя сила</span><p>История, ритм, склейки и звук. Из десятка вариаций ты знаешь, какой кусок взять и куда поставить.</p></div>
+<div class="k"><span class="micro">Отдай нейросети</span><ul><li>Шоты по раскадровке — Seedance, Kling</li><li>Музыку — Suno</li><li>Сценарий и промпты — Claude или ChatGPT</li></ul></div>
+<div class="k"><span class="micro">Оставь себе</span><ul><li>Идею и сценарий</li><li>Отбор дублей и монтаж</li><li>Звук, титры и цвет</li></ul></div>
+<div class="k"><span class="micro">Первый проект</span><p>Тематический ролик на 20–60 секунд: исторический, художественный или мемный.</p></div>
+<div class="wide"><span class="micro">Растёшь в</span><b>AI-видео · 30–100 тыс ₽ за проект</b><span class="micro">дальше — реклама и клипы для артистов</span></div></div>
+<div class="dir" role="tabpanel" id="dir-web" aria-labelledby="t-web"><h3>Веб и UX/UI → <span class="s">визуал для своих сайтов</span></h3>
+<div class="k"><span class="micro">Твоя сила</span><p>Структура, сетки, понимание продукта и пользователя. Тебе не нужно объяснять, где и зачем на странице картинка.</p></div>
+<div class="k"><span class="micro">Отдай нейросети</span><ul><li>Фото и иллюстрации для экранов</li><li>Мокапы интерфейсов — Nano Banana</li><li>Черновики текстов и структуры — Claude</li></ul></div>
+<div class="k"><span class="micro">Оставь себе</span><ul><li>UX, структуру и сценарии</li><li>Макеты и дизайн-систему в Figma</li><li>Единый стиль на всех экранах</li></ul></div>
+<div class="k"><span class="micro">Первый проект</span><p>Фотоконтент или серия иллюстраций для лендинга в одном стиле.</p></div>
+<div class="wide"><span class="micro">Растёшь в</span><b>фотоконтент для сайта · 5–25 тыс ₽</b><span class="micro">дальше — лендинг с визуалом под ключ</span></div></div>
+<div class="dir" role="tabpanel" id="dir-pr" aria-labelledby="t-pr"><h3>Продукт и 3D → <span class="s">концепты и предметка</span></h3>
+<div class="k"><span class="micro">Твоя сила</span><p>Форма, материалы и свет. Из 3D-сцены получается точная основа, которую нейросеть потом доводит до фото.</p></div>
+<div class="k"><span class="micro">Отдай нейросети</span><ul><li>Варианты формы и материалов</li><li>Предметку без студии и lifestyle-сцены</li><li>Окружение и атмосферу</li></ul></div>
+<div class="k"><span class="micro">Оставь себе</span><ul><li>Идею продукта и метафору</li><li>Форму, пропорции, модель в Blender</li><li>Карточку продукта, по которой держатся все кадры</li></ul></div>
+<div class="k"><span class="micro">Первый проект</span><p>AI-продукт: придумать и показать продукт, которого нет, — как Eaglips или Tootem.</p></div>
+<div class="wide"><span class="micro">Растёшь в</span><b>AI-продукт · 30–100 тыс ₽ за проект</b><span class="micro">дальше — концепты и 3D-графика</span></div></div>
+<div class="dir" role="tabpanel" id="dir-ph" aria-labelledby="t-ph"><h3>Фотограф → <span class="s">съёмки без студии</span></h3>
+<div class="k"><span class="micro">Твоя сила</span><p>Свет, кадр, поза и работа с моделью. Ты сразу видишь, где генерация врёт со светом.</p></div>
+<div class="k"><span class="micro">Отдай нейросети</span><ul><li>Смену фона, сета и сезона</li><li>AI-моделей и смену одежды</li><li>Правки по фото — Nano Banana</li></ul></div>
+<div class="k"><span class="micro">Оставь себе</span><ul><li>Постановку и свет</li><li>Отбор и цвет</li><li>Единый фотостиль всех кадров</li></ul></div>
+<div class="k"><span class="micro">Первый проект</span><p>Фотостиль бренда: карточка продукта, три hero и три lifestyle в одном мире.</p></div>
+<div class="wide"><span class="micro">Растёшь в</span><b>фотосессии с продуктом и моделями · 5–25 тыс ₽</b><span class="micro">дальше — гибридные съёмки</span></div></div>
+<div class="dir" role="tabpanel" id="dir-smm" aria-labelledby="t-smm"><h3>Маркетинг и SMM → <span class="s">контент в едином стиле</span></h3>
+<div class="k"><span class="micro">Твоя сила</span><p>Знаешь аудиторию, площадки и форматы, умеешь думать контент-планом.</p></div>
+<div class="k"><span class="micro">Отдай нейросети</span><ul><li>Визуал для постов и сторис</li><li>Креативы для рекламы в разных форматах</li><li>Короткие ролики и рилсы</li></ul></div>
+<div class="k"><span class="micro">Оставь себе</span><ul><li>Стратегию и рубрики</li><li>Тексты и тон бренда</li><li>Аналитику: что сработало</li></ul></div>
+<div class="k"><span class="micro">Первый проект</span><p>Серия из 6–9 постов и двух роликов для одного бренда в едином стиле.</p></div>
+<div class="wide"><span class="micro">Растёшь в</span><b>in-house AI-креатор бренда</b><span class="micro">или креативы для агентств</span></div></div>
+<div class="dir" role="tabpanel" id="dir-0" aria-labelledby="t-0"><h3>С нуля → <span class="s">один проект вместо двадцати стилей</span></h3>
+<div class="k"><span class="micro">Твоя сила</span><p>Нет привычек, которые надо ломать. Главное — сразу учиться на задачах, а не на случайных картинках.</p></div>
+<div class="k"><span class="micro">С чего начать</span><ul><li>Насмотренность: собирай референсы каждый день</li><li>Midjourney и бесплатный Claude</li><li>Основы композиции и света</li></ul></div>
+<div class="k"><span class="micro">Чего не делать</span><ul><li>Не покупать четыре подписки сразу</li><li>Не собирать портфолио из 40 картинок в 20 стилях</li><li>Не ставить цену за генерацию</li></ul></div>
+<div class="k"><span class="micro">Первый проект</span><p>Фотосессия продукта: самый быстрый вход, 10–20 часов на проект.</p></div>
+<div class="wide"><span class="micro">Дальше</span><b>направление станет ясно после 2–3 проектов</b></div></div>
+</div>
+<p class="tip"><b>Как выбрать.</b> Иди туда, где ты уже сильнее большинства. Нейросеть одинаково доступна всем, а твоя прошлая профессия — нет.</p>
+</section>
+
+<section class="step" id="pg-7"><div class="head"><div class="num">06<small>Шаг 2</small></div><div class="txt"><h2>Опиши <span class="s">свои услуги</span></h2><p>Выбери один-два типа проектов из раздела 03 и опиши каждую услугу так, чтобы клиент сразу понял, что получит. Генерации — твой внутренний расход, клиенту важен результат и срок.</p></div></div>
+<div class="six"><div><b>Для кого</b><span>какой бизнес и в какой ситуации</span></div><div><b>Задача</b><span>что бренд хочет получить</span></div><div><b>Результат</b><span>число кадров или секунд, форматы</span></div><div><b>Срок</b><span>рабочих дней от брифа до сдачи</span></div><div><b>Цена</b><span>вилка и от чего зависит</span></div><div><b>Не входит</b><span>что делается отдельно</span></div></div>
+<div class="tpl"><div class="bar"><span class="micro">Пример</span></div><p>Крафтовый производитель лимонада перед запуском на маркетплейсе · единый фотостиль для карточки и первых постов · карточка продукта, 3 hero и 3 lifestyle, форматы 1:1 и 4:5 · 4 рабочих дня · 15–25 тыс ₽ в зависимости от числа сетов · не входят тексты, инфографика и печать</p></div>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон</span><button class="copy" type="button" data-copy="t-svc">Скопировать</button></div><pre id="t-svc">Для кого: …
+Задача: …
+Результат: … кадров / секунд, форматы …
+Срок: … рабочих дней
+Цена: … – … тыс ₽, зависит от …
+Не входит: …</pre></div>
+<p class="tip"><b>Зачем поле «Не входит».</b> Без него клиент уверен, что в цену входит всё: тексты, логотип, печать и ещё пять кругов правок.</p>
+</section>
+
+<section class="step" id="pg-8"><div class="head"><div class="num">07<small>Шаг 3</small></div><div class="txt"><h2>Собери <span class="s">минимальный стек</span></h2><p>Подписки подключай по мере задач. Модель можно открыть на её сайте или через агрегатор — один кабинет с общим балансом, где многие принимают российские карты.</p></div></div>
+<div class="facts"><div><b>Любой</b><span class="micro">Компьютер</span><span>Обычный ноутбук без мощной видеокарты: нейросети работают в браузере</span></div><div><b>2–5 тыс ₽</b><span class="micro">Подписки в месяц</span><span>Midjourney, Nano Banana и Kling. Подробно — в части «Подписки»</span></div><div><b>6–8 часов</b><span class="micro">В неделю</span><span>Хватает, чтобы за полтора-два месяца собрать первые кейсы</span></div></div>
+<p class="micro" style="margin:28px 0 10px">Три бюджета в месяц</p>
+<div class="facts">
+<div><b>≈ 1 100 ₽</b><span class="micro">Первые недели</span><span>Midjourney Basic и бесплатный Claude или ChatGPT. Хватает, чтобы искать стиль и делать первые проекты.</span></div>
+<div><b>≈ 5 100 ₽</b><span class="micro">Рабочий стек</span><span>Midjourney Basic и Syntx VIP. Текст, музыка и монтаж бесплатно. Хватает на учебные и первые коммерческие проекты.</span></div>
+<div><b>≈ 10–11,5 тыс ₽</b><span class="micro">С заказами</span><span>Midjourney Standard, Syntx VIP или Higgsfield Plus, Claude Pro и Suno Pro.</span></div>
+</div>
+<p class="tip"><b>Подписки — по задачам.</b> Платишь за инструмент, когда для него появилась задача. И не покупай «общие» аккаунты у третьих лиц: их блокируют вместе с твоими генерациями.</p>
+</section>
+
+<section class="step" id="pg-9"><div class="head"><div class="num">08<small>Шаг 4</small></div><div class="txt"><h2>Сделай первый <span class="s">проект</span></h2><p>Один проект для одного бренда, можно выдуманного: фотосессия, AI-продукт или ролик. Порядок работы одинаковый для всех трёх.</p></div></div>
+<ol class="check">
+<li><b>Бриф.</b> Задача, площадка, формат, что должно быть в кадре. Пиши его даже для учебного проекта.</li>
+<li><b>Идея.</b> Одна фраза, на которой держится весь проект: «прищепка, которая держит, как орёл когтями».</li>
+<li><b>Стиль.</b> Мудборд и стиль-якорь в Midjourney: свет, палитра, материалы.</li>
+<li><b>Опора.</b> Карточка продукта или персонажа в Nano Banana — по ней каждый кадр остаётся тем же продуктом.</li>
+<li><b>Генерация.</b> 4–8 вариантов на кадр — норма, а не провал.</li>
+<li><b>Отбор и финализация.</b> Правки деталей в Nano Banana, текст и логотип — вёрсткой в Figma.</li>
+</ol>
+<p class="tip"><b>Дешёвые черновики → дорогие финалы.</b> Сначала отрабатывай кадр в картинке и только потом анимируй. Видео по неутверждённому кадру — самый дорогой способ узнать, что кадр плохой.</p>
+</section>
+
+<section class="step" id="pg-10"><div class="head"><div class="num">09<small>Шаг 5</small></div><div class="txt"><h2>Оформи <span class="s">кейс</span></h2><p>Кейс — это история решения, а не альбом картинок. Заказчик покупает метод, который ты повторишь на его продукте.</p></div></div>
+<div class="tw"><table style="min-width:640px"><thead><tr><th>Экран</th><th>Что внутри</th><th>Правило</th></tr></thead><tbody>
+<tr><td>Обложка</td><td class="n">Название, подпись «AI concept» или «AI photoshoot», самый сильный кадр</td><td class="n">Обложка решает, откроют ли кейс</td></tr>
+<tr><td>Идея</td><td class="n">Продукт, для кого, задача — 2–4 предложения</td><td class="n">Идея одной фразой</td></tr>
+<tr><td>AI-разметка</td><td class="n">Что сделала нейросеть, что сделал ты</td><td class="n">До процесса, а не сноской в конце</td></tr>
+<tr><td>Процесс</td><td class="n">Мудборд, карточка-опора, пара «до / после»</td><td class="n">Решения, а не свалка генераций</td></tr>
+<tr><td>Результат</td><td class="n">Финальные кадры, адаптации, мокапы или ролик</td><td class="n">Одна мысль — один экран, сначала лучшее</td></tr>
+<tr><td>Контакты</td><td class="n">Имя, Telegram, почта, «что могу сделать для вас»</td><td class="n">Финальный экран — кнопка, а не «спасибо»</td></tr>
+</tbody></table></div>
+<p class="tip"><b>Честно о нейросети.</b> Плашка «AI-generated» в кейсе и договорённость с клиентом защищают и тебя, и его.</p>
+</section>
+
+<section class="step" id="pg-11"><div class="head"><div class="num">10<small>Шаг 6</small></div><div class="txt"><h2>Покажи <span class="s">работы</span></h2><p>Клиент сам не придёт: его нужно искать, а ещё лучше выкладывать работы там, где их продвигают алгоритмы. Отличным вариантом будет сделать свой формат, который повторяется и имеет узнаваемый стиль. Он даст охваты и поможет сделать тебя как специалиста более узнаваемым и видным.</p></div></div>
+<ol class="check">
+<li><b>Выбери формат</b> — повторяемую механику: реклама несуществующего, ожившая картина, мем-вселенная, сниппет для артиста.</li>
+<li><b>Зафиксируй слоты формата</b>: стиль, длину, структуру, обложку. Меняется только тема.</li>
+<li><b>Держи ритм</b>: одна работа и один пост о процессе в неделю лучше рывка и тишины месяц.</li>
+<li><b>Пиши брендам и артистам</b>, прикладывая готовую работу для них, а не «беру заказы».</li>
+<li><b>Смотри на динамику за месяц</b>: сохранения, пересылки, входящие сообщения. Просмотры одного ролика — шум.</li>
+</ol>
+</section>
+
+<section class="step" id="pg-12"><div class="head"><div class="num">11<small>Шаг 7</small></div><div class="txt"><h2>Возьми первый <span class="s">заказ</span></h2><p>Цена — это границы проекта, записанные цифрой: что сдаёшь, сколько правок и где будет размещено. Поэтому цену называют после брифа.</p></div></div>
+<ol class="check">
+<li><b>Бриф.</b> Задача, сроки, где будет размещено, что уже есть у клиента.</li>
+<li><b>Расчёт.</b> Часы с запасом 20% × ставка + расходы на подписки + надбавки. Формула и пример — в разделе 03.</li>
+<li><b>Коммерческое предложение.</b> Одна страница, три пакета: «Старт», «Стандарт», «Кампания».</li>
+<li><b>Договор.</b> Два круга правок, дальше по часовой ставке. Предоплата, права и маркировка.</li>
+</ol>
+<p class="tcap"><b>Три пакета услуг.</b> Что входит в «Старт», «Стандарт» и «Кампанию» для каждой услуги.</p>
+<div class="tw"><table style="min-width:720px"><thead><tr><th>Услуга</th><th>Старт</th><th>Стандарт</th><th>Кампания</th></tr></thead><tbody>
+<tr><td>Фотосессия с продуктом<small>5–25 тыс ₽</small></td><td class="n">3 кадра в одном сете, 1 круг правок</td><td class="n">Карточка, 3 hero и 3 lifestyle, 2 круга</td><td class="n">Стандарт + адаптации 1:1, 4:5, 9:16 и сезонный сет</td></tr>
+<tr><td>Креативный ролик<small>5–50 тыс ₽</small></td><td class="n">Тизер 8–10 секунд, 3–4 шота</td><td class="n">Ролик 20–30 секунд: концепция, раскадровка, звук, титры</td><td class="n">Ролик 30–60 секунд, нарезки и обложки</td></tr>
+<tr><td>Генерация концептов<small>5–15 тыс ₽</small></td><td class="n">1 направление, 3 кадра</td><td class="n">2 направления по 4 кадра и мудборды</td><td class="n">3 направления и доработка выбранного до KV</td></tr>
+</tbody></table></div>
+<p class="tip"><b>На «дорого» отвечает «Старт», а не скидка.</b> Урезай объём, а не цену часа. Пакеты отличаются форматами и кругами правок, а не числом генераций — их клиент не видит. Юридические формулировки договора проверяй с юристом.</p>
+</section>
+
+<div class="part" id="pg-p3"><h2>Часть III. <span class="s">Нейронки</span></h2><p>Какая нейросеть за что отвечает, чем они отличаются и как их связать.</p></div>
+
+<section class="step" id="pg-14"><div class="head"><div class="num">12<small>Нейросети</small></div><div class="txt"><h2>Какая нейросеть <span class="s">за что отвечает</span></h2><p>Генераторов много, а задач всего пять: придумать, сохранить и поправить, написать буквами, оживить, сформулировать. Спорить, какая нейросеть лучшая, — всё равно что спорить, что лучше: кисть или молоток. Ниже: чем сильна каждая, для чего её не брать и сколько она стоит. Цены официальные, в рублях — по курсу около 83 ₽ за доллар с комиссией посредника там, где российские карты не принимают.</p></div></div>
+<div class="tw"><table style="min-width:900px"><thead><tr><th>Нейросеть</th><th>Задача</th><th>Сильная сторона</th><th>Не бери для</th><th>Сколько стоит</th><th>Карта РФ</th></tr></thead><tbody>
+<tr><td><b>Midjourney</b></td><td class="n">Придумать</td><td>Стиль, эстетика, key visual, мудборд</td><td class="n">Точных правок, текста, сохранения продукта</td><td>Basic $10<small>≈ 1 100 ₽ через посредника</small></td><td><span class="no">нет</span></td></tr>
+<tr><td><b>Nano Banana</b><small>Pro и 2, от Google</small></td><td class="n">Сохранить и поправить</td><td>Правка по фото, сборка кадра из референсов, одно лицо и продукт во всех кадрах, мокапы</td><td class="n">Поиска стиля с нуля</td><td>В агрегаторе<small>Syntx Basic 890 ₽ ≈ 130 картинок</small></td><td><span class="warn">через агрегатор</span></td></tr>
+<tr><td><b>Картинки в ChatGPT</b></td><td class="n">Буквы и схемы</td><td>Текст на картинке, схемы, черновики инфографики</td><td class="n">Финальной эстетики бренда</td><td>В ChatGPT Plus $20<small>≈ 1 900–2 400 ₽</small></td><td><span class="no">нет</span></td></tr>
+<tr><td><b>Seedance</b></td><td class="n">Оживить: атмосфера</td><td>Несколько шотов подряд, диалог и звук, спокойное движение</td><td class="n">Резкой физики удара и контакта</td><td>В агрегаторе<small>Syntx VIP 3 990 ₽ ≈ 19 клипов</small></td><td><span class="warn">через агрегатор</span></td></tr>
+<tr><td><b>Kling</b></td><td class="n">Оживить: физика</td><td>Удар, контакт, спорт, первый и последний кадр</td><td class="n">Длинных атмосферных сцен с диалогом</td><td>Standard $10<small>≈ 1 100–1 200 ₽ или в агрегаторе</small></td><td><span class="warn">через посредника</span></td></tr>
+<tr><td><b>Suno</b></td><td class="n">Музыка</td><td>Трек под ролик по описанию жанра и настроения</td><td class="n">Точного попадания в склейки без правок</td><td>Бесплатно<small>Pro $10 ≈ 1 100 ₽ — права на трек для коммерции</small></td><td><span class="warn">через посредника</span></td></tr>
+<tr><td><b>Claude, ChatGPT</b></td><td class="n">Сформулировать</td><td>Сценарий, стиль, раскадровка, промпты для других нейросетей</td><td class="n">Итоговой картинки</td><td>Бесплатно<small>Pro или Plus $20 ≈ 1 900–2 400 ₽</small></td><td><span class="warn">через посредника</span></td></tr>
+<tr><td><b>CapCut, Figma</b></td><td class="n">Собрать</td><td>Монтаж ролика, вёрстка текста и логотипа поверх кадра</td><td class="n">Генерации</td><td>Бесплатно</td><td><span class="ok">не нужна</span></td></tr>
+</tbody></table></div>
+
+<p class="micro" style="margin:36px 0 12px">Как связать в конвейер</p>
+<div class="pipe"><div><i>01</i><b>Claude или ChatGPT</b><span>Пишет промпт по брифу и стилю</span></div><div><i>02</i><b>Модель для картинок</b><span>Ищет стиль, правит детали и держит продукт. Например, Nano Banana</span></div><div><i>03</i><b>Figma</b><span>Текст и логотип вёрсткой</span></div><div><i>04</i><b>Seedance или Kling</b><span>Оживляет утверждённый кадр</span></div></div>
+<p class="tip"><b>Версии меняются, роли остаются.</b> Сервисы обновляются каждые пару месяцев. Запоминай, кто за что отвечает, а не номер версии.</p>
+</section>
+
+<div class="part" id="pg-p4"><h2>Подписки</h2><a class="pbtn" href="#pg-s7">К калькулятору ↓</a></div>
+
+<section class="step" id="pg-s1"><div class="head"><div class="num">П1<small>Планы</small></div><div class="txt"><h2>Сравнение <span class="s">планов</span></h2><p>В агрегаторе платишь не за картинку, а за токены или кредиты, и каждая модель тратит их по-своему. Поэтому всё пересчитано на одинаковые условия: <b>картинка 2K в Nano Banana Pro</b> и <b>видео 720p на 5 секунд в Seedance 2.5</b>.</p></div></div>
+<div class="txt"><p><b>А. Только картинки.</b> Сколько 2K-картинок в Nano Banana Pro даёт план за месяц. Считаются все генерации, включая неудачные. Обычно нужно 60–100 картинок в месяц.</p></div>
+<div><div class="tw"><table><thead><tr><th>План</th><th>Цена в месяц</th><th>Картинок</th><th>₽ за картинку</th><th>Карта РФ</th><th>Заметка</th></tr></thead><tbody id="pai-t3"></tbody></table></div>
+</div>
+<p class="tip"><b>Вывод.</b> На Nano Banana Pro выгоднее всего Syntx: около 7 ₽ за картинку на Basic, которого хватает на 60–100 картинок в месяц, и около 5 ₽ на Pro. На Nano Banana 2 выгоднее GIVON: около 3,7 ₽ против 7,5 ₽ у Syntx. Utopy дороже везде. У Higgsfield хорошие модели, но нужна зарубежная карта.</p>
+
+<div class="txt"><p><b>Б. Картинки и видео.</b> Видео тратит в разы больше токенов, чем картинка. Колонка «80 картинок + 15 клипов» показывает, хватит ли плана на типичный месяц работы с роликами.</p></div>
+<div><div class="tw"><table><thead><tr><th>План</th><th>Цена в месяц</th><th>Картинок</th><th>Клипов</th><th>80 картинок + 15 клипов</th><th>Карта РФ</th><th>Заметка</th></tr></thead><tbody id="pai-t4"></tbody></table></div>
+<p class="fn">«Картинок» и «Клипов» — сколько даёт план, если тратить его только на картинки или только на клипы.</p></div>
+<p class="tip"><b>Вывод.</b> Самый дешёвый вариант — Phygital+ Старт с докупкой, около 1 850 ₽, но модели там слабее. На Seedance 2.5 в 720p почти поровну выходят Syntx VIP (3 990 ₽) и GIVON Creator с докупкой (около 4 200 ₽). На Seedance 2.0 хватит Syntx Pro (1 690 ₽). В Full HD GIVON выгоднее Syntx примерно на 25%.</p>
+
+</section>
+
+<section class="step" id="pg-s2"><div class="head"><div class="num">П2<small>Оплата</small></div><div class="txt"><h2>Чем платить <span class="s">и когда брать годовой</span></h2><p>Выбор сервиса часто решает именно оплата. Годовой тариф платится сразу за 12 месяцев и в пересчёте на месяц стоит на 15–20% дешевле, но выгоден, только если ты будешь пользоваться сервисом не меньше 10 месяцев из 12.</p></div></div>
+<div class="tw"><table style="min-width:640px"><thead><tr><th>Сервис</th><th>Оплата</th><th>Что учесть</th></tr></thead><tbody id="pai-t5"></tbody></table></div>
+<p class="tip"><b>Перед оплатой.</b> Проверь реальную стоимость токенов на нужную модель в бесплатном аккаунте. Автопродление есть у большинства сервисов — если платить дальше не собираешься, отключи его в кабинете до следующего списания.</p>
+
+<div><div class="tw"><table style="min-width:640px"><thead><tr><th>План</th><th>В месяц, помесячно</th><th>В месяц, при оплате за год</th><th>Экономия</th><th>Платишь сразу</th></tr></thead><tbody id="pai-t6"></tbody></table></div>
+<p class="fn">У годовых планов Utopy и Syntx весь пакет токенов выдаётся сразу. У Higgsfield кредиты годового плана обновляются каждые 30 дней и не копятся.</p></div>
+<p class="tip"><b>Правило.</b> Первые 1–2 месяца плати помесячно. Если сервис вошёл в работу и ты точно будешь им пользоваться почти весь год — переходи на годовой.</p>
+
+</section>
+
+<section class="step" id="pg-s7"><div class="head"><div class="num">П3<small>Калькулятор</small></div><div class="txt"><h2>Подбери <span class="s">свой план</span></h2><p>Выбери, сколько картинок и клипов нужно в месяц и чем платишь. Калькулятор покажет подходящие месячные планы от дешёвых к дорогим. Если плана немного не хватает, показываем цену с докупкой токенов.</p></div></div>
+<div class="calc">
+<label class="f" for="pai-lvl"><span class="micro">Картинок в месяц</span><select id="pai-lvl"><option value="40">Начинаю: ~40 картинок</option><option value="80" selected>Уже делал(а) картинки: ~80</option><option value="150">Работаю с клиентами: ~150</option></select></label>
+<label class="f" for="pai-clp"><span class="micro">Клипов по 5 секунд</span><select id="pai-clp"><option value="0">Без видео</option><option value="5">~5 клипов</option><option value="15" selected>~15 клипов</option><option value="30">~30 клипов</option></select></label>
+<label class="f" for="pai-pay"><span class="micro">Чем платишь</span><select id="pai-pay"><option value="ru" selected>Карта РФ, Мир или СБП</option><option value="any">Есть зарубежная карта</option></select></label>
+</div>
+<p class="tip" id="pai-best" aria-live="polite"></p>
+<div class="tw"><table style="min-width:640px"><thead><tr><th>План</th><th>Цена в месяц</th><th>Уйдёт плана</th><th>Хватит?</th><th>Заметка</th></tr></thead><tbody id="pai-t8"></tbody></table></div>
+<ol class="check">
+<li>Определи категорию: только картинки или картинки и видео.</li>
+<li>Реши, чем будешь платить: карта РФ, Мир или зарубежная карта.</li>
+<li>Возьми помесячный план из выделенных строк своей таблицы или из калькулятора.</li>
+<li>В первый день сделай 5 пробных генераций и проверь, сколько токенов ушло.</li>
+<li>Через 1–2 месяца реши, оставаться на месячном или платить за год.</li>
+</ol>
+</section>
+
+<div class="src"><span class="micro">Что проверено и что посчитано</span><ul>
+<li>Вилки цен на услуги и проекты — с сайта школы и студии Perasperadastra, октябрь 2026. Работы — студентов курса Mission to AI.</li>
+<li>Цены нейросетей в части «Нейронки» — с тарифных страниц сервисов в октябре 2026, по курсу около 83 ₽ за доллар с комиссией посредника.</li>
+<li>Цены и токены в части «Подписки» — с тарифных страниц 12 октября 2026. Higgsfield пересчитан по курсу 85,5 ₽ за доллар. Расчёты для Nano Banana Pro в 2K и Seedance 2.5 в 720p на 5 секунд.</li>
+</ul><span class="micro">Сервисы: syntx.ai · higgsfield.ai · utopy.ai · phygital.plus · givon.ai</span></div>
+
+<footer class="ft">
+ <div class="ft-intro">
+  <p class="micro">Спасибо, что посмотрели наш гайд</p>
+  <h2>Давайте <span class="s">знакомиться</span></h2>
+  <p>Мы — студия дизайна Perasperadastra. Сотрудничали с Яндексом, ТБанком, Альфой, Сбером, «Победой», Музеем космонавтики, 2ГИС и другими. Делаем UX/UI-дизайн, моушн и работаем с нейросетями.</p>
+  <p>Ещё у нас есть образовательное направление: мы учим тому, что умеем сами.</p>
+  <a class="btn" href="https://t.me/perasperagram" target="_blank" rel="noopener noreferrer">Наш Telegram-канал</a>
+ </div>
+ <div class="ft-photos">
+  <figure class="ph ph-hero"><img src="img/ft-35.webp" width="1600" height="662" alt="Команда и ученики студии Perasperadastra на Dprofile Awards 2025" loading="lazy"><figcaption><span>Dprofile Awards 2025</span><span>Команда и ученики</span></figcaption></figure>
+  <div class="ph2">
+   <figure class="ph ph-s"><img src="img/ft-36.webp" width="900" height="675" alt="Офлайн-встреча со студентами на фоне зелёной стены" loading="lazy"><figcaption><span>Офлайн-встреча</span><span>Ученики</span></figcaption></figure>
+   <figure class="ph ph-s"><img src="img/ft-37.webp" width="900" height="675" alt="Групповое фото после дизайн-лектория" loading="lazy"><figcaption><span>Дизайн-лекторий</span><span>18 апреля</span></figcaption></figure>
+  </div>
+ </div>
+ <div class="partners">
+  <span class="tag">С кем мы сотрудничали</span>
+  <div class="mq"><div class="mq-track"><div class="mq-set"><div class="lgo"><i><img src="img/ft-38.png" width="360" height="104" alt="Яндекс"></i><span>Яндекс</span></div><div class="lgo"><i><img src="img/ft-39.png" width="360" height="97" alt="Сбер"></i><span>Сбер</span></div><div class="lgo"><i><img src="img/ft-40.png" width="360" height="124" alt="2ГИС"></i><span>2ГИС</span></div><div class="lgo"><i><img src="img/ft-41.png" width="360" height="128" alt="ВТБ"></i><span>ВТБ</span></div><div class="lgo"><i><img src="img/ft-42.png" width="338" height="66" alt="Билайн"></i><span>Билайн</span></div><div class="lgo"><i><img src="img/ft-43.png" width="188" height="130" alt="Нацпроекты"></i><span>Нацпроекты</span></div></div><div class="mq-set" aria-hidden="true"><div class="lgo"><i><img src="img/ft-38.png" width="360" height="104" alt=""></i><span>Яндекс</span></div><div class="lgo"><i><img src="img/ft-39.png" width="360" height="97" alt=""></i><span>Сбер</span></div><div class="lgo"><i><img src="img/ft-40.png" width="360" height="124" alt=""></i><span>2ГИС</span></div><div class="lgo"><i><img src="img/ft-41.png" width="360" height="128" alt=""></i><span>ВТБ</span></div><div class="lgo"><i><img src="img/ft-42.png" width="338" height="66" alt=""></i><span>Билайн</span></div><div class="lgo"><i><img src="img/ft-43.png" width="188" height="130" alt=""></i><span>Нацпроекты</span></div></div></div></div>
+ </div>
+ <div class="mta">
+  <div class="mta-t">
+   <p class="micro">А если хотите прокачаться в нейросетях</p>
+   <h2>Mission to AI</h2>
+   <p>Программа, где учим генерировать графику и видео. Много обратной связи от наших кураторов.</p>
+   <a class="btn" href="https://perasperadastra.ru/mission-to-ai" target="_blank" rel="noopener noreferrer">Подробнее о программе</a>
+  </div>
+  <a class="mta-img" href="https://perasperadastra.ru/mission-to-ai" target="_blank" rel="noopener noreferrer" aria-label="Mission to AI — подробнее о программе">Mission to AI</a>
+ </div>
+</footer>
+</div></div>
+
+<script>window.PG_DIO={tower:"d/tower.png",roles:"d/roles.png",coins:"d/coins.png"};</script>
+<script>
+(function(){
+var C={hf:['Higgsfield','#d7f64a','H'],sx:['Syntx','#ff7a45','S'],ut:['Utopy','#f2f0ec','U'],ph:['Phygital+','#a98bff','P'],gv:['GIVON','#7cc4ff','G']};
+function sv(k,n){var c=C[k];return '<span class="svc"><i style="background:'+c[1]+'">'+c[2]+'</i>'+(n||c[0])+'</span>'}
+function rub(x){return String(Math.round(x)).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' ₽'}
+var pay={ru:'<span class="ok">да</span>',mir:'<span class="warn">Мир, СБП</span>',no:'<span class="no">нет</span>'};
+/* план: сервис, имя, пакет, цена, картинок, клипов, оплата, докупка за 100% плана (₽) или 0, заметка А, заметка Б, лучший в А/Б */
+var P=[
+ ['hf','Lite','250 кредитов',855,125,7,'no',0,'Нужна зарубежная карта',''],
+ ['hf','Plus','1 200 кредитов',5045,600,36,'no',0,'Дорого без видео','Лучшие модели видео'],
+ ['sx','Basic','260 токенов',890,130,3,'mir',936,'Хватает на 60–100 картинок','',1],
+ ['sx','Pro','680 токенов',1690,340,8,'mir',2540,'Хватает с большим запасом','Докупка 3,6 ₽ за токен'],
+ ['sx','VIP','1 700 токенов',3990,850,19,'mir',6120,'Для большого объёма','Запас небольшой',0,1],
+ ['ut','Старт','1 500 токенов',740,22,3,'ru',0,'Хватит ненадолго',''],
+ ['ut','Профессиональный','4 500 токенов',1590,67,9,'ru',0,'Модели проще',''],
+ ['ut','Максимальный','14 000 токенов',3590,209,28,'ru',0,'Модели проще','Модели проще'],
+ ['ph','Старт','10 000 кредитов',1499,200,18,'ru',1500,'Модели слабее','Модели слабее'],
+ ['ph','Pro','',5899,914,82,'ru',5900,'Модели слабее','Модели слабее'],
+ ['gv','Start','300 токенов',990,100,4,'mir',960,'Дорого на входе',''],
+ ['gv','Creator','900 токенов',2490,330,11,'mir',2810,'Хватает с запасом','Нужна докупка токенов'],
+ ['gv','Ultima','2 200 токенов',5490,860,31,'mir',7040,'Для большого объёма','Хватает с запасом']
+];
+function grp(rows,cols){var h='',last='';rows.forEach(function(r){if(r.k!==last){h+='<tr class="grp"><td colspan="'+cols+'">'+sv(r.k)+'</td></tr>';last=r.k}h+=r.h});return h}
+function need(p,img,clp){return img/p[4]+clp/p[5]}
+function verdict(p,img,clp){var f=need(p,img,clp);if(f<=.8)return {t:'<span class="ok">да</span>',c:p[3],f:f};if(f<=1)return {t:'<span class="warn">впритык</span>',c:p[3],f:f};if(p[7]){var c=p[3]+(f-1)*p[7];return {t:'<span class="warn">с докупкой ≈ '+rub(Math.round(c/50)*50)+'</span>',c:c,f:f}}return {t:'<span class="no">не хватит</span>',c:Infinity,f:f}}
+/* 3 */
+document.getElementById('pai-t3').innerHTML=grp(P.filter(function(p){return p[1]!=='Pro'||p[0]!=='ph'}).map(function(p){return {k:p[0],h:'<tr'+(p[10]?' class="best"':'')+'><td>'+p[1]+(p[2]?'<small>'+p[2]+'</small>':'')+'</td><td>'+(p[0]==='hf'?'~':'')+rub(p[3])+'</td><td class="n">~'+p[4]+' шт.</td><td class="n">~'+(p[3]/p[4]).toFixed(p[3]/p[4]<10?1:0).replace('.0','').replace('.',',')+' ₽</td><td>'+pay[p[6]]+'</td><td class="n">'+p[8]+'</td></tr>'}}),6);
+/* 4 */
+var b4=P.filter(function(p){return p[9]&&!(p[0]==='ph'&&p[1]==='Pro')});
+document.getElementById('pai-t4').innerHTML=grp(b4.map(function(p){var v=verdict(p,80,15);return {k:p[0],h:'<tr'+(p[11]?' class="best"':'')+'><td>'+p[1]+'</td><td>'+(p[0]==='hf'?'~':'')+rub(p[3])+'</td><td class="n">~'+p[4]+' шт.</td><td class="n">~'+p[5]+' шт.</td><td>'+v.t+'</td><td>'+pay[p[6]]+'</td><td class="n">'+p[9]+'</td></tr>'}}),7);
+/* 5 */
+document.getElementById('pai-t5').innerHTML=[
+ ['ut','<span class="ok">Карты РФ, СБП, SberPay, Яндекс Пэй</span>','Модели проще, чем у Syntx и Higgsfield'],
+ ['sx','<span class="warn">Мир, СБП, Telegram Stars</span>','Токены не сгорают, но тратить их можно только при активной подписке'],
+ ['ph','<span class="ok">Карты РФ</span>','Цены с НДС. Модели слабее'],
+ ['hf','<span class="no">Карты РФ не принимает</span>','Кредиты подписки сгорают при продлении'],
+ ['gv','<span class="warn">Мир, СБП</span>','Дороже Syntx на Nano Banana Pro, дешевле на Nano Banana 2']
+].map(function(r){return '<tr><td>'+sv(r[0])+'</td><td>'+r[1]+'</td><td class="n">'+r[2]+'</td></tr>'}).join('');
+/* 6 */
+document.getElementById('pai-t6').innerHTML=[
+ ['ut','Utopy Профессиональный',1590,1271,15250],['ut','Utopy Максимальный',3590,2871,34450],['sx','Syntx Pro',1690,1436,17230],
+ ['ph','Phygital+ Старт',1499,1200,14400],['hf','Higgsfield Plus',5045,4020,48200],['gv','GIVON Creator',2490,2090,25080],['gv','GIVON Ultima',5490,4590,55080]
+].map(function(r){var t=r[0]==='hf'||r[1]==='Syntx Pro'?'~':'';return '<tr><td>'+sv(r[0],r[1])+'</td><td>'+(r[0]==='hf'?'~':'')+rub(r[2])+'</td><td>'+(r[0]==='hf'?'~':'')+rub(r[3])+'</td><td class="n">'+Math.round((1-r[3]/r[2])*100)+'%</td><td>'+t+rub(r[4])+'</td></tr>'}).join('');
+/* 8 */
+var L=document.getElementById('pai-lvl'),K=document.getElementById('pai-clp'),Y=document.getElementById('pai-pay');
+function calc(){var img=+L.value,clp=+K.value,ru=Y.value==='ru';
+ var r=P.filter(function(p){return !ru||p[6]!=='no'}).map(function(p){var v=verdict(p,img,clp);v.p=p;return v}).filter(function(v){return isFinite(v.c)}).sort(function(a,b){return a.c-b.c}).slice(0,7);
+ document.getElementById('pai-t8').innerHTML=r.map(function(v,i){var p=v.p;return '<tr'+(i===0?' class="best"':'')+'><td>'+sv(p[0],C[p[0]][0]+' '+p[1])+'</td><td>'+(p[0]==='hf'?'~':'')+rub(p[3])+'</td><td class="n">'+Math.round(v.f*100)+'%</td><td>'+v.t+'</td><td class="n">'+(clp?(p[9]||p[8]):p[8])+'</td></tr>'}).join('');
+ var b=r[0];document.getElementById('pai-best').innerHTML=b?'<b>Самый дешёвый вариант: '+C[b.p[0]][0]+' '+b.p[1]+', ≈ '+rub(Math.round(b.c/10)*10)+' в месяц'+(b.c>b.p[3]?' с докупкой токенов':'')+'.</b> Считаем '+img+' картинок'+(clp?' и '+clp+' клипов':'')+' в месяц. Если нужен запас или модели лучше, смотри следующие строки.':'Ни один план не подходит. Попробуй уменьшить объём.'}
+[L,K,Y].forEach(function(s){s.addEventListener('change',calc)});calc();
+})();
+</script>
+<script>(function(){var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,SP=window.PG_DIO||{};
+/* дизеринг-сцены: спрайт 10×6 кадров по 480×270, кадр зависит от положения на экране */
+var its=[];document.querySelectorAll('.pg .dio canvas').forEach(function(cv){var im=new Image(),it={cv:cv,x:cv.getContext('2d'),im:im,h:+cv.dataset.h||0,last:-1,ok:false};im.onload=function(){it.ok=true;draw(it)};im.src=SP[cv.dataset.d];its.push(it)});
+function draw(it){if(!it.ok)return;var r=it.cv.getBoundingClientRect(),vh=window.innerHeight||1;if(r.bottom<-200||r.top>vh+200)return;var p=(r.top+r.height/2)/vh;p=Math.max(-.3,Math.min(1.3,p));var f=still?it.h:(((it.h+Math.round((.5-p)*34))%60)+60)%60;if(f===it.last)return;it.last=f;it.x.clearRect(0,0,480,270);it.x.imageSmoothingEnabled=false;it.x.drawImage(it.im,(f%10)*480,Math.floor(f/10)*270,480,270,0,0,480,270)}
+var tk=false;function on(){if(tk)return;tk=true;requestAnimationFrame(function(){tk=false;its.forEach(draw)})}
+addEventListener('scroll',on,{passive:true});addEventListener('resize',on);
+/* полосы вилок вырастают, когда график на экране */
+var rg=document.getElementById('pg-rng');if(rg){var rs=rg.querySelectorAll('.rng');if(still||!('IntersectionObserver' in window))rs.forEach(function(x){x.classList.add('on')});else new IntersectionObserver(function(es,o){es.forEach(function(e){if(e.isIntersecting){rs.forEach(function(x,i){setTimeout(function(){x.classList.add('on')},i*70)});o.disconnect()}})},{threshold:.3}).observe(rg)}
+/* вкладки направлений */
+[].slice.call(document.querySelectorAll('.pg .tabs')).forEach(function(box){var tabs=[].slice.call(box.querySelectorAll('[role=tab]'));
+function sel(t,focus){tabs.forEach(function(b){var on=b===t;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;var p=document.getElementById(b.getAttribute('aria-controls'));if(p)p.classList.toggle('on',on)});if(focus)t.focus()}
+tabs.forEach(function(b,i){b.tabIndex=i?-1:0;b.addEventListener('click',function(){sel(b)});b.addEventListener('keydown',function(e){var k=e.key,j=k==='ArrowRight'?i+1:k==='ArrowLeft'?i-1:k==='Home'?0:k==='End'?tabs.length-1:null;if(j===null)return;e.preventDefault();sel(tabs[(j+tabs.length)%tabs.length],true)})});});
+/* высота для встраивания iframe */
+if(window.parent!==window){var s=function(){parent.postMessage({type:'pad-height',h:document.documentElement.scrollHeight},'*')};addEventListener('load',s);addEventListener('resize',s);if(window.ResizeObserver)new ResizeObserver(s).observe(document.body);setInterval(s,1500)}
+})();
+document.querySelectorAll('.pg button.copy').forEach(function(b){b.addEventListener('click',function(){var el=document.getElementById(b.dataset.copy),t=el.textContent;var done=function(){b.textContent='Скопировано';setTimeout(function(){b.textContent='Скопировать'},1600)};var fb=function(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено — скопируй'};try{navigator.clipboard.writeText(t).then(done,fb)}catch(e){fb()}})});
+/* слайдер кейсов */
+(function(){var sl=document.getElementById('pg-sl');if(!sl)return;var trk=sl.querySelector('.trk'),cs=[].slice.call(sl.querySelectorAll('.cs')),bar=sl.querySelector('.slb i'),cnt=sl.querySelector('.slc b'),tot=sl.querySelector('.slc'),ars=sl.querySelectorAll('.ar'),still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function vis(){return cs.filter(function(c){return !c.hidden})}
+function upd(){var v=vis(),m=trk.scrollWidth-trk.clientWidth,p=m>0?trk.scrollLeft/m:0,w=m>0?trk.clientWidth/trk.scrollWidth:1;bar.style.width=(w*100)+'%';bar.style.left=(p*(1-w)*100)+'%';var x=trk.getBoundingClientRect().left,i=0;v.forEach(function(c,j){if(c.getBoundingClientRect().left-x<c.offsetWidth/2)i=j});if(m>0&&trk.scrollLeft>=m-4)i=v.length-1;cnt.textContent=('0'+(i+1)).slice(-2);tot.lastChild.textContent=' / '+('0'+v.length).slice(-2);ars[0].disabled=trk.scrollLeft<4;ars[1].disabled=trk.scrollLeft>=m-4}
+ars.forEach(function(b){b.addEventListener('click',function(){var c=vis()[0];trk.scrollBy({left:(+b.dataset.d)*((c?c.offsetWidth:300)+12),behavior:still?'auto':'smooth'})})});
+trk.addEventListener('scroll',function(){requestAnimationFrame(upd)},{passive:true});addEventListener('resize',upd);
+sl.querySelectorAll('.ct').forEach(function(b){b.addEventListener('click',function(){var f=b.dataset.f;sl.querySelectorAll('.ct').forEach(function(x){x.setAttribute('aria-pressed',x===b)});cs.forEach(function(c){c.hidden=!(f==='all'||c.dataset.c===f)});trk.scrollLeft=0;upd()})});
+trk.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();ars[e.key==='ArrowRight'?1:0].click()}});
+/* видео: грузятся и играют, только когда карточка на экране */
+var vs=[].slice.call(sl.querySelectorAll('video'));function play(v,on){if(on){if(!v.src)v.src=v.dataset.src;if(!still){var p=v.play();if(p&&p.catch)p.catch(function(){})}}else v.pause()}
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){play(e.target,e.isIntersecting)})},{threshold:.4});vs.forEach(function(v){io.observe(v)})}else vs.forEach(function(v){play(v,true)});
+upd()})();
+</script>
+<script>(function(){var nav=document.getElementById('pg-nav'),b=document.querySelector('.pg .tonav');if(!nav||!b)return;var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;b.addEventListener('click',function(e){e.preventDefault();nav.scrollIntoView({behavior:still?'auto':'smooth',block:'start'})});if('IntersectionObserver' in window){new IntersectionObserver(function(es){b.hidden=es[0].isIntersecting}).observe(nav)}else{b.hidden=false}})();</script>
+<script>(function(){var still=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;[].slice.call(document.querySelectorAll(".pg .pbtn")).forEach(function(a){a.addEventListener("click",function(e){var t=document.getElementById((a.getAttribute("href")||"").slice(1));if(!t)return;e.preventDefault();t.scrollIntoView({behavior:still?"auto":"smooth",block:"start"})})})})();</script>
+</body></html>
