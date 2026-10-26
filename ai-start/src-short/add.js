@@ -3,7 +3,7 @@ var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matc
 /* клетки 20/80: порядок появления */
 document.querySelectorAll('.pg .cells i').forEach(function(c,k){c.style.setProperty('--d',(k%10)*28+Math.floor(k/10)*40)});
 /* анимации запускаются, когда блок на экране (работает и во встроенном iframe) */
-var els=[].slice.call(document.querySelectorAll('.pg .yt,.pg .gw,.pg .walk,.pg ol.cen,.pg .split,.pg .hp'));
+var els=[].slice.call(document.querySelectorAll('.pg .yt,.pg .gw,.pg .walk,.pg .tsp,.pg ol.cen,.pg .split,.pg .hp'));
 if(still||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('on')})}
 else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.25});els.forEach(function(e){io.observe(e)})}
 /* видео в карточках гайдов */
