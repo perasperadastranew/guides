@@ -314,8 +314,8 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px
 .chk input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent)}
 .chk input:checked+span{color:var(--dim);text-decoration:line-through}
 .stagebar{display:flex;flex-wrap:wrap;gap:6px}
-.stagebar span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:6px;padding:6px 9px;color:var(--dim);background:var(--panel)}
-.stagebar span.on{background:var(--accent);border-color:var(--accent);color:#101010}
+.stagebar a{text-decoration:none;transition:border-color .15s,color .15s}.stagebar a:hover{border-color:var(--accent);color:var(--fg,#edece7)}.stagebar a.on:hover{color:#101010}.stagebar span,.stagebar a{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:6px;padding:6px 9px;color:var(--dim);background:var(--panel)}
+.stagebar span.on,.stagebar a.on{background:var(--accent);border-color:var(--accent);color:#101010}
 html.stagemode .stage>summary .chev{display:none}
 html.stagemode .stage{border:0;background:transparent}
 html.stagemode .stage>summary{padding:0 0 18px;cursor:default}
@@ -1029,11 +1029,13 @@ if(STAGE_NS.length){
     if(!STAGE_NS.includes(1)){const duo=rv.querySelector(".duo"); if(duo) duo.remove()}
     const ch=rv.querySelector("ol.checks")?.previousElementSibling?.querySelector("h3"); if(ch) ch.textContent=STAGE_NS.length>1?"Точки проверки этапов":"Точка проверки этапа";}
   const st=STAGES.filter(x=>STAGE_NS.includes(x.n));
+  const keepQ=new URLSearchParams(location.search);keepQ.delete("stage");
+  const stageHref=n=>{if(window.LEND_STAGE){const q=keepQ.toString();return "../etap-"+n+"/"+(q?"?"+q:"")}const q=new URLSearchParams(keepQ);q.set("stage",n);return "?"+q.toString()};
   const hd=document.querySelector("header.hd");
   hd.innerHTML=`<div class="corner"><span>PERASPERADASTRA\nMISSION TO WEB</span><span>ПРОЕКТ №1 «ЛЕНДИНГ»\nЭТАП ${STAGE_NS.join(" И ")} ИЗ 6</span></div>
    <div class="hero" style="display:flex;flex-direction:column;gap:20px"><h1 style="font-size:clamp(34px,6vw,64px)">${st.map(x=>x.title).join(" и ")}</h1>
    <p>${st[0].lead}</p>
-   <div class="stagebar">${STAGES.map(x=>`<span class="${STAGE_NS.includes(x.n)?"on":""}">${String(x.n).padStart(2,"0")} ${x.title.split(":")[0]}</span>`).join("")}</div>
+   <nav class="stagebar" aria-label="Этапы проекта">${STAGES.map(x=>`<a href="${stageHref(x.n)}" class="${STAGE_NS.includes(x.n)?"on":""}"${STAGE_NS.includes(x.n)?' aria-current="page"':""}>${String(x.n).padStart(2,"0")} ${x.title.split(":")[0]}</a>`).join("")}</nav>
    <p class="note">Это часть гайда «Лендинг с нейросетями». Остальные этапы, карта агентов и квиз по всему проекту — <a href="${FULL}" target="_blank" rel="noopener">в полном гайде</a>.</p></div>`;
   document.querySelectorAll("details.stage .lead").forEach(p=>{if(st.length===1)p.remove()});
   const sh=document.querySelector("#stages .sec-head"); if(sh){sh.querySelector("h2").textContent=st.length>1?"Шаги этапов":"Шаги этапа"; const m=sh.querySelector("p"); if(m) m.textContent="Что делаешь сам, что можно отдать нейросети, готовые инструкции агентов и чек-лист перед сдачей."}
