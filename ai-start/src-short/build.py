@@ -79,9 +79,14 @@ g.append('</svg>')
 ev = ''.join('<li style="--k:%d"><b>%d</b><em>%s</em><span>%s</span></li>' % (k, y, a_, d_) for k, (y, a_, d_) in enumerate(EV))
 growth = '<figure class="gw"><span class="micro">Насколько нейросети стали сильнее</span><div class="hsc">%s</div><figcaption>Длина задачи, которую нейросеть выполняет сама без человека: от нескольких секунд у GPT-3 до примерно 12 часов работы эксперта у Opus 4.6. Шкала логарифмическая — каждое деление в 10 раз больше. Удвоение примерно каждые 4 месяца. По данным METR.</figcaption><ol class="ev">%s</ol></figure>' % (''.join(g), ev)
 th = ''.join('<li><div class="tl"><span class="micro">%02d</span><h3>%s</h3><b>%s</b></div><p>%s</p></li>' % (i + 1, t, b, d) for i, (t, b, d) in enumerate(TH))
+
+birds = """<figure class="ab" id="pg-birds"><div class="abh"><span class="micro">Почему одной нейросети мало</span><button type="button" class="ab-re">↻ Ещё раз</button></div>
+<div class="abg"><div class="ab-a"><span class="micro">Одна птица</span><svg viewBox="0 0 400 250" role="img" aria-label="Одна и та же птица трижды отскакивает от крепости — проект стоит"></svg><p>Новичок раз за разом бьёт одной нейросетью. Каждый раз тот же удар — и тот же результат.</p></div>
+<div class="ab-b"><span class="micro">Стая со скиллами</span><svg viewBox="0 0 400 250" role="img" aria-label="Четыре разные птицы по очереди: разведчик находит слабые места, вторая делится на три, третья выбивает опору, тяжёлая добивает — крепость падает"></svg><p>Профи использует разные нейросети под разные задачи — и любой проект рушится.</p></div></div>
+<ol class="abl"><li><i class="k s"></i><b>Разведчик</b><span>Текстовая нейросеть: разбирает бриф, находит идею и слабое место, пишет промпт</span></li><li><i class="k r"></i><b>Стиль</b><span>Midjourney: задаёт образ и бьёт сразу в нескольких направлениях</span></li><li><i class="k d"></i><b>Точность</b><span>Nano Banana: точечные правки, держит продукт и лицо</span></li><li><i class="k h"></i><b>Сила</b><span>Видео-нейросети: оживляют кадр и добивают проект</span></li></ol></figure>"""
 out.append(section(1, '01', 'Что происходит', 'Что происходит <span class="s">на рынке</span>',
   '<p>Пять тезисов о том, что сейчас на самом деле происходит с профессией: как быстро пришли нейросети, что с увольнениями, какими стали проекты и кто нужен рынку.</p>',
-  growth + '\n<ol class="th">' + th + '</ol>\n<p class="tip"><b>Вывод.</b> «Всех сокращают из-за ИИ» — часто отговорка. Нейросети не отменяют дизайнеров, они отменяют средний результат. Людей, которые умеют с ними работать, ищут активнее остальных.</p>'))
+  growth + '\n<ol class="th">' + th + '</ol>\n' + birds + '\n<p class="tip"><b>Вывод.</b> «Всех сокращают из-за ИИ» — часто отговорка. Нейросети не отменяют дизайнеров, они отменяют средний результат. Людей, которые умеют с ними работать, ищут активнее остальных.</p>'))
 
 # --- I.02 Перепись населения
 ST = [
@@ -369,7 +374,7 @@ res = s[:a] + body + s[b:]
 res = res.replace('<title>Как начать в AI-индустрии, короткая версия</title>', '<title>Как начать в AI-индустрии</title>')
 
 css = open(os.path.join(D, 'add.css'), encoding='utf-8').read()
-js = open(os.path.join(D, 'add.js'), encoding='utf-8').read()
+js = open(os.path.join(D, 'add.js'), encoding='utf-8').read() + '\n' + open(os.path.join(D, 'birds.js'), encoding='utf-8').read()
 i = res.index('</style>'); res = res[:i] + css + res[i:]
 i = res.rindex('</body>'); res = res[:i] + '<script>' + js + '</script>\n' + res[i:]
 open(OUT, 'w', encoding='utf-8').write(res)
