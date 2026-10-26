@@ -170,7 +170,7 @@ CATS = [
 ]
 def media(src, credit):
     if src is None:
-        return '<span class="ph"><span>%s</span></span>' % credit
+        return '<span class="phx"><span>%s</span></span>' % credit
     if src.startswith('video:'):
         u, poster = src[6:].split('|')
         return '<video muted loop playsinline preload="%s"%s data-src="%s"></video>' % ('none' if poster else 'metadata', (' poster="%s"' % poster) if poster else '', u)
