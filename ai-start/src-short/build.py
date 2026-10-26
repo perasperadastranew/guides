@@ -35,8 +35,8 @@ hdr = re.sub(r'<figure class="dio".*?</figure>', '', hdr, flags=re.S)
 hdr = re.sub(r'<p class="lead">.*?</p>', '<p class="lead">Гайд для старта в нейросетях: что на самом деле происходит на рынке, какие проекты заказывают и сколько они стоят, как пройти путь до первого заказа, чем текстовые нейросети отличаются от визуальных и за какие подписки платить.</p>', hdr, flags=re.S)
 hdr = re.sub(r'<nav class="need".*?</nav>', '''<nav class="need" aria-label="Разделы">
 <a href="#pg-p1"><b><i>I</i>Рынок</b><span>Что происходит, мифы, заказы и цены</span></a>
-<a href="#pg-p2"><b><i>II</i>Пошагово</b><span>От цели до первого заказа</span></a>
-<a href="#pg-p3"><b><i>III</i>Нейросети</b><span>Текстовые и визуальные</span></a>
+<a href="#pg-p2"><b><i>II</i>Пошаговый план</b><span>От цели до первого заказа</span></a>
+<a href="#pg-p3"><b><i>III</i>Нейросети</b><span>Самые актуальные текстовые и визуальные модели</span></a>
 <a href="#pg-p4"><b><i>IV</i>Подписки</b><span>За что платить и сколько</span></a>
 <a href="#pg-end"><b><i>→</i>Итог</b><span>Пять выводов, эфир и гайды</span></a>
 </nav>''', hdr, flags=re.S)
@@ -190,7 +190,7 @@ out.append(section(5, '05', 'Было и стало', 'Что изменили <
 out.append(section(6, '06', 'Клиенты', 'Чего хотят клиенты <span class="s">и где работать</span>', sec_txt('pg-5'), nofn(sec_body('pg-5'))))
 
 # ================= ЧАСТЬ II. ПОШАГОВО
-out.append(part('p2', 'II', 'Пошагово', 'Семь шагов от цели до первого оплаченного заказа.'))
+out.append(part('p2', 'II', 'Пошаговый план', 'Семь шагов от цели до первого оплаченного заказа.'))
 def step(id_src, n, title, txt=None, body=None):
     return section(id_src.replace('pg-', 'st'), '%02d' % n, 'Шаг %d' % n, title, txt if txt is not None else sec_txt(id_src), body if body is not None else nofn(sec_body(id_src)))
 def _dir(m):
