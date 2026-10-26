@@ -450,3 +450,6 @@
 .pg .prt td.t1{padding-right:12px}
 .pg .prt td.t2 .th3{width:100%}
 .pg .tw .prt{min-width:0!important}@media (max-width:760px){.pg .tw:has(.prt){overflow:visible}}
+.pg .prt thead th:nth-child(1){width:24%}.pg .prt thead th:nth-child(2){width:38%}.pg .prt thead th:nth-child(3){width:38%}
+.pg .prt td.pd .pc{bottom:18px}
+@media (max-width:760px){.pg .prt tr{grid-template-columns:minmax(0,1fr)}}

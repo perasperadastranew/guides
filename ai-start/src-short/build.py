@@ -195,8 +195,8 @@ for i, (k, n, who, rows) in enumerate(CATS):
             wd = '<span class="th3"><img src="%s" alt="%s" loading="lazy"></span>' % (w2, name)
         else:
             wd = tb.replace('class="th2"', 'class="th3"')
-        rr += '<tr><th scope="row"><b>%s</b>%s</th><td class="pd"><p>%s</p><p class="gv"><span>Сдаёшь:</span> %s</p><div class="pc">%s</div></td><td class="t1">%s</td><td class="t2">%s</td></tr>' % (name, by, task, give, price, tb, wd)
-    pans += '<div class="cat" id="cp-%s"><div class="cath"><span class="cn2">%02d</span><h3>%s</h3><p>%s</p></div><div class="tw"><table class="prt"><thead><tr><th>Проект</th><th>Задача и цена</th><th>Пример</th><th></th></tr></thead><tbody>%s</tbody></table></div></div>' % (k, i + 1, n, who, rr)
+        rr += '<tr><th scope="row"><b>%s</b>%s</th><td class="pd"><p>%s</p><p class="gv"><span>Сдаёшь:</span> %s</p><div class="pc">%s</div></td><td class="t2">%s</td></tr>' % (name, by, task, give, price, wd)
+    pans += '<div class="cat" id="cp-%s"><div class="cath"><span class="cn2">%02d</span><h3>%s</h3><p>%s</p></div><div class="tw"><table class="prt"><thead><tr><th>Проект</th><th>Задача и цена</th><th>Пример</th></tr></thead><tbody>%s</tbody></table></div></div>' % (k, i + 1, n, who, rr)
 b3 = pans
 PJ = [  # название, часы от-до, цена от-до (тыс ₽), подпись: dx, dy, якорь
  ('Мокапы', 2, 6, 1, 5, 10, 4, 'start'),
