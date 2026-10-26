@@ -330,8 +330,8 @@ def gcard(u, img, vid, k, t, d):
 gd = '<div class="gds">' + ''.join(gcard(*g) for g in GD) + '</div>'
 out.append('''<section class="step fin" id="pg-end">%s
 %s
-<div class="live"><span class="micro">Прямой эфир</span><h3>Разберём всё это вживую</h3><p>На прямом эфире покажем, как мы работаем с нейросетями: идеи и решения на нас, рутина на ИИ. Ответим на вопросы и разберём, что дизайнеру нужно уметь в 2027 году. Анонс — в нашем Telegram-канале.</p><a class="btn" href="https://t.me/perasperagram" target="_blank" rel="noopener">Telegram-канал ↗</a></div>
-<p class="micro" style="margin:56px 0 14px">Бесплатные гайды школы</p>
+<div class="live"><span class="micro">Прямой эфир · 28 октября, 19:00 по Москве</span><h3>Разберём всё это вживую</h3><p>Покажем, как мы работаем с нейросетями: идеи и решения на нас, рутина на ИИ. Ответим на вопросы и разберём, что дизайнеру нужно уметь в 2027 году. Ссылка на эфир, вся информация и другие методички — в нашем закрытом канале.</p><a class="btn" href="https://t.me/perasperagram" target="_blank" rel="noopener">Вступить в закрытый канал ↗</a></div>
+<p class="micro" style="margin:56px 0 14px">Открытые гайды школы · остальные методички в закрытом канале</p>
 %s
 </section>
 
