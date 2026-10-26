@@ -458,3 +458,14 @@
 /* надёжная обрезка картинок (Safari) */
 .pg .prt .th2,.pg .prt .th3{position:relative;height:auto}
 .pg .prt .th2 img,.pg .prt .th2 video,.pg .prt .th3 img,.pg .prt .th3 video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none}
+/* Safari: высота кадра через padding, картинка абсолютно */
+.pg .prt .th2,.pg .prt .th3{aspect-ratio:auto!important;height:0!important;padding-bottom:56.25%}
+.pg .prt .th2{padding-bottom:100%}
+/* воздух в таблице проектов */
+.pg .cath{margin-bottom:36px}
+.pg .prt thead th{padding:0 16px 14px 0}
+.pg .prt tbody th,.pg .prt tbody td{padding:28px 24px 28px 0}
+.pg .prt td.t2{padding-right:0}
+.pg .prt td.pd .pc{bottom:28px}
+.pg .prt tbody th .by{margin-top:10px}
+.pg .prt td.pd p.gv{margin-top:10px}
