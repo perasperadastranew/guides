@@ -482,3 +482,15 @@
 .pg .feat .flk{margin-top:auto;color:var(--accent);font-size:15px}
 .pg .feat:hover .flk{text-decoration:underline}
 @media (max-width:640px){.pg .feat{grid-template-columns:minmax(0,1fr)}}
+/* пример: ссылка со стрелкой и подписью */
+.pg .exm{display:block;text-decoration:none;color:inherit}
+.pg .exm .th3{position:relative}
+.pg .exm .go{position:absolute;right:10px;top:10px;width:34px;height:34px;display:grid;place-items:center;font-style:normal;font-size:16px;background:rgba(11,11,11,.7);color:#fff;backdrop-filter:blur(6px);transition:background .2s,transform .2s}
+.pg a.exm:hover .go{background:var(--accent);transform:translate(2px,-2px)}
+.pg .exm .cap2{display:block;margin-top:10px;font-size:14px;color:var(--muted)}
+.pg .exm .cap2 em{font-style:normal;color:var(--accent)}
+.pg a.exm:hover .cap2{color:var(--fg)}
+.pg .exm .cap2.soon{font-style:italic}
+.pg .ph{position:absolute;inset:0;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--surface) 0 10px,color-mix(in srgb,var(--surface) 80%,var(--line)) 10px 20px);border:1px dashed var(--line)}
+.pg .ph span{font-size:14px;color:var(--muted);padding:6px 10px;background:var(--bg)}
+.pg .prt td.pd .pc{bottom:58px}

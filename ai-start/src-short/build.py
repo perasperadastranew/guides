@@ -148,61 +148,43 @@ def fig(src, cap, key=None, vid=None):
             med = '<img src="%s" alt="%s" loading="lazy">' % (src, who)
         return '<figure class="lk%s"><a href="%s" target="_blank" rel="noopener">%s</a><figcaption><b>%s</b><a href="%s" target="_blank" rel="noopener">%s ↗</a></figcaption></figure>' % ('' if src else ' nv', u, med, cap, u, who)
     return '<figure><img src="%s" alt="%s" loading="lazy"><figcaption><b>%s</b></figcaption></figure>' % (src, cap, cap)
-V = lambda u: 'video:' + u
+DP2 = 'https://dprofile.ru/case/'
+# (картинка или 'video:файл|постер' или None, ссылка, подпись под картинкой, проект, задача, что сдаёшь, цена)
 CATS = [
- ('foto', 'Фото и реализм', 'Маркетплейсы, e-com, бренды одежды и косметики. Нужно много реалистичных кадров — быстрее и дешевле съёмки.', [
-   ('img/c-t-prodshoot.webp', None, 'Предметная фотосессия', 'Продукт в нескольких сетах без студии', 'Карточка продукта, 3 hero и 3 lifestyle', '5–25 тыс ₽'),
-   ('img/c-t-aimodel.webp', None, 'Фотосессия с AI-моделью', 'Модель бренда в разных образах и с продуктом', 'Карточка модели и серия кадров', '5–20 тыс ₽'),
-   ('img/case-pohjola-herbs-2.webp', None, 'Фотостиль бренда', 'Единый стиль кадров для сайта и соцсетей', 'Серия кадров и правила стиля', '5–25 тыс ₽'),
-   ('img/c-t-interior.webp', None, 'Визуализация интерьера', 'Пространство до ремонта или стройки', 'Серия ракурсов', 'по объёму')]),
- ('graf', '2D и 3D-графика', 'Бренды и агентства: кампании, запуски, айдентика. Нужен узнаваемый стиль на всех материалах, а не одна картинка.', [
-   ('cases/v-knives.jpg', 'knives', 'Key visual и адаптации', 'Главный образ кампании для баннеров и наружки', 'KV и адаптации под форматы', '5–30 тыс ₽'),
-   ('img/c-t-ident.webp', None, 'Иллюстрации для бренда', 'Графический язык, набор иллюстраций', 'Серия из 5–15 кадров в одном стиле', '5–30 тыс ₽'),
-   ('cases/mako.webp', 'mako', 'Маскот', 'Персонаж бренда в разных позах и ситуациях', 'Карточка персонажа и серия сцен', 'по объёму'),
-   ('cases/hronos-box.webp', 'hronos', 'Упаковка и айдентика', 'Концепт упаковки, графика бренда', 'Концепт, мокапы, носители', 'по объёму'),
-   ('img/case-fight-club-3.webp', None, 'Генерация концептов', 'Варианты визуального направления до запуска', '2–3 направления с мудбордами', '5–15 тыс ₽')]),
- ('prod', 'Продукты и digital', 'Стартапы, продуктовые команды, сайты и сервисы. Нужно показать то, чего ещё нет, или красиво упаковать продукт на экране.', [
-   ('cases/eaglips.webp', 'eaglips', 'AI-продукт', 'Придумать и показать продукт, которого нет', 'Метафора, карточка продукта, KV, мокапы', '30–100 тыс ₽'),
-   ('img/c-t-concept3d.webp', None, '3D-визуализация и концепты', 'Форма, материалы, ракурсы', 'Серия ракурсов и деталей', '5–30 тыс ₽'),
-   ('img/c-t-services.webp', None, 'Графика для сайта и сервиса', 'Визуал для лендинга, промо и соцсетей без съёмки', 'Серия кадров в одном стиле', '5–25 тыс ₽'),
-   ('img/c-t-app.webp', None, 'Мокапы интерфейсов', 'Экраны в живой сцене для презентации', '1–5 сцен', '1–5 тыс ₽')]),
+ ('foto', 'Фотореализм', 'Маркетплейсы, e-com, бренды одежды и косметики. Нужно много реалистичных кадров — быстрее и дешевле съёмки.', [
+   ('cases/knives-2.webp', DP2 + '178358/simple-knives-kollekciia-nozei', 'Simple Knives · Анастасия Грачева', 'Предметная фотосессия', 'Продукт в нескольких сетах без студии', 'Карточка продукта, 3 hero и 3 lifestyle', '5–25 тыс ₽'),
+   (None, None, 'Going All In · Лейла Исхакова', 'Фотосессия с AI-моделью', 'Модель бренда в разных образах и с продуктом', 'Карточка модели и серия кадров', '5–20 тыс ₽')]),
+ ('graf', '2D и 3D-графика', 'Бренды, агентства и продуктовые команды: кампании, запуски, айдентика, цифровые продукты. Нужен узнаваемый стиль на всех материалах, а не одна картинка.', [
+   (None, None, 'Пример подбираем', 'Иллюстрации для бренда', 'Графический язык, набор иллюстраций', 'Серия из 5–15 кадров в одном стиле', '5–30 тыс ₽'),
+   ('cases/lappi-2.webp', 'https://perasperadastra.ru/sreda-lappi', 'Лаппи', 'Маскот', 'Персонаж бренда в разных позах и ситуациях', 'Карточка персонажа и серия сцен', 'по объёму'),
+   ('cases/hronos-main.webp', 'https://perasperadastra.ru/sreda-hronos', 'Хронос', 'Упаковка', 'Концепт упаковки и её подача', 'Концепт, мокапы, носители', 'по объёму'),
+   (None, None, 'Пример подбираем', 'Айдентика', 'Графика бренда: знак, паттерны, носители', 'Набор графики и примеры применения', 'по объёму'),
+   (None, None, 'Пример: Яндекс', 'Графика для цифрового продукта', 'Иллюстрации и 3D для приложения, сайта, промо', 'Серия графики в стиле продукта', '5–30 тыс ₽'),
+   ('cases/eaglips-2.webp', DP2 + '173955/eaglips', 'Eaglips · Милана Гавриченко', 'AI-продукт', 'Придумать и показать продукт, которого нет', 'Метафора, карточка продукта, KV, мокапы', '30–100 тыс ₽')]),
  ('vid', 'Видео', 'Бренды, медиа и артисты: ролики для рекламы, соцсетей и музыкантов.', [
-   (V('cases/v-knives.mp4|cases/v-knives.jpg'), 'knives', 'Рекламный ролик', 'Продукт через рекламный приём, пэкшот в финале', 'Ролик и нарезки под площадки', '30–100 тыс ₽'),
-   (V('https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4|'), 'husky', 'Клип и визуалайзер', 'Визуальный ряд под трек артиста', 'Клип или визуалайзер', 'по объёму'),
-   (V('cases/v-lappi.mp4|cases/v-lappi.jpg'), 'lappi', 'Мультфильм и анимация персонажа', 'Короткая история с маскотом или героем', 'Ролик со звуком', 'по объёму'),
-   ('img/c-t-services.webp', None, 'Объясняющий ролик', 'Как работает продукт или сервис, за 30–90 секунд', 'Ролик с графикой и озвучкой', 'по объёму'),
-   ('cases/godovshina.webp', 'godov', 'Фильм по фото', 'Семейная или корпоративная история с реальными героями', 'Фильм со звуком и титрами', 'по объёму'),
-   ('img/c-video-portfolio.webp', None, 'Тематический ролик', 'Исторический, художественный или мемный ролик на 20–60 секунд', 'Ролик со звуком и титрами', '5–50 тыс ₽')]),
+   ('video:https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4|', 'https://perasperadastra.ru/klip', 'Хаски', 'Клип', 'Визуальный ряд под трек артиста', 'Клип или визуалайзер', 'по объёму'),
+   (None, 'https://t.me/perasperagram/2173', 'Ведьмак · кураторы школы', 'Мультфильм', 'Короткая история с персонажем', 'Ролик со звуком', 'по объёму'),
+   (None, None, 'Пример подбираем', 'Объясняющий ролик', 'Как работает продукт или сервис, за 30–90 секунд', 'Ролик с графикой и озвучкой', 'по объёму'),
+   ('cases/godovshina-2.webp', 'https://perasperadastranew.github.io/guides/rolik-po-foto/', 'Годовщина родителей', 'AI-фильм', 'История с реальными героями и локациями', 'Фильм со звуком и титрами', 'по объёму'),
+   (None, None, 'Пример подбираем', 'Тематический ролик', 'Исторический, художественный или мемный ролик на 20–60 секунд', 'Ролик со звуком и титрами', '5–50 тыс ₽')]),
 ]
-def thumb(src, key, name):
+def media(src, credit):
+    if src is None:
+        return '<span class="ph"><span>%s</span></span>' % credit
     if src.startswith('video:'):
         u, poster = src[6:].split('|')
-        med = '<video muted loop playsinline preload="%s"%s data-src="%s"></video>' % ('none' if poster else 'metadata', (' poster="%s"' % poster) if poster else '', u)
-    else:
-        med = '<img src="%s" alt="%s" loading="lazy">' % (src, name)
-    if key:
-        u, who = CASE[key]
-        return '<a class="th2" href="%s" target="_blank" rel="noopener">%s</a>' % (u, med), '<a class="by" href="%s" target="_blank" rel="noopener">%s ↗</a>' % (u, who)
-    return '<span class="th2">%s</span>' % med, ''
-WIDE = {'Key visual и адаптации': 'cases/knives-2.webp', 'Маскот': 'cases/mako-2.webp', 'Упаковка и айдентика': 'cases/hronos-main.webp', 'AI-продукт': 'cases/eaglips-2.webp', 'Мультфильм и анимация персонажа': 'cases/lappi-2.webp', 'Фильм по фото': 'cases/godovshina-2.webp', 'Рекламный ролик': 'cases/knives-2.webp'}
+        return '<video muted loop playsinline preload="%s"%s data-src="%s"></video>' % ('none' if poster else 'metadata', (' poster="%s"' % poster) if poster else '', u)
+    return '<img src="%s" alt="%s" loading="lazy">' % (src, credit)
 pans = ''
 for i, (k, n, who, rows) in enumerate(CATS):
     rr = ''
-    for src, key, name, task, give, price in rows:
-        tb, by = thumb(src, key, name)
-        w2 = WIDE.get(name)
-        if w2:
-            wd = '<span class="th3"><img src="%s" alt="%s" loading="lazy"></span>' % (w2, name)
+    for src, link, credit, name, task, give, price in rows:
+        m = media(src, credit)
+        if link:
+            ex = '<a class="exm" href="%s" target="_blank" rel="noopener"><span class="th3">%s<i class="go" aria-hidden="true">↗</i></span><span class="cap2">%s <em>↗</em></span></a>' % (link, m, credit)
         else:
-            wd = tb.replace('class="th2"', 'class="th3"')
-        if name == 'Мультфильм и анимация персонажа':
-            wd = '<div class="duo">%s<a class="th3 wt" href="https://t.me/perasperagram/2173" target="_blank" rel="noopener"><span class="ty" aria-hidden="true">Ведьмак</span><span class="pl2" aria-hidden="true">▶</span></a></div>' % wd
-            by += '<a class="by" href="https://t.me/perasperagram/2173" target="_blank" rel="noopener">Ведьмак · кураторы школы ↗</a>'
-        if name == 'Маскот':
-            u2, who2 = CASE['lappi']
-            wd = '<div class="duo">%s<a class="th3" href="%s" target="_blank" rel="noopener"><img src="cases/lappi-2.webp" alt="Лаппи" loading="lazy"></a></div>' % (wd, u2)
-            by += '<a class="by" href="%s" target="_blank" rel="noopener">%s ↗</a>' % (u2, who2)
-        rr += '<tr><th scope="row"><b>%s</b>%s</th><td class="pd"><p>%s</p><p class="gv"><span>Сдаёшь:</span> %s</p><div class="pc">%s</div></td><td class="t2">%s</td></tr>' % (name, by, task, give, price, wd)
+            ex = '<div class="exm"><span class="th3">%s</span><span class="cap2 soon">%s</span></div>' % (m, credit)
+        rr += '<tr><th scope="row"><b>%s</b></th><td class="pd"><p>%s</p><p class="gv"><span>Сдаёшь:</span> %s</p><div class="pc">%s</div></td><td class="t2">%s</td></tr>' % (name, task, give, price, ex)
     pans += '<div class="cat" id="cp-%s"><div class="cath"><span class="cn2">%02d</span><h3>%s</h3><p>%s</p></div><div class="tw"><table class="prt"><thead><tr><th>Проект</th><th>Задача и цена</th><th>Пример</th></tr></thead><tbody>%s</tbody></table></div></div>' % (k, i + 1, n, who, rr)
 b3 = pans
 PJ = [  # название, часы от-до, цена от-до (тыс ₽), подпись: dx, dy, якорь
@@ -233,7 +215,7 @@ for i, (n, h1, h2, p1, p2, dx, dy, an) in enumerate(PJ):
         ' hot' if hot else '', i, X(hm), Y(pm_), X(hm) + dx, Y(pm_) + dy, an, n, format(int(round(rate, -2)), ',').replace(',', ' ')))
 g.append('</svg>')
 chart = '<figure class="hp"><div class="hsc">%s</div><figcaption><span class="micro">Часы × цена</span><span>Точка — середина вилки по часам и цене. Чем выше точка над линиями, тем дороже час. <b>Красным</b> — где час стоит дороже всего: в рекламе платят за идею и ответственность, а не за генерацию.</span></figcaption></figure>' % ''.join(g)
-t3 = '<p>Удобнее делить проекты по типу работы: фото, графика, продукты и видео. Для каждого — кто заказывает, что ты сдаёшь и вилка цен на 2026 год. Внизу вилки — один кадр, один круг правок и один формат, вверху — набор кадров, адаптации и передача прав.</p>'
+t3 = '<p>Удобнее делить проекты по типу работы: фотореализм, графика и видео. Для каждого — кто заказывает, что ты сдаёшь и вилка цен на 2026 год. Внизу вилки — один кадр, один круг правок и один формат, вверху — набор кадров, адаптации и передача прав.</p>'
 out.append(section(4, '04', 'Заказы и цены', 'Какие проекты заказывают <span class="s">и сколько они стоят</span>', t3, b3 + '\n<p class="micro" style="margin:56px 0 14px">Сколько стоит час в разных проектах</p>\n' + chart))
 
 # --- I.05 Что изменили нейросети — по категориям
@@ -241,8 +223,8 @@ b2 = sec_body('pg-2')
 R = dict((re.sub('<[^>]+>', '', m.group(1)).strip(), m.group(0)) for m in re.finditer(r'<tr><td><b>(.*?)</b>.*?</tr>', b2, re.S))
 def BR(name, sub, was, wasd, now, nowd, pct, x):
     return '<tr><td><b>%s</b><small>%s</small></td><td class="n"><span class="t">%s</span>%s</td><td class="nn"><span class="t a">%s</span>%s</td><td><div class="bb"><i style="--w:100%%"></i><i class="a" style="--w:%d%%"></i></div><span class="x">%s</span></td></tr>' % (name, sub, was, wasd, now, nowd, pct, x)
-G = lambda t, d: '<tr class="grp"><td colspan="4"><span>%s</span><small>%s</small></td></tr>' % (t, d)
-body_rows = (G('Фото', 'предметка, модели, фотостиль') + R['Предметная фотосессия'] +
+G = lambda t, d: '<tr class="grp"><td colspan="4"><span>%s</span></td></tr>' % t
+body_rows = (G('Фотореализм', 'предметка, модели, фотостиль') + R['Предметная фотосессия'] +
   BR('Фотосессия с моделью', 'серия образов для бренда', '1–2 недели', 'Кастинг, модель, стилист, фотограф, студия и ретушь', '1–2 дня', 'Карточка модели и генерация образов', 15, '≈ в 7 раз быстрее') +
   G('Графика и 3D', 'KV, иллюстрации, маскоты, продукт') +
   BR('Key visual и адаптации', 'главный образ и 5–10 форматов', '1–2 недели', 'Съёмка или 3D, дизайнер на адаптации', '2–3 дня', 'Генерация образа, вёрстка в Figma', 25, '≈ в 4 раза быстрее') +
