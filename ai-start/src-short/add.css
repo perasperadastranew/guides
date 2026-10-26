@@ -268,3 +268,4 @@
 .pg .walk.on .w1,.pg .walk.on .w2,.pg .walk.on .w3{transform:translateX(30%);opacity:.18}
 .pg .walk .n3{left:8%}.pg .walk .n1{left:auto;right:6%}
 .pg .walk::after{content:"→";position:absolute;left:54%;top:45%;font:400 40px/1 var(--num);color:var(--muted)}
+.pg .note{margin:28px 0 0;max-width:760px;padding:16px 20px;background:var(--surface);font-size:14px;line-height:1.55;color:var(--muted);clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px)}.pg .note b{color:var(--fg);font-weight:500}
