@@ -184,13 +184,19 @@ def thumb(src, key, name):
         u, who = CASE[key]
         return '<a class="th2" href="%s" target="_blank" rel="noopener">%s</a>' % (u, med), '<a class="by" href="%s" target="_blank" rel="noopener">%s ↗</a>' % (u, who)
     return '<span class="th2">%s</span>' % med, ''
+WIDE = {'Key visual и адаптации': 'cases/knives-2.webp', 'Маскот': 'cases/mako-2.webp', 'Упаковка и айдентика': 'cases/hronos-main.webp', 'AI-продукт': 'cases/eaglips-2.webp', 'Мультфильм и анимация персонажа': 'cases/lappi-2.webp', 'Фильм по фото': 'cases/godovshina-2.webp', 'Рекламный ролик': 'cases/knives-2.webp'}
 pans = ''
 for i, (k, n, who, rows) in enumerate(CATS):
     rr = ''
     for src, key, name, task, give, price in rows:
         tb, by = thumb(src, key, name)
-        rr += '<li>%s<div class="pd"><b>%s</b><p>%s</p><p class="gv"><span>Сдаёшь:</span> %s</p>%s</div><div class="pc">%s</div></li>' % (tb, name, task, give, by, price)
-    pans += '<div class="cat" id="cp-%s"><div class="cath"><span class="cn2">%02d</span><h3>%s</h3><p>%s</p></div><ol class="prl">%s</ol></div>' % (k, i + 1, n, who, rr)
+        w2 = WIDE.get(name)
+        if w2:
+            wd = '<span class="th3"><img src="%s" alt="%s" loading="lazy"></span>' % (w2, name)
+        else:
+            wd = tb.replace('class="th2"', 'class="th3"')
+        rr += '<tr><th scope="row"><b>%s</b>%s</th><td class="pd"><p>%s</p><p class="gv"><span>Сдаёшь:</span> %s</p><div class="pc">%s</div></td><td class="t1">%s</td><td class="t2">%s</td></tr>' % (name, by, task, give, price, tb, wd)
+    pans += '<div class="cat" id="cp-%s"><div class="cath"><span class="cn2">%02d</span><h3>%s</h3><p>%s</p></div><div class="tw"><table class="prt"><thead><tr><th>Проект</th><th>Задача и цена</th><th>Пример</th><th></th></tr></thead><tbody>%s</tbody></table></div></div>' % (k, i + 1, n, who, rr)
 b3 = pans
 PJ = [  # название, часы от-до, цена от-до (тыс ₽), подпись: dx, dy, якорь
  ('Мокапы', 2, 6, 1, 5, 10, 4, 'start'),
