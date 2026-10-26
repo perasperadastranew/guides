@@ -33,7 +33,7 @@
 .pg ol.cen img{display:block;height:clamp(130px,19vw,240px);width:auto;max-width:100%;object-fit:contain;object-position:left bottom;margin-bottom:12px}
 .pg ol.cen.on img{animation:pgwalk 1.1s ease-in-out 2;animation-delay:calc(var(--i)*.35s)}
 @keyframes pgwalk{25%{transform:translateY(-3px)}50%{transform:none}75%{transform:translateY(-3px)}}
-.pg ol.cen li b{font:400 clamp(17px,1.8vw,22px)/1.05 "PG W3",var(--sans);text-transform:uppercase;letter-spacing:.01em}
+.pg ol.cen li b{font:600 clamp(17px,1.8vw,22px)/1.05 var(--num);letter-spacing:-.02em}
 .pg ol.cen li p{margin:0;font-size:14px;line-height:1.4;color:var(--muted)}
 .pg ol.cen li:last-child b,.pg ol.cen li:last-child .micro{color:var(--accent)}
 @media (prefers-color-scheme:dark){.pg ol.cen img{filter:invert(1)}}
@@ -43,7 +43,7 @@
 .pg .pm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:32px}
 .pg .pm>div{padding:24px 24px 26px;background:var(--surface);clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}
 .pg .pm .mn{background:var(--fg);color:var(--bg)}
-.pg .pm h3{margin:0 0 16px;font:400 clamp(26px,3vw,36px)/1 "PG W3",var(--sans);text-transform:uppercase}
+.pg .pm h3{margin:0 0 16px;font:600 clamp(26px,3vw,36px)/1 var(--num);letter-spacing:-.02em}
 .pg .pm .pp h3{color:var(--accent)}
 .pg .pm h3 span{display:block;font:400 12px/1.3 var(--mono);letter-spacing:.06em;margin-top:8px;opacity:.7}
 .pg .pm ol{margin:0;padding:0;list-style:none;counter-reset:pm}
@@ -102,7 +102,7 @@
 .pg .tm{padding:26px 24px;background:var(--surface);display:flex;flex-direction:column;gap:10px;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}
 .pg .tm.v{background:var(--fg);color:var(--bg)}
 .pg .tm.v .micro{color:var(--accent)}
-.pg .tm h3{margin:0;font:400 clamp(34px,4.4vw,52px)/1 "PG W3",var(--sans);text-transform:uppercase}
+.pg .tm h3{margin:0;font:600 clamp(34px,4.4vw,52px)/1 var(--num);letter-spacing:-.02em}
 .pg .tm p{margin:0;font-size:15px;line-height:1.5}
 .pg .tm ul{margin:4px 0 0;padding:0;list-style:none}
 .pg .tm li{padding:8px 0 8px 22px;border-top:1px solid color-mix(in srgb,currentColor 18%,transparent);position:relative;font-size:15px}
@@ -129,7 +129,7 @@
 .pg ol.con p{margin:0;font-size:15px;line-height:1.5;color:var(--muted)}
 .pg .live{padding:36px 32px 34px;background:var(--accent);color:var(--on-accent);clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,0 calc(100% - 12px),0 12px)}
 .pg .live .micro{color:inherit;opacity:.75}
-.pg .live h3{margin:10px 0 12px;font:400 clamp(34px,5vw,60px)/1 "PG W3",var(--sans);text-transform:uppercase}
+.pg .live h3{margin:10px 0 12px;font:600 clamp(34px,5vw,60px)/1 var(--num);letter-spacing:-.02em}
 .pg .live p{margin:0 0 18px;max-width:60ch;font-size:16px;line-height:1.5}
 .pg .live .btn{background:var(--on-accent);color:var(--accent)}
 .pg .gds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
@@ -173,7 +173,7 @@
 .pg .fromto .fr{background:var(--surface)}
 .pg .fromto .to{background:var(--fg);color:var(--bg)}
 .pg .fromto .to>.micro{color:var(--accent)}
-.pg .fromto h3{margin:0 0 6px;font:400 clamp(26px,3vw,36px)/1.05 "PG W3",var(--sans);text-transform:uppercase}
+.pg .fromto h3{margin:0 0 6px;font:600 clamp(26px,3vw,36px)/1.05 var(--num);letter-spacing:-.02em}
 .pg .fromto .fr p{margin:0;font-size:16px;line-height:1.5}
 .pg .fromto .ks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:6px}
 .pg .fromto .ks .k{display:flex;flex-direction:column;gap:6px}
@@ -243,7 +243,7 @@
 .pg h2 .nw,.pg h1 .nw{white-space:nowrap}
 /* было и стало: заметные категории */
 .pg .bat tr.grp td{padding:44px 0 14px;border-bottom:1px solid var(--fg)}
-.pg .bat tr.grp td span{font:400 clamp(28px,3.4vw,44px)/1 "PG W3",var(--sans);text-transform:uppercase;color:var(--accent);margin-right:16px}
+.pg .bat tr.grp td span{font:600 clamp(28px,3.4vw,44px)/1 var(--num);letter-spacing:-.02em;color:var(--accent);margin-right:16px}
 .pg .bat tr.grp td small{font:400 12px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .pg .bat tbody tr.grp:first-child td{padding-top:20px}
 /* 3 → 1: три фигуры сходятся в одну */
@@ -324,13 +324,13 @@
 .pg .twc>div{display:flex;flex-direction:column;gap:4px;max-width:30ch}
 .pg .twc .r{justify-self:end;text-align:right;opacity:0;transition:opacity .6s}
 .pg .tw3.big .twc .r{opacity:1}
-.pg .twc b{font:400 clamp(18px,2.4vw,30px)/1 "PG W3",var(--sans);text-transform:uppercase}
+.pg .twc b{font:600 clamp(18px,2.4vw,30px)/1 var(--num);letter-spacing:-.02em}
 .pg .twc .r b{color:#F0303B}
 .pg .twc span{font-size:clamp(11px,1.3vw,14px);line-height:1.35;color:#A3A39D}
 @media (max-width:640px){.pg .twc{position:static;padding:14px 16px 16px;gap:12px}.pg .twc .r{opacity:1}}
 .pg .twc{position:static;padding:4px 4% 22px}
 .pg .gds{grid-template-columns:repeat(3,minmax(0,1fr))}
-.pg .gd.tg .ty{font:400 clamp(60px,8vw,110px)/1 "PG W3",var(--sans);letter-spacing:.02em}
+.pg .gd.tg .ty{font:600 clamp(60px,8vw,110px)/1 var(--num);letter-spacing:-.03em}
 .pg .gdl{margin:22px 0 0;font-size:16px;color:var(--muted)}
 .pg .gdl a{color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
 @media (max-width:640px){.pg .gds{grid-template-columns:minmax(0,1fr)}}
@@ -339,7 +339,7 @@
 .pg .tsg{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:12px;margin-top:14px}
 .pg .tc{background:var(--surface);padding:22px 22px 24px;display:flex;flex-direction:column;gap:14px;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}
 .pg .tl2 .micro{display:block;margin-bottom:6px}
-.pg .tl2 b{display:block;font:400 clamp(30px,4vw,54px)/.95 "PG W3",var(--sans);text-transform:uppercase}
+.pg .tl2 b{display:block;font:600 clamp(30px,4vw,54px)/.95 var(--num);letter-spacing:-.02em}
 .pg .tc.wide .tl2 b{color:var(--accent)}
 .pg .tfx{position:relative;display:flex;justify-content:center;align-items:flex-end;height:clamp(220px,28vw,340px)}
 .pg .tfx .m{display:block;height:100%;aspect-ratio:var(--w)/var(--h);background:var(--fg);-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center bottom;mask-position:center bottom;position:relative;z-index:1}
@@ -356,3 +356,14 @@
 .pg .abq{flex:1 1 300px;font:italic 400 15px/1.35 var(--serif);color:var(--muted);quotes:"«" "»"}
 .pg .tfx .tax.v,.pg .tfx .tax.h{transform:none;clip-path:none;border-radius:0;opacity:.85}.pg .tfx .tax.v{width:10px;left:calc(50% - 5px)}.pg .tfx .tax.h{height:10px}
 .pg .tfx .tax.v{left:6%;width:6px;top:4%;bottom:0}.pg .tfx .tax.h{top:2%;left:4%;right:4%;height:6px}.pg .tfx .tax::before,.pg .tfx .tax::after{content:"";position:absolute;border:7px solid transparent}.pg .tfx .tax.v::before{top:-12px;left:-4px;border-bottom-color:var(--accent);border-width:0 7px 12px}.pg .tfx .tax.v::after{bottom:-12px;left:-4px;border-top-color:var(--accent);border-width:12px 7px 0}.pg .tfx .tax.h::before{left:-12px;top:-4px;border-right-color:var(--accent);border-width:7px 12px 7px 0}.pg .tfx .tax.h::after{right:-12px;top:-4px;border-left-color:var(--accent);border-width:7px 0 7px 12px}.pg .tfx{padding-top:18px}
+.pg .tlead{margin:8px 0 0;font:600 clamp(22px,2.6vw,32px)/1.2 var(--num);letter-spacing:-.02em;max-width:30ch}
+.pg .tl2 b{font:600 clamp(22px,2.4vw,30px)/1.1 var(--num);letter-spacing:-.02em;text-transform:none}
+/* баннер эфира */
+.pg .lvb{display:flex;align-items:center;flex-wrap:wrap;gap:6px 16px;max-width:720px;margin:28px 0 0;padding:14px 18px;background:var(--surface);color:var(--fg);text-decoration:none;border-left:3px solid var(--accent);transition:background .2s}
+.pg .lvb:hover{background:color-mix(in srgb,var(--accent) 10%,var(--surface))}
+.pg .lvb .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent);animation:pgpl 1.6s infinite}
+.pg .lvb .micro{color:var(--accent)}
+.pg .lvb b{font:600 16px/1.2 var(--num)}
+.pg .lvb .tx{font-size:14px;color:var(--muted);flex:1 1 220px}
+.pg .lvb i{font-style:normal;color:var(--accent);font-size:18px}
+@media (prefers-reduced-motion:reduce){.pg .lvb .dot{animation:none}}

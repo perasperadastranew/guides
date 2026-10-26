@@ -41,6 +41,7 @@ hdr = re.sub(r'<nav class="need".*?</nav>', '''<nav class="need" aria-label="Р�
 <a href="#pg-end"><b><i>→</i>Итог</b><span>Пять выводов, эфир и гайды</span></a>
 </nav>''', hdr, flags=re.S)
 out.append(hdr)
+out.append('<a class="lvb" href="https://t.me/perasperagram" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span><span class="micro">Прямой эфир</span><b>Среда, 28 октября, 19:00</b><span class="tx">Разберём рынок, навыки и нейросети вживую</span><i aria-hidden="true">→</i></a>\n')
 
 # ================= ЧАСТЬ I. РЫНОК
 out.append(part('p1', 'I', 'Рынок', 'Что происходит на самом деле, какие мифы мешают, какие проекты заказывают и что изменили нейросети.'))
@@ -84,10 +85,10 @@ towers = """<figure class="tw3" id="pg-tw"><div class="abh"><span class="micro">
 <div class="twv"><canvas width="480" height="270" data-src="d/towers.png" data-n="62" role="img" aria-label="Слева маленькая башенка из трёх блоков — проект раньше. Справа строится большая башня в семь ярусов — проект сейчас"></canvas>
 <div class="twc"><div class="l"><b>Раньше</b><span>Одна картинка, один формат</span></div><div class="r"><b>Сейчас</b><span>Фото, графика, 3D, моушн, видео и адаптации — в одном проекте</span></div></div></div></figure>"""
 
-tshape = """<figure class="tsp" id="pg-tsp"><span class="micro">Кто сейчас ценится</span>
-<div class="tsg"><div class="tc deep"><div class="tl2"><span class="micro">с глубокой</span><b>Экспертизой</b></div><div class="tfx"><i class="tax v" aria-hidden="true"></i><i class="m" style="--w:223;--h:440;-webkit-mask-image:url(img/t-deep.png);mask-image:url(img/t-deep.png)"></i></div><p>Глубоко в своём деле: дизайн, моушн, монтаж, иллюстрация. Это то, за что тебя выбирают.</p></div>
-<div class="tc wide"><div class="tl2"><span class="micro">и широким кругозором</span><b>В смежных</b></div><div class="tfx"><i class="tax h" aria-hidden="true"></i><i class="m" style="--w:424;--h:440;-webkit-mask-image:url(img/t-wide.png);mask-image:url(img/t-wide.png)"></i></div><p>Широко в соседних областях: 3D, видео, звук, текст. Нейросети дают эту ширину без отдельной команды.</p></div></div>
-<p class="tsum"><b>Вместе — Т-специалист.</b> Вертикаль — глубина, горизонталь — ширина. Одной ширины мало: без глубины получается средний результат.</p></figure>"""
+tshape = """<figure class="tsp" id="pg-tsp"><span class="micro">Кто сейчас ценится</span><p class="tlead">Дизайнер с глубокой экспертизой в одной сфере и широким кругозором в смежных</p>
+<div class="tsg"><div class="tc deep"><div class="tl2"><span class="micro">Вертикаль</span><b>Глубокая экспертиза</b></div><div class="tfx"><i class="tax v" aria-hidden="true"></i><i class="m" style="--w:223;--h:440;-webkit-mask-image:url(img/t-deep.png);mask-image:url(img/t-deep.png)"></i></div><p>Одна сфера, в которой ты сильнее большинства: дизайн, моушн, монтаж или иллюстрация. За это тебя и выбирают.</p></div>
+<div class="tc wide"><div class="tl2"><span class="micro">Горизонталь</span><b>Широкий кругозор</b></div><div class="tfx"><i class="tax h" aria-hidden="true"></i><i class="m" style="--w:424;--h:440;-webkit-mask-image:url(img/t-wide.png);mask-image:url(img/t-wide.png)"></i></div><p>Понимание смежных областей: 3D, видео, звук, текст. Нейросети дают эту ширину без отдельной команды.</p></div></div>
+<p class="tsum"><b>Вместе это и есть Т-специалист.</b> Одной ширины мало: без глубины получается средний результат.</p></figure>"""
 
 birds = """<figure class="ab" id="pg-birds"><div class="abh"><span class="micro">Почему одних нейросетей мало</span><q class="abq">Успех не в силе натяжения, а в том, куда приложить усилие</q><button type="button" class="ab-re">↻ Ещё раз</button></div>
 <div class="abg"><div class="ab-a"><span class="micro">Только нейросети</span><div class="abv"><canvas width="480" height="270" data-src="d/birds-a.png" role="img" aria-label="Одна и та же птица трижды отскакивает от крепости — проект стоит"></canvas><span class="cap"></span></div><p>Новичок умеет только генерировать — и бьёт этим раз за разом. Тот же удар, тот же результат.</p></div>
