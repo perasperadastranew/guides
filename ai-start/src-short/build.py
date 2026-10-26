@@ -265,7 +265,7 @@ out.append(section(6, '06', 'Клиенты', 'Чего хотят клиент�
 # ================= ЧАСТЬ II. ПОШАГОВО
 out.append(part('p2', 'II', 'Пошаговый план', 'Семь шагов от цели до первого оплаченного заказа.'))
 def step(id_src, n, title, txt=None, body=None):
-    return section(id_src.replace('pg-', 'st'), '%02d' % n, 'Шаг %d' % n, title, txt if txt is not None else sec_txt(id_src), body if body is not None else nofn(sec_body(id_src)))
+    return section(id_src.replace('pg-', 'st'), '%02d' % n, '', title, txt if txt is not None else sec_txt(id_src), body if body is not None else nofn(sec_body(id_src)))
 def _dir(m):
     t = m.group(0)
     h = re.search(r'<h3>(.*?) → <span class="s">(.*?)</span></h3>', t)
@@ -288,7 +288,7 @@ LEARN = [
 ]
 learn = '<ol class="check">' + ''.join('<li><b>%s.</b> %s</li>' % x for x in LEARN) + '</ol>'
 GUIDES_SHORT = '<div class="lrn"><a href="https://perasperadastra.ru/mission-to-ai" target="_blank" rel="noopener"><span class="micro">Курс</span><b>Mission to AI ↗</b><span>Генерация графики и видео с обратной связью от кураторов</span></a><a href="https://t.me/perasperagram" target="_blank" rel="noopener"><span class="micro">Бесплатно</span><b>Наш Telegram-канал ↗</b><span>Разборы проектов, новые нейросети, эфиры и гайды</span></a><a href="#pg-end"><span class="micro">Бесплатно</span><b>Гайды школы ↓</b><span>AI-клип и AI-фильм с реальными героями</span></a></div>'
-out.append(section('learn', '02', 'Шаг 2', 'Прокачай <span class="s">базу</span>',
+out.append(section('learn', '02', '', 'Прокачай <span class="s">базу</span>',
   '<p>Нейросеть усиливает то, что уже есть внутри: есть вкус и идея — будет сильный результат, нет — будет среднее. Поэтому сначала база, потом сервисы.</p>',
   learn + '\n<p class="micro" style="margin:36px 0 12px">Где учиться</p>\n' + GUIDES_SHORT))
 out.append(step('pg-7', 3, 'Опиши <span class="s">свои услуги</span>'))
@@ -298,7 +298,7 @@ def exg(items, cap):
 first = exg([('cases/eaglips.webp', 'Продукт с нуля', 'eaglips'), ('img/case-lumera-1.webp', 'Выдуманный гаджет', 'lumera'), ('cases/mako.webp', 'Маскот', 'mako')], 'Так начинали ученики')
 first += '<p class="tip"><b>Больше 50 наград на Dprofile</b> собрали ученики школы — многие с первых учебных проектов, сделанных с нуля. Посмотри их кейсы, чтобы понять планку.</p>'
 out.append(step('pg-9', 5, 'Сделай первый <span class="s">проект</span>', body=nofn(sec_body('pg-9')) + first))
-out.append(section('st10', '06', 'Шаг 6', 'Оформи кейс <span class="s">и покажи работы</span>', sec_txt('pg-10'),
+out.append(section('st10', '06', '', 'Оформи кейс <span class="s">и покажи работы</span>', sec_txt('pg-10'),
   nofn(sec_body('pg-10')) + exg([('cases/hronos-box.webp', 'Кейс на сайте', 'hronos'), ('cases/v-lappi.jpg', 'Кейс на сайте', 'lappi'), ('cases/v-knives.jpg', 'Кейс на Dprofile', 'knives')], 'Как оформляют кейсы у нас') + '\n<p class="micro" style="margin:48px 0 12px">Где показывать</p>\n' + nofn(sec_body('pg-11'))))
 out.append(step('pg-12', 7, 'Возьми первый <span class="s">заказ</span>'))
 
