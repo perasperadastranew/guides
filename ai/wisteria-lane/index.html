@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>3D-улица из сериала</title>
+<meta name="robots" content="noindex">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500&display=swap">
+<style>
+/* Layout: шаблон лид-магнитов Perasperadastra (rolik-po-foto): колонка чтения 680px, кадры и схема на всю обёртку 1040px */
+@font-face{font-family:"Classic Russian";src:url(a/01.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"W3iP";src:url(a/02.ttf) format("truetype");font-display:swap}
+:root{
+  --bg:#F1EFEA; --surface:#E5E2DB; --fg:#0C0B0D; --muted:#625E5B; --line:#CFCBC3; --accent:#B0141C; --on-accent:#FFFFFF;
+  --sans:-apple-system,"SF Pro Text","Golos Text","Helvetica Neue",Arial,sans-serif;
+  --serif:"Classic Russian","Times New Roman",Georgia,serif;
+  --mono:"W3iP","SF Mono",ui-monospace,Menlo,monospace;
+  --c:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C0B0D;--surface:#1B191C;--fg:#F1EFEA;--muted:#A5A09B;--line:#302D31;--accent:#EE3A40;--on-accent:#0C0B0D;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0C0B0D;--surface:#1B191C;--fg:#F1EFEA;--muted:#A5A09B;--line:#302D31;--accent:#EE3A40;--on-accent:#0C0B0D;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1040px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 96px;display:flex;flex-direction:column;gap:88px}
+.micro{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+header{display:flex;flex-direction:column;gap:36px}
+h1{font-weight:300;font-size:clamp(44px,8.2vw,104px);line-height:.92;letter-spacing:-.035em;margin:0;text-wrap:balance}
+h1 span{display:block}
+h1 span+span{padding-left:.9em}
+.s{font-family:var(--serif);font-weight:400;letter-spacing:-.02em;font-size:1.12em}
+.lead{max-width:34em;font-size:clamp(18px,2.1vw,22px);color:var(--fg);margin:0;text-indent:2.2em}
+figure{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+figure img{display:block;width:100%;max-width:100%;height:auto;background:var(--surface);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+figcaption{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.need{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;border-top:1px solid var(--line)}
+.need div{padding:18px 18px 18px 0;border-bottom:1px solid var(--line);min-width:0}
+.need b{display:block;font-weight:500}
+.need span{color:var(--muted);font-size:15px}
+section.step{display:flex;flex-direction:column;gap:28px}
+.head{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 40px;align-items:start}
+.num{font-family:var(--serif);font-size:clamp(72px,11vw,128px);line-height:.8;color:var(--accent)}
+.num small{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:14px;line-height:1.3}
+h2{font-weight:300;font-size:clamp(30px,4.6vw,54px);line-height:1;letter-spacing:-.03em;margin:0 0 18px;text-wrap:balance}
+.txt{max-width:680px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.txt p{margin:0}
+.txt p:first-of-type{text-indent:2.2em}
+.txt ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.sub{margin:0;display:flex;gap:12px;align-items:baseline}
+.sub b{color:var(--accent);font-weight:400}
+.tpl{background:var(--surface);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c));padding:20px 22px;display:flex;flex-direction:column;gap:12px;max-width:680px;min-width:0}
+.tpl .bar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.tpl pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:14px;line-height:1.5;color:var(--fg)}
+button.copy{font:inherit;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;border:0;padding:8px 14px;cursor:pointer;background:var(--fg);color:var(--bg);flex:none;clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px)}
+button.copy:hover{background:var(--accent);color:var(--on-accent)}
+button.copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tip{max-width:680px;border-left:2px solid var(--accent);padding:2px 0 2px 18px;color:var(--muted);font-size:16px;margin:0}
+.tip b{color:var(--fg);font-weight:500}
+/* референсы, которые уходят в промпт */
+.rf{display:flex;gap:8px;margin-bottom:2px}
+.rf span{flex:1;min-width:0}
+.rf img{aspect-ratio:4/3;object-fit:contain;clip-path:none}
+.rf b{display:block;margin-top:4px;font:400 10px/1.3 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.rf.sm span{flex:0 1 calc(33.333% - 6px)}
+/* схема пайплайна с подсветкой зон */
+.board{gap:14px}
+.board .bd{position:relative;background:#0f0f12;clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.board .z{position:absolute;border:2px solid #EE3A40;box-shadow:0 0 0 2000px rgba(8,8,10,.62);opacity:0;transition:opacity .35s;pointer-events:none}
+.board .z.on{opacity:1}
+.board ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
+.board li{padding:14px 14px 14px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:15px;transition:color .3s}
+.board li b{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:400;margin-bottom:4px}
+.board li.on{color:var(--fg)}
+.board li.on b{color:var(--accent)}
+.board .bd .in{position:relative}
+/* места под будущие примеры */
+.mk{display:grid;gap:8px;padding:12px;background:var(--surface);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.mk i{display:flex;align-items:flex-end;padding:8px;min-height:130px;border:1px dashed var(--muted);font:normal 11px/1.25 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mk i b{color:var(--accent);font-weight:400;margin-right:.5em}
+.mk.tr{grid-template-columns:repeat(3,minmax(0,1fr))}
+.who{display:flex;flex-direction:column;gap:12px}
+.end{display:flex;flex-direction:column;gap:28px;border-top:1px solid var(--line);padding-top:40px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:24px}
+.facts b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(44px,6vw,72px);line-height:1;font-variant-numeric:tabular-nums}
+.facts span{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+ol.check{margin:0;padding-left:1.3em;max-width:680px;display:flex;flex-direction:column;gap:8px}
+.recap{list-style:none;counter-reset:r;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,auto);grid-auto-flow:column;gap:0 40px;border-top:1px solid var(--line)}
+.recap li{counter-increment:r;display:grid;grid-template-columns:44px minmax(0,1fr);gap:2px 8px;padding:16px 0;border-bottom:1px solid var(--line)}
+.recap li:before{content:counter(r);grid-row:1/3;font-family:var(--serif);font-size:34px;line-height:1;color:var(--accent)}
+.recap b{font-weight:500}.recap span{color:var(--muted);font-size:15px}
+/* единый блок: референсы -> промпт -> результат */
+.flow{display:flex;flex-direction:column;gap:14px}
+.inp,.out,.pair{display:grid;gap:12px}
+.c1{grid-template-columns:minmax(0,1fr)}.c2{grid-template-columns:repeat(2,minmax(0,1fr))}.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.inp.c1{max-width:calc(50% - 6px)}.out.c1.half{max-width:calc(50% - 6px)}
+.flow figure img{aspect-ratio:var(--ar,16/9);object-fit:cover;object-position:var(--op,50% 50%);height:auto}
+.flow figure video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--surface);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.mk.tr.one{grid-template-columns:minmax(0,1fr)}
+@media (max-width:640px){
+  body{font-size:17px}
+  .wrap{gap:64px}
+  .head{grid-template-columns:1fr}
+  .grid2,.grid3,.mk.tr{grid-template-columns:1fr}
+  .out.c2,.out.c3,.pair.c2{grid-template-columns:1fr}.inp.c3{grid-template-columns:repeat(2,minmax(0,1fr))}.inp.c1,.out.c1.half{max-width:100%}.recap{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
+  :root{--c:10px}
+  .board{margin-inline:calc(max(16px,env(safe-area-inset-left,0px))*-1)}
+  .board .bd{clip-path:none;overflow-x:auto}
+  .board .bd .in{width:230%}
+  .board ol{grid-template-columns:repeat(2,minmax(0,1fr));margin-inline:16px}
+  .board figcaption{padding-inline:16px}
+}
+@media (prefers-reduced-motion:reduce){.board .z{transition:none}}
+.ft{display:flex;flex-direction:column;gap:56px;border-top:1px solid var(--line);padding-top:44px;min-width:0}
+.ft-intro{display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:680px}
+.ft-intro h2{margin:6px 0 4px}.ft-intro p{margin:0}.ft-intro h2+p{text-indent:2.2em}
+.btn{display:inline-block;background:var(--accent);color:var(--on-accent);font:12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:16px 20px;margin-top:8px;border-radius:2px}
+.btn:hover{filter:brightness(1.12)}.btn:focus-visible,.mta-img:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.ph{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.ph img{display:block;width:100%;height:auto;object-fit:cover;border-radius:14px;background:var(--surface)}
+.ph-hero img{aspect-ratio:2.33/1}.ph-s img{aspect-ratio:16/10}
+.ph figcaption{display:flex;justify-content:space-between;gap:12px;font:11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ph2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 8px}
+.ft-photos{display:flex;flex-direction:column;gap:20px;min-width:0}
+.partners{display:flex;flex-direction:column;gap:24px;align-items:center;min-width:0}
+.tag{font:12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--fg);padding:13px 28px;background:
+ linear-gradient(var(--muted),var(--muted)) 0 0/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 0 0/1px 9px no-repeat,
+ linear-gradient(var(--muted),var(--muted)) 100% 0/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 100% 0/1px 9px no-repeat,
+ linear-gradient(var(--muted),var(--muted)) 0 100%/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 0 100%/1px 9px no-repeat,
+ linear-gradient(var(--muted),var(--muted)) 100% 100%/9px 1px no-repeat,linear-gradient(var(--muted),var(--muted)) 100% 100%/1px 9px no-repeat}
+.mq{width:100%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.mq-track{display:flex;width:max-content;animation:mq 34s linear infinite}
+.mq:hover .mq-track{animation-play-state:paused}
+.mq-set{display:flex;gap:12px;padding-right:12px}
+.lgo{width:176px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.lgo i{display:flex;align-items:center;justify-content:center;width:100%;height:88px;background:#EDEBE6;border-radius:10px}
+.lgo img{max-width:72%;max-height:52%;width:auto;height:auto;mix-blend-mode:multiply}
+.lgo span{font:11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+@keyframes mq{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.mq{-webkit-mask-image:none;mask-image:none}.mq-track{animation:none;width:auto;flex-wrap:wrap;justify-content:center}.mq-set{flex-wrap:wrap;justify-content:center;gap:16px 12px;padding:0}.mq-set[aria-hidden]{display:none}}
+.mta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-radius:14px;overflow:hidden;background:var(--surface);min-width:0}
+.mta-t{display:flex;flex-direction:column;gap:14px;align-items:flex-start;justify-content:center;padding:40px 36px}
+.mta-t h2{margin:0}.mta-t p{margin:0;color:var(--muted);font-size:17px}
+.mta-img{display:flex;align-items:center;justify-content:center;min-height:280px;background:var(--accent);color:#fff;text-decoration:none;font-family:var(--serif);font-size:clamp(34px,5vw,56px);letter-spacing:-.02em;text-align:center;padding:24px}
+.mta-img:hover{filter:brightness(1.08)}
+@media(max-width:640px){.ph2,.mta{grid-template-columns:1fr}.ft{gap:44px}.mta-t{padding:28px 22px}.mta-img{min-height:200px;order:-1}.ph-s img{aspect-ratio:4/3}}
+
+
+/* таблица весов, длинный рекап, квиз */
+.tbl{overflow-x:auto;max-width:680px}
+.tbl table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{font:400 12px/1.3 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tbl td:last-child,.tbl th:last-child{text-align:right;white-space:nowrap}
+.recap.r11{grid-template-rows:repeat(6,auto)}
+.end .btn{align-self:flex-start}
+.quiz{display:flex;flex-direction:column;gap:20px}
+.quiz h2{margin:0}
+.q{display:flex;flex-direction:column;gap:10px;padding:20px 0;border-top:1px solid var(--line);max-width:680px}
+.q p{margin:0;font-weight:500}
+.q .opts{display:flex;flex-direction:column;gap:8px}
+.q button{font:inherit;font-size:16px;text-align:left;color:var(--fg);background:var(--surface);border:1px solid transparent;padding:12px 16px;cursor:pointer;clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px)}
+.q button:hover{border-color:var(--muted)}
+.q button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.q button.ok{background:#2f6b45;color:#fff}
+.q button.no{background:var(--accent);color:var(--on-accent)}
+.q button[disabled]{cursor:default}
+.q .why{margin:0;color:var(--muted);font-size:16px;border-left:2px solid var(--accent);padding-left:16px}
+.q .why[hidden]{display:none}
+.score{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+@media (max-width:640px){.recap.r11{grid-template-rows:none}}
+</style>
+<div class="wrap">
+<header><div class="top micro"><span>Гайд · Нейросети и 3D</span><span>Пайплайн</span></div>
+<h1><span>3D-улица из сериала</span><span><span class="s" style="display:inline">с Claude и Blender</span></span></h1>
+<p class="lead">Мы собрали Вистериа-лейн из «Отчаянных домохозяек» как интерактивный сайт: тринадцать домов, холмы до горизонта, день и ночь, разрез дома и детективная игра с пятнадцатью уликами. Ни одного полигона не двигали руками: дома написаны кодом, сцену в Blender собирает Claude, а сайт — один HTML-файл на three.js. Разбираем весь путь по шагам, с промптами и ошибками, на которых мы учились.</p>
+<div class="out c1"><figure><img src="a/04.webp" alt="Сайт Вистериа-лейн: изометрическая улица днём и папка с делом" style="--ar:16/10" width="1440" height="900"><figcaption><span>Результат</span><span>Улица днём, общий план</span></figcaption></figure></div>
+<div class="out c2"><figure><img src="a/05.webp" alt="Та же улица ночью: горят окна и фонари" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Ночь</span><span>Окна, фонари, светлячки</span></figcaption></figure><figure><img src="a/06.webp" alt="Режим «Рисунок»: улица как чернильная иллюстрация" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Рисунок</span><span>Тушь, бумага, штриховка</span></figcaption></figure></div>
+</header>
+
+<div><p class="micro" style="margin:0 0 12px">Что понадобится</p><div class="need">
+<div><b>Claude</b><span>В десктопном приложении: пишет код, управляет Blender и проверяет сайт в браузере</span></div>
+<div><b>Blender</b><span>Бесплатный 3D-редактор. Здесь он сборочный цех и рендер</span></div>
+<div><b>Blender MCP</b><span>Аддон-мост: Claude запускает код прямо в открытом Blender</span></div>
+<div><b>Референсы</b><span>Карта улицы с номерами домов, кадры фасадов, видео с проездом</span></div>
+<div><b>three.js</b><span>Библиотека для 3D в браузере. Подключается одной строкой</span></div>
+<div><b>Хостинг</b><span>Любой для статичных страниц, например GitHub Pages</span></div>
+</div></div>
+
+<figure class="board" id="board"><div class="bd"><div class="in"><svg viewBox="0 0 1000 400" style="display:block;width:100%" role="img" aria-label="Схема: карта и кадры ведут к Python-генератору, затем к сборке в Blender через MCP и к сайту на three.js"><rect width="1000" height="400" fill="#0f0f12"/><g fill="#1f1d22" stroke="#4a464d"><rect x="30" y="70" width="200" height="110"/><rect x="30" y="220" width="200" height="110"/><rect x="290" y="140" width="190" height="120"/><rect x="540" y="140" width="190" height="120"/><rect x="790" y="140" width="180" height="120"/></g><path d="M230 125C260 125 260 200 290 200M230 275C260 275 260 200 290 200M480 200H540M730 200H790" stroke="#EE3A40" stroke-width="2" fill="none"/><g fill="#F1EFEA" font-family="monospace" font-size="20" text-anchor="middle"><text x="130" y="122">Карта улицы</text><text x="130" y="148" fill="#A5A09B" font-size="15">номера и изгибы</text><text x="130" y="272">Кадры домов</text><text x="130" y="298" fill="#A5A09B" font-size="15">фасады, крыши</text><text x="385" y="196">Python-</text><text x="385" y="222">генератор</text><text x="635" y="196">Blender</text><text x="635" y="222" fill="#A5A09B" font-size="15">через MCP</text><text x="880" y="196">Сайт</text><text x="880" y="222" fill="#A5A09B" font-size="15">three.js</text></g></svg>
+<span class="z" style="left:1.5%;top:13%;width:22.5%;height:74%"></span><span class="z" style="left:27%;top:30%;width:22%;height:42%"></span><span class="z" style="left:52%;top:30%;width:22%;height:42%"></span><span class="z" style="left:77%;top:30%;width:21%;height:42%"></span></div></div>
+<ol><li><b>01 Материал</b>Карта и кадры из сериала</li><li><b>02 Код</b>Дома, рельеф и растения функциями</li><li><b>03 Сцена</b>Claude собирает её в Blender</li><li><b>04 Сайт</b>Камера, свет, игра в браузере</li></ol><figcaption><span>Схема</span><span>Слева направо: от карты к сайту</span></figcaption></figure>
+
+<section class="step" id="step-1"><div class="head"><div class="num">1<small>План улицы</small></div><div class="txt"><h2>Сначала карта, потом <span class="s">дома</span></h2><p>Дорога на Вистериа-лейн изгибается, а дома стоят под разными углами к ней. Если начать с моделей, улица выйдет прямой и скучной. Поэтому первым делом переносим аэросъёмку в план в метрах: линию дороги, ширину проезжей части и тротуаров, место и поворот каждого участка, круглый тупик в конце.</p><ul><li>Найди снимок сверху с подписанными номерами домов. Для Вистериа-лейн это съёмочная площадка Colonial Street на студии Universal.</li><li>Попроси Claude описать дорогу десятком опорных точек и сгладить её сплайном.</li><li>Каждому участку нужны номер, сторона улицы и угол, под которым дом смотрит на дорогу.</li><li>Пусть Claude нарисует схему сверху, и сверь её с картой глазами.</li></ul><p>Метры выбраны не случайно: Blender и three.js считают в метрах, поэтому один план становится общей правдой для сцены и сайта.</p></div></div>
+<div class="flow"><p class="sub micro"><b>Промпт</b>Карта в план</p>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-plan">Скопировать</button></div><pre id="t-plan" tabindex="0">Вот аэроснимок улицы [название] с подписанными номерами домов.
+Перенеси его в план в метрах:
+— центральная линия дороги по [10–15] опорным точкам, сглаженная сплайном;
+— ширина дороги [9] м, тротуар [2] м с каждой стороны;
+— разворотный круг радиусом [15] м в конце улицы;
+— для каждого дома: номер, сторона улицы, расстояние вдоль дороги и угол поворота фасадом к ней.
+Сохрани план как Python-структуру и нарисуй схему сверху с номерами, чтобы я сверил её с картой.</pre></div>
+<p class="sub micro"><b>Результат</b>План, по которому строится всё остальное</p><div class="out c1 half"><figure><img src="a/07.webp" alt="Схема плана: изогнутая дорога и 13 участков с номерами" style="--ar:4/5" width="1200" height="1500" loading="lazy"><figcaption><span>План</span><span>Жёлтые — дома героинь</span></figcaption></figure></div></div>
+<p class="tip"><b>Проверка шага.</b> Порядок номеров совпадает с картой, дорога повторяет изгибы, ни один участок не залезает на проезжую часть.</p></section>
+
+<section class="step" id="step-2"><div class="head"><div class="num">2<small>Генератор</small></div><div class="txt"><h2>Дом как <span class="s">функция</span></h2><p>Вместо того чтобы лепить дома мышкой, просим Claude написать Python-скрипт с маленьким «конструктором». В нём есть коробка, цилиндр, крыши разных типов (двускатная, вальмовая, ломаная), окно с рамой, дверь, веранда, штакетник, дерево. Каждый дом — одна функция, которая собирает себя из этих деталей.</p><ul><li>Детали ставятся в координатах самого дома. Потом дом целиком поворачивается и встаёт на свой участок из плана.</li><li>Материал — это просто имя и цвет: «brick», «roof_slate», «glass». По имени сайт потом понимает, что стекло нужно зажечь ночью.</li><li>Скрипт работает в двух режимах: внутри Blender строит объекты, а без Blender пишет файлы glTF для сайта. Так сцена и сайт не расходятся.</li></ul></div></div>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-gen">Скопировать</button></div><pre id="t-gen" tabindex="0">Напиши Python-генератор low-poly домов без внешних библиотек.
+Нужен класс Mesh со стеком трансформаций (сдвиг + поворот вокруг вертикали) и примитивы:
+коробка, цилиндр, крыши [двускатная, вальмовая, ломаная], окно с рамой и переплётом, дверь, веранда, штакетник.
+Материал задаётся именем, цвета храни в одном словаре.
+Скрипт должен работать двумя способами:
+— внутри Blender строить объекты через bpy, раскладывать их по коллекциям и сохранять .blend;
+— без Blender записывать каждый дом в отдельный glTF-файл.
+Покажи на одном простом доме, что оба режима дают одинаковый результат.</pre></div>
+<p class="tip"><b>Почему кодом.</b> Правка одной функции, например рамы окна, сразу чинит все тринадцать домов. А ещё код можно показать нейросети целиком, и она видит каждую деталь.</p>
+<p class="tip"><b>Проверка шага.</b> Тестовый дом одинаково выглядит в Blender и в браузере, стоит на земле и смотрит фасадом на дорогу.</p></section>
+
+<section class="step" id="step-3"><div class="head"><div class="num">3<small>Дома</small></div><div class="txt"><h2>Тринадцать <span class="s">фасадов</span></h2><p>Теперь по очереди описываем каждый дом. Даём Claude кадры из сериала и короткое описание. Дом узнаётся прежде всего по силуэту крыши и цвету, поэтому начинаем с них, а детали добавляем потом.</p><ul><li>Силуэт: этажи, форма крыши, выступы. Ломаная крыша Бри и мансарда Солис видны даже с общего плана.</li><li>Цвет: жёлтый викторианский дом Солис, кирпичный низ и голубой верх у Бри, розовый дом Иди.</li><li>Окна на всех стенах, включая заднюю и треугольники под крышей. Пустая стена на изометрии сразу бросается в глаза.</li><li>Двор: дорожка, почтовый ящик, клумбы, машина у гаража.</li><li>Подвижные детали — флюгер, дверь, качели, флажок почты — отдельные объекты с меткой, чтобы их можно было анимировать на сайте.</li></ul></div></div>
+<div class="flow"><p class="sub micro"><b>Промпт</b>Один дом по кадрам</p>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-house">Скопировать</button></div><pre id="t-house" tabindex="0">Смоделируй дом [номер] функцией в нашем генераторе. Кадры приложены.
+Силуэт: [этажей], крыша [тип и цвет], выступы [веранда, башенка, эркер].
+Стены: [цвет и материал: доска, кирпич, штукатурка].
+Окна: [сколько и где на каждой стене, ставни, круглое окно во фронтоне].
+Вход: [крыльцо, колонны, цвет двери].
+Двор: [дорожка, клумбы, машина, почтовый ящик, деревья].
+Подвижные детали отдельными объектами: [флюгер, дверь, качели].
+Отрендери дом с двух сторон и покажи мне, прежде чем переходить к следующему.</pre></div>
+<p class="sub micro"><b>Результат</b>Шесть домов героинь и соседей</p><div class="out c3"><figure><img src="a/09.webp" alt="Дом Солис" style="--ar:4/3" width="1200" height="900" loading="lazy"><figcaption><span>4349</span><span>Солис</span></figcaption></figure><figure><img src="a/10.webp" alt="Дом Бри" style="--ar:4/3" width="1200" height="900" loading="lazy"><figcaption><span>4354</span><span>Бри</span></figcaption></figure><figure><img src="a/11.webp" alt="Дом Сьюзан" style="--ar:4/3" width="1200" height="900" loading="lazy"><figcaption><span>4353</span><span>Сьюзан</span></figcaption></figure><figure><img src="a/12.webp" alt="Дом Янгов" style="--ar:4/3" width="1200" height="900" loading="lazy"><figcaption><span>4352</span><span>Янги</span></figcaption></figure><figure><img src="a/13.webp" alt="Дом Скаво" style="--ar:4/3" width="1200" height="900" loading="lazy"><figcaption><span>4355</span><span>Скаво</span></figcaption></figure><figure><img src="a/14.webp" alt="Дом Иди" style="--ar:4/3" width="1200" height="900" loading="lazy"><figcaption><span>4362</span><span>Иди</span></figcaption></figure></div>
+<p class="sub micro"><b>Доработка</b>Эркеры и окна во фронтонах</p><div class="out c1 half"><figure><img src="a/15.webp" alt="Боковые стены домов с эркерами и чердачными окнами" style="--ar:1/1" width="1120" height="1080" loading="lazy"><figcaption><span>Окна</span><span>Боковые стены перестали быть пустыми</span></figcaption></figure></div></div>
+<p class="tip"><b>Не делай декорации.</b> На съёмочной площадке часть домов — пустые фасады. В 3D дом видно со всех сторон, поэтому у каждого должна быть задняя стена с окнами.</p>
+<p class="tip"><b>Проверка шага.</b> Каждый дом узнаётся по силуэту и цвету, окна есть на всех стенах, в крыше нет дыр ни с одного ракурса.</p></section>
+
+<section class="step" id="step-4"><div class="head"><div class="num">4<small>Blender MCP</small></div><div class="txt"><h2>Claude у руля <span class="s">Blender</span></h2><p>Сначала Claude управлял Blender через экран: кликал, вставлял код в текстовый редактор и нажимал «Run Script». Это работает, но медленно и ломко. С аддоном Blender MCP он запускает Python прямо в открытом Blender, смотрит на сцену снимком и проверяет объекты по именам.</p><ul><li>Скачай аддон Blender MCP и установи в Blender: Preferences → Add-ons → Install. Выбирай сам файл аддона, а не весь архив репозитория.</li><li>В боковой панели Blender нажми Connect, чтобы он начал слушать подключения.</li><li>Добавь сервер в настройки Claude Desktop. Путь к uvx пиши полностью, иначе приложение его не найдёт.</li><li>Перезапусти Claude и попроси показать сцену. Если пришла картинка, связь есть.</li></ul></div></div>
+<div class="tpl"><div class="bar"><span class="micro">claude_desktop_config.json · подставь свой путь</span><button class="copy" type="button" data-copy="t-mcp">Скопировать</button></div><pre id="t-mcp" tabindex="0">{
+  "mcpServers": {
+    "blender": {
+      "command": "[полный путь к uvx, например /Users/имя/.local/bin/uvx]",
+      "args": ["blender-mcp"]
+    }
+  }
+}</pre></div>
+<p class="tip"><b>Пиши лог в файл.</b> Однажды Blender молча не сохранил сцену. С тех пор скрипт записывает рядом файл со строками «собрано», «сохранено», «выгружено». Claude читает его и сразу видит, на каком шаге что-то пошло не так.</p>
+<p class="tip"><b>Проверка шага.</b> На просьбу «покажи сцену» Claude присылает снимок, а в списке объектов видны все дома.</p></section>
+
+<section class="step" id="step-5"><div class="head"><div class="num">5<small>Сцена</small></div><div class="txt"><h2>Сборка и <span class="s">рендер</span></h2><p>Когда генератор и MCP готовы, вся сцена собирается одной командой. Claude запускает скрипт в Blender, тот раскладывает дома, рельеф, растения и улики по коллекциям, ставит камеру и солнце, сохраняет файл и выгружает модель для сайта. Потом Claude делает рендеры и смотрит на них сам.</p><ul><li>Каждый дом в своей коллекции с номером, улики — в отдельной. Так сцену удобно править руками, если захочется.</li><li>Рендер в EEVEE с ортографической камерой: он быстрый и сразу показывает изометрию, как на сайте.</li><li>Проси рендер каждого дома с двух сторон. Дыры в крышах, утонувшие окна и пустые стены видны только так.</li></ul></div></div>
+<div class="flow"><p class="sub micro"><b>Промпт</b>Сборка и проверка</p>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-build">Скопировать</button></div><pre id="t-build" tabindex="0">Запусти генератор в открытом Blender через MCP и пересобери сцену.
+Потом отрендери каждый дом с двух сторон: [три четверти спереди] и [сзади сбоку].
+Собери рендеры в одну сетку, посмотри сам и перечисли косяки по каждому дому:
+дыры в крыше, окна под кровлей, пустые стены, детали в воздухе, двор на дороге.
+Исправь найденное в коде и покажи сетку ещё раз.</pre></div>
+<p class="sub micro"><b>Результат</b>Сцена в Blender</p><div class="out c2"><figure><img src="a/08.webp" alt="Интерфейс Blender со сценой улицы" style="--ar:16/9" width="1100" height="618" loading="lazy"><figcaption><span>Blender</span><span>Коллекции, камера, солнце</span></figcaption></figure><figure><img src="a/16.webp" alt="Рендер EEVEE всей улицы" style="--ar:16/10" width="1600" height="1000" loading="lazy"><figcaption><span>Рендер</span><span>Снял Claude через MCP</span></figcaption></figure></div></div>
+<p class="tip"><b>Проверка шага.</b> Файл сцены обновился, рендер каждого дома чистый с обеих сторон, модель для сайта выгружена.</p></section>
+
+<section class="step" id="step-6"><div class="head"><div class="num">6<small>Ландшафт</small></div><div class="txt"><h2>Холмы до <span class="s">горизонта</span></h2><p>Площадка Colonial Street стоит у подножия Голливудских холмов: вокруг улицы земля поднимается и желтеет. Возле дороги и участков она плоская, дальше растут холмы. Дорога уходит в обе стороны и теряется в дымке, поэтому кажется, что мир продолжается.</p><ul><li>Высота земли зависит от расстояния до дороги и участков плюс плавный шум. Сетка мелкая у домов и крупная у горизонта.</li><li>Растения ставятся функциями с зерном случайности: дубы, сосны, кипарисы, пальмы, глициния, кусты, камни, цветы. Лес не повторяется.</li><li>Каждую посадку записываем в список с координатами, а не в общую модель. На шаге с весом это сэкономит мегабайты.</li><li>Деревья, кусты, газон, заборы и изгороди не должны заходить на тротуар и дорогу. На изгибах это ломается чаще всего, проверяй именно там.</li></ul></div></div>
+<div class="flow"><p class="sub micro"><b>Промпт</b>Рельеф и зелень</p>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-land">Скопировать</button></div><pre id="t-land" tabindex="0">Добавь вокруг улицы рельеф: плоско в [30] м от дороги и участков, дальше холмы до [20] м высотой, выше к [северо-востоку].
+Сетка [3] м у домов и [9] м до горизонта, швы без щелей. Продли дорогу за край улицы, чтобы она уходила в дымку.
+Засади всё растениями: [дубы, сосны, кипарисы, пальмы, кусты, камни, цветы] — гуще у дворов, реже на склонах.
+Ничего не ставь ближе [7] м к дороге и внутри участков, проверь отдельно изгибы дороги.
+Каждую посадку записывай через обёртку: вид растения, параметры и координаты.</pre></div>
+<p class="sub micro"><b>Результат</b>Зелень и дорога, уходящая в дымку</p><div class="out c2"><figure><img src="a/17.webp" alt="Улица крупнее: деревья и кусты вдоль дороги" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Зелень</span><span>Почти три тысячи растений</span></figcaption></figure><figure><img src="a/18.webp" alt="Общий план: дорога уходит к перекрёстку и в дымку" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Горизонт</span><span>Дорога продолжается в дымку</span></figcaption></figure></div></div>
+<p class="tip"><b>Проверка шага.</b> На краю карты нет обрыва, деревья не растут из домов и машин, газон и изгороди не заходят на асфальт.</p></section>
+
+<section class="step" id="step-7"><div class="head"><div class="num">7<small>Вес</small></div><div class="txt"><h2>Улица меньше <span class="s">7 мегабайт</span></h2><p>Полная сцена с растениями — больше миллиона вершин. Отдавать её в браузер как есть долго. Поэтому растения уходят в набор шаблонов и список координат, а координаты вершин хранятся целыми числами вместо дробных. В браузере шаблоны раскладываются по местам и склеиваются по материалам в несколько десятков сеток.</p><ul><li>Формат glTF с квантованием: позиции и нормали сжаты в маленькие целые числа, размер возвращает масштаб узла.</li><li>Каждый дом — отдельный файл. Улица появляется по частям, а прелоадер честно считает прогресс.</li><li>Интерьер дома Бри грузится только тогда, когда гость открывает разрез.</li></ul></div></div>
+<div class="tbl"><table><thead><tr><th>Файл</th><th>Что внутри</th><th>Вес</th></tr></thead><tbody>
+<tr><td>Рельеф</td><td>Земля, дороги, тротуары, фонари</td><td>0,9 МБ</td></tr>
+<tr><td>Шаблоны растений</td><td>176 вариантов деревьев, кустов и камней</td><td>1,7 МБ</td></tr>
+<tr><td>Посадки</td><td>2 943 растения: координаты, масштаб, поворот</td><td>0,1 МБ</td></tr>
+<tr><td>13 домов</td><td>Отдельный файл на дом</td><td>4,2 МБ</td></tr>
+<tr><td>Улики и интерьер</td><td>15 улик, торнадо, самолёт, разрез дома Бри</td><td>0,3 МБ</td></tr>
+</tbody></table></div>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-weight">Скопировать</button></div><pre id="t-weight" tabindex="0">Оптимизируй выгрузку для сайта.
+Растения запиши как набор шаблонов, по [3] варианта на вид, и отдельный JSON с координатами, масштабом и поворотом каждой посадки.
+Сожми геометрию через KHR_mesh_quantization: позиции в int16, нормали в int8.
+На сайте склей растения по материалу в [5] полос вдоль улицы, чтобы работало отсечение по камере.
+Покажи вес каждого файла до и после.</pre></div>
+<p class="tip"><b>Подвох хостинга.</b> Некоторые хостинги не отдают файлы с расширением .bin. Буферы можно переименовать и поправить ссылку в .json: сам glTF расширение не проверяет.</p>
+<p class="tip"><b>Проверка шага.</b> Деревья на сайте стоят там же, где в Blender, все прямые и своего размера, а папка с моделями весит меньше 10 МБ.</p></section>
+
+<section class="step" id="step-8"><div class="head"><div class="num">8<small>Сайт</small></div><div class="txt"><h2>Камера, которая <span class="s">листает</span></h2><p>Сайт — один HTML-файл. Камера ортографическая, как в изометрических играх. Скролл ведёт её от общего плана к каждому дому по очереди: для дома считается ракурс три четверти и масштаб, при котором он целиком помещается в свободную от текста часть экрана. Между домами камера чуть отъезжает по дуге.</p><ul><li>Слева карточка дома: кто жил, в каких сезонах, какие улики рядом. Переключатель сезонов подсвечивает жильцов.</li><li>Пока грузятся модели, показываем прелоадер-папку: проценты и строчки «поднимаем фасады», «высаживаем деревья».</li><li>На телефоне карточка уходит вниз, дом встаёт сверху. Стрелками на клавиатуре можно листать дома.</li><li>Клик по дому запускает его детали: открывается дверь, крутится флюгер, качаются качели.</li></ul></div></div>
+<div class="flow"><p class="sub micro"><b>Промпт</b>Каркас сайта</p>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-site">Скопировать</button></div><pre id="t-site" tabindex="0">Сделай сайт на three.js из этих glTF-файлов, одним HTML-файлом.
+Ортографическая изометрическая камера, по скроллу облёт [13] домов: общий план, потом каждый дом по очереди.
+У каждого дома карточка с текстом [слева], сам дом — в свободной части экрана целиком.
+Прелоадер с реальным прогрессом загрузки. На телефоне карточка снизу, дом сверху.
+Проверяй сам в браузере: снимай экран на ширине [1440] и [390] px и чини то, что видишь.</pre></div>
+<p class="sub micro"><b>Результат</b>Прелоадер, дом крупно и телефон</p><div class="out c2"><figure><img src="a/19.webp" alt="Прелоадер: папка дела с процентами загрузки" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Прелоадер</span><span>Папка открывается на 100%</span></figcaption></figure><figure><img src="a/20.webp" alt="Камера подлетела к дому Янгов, карточка слева" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Дом</span><span>Карточка слева, дом справа</span></figcaption></figure></div>
+<div class="out c1"><figure><img src="a/21.webp" alt="Три экрана сайта на телефоне" style="--ar:1190/844" width="1190" height="844" loading="lazy"><figcaption><span>Телефон</span><span>Прелоадер, общий план, дом Сьюзан</span></figcaption></figure></div></div>
+<p class="tip"><b>Проверка шага.</b> На каждом шаге скролла дом целиком виден рядом с карточкой, на телефоне нет горизонтальной прокрутки.</p></section>
+
+<section class="step" id="step-9"><div class="head"><div class="num">9<small>Атмосфера</small></div><div class="txt"><h2>Свет, туман и <span class="s">ночь</span></h2><p>Модели одинаковые, а настроение делает свет. Все эффекты живут в шейдерах, то есть в маленьких программах для видеокарты, поэтому сайт остаётся лёгким.</p><ul><li>Предвечернее солнце: тёплый свет, длинные тени, холодный заполняющий свет с неба. Под домами и деревьями мягкое затемнение, чтобы ничего не висело над землёй.</li><li>Дымка от центра кадра: мир растворяется кругом вокруг того, на что смотришь, и карта кажется бесконечной.</li><li>Ветер в листве, тени облаков на земле, объёмный газон из слоёв и тысяч травинок.</li><li>Фокус как у макета под объективом: резким остаётся дом, края кадра мягко размыты.</li><li>Ночь: окна загораются выборочно, в некоторых шторы и силуэты, у фонарей ореолы, над газонами светлячки, по дорогам едут машины с фарами.</li><li>Режим «Рисунок»: контуры тушью, бумага, штриховка в тенях.</li></ul></div></div>
+<div class="flow"><p class="sub micro"><b>Промпт</b>Настроение</p>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-mood">Скопировать</button></div><pre id="t-mood" tabindex="0">Докрути визуал сайта, всё через шейдеры, без тяжёлых библиотек:
+— свет [предвечерний]: тёплое солнце, длинные тени, мягкое затемнение под домами и деревьями;
+— дымка от центра кадра, чтобы карта уходила в горизонт;
+— ветер в листве и тени облаков;
+— размытие краёв кадра, резким оставь дом в фокусе;
+— ночной режим: выборочно горящие окна, ореолы фонарей, светлячки.
+Если кадр тормозит, сайт сам снижает чёткость, но не переключает качество туда-обратно.</pre></div>
+<p class="sub micro"><b>Результат</b>День в фокусе и ночь</p><div class="out c2"><figure><img src="a/26.webp" alt="Дом Сьюзан в фокусе, края кадра размыты" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>День</span><span>Фокус на доме</span></figcaption></figure><figure><img src="a/27.webp" alt="Ночь у дома Скаво: фонари и фары" style="--ar:16/10" width="900" height="560" loading="lazy"><figcaption><span>Ночь</span><span>Фонари, окна, фары</span></figcaption></figure></div></div>
+<p class="tip"><b>Тени.</b> Карту теней строй вокруг того, что реально видно на экране. Если строить её вокруг точки, куда смотрит камера, на широком экране углы кадра остаются без теней.</p>
+<p class="tip"><b>Проверка шага.</b> При переключении ночи нет вспышек, тени лежат по всему кадру, картинка не меняется сама по себе через несколько секунд.</p></section>
+
+<section class="step" id="step-10"><div class="head"><div class="num">10<small>Игра</small></div><div class="txt"><h2>Улица как <span class="s">расследование</span></h2><p>Чтобы улицу хотелось пройти до конца, мы спрятали на ней предметы из сюжета: письмо шантажиста на крыльце Мэри Элис, морозильник Карен, газонокосилку садовника, упавший самолёт. Часть улик есть только в своём сезоне, поэтому переключатель сезонов становится частью игры.</p><ul><li>Ненайденные улики мягко переливаются, а курсор-лупа пишет «Осмотреть», когда ты над предметом.</li><li>Найденную улику сайт фотографирует прямо из кадра: полароид проявляется и улетает в опись.</li><li>В описи у ненайденных улик загадки, а кнопка подсказки везёт камеру к нужному дому.</li><li>Дом Бри можно открыть в разрезе: крыша уходит, видна гостиная и кухня. Переключатель «На площадке» показывает правду: внутри туалеты для съёмочной группы.</li><li>Финал — отчёт «Дело закрыто» со всеми снимками и рассказом о том, как сделан сайт.</li></ul></div></div>
+<div class="flow"><p class="sub micro"><b>Промпт</b>Игровая механика</p>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-game">Скопировать</button></div><pre id="t-game" tabindex="0">Преврати карту в игру: спрячь у домов [15] сюжетных предметов, часть показывай только в своём сезоне.
+Ненайденные пусть мягко переливаются, без мигания.
+Найденную улику сфотографируй из кадра в полароид и положи в опись; у ненайденных в описи — загадки.
+Прогресс сохраняй в браузере.
+После последней улики покажи финальный отчёт со снимками и рассказом о том, как сделан сайт.</pre></div>
+<p class="sub micro"><b>Результат</b>Опись, разрез и финал</p><div class="out c3"><figure><img src="a/23.webp" alt="Опись улик с загадками" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Опись</span><span>Загадки</span></figcaption></figure><figure><img src="a/22.webp" alt="Разрез дома Бри: кабинки-туалеты на площадке" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Разрез</span><span>Правда о площадке</span></figcaption></figure><figure><img src="a/24.webp" alt="Финальный отчёт с полароидами улик" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Финал</span><span>Дело закрыто</span></figcaption></figure></div></div>
+<p class="tip"><b>Проверка шага.</b> Каждую улику можно найти без подсказки, прогресс переживает перезагрузку, финал открывается ровно на последней.</p></section>
+
+<section class="step" id="step-11"><div class="head"><div class="num">11<small>Проверка</small></div><div class="txt"><h2>Ищем <span class="s">косяки</span></h2><p>Последний шаг — пройти сайт глазами зрителя и честно записать всё, что выглядит странно. Большую часть проверок Claude делает сам: снимает экран в браузере, рендерит дома в Blender и сверяет геометрию с дорогой скриптом. Вот что мы нашли и починили у себя.</p><ul><li>Газон, заборы и изгороди выезжали на тротуар на изгибах дороги. Теперь каждый элемент двора проверяется по реальной форме дороги.</li><li>В крыше дома Скаво с одного ракурса виднелась дыра, а окна мансарды у Мэйфэр утонули в кровлю.</li><li>Наружная лестница Гринбергов была сплошным белым блоком, а верх крыши Солис — плоской серой плитой.</li><li>На широком экране пропадали тени по краям кадра.</li><li>Сайт сам понижал и повышал качество, и картинка менялась каждые несколько секунд.</li></ul></div></div>
+<div class="flow"><p class="sub micro"><b>Было и стало</b>Первая версия и финал</p><div class="out c2"><figure><img src="a/25.webp" alt="Первая версия: плоский газон, редкий лес" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Было</span><span>Первая версия того же дня</span></figcaption></figure><figure><img src="a/04.webp" alt="Финальная версия: свет, зелень, дымка" style="--ar:16/10" width="1440" height="900" loading="lazy"><figcaption><span>Стало</span><span>Финальная версия</span></figcaption></figure></div>
+<div class="tpl"><div class="bar"><span class="micro">Шаблон промпта · подставь своё</span><button class="copy" type="button" data-copy="t-qa">Скопировать</button></div><pre id="t-qa" tabindex="0">Проверь проект целиком, как зритель.
+1. Сними сайт на ширине [1440] и [390] px: общий план, каждый дом, ночь, игра до финала.
+2. Отрендери каждый дом в Blender с двух сторон.
+3. Скриптом проверь, что газон, заборы, изгороди и деревья не заходят на дорогу и тротуар.
+4. Посмотри консоль браузера на ошибки.
+Составь список косяков с файлом и причиной, исправь и покажи, что изменилось.</pre></div></div>
+<p class="tip"><b>Проверка шага.</b> В консоли нет ошибок, на рендерах нет дыр и пустых стен, скрипт не находит ни одного элемента двора на дороге.</p></section>
+
+<div class="end"><p class="micro" style="margin:0">Итог</p>
+<div class="facts"><div><b>13</b><span>домов</span></div><div><b>15</b><span>улик</span></div><div><b>2 943</b><span>растения</span></div><div><b>0</b><span>полигонов руками</span></div></div>
+<ol class="recap r11">
+<li><b>План</b><span>Перенеси карту в план в метрах, прежде чем моделировать.</span></li>
+<li><b>Генератор</b><span>Попроси скрипт-конструктор: дом — это функция из примитивов.</span></li>
+<li><b>Дома</b><span>Описывай каждый дом по кадрам, начиная с силуэта крыши.</span></li>
+<li><b>Blender MCP</b><span>Подключи аддон, чтобы Claude сам запускал код в Blender.</span></li>
+<li><b>Сцена</b><span>Собирай одной командой, рендери каждый дом с двух сторон.</span></li>
+<li><b>Ландшафт</b><span>Холмы, растения и дорога в дымку, без заездов на асфальт.</span></li>
+<li><b>Вес</b><span>Растения шаблонами и координатами, геометрия сжата.</span></li>
+<li><b>Сайт</b><span>Изометрическая камера, скролл по домам, прелоадер.</span></li>
+<li><b>Атмосфера</b><span>Свет, дымка, ночь и фокус — всё в шейдерах.</span></li>
+<li><b>Игра</b><span>Улики, полароиды, разрез дома и финальный отчёт.</span></li>
+<li><b>Проверка</b><span>Пройди сайт глазами зрителя и почини всё, что видно.</span></li>
+</ol>
+<a class="btn" href="ulica/" target="_blank" rel="noopener noreferrer">Открыть Вистериа-лейн</a></div>
+
+<section class="quiz" id="quiz"><p class="micro" style="margin:0">Проверь себя</p><h2>Четыре вопроса <span class="s">по гайду</span></h2><div id="qz"></div></section>
+
+<footer class="ft">
+ <div class="ft-intro">
+  <p class="micro">Спасибо, что посмотрели наш гайд</p>
+  <h2>Давайте <span class="s">знакомиться</span></h2>
+  <p>Мы — студия дизайна Perasperadastra. Сотрудничали с Яндексом, ТБанком, Альфой, Сбером, «Победой», Музеем космонавтики, 2ГИС и другими. Делаем UX/UI-дизайн, моушн и работаем с нейросетями.</p>
+  <p>Ещё у нас есть образовательное направление: мы учим тому, что умеем сами.</p>
+  <a class="btn" href="https://t.me/perasperagram" target="_blank" rel="noopener noreferrer">Наш Telegram-канал</a>
+ </div>
+ <div class="ft-photos">
+  <figure class="ph ph-hero"><img src="a/35.webp" width="1600" height="662" alt="Команда и ученики студии Perasperadastra на Dprofile Awards 2025" loading="lazy"><figcaption><span>Dprofile Awards 2025</span><span>Команда и ученики</span></figcaption></figure>
+  <div class="ph2">
+   <figure class="ph ph-s"><img src="a/36.webp" width="900" height="675" alt="Офлайн-встреча со студентами на фоне зелёной стены" loading="lazy"><figcaption><span>Офлайн-встреча</span><span>Ученики</span></figcaption></figure>
+   <figure class="ph ph-s"><img src="a/37.webp" width="900" height="675" alt="Групповое фото после дизайн-лектория" loading="lazy"><figcaption><span>Дизайн-лекторий</span><span>18 апреля</span></figcaption></figure>
+  </div>
+ </div>
+ <div class="partners">
+  <span class="tag">С кем мы сотрудничали</span>
+  <div class="mq"><div class="mq-track"><div class="mq-set"><div class="lgo"><i><img src="a/38.png" width="360" height="104" alt="Яндекс"></i><span>Яндекс</span></div><div class="lgo"><i><img src="a/39.png" width="360" height="97" alt="Сбер"></i><span>Сбер</span></div><div class="lgo"><i><img src="a/40.png" width="360" height="124" alt="2ГИС"></i><span>2ГИС</span></div><div class="lgo"><i><img src="a/41.png" width="360" height="128" alt="ВТБ"></i><span>ВТБ</span></div><div class="lgo"><i><img src="a/42.png" width="338" height="66" alt="Билайн"></i><span>Билайн</span></div><div class="lgo"><i><img src="a/43.png" width="188" height="130" alt="Нацпроекты"></i><span>Нацпроекты</span></div></div><div class="mq-set" aria-hidden="true"><div class="lgo"><i><img src="a/38.png" width="360" height="104" alt=""></i><span>Яндекс</span></div><div class="lgo"><i><img src="a/39.png" width="360" height="97" alt=""></i><span>Сбер</span></div><div class="lgo"><i><img src="a/40.png" width="360" height="124" alt=""></i><span>2ГИС</span></div><div class="lgo"><i><img src="a/41.png" width="360" height="128" alt=""></i><span>ВТБ</span></div><div class="lgo"><i><img src="a/42.png" width="338" height="66" alt=""></i><span>Билайн</span></div><div class="lgo"><i><img src="a/43.png" width="188" height="130" alt=""></i><span>Нацпроекты</span></div></div></div></div>
+ </div>
+ <div class="mta">
+  <div class="mta-t">
+   <p class="micro">А если хотите прокачаться в нейросетях</p>
+   <h2>Mission to AI</h2>
+   <p>Программа, где учим генерировать графику и видео и собирать проекты с нейросетями. Много обратной связи от наших кураторов.</p>
+   <a class="btn" href="https://perasperadastra.ru/mission-to-ai" target="_blank" rel="noopener noreferrer">Подробнее о программе</a>
+  </div>
+  <a class="mta-img" href="https://perasperadastra.ru/mission-to-ai" target="_blank" rel="noopener noreferrer" aria-label="Mission to AI — подробнее о программе">Mission to AI</a>
+ </div>
+</footer>
+</div>
+
+<script>(function(){var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches||window.parent!==window;
+var bd=document.querySelector('.board .bd'),zs=[].slice.call(document.querySelectorAll('.board .z')),ls=[].slice.call(document.querySelectorAll('.board li')),cur=-2;
+function board(){var r=bd.getBoundingClientRect(),vh=window.innerHeight||1;if(r.bottom<-200||r.top>vh+200)return;var p=1-(r.top+r.height/2)/vh;p=(p-.22)/.5;var i=p<0?-1:Math.min(3,Math.floor(p*4));if(still)i=-1;if(i===cur)return;cur=i;
+  zs.forEach(function(z,k){z.classList.toggle('on',k===i);});ls.forEach(function(l,k){l.classList.toggle('on',k===i||i<0);});
+  if(i>=0&&bd.scrollWidth>bd.clientWidth+4){var z=zs[i],x=z.offsetLeft+z.offsetWidth/2-bd.clientWidth/2;bd.scrollTo({left:Math.max(0,x),behavior:'smooth'});}}
+var tk=false;function on(){if(tk)return;tk=true;requestAnimationFrame(function(){tk=false;board();});}
+window.addEventListener('scroll',on,{passive:true});window.addEventListener('resize',on);on();})();
+try{var vs=[].slice.call(document.querySelectorAll('.flow video'));if('IntersectionObserver' in window&&!still){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var p=e.target.play();if(p&&p.catch)p.catch(function(){});}else e.target.pause();});},{threshold:.5});vs.forEach(function(v){io.observe(v);});}}catch(e){}
+document.querySelectorAll('button.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy), t=el.textContent;
+    var done=function(){b.textContent='Скопировано'; setTimeout(function(){b.textContent='Скопировать';},1600);};
+    var fallback=function(){var r=document.createRange(); r.selectNodeContents(el); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent='Выделено — скопируй';};
+    try{navigator.clipboard.writeText(t).then(done,fallback);}catch(e){fallback();}
+  });
+});
+</script>
+<script>(function(){
+var Q=[
+ {q:'С чего начинать, если хочешь собрать улицу из сериала?',a:['С самого красивого дома','С плана улицы в метрах по карте','С выбора шрифтов для сайта'],r:1,w:'План задаёт изгибы дороги и место каждого дома. Без него улица получится прямой, а дома встанут как попало.'},
+ {q:'Зачем дома описаны кодом, если есть Blender?',a:['Так быстрее рендерить','Правка одной функции чинит все дома, а скрипт выгружает модели и для Blender, и для сайта','Без кода Blender не откроет файл'],r:1,w:'Генератор — единый источник: сцена и сайт не расходятся, а исправление рамы окна сразу попадает во все тринадцать домов.'},
+ {q:'Что даёт аддон Blender MCP?',a:['Claude запускает код прямо в открытом Blender и видит сцену снимком','Blender начинает работать в браузере','Модели сжимаются в два раза'],r:0,w:'MCP — мост между Claude и программой. Без него приходится кликать по экрану и вставлять код вручную.'},
+ {q:'Как улица из почти трёх тысяч растений весит меньше 7 МБ?',a:['Растения нарисованы картинками','Растения хранятся шаблонами и списком координат, геометрия сжата','Половину растений убрали'],r:1,w:'176 шаблонов и координаты посадок весят меньше двух мегабайт. Браузер сам раскладывает их по местам.'}
+];
+var box=document.getElementById('qz'); if(!box)return; var got=0, done=0;
+var sc=document.createElement('p'); sc.className='score';
+Q.forEach(function(it,i){var d=document.createElement('div'); d.className='q';
+  var p=document.createElement('p'); p.textContent=(i+1)+'. '+it.q; d.appendChild(p);
+  var o=document.createElement('div'); o.className='opts'; d.appendChild(o);
+  var why=document.createElement('p'); why.className='why'; why.hidden=true; why.textContent=it.w;
+  it.a.forEach(function(t,k){var b=document.createElement('button'); b.type='button'; b.textContent=t;
+    b.onclick=function(){ [].forEach.call(o.children,function(x,j){x.disabled=true; if(j===it.r)x.classList.add('ok');}); if(k!==it.r)b.classList.add('no'); else got++;
+      why.hidden=false; done++; if(done===Q.length){sc.textContent='Верных ответов: '+got+' из '+Q.length;} };
+    o.appendChild(b);});
+  d.appendChild(why); box.appendChild(d);});
+box.appendChild(sc);
+})();</script>
+<script>(function(){if(window.parent===window)return;function s(){parent.postMessage({type:'pad-height',h:document.documentElement.scrollHeight},'*')}
+addEventListener('load',s);addEventListener('resize',s);if(window.ResizeObserver)new ResizeObserver(s).observe(document.body);setInterval(s,1500)})();</script>
+
+
+
+</html>
