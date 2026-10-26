@@ -295,7 +295,8 @@ out.append(step('pg-7', 3, 'Опиши <span class="s">свои услуги</sp
 out.append(step('pg-8', 4, 'Собери минимальный <span class="s">стек</span>'))
 def exg(items, cap):
     return '<p class="micro" style="margin:40px 0 12px">%s</p><div class="grid4 gal sq ex3">%s</div>' % (cap, ''.join(fig(*it) for it in items))
-first = exg([('cases/eaglips.webp', 'Продукт с нуля', 'eaglips'), ('img/case-lumera-1.webp', 'Выдуманный гаджет', 'lumera'), ('cases/mako.webp', 'Маскот', 'mako')], 'Так начинали ученики')
+feat = '<a class="feat" href="%s" target="_blank" rel="noopener"><span class="fim"><video muted loop playsinline preload="none" poster="cases/knives-2.webp" data-src="cases/v-knives.mp4"></video></span><span class="ftx"><span class="micro">Пример проекта</span><b>Simple Knives</b><span class="fau">Анастасия Грачева · студентка Mission to AI</span><span class="fds">Коллекция ножей для выдуманного бренда, сделанная с нуля: идея, продукт, key visual, серия кадров и рекламный ролик в одном стиле. Хороший ориентир, как должен выглядеть первый проект целиком.</span><span class="flk">Смотреть кейс на Dprofile ↗</span></span></a>' % CASE['knives'][0]
+first = feat + exg([('cases/eaglips.webp', 'Продукт с нуля', 'eaglips'), ('img/case-lumera-1.webp', 'Выдуманный гаджет', 'lumera'), ('cases/mako.webp', 'Маскот', 'mako')], 'Так начинали ученики')
 first += '<p class="tip"><b>Больше 50 наград на Dprofile</b> собрали ученики школы — многие с первых учебных проектов, сделанных с нуля. Посмотри их кейсы, чтобы понять планку.</p>'
 out.append(step('pg-9', 5, 'Сделай первый <span class="s">проект</span>', body=nofn(sec_body('pg-9')) + first))
 out.append(section('st10', '06', '', 'Оформи кейс <span class="s">и покажи работы</span>', sec_txt('pg-10'),

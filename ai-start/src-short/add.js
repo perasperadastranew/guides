@@ -7,7 +7,7 @@ var els=[].slice.call(document.querySelectorAll('.pg .yt,.pg .gw,.pg .walk,.pg .
 if(still||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('on')})}
 else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.25});els.forEach(function(e){io.observe(e)})}
 /* видео в карточках гайдов */
-var vs=[].slice.call(document.querySelectorAll('.pg .gd video,.pg .gal video,.pg .th2 video'));
+var vs=[].slice.call(document.querySelectorAll('.pg .gd video,.pg .gal video,.pg .th2 video,.pg .th3 video,.pg .feat video'));
 function play(v,on){if(on){if(!v.src)v.src=v.dataset.src;if(!still){var p=v.play();if(p&&p.catch)p.catch(function(){})}}else v.pause()}
 if('IntersectionObserver' in window){var vo=new IntersectionObserver(function(es){es.forEach(function(e){play(e.target,e.isIntersecting)})},{threshold:.4});vs.forEach(function(v){vo.observe(v)})}
 })();
