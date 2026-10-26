@@ -101,7 +101,7 @@ MAT = {
     "trim":      ("#fbfaf6", 0.8), "door_rd": ("#b8463a", 0.7), "door_bl": ("#3f5f86", 0.7),
     "door_gn":   ("#3f6b4f", 0.7), "door_wd": ("#8a5a3b", 0.7), "glass": ("#9fc0d4", 0.15),
     "shutter_gn":("#557a5e", 0.8), "shutter_bl":("#4f6d8f", 0.8), "shutter_bk": ("#3d4245", 0.8),
-    "board":     ("#c9b994", 1.0),
+    "board":     ("#c9b994", 1.0), "curtain": ("#f4ecda", 1.0), "curtain_rs": ("#f0c4c4", 1.0), "curtain_bl": ("#cfdeea", 1.0), "curtain_yl": ("#f3e2a8", 1.0),
     "yellow":    ("#f1d886", 0.9), "green_lyn": ("#9fb79c", 0.9), "slate": ("#6f7c88", 0.9),
     "teal":      ("#9fb5ad", 0.9), "leaf_lt": ("#8fc46e", 1.0), "grass_tuft": ("#5d9a4c", 1.0),
     "rock": ("#a9aeb0", 1.0), "rock_lt": ("#c4c8c8", 1.0), "wood_cut": ("#e3bf7f", 1.0), "berry": ("#d0443a", 1.0), "hedge_lt": ("#73ac6c", 1.0), "brass": ("#c9a24a", 0.4), "terracotta": ("#c4704f", 0.9), "glass_lt": ("#e8f3fa", 0.1), "meadow": ("#a9c98a", 1.0), "meadow_dk": ("#93b878", 1.0), "hill_dry": ("#d9c48c", 1.0),
@@ -240,7 +240,11 @@ class Mesh:
         f = .12
         x0, x1 = X(-.02, .08); self.box(trim, x0, y - f, zc - w/2 - f, x1, y + h + f, zc + w/2 + f)
         x0, x1 = X(.06, .1); self.box("glass", x0, y, zc - w/2, x1, y + h, zc + w/2)
-        x0, x1 = X(.08, .13); self.box(trim, x0, y, zc - .03, x1, y + h, zc + .03); self.box(trim, x0, y + h/2 - .03, zc - w/2, x1, y + h/2 + .03, zc + w/2)
+        x0, x1 = X(.1, .102)
+        for s2 in (-1, 1):                                    # tied-back curtains
+            ze = zc + s2 * (w/2 - .04); cw = w * .2
+            self.poly(WSTY.get("curtain") or "curtain", [(x0, y + h - .05, ze), (x0, y + h - .05, ze - s2 * cw), (x0, y + h*.42, ze - s2 * cw * .42), (x0, y + .06, ze - s2 * cw * .62), (x0, y + .06, ze)], up=(sg, 0, 0))
+        x0, x1 = X(.08, .14); self.box(trim, x0, y, zc - .03, x1, y + h, zc + .03); self.box(trim, x0, y + h/2 - .045, zc - w/2, x1, y + h/2 + .045, zc + w/2)
         x0, x1 = X(-.02, .22); self.box(trim, x0, y - .2, zc - w/2 - .18, x1, y - .08, zc + w/2 + .18)
         x0, x1 = X(-.02, .2); self.box(trim, x0, y + h + f, zc - w/2 - .2, x1, y + h + f + .1, zc + w/2 + .2)
     def xocul(self, x, sg, zc, y, r, trim="trim", n=12):
@@ -336,37 +340,98 @@ def _newell(P):
 FACE_RY = {"front": 0.0, "back": math.pi, "left": -math.pi/2, "right": math.pi/2}
 def face_half(face, W, D): return D/2 if face in ("front", "back") else W/2
 
-def window(m, face, W, D, u, y, w=1.1, h=1.5, trim="trim", shutters=None, arch=False, box=False):
+# Each house sets its window style once (wstyle at the top of hXXXX); window() falls back to it,
+# so a street of 300+ windows stays consistent per house and different between houses.
+WSTY = {}
+def wstyle(**kw):
+    WSTY.clear(); WSTY.update(kw)
+
+def _prism(m, mat, pts, z0, z1):
+    """Convex outline in the face plane (x, y), extruded from z0 to z1."""
+    a = [(x, y, z0) for x, y in pts]; b = [(x, y, z1) for x, y in pts]; n = len(pts)
+    m.solid(mat, [a, b] + [[a[i], a[(i+1) % n], b[(i+1) % n], b[i]] for i in range(n)])
+
+def _curtains(m, mat, u, y, w, h, z):
+    """Tied-back drapes and a valance just behind the muntins: reads as a lived-in room, also at night."""
+    x0, x1 = u - w/2 + .05, u + w/2 - .05; cw = w * .15; yt = y + h - .05; tie = y + h * .42
+    for sg, xe in ((1, x0), (-1, x1)):
+        pts = [(xe, yt), (xe + sg * cw, yt), (xe + sg * cw * .42, tie), (xe + sg * cw * .62, y + .06), (xe, y + .06)]
+        m.poly(mat, [(px, py, z) for px, py in pts], up=(0, 0, 1))
+    m.poly(mat, [(x0, yt - .17, z + .002), (x1, yt - .17, z + .002), (x1, yt, z + .002), (x0, yt, z + .002)], up=(0, 0, 1))
+
+def window(m, face, W, D, u, y, w=1.1, h=1.5, trim="trim", shutters=None, arch=False, box=False,
+           lites=None, crown=None, curtain=None):
+    S = WSTY
+    lites = lites or S.get("lites", "cross")
+    crown = crown or ("arch" if arch else S.get("crown", "cap"))
+    curtain = S.get("curtain", "curtain") if curtain is None else curtain
+    if not box and face == "front" and y < 2.2: box = S.get("boxes", False)
     hd = face_half(face, W, D)
     with m.at(ry=FACE_RY[face]):
-        f = .13                                                              # frame width
-        m.box(trim, u - w/2 - f, y - f, hd - .02, u + w/2 + f, y + h + f, hd + .03)   # back frame
-        for x0, x1 in ((u - w/2 - f, u - w/2), (u + w/2, u + w/2 + f)):       # jambs stand proud
-            m.box(trim, x0, y - f, hd + .03, x1, y + h + f, hd + .12)
-        m.box(trim, u - w/2 - f, y + h, hd + .03, u + w/2 + f, y + h + f, hd + .12)
-        m.box("glass", u - w/2, y, hd + .03, u + w/2, y + h, hd + .05)       # glass sits back
-        m.box("glass_lt", u - w/2 + .06, y + h*.62, hd + .05, u - w/2 + .2, y + h - .08, hd + .055)   # glint
-        for xm in (u,):
-            m.box(trim, xm - .035, y, hd + .05, xm + .035, y + h, hd + .09)   # muntins
-        m.box(trim, u - w/2, y + h*.52 - .035, hd + .05, u + w/2, y + h*.52 + .035, hd + .09)
-        m.box(trim, u - w/2 - .24, y - .26, hd - .02, u + w/2 + .24, y - .1, hd + .24)   # sill
-        m.box(trim, u - w/2 - .26, y + h + f, hd - .02, u + w/2 + .26, y + h + f + .1, hd + .2)   # crown
-        m.box(trim + "_dk", u - w/2 - .22, y + h + f + .1, hd - .02, u + w/2 + .22, y + h + f + .16, hd + .15)
-        if arch:
-            m.cyl(trim, u, y + h + f + .14, hd - .02, w/2 + .1, w/2 + .1, .14, n=10)
+        f = .13                                                              # casing
+        L, R, T = u - w/2, u + w/2, y + h
+        m.box(trim, L - f, y - f, hd - .02, R + f, T + f, hd + .03)
+        for x0, x1 in ((L - f, L), (R, R + f)):                              # jambs stand proud
+            m.box(trim, x0, y - f, hd + .03, x1, T + f, hd + .13)
+        m.box(trim, L - f, T, hd + .03, R + f, T + f, hd + .13)
+        m.box("glass", L, y, hd + .03, R, T, hd + .05)                       # glass sits back
+        if curtain:
+            _curtains(m, curtain, u, y, w, h, hd + .055)
+        ym = y + h * .52                                                     # two sashes and a meeting rail
+        m.box(trim, L, ym - .045, hd + .05, R, ym + .045, hd + .11)
+        m.box(trim, L, y, hd + .05, R, y + .07, hd + .1); m.box(trim, L, T - .06, hd + .05, R, T, hd + .1)
+        for x0, x1 in ((L, L + .055), (R - .055, R)):
+            m.box(trim, x0, y, hd + .05, x1, T, hd + .1)
+        bar = lambda x0, y0, x1, y1: m.box(trim, x0, y0, hd + .06, x1, y1, hd + .095)
+        if lites == "cross":
+            bar(u - .03, y, u + .03, T)
+        elif lites == "6over6":
+            for k in (1, 2):
+                xm = L + w * k / 3; bar(xm - .025, y, xm + .025, T)
+            for yy in (y + (ym - y) / 2, ym + (T - ym) / 2):
+                bar(L, yy - .025, R, yy + .025)
+        elif lites == "3over1":                                              # Craftsman: upper sash only
+            for k in (1, 2):
+                xm = L + w * k / 3; bar(xm - .025, ym, xm + .025, T)
+        elif lites == "diamond":                                             # Victorian upper sash border lights
+            bar(L + .16, ym, L + .2, T); bar(R - .2, ym, R - .16, T); bar(L, T - .2, R, T - .16)
+        # sill on two little brackets
+        m.box(trim, L - .24, y - .26, hd - .02, R + .24, y - .1, hd + .26)
+        for xb in (L + .04, R - .14):
+            m.box(trim + "_dk", xb, y - .46, hd - .02, xb + .1, y - .26, hd + .16)
+        # head: flat cornice, triangular pediment, segmental arch, Craftsman lintel or a steep gothic gable
+        yh = T + f
+        if crown == "cap":
+            m.box(trim, L - .26, yh, hd - .02, R + .26, yh + .1, hd + .2)
+            m.box(trim + "_dk", L - .22, yh + .1, hd - .02, R + .22, yh + .16, hd + .15)
+        elif crown in ("pediment", "gothic"):
+            ap = .36 if crown == "pediment" else .7
+            m.box(trim, L - .26, yh, hd - .02, R + .26, yh + .08, hd + .2)
+            _prism(m, trim, [(L - .26, yh + .08), (R + .26, yh + .08), (u, yh + .08 + ap)], hd - .02, hd + .16)
+            _prism(m, trim + "_dk", [(L - .12, yh + .1), (R + .12, yh + .1), (u, yh + .1 + ap * .72)], hd + .16, hd + .17)
+        elif crown == "arch":
+            n = 9; r = w/2 + f + .12
+            pts = [(u + r * math.cos(math.pi * k / (n - 1)), yh + .02 + r * .55 * math.sin(math.pi * k / (n - 1))) for k in range(n)]
+            _prism(m, trim, pts, hd - .02, hd + .17)
+            m.box(trim + "_dk", u - .07, yh + .02, hd + .17, u + .07, yh + .02 + r * .5, hd + .2)   # keystone
+        elif crown == "craft":
+            m.box(trim, L - .4, yh, hd - .02, R + .4, yh + .2, hd + .2)
+            m.box(trim + "_dk", L - .44, yh + .2, hd - .02, R + .44, yh + .26, hd + .26)
         if box:                                                              # window box with flowers
-            m.box("door_wd", u - w/2 - .1, y - .62, hd + .02, u + w/2 + .1, y - .28, hd + .42)
-            for k in range(int(w / .32) + 1):
-                xx = u - w/2 + k * .32
-                m.blob("hedge", xx, y - .2, hd + .22, .2, .16, .18, k + u)
-                m.blob(box if isinstance(box, str) else "rose", xx + .05, y - .08, hd + .3, .09, .08, .09, k)
+            m.box("door_wd", L - .1, y - .66, hd + .02, R + .1, y - .3, hd + .44)
+            m.box("door_wd_dk", L - .12, y - .34, hd + .02, R + .12, y - .28, hd + .47)
+            for k in range(int(w / .3) + 1):
+                xx = L + k * .3
+                m.blob("hedge", xx, y - .2, hd + .24, .2, .16, .18, k + u)
+                m.blob(box if isinstance(box, str) else S.get("flowers", "rose"), xx + .05, y - .07, hd + .32, .09, .08, .09, k)
         if shutters:
             for sgn in (-1, 1):
                 x = u + sgn * (w/2 + .44)
-                m.box(shutters, x - .3, y - .04, hd, x + .3, y + h + .04, hd + .09)
+                m.box(shutters, x - .3, y - .04, hd, x + .3, T + .04, hd + .09)
                 for k in range(1, int(h / .18)):
                     yy = y + k * .18
                     m.box(shutters + "_dk", x - .25, yy - .02, hd + .09, x + .25, yy + .015, hd + .11)
+                m.box(shutters + "_dk", x - .25, ym - .05, hd + .09, x + .25, ym + .05, hd + .12)
 
 def bay_window(m, face, W, D, u, yb, yt, wall, w=2.6, dep=.85, roof="roof_dk", trim="trim"):
     """Three-sided bay projecting from a wall: angled sides, glass on all three faces, a little hipped cap."""
@@ -472,8 +537,9 @@ def walls(m, W, D, y0, h, mat, siding=True, back=True):
             for k in range(n):
                 u = -W/2 + W * (k + .5) / n
                 window(m, "back", W, D, u, y, 1.0, 1.45 if y == ys[0] else 1.3)
+    if mat not in ("brick", "stone"):          # frieze board under the eaves gives every house a crisp top line
+        m.cbox("trim", 0, y0 + h - .26, 0, W + .07, .26, D + .07)
     if siding and mat not in NO_SIDING:
-        clapboard(m, W, D, y0, h, mat)
         for sx in (-1, 1):
             for sz in (-1, 1):
                 x, z = sx * W/2, sz * D/2
@@ -811,6 +877,7 @@ def rail(m, x0, x1, z, mat="trim"):
 
 
 def h4349():  # Solis — yellow Victorian: dark mansard, centre gable with an oculus, wraparound porch with a balcony
+    wstyle(lites="diamond", curtain="curtain_rs", boxes=True, flowers="rose")
     h = House("4349"); m = h.body; W, D = 12.5, 10.0
     foundation(m, W, D, .6); walls(m, W, D, .6, 6.2, "gaby")
     band(m, W, D, 3.6, "trim", .16); band(m, W, D, 6.8, "trim", .28)
@@ -872,6 +939,7 @@ def h4349():  # Solis — yellow Victorian: dark mansard, centre gable with an o
 
 
 def h4354():  # Van de Kamp — brick ground floor, blue gambrel upper storey with dormers, tall chimney
+    wstyle(lites="6over6", crown="cap", curtain="curtain")
     h = House("4354"); m = h.body; W, D = 13.0, 9.5
     foundation(m, W, D, .45); walls(m, W, D, .45, 3.2, "brick")
     for y in (1.2, 2.2, 3.1): m.box("brick_dk", -W/2 - .03, y, D/2, W/2 + .03, y + .05, D/2 + .03)
@@ -1030,6 +1098,7 @@ INTERIORS = {"4354": (interior_4354_show, interior_4354_set)}
 
 
 def h4353():  # Mayer — yellow Dutch colonial: gambrel roof, shed dormer, front gable bay, white rail fence
+    wstyle(lites="6over6", crown="pediment", curtain="curtain", boxes=True, flowers="flower_y")
     h = House("4353"); m = h.body; W, D = 12.0, 9.0
     foundation(m, W, D); walls(m, W, D, .45, 3.2, "yellow")
     m.gambrel("roof_br", "yellow", -W/2, W/2, -D/2, D/2, 3.65, 2.6, 1.5, knee=.3)
@@ -1068,6 +1137,7 @@ def h4353():  # Mayer — yellow Dutch colonial: gambrel roof, shed dormer, fron
     return h
 
 def h4355():  # Scavo — sage-green two-storey, brown roof, white trim, vine-covered porch and picket fence
+    wstyle(lites="cross", crown="cap", curtain="curtain_yl", boxes=True, flowers="rose")
     h = House("4355"); m = h.body; W, D = 12.5, 10.0
     foundation(m, W, D, .5); walls(m, W, D, .5, 5.9, "green_lyn"); band(m, W, D, 3.4, "trim", .16)
     m.gable("roof_br", "green_lyn", -W/2, W/2, -D/2, D/2, 6.4, 9.4, over=.5)
@@ -1094,6 +1164,7 @@ def h4355():  # Scavo — sage-green two-storey, brown roof, white trim, vine-co
     return h
 
 def h4352():  # Young — the Cleaver house replica: cream clapboard, brown shingle roof, cross gables
+    wstyle(lites="6over6", crown="pediment", curtain="curtain")
     h = House("4352"); m = h.body; W, D = 12.0, 9.5
     foundation(m, W, D); walls(m, W, D, .45, 5.6, "cream"); band(m, W, D, 3.2, "trim", .14)
     m.gable("roof_bn", "cream", -W/2, W/2, -D/2, D/2, 6.05, 9.2, over=.55)
@@ -1119,6 +1190,7 @@ def h4352():  # Young — the Cleaver house replica: cream clapboard, brown shin
     return h
 
 def h4356():  # Mayfair — Craftsman bungalow, low wide gables, grey-brown boards
+    wstyle(lites="3over1", crown="craft", curtain="curtain_yl")
     h = House("4356"); m = h.body; W, D = 12.5, 10.0
     foundation(m, W, D, .55, "stone"); walls(m, W, D, .55, 3.4, "slate")
     m.gable("roof_dk", "slate", -W/2, W/2, -D/2, D/2, 3.95, 6.6, over=.9, attic="x1")
@@ -1147,6 +1219,7 @@ def h4356():  # Mayfair — Craftsman bungalow, low wide gables, grey-brown boar
     return h
 
 def h4358():  # McCluskey — rebuilt farmhouse with a full-width porch
+    wstyle(lites="6over6", crown="pediment", curtain="curtain_bl", boxes=True, flowers="wisteria")
     h = House("4358"); m = h.body; W, D = 11.0, 9.0
     foundation(m, W, D); walls(m, W, D, .45, 5.6, "grey"); band(m, W, D, 3.3, "trim", .14)
     m.gable("roof_lt", "grey", -W/2, W/2, -D/2, D/2, 6.05, 8.6, over=.45)
@@ -1164,6 +1237,7 @@ def h4358():  # McCluskey — rebuilt farmhouse with a full-width porch
     return h
 
 def h4362():  # Britt — pink clapboard, brown roof, twin front gables with oculi, columned entry, white gate
+    wstyle(lites="cross", crown="cap", curtain="curtain_rs")
     h = House("4362"); m = h.body; W, D = 14.0, 9.5
     foundation(m, W, D, .4, "stone"); walls(m, W, D, .4, 6.0, "blush")
     band(m, W, D, 3.3, "trim", .14)
@@ -1202,6 +1276,7 @@ def h4362():  # Britt — pink clapboard, brown roof, twin front gables with ocu
     return h
 
 def h4350():  # Huber — tiny one-storey cottage
+    wstyle(lites="6over6", crown="cap", curtain="curtain_rs", boxes=True, flowers="rose")
     h = House("4350"); m = h.body; W, D = 9.0, 8.0
     foundation(m, W, D, .4); walls(m, W, D, .4, 3.1, "cream")
     m.gable("roof_br", "cream", -W/2, W/2, -D/2, D/2, 3.5, 5.8, over=.5)
@@ -1216,6 +1291,7 @@ def h4350():  # Huber — tiny one-storey cottage
     return h
 
 def h4347():  # Greenberg — powder-blue Victorian with an exterior stair and grey hip roof
+    wstyle(lites="diamond", crown="arch", curtain="curtain")
     h = House("4347"); m = h.body; W, D = 12.0, 10.0
     foundation(m, W, D, .5); walls(m, W, D, .5, 6.2, "blue_vic"); band(m, W, D, 3.5, "trim", .16)
     m.hip("roof_dk", -W/2, W/2, -D/2, D/2, 6.7, 3.4, over=.5)
@@ -1247,6 +1323,7 @@ def h4347():  # Greenberg — powder-blue Victorian with an exterior stair and g
          trees=[(9.5, 6, 1.1, "leaf"), (-9.8, -5, 1.0, "leaf")])
     return h
 def h4351():  # Applewhite — grey-green Victorian with a corner turret (the old Munster house)
+    wstyle(lites="diamond", crown="arch", curtain="curtain_yl")
     h = House("4351"); m = h.body; W, D = 11.5, 10.0
     foundation(m, W, D, .55); walls(m, W, D, .55, 6.0, "teal"); band(m, W, D, 3.5, "trim", .16)
     m.hip("roof_lt", -W/2, W/2, -D/2, D/2, 6.55, 3.4, over=.45)
@@ -1276,6 +1353,7 @@ def h4351():  # Applewhite — grey-green Victorian with a corner turret (the ol
     return h
 
 def h4344():  # Seven Gables — dark, steep and empty
+    wstyle(lites="cross", crown="gothic", curtain=False)
     h = House("4344"); m = h.body; W, D = 11.0, 9.0
     foundation(m, W, D, .5); walls(m, W, D, .5, 5.6, "darkgrey")
     m.gable("roof_dk", "darkgrey", -W/2, W/2, -D/2, D/2, 6.1, 10.2, over=.4)
@@ -1294,6 +1372,7 @@ def h4344():  # Seven Gables — dark, steep and empty
     return h
 
 def h4360():  # light-green house at the end of the lane
+    wstyle(lites="6over6", crown="pediment", curtain="curtain", boxes=True, flowers="flower_y")
     h = House("4360"); m = h.body; W, D = 11.0, 9.0
     foundation(m, W, D); walls(m, W, D, .45, 5.6, "mint"); band(m, W, D, 3.3, "trim", .14)
     m.hip("roof_lt", -W/2, W/2, -D/2, D/2, 6.05, 2.4, over=.5)

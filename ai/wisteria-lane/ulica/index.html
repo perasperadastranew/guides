@@ -742,7 +742,7 @@ function patch(m,opt){ opt=opt||{}; if(m.userData.patched) return; m.userData.pa
         float d=dot(vW,rgt)*.8+dot(vW,upv)*1.1, g=fract(d*.16), up=fract(vW.y/2.6);
         float glint=smoothstep(0.,.03,g)*smoothstep(.13,.07,g)+.45*smoothstep(.2,.23,g)*smoothstep(.27,.24,g);
         float fres=pow(1.-abs(normalize(normal).z),2.);
-        totalEmissiveRadiance+=(1.-uNight)*uTex*(vec3(.78,.88,1.)*(.06+.22*fres+.16*smoothstep(.3,1.,up))+vec3(1.,.98,.92)*glint*.42); }`);
+        totalEmissiveRadiance+=(1.-uNight)*uTex*(vec3(.78,.88,1.)*(.03+.16*fres+.13*smoothstep(.35,1.,up))+vec3(1.,.98,.92)*glint*.42); }`);
     if(veg) f=f.replace('#include <color_fragment>','#include <color_fragment>\n diffuseColor.rgb*=mix(.68,1.12,vH);')
       .replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
       { float rim=pow(1.-abs(dot(normalize(normal),normalize(vViewPosition))),2.4); totalEmissiveRadiance+=(1.-uNight)*vec3(1.,.8,.5)*diffuseColor.rgb*.75*rim*vH; }`);
@@ -858,7 +858,7 @@ const fileLoader=new THREE.FileLoader(manager); fileLoader.setResponseType('json
 function failed(what){ return ()=>{ const li=document.createElement('li'); li.textContent='Не загрузилось: '+what; preLog.appendChild(li); }; }
 
 function prep(root,hi,cut){ root.traverse(o=>{ if(!o.isMesh) return; o.castShadow=true; o.receiveShadow=true; const m=o.material; m.flatShading=true; m.metalness=0;
-  if(m.name==='glass'){ m.color.set(0x9cc4dc); m.roughness=.25; m.emissive=new THREE.Color(0x29455a); }
+  if(m.name==='glass'){ m.color.set(0x3f5d72).convertSRGBToLinear(); m.roughness=.25; m.emissive=new THREE.Color(0x0f1d28).convertSRGBToLinear(); }
   if(m.name==='lamp'){ m.emissive=new THREE.Color(0xfff1c0); m.emissiveIntensity=.35; }
   patch(m,{hi,cut}); m.needsUpdate=true; }); }
 
