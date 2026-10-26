@@ -156,3 +156,54 @@
 .pg .hp figcaption span:not(.micro){font-family:var(--sans);text-transform:none;letter-spacing:0;font-size:14px;line-height:1.5}
 .pg .hp .hsc{overflow-x:auto;scrollbar-width:thin}
 @media (max-width:640px){.pg .hp .hsc svg{min-width:620px}.pg .hp .pj text{font-size:13px}.pg .hp .pj text tspan{display:inline}.pg .hp .ax{font-size:11px}}
+/* ===== правки 26.10 (2) */
+.pg ol.th li{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 48px;padding:36px 0}
+.pg ol.th .tl{display:flex;flex-direction:column;gap:10px}
+.pg ol.th .tl h3{margin:0;font-size:clamp(22px,2.4vw,28px);font-weight:500;line-height:1.15;max-width:16ch}
+.pg ol.th .tl b{grid-row:auto;font:600 clamp(48px,6.4vw,84px)/.92 var(--num);letter-spacing:-.04em;color:var(--accent);margin-top:10px}
+.pg ol.th li:nth-child(even) .tl b{color:var(--fg)}
+.pg ol.th li p{align-self:end;font-size:16px}
+@media (max-width:640px){.pg ol.th li{grid-template-columns:minmax(0,1fr)}}
+/* откуда → куда: две колонки, без прыжков */
+.pg .dirs{display:block}
+.pg .dirs .dir{display:none}
+.pg .dirs .dir.on{display:block}
+.pg .fromto{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:12px;min-height:420px}
+.pg .fromto>div{padding:26px 24px;display:flex;flex-direction:column;gap:10px;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}
+.pg .fromto .fr{background:var(--surface)}
+.pg .fromto .to{background:var(--fg);color:var(--bg)}
+.pg .fromto .to>.micro{color:var(--accent)}
+.pg .fromto h3{margin:0 0 6px;font:400 clamp(26px,3vw,36px)/1.05 "PG W3",var(--sans);text-transform:uppercase}
+.pg .fromto .fr p{margin:0;font-size:16px;line-height:1.5}
+.pg .fromto .ks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:6px}
+.pg .fromto .ks .k{display:flex;flex-direction:column;gap:6px}
+.pg .fromto .ks .micro{color:color-mix(in srgb,var(--bg) 65%,transparent)}
+.pg .fromto .ks ul{margin:0;padding:0;list-style:none}
+.pg .fromto .ks li{padding:5px 0;border-top:1px solid color-mix(in srgb,var(--bg) 18%,transparent);font-size:14px;line-height:1.4}
+.pg .fromto .ks p{margin:0;font-size:14px;line-height:1.45}
+.pg .fromto .wide{margin-top:auto;padding-top:14px;border-top:1px solid color-mix(in srgb,var(--bg) 25%,transparent);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;background:none}
+.pg .fromto .wide b{color:var(--accent);font-weight:500}
+.pg .fromto .wide .micro{color:color-mix(in srgb,var(--bg) 65%,transparent)}
+@media (max-width:760px){.pg .fromto{grid-template-columns:minmax(0,1fr);min-height:0}.pg .fromto .ks{grid-template-columns:minmax(0,1fr)}}
+/* 3 → 1 */
+.pg .b31{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px 48px;align-items:center;margin:48px 0 8px;padding:32px 0;border-top:1px solid var(--fg);border-bottom:1px solid var(--fg)}
+.pg .b31 .nums{display:flex;align-items:center;gap:18px;font:600 clamp(80px,12vw,150px)/.85 var(--num);letter-spacing:-.05em}
+.pg .b31 .nums i{font-style:normal;font-size:.45em;color:var(--muted)}
+.pg .b31 .nums .a{color:var(--accent)}
+.pg .b31 p{margin:8px 0 0;font-size:clamp(18px,2vw,24px);line-height:1.35;max-width:30ch}
+@media (max-width:640px){.pg .b31{grid-template-columns:minmax(0,1fr)}}
+.pg .gal.ex3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:640px){.pg .gal.ex3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pg .gh p .micro{display:block;margin-bottom:4px}
+/* итог: строки одинаковой сетки */
+.pg ol.con{display:block;border-top:1px solid var(--fg)}
+.pg ol.con li{display:grid;grid-template-columns:72px minmax(0,1fr) minmax(0,1.3fr);gap:8px 32px;align-items:baseline;padding:24px 0;border-top:0;border-bottom:1px solid var(--line)}
+.pg ol.con li::before{content:none}
+.pg ol.con .cnum{font:300 40px/1 var(--num);color:var(--accent);letter-spacing:-.03em}
+.pg ol.con b{margin:0;font-size:clamp(20px,2.2vw,26px);line-height:1.2}
+.pg ol.con p{font-size:16px}
+@media (max-width:640px){.pg ol.con li{grid-template-columns:48px minmax(0,1fr)}.pg ol.con li p{grid-column:2}}
+.pg .gds{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:640px){.pg .gds{grid-template-columns:minmax(0,1fr)}}
+.pg .lrn{grid-template-columns:repeat(3,minmax(0,1fr));max-width:none}
+.pg .dirs .dir,.pg .dirs .dir.on{background:none;padding:0;clip-path:none;grid-template-columns:none}
