@@ -97,7 +97,7 @@
       [
        "<b>Рендер</b>",
        "Стилизованно или физически точно",
-       "soft stylized 3D render, clay render, photorealistic studio product render, physically accurate glass and liquid"
+       "soft stylized 3D render, clay render, studio product photography on medium format film, physically accurate glass and liquid"
       ]
      ]
     },
@@ -199,7 +199,7 @@
      "type": "prompt",
      "title": "Заготовки якорей четырёх манер",
      "tool": "Midjourney",
-     "text": "CLAY: Soft stylized 3D render, matte clay-like materials with subtle fingerprint texture, rounded chunky forms, pastel [2 colors] with one saturated [accent] accent, large soft area light from the upper left, gentle contact shadows, clean uncluttered composition.\n\nSOFT PLASTIC: Stylized 3D toy render, smooth soft-touch plastic with satin sheen, simplified rounded shapes with thick bevels, limited palette of [colors] and one bright accent, soft even studio light, subtle ambient occlusion, playful centered composition on a plain backdrop.\n\nVINYL: Collectible vinyl figure style 3D render, glossy molded vinyl with soft highlights, bold simplified silhouettes, flat saturated colors of [colors], faint seam lines, bright key light with a colored rim light, clean seamless backdrop, centered hero composition.\n\nPHOTOREAL: Photorealistic studio product render, physically accurate glass and liquid, clear refraction and crisp rim highlights, [backdrop color] backdrop with one warm accent, single large softbox from behind and a small front fill, soft contact shadows, minimal composition with open space.",
+     "text": "CLAY: Soft stylized 3D render, matte clay-like materials with subtle fingerprint texture, rounded chunky forms, pastel [2 colors] with one saturated [accent] accent, large soft area light from the upper left, gentle contact shadows, clean uncluttered composition.\n\nSOFT PLASTIC: Stylized 3D toy render, smooth soft-touch plastic with satin sheen, simplified rounded shapes with thick bevels, limited palette of [colors] and one bright accent, soft even studio light, subtle ambient occlusion, playful centered composition on a plain backdrop.\n\nVINYL: Collectible vinyl figure style 3D render, glossy molded vinyl with soft highlights, bold simplified silhouettes, flat saturated colors of [colors], faint seam lines, bright key light with a colored rim light, clean seamless backdrop, centered hero composition.\n\nPHOTOREAL: Studio product photography on medium format film, physically accurate glass and liquid, clear refraction and crisp rim highlights, [backdrop color] backdrop with one warm accent, single large softbox from behind and a small front fill, soft contact shadows, minimal composition with open space.",
      "you": "Выбираешь одну манеру, подставляешь палитру бренда и кладёшь якорь в бриф."
     },
     {
@@ -499,7 +499,7 @@
      "type": "prompt",
      "title": "Шаг 3. Фотореал-вариант для hero-баннера",
      "tool": "Midjourney",
-     "text": "A 330 ml glass bottle with rounded shoulders, amber lemonade with whole cloudberries inside, a blank matte kraft paper label and a metal cap, beaded with cold condensation, standing on a slab of wet dark slate with a sprig of reindeer moss and three cloudberries at its base, open space above the bottle, eye-level close-up, 85mm lens, photorealistic studio product render, physically accurate glass and liquid, clear refraction and crisp rim highlights, cold grey-blue backdrop with one warm amber accent, single large softbox from behind and a small front fill, soft contact shadows, minimal composition --no text, letters, logo",
+     "text": "A 330 ml glass bottle with rounded shoulders, amber lemonade with whole cloudberries inside, a blank matte kraft paper label and a metal cap, beaded with cold condensation, standing on a slab of wet dark slate with a sprig of reindeer moss and three cloudberries at its base, open space above the bottle, eye-level close-up, 85mm lens, studio product photography on medium format film, physically accurate glass and liquid, clear refraction and crisp rim highlights, cold grey-blue backdrop with one warm amber accent, single large softbox from behind and a small front fill, soft contact shadows, minimal composition --no text, letters, logo",
      "you": "Меняется якорь и сцена, продукт тот же — и его снова меняешь на карточку промптом из шага 2."
     },
     {
@@ -603,7 +603,7 @@
         },
         {
          "l": "фотореал",
-         "v": "photorealistic studio product render, physically accurate glass and liquid, clear refraction and crisp rim highlights, cold grey-blue backdrop with one warm amber accent"
+         "v": "studio product photography on medium format film, physically accurate glass and liquid, clear refraction and crisp rim highlights, cold grey-blue backdrop with one warm amber accent"
         }
        ]
       }
