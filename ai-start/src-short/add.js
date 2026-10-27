@@ -62,3 +62,16 @@ if(inFrame){addEventListener('message',function(e){if(e.data&&e.data.type==='pad
 else{addEventListener('scroll',sch,{passive:true});addEventListener('resize',sch)}
 sch();
 })();
+/* 3 → 1: карточки сходятся по прокрутке и расходятся обратно */
+(function(){
+var el=document.querySelector('.pg .tri');if(!el)return;
+var inFrame=window.parent!==window,view=null;
+function top(e){var y=0;while(e){y+=e.offsetTop;e=e.offsetParent}return y}
+function upd(){var vt,vh;if(inFrame){if(!view)return;vt=view.top;vh=view.h}else{vt=window.scrollY;vh=window.innerHeight}
+  var t=top(el),h=el.offsetHeight,start=t+h*.2-vh,end=t+h*.5-vh*.45;
+  var p=Math.max(0,Math.min(1,(vt-start)/(end-start)));p=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;el.style.setProperty('--p',p.toFixed(3))}
+var raf=0;function sch(){if(!raf)raf=requestAnimationFrame(function(){raf=0;upd()})}
+if(inFrame)addEventListener('message',function(e){if(e.data&&e.data.type==='pad-view'){view={top:+e.data.top||0,h:+e.data.h||800};sch()}});
+else addEventListener('scroll',sch,{passive:true});
+addEventListener('resize',sch);sch();
+})();

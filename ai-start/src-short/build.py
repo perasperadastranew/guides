@@ -51,7 +51,7 @@ TH = [
  ('Нейросети пришли в каждую профессию', '5 дней', 'Столько понадобилось ChatGPT, чтобы набрать первый миллион пользователей. Сейчас у него около 900 млн человек в неделю. А длина задач, которые ИИ выполняет сам, удваивается примерно каждые 4 месяца.'),
  ('Сокращения — часто отговорка', '9%', 'Только 9% компаний говорят, что ИИ действительно заменил какие-то роли. При этом к маю 2026 года 102 000 человек потеряли работу в технологических компаниях, и почти 6 из 10 компаний называют причиной ИИ, хотя причина финансовая. Сэм Альтман называет это AI washing. А Klarna, которая хвасталась, что бот заменил 700 операторов, снова нанимает людей: качество упало.'),
  ('Проекты стали сложнее', 'всё сразу', 'Раньше заказывали одну картинку или один формат. Теперь в одном проекте фото, графика, 3D, моушн и видео: клиент ждёт серию, адаптации под площадки и ролик — и всё это в одном стиле.'),
- ('Ценятся Т‑специалисты', 'Т', 'Глубоко в одном — дизайне, моушне, монтаже — и широко в смежном. Нейросети дают доступ к 3D, видео и звуку без отдельной команды, но собрать это в сильный проект может только тот, у кого есть база.'),
+ ('Ценятся Т‑специалисты', 'T‑shaped', 'Глубоко в одном — дизайне, моушне, монтаже — и широко в смежном. Нейросети дают доступ к 3D, видео и звуку без отдельной команды, но собрать это в сильный проект может только тот, у кого есть база.'),
  ('Рынок ищет тех, кто умеет', '16%', '16% вакансий дизайнеров и художников на hh.ru в 2026 году требуют навыков работы с нейросетями — больше, чем в любой другой профессии.'),
 ]
 # график «крутости»: длина задачи, которую модель выполняет сама (METR, 50% успеха), лог-шкала
@@ -136,7 +136,7 @@ CASE = {
  'eaglips': ('https://dprofile.ru/case/173955/eaglips', 'Eaglips · Милана Гавриченко'),
  'lumera': ('https://dprofile.ru/case/174067/lumera', 'Lumera · Лейла Исхакова'),
  'mofu': ('https://dprofile.ru/case/179802/mofu-mofu-pusistye-obvesy', 'mofu-mofu · Арина Галимова'),
- 'husky': ('https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', '«Танцы на снегу»'),
+ 'husky': ('https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', 'Концепция AI-клипа'),
  'godov': ('https://perasperadastranew.github.io/guides/rolik-po-foto/', 'Годовщина родителей'),
 }
 def fig(src, cap, key=None, vid=None):
@@ -164,9 +164,9 @@ CATS = [
    ('cases/dp-kvas.webp', DP2 + '179478/kvas-drinks-collection', 'Drinks Collection · Вероника Саттарова', 'Айдентика и упаковка серии', 'Графика бренда и линейка продуктов с общей историей', 'Набор графики, упаковка и примеры применения', '20–60 тыс ₽'),
    ('cases/dp-yapay.webp', DP2 + '190803/key-visual-dlia-iandeks-pei', 'Яндекс Пэй · Мария Даль', 'Графика для цифрового продукта', 'Key visual, 3D-ассеты и иллюстрации для приложения и промо', 'Система графики в стиле продукта', '30–100 тыс ₽')]),
  ('vid', 'Видео', 'Бренды, медиа и артисты: ролики для рекламы, соцсетей и музыкантов.', [
-   ('video:https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4|', 'https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', '«Танцы на снегу»', 'Клип', 'Визуальный ряд под трек артиста', 'Клип или визуалайзер', '30–100 тыс ₽'),
-   ('cases/vm-witcher.webp', 'https://vimeo.com/1239807103', 'Ведьмак · кураторы школы', 'Мультфильм', 'Короткая история с персонажем', 'Ролик со звуком', '30–100 тыс ₽'),
-   ('cases/vm-omega.webp', 'https://vimeo.com/1239785942', 'Omega', 'Рекламный ролик', 'Продукт через рекламный приём, пэкшот в финале', 'Ролик и нарезки под площадки', '30–100 тыс ₽'),
+   ('video:https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4|', 'https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', 'Концепция AI-клипа', 'Клип', 'Визуальный ряд под трек артиста', 'Клип или визуалайзер', '30–100 тыс ₽'),
+   ('cases/vm-witcher.webp', 'https://vimeo.com/1239807103', 'Мясник из Блавикена', 'Мультфильм', 'Короткая история с персонажем', 'Ролик со звуком', '30–100 тыс ₽'),
+   ('cases/vm-omega.webp', 'https://vimeo.com/1239785942', 'Реклама Omega', 'Рекламный ролик', 'Продукт через рекламный приём, пэкшот в финале', 'Ролик и нарезки под площадки', '30–100 тыс ₽'),
    ('vimeo:1239780521', 'https://vimeo.com/1239780521', 'Тасманский дьявол', 'Объясняющий или тематический ролик', 'Познавательный или художественный ролик на 20–90 секунд', 'Ролик с графикой, звуком и титрами', '10–60 тыс ₽'),
    ('cases/godovshina-cover.webp', 'https://perasperadastranew.github.io/guides/rolik-po-foto/', 'Годовщина родителей', 'AI-фильм', 'История с реальными героями и локациями', 'Фильм со звуком и титрами', '30–80 тыс ₽')]),
 ]
@@ -220,7 +220,7 @@ for i, (n, h1, h2, p1, p2, dx, dy, an) in enumerate(PJ):
     g.append('<g class="pj%s" style="--i:%d"><circle cx="%.1f" cy="%.1f" r="7"/><text x="%.1f" y="%.1f" text-anchor="%s">%s<tspan> ≈ %s ₽/ч</tspan></text></g>' % (
         ' hot' if hot else '', i, X(hm), Y(pm_), X(hm) + dx, Y(pm_) + dy, an, n, format(int(round(rate, -2)), ',').replace(',', ' ')))
 g.append('</svg>')
-chart = '<figure class="hp"><div class="hsc">%s</div><figcaption><span class="micro">Часы × цена</span><span>Точка — середина вилки по часам и цене. Чем выше точка над линиями, тем дороже час. <b>Красным</b> — где час стоит дороже всего: в рекламе платят за идею и ответственность, а не за генерацию.</span></figcaption></figure>' % ''.join(g)
+chart = '<figure class="hp"><div class="hsc">%s</div><figcaption><span class="micro">Часы × цена</span><span>Точка — середина вилки по часам и цене. Чем выше точка над линиями, тем дороже час. Для сравнения: дизайнер-новичок на фрилансе берёт 500–1000 ₽ в час, опытный — 2000–5000 ₽. <b>Красным</b> — где час стоит дороже всего: в рекламе платят за идею и ответственность, а не за генерацию.</span></figcaption></figure>' % ''.join(g)
 t3 = '<p>Удобнее делить проекты по типу работы: фотореализм, графика и видео. Для каждого — кто заказывает, что ты сдаёшь и вилка цен на 2026 год. Внизу вилки — один кадр, один круг правок и один формат, вверху — набор кадров, адаптации и передача прав.</p>'
 out.append(section(4, '04', 'Заказы и цены', 'Какие проекты заказывают <span class="s">и сколько они стоят</span>', t3, b3 + '\n<p class="micro" style="margin:56px 0 14px">Сколько стоит час в разных проектах</p>\n' + chart))
 
@@ -265,7 +265,7 @@ def _dir(m):
     head_ = re.match(r'<div class="dir[^"]*"[^>]*>', t).group(0)
     frm = ks[0]
     rest = ''.join('<div class="k"><span class="micro">%s</span>%s</div>' % k for k in ks[1:])
-    return head_ + '<div class="fromto"><div class="fr"><span class="micro">Откуда</span><h3>%s</h3><span class="micro">%s</span>%s</div><div class="to"><span class="micro">Куда расти</span><h3>%s</h3><div class="ks">%s</div>%s</div></div></div>' % (h.group(1), frm[0], frm[1], h.group(2), rest, wide)
+    return head_ + '<div class="fromto"><div class="fr"><span class="micro">Откуда</span><h3>%s</h3><span class="micro">%s</span>%s</div><div class="to"><span class="micro">Направления роста</span><h3>%s</h3><div class="ks">%s</div>%s</div></div></div>' % (h.group(1), frm[0], frm[1], h.group(2), rest, wide)
 b6 = nofn(sec_body('pg-6'))
 b6 = re.sub(r'<div class="dir[ "][^>]*>.*?<div class="wide">.*?</div></div>', _dir, b6, flags=re.S)
 b6 = b6.replace('</div>\n<div class="dir', '</div>\n<div class="dir', 1)
@@ -284,14 +284,14 @@ out.append(section('learn', '02', '', 'Прокачай <span class="s">базу
   learn + '\n<p class="micro" style="margin:36px 0 12px">Где учиться</p>\n' + GUIDES_SHORT))
 out.append(step('pg-7', 3, 'Опиши <span class="s">свои услуги</span>'))
 out.append(step('pg-8', 4, 'Собери минимальный <span class="s">стек</span>'))
-def exg(items, cap):
-    return '<p class="micro" style="margin:40px 0 12px">%s</p><div class="grid4 gal sq ex3">%s</div>' % (cap, ''.join(fig(*it) for it in items))
+def exg(items, cap, wide=False):
+    return '<p class="micro" style="margin:40px 0 12px">%s</p><div class="grid4 gal %s ex3">%s</div>' % (cap, 'wd' if wide else 'sq', ''.join(fig(*it) for it in items))
 feat = '<a class="feat" href="%s" target="_blank" rel="noopener"><span class="fim"><video muted loop playsinline preload="none" poster="cases/knives-2.webp" data-src="cases/v-knives.mp4"></video></span><span class="ftx"><span class="micro">Пример проекта</span><b>Simple Knives</b><span class="fau">Анастасия Грачева · студентка Mission to AI</span><span class="fds">Коллекция ножей для выдуманного бренда, сделанная с нуля: идея, продукт, key visual, серия кадров и рекламный ролик в одном стиле. Хороший ориентир, как должен выглядеть первый проект целиком.</span><span class="flk">Смотреть кейс на Dprofile ↗</span></span></a>' % CASE['knives'][0]
 first = feat + exg([('cases/eaglips.webp', 'Продукт с нуля', 'eaglips'), ('img/case-lumera-1.webp', 'Выдуманный гаджет', 'lumera'), ('cases/mako.webp', 'Маскот', 'mako')], 'Так начинали ученики')
 first += '<p class="tip"><b>Больше 50 наград на Dprofile</b> собрали ученики школы — многие с первых учебных проектов, сделанных с нуля. Посмотри их кейсы, чтобы понять планку.</p>'
 out.append(step('pg-9', 5, 'Сделай первый <span class="s">проект</span>', body=nofn(sec_body('pg-9')) + first))
 out.append(section('st10', '06', '', 'Оформи кейс <span class="s">и покажи работы</span>', sec_txt('pg-10'),
-  nofn(sec_body('pg-10')) + exg([('cases/hronos-box.webp', 'Кейс на сайте', 'hronos'), ('cases/v-lappi.jpg', 'Кейс на сайте', 'lappi'), ('cases/v-knives.jpg', 'Кейс на Dprofile', 'knives')], 'Как оформляют кейсы у нас') + '\n<p class="micro" style="margin:48px 0 12px">Где показывать</p>\n' + nofn(sec_body('pg-11'))))
+  nofn(sec_body('pg-10')) + exg([('cases/hronos-box.webp', 'Кейс на сайте', 'hronos'), ('cases/dp-lappi.webp', 'Кейс на сайте', 'lappi'), ('cases/knives-2.webp', 'Кейс на Dprofile', 'knives')], 'Как оформляют кейсы у нас', wide=True) + '\n<p class="micro" style="margin:48px 0 12px">Где показывать</p>\n' + nofn(sec_body('pg-11'))))
 out.append(step('pg-12', 7, 'Возьми первый <span class="s">заказ</span>'))
 
 # ================= ЧАСТЬ III. НЕЙРОСЕТИ
@@ -366,7 +366,7 @@ CON = [('Рынок новый — и это возможность', 'Прав�
 con = '<ol class="con">' + ''.join('<li><span class="cnum">%02d</span><b>%s</b><p>%s</p></li>' % (k + 1, c[0], c[1]) for k, c in enumerate(CON)) + '</ol>'
 CLOSED = 'https://t.me/perasperagram'  # TODO: ссылка на закрытый канал
 GD = [(CLOSED, None, 'https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4', 'Гайд · в закрытом канале', 'AI-клип', 'Клип с персонажем без съёмки: от идеи до монтажа'),
-      (CLOSED, 'img/g-rolik.webp', None, 'Гайд · в закрытом канале', 'AI-фильм с реальными героями', 'Фильм по семейным фото: реальные люди и локации')]
+      (CLOSED, 'cases/godovshina-2.webp', None, 'Гайд · в закрытом канале', 'AI-фильм с реальными героями', 'Фильм по семейным фото: реальные люди и локации')]
 def gcard(u, img, vid, k, t, d):
     med = ('<img src="%s" alt="" loading="lazy">' % img) if img else ('<span class="ty" aria-hidden="true">%s</span><video muted loop playsinline preload="metadata" data-src="%s"></video>' % (t[0], vid))
     return '<a class="gd%s" href="%s" target="_blank" rel="noopener"><div class="cm">%s</div><div class="cb"><span class="micro">%s</span><b>%s <i aria-hidden="true">↗</i></b><span>%s</span></div></a>' % ('' if img else ' t', u, med, k, t, d)
