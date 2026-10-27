@@ -166,12 +166,15 @@ CATS = [
  ('vid', 'Видео', 'Бренды, медиа и артисты: ролики для рекламы, соцсетей и музыкантов.', [
    ('video:https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4|', 'https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', 'Хаски «Танцы на снегу»', 'Клип', 'Визуальный ряд под трек артиста', 'Клип или визуалайзер', '30–100 тыс ₽'),
    (None, 'https://t.me/perasperagram/2173', 'Ведьмак · кураторы школы', 'Мультфильм', 'Короткая история с персонажем', 'Ролик со звуком', '30–100 тыс ₽'),
-   (None, None, 'Пример подбираем', 'Объясняющий или тематический ролик', 'Как работает продукт, или художественный ролик на 20–90 секунд', 'Ролик с графикой, звуком и титрами', '10–60 тыс ₽'),
+   ('vimeo:1239785942', 'https://vimeo.com/1239785942', 'Omega', 'Рекламный ролик', 'Продукт через рекламный приём, пэкшот в финале', 'Ролик и нарезки под площадки', '30–100 тыс ₽'),
+   ('vimeo:1239780521', 'https://vimeo.com/1239780521', 'Тасманский дьявол', 'Объясняющий или тематический ролик', 'Познавательный или художественный ролик на 20–90 секунд', 'Ролик с графикой, звуком и титрами', '10–60 тыс ₽'),
    ('cases/godovshina-2.webp', 'https://perasperadastranew.github.io/guides/rolik-po-foto/', 'Годовщина родителей', 'AI-фильм', 'История с реальными героями и локациями', 'Фильм со звуком и титрами', '30–80 тыс ₽')]),
 ]
 def media(src, credit):
     if src is None:
         return '<span class="phx"><span>%s</span></span>' % credit
+    if src.startswith('vimeo:'):
+        return '<iframe src="https://player.vimeo.com/video/%s?title=0&byline=0&portrait=0&dnt=1" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="%s"></iframe>' % (src[6:], credit)
     if src.startswith('video:'):
         u, poster = src[6:].split('|')
         return '<video muted loop playsinline preload="%s"%s data-src="%s"></video>' % ('none' if poster else 'metadata', (' poster="%s"' % poster) if poster else '', u)
@@ -181,7 +184,9 @@ for i, (k, n, who, rows) in enumerate(CATS):
     rr = ''
     for src, link, credit, name, task, give, price in rows:
         m = media(src, credit)
-        if link:
+        if link and src and src.startswith('vimeo:'):
+            ex = '<div class="exm"><span class="th3">%s</span><a class="cap2" href="%s" target="_blank" rel="noopener">%s <em>↗</em></a></div>' % (m, link, credit)
+        elif link:
             ex = '<a class="exm" href="%s" target="_blank" rel="noopener"><span class="th3">%s<i class="go" aria-hidden="true">↗</i></span><span class="cap2">%s <em>↗</em></span></a>' % (link, m, credit)
         else:
             ex = '<div class="exm"><span class="th3">%s</span><span class="cap2 soon">%s</span></div>' % (m, credit)
