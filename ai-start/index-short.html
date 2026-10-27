@@ -858,6 +858,11 @@ html,body{margin:0;background:#0B0B0B}@media (prefers-color-scheme: light){html,
 html.in-frame .pg .tonav{display:none!important}
 .pg .dirs .tabs{margin-bottom:20px!important}
 .pg .cat .tw{border-top:0}
+/* итог: без стрелки, заголовок и подзаголовок по центру */
+.pg .fin .head{grid-template-columns:minmax(0,1fr)!important;text-align:center;justify-items:center}
+.pg .fin .head .num{display:none}
+.pg .fin .head .txt{max-width:760px}
+.pg .fin .head .txt p{text-indent:0!important}
 </style>
 </head><body>
 <div class="pg"><div class="wrap">
