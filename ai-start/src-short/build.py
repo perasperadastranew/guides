@@ -402,5 +402,9 @@ css = open(os.path.join(D, 'add.css'), encoding='utf-8').read()
 js = open(os.path.join(D, 'add.js'), encoding='utf-8').read() + '\n' + open(os.path.join(D, 'birds3d.js'), encoding='utf-8').read() + '\n' + open(os.path.join(D, 'towers.js'), encoding='utf-8').read()
 i = res.index('</style>'); res = res[:i] + css + res[i:]
 i = res.rindex('</body>'); res = res[:i] + '<script>' + js + '</script>\n' + res[i:]
+# только тёмная тема: правила для dark — всегда, для light — никогда
+res = re.sub(r'@media\s*\(prefers-color-scheme:\s*dark\)\s*\{((?:[^{}]*\{[^{}]*\})*)\s*\}', r'\1', res)
+res = re.sub(r'@media\s*\(prefers-color-scheme:\s*light\)\s*\{(?:[^{}]*\{[^{}]*\})*\s*\}', '', res)
+res = res.replace('<head>', '<head><meta name="color-scheme" content="dark">', 1)
 open(OUT, 'w', encoding='utf-8').write(res)
 print('ok', len(res))
