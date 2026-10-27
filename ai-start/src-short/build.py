@@ -136,7 +136,7 @@ CASE = {
  'eaglips': ('https://dprofile.ru/case/173955/eaglips', 'Eaglips · Милана Гавриченко'),
  'lumera': ('https://dprofile.ru/case/174067/lumera', 'Lumera · Лейла Исхакова'),
  'mofu': ('https://dprofile.ru/case/179802/mofu-mofu-pusistye-obvesy', 'mofu-mofu · Арина Галимова'),
- 'husky': ('https://perasperadastra.ru/klip', 'Хаски'),
+ 'husky': ('https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', 'Хаски «Танцы на снегу»'),
  'godov': ('https://perasperadastranew.github.io/guides/rolik-po-foto/', 'Годовщина родителей'),
 }
 def fig(src, cap, key=None, vid=None):
@@ -162,7 +162,7 @@ CATS = [
    (None, None, 'Пример: Яндекс', 'Графика для цифрового продукта', 'Иллюстрации и 3D для приложения, сайта, промо', 'Серия графики в стиле продукта', '5–30 тыс ₽'),
    ('cases/eaglips-2.webp', DP2 + '173955/eaglips', 'Eaglips · Милана Гавриченко', 'AI-продукт', 'Придумать и показать продукт, которого нет', 'Метафора, карточка продукта, KV, мокапы', '30–100 тыс ₽')]),
  ('vid', 'Видео', 'Бренды, медиа и артисты: ролики для рекламы, соцсетей и музыкантов.', [
-   ('video:https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4|', 'https://perasperadastra.ru/klip', 'Хаски', 'Клип', 'Визуальный ряд под трек артиста', 'Клип или визуалайзер', 'по объёму'),
+   ('video:https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4|', 'https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', 'Хаски «Танцы на снегу»', 'Клип', 'Визуальный ряд под трек артиста', 'Клип или визуалайзер', 'по объёму'),
    (None, 'https://t.me/perasperagram/2173', 'Ведьмак · кураторы школы', 'Мультфильм', 'Короткая история с персонажем', 'Ролик со звуком', 'по объёму'),
    (None, None, 'Пример подбираем', 'Объясняющий ролик', 'Как работает продукт или сервис, за 30–90 секунд', 'Ролик с графикой и озвучкой', 'по объёму'),
    ('cases/godovshina-2.webp', 'https://perasperadastranew.github.io/guides/rolik-po-foto/', 'Годовщина родителей', 'AI-фильм', 'История с реальными героями и локациями', 'Фильм со звуком и титрами', 'по объёму'),
