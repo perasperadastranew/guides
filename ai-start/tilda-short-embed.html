@@ -1,11 +1,32 @@
 <div id="pg-ai-start" style="margin:0;padding:0;background:#0B0B0B">
 <iframe id="pg-ai-start-frame" src="https://perasperadastranew.github.io/guides/ai-start/index-short.html" title="Как начать в AI-индустрии" style="display:block;width:100%;height:100vh;border:0;background:#0B0B0B" scrolling="no" loading="eager"></iframe>
 </div>
+<style>
+#pg-rail{display:none}
+@media (min-width:1360px){
+#pg-rail{display:block;position:fixed;left:28px;top:96px;z-index:50;width:168px;font:500 13px/1.3 -apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;opacity:0;pointer-events:none;transition:opacity .35s}
+#pg-rail.on{opacity:1;pointer-events:auto}
+#pg-rail ol{list-style:none;margin:0;padding:0}
+#pg-rail a{display:block;color:#A3A39D;text-decoration:none;padding:5px 0;transition:color .2s;cursor:pointer}
+#pg-rail a:hover{color:#F2F2F0}
+#pg-rail .rl-p>a{display:flex;gap:10px;align-items:baseline;color:#F2F2F0;padding:7px 0}
+#pg-rail .rl-p>a i{font:500 11px/1 ui-monospace,Menlo,monospace;font-style:normal;color:#F0303B;width:16px}
+#pg-rail .rl-p>ol{display:none;margin:2px 0 8px 26px;border-left:1px solid #2E2E2C;padding-left:12px}
+#pg-rail .rl-p.rl-open>ol{display:block}
+#pg-rail li li a{font-size:12.5px}
+#pg-rail li.rl-cur>a{color:#F0303B}
+}
+</style>
 <script>
-(function(){var f=document.getElementById('pg-ai-start-frame');
-window.addEventListener('message',function(e){if(e.source!==f.contentWindow||!e.data)return;
-if(e.data.type==='pad-height'&&e.data.h){f.style.height=Math.ceil(e.data.h)+'px'}
-if(e.data.type==='pad-scroll'){var y=f.getBoundingClientRect().top+window.pageYOffset+e.data.y;window.scrollTo({top:y,behavior:'smooth'})}});
+(function(){var f=document.getElementById('pg-ai-start-frame'),rail=null,pos={};
+function fy(){return f.getBoundingClientRect().top+window.pageYOffset}
+window.addEventListener('message',function(e){if(e.source!==f.contentWindow||!e.data)return;var d=e.data;
+if(d.type==='pad-height'&&d.h){f.style.height=Math.ceil(d.h)+'px'}
+if(d.type==='pad-scroll'){window.scrollTo({top:fy()+d.y,behavior:'smooth'})}
+if(d.type==='pad-nav'){pos=d.pos||{};if(!rail){rail=document.createElement('nav');rail.id='pg-rail';rail.setAttribute('aria-label','Разделы гайда');document.body.appendChild(rail);
+  rail.addEventListener('click',function(ev){var a=ev.target.closest('a');if(!a)return;ev.preventDefault();var id=a.getAttribute('href').slice(1);if(id in pos)window.scrollTo({top:fy()+pos[id],behavior:'smooth'})})}
+  rail.innerHTML=d.html}
+if(d.type==='pad-nav-state'&&rail){rail.classList.toggle('on',!!d.vis);[].forEach.call(rail.querySelectorAll('li'),function(li){li.classList.toggle('rl-cur',li.getAttribute('data-id')===d.cur);li.classList.toggle('rl-open',li.getAttribute('data-id')===d.part)})}});
 var q=0;function v(){q=0;try{f.contentWindow.postMessage({type:'pad-view',top:-f.getBoundingClientRect().top,h:window.innerHeight},'*')}catch(x){}}
 function s(){if(!q)q=requestAnimationFrame(v)}
 window.addEventListener('scroll',s,{passive:true});window.addEventListener('resize',s);f.addEventListener('load',function(){setTimeout(v,300)});setInterval(v,1500);})();

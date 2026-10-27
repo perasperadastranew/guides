@@ -23,7 +23,9 @@ align();addEventListener('resize',align);if(document.fonts&&document.fonts.ready
 /* во встроенном iframe (Тильда): якоря прокручивают родительскую страницу, кнопка навигации скрыта */
 (function(){if(window.parent===window)return;document.documentElement.classList.add('in-frame');
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;var el=document.getElementById(a.getAttribute('href').slice(1));if(!el)return;e.preventDefault();parent.postMessage({type:'pad-scroll',y:el.getBoundingClientRect().top+window.scrollY},'*')})})();
-/* боковая навигация: части и разделы, подсветка текущего места */
+/* боковая навигация: части и разделы, подсветка текущего места.
+   На своей странице — fixed здесь. Во встроенном iframe (Тильда) меню рисует родительская страница:
+   мы отправляем ей пункты (pad-nav) и текущее место (pad-nav-state). */
 (function(){
 var parts=[].slice.call(document.querySelectorAll('.pg .part[id], .pg section.fin[id]'));if(!parts.length)return;
 var inFrame=window.parent!==window,view=null,html='<ol>',secs=[];
@@ -39,21 +41,24 @@ parts.forEach(function(p){
     if(ch)html+='<ol>'+ch+'</ol>'}
   html+='</li>'});
 html+='</ol>';
-var nav=document.createElement('nav');nav.className='rail';nav.setAttribute('aria-label','Разделы гайда');nav.innerHTML=html;(document.querySelector('.pg')||document.body).appendChild(nav);
-if(inFrame)nav.classList.add('rl-inf');
-var cur=null,curP=null;
 function top(e){var y=0;while(e){y+=e.offsetTop;e=e.offsetParent}return y}
+var nav=null;
+if(!inFrame){nav=document.createElement('nav');nav.className='rail';nav.setAttribute('aria-label','Разделы гайда');nav.innerHTML=html;(document.querySelector('.pg')||document.body).appendChild(nav)}
+function sendNav(){if(!inFrame)return;var pos={};secs.forEach(function(s){pos[s.id]=top(s.el)});parent.postMessage({type:'pad-nav',html:html,pos:pos},'*')}
+var st={cur:null,part:null,vis:null};
 function upd(){
   var vt,vh;if(inFrame){if(!view)return;vt=view.top;vh=view.h}else{vt=window.scrollY;vh=window.innerHeight}
-  var start=top(parts[0])-vh*.5,on=vt>start&&vt<document.documentElement.scrollHeight-vh*1.2;
-  nav.classList.toggle('rl-vis',on);
-  if(inFrame)nav.style.top=(vt+vh/2-(nav.offsetParent?top(nav.offsetParent):0))+'px';
+  var on=vt>top(parts[0])-vh*.5&&vt<document.documentElement.scrollHeight-vh*1.2;
   var a=null;for(var i=0;i<secs.length;i++){if(top(secs[i].el)<=vt+vh*.5)a=secs[i];else break}
-  if(a&&a.id!==cur){cur=a.id;
-    [].forEach.call(nav.querySelectorAll('li'),function(li){li.classList.toggle('rl-cur',li.dataset.id===a.id);li.classList.toggle('rl-open',li.dataset.id===a.part)})}
+  var cur=a?a.id:null,part=a?a.part:null;
+  if(cur===st.cur&&part===st.part&&on===st.vis)return;st={cur:cur,part:part,vis:on};
+  if(inFrame){parent.postMessage({type:'pad-nav-state',cur:cur,part:part,vis:on},'*');return}
+  nav.classList.toggle('rl-vis',on);
+  [].forEach.call(nav.querySelectorAll('li'),function(li){li.classList.toggle('rl-cur',li.dataset.id===cur);li.classList.toggle('rl-open',li.dataset.id===part)})
 }
 var raf=0;function sch(){if(!raf)raf=requestAnimationFrame(function(){raf=0;upd()})}
-if(inFrame){addEventListener('message',function(e){if(e.data&&e.data.type==='pad-view'){view={top:+e.data.top||0,h:+e.data.h||800};nav.classList.add('rl-live');sch()}})}
-else{addEventListener('scroll',sch,{passive:true})}
-addEventListener('resize',sch);sch();
+if(inFrame){addEventListener('message',function(e){if(e.data&&e.data.type==='pad-view'){var first=!view;view={top:+e.data.top||0,h:+e.data.h||800};if(first)sendNav();sch()}});
+  addEventListener('load',sendNav);var rt=0;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(sendNav,300)});setTimeout(sendNav,1500)}
+else{addEventListener('scroll',sch,{passive:true});addEventListener('resize',sch)}
+sch();
 })();

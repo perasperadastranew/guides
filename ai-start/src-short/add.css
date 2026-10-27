@@ -536,7 +536,7 @@ html.in-frame .pg .tonav{display:none!important}
 /* боковая навигация */
 .rail{display:none}
 @media (min-width:1360px){
-.rail{display:block;position:fixed;left:28px;top:50%;transform:translateY(-50%);z-index:20;width:168px;font:500 13px/1.3 var(--sans,inherit);opacity:0;pointer-events:none;transition:opacity .4s}
+.rail{display:block;position:fixed;left:28px;top:96px;z-index:20;width:168px;font:500 13px/1.3 var(--sans,inherit);opacity:0;pointer-events:none;transition:opacity .4s}
 .rail.rl-inf{position:absolute;transition:opacity .4s,top .25s ease-out}
 .rail.rl-inf:not(.rl-live){display:none}
 .rail.rl-vis{opacity:1;pointer-events:auto}
