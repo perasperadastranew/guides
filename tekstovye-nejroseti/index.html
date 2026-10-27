@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>Claude и текстовые нейросети</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>body{margin:0}
+body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейронкой */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+
+/* иллюстрации Hairline: изометрические фигуры, которые отвечают на курсор */
+.figrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:32px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px}
+.figtext{display:flex;flex-direction:column;gap:10px;min-width:0}
+.figtext b{font-size:20px;font-weight:400;line-height:1.25}
+.figtext p{font-size:16px}
+.fig{position:relative;background:var(--panel);border-radius:8px;overflow:hidden;min-width:0}
+.fig .stage{aspect-ratio:5/4;max-width:100%;--hairline-plate:var(--panel);--hairline-hi:var(--accent);--hairline-edge:#6a6a6e;--hairline-mid:#47474b;--hairline-lo:#303033}
+.fig-read{position:absolute;top:10px;right:12px;z-index:1;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fig-read.on{color:var(--accent)}
+@media (max-width:760px){.figrow{grid-template-columns:minmax(0,1fr);gap:16px}}
+
+
+/* сравнение «с нейросетью и без», способы оплаты, калькулятор бюджета */
+.head .tag{margin-top:4px}
+.cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cmp .side{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.cmp .side.on{border-color:var(--accent)}
+.cmp i,.ways i,.warn i,.legend,.calc label{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+.cmp .side.on i{color:var(--accent)}
+.cmp .big,.res .big{font-family:var(--display);font-size:clamp(40px,6vw,64px);line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.cmp p{font-size:15px}
+
+.bars{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px}
+.legend span{display:flex;align-items:center;gap:8px}
+.sw{width:14px;height:8px;border-radius:2px;display:inline-block}
+.sw.m{background:#4a4a48}.sw.a{background:var(--accent)}
+.bar{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr);gap:6px 16px;align-items:center}
+.bar .nm{color:var(--ink);font-size:15px;line-height:1.25}
+.bar .tr{display:flex;flex-direction:column;gap:4px;min-width:0}
+.bar .ln{display:flex;align-items:center;gap:10px;min-width:0}
+.bar .f{height:10px;border-radius:3px;min-width:3px;flex:none}
+.bar .f.m{background:#4a4a48}.bar .f.a{background:var(--accent)}
+.bar .v{font-family:var(--mono);font-size:12px;color:var(--dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bar .ln.a .v{color:var(--ink)}
+
+table td.hl{color:var(--ink);box-shadow:inset 2px 0 0 var(--accent);padding-left:12px}
+table small{color:var(--faint);font-size:13px}
+td.t{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.warn{border:1px solid var(--bad);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.warn i{color:var(--bad)}
+.warn p{color:var(--ink);font-size:16px;max-width:75ch}
+
+.ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.way{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.way .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.way b.t{font-size:20px;font-weight:400;color:var(--ink);line-height:1.2}
+.way .risk{flex:none;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 9px;border:1px solid currentColor}
+.risk.lo{color:var(--good)}.risk.md{color:#e5b53a}.risk.hi{color:var(--bad)}
+.way .price{font-family:var(--display);font-size:22px;color:var(--ink);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.way .price small{display:block;font-family:var(--body);font-size:13px;color:var(--faint);letter-spacing:0;margin-top:2px}
+.way p{font-size:15px}
+.way .pm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;border-top:1px solid var(--stroke);padding-top:12px}
+.way .pm ul{margin:4px 0 0;padding-left:16px;display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.35}
+.way .pm .g i{color:var(--good)}.way .pm .b i{color:var(--bad)}
+.way .for{font-size:14px;color:var(--ink);border-left:1px solid var(--accent);padding-left:10px}
+.way.wide{grid-column:1/-1}
+
+.calc{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:18px}
+.kits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kits button{text-align:left;background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:14px;color:var(--dim);font-weight:400;font-size:14px;line-height:1.35;display:flex;flex-direction:column;gap:6px}
+.kits button b{font-size:17px;font-weight:400;color:var(--ink)}
+.kits button[aria-checked="true"]{border-color:var(--accent)}
+.kits button[aria-checked="true"] b{color:var(--accent)}
+.months{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.months input{flex:1 1 200px;accent-color:var(--accent)}
+.months output{font-family:var(--display);font-size:28px;color:var(--ink);min-width:1.2em;font-variant-numeric:tabular-nums}
+.res{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--stroke);padding-top:16px}
+.res p{font-size:15px}
+
+@media (max-width:760px){
+  .cmp,.ways,.kits,.way .pm{grid-template-columns:minmax(0,1fr)}
+  .bar{grid-template-columns:minmax(0,1fr)}
+}
+
+
+/* табло, подборщик */
+.score-t td.dot{font-family:var(--mono);letter-spacing:.1em;font-size:14px;white-space:nowrap}
+.score-t .d3{color:var(--accent)} .score-t .d2{color:var(--ink)} .score-t .d1{color:var(--dim)} .score-t .d0{color:var(--faint)}
+.score-t th{color:var(--ink)}
+.picker{display:flex;flex-direction:column;gap:14px}
+.pq{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.pq .n{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.pq .p{color:var(--ink);font-size:19px;line-height:1.3}
+.pq .opts{display:flex;flex-wrap:wrap;gap:8px}
+.pq .opts button{background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:999px;padding:10px 16px;font-weight:400;font-size:15px}
+.pq .opts button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.verdict{border:1px solid var(--accent);border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:10px;animation:pop .35s ease}
+.verdict i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--accent)}
+.verdict b{font-family:var(--display);font-weight:400;font-size:clamp(32px,5vw,52px);line-height:1;color:var(--ink);letter-spacing:-.03em}
+.verdict .for{font-size:15px;color:var(--ink);border-left:1px solid var(--accent);padding-left:10px}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.verdict{animation:none}}
+
+/* окно контекста: слои, которые видит модель */
+.ctxw{display:flex;flex-direction:column;gap:6px;border:1px solid var(--stroke);border-radius:12px;padding:10px;background:var(--well)}
+.ctxw .cl{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;min-height:42px}
+.ctxw .cl span{color:var(--ink);font-size:15px;line-height:1.3}
+.ctxw .cl i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint);text-align:right}
+.ctxw .cl.s{opacity:.7}
+.ctxw .cl.big{min-height:120px;align-items:flex-start;padding-top:12px;background:repeating-linear-gradient(0deg,var(--card) 0 22px,#1d1d1d 22px 23px)}
+.ctxw .cl.me{border-color:var(--accent)}
+.ctxw .cl.me i{color:var(--accent)}
+.ctxw .cl.free{background:transparent;border-style:dashed;min-height:56px}
+.ctxw .cl.free span{color:var(--dim)}
+/* таблицы-справочники */
+.ft{min-width:720px}
+.ft td{vertical-align:top;font-size:15px;line-height:1.4}
+.ft td:first-child{white-space:nowrap}
+.ul-plain,ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;max-width:70ch}
+ul.plain li::marker{color:var(--accent)}
+.warn a{color:var(--ink)}
+.prompt pre em{color:var(--accent);font-style:normal}
+@media (max-width:760px){.ctxw .cl{flex-direction:column;align-items:flex-start;gap:4px}.ctxw .cl i{text-align:left}.ctxw .cl.big{min-height:90px}}
+</style></head><body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА ДЛЯ СТУДЕНТОВ</span><span>НЕЙРОСЕТИ В РАБОТЕ
+АКТУАЛЬНО НА ОКТЯБРЬ 2026</span></div>
+  <h1>Claude и текстовые нейросети</h1>
+  <p class="lead"><b>Как они устроены, что умеют в работе дизайнера и чем отличаются проекты, память, скиллы, коннекторы и MCP.</b> Плюс где скачать, как настроить, как не терять контекст и не сжигать лимиты.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#how">Как это работает</a><a href="#map">Что вокруг модели</a><a href="#ext">Скиллы, коннекторы, MCP</a><a href="#start">Установка</a><a href="#work">Где применять</a><a href="#ctx">Контекст</a><a href="#tokens">Лимиты и токены</a><a href="#ai">Промпты</a><a href="#practice">Задание и квиз</a></nav>
+</header>
+
+<section id="how">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Как это работает</h2><span class="tag">Без магии</span></div></div>
+  <p class="quote">Модель видит только то, что лежит в окне контекста. Всё остальное для неё не существует.</p>
+  <p>Текстовая нейросеть — это языковая модель. Она прочитала огромный объём текстов и научилась продолжать текст так, как его продолжил бы человек, который разбирается в теме. Ты пишешь сообщение, модель кусочек за кусочком дописывает ответ. Отсюда и сильные стороны, и ошибки.</p>
+  <div class="sub">
+    <h3>Четыре слова, которые надо знать</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><span class="kind">Токен</span><b>Единица текста</b><p>Модель читает и пишет не буквами и не словами, а токенами — кусочками слов. В русском тексте токен примерно в полслова. Лимиты и цена считаются в токенах.</p></div>
+        <div class="box"><span class="kind">Окно контекста</span><b>Рабочий стол модели</b><p>Всё, что модель видит в момент ответа: инструкции, файлы, вся переписка в чате и твой вопрос. Стол большой, но не бесконечный. Чем больше на нём лежит, тем дороже каждый ответ и тем легче модели упустить деталь.</p></div>
+        <div class="box"><span class="kind">Модель</span><b>Сам «мозг»</b><p>У Claude три размера: <b>Opus</b> — самая сильная для сложных задач, <b>Sonnet</b> — основная на каждый день, <b>Haiku</b> — быстрая для простого. Сейчас это версии 5.5. Номера растут каждые несколько месяцев, роли остаются.</p></div>
+        <div class="box"><span class="kind">Галлюцинация</span><b>Уверенная ошибка</b><p>Если модель чего-то не знает, она может написать правдоподобный ответ с выдуманными фактами, ссылками и цифрами. Факты, цены и даты проверяй: включай веб-поиск и проси источники.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Что модель видит в чате</h3>
+    <div class="sub-b">
+      <div class="ctxw" aria-label="Схема окна контекста">
+        <div class="cl s"><span>Системные инструкции сервиса</span><i>всегда</i></div>
+        <div class="cl"><span>Твои инструкции и память</span><i>во всех чатах</i></div>
+        <div class="cl"><span>Инструкции и файлы проекта</span><i>в чатах проекта</i></div>
+        <div class="cl"><span>Скиллы и коннекторы</span><i>когда нужны</i></div>
+        <div class="cl big"><span>Вся переписка этого чата и вложения</span><i>растёт с каждым сообщением</i></div>
+        <div class="cl me"><span>Твоё новое сообщение</span><i>сейчас</i></div>
+        <div class="cl free"><span>Свободное место</span><i>кончается — начинай новый чат</i></div>
+      </div>
+      <p class="why">Модель не помнит прошлые чаты сама по себе. Если сведения из другого чата нужны, их приносят память, поиск по чатам или файл в проекте. Знания самой модели заканчиваются датой обучения, свежее она узнаёт только из поиска.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Чем текстовые отличаются от визуальных</h3>
+    <div class="sub-b">
+      <p>Текстовые нейросети (Claude, ChatGPT, Gemini, DeepSeek) думают словами: понимают задачу, пишут, считают, разбирают файлы и картинки, пишут код. Визуальные (Midjourney, Nano Banana, Kling) генерируют изображения и видео. В связке текстовая — режиссёр: пишет промпты, раскадровку и тексты, а визуальная — оператор. Claude картинки понимает, но сам не рисует.</p>
+    </div>
+  </div>
+</section>
+
+<section id="map">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Что вокруг модели</h2><span class="tag">Проекты, память, артефакты</span></div></div>
+  <p>Модель у всех примерно одинаково умная. Работать удобнее или неудобнее делает обвязка: где хранятся инструкции, как переносится контекст, к каким сервисам есть доступ. Ниже — всё, что есть в Claude. У ChatGPT похожие функции, названия чуть другие.</p>
+  <div class="sub wide">
+    <h3>Карта Claude</h3>
+    <div class="scroll"><table class="score-t ft">
+      <thead><tr><th>Что</th><th>Что это</th><th>Когда пригодится</th><th>Где включить</th></tr></thead>
+      <tbody>
+        <tr><td><b>Чат</b></td><td>Один разговор с моделью. Всё внутри чата — общий контекст.</td><td>Одна задача: разобрать бриф, написать текст для лендинга.</td><td>claude.ai, приложение</td></tr>
+        <tr><td><b>Инструкции профиля</b></td><td>Пара абзацев о тебе и о том, как отвечать. Работают во всех чатах.</td><td>«Я дизайнер, отвечай коротко, по-русски, без канцелярита».</td><td>Settings → General, поле личных предпочтений</td></tr>
+        <tr><td><b>Проект</b></td><td>Папка с чатами, общими файлами и инструкциями. Файлы проекта видны во всех его чатах.</td><td>Один клиент или один учебный проект: бриф, паспорт, референсы.</td><td>Projects → «+». На бесплатном — до 5 проектов</td></tr>
+        <tr><td><b>Память</b></td><td>Claude сам записывает важное о тебе темами и вспоминает в новых чатах. У каждого проекта своя память.</td><td>Не объяснять заново, кто ты и над чем работаешь.</td><td>Settings → Your Claude → Your memory</td></tr>
+        <tr><td><b>Поиск по чатам</b></td><td>Claude находит нужный прошлый чат и берёт оттуда детали.</td><td>«Мы обсуждали палитру для кофейни — продолжим».</td><td>Платные тарифы, Settings → Your Claude</td></tr>
+        <tr><td><b>Артефакты</b></td><td>Готовый результат рядом с чатом: страница, схема, документ, мини-приложение. Можно поделиться ссылкой.</td><td>Прототип лендинга, интерактивная схема, презентация.</td><td>Работает само, когда просишь сделать страницу или документ</td></tr>
+        <tr><td><b>Веб-поиск и Research</b></td><td>Модель ищет в интернете и даёт ссылки. Research — долгое исследование по многим источникам.</td><td>Конкуренты, цены, тренды, свежие факты.</td><td>Кнопка инструментов в поле ввода</td></tr>
+        <tr><td><b>Скиллы</b></td><td>Сохранённые инструкции под конкретную задачу. Подгружаются сами, когда нужны.</td><td>Регламент курса, твой процесс разбора брифа.</td><td>Customize → Skills</td></tr>
+        <tr><td><b>Коннекторы</b></td><td>Доступ Claude к твоим сервисам: Figma, Notion, Google Drive, календарь.</td><td>Прочитать бриф из Notion, достать макет из Figma.</td><td>Customize → Connectors</td></tr>
+        <tr><td><b>Приложение на компьютере</b></td><td>То же, что сайт, плюс доступ к папкам на компьютере, локальные коннекторы и Claude Code.</td><td>Работа с файлами проекта прямо с диска.</td><td>claude.com/download</td></tr>
+        <tr><td><b>Claude Code</b></td><td>Claude, который работает в папке на твоём компьютере: читает и правит файлы, запускает команды.</td><td>Свёрстать лендинг, собрать сайт, разложить файлы, сделать скрипт.</td><td>Pro и выше, терминал или приложение</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="note"><b>Где искать настройки.</b> Названия пунктов меню иногда меняются. Если не нашёл, спроси у самого Claude: «Где в настройках включить память?» — он подскажет по текущей версии.</div>
+</section>
+
+<section id="ext">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Скиллы, коннекторы, MCP</h2><span class="tag">Чем всё это отличается</span></div></div>
+  <p class="quote">Проект — что знать. Скилл — как делать. Коннектор — куда дотянуться.</p>
+  <p>Представь, что Claude — новый сотрудник студии. Ты даёшь ему папку с брифом (проект), правила общения (инструкции), блокнот для заметок (память), регламент на конкретную работу (скилл) и пропуск в Figma и Notion (коннектор). MCP — стандарт, по которому такие пропуска делаются.</p>
+  <div class="sub wide">
+    <h3>Пять способов дать Claude контекст</h3>
+    <div class="scroll"><table class="score-t ft">
+      <thead><tr><th>Что</th><th>Отвечает на вопрос</th><th>Когда работает</th><th>Пример</th></tr></thead>
+      <tbody>
+        <tr><td><b>Инструкции профиля</b></td><td>Кто я и как со мной говорить</td><td>Всегда, во всех чатах</td><td>«Отвечай коротко, на “ты”, без списков, если я не прошу»</td></tr>
+        <tr><td><b>Проект</b></td><td>Что надо знать про эту работу</td><td>В каждом чате проекта</td><td>Бриф кофейни, паспорт проекта, тексты от клиента</td></tr>
+        <tr><td><b>Память</b></td><td>Что уже обсуждали</td><td>Подтягивается, когда относится к делу</td><td>«Работаю над дипломом про приложение для студентов»</td></tr>
+        <tr><td><b>Скилл</b></td><td>Как делать конкретную задачу</td><td>Только когда задача подходит</td><td>«Разбор брифа по чек-листу школы», «Оформление кейса»</td></tr>
+        <tr><td><b>Коннектор (MCP)</b></td><td>Где взять данные или куда положить результат</td><td>Когда Claude нужно в другой сервис</td><td>Прочитать страницу Notion, открыть фрейм в Figma</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="sub">
+    <h3>Скиллы</h3>
+    <div class="sub-b">
+      <p>Скилл — папка с файлом инструкций в формате Markdown, иногда с шаблонами и скриптами. Claude видит только названия и короткие описания всех скиллов. Когда задача подходит, он открывает нужный целиком. Поэтому скиллов может быть много, и контекст они не забивают.</p>
+      <ol class="steps">
+        <li><div><div class="t">Включи выполнение кода</div><div class="d">Скиллы работают через него. Settings → Capabilities → «Выполнение кода и создание файлов».</div></div></li>
+        <li><div><div class="t">Поставь готовые</div><div class="d">Customize → Skills → «+» → Browse skills. Там скиллы Anthropic (Word, Excel, PowerPoint, PDF) и партнёров (Figma, Notion).</div></div></li>
+        <li><div><div class="t">Загрузи свой</div><div class="d">Customize → Skills → «+» → загрузить архив .zip со скиллом. Скиллы курса лежат в уроках. Или попроси Claude: «Сделай скилл из того, что мы сейчас делали» — он соберёт его сам.</div></div></li>
+      </ol>
+      <p class="why">Скиллы есть на всех тарифах, включая бесплатный, и в Claude Code.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Коннекторы и MCP</h3>
+    <div class="sub-b">
+      <p><b>MCP</b> (Model Context Protocol) — открытый стандарт, как нейросеть подключается к программам и данным. Вроде USB: один разъём на всех. <b>Коннектор</b> — готовое подключение к конкретному сервису по этому стандарту. Его поддерживают и Claude, и другие нейросети.</p>
+      <div class="two">
+        <div class="box"><span class="kind">Облачные</span><b>Работают на сайте и в приложении</b><p>Figma, Notion, Google Drive, Gmail, календарь и сотни других. Customize → Connectors → выбрать из каталога → войти в аккаунт сервиса. Из каталога можно на любом тарифе, свой по ссылке — на платных.</p></div>
+        <div class="box"><span class="kind">Локальные</span><b>Работают на твоём компьютере</b><p>Ставятся в приложение Claude на компьютере или в Claude Code. Дают доступ к программам на компьютере: Blender, After Effects, папкам с файлами. На сайте claude.ai их нет.</p></div>
+      </div>
+      <div class="dodont">
+        <div class="bad"><i>Осторожно</i><ul><li>Не подключай всё подряд: каждый коннектор занимает место в контексте и тратит лимит.</li><li>Не давай доступ к рабочим аккаунтам клиента без его согласия.</li><li>Неизвестные MCP-серверы из интернета ставь только если понимаешь, что они делают.</li></ul></div>
+        <div class="good"><i>Хорошо</i><ul><li>Подключать сервисы, с которыми работаешь каждый день.</li><li>Выключать коннектор в чате, где он не нужен.</li><li>Проверять, что Claude собирается сделать, прежде чем разрешить действие.</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Claude Code</h3>
+    <div class="sub-b">
+      <p>Тот же Claude, но работает не в окне чата, а в папке на твоём компьютере: сам читает файлы, правит их и запускает команды. Для дизайнера это сборка лендинга и прототипа кодом, пакетная обработка картинок, переименование и сортировка файлов, скрипты для After Effects и Figma. Его постоянная память — файл <b>CLAUDE.md</b> в папке проекта: туда пишешь правила и контекст, и Claude читает его при каждом запуске.</p>
+    </div>
+  </div>
+</section>
+
+<section id="start">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Где скачать и как настроить</h2><span class="tag">За 15 минут</span></div></div>
+  <div class="warn"><b>Из России.</b> Claude официально в России не работает: нужен VPN и зарубежная карта или оплата через посредника. Как выбрать тариф и оплатить без риска потерять деньги — в методичке <a href="https://perasperadastranew.github.io/guides/nejroseti-dostup/" target="_blank" rel="noopener">«Нейросети: доступ и бюджет»</a>.</div>
+  <div class="sub">
+    <h3>Тарифы коротко</h3>
+    <div class="sub-b">
+      <div class="three">
+        <div class="box"><span class="kind">Бесплатно</span><b>Free</b><ul><li>Чат, до 5 проектов, память, скиллы.</li><li>Лимит сообщений небольшой и сбрасывается каждые несколько часов.</li><li>Claude Code нет.</li></ul><p class="ask">Попробовать и понять, нравится ли.</p></div>
+        <div class="box hot"><span class="kind">Основной</span><b>Pro</b><ul><li>Около $20 в месяц, при оплате за год — около $17.</li><li>Все модели, проекты без ограничений, поиск по чатам, свои коннекторы, Research.</li><li>Claude Code.</li></ul><p class="ask">Хватает на весь курс.</p></div>
+        <div class="box"><span class="kind">Много работы</span><b>Max</b><ul><li>$100 — примерно в 5 раз больше лимитов, чем у Pro. $200 — примерно в 20 раз.</li><li>Ранний доступ к новым функциям.</li></ul><p class="ask">Когда упираешься в лимиты Pro каждую неделю.</p></div>
+      </div>
+      <p class="why">Цены на октябрь 2026, в долларах на официальном сайте. Проверяй перед оплатой.</p>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Первый запуск</h3>
+    <div class="sub-b">
+      <ol class="steps">
+        <li><div><div class="t">Регистрация</div><div class="d">Зайди на claude.ai и войди через почту или Google. Нужен номер телефона для подтверждения.</div></div></li>
+        <li><div><div class="t">Скачай приложение</div><div class="d">claude.com/download — для Mac и Windows. В App Store и Google Play — для телефона. Чаты и проекты общие везде.</div></div></li>
+        <li><div><div class="t">Заполни инструкции профиля</div><div class="d">Settings → General, поле личных предпочтений: кто ты, чем занимаешься, как тебе удобно получать ответы. Шаблон — в разделе «Промпты».</div></div></li>
+        <li><div><div class="t">Проверь возможности</div><div class="d">Settings → Capabilities: включи выполнение кода и создание файлов, без него не работают скиллы и документы. Settings → Your Claude: память и поиск по чатам.</div></div></li>
+        <li><div><div class="t">Создай первый проект</div><div class="d">Projects → «+» → название проекта. В инструкции проекта — задача и правила, в файлы — бриф и материалы.</div></div></li>
+        <li><div><div class="t">Подключи то, чем пользуешься</div><div class="d">Customize → Connectors: Figma, Notion или Google Drive. Только то, что реально нужно.</div></div></li>
+      </ol>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Claude Code</h3>
+    <div class="sub-b">
+      <p>Нужен тариф Pro или выше. Проще всего — вкладка Code в приложении Claude на компьютере, терминал не нужен. Если хочешь в терминале, открой его и вставь команду для своей системы.</p>
+      <div class="prompt"><span class="kind">macOS и Linux</span><b>Терминал</b>
+        <pre id="i1">curl -fsSL https://claude.ai/install.sh | bash</pre>
+        <button type="button" class="copy" data-copy="i1">Скопировать</button></div>
+      <div class="prompt"><span class="kind">Windows</span><b>PowerShell</b>
+        <pre id="i2">irm https://claude.ai/install.ps1 | iex</pre>
+        <button type="button" class="copy" data-copy="i2">Скопировать</button>
+        <p class="you"><b>Дальше:</b> открой новое окно терминала, перейди в папку проекта и набери <b>claude</b>. Первый раз откроется браузер, чтобы войти в аккаунт. Проверить установку — команда <b>claude --version</b>.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Где применять в работе</h2><span class="tag">По этапам проекта</span></div></div>
+  <p class="quote">Нейросеть пишет черновик и задаёт вопросы. Решение и вкус — твои.</p>
+  <div class="three">
+    <div class="box"><span class="kind">Старт</span><b>Бриф и ресёрч</b><ul><li>Разобрать бриф и составить вопросы клиенту.</li><li>Собрать конкурентов и аудиторию с поиском и ссылками.</li><li>Сделать выжимку из длинного документа или созвона.</li></ul></div>
+    <div class="box"><span class="kind">Идея</span><b>Концепция и тексты</b><ul><li>Набросать 20 вариантов, чтобы найти свои.</li><li>Проверить идею вопросами и найти слабые места.</li><li>Написать тексты для макета, нейминг, слоганы.</li></ul></div>
+    <div class="box"><span class="kind">Производство</span><b>Промпты и сборка</b><ul><li>Писать промпты для Midjourney, Nano Banana, Kling.</li><li>Собрать раскадровку и сценарий ролика.</li><li>Свёрстать лендинг или прототип в Claude Code.</li></ul></div>
+    <div class="box"><span class="kind">Проверка</span><b>Ревью</b><ul><li>Проверить макет по чек-листу до куратора.</li><li>Найти опечатки и неровности в текстах.</li><li>Разобрать скриншот: что считывается первым.</li></ul></div>
+    <div class="box"><span class="kind">Клиент</span><b>Общение и документы</b><ul><li>Письмо клиенту, КП, смета, договорённости после созвона.</li><li>Оформить кейс для портфолио.</li><li>Таблица этапов и сроков.</li></ul></div>
+    <div class="box"><span class="kind">Рутина</span><b>Файлы и расчёты</b><ul><li>Переименовать и разложить сотни файлов.</li><li>Посчитать палитру, сетку, бюджет.</li><li>Скрипт, который делает повторяющееся за тебя.</li></ul></div>
+  </div>
+  <div class="dodont">
+    <div class="bad"><i>Не стоит</i><ul><li>Сдавать ответ нейросети как свою идею без отбора и доработки.</li><li>Доверять цифрам и фактам без проверки.</li><li>Загружать личные данные людей и закрытые документы клиента без разрешения.</li></ul></div>
+    <div class="good"><i>Стоит</i><ul><li>Давать контекст: бриф, аудиторию, ограничения, примеры.</li><li>Просить вопросы и варианты, а выбирать самому.</li><li>Просить источники и проверять их.</li></ul></div>
+  </div>
+</section>
+
+<section id="ctx">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Как не терять контекст</h2><span class="tag">Один проект — один дом</span></div></div>
+  <p>Главная ошибка новичка — один бесконечный чат на всё. К сотому сообщению модель путает старые версии с новыми, ответы медленнее и тратят больше лимита. Работает другая схема.</p>
+  <div class="sub">
+    <h3>Схема работы</h3>
+    <div class="sub-b">
+      <ol class="steps">
+        <li><div><div class="t">Проект на каждую работу</div><div class="d">Клиент, диплом, учебный проект — отдельный проект в Claude. Внутри — инструкции и файлы, которые нужны во всех чатах.</div></div></li>
+        <li><div><div class="t">Паспорт проекта</div><div class="d">Один короткий файл с фактами: что делаем, для кого, ограничения, решения по этапам. Лежит в файлах проекта и обновляется после каждого этапа.</div></div></li>
+        <li><div><div class="t">Один чат — одна задача</div><div class="d">Новый чат, когда меняется задача: «Бриф», «Концепция», «Тексты для лендинга». Называй чаты так, чтобы потом найти.</div></div></li>
+        <li><div><div class="t">Сводка в конце</div><div class="d">Перед тем как закрыть чат, попроси сводку решений (промпт ниже) и добавь её в паспорт. Следующий чат начинается с чистого стола и свежего паспорта.</div></div></li>
+      </ol>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Признаки, что пора в новый чат</h3>
+    <div class="sub-b">
+      <ul class="plain"><li>Claude забывает договорённости из начала разговора.</li><li>Ответы стали медленнее, приходит предупреждение о длине чата.</li><li>Ты сменил задачу или вернулся к старой версии.</li><li>Модель зациклилась и повторяет одну ошибку. Новый чат с хорошим описанием задачи лечит это лучше, чем десятое «нет, не так».</li></ul>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>В Claude Code</h3>
+    <div class="sub-b">
+      <div class="two">
+        <div class="box"><span class="kind">CLAUDE.md</span><b>Память папки</b><p>Файл в корне проекта: что за проект, правила, где что лежит. Claude читает его при каждом запуске. Команда <b>/init</b> создаст первый вариант сама.</p></div>
+        <div class="box"><span class="kind">/clear и /compact</span><b>Уборка стола</b><p><b>/clear</b> — начать заново с пустым контекстом. <b>/compact</b> — сжать разговор в сводку и продолжить. Делай это между задачами.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tokens">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Как экономить лимиты</h2><span class="tag">Токены не бесконечны</span></div></div>
+  <p>На платных тарифах есть лимит на 5-часовую сессию и недельный лимит. Сколько потрачено, видно в Settings → Usage. Каждое сообщение отправляет модели весь стол целиком: переписку, файлы, инструкции. Поэтому длинный чат с тяжёлыми файлами съедает лимит быстрее, чем кажется.</p>
+  <div class="sub wide">
+    <h3>Что тратит больше всего</h3>
+    <div class="four">
+      <div class="box"><span class="kind">Длинный чат</span><p>Каждое новое сообщение пересылает всю историю. Сотое сообщение в чате дороже первого во много раз.</p></div>
+      <div class="box"><span class="kind">Тяжёлые файлы</span><p>PDF на 100 страниц и пачка скриншотов. Особенно если загружать их заново в каждый чат.</p></div>
+      <div class="box"><span class="kind">Инструменты</span><p>Веб-поиск, Research, коннекторы, создание файлов и многошаговые задачи.</p></div>
+      <div class="box"><span class="kind">Сильная модель</span><p>Opus и высокий уровень размышлений тратят больше, чем Sonnet на обычных задачах.</p></div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Девять привычек</h3>
+    <div class="sub-b">
+      <ol class="steps">
+        <li><div><div class="t">Новый чат на новую задачу</div><div class="d">Самая большая экономия. Контекст переносишь сводкой и паспортом.</div></div></li>
+        <li><div><div class="t">Файлы — в проект</div><div class="d">Файлы проекта кэшируются и при повторном использовании стоят дешевле. Не загружай один и тот же бриф в каждый чат.</div></div></li>
+        <li><div><div class="t">Всё в одном сообщении</div><div class="d">Задача, контекст, требования и формат ответа сразу. Пять уточнений подряд дороже одного хорошего сообщения.</div></div></li>
+        <li><div><div class="t">Группируй вопросы</div><div class="d">Три связанных вопроса — одним сообщением.</div></div></li>
+        <li><div><div class="t">Модель по задаче</div><div class="d">Sonnet — на каждый день. Opus — когда задача сложная и важна глубина. Haiku — переформулировать, перевести, разложить по пунктам.</div></div></li>
+        <li><div><div class="t">Лишнее выключено</div><div class="d">Поиск и коннекторы включай, когда они нужны в этом чате.</div></div></li>
+        <li><div><div class="t">Сжимай файлы</div><div class="d">Вместо PDF на 80 страниц — нужные главы или текст. Вместо 20 скриншотов — 3 главных.</div></div></li>
+        <li><div><div class="t">Правь кусок, а не всё</div><div class="d">«Перепиши второй абзац», а не «перепиши текст целиком ещё раз».</div></div></li>
+        <li><div><div class="t">Делай перерывы с умом</div><div class="d">Кэш проекта живёт недолго. Если работаешь с одним проектом, делай задачи подряд, а не по одной в день.</div></div></li>
+      </ol>
+    </div>
+  </div>
+  <div class="note"><b>Если упёрся в лимит.</b> Дождись сброса сессии (время видно в Settings → Usage), а тем временем подготовь следующее сообщение и сводку. Когда это происходит каждую неделю, смотри на Max или раздели работу между Claude и бесплатной нейросетью для простых задач.</div>
+</section>
+
+<section id="ai">
+  <div class="head"><div class="head-l"><span class="num">08</span><h2>В&nbsp;паре с&nbsp;нейронкой</h2></div></div>
+  <div class="rule">
+    <div><i>Правило 1</i><b>Сначала контекст</b>Бриф, паспорт, твои заметки. Без них нейросеть додумывает за тебя.</div>
+    <div><i>Правило 2</i><b>Вопросы по одному</b>Пусть нейросеть спрашивает и ждёт ответа, а не выдаёт готовое.</div>
+    <div><i>Правило 3</i><b>Решаешь ты</b>Нейросеть даёт варианты и их слабые места. Выбор и формулировка твои.</div>
+  </div>
+  <div class="ai">
+    <div class="prompt"><span class="kind">Настройка</span><b>Инструкции профиля</b>
+      <pre id="p1">Я <em>[кто ты: студент курса по дизайну / моушн-дизайнер / веб-дизайнер]</em>.
+Сейчас работаю над <em>[чем занимаешься]</em>, пользуюсь <em>[Figma, After Effects, ...]</em>.
+
+Как отвечать:
+- по-русски, на «ты», коротко и по делу;
+- если задача неясна, сначала задай уточняющий вопрос;
+- факты, цены и даты проверяй поиском и давай ссылки;
+- не придумывай за меня идеи, если я не прошу варианты;
+- предлагай варианты с плюсами и минусами, выбор оставляй мне.</pre>
+      <button type="button" class="copy" data-copy="p1">Скопировать</button>
+      <p class="you"><b>Что делаешь ты:</b> вставляешь в Settings → General, в поле личных предпочтений, и правишь под себя через неделю работы.</p></div>
+    <div class="prompt"><span class="kind">Старт проекта</span><b>Собрать инструкции проекта</b>
+      <pre id="p2">Я создаю проект в Claude под работу: <em>[название проекта и задача в одну строку]</em>.
+Вот бриф и мои заметки: <em>[вставь]</em>
+
+Помоги собрать инструкции проекта и паспорт.
+Задавай по одному вопросу и жди ответа. Ничего не придумывай за меня.
+В конце выдай два блока:
+1. Инструкции проекта — как тебе работать в этом проекте (до 10 строк).
+2. Паспорт — что делаем, для кого, ограничения, сроки, что уже решено.</pre>
+      <button type="button" class="copy" data-copy="p2">Скопировать</button>
+      <p class="you"><b>Что делаешь ты:</b> отвечаешь на вопросы, вычёркиваешь лишнее, кладёшь инструкции в настройки проекта, а паспорт — в его файлы.</p></div>
+    <div class="prompt"><span class="kind">Конец чата</span><b>Сводка для переноса</b>
+      <pre id="p3">Мы заканчиваем этот чат. Сделай сводку для следующего:
+- что решили (только решения, без хода обсуждения);
+- что отклонили и почему, одной строкой;
+- открытые вопросы;
+- следующий шаг.
+Пиши коротко, чтобы это можно было вставить в паспорт проекта.</pre>
+      <button type="button" class="copy" data-copy="p3">Скопировать</button>
+      <p class="you"><b>Что делаешь ты:</b> проверяешь, что в сводке нет того, с чем ты не согласен, и обновляешь паспорт в проекте.</p></div>
+    <div class="prompt"><span class="kind">Скилл</span><b>Упаковать свой процесс в скилл</b>
+      <pre id="p4">Хочу сделать скилл из того, как я делаю <em>[задача: разбор брифа / оформление кейса / промпты для обложек]</em>.
+Мой процесс сейчас: <em>[опиши шаги своими словами]</em>
+
+Задавай по одному вопросу, чтобы уточнить шаги, исключения и как выглядит хороший результат.
+Потом собери скилл: название, описание «когда использовать» в одну строку и инструкцию по шагам.</pre>
+      <button type="button" class="copy" data-copy="p4">Скопировать</button>
+      <p class="you"><b>Что делаешь ты:</b> описываешь свой процесс, проверяешь шаги и сохраняешь скилл. Через пару использований дописываешь в него то, что пришлось объяснять заново.</p></div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="head"><div class="head-l"><span class="num">09</span><h2>Задание и&nbsp;квиз</h2></div></div>
+  <div class="task"><i>Задание</i><b>Собери рабочее место в Claude</b><p>Заполни инструкции профиля, создай проект под свою текущую работу с инструкциями и паспортом, проведи в нём два чата на разные задачи и перенеси сводку из первого во второй. Сдай куратору скриншот проекта и паспорт.</p></div>
+  <div class="check">
+    <label><input type="checkbox" id="c1"><span>Заполнил инструкции профиля</span></label>
+    <label><input type="checkbox" id="c2"><span>Включил выполнение кода, память и поиск по чатам</span></label>
+    <label><input type="checkbox" id="c3"><span>Создал проект, положил инструкции и паспорт</span></label>
+    <label><input type="checkbox" id="c4"><span>Провёл два чата и перенёс сводку через паспорт</span></label>
+    <label><input type="checkbox" id="c5"><span>Подключил один коннектор или поставил один скилл</span></label>
+    <label><input type="checkbox" id="c6"><span>Нашёл, где смотреть свои лимиты</span></label>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="score" id="score" hidden><span class="big" id="score-n"></span><span id="score-t"></span><button type="button" id="retry">Пройти заново</button></div>
+  <p class="next">Функции и названия меню меняются каждые пару месяцев. Методичку обновляем перед каждым набором.</p>
+</section>
+<footer>Perasperadastra · Нейросети в работе · Октябрь 2026</footer>
+</div>
+
+<script type="application/json" id="quiz-data">[
+{"p":"Почему Claude не помнит, о чём вы говорили в соседнем чате?","o":["Он всё помнит, просто не говорит","Модель видит только то, что лежит в окне контекста этого чата; прошлое приносят память, поиск по чатам или файлы проекта","Нужно перезагрузить страницу","Так бывает только на бесплатном тарифе"],"a":1,"e":"У модели нет своей памяти между чатами. Всё, что она «помнит», попадает в окно контекста через инструкции, проект, память или поиск по чатам."},
+{"p":"Где хранить бриф и паспорт проекта, чтобы они были в каждом чате по этой работе?","o":["В инструкциях профиля","В файлах проекта","Вставлять в каждый чат заново","В памяти, она сама разберётся"],"a":1,"e":"Файлы проекта видны во всех чатах проекта и кэшируются, поэтому стоят дешевле при повторном использовании. Инструкции профиля — для того, что верно во всех твоих чатах."},
+{"p":"Чем скилл отличается от проекта?","o":["Ничем, это одно и то же","Проект — что знать про конкретную работу, скилл — как делать определённую задачу; скилл подгружается только когда нужен","Скилл работает только в Claude Code","Скилл — это платный проект"],"a":1,"e":"Проект даёт фоновые знания для своих чатов. Скилл — инструкция под задачу, работает в любом чате и открывается только при подходящей задаче."},
+{"p":"Что такое MCP?","o":["Модель Claude для кода","Открытый стандарт, по которому нейросеть подключается к сервисам и данным; коннекторы сделаны на нём","Тариф для команд","Формат файлов для скиллов"],"a":1,"e":"MCP — как общий разъём. Коннектор к Figma, Notion или Google Drive — конкретное подключение по этому стандарту."},
+{"p":"Чат идёт третий день, Claude путает версии текста и отвечает медленно. Что делать?","o":["Писать «нет, не так» до победного","Перейти на Opus в этом же чате","Попросить сводку решений, обновить паспорт и открыть новый чат","Удалить проект"],"a":2,"e":"Длинный чат дорогой и путаный: каждое сообщение пересылает всю историю. Сводка и новый чат дают чистый стол и тот же контекст."},
+{"p":"Что из этого сильнее всего экономит лимиты?","o":["Писать короткими сообщениями по одному вопросу","Новый чат на новую задачу, файлы в проекте, всё нужное — в одном сообщении","Всегда выбирать самую сильную модель","Загружать бриф заново в каждый чат"],"a":1,"e":"Пять уточнений подряд дороже одного полного сообщения. Самая сильная модель тратит больше, а повторная загрузка файлов съедает лимит зря."},
+{"p":"Ты хочешь, чтобы Claude сам свёрстал лендинг в папке на компьютере. Что нужно?","o":["Бесплатный тариф и сайт claude.ai","Claude Code: тариф Pro или выше, вкладка Code в приложении или установка в терминале","Коннектор к Figma","Скилл для PowerPoint"],"a":1,"e":"Claude Code работает с файлами на компьютере: читает, правит, запускает команды. На бесплатном тарифе его нет."}
+]
+</script>
+<script>document.querySelectorAll('button.copy').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const el=document.getElementById(b.dataset.copy);const t=el.innerText;const o=b.textContent;
+    const done=()=>{b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено, нажми Ctrl+C';setTimeout(()=>b.textContent=o,2400)};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  });
+});
+(function(){
+  const src=document.getElementById('quiz-data');const quiz=document.getElementById('quiz');
+  if(!src||!quiz)return;const Q=JSON.parse(src.textContent);let got=0,ans=0;
+  const score=document.getElementById('score');
+  function build(){
+    quiz.innerHTML='';got=0;ans=0;score.hidden=true;
+    Q.forEach((q,i)=>{
+      const d=document.createElement('div');d.className='q';
+      d.innerHTML='<span class="n"></span><div class="p"></div><div class="opts"></div><div class="exp" hidden></div>';
+      d.querySelector('.n').textContent='Вопрос '+(i+1)+' из '+Q.length;
+      d.querySelector('.p').textContent=q.p;
+      const opts=d.querySelector('.opts'),exp=d.querySelector('.exp');
+      q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+        b.addEventListener('click',()=>{
+          opts.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('right')});
+          if(j===q.a)got++;else b.classList.add('wrong');
+          exp.textContent='';const s=document.createElement('b');s.textContent=j===q.a?'Верно. ':'Не совсем. ';exp.append(s,q.e);exp.hidden=false;
+          if(++ans===Q.length){document.getElementById('score-n').textContent=got+' / '+Q.length;
+            document.getElementById('score-t').textContent=got===Q.length?'Всё верно, можно делать задание.':'Перечитай разделы, где ошибся, и пройди ещё раз.';score.hidden=false;}
+        });opts.append(b);});
+      quiz.append(d);
+    });
+  }
+  document.getElementById('retry').addEventListener('click',build);build();
+})();
+</script>
+</body></html>

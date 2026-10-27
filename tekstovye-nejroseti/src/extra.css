@@ -1,0 +1,20 @@
+/* окно контекста: слои, которые видит модель */
+.ctxw{display:flex;flex-direction:column;gap:6px;border:1px solid var(--stroke);border-radius:12px;padding:10px;background:var(--well)}
+.ctxw .cl{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;min-height:42px}
+.ctxw .cl span{color:var(--ink);font-size:15px;line-height:1.3}
+.ctxw .cl i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint);text-align:right}
+.ctxw .cl.s{opacity:.7}
+.ctxw .cl.big{min-height:120px;align-items:flex-start;padding-top:12px;background:repeating-linear-gradient(0deg,var(--card) 0 22px,#1d1d1d 22px 23px)}
+.ctxw .cl.me{border-color:var(--accent)}
+.ctxw .cl.me i{color:var(--accent)}
+.ctxw .cl.free{background:transparent;border-style:dashed;min-height:56px}
+.ctxw .cl.free span{color:var(--dim)}
+/* таблицы-справочники */
+.ft{min-width:720px}
+.ft td{vertical-align:top;font-size:15px;line-height:1.4}
+.ft td:first-child{white-space:nowrap}
+.ul-plain,ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;max-width:70ch}
+ul.plain li::marker{color:var(--accent)}
+.warn a{color:var(--ink)}
+.prompt pre em{color:var(--accent);font-style:normal}
+@media (max-width:760px){.ctxw .cl{flex-direction:column;align-items:flex-start;gap:4px}.ctxw .cl i{text-align:left}.ctxw .cl.big{min-height:90px}}
