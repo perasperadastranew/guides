@@ -1126,7 +1126,7 @@ html.in-frame .pg .tonav{display:none!important}
 <div class="txt"><p><b>А. Только картинки.</b> Сколько 2K-картинок в Nano Banana Pro даёт план за месяц. Считаются все генерации, включая неудачные. Обычно нужно 60–100 картинок в месяц.</p></div>
 <div><div class="tw"><table><thead><tr><th>План</th><th>Цена в месяц</th><th>Картинок</th><th>₽ за картинку</th><th>Карта РФ</th><th>Заметка</th></tr></thead><tbody id="pai-t3"></tbody></table></div>
 </div>
-<p class="tip"><b>Вывод.</b> На Nano Banana Pro выгоднее всего Syntx: около 7 ₽ за картинку на Basic, которого хватает на 60–100 картинок в месяц, и около 5 ₽ на Pro. На Nano Banana 2 выгоднее GIVON: около 3,7 ₽ против 7,5 ₽ у Syntx. Utopy дороже везде. У Higgsfield хорошие модели, но нужна зарубежная карта.</p>
+<p class="tip"><b>Вывод.</b> На Nano Banana Pro выгоднее всего Syntx: около 7 ₽ за картинку на Basic, которого хватает на 60–100 картинок в месяц, и около 5 ₽ на Pro. На Nano Banana 2 выгоднее GIVON: около 3,7 ₽ против 7,5 ₽ у Syntx. У Higgsfield хорошие модели, но нужна зарубежная карта.</p>
 
 <div class="txt"><p><b>Б. Картинки и видео.</b> Видео тратит в разы больше токенов, чем картинка. Колонка «80 картинок + 15 клипов» показывает, хватит ли плана на типичный месяц работы с роликами.</p></div>
 <div><div class="tw"><table><thead><tr><th>План</th><th>Цена в месяц</th><th>Картинок</th><th>Клипов</th><th>80 картинок + 15 клипов</th><th>Карта РФ</th><th>Заметка</th></tr></thead><tbody id="pai-t4"></tbody></table></div>
@@ -1140,7 +1140,7 @@ html.in-frame .pg .tonav{display:none!important}
 <p class="tip"><b>Перед оплатой.</b> Проверь реальную стоимость токенов на нужную модель в бесплатном аккаунте. Автопродление есть у большинства сервисов — если платить дальше не собираешься, отключи его в кабинете до следующего списания.</p>
 
 <div><div class="tw"><table style="min-width:640px"><thead><tr><th>План</th><th>В месяц, помесячно</th><th>В месяц, при оплате за год</th><th>Экономия</th><th>Платишь сразу</th></tr></thead><tbody id="pai-t6"></tbody></table></div>
-<p class="fn">У годовых планов Utopy и Syntx весь пакет токенов выдаётся сразу. У Higgsfield кредиты годового плана обновляются каждые 30 дней и не копятся.</p></div>
+<p class="fn">У годовых планов Syntx весь пакет токенов выдаётся сразу. У Higgsfield кредиты годового плана обновляются каждые 30 дней и не копятся.</p></div>
 <p class="tip"><b>Правило.</b> Первые 1–2 месяца плати помесячно. Если сервис вошёл в работу и ты точно будешь им пользоваться почти весь год — переходи на годовой.</p>
 
 </section>
@@ -1204,7 +1204,7 @@ html.in-frame .pg .tonav{display:none!important}
 <script>window.PG_DIO={tower:"d/tower.png",roles:"d/roles.png",coins:"d/coins.png"};</script>
 <script>
 (function(){
-var C={hf:['Higgsfield','#d7f64a','H'],sx:['Syntx','#ff7a45','S'],ut:['Utopy','#f2f0ec','U'],ph:['Phygital+','#a98bff','P'],gv:['GIVON','#7cc4ff','G']};
+var C={hf:['Higgsfield','#d7f64a','H'],sx:['Syntx','#ff7a45','S'],ph:['Phygital+','#a98bff','P'],gv:['GIVON','#7cc4ff','G']};
 function sv(k,n){var c=C[k];return '<span class="svc"><i style="background:'+c[1]+'">'+c[2]+'</i>'+(n||c[0])+'</span>'}
 function rub(x){return String(Math.round(x)).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' ₽'}
 var pay={ru:'<span class="ok">да</span>',mir:'<span class="warn">Мир, СБП</span>',no:'<span class="no">нет</span>'};
@@ -1215,9 +1215,6 @@ var P=[
  ['sx','Basic','260 токенов',890,130,3,'mir',936,'Хватает на 60–100 картинок','',1],
  ['sx','Pro','680 токенов',1690,340,8,'mir',2540,'Хватает с большим запасом','Докупка 3,6 ₽ за токен'],
  ['sx','VIP','1 700 токенов',3990,850,19,'mir',6120,'Для большого объёма','Запас небольшой',0,1],
- ['ut','Старт','1 500 токенов',740,22,3,'ru',0,'Хватит ненадолго',''],
- ['ut','Профессиональный','4 500 токенов',1590,67,9,'ru',0,'Модели проще',''],
- ['ut','Максимальный','14 000 токенов',3590,209,28,'ru',0,'Модели проще','Модели проще'],
  ['ph','Старт','10 000 кредитов',1499,200,18,'ru',1500,'Модели слабее','Модели слабее'],
  ['ph','Pro','',5899,914,82,'ru',5900,'Модели слабее','Модели слабее'],
  ['gv','Start','300 токенов',990,100,4,'mir',960,'Дорого на входе',''],
@@ -1234,7 +1231,6 @@ var b4=P.filter(function(p){return p[9]&&!(p[0]==='ph'&&p[1]==='Pro')});
 document.getElementById('pai-t4').innerHTML=grp(b4.map(function(p){var v=verdict(p,80,15);return {k:p[0],h:'<tr'+(p[11]?' class="best"':'')+'><td>'+p[1]+'</td><td>'+(p[0]==='hf'?'~':'')+rub(p[3])+'</td><td class="n">~'+p[4]+' шт.</td><td class="n">~'+p[5]+' шт.</td><td>'+v.t+'</td><td>'+pay[p[6]]+'</td><td class="n">'+p[9]+'</td></tr>'}}),7);
 /* 5 */
 document.getElementById('pai-t5').innerHTML=[
- ['ut','<span class="ok">Карты РФ, СБП, SberPay, Яндекс Пэй</span>','Модели проще, чем у Syntx и Higgsfield'],
  ['sx','<span class="warn">Мир, СБП, Telegram Stars</span>','Токены не сгорают, но тратить их можно только при активной подписке'],
  ['ph','<span class="ok">Карты РФ</span>','Цены с НДС. Модели слабее'],
  ['hf','<span class="no">Карты РФ не принимает</span>','Кредиты подписки сгорают при продлении'],
@@ -1242,7 +1238,6 @@ document.getElementById('pai-t5').innerHTML=[
 ].map(function(r){return '<tr><td>'+sv(r[0])+'</td><td>'+r[1]+'</td><td class="n">'+r[2]+'</td></tr>'}).join('');
 /* 6 */
 document.getElementById('pai-t6').innerHTML=[
- ['ut','Utopy Профессиональный',1590,1271,15250],['ut','Utopy Максимальный',3590,2871,34450],['sx','Syntx Pro',1690,1436,17230],
  ['ph','Phygital+ Старт',1499,1200,14400],['hf','Higgsfield Plus',5045,4020,48200],['gv','GIVON Creator',2490,2090,25080],['gv','GIVON Ultima',5490,4590,55080]
 ].map(function(r){var t=r[0]==='hf'||r[1]==='Syntx Pro'?'~':'';return '<tr><td>'+sv(r[0],r[1])+'</td><td>'+(r[0]==='hf'?'~':'')+rub(r[2])+'</td><td>'+(r[0]==='hf'?'~':'')+rub(r[3])+'</td><td class="n">'+Math.round((1-r[3]/r[2])*100)+'%</td><td>'+t+rub(r[4])+'</td></tr>'}).join('');
 /* 8 */
