@@ -185,7 +185,7 @@ for i, (k, n, who, rows) in enumerate(CATS):
     for src, link, credit, name, task, give, price in rows:
         m = media(src, credit)
         if link and src and src.startswith('vimeo:'):
-            ex = '<div class="exm"><span class="th3">%s</span><a class="cap2" href="%s" target="_blank" rel="noopener">%s <em>↗</em></a></div>' % (m, link, credit)
+            ex = '<div class="exm"><span class="th3 vv">%s</span><a class="cap2" href="%s" target="_blank" rel="noopener">%s <em>↗</em></a></div>' % (m, link, credit)
         elif link:
             ex = '<a class="exm" href="%s" target="_blank" rel="noopener"><span class="th3">%s<i class="go" aria-hidden="true">↗</i></span><span class="cap2">%s <em>↗</em></span></a>' % (link, m, credit)
         else:
