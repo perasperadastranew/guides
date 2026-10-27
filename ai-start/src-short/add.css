@@ -511,3 +511,12 @@ html.in-frame .pg .tonav{display:none!important}
 .pg .bat tr.tot .t{font-weight:600}
 .pg .bat tr.tot .x{color:inherit}
 .pg .wsum{max-width:760px;margin:40px 0 24px;font-size:20px;line-height:1.45;color:inherit}
+/* тезисы v3: цифра слева, номер+заголовок+текст справа в одной связке */
+.pg ol.th li.t2r{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:12px 48px;padding:40px 0;align-items:start}
+.pg ol.th li.t2r>.fig{grid-row:auto;font:600 clamp(52px,6vw,88px)/.9 var(--num);letter-spacing:-.045em;color:var(--accent);margin:0;overflow-wrap:normal}
+.pg ol.th li.t2r:nth-child(even)>.fig{color:var(--fg)}
+.pg ol.th li.t2r .tx{display:flex;flex-direction:column;gap:12px;padding-top:4px}
+.pg ol.th li.t2r .tx .micro{align-self:auto;margin:0}
+.pg ol.th li.t2r .tx h3{margin:0;font-size:clamp(22px,2.4vw,30px);font-weight:500;line-height:1.15;max-width:none}
+.pg ol.th li.t2r .tx p{margin:0;align-self:auto;font-size:16px;line-height:1.55;max-width:60ch;color:var(--fg)}
+@media (max-width:640px){.pg ol.th li.t2r{grid-template-columns:minmax(0,1fr);gap:16px}}
