@@ -552,3 +552,13 @@ html.in-frame .pg .tonav{display:none!important}
 .rail .rl-p.rl-cur>a{color:var(--accent)}
 }
 @media (min-width:1360px){.pg .tonav{display:none!important}}
+/* тезисы v4: слева тезис, справа фактоид — цифра и её расшифровка вместе */
+.pg ol.th li.t3r{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:20px 56px;padding:44px 0;align-items:start}
+.pg ol.th li.t3r .hd{display:flex;flex-direction:column;gap:14px}
+.pg ol.th li.t3r .hd .micro{margin:0;align-self:auto}
+.pg ol.th li.t3r .hd h3{margin:0;font-size:clamp(24px,2.6vw,34px);font-weight:500;line-height:1.12;max-width:14ch}
+.pg ol.th li.t3r .fx{display:flex;flex-direction:column;gap:14px;padding-top:2px}
+.pg ol.th li.t3r .fig{grid-row:auto;font:600 clamp(52px,6vw,84px)/.9 var(--num);letter-spacing:-.045em;color:var(--accent);margin:0}
+.pg ol.th li.t3r:nth-child(even) .fig{color:var(--fg)}
+.pg ol.th li.t3r .fx p{margin:0;align-self:auto;font-size:16px;line-height:1.55;max-width:58ch;color:var(--muted)}
+@media (max-width:640px){.pg ol.th li.t3r{grid-template-columns:minmax(0,1fr);gap:18px;padding:32px 0}}
