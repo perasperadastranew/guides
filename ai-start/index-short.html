@@ -881,6 +881,38 @@ html.in-frame .pg .tonav{display:none!important}
 .pg ol.th li.t2r .tx h3{margin:0;font-size:clamp(22px,2.4vw,30px);font-weight:500;line-height:1.15;max-width:none}
 .pg ol.th li.t2r .tx p{margin:0;align-self:auto;font-size:16px;line-height:1.55;max-width:60ch;color:var(--fg)}
 @media (max-width:640px){.pg ol.th li.t2r{grid-template-columns:minmax(0,1fr);gap:16px}}
+/* 3 → 1 из слайдов лекции: три карточки сходятся в одну */
+.pg .b31.trio{display:block;padding:40px 0}
+.pg .tri{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:900px;margin:0 auto}
+.pg .tri img{display:block;width:100%;height:auto;aspect-ratio:422/531;object-fit:cover;transition:transform 1.4s cubic-bezier(.6,0,.2,1) .3s,filter 1s .3s}
+.pg .tri .t1{grid-column:1;grid-row:1}.pg .tri .t2{grid-column:2;grid-row:1;position:relative;z-index:2}.pg .tri .t3{grid-column:3;grid-row:1}
+.pg .tri.on .t1{transform:translateX(calc(100% + 16px)) translate(-18px,10px) rotate(-6deg);filter:brightness(.7)}
+.pg .tri.on .t3{transform:translateX(calc(-100% - 16px)) translate(18px,10px) rotate(6deg);filter:brightness(.7)}
+.pg .tri .tg{position:absolute;z-index:3;left:50%;bottom:18px;transform:translate(-50%,8px);background:var(--accent);color:#fff;font:500 13px/1 var(--mono,monospace);letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;opacity:0;transition:opacity .6s 1.5s,transform .6s 1.5s;white-space:nowrap}
+.pg .tri.on .tg{opacity:1;transform:translate(-50%,0)}
+.pg .trio .trx{max-width:760px;margin:36px auto 0;text-align:center}
+.pg .trio .trx p{max-width:none;margin:10px auto 0}
+@media (max-width:640px){.pg .tri{gap:8px}.pg .tri.on .t1{transform:translateX(calc(100% + 8px)) translate(-10px,6px) rotate(-6deg)}.pg .tri.on .t3{transform:translateX(calc(-100% - 8px)) translate(10px,6px) rotate(6deg)}}
+@media (prefers-reduced-motion:reduce){.pg .tri img,.pg .tri .tg{transition:none}}
+/* боковая навигация */
+.rail{display:none}
+@media (min-width:1360px){
+.rail{display:block;position:fixed;left:28px;top:50%;transform:translateY(-50%);z-index:20;width:168px;font:500 13px/1.3 var(--sans,inherit);opacity:0;pointer-events:none;transition:opacity .4s}
+.rail.rl-inf{position:absolute;transition:opacity .4s,top .25s ease-out}
+.rail.rl-inf:not(.rl-live){display:none}
+.rail.rl-vis{opacity:1;pointer-events:auto}
+.rail ol{list-style:none;margin:0;padding:0}
+.rail a{display:block;color:var(--muted);text-decoration:none;padding:5px 0;transition:color .2s}
+.rail a:hover{color:var(--fg)}
+.rail .rl-p>a{display:flex;gap:10px;align-items:baseline;color:var(--fg);padding:7px 0}
+.rail .rl-p>a i{font:500 11px/1 var(--mono,monospace);font-style:normal;color:var(--accent);width:16px}
+.rail .rl-p>ol{display:none;margin:2px 0 8px 26px;border-left:1px solid var(--line);padding-left:12px}
+.rail .rl-p.rl-open>ol{display:block}
+.rail li li a{font-size:12.5px}
+.rail li.rl-cur>a{color:var(--accent)}
+.rail .rl-p.rl-cur>a{color:var(--accent)}
+}
+@media (min-width:1360px){.pg .tonav{display:none!important}}
 </style>
 </head><body>
 <div class="pg"><div class="wrap">
@@ -941,7 +973,7 @@ html.in-frame .pg .tonav{display:none!important}
 <div class="ba"><div class="tw"><table class="bat"><thead><tr><th>Этап</th><th>Раньше</th><th>С нейросетями</th><th>Разница</th></tr></thead><tbody><tr class="grp"><td colspan="4"><span>Пример: рекламная кампания бренда — key visual и ролик на 30 секунд</span></td></tr><tr><td><b><span class="sn">01</span>Бриф и ресёрч</b><small>задача, аудитория, конкуренты</small></td><td class="n"><span class="t">3–5 дней</span>Стратег собирает конкурентов и аудиторию вручную, бриф уточняют созвонами</td><td class="nn"><span class="t a">1–2 дня</span>Текстовая нейросеть с поиском делает выжимку рынка, ты проверяешь и задаёшь вопросы клиенту</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:38%"></i></div></td></tr><tr><td><b><span class="sn">02</span>Идея и концепция</b><small>о чём проект и как его подать</small></td><td class="n"><span class="t">1 неделя</span>Креативная команда на брейншторме, 2–3 концепции на словах</td><td class="nn"><span class="t a">3–4 дня</span>Больше вариантов с нейросетью, но отбор, докрутка и защита идеи — по-прежнему на тебе</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:70%"></i></div></td></tr><tr><td><b><span class="sn">03</span>Стиль и мудборд</b><small>как это будет выглядеть</small></td><td class="n"><span class="t">3–5 дней</span>Поиск референсов, коллажи, тестовая съёмка или эскизы</td><td class="nn"><span class="t a">1–2 дня</span>Стилевые тесты сразу в нужном визуале, на продукте клиента</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:38%"></i></div></td></tr><tr><td><b><span class="sn">04</span>Эскизы и раскадровка</b><small>что в каждом кадре</small></td><td class="n"><span class="t">1 неделя</span>Иллюстратор рисует скетчи, клиент угадывает финал по ним</td><td class="nn"><span class="t a">2–3 дня</span>Эскизы генерацией: клиент видит кадр, близкий к финалу</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:50%"></i></div></td></tr><tr><td><b><span class="sn">05</span>Производство</b><small>съёмка, 3D, анимация</small></td><td class="n"><span class="t">2–4 недели</span>Студия, модели, фотограф, 3D-художник, аниматор</td><td class="nn"><span class="t a">1–1,5 недели</span>Генерация кадров и видео, отбор, ретушь, монтаж и звук</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:42%"></i></div></td></tr><tr><td><b><span class="sn">06</span>Правки и адаптации</b><small>финал под все площадки</small></td><td class="n"><span class="t">1–2 недели</span>Пересъёмка или перерисовка, ресайзы под каждый формат</td><td class="nn"><span class="t a">3–5 дней</span>Точечные правки в кадре, адаптации генерацией и в Figma, согласования с клиентом</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:53%"></i></div></td></tr><tr class="tot"><td><b>Весь проект</b><small>от брифа до сдачи</small></td><td class="n"><span class="t">7–9 недель</span>Команда специалистов</td><td class="nn"><span class="t a">3–4 недели</span>Один креатор с нейросетями</td><td><div class="bb"><i style="--w:100%"></i><i class="a" style="--w:48%"></i></div><span class="x">примерно вдвое быстрее</span></td></tr></tbody></table></div>
 <p class="wsum">Проект целиком стал примерно вдвое быстрее. Сильнее всего сжались ресёрч, стиль и производство: вместо съёмки и студии — генерация и отбор. Идея, правки и общение с клиентом почти не ускорились, потому что их делает человек. На них теперь и уходит основное время, поэтому цена считается от твоих часов и результата, а не от минут генерации.</p><p class="fn">Сроки ориентировочные: зависят от объёма, клиента и числа кругов правок. Полосы — по серединам вилок.</p>
 </div>
-<div class="b31"><div class="walk" aria-hidden="true"><img class="w1" src="img/hc-5.webp" alt=""><img class="w2" src="img/hc-5.webp" alt=""><img class="w3" src="img/hc-5.webp" alt=""><img class="w0" src="img/hc-5.webp" alt=""><span class="n3">3</span><span class="n1">1</span></div><div><span class="micro">Главный итог</span><p>То, что раньше делала команда из трёх человек — фотограф, дизайнер и монтажёр, — теперь делает один специалист с нейросетями.</p></div></div>
+<div class="b31 trio"><div class="tri" aria-hidden="true"><img class="t1" src="img/trio-1.webp" alt="" loading="lazy"><img class="t3" src="img/trio-3.webp" alt="" loading="lazy"><img class="t2" src="img/trio-2.webp" alt="" loading="lazy"><span class="tg">один креатор</span></div><div class="trx"><span class="micro">Главный итог</span><p>То, что раньше делали трое — фотограф, дизайнер и монтажёр, — теперь делает один специалист с нейросетями.</p></div></div>
 </section>
 
 <section class="step" id="pg-6"><div class="head"><div class="num">06<small>Клиенты</small></div><div class="txt"><h2>Чего хотят клиенты <span class="s"><span class="nw">и где</span> работать</span></h2><p>Четыре запроса, которые встречаются почти в каждом брифе, и что из них следует для тебя.</p></div></div>
@@ -1258,7 +1290,7 @@ var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matc
 /* клетки 20/80: порядок появления */
 document.querySelectorAll('.pg .cells i').forEach(function(c,k){c.style.setProperty('--d',(k%10)*28+Math.floor(k/10)*40)});
 /* анимации запускаются, когда блок на экране (работает и во встроенном iframe) */
-var els=[].slice.call(document.querySelectorAll('.pg .yt,.pg .gw,.pg .walk,.pg .tsp,.pg ol.cen,.pg .split,.pg .hp'));
+var els=[].slice.call(document.querySelectorAll('.pg .yt,.pg .gw,.pg .walk,.pg .tsp,.pg ol.cen,.pg .split,.pg .hp,.pg .tri'));
 if(still||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('on')})}
 else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.25});els.forEach(function(e){io.observe(e)})}
 /* видео в карточках гайдов */
@@ -1278,6 +1310,40 @@ align();addEventListener('resize',align);if(document.fonts&&document.fonts.ready
 /* во встроенном iframe (Тильда): якоря прокручивают родительскую страницу, кнопка навигации скрыта */
 (function(){if(window.parent===window)return;document.documentElement.classList.add('in-frame');
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;var el=document.getElementById(a.getAttribute('href').slice(1));if(!el)return;e.preventDefault();parent.postMessage({type:'pad-scroll',y:el.getBoundingClientRect().top+window.scrollY},'*')})})();
+/* боковая навигация: части и разделы, подсветка текущего места */
+(function(){
+var parts=[].slice.call(document.querySelectorAll('.pg .part[id], .pg section.fin[id]'));if(!parts.length)return;
+var inFrame=window.parent!==window,view=null,html='<ol>',secs=[];
+function txt(e){return e?e.textContent.replace(/\s+/g,' ').trim():''}
+parts.forEach(function(p){
+  var isFin=p.tagName==='SECTION',h=p.querySelector('h2'),lab=isFin?'Итог':txt(h).replace(/^Часть\s+([IVX]+)\.\s*/,''),num=isFin?'→':(txt(h).match(/Часть\s+([IVX]+)/)||[])[1]||'';
+  html+='<li class="rl-p" data-id="'+p.id+'"><a href="#'+p.id+'"><i>'+num+'</i>'+lab+'</a>';secs.push({id:p.id,el:p,part:p.id});
+  if(!isFin){var ch='',n=p.nextElementSibling;
+    while(n&&!n.classList.contains('part')&&!n.classList.contains('fin')){
+      if(n.tagName==='SECTION'&&n.id){var sm=n.querySelector('.head .num small'),t=txt(sm)||txt(n.querySelector('.head h2'));
+        ch+='<li data-id="'+n.id+'"><a href="#'+n.id+'">'+t+'</a></li>';secs.push({id:n.id,el:n,part:p.id})}
+      n=n.nextElementSibling}
+    if(ch)html+='<ol>'+ch+'</ol>'}
+  html+='</li>'});
+html+='</ol>';
+var nav=document.createElement('nav');nav.className='rail';nav.setAttribute('aria-label','Разделы гайда');nav.innerHTML=html;(document.querySelector('.pg')||document.body).appendChild(nav);
+if(inFrame)nav.classList.add('rl-inf');
+var cur=null,curP=null;
+function top(e){var y=0;while(e){y+=e.offsetTop;e=e.offsetParent}return y}
+function upd(){
+  var vt,vh;if(inFrame){if(!view)return;vt=view.top;vh=view.h}else{vt=window.scrollY;vh=window.innerHeight}
+  var start=top(parts[0])-vh*.5,on=vt>start&&vt<document.documentElement.scrollHeight-vh*1.2;
+  nav.classList.toggle('rl-vis',on);
+  if(inFrame)nav.style.top=(vt+vh/2-(nav.offsetParent?top(nav.offsetParent):0))+'px';
+  var a=null;for(var i=0;i<secs.length;i++){if(top(secs[i].el)<=vt+vh*.5)a=secs[i];else break}
+  if(a&&a.id!==cur){cur=a.id;
+    [].forEach.call(nav.querySelectorAll('li'),function(li){li.classList.toggle('rl-cur',li.dataset.id===a.id);li.classList.toggle('rl-open',li.dataset.id===a.part)})}
+}
+var raf=0;function sch(){if(!raf)raf=requestAnimationFrame(function(){raf=0;upd()})}
+if(inFrame){addEventListener('message',function(e){if(e.data&&e.data.type==='pad-view'){view={top:+e.data.top||0,h:+e.data.h||800};nav.classList.add('rl-live');sch()}})}
+else{addEventListener('scroll',sch,{passive:true})}
+addEventListener('resize',sch);sch();
+})();
 
 /* «Почему одних нейросетей мало»: две 3D-сцены в дизеринге, кадры из спрайтов 12×9 по 480×270, 12 кадров в секунду */
 (function(){
