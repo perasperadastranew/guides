@@ -562,3 +562,4 @@ html.in-frame .pg .tonav{display:none!important}
 .pg ol.th li.t3r:nth-child(even) .fig{color:var(--fg)}
 .pg ol.th li.t3r .fx p{margin:0;align-self:auto;font-size:16px;line-height:1.55;max-width:58ch;color:var(--muted)}
 @media (max-width:640px){.pg ol.th li.t3r{grid-template-columns:minmax(0,1fr);gap:18px;padding:32px 0}}
+.pg .prt td.pd .pc .pcn{display:block;font:400 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}

@@ -136,7 +136,7 @@ CASE = {
  'eaglips': ('https://dprofile.ru/case/173955/eaglips', 'Eaglips · Милана Гавриченко'),
  'lumera': ('https://dprofile.ru/case/174067/lumera', 'Lumera · Лейла Исхакова'),
  'mofu': ('https://dprofile.ru/case/179802/mofu-mofu-pusistye-obvesy', 'mofu-mofu · Арина Галимова'),
- 'husky': ('https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', 'Хаски «Танцы на снегу»'),
+ 'husky': ('https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', '«Танцы на снегу»'),
  'godov': ('https://perasperadastranew.github.io/guides/rolik-po-foto/', 'Годовщина родителей'),
 }
 def fig(src, cap, key=None, vid=None):
@@ -164,7 +164,7 @@ CATS = [
    ('cases/dp-kvas.webp', DP2 + '179478/kvas-drinks-collection', 'Drinks Collection · Вероника Саттарова', 'Айдентика и упаковка серии', 'Графика бренда и линейка продуктов с общей историей', 'Набор графики, упаковка и примеры применения', '20–60 тыс ₽'),
    ('cases/dp-yapay.webp', DP2 + '190803/key-visual-dlia-iandeks-pei', 'Яндекс Пэй · Мария Даль', 'Графика для цифрового продукта', 'Key visual, 3D-ассеты и иллюстрации для приложения и промо', 'Система графики в стиле продукта', '30–100 тыс ₽')]),
  ('vid', 'Видео', 'Бренды, медиа и артисты: ролики для рекламы, соцсетей и музыкантов.', [
-   ('video:https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4|', 'https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', 'Хаски «Танцы на снегу»', 'Клип', 'Визуальный ряд под трек артиста', 'Клип или визуалайзер', '30–100 тыс ₽'),
+   ('video:https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4|', 'https://dprofile.ru/case/197117/tancy-na-snegu-koncept-klipa-bez-kamery-i-akterov', '«Танцы на снегу»', 'Клип', 'Визуальный ряд под трек артиста', 'Клип или визуалайзер', '30–100 тыс ₽'),
    ('cases/vm-witcher.webp', 'https://vimeo.com/1239807103', 'Ведьмак · кураторы школы', 'Мультфильм', 'Короткая история с персонажем', 'Ролик со звуком', '30–100 тыс ₽'),
    ('cases/vm-omega.webp', 'https://vimeo.com/1239785942', 'Omega', 'Рекламный ролик', 'Продукт через рекламный приём, пэкшот в финале', 'Ролик и нарезки под площадки', '30–100 тыс ₽'),
    ('vimeo:1239780521', 'https://vimeo.com/1239780521', 'Тасманский дьявол', 'Объясняющий или тематический ролик', 'Познавательный или художественный ролик на 20–90 секунд', 'Ролик с графикой, звуком и титрами', '10–60 тыс ₽'),
@@ -190,7 +190,7 @@ for i, (k, n, who, rows) in enumerate(CATS):
             ex = '<a class="exm" href="%s" target="_blank" rel="noopener"><span class="th3">%s<i class="go" aria-hidden="true">↗</i></span><span class="cap2">%s <em>↗</em></span></a>' % (link, m, credit)
         else:
             ex = '<div class="exm"><span class="th3">%s</span><span class="cap2 soon">%s</span></div>' % (m, credit)
-        rr += '<tr><th scope="row"><b>%s</b></th><td class="pd"><p>%s</p><p class="gv"><span>Сдаёшь:</span> %s</p><div class="pc">%s</div></td><td class="t2">%s</td></tr>' % (name, task, give, price, ex)
+        rr += '<tr><th scope="row"><b>%s</b></th><td class="pd"><p>%s</p><p class="gv"><span>Сдаёшь:</span> %s</p><div class="pc"><small class="pcn">Примерная вилка</small>%s</div></td><td class="t2">%s</td></tr>' % (name, task, give, price, ex)
     pans += '<div class="cat" id="cp-%s"><div class="cath"><span class="cn2">%02d</span><h3>%s</h3><p>%s</p></div><div class="tw"><table class="prt"><thead><tr><th>Проект</th><th>Задача и цена</th><th>Пример</th></tr></thead><tbody>%s</tbody></table></div></div>' % (k, i + 1, n, who, rr)
 b3 = pans
 PJ = [  # название, часы от-до, цена от-до (тыс ₽), подпись: dx, dy, якорь
