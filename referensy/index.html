@@ -309,7 +309,7 @@ ul.see li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height
   <p class="lead"><b>Референсы нужны не для подражания, а для точности.</b> Как искать их под конкретную задачу, разбирать по слоям, переводить впечатление в решения и не скатиться в копирование.</p>
   <span class="save">Сохрани, чтобы не потерять</span>
   <nav aria-label="Разделы">
-    <a href="#start" data-n="00">Зачем</a><a href="#u1" data-n="01">Пять принципов</a><a href="#u2" data-n="02">Четыре уровня разбора</a><a href="#u3" data-n="03">На что смотреть</a><a href="#u4" data-n="04">Без копирования</a><a href="#u5" data-n="05">Процесс и шаблон</a><a href="#u6" data-n="06">Нейронка и задание</a><a href="#quiz" data-n="07">Квиз</a>
+    <a href="#start" data-n="00">Зачем</a><a href="#u1" data-n="01">Пять принципов</a><a href="#u2" data-n="02">Четыре уровня разбора</a><a href="#u3" data-n="03">На что смотреть</a><a href="#cases" data-n="★">Разборы: референс → ролик</a><a href="#u4" data-n="04">Без копирования</a><a href="#u5" data-n="05">Процесс и шаблон</a><a href="#u6" data-n="06">Нейронка и задание</a><a href="#quiz" data-n="07">Квиз</a>
   </nav>
 </header>
 
@@ -446,6 +446,84 @@ ul.see li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height
     <div class="box"><span class="kind">Баланс</span><p>Иногда кадр красиво нарисован, но плохо двигается. Иногда анимации так много, что непонятно, куда смотреть. Анализируй: что статично, что движется, где главный акцент, а где второстепенное.</p></div>
   </div>
 </section>
+
+
+<section id="cases">
+<div class="corner"><span>PERASPERADASTRA
+РЕФЕРЕНСЫ</span><span>РАЗБОРЫ
+РЕФЕРЕНС → РОЛИК</span></div>
+  <div class="head"><h2>От референса к ролику</h2></div>
+  <p class="quote">Девять примеров из наших роликов: что мы взяли из референса и во что это превратилось.</p>
+  <style>
+  #cases .tab-wrap{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:14px}
+  #cases .tabs-b{display:flex;flex-wrap:wrap;gap:6px}
+  #cases .tabs-b button{background:var(--well);border:1px solid var(--stroke);color:var(--dim);border-radius:999px;padding:7px 13px;font:14px var(--body);cursor:pointer}
+  #cases .tabs-b button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .cx-lead{color:var(--ink);font-size:18px;max-width:none}
+  .cx-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start}
+  .cx-col{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .cx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+  .cx-grid figure{margin:0;background:#0d0d0d;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .cx-grid img,.cx-grid video{display:block;width:100%;height:auto;max-height:520px;object-fit:contain}
+  .cx-grid:has(figure:only-child){grid-template-columns:minmax(0,1fr)}
+  .cx-pts{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:16px}
+  @media (max-width:760px){.cx-cols{grid-template-columns:minmax(0,1fr)}}
+  </style>
+  <div class="tab-wrap" data-tabs>
+    <div class="tabs-b"><button type="button" aria-selected="true">Стиль</button><button type="button" aria-selected="false">Анимация текста</button><button type="button" aria-selected="false">Переходы</button><button type="button" aria-selected="false">Монтаж</button><button type="button" aria-selected="false">Цвет</button><button type="button" aria-selected="false">Атмосфера</button><button type="button" aria-selected="false">Анимация внутри кадра</button><button type="button" aria-selected="false">Звук</button><button type="button" aria-selected="false">Кадр</button></div>
+    <div class="tab-p">
+      <p class="cx-lead">Коллаж из гравюр, архивных фото и аккуратной сетки в референсах — и свой ролик в той же системе: гравюры-объекты, плоский цвет, крупная подпись.</p>
+      <div class="cx-cols"><div class="cx-col"><span class="mono">Референс</span><div class="cx-grid"><figure><img src="ex/style-ref-1.jpg" alt="" loading="lazy"></figure><figure><img src="ex/style-ref-2.jpg" alt="" loading="lazy"></figure><figure><img src="ex/style-ref-3.jpg" alt="" loading="lazy"></figure><figure><img src="ex/style-ref-4.jpg" alt="" loading="lazy"></figure><figure><img src="ex/style-ref-5.jpg" alt="" loading="lazy"></figure></div></div>
+      <div class="cx-col"><span class="mono">Наша реализация</span><div class="cx-grid real"><figure><video src="ex/style-real-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div></div>
+      <ul class="cx-pts"><li>Берём не картинку, а систему: архивные вырезки + один акцентный цвет + сетка + шрифт с засечками.</li><li>Палитру и графику адаптируем под свой бренд: красный и светлый фон вместо оранжевого.</li><li>Стиль держится весь ролик, даже в кадрах со спикером.</li></ul>
+    </div><div class="tab-p" hidden>
+      <p class="cx-lead">Слово в строке «вздрагивает» и подменяется пиктограммой — подсмотрели механику и перенесли на свой текст.</p>
+      <div class="cx-cols"><div class="cx-col"><span class="mono">Референс</span><div class="cx-grid"><figure><video src="ex/text-ref-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div>
+      <div class="cx-col"><span class="mono">Наша реализация</span><div class="cx-grid real"><figure><video src="ex/text-real-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div></div>
+      <ul class="cx-pts"><li>Механика: часть слова на секунду превращается в иконку и возвращается.</li><li>Перенесли на русский текст и свою тему — про минимализм.</li><li>Тайминг короче, чтобы не мешать чтению.</li></ul>
+    </div><div class="tab-p" hidden>
+      <p class="cx-lead">Глитч-переходы из текста и цифрового шума — в нашем ролике они превратились в «загрузку» картинки на старом мониторе.</p>
+      <div class="cx-cols"><div class="cx-col"><span class="mono">Референс</span><div class="cx-grid"><figure><video src="ex/trans-ref-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/trans-ref-2.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div>
+      <div class="cx-col"><span class="mono">Наша реализация</span><div class="cx-grid real"><figure><video src="ex/trans-real-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div></div>
+      <ul class="cx-pts"><li>Из референса взяли принцип: смена кадра через цифровой сбой.</li><li>Привязали к смыслу: AI «дорисовывает» картинку — чёрно-белое становится цветным.</li><li>Переход работает на мысль, а не ради эффекта.</li></ul>
+    </div><div class="tab-p" hidden>
+      <p class="cx-lead">Ритм референса: предметная съёмка, руки, крупные планы, текст встроен в кадр. В нашем ролике — тот же темп, но про свой процесс.</p>
+      <div class="cx-cols"><div class="cx-col"><span class="mono">Референс</span><div class="cx-grid"><figure><video src="ex/mont-ref-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div>
+      <div class="cx-col"><span class="mono">Наша реализация</span><div class="cx-grid real"><figure><video src="ex/mont-real-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div></div>
+      <ul class="cx-pts"><li>Чередование крупностей: общий → деталь руки → интерфейс.</li><li>Слова появляются прямо на предметах, а не поверх кадра.</li><li>Темп задаёт музыка, склейки в доли.</li></ul>
+    </div><div class="tab-p" hidden>
+      <p class="cx-lead">Ограниченная палитра — красный, синий, чёрно-белые вырезки — из референсов-коллажей перешла в целую серию наших роликов.</p>
+      <div class="cx-cols"><div class="cx-col"><span class="mono">Референс</span><div class="cx-grid"><figure><img src="ex/color-ref-1.jpg" alt="" loading="lazy"></figure><figure><img src="ex/color-ref-2.jpg" alt="" loading="lazy"></figure><figure><img src="ex/color-ref-3.jpg" alt="" loading="lazy"></figure><figure><img src="ex/color-ref-4.jpg" alt="" loading="lazy"></figure></div></div>
+      <div class="cx-col"><span class="mono">Наша реализация</span><div class="cx-grid real"><figure><video src="ex/color-real-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/color-real-2.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div></div>
+      <ul class="cx-pts"><li>Два-три цвета + чёрно-белые фото = узнаваемость.</li><li>Цвет несёт смысл: красный — акцент и тревога, синий — фон и спокойствие.</li><li>Палитра стала частью айдентики канала.</li></ul>
+    </div><div class="tab-p" hidden>
+      <p class="cx-lead">Тёплые кадры с бумагой, предметами и мягким светом — настроение «сделано руками». В наших роликах про Eaglips и Totem — то же ощущение.</p>
+      <div class="cx-cols"><div class="cx-col"><span class="mono">Референс</span><div class="cx-grid"><figure><video src="ex/atmo-ref-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/atmo-ref-2.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div>
+      <div class="cx-col"><span class="mono">Наша реализация</span><div class="cx-grid real"><figure><video src="ex/atmo-real-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/atmo-real-2.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div></div>
+      <ul class="cx-pts"><li>Атмосфера — это свет, фактура и темп, а не конкретные кадры.</li><li>Скетчи, предметная съёмка и тёплый интерьер работают на одно настроение.</li><li>Звук и паузы тоже часть атмосферы.</li></ul>
+    </div><div class="tab-p" hidden>
+      <p class="cx-lead">Как двигаются элементы: слои коллажа, пиксельные объекты, предметы, разлетающиеся вокруг героя.</p>
+      <div class="cx-cols"><div class="cx-col"><span class="mono">Референс</span><div class="cx-grid"><figure><video src="ex/anim-ref-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/anim-ref-2.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/anim-ref-3.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/anim-ref-4.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div>
+      <div class="cx-col"><span class="mono">Наша реализация</span><div class="cx-grid real"><figure><video src="ex/anim-real-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/anim-real-2.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/anim-real-3.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/anim-real-4.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div></div>
+      <ul class="cx-pts"><li>Слой за слоем: элементы появляются по очереди и строят кадр.</li><li>Пиксельная анимация: объект пересобирается по шагам, как в референсе.</li><li>Движение объясняет мысль: «расцвет технологий» — вещи сменяют друг друга.</li></ul>
+    </div><div class="tab-p" hidden>
+      <p class="cx-lead">Звук игры «Змейка» и щелчки клавиш из референсов — в наших роликах звук ведёт монтаж и подсказывает смысл.</p>
+      <div class="cx-cols"><div class="cx-col"><span class="mono">Референс</span><div class="cx-grid"><figure><video src="ex/sound-ref-1.mp4" controls playsinline preload="metadata"></video></figure><figure><video src="ex/sound-ref-2.mp4" controls playsinline preload="metadata"></video></figure><figure><video src="ex/sound-ref-3.mp4" controls playsinline preload="metadata"></video></figure></div></div>
+      <div class="cx-col"><span class="mono">Наша реализация</span><div class="cx-grid real"><figure><video src="ex/sound-real-1.mp4" controls playsinline preload="metadata"></video></figure><figure><video src="ex/sound-real-2.mp4" controls playsinline preload="metadata"></video></figure></div></div></div>
+      <ul class="cx-pts"><li>Узнаваемый звук сразу переносит в контекст — Nokia, игра, детство.</li><li>Движение попадает в звук: каждый шаг змейки — щелчок.</li><li>Включи звук, чтобы сравнить.</li></ul>
+    </div><div class="tab-p" hidden>
+      <p class="cx-lead">Сгенерированные кадры-референсы — комната с ретро-монитором и воронка из экранов — стали сценами ролика про поиск референсов.</p>
+      <div class="cx-cols"><div class="cx-col"><span class="mono">Референс</span><div class="cx-grid"><figure><img src="ex/frame-ref-1.jpg" alt="" loading="lazy"></figure><figure><img src="ex/frame-ref-2.jpg" alt="" loading="lazy"></figure><figure><img src="ex/frame-ref-3.jpg" alt="" loading="lazy"></figure><figure><img src="ex/frame-ref-4.jpg" alt="" loading="lazy"></figure></div></div>
+      <div class="cx-col"><span class="mono">Наша реализация</span><div class="cx-grid real"><figure><video src="ex/frame-real-1.mp4" autoplay muted loop playsinline preload="metadata"></video></figure><figure><video src="ex/frame-real-2.mp4" autoplay muted loop playsinline preload="metadata"></video></figure></div></div></div>
+      <ul class="cx-pts"><li>Референс задаёт композицию и свет, дальше мы дорабатываем и анимируем.</li><li>Образ подставлен по смыслу: воронка = «бесконечный круг переотребления».</li><li>Текст встроен в кадр: «БАГ», «УВЛЕКАТЕЛЬНО».</li></ul>
+    </div>
+  </div>
+</section>
+<script>
+(function(){var w=document.querySelector('#cases [data-tabs]');if(!w)return;var bs=w.querySelectorAll('.tabs-b button'),ps=w.querySelectorAll('.tab-p');
+function show(i){bs.forEach(function(b,k){b.setAttribute('aria-selected',k===i)});ps.forEach(function(p,k){p.hidden=k!==i;p.querySelectorAll('video').forEach(function(v){if(k!==i){v.pause()}else if(v.muted){var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}})})}
+bs.forEach(function(b,i){b.addEventListener('click',function(){show(i)})});show(0)})();
+</script>
 
 <section id="u4">
 <div class="corner"><span>PERASPERADASTRA
