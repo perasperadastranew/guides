@@ -1,0 +1,10 @@
+<div id="pg-stili" style="margin:0;padding:0">
+<iframe id="pg-stili-frame" src="https://perasperadastranew.github.io/guides/stili-v-grafike/" title="Стили в графике" style="display:block;width:100%;height:100vh;border:0" scrolling="no" loading="eager"></iframe>
+</div>
+<script>
+(function(){var f=document.getElementById('pg-stili-frame');
+function fy(){return f.getBoundingClientRect().top+window.pageYOffset}
+window.addEventListener('message',function(e){if(e.source!==f.contentWindow||!e.data)return;var d=e.data;
+if(d.type==='pad-height'&&d.h){f.style.height=Math.ceil(d.h)+'px'}
+if(d.type==='pad-scroll'){window.scrollTo({top:fy()+d.y,behavior:'smooth'})}});})();
+</script>
