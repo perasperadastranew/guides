@@ -41,7 +41,7 @@ hdr = re.sub(r'<nav class="need".*?</nav>', '''<nav class="need" aria-label="Р�
 <a href="#pg-end"><b><i>→</i>Итог</b><span>Пять выводов, эфир и гайды</span></a>
 </nav>''', hdr, flags=re.S)
 out.append(hdr)
-out.append('<a class="lvb" href="https://t.me/perasperagram" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span><span class="micro">Прямой эфир</span><b>Среда, 28 октября, 19:00</b><span class="tx">Разберём рынок, навыки и нейросети вживую</span><i aria-hidden="true">→</i></a>\n')
+out.append('<a class="lvb" href="https://t.me/+zJoDrc2GevNhNzRi" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span><span class="micro">Прямой эфир</span><b>Среда, 28 октября, 19:00</b><span class="tx">Разберём рынок, навыки и нейросети вживую</span><i aria-hidden="true">→</i></a>\n')
 
 # ================= ЧАСТЬ I. РЫНОК
 out.append(part('p1', 'I', 'Рынок', 'Что происходит на самом деле, какие мифы мешают, какие проекты заказывают и что изменили нейросети.'))
@@ -364,7 +364,7 @@ CON = [('Рынок новый — и это возможность', 'Прав�
        ('Учись вести проект', 'Понимать задачу, договариваться о сроках и правках, сдавать вовремя. На это почти никто не делает ставку — и зря.'),
        ('Развивай личный бренд', 'Показывай работы и процесс. Заказчик выбирает того, кого видит и кому доверяет, а выделиться через блог сейчас проще, чем когда-либо.')]
 con = '<ol class="con">' + ''.join('<li><span class="cnum">%02d</span><b>%s</b><p>%s</p></li>' % (k + 1, c[0], c[1]) for k, c in enumerate(CON)) + '</ol>'
-CLOSED = 'https://t.me/perasperagram'  # TODO: ссылка на закрытый канал
+CLOSED = 'https://t.me/+zJoDrc2GevNhNzRi'  # закрытый канал
 GD = [(CLOSED, None, 'https://static.tildacdn.com/vide3137-3335-4439-b138-373930326161/klip-hero-final.mp4', 'Гайд · в закрытом канале', 'AI-клип', 'Клип с персонажем без съёмки: от идеи до монтажа'),
       (CLOSED, 'cases/godovshina-2.webp', None, 'Гайд · в закрытом канале', 'AI-фильм с реальными героями', 'Фильм по семейным фото: реальные люди и локации')]
 def gcard(u, img, vid, k, t, d):
@@ -373,7 +373,7 @@ def gcard(u, img, vid, k, t, d):
 gd = '<div class="gds">' + ''.join(gcard(*g) for g in GD) + '</div>'
 out.append('''<section class="step fin" id="pg-end">%s
 %s
-<div class="live"><span class="micro">Прямой эфир · 28 октября, 19:00 по Москве</span><h3>Разберём всё это вживую</h3><p>Покажем, как мы работаем с нейросетями: идеи и решения на нас, рутина на ИИ. Ответим на вопросы и разберём, что дизайнеру нужно уметь в 2027 году. Ссылка на эфир, вся информация и другие методички — в нашем закрытом канале.</p><a class="btn" href="https://t.me/perasperagram" target="_blank" rel="noopener">Вступить в закрытый канал ↗</a></div>
+<div class="live"><span class="micro">Прямой эфир · 28 октября, 19:00 по Москве</span><h3>Разберём всё это вживую</h3><p>Покажем, как мы работаем с нейросетями: идеи и решения на нас, рутина на ИИ. Ответим на вопросы и разберём, что дизайнеру нужно уметь в 2027 году. Ссылка на эфир, вся информация и другие методички — в нашем закрытом канале.</p><a class="btn" href="https://t.me/+zJoDrc2GevNhNzRi" target="_blank" rel="noopener">Вступить в закрытый канал ↗</a></div>
 <p class="micro" style="margin:56px 0 14px">Гайды школы — в закрытом Telegram-канале</p>
 %s
 </section>
