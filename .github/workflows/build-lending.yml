@@ -2,7 +2,7 @@ name: Сборка этапов гайда «Лендинг с нейросет�
 
 on:
   push:
-    branches: [main]
+    branches: [main, lending-test]
     paths: ['mtw/lending/index.html', 'mtw/lending/build_stages.py']
   workflow_dispatch:
 
