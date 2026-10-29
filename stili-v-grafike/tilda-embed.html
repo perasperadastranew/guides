@@ -6,5 +6,8 @@
 function fy(){return f.getBoundingClientRect().top+window.pageYOffset}
 window.addEventListener('message',function(e){if(e.source!==f.contentWindow||!e.data)return;var d=e.data;
 if(d.type==='pad-height'&&d.h){f.style.height=Math.ceil(d.h)+'px'}
-if(d.type==='pad-scroll'){window.scrollTo({top:fy()+d.y,behavior:'smooth'})}});})();
+if(d.type==='pad-scroll'){window.scrollTo({top:fy()+d.y,behavior:'smooth'})}});
+var q=0;function v(){q=0;try{f.contentWindow.postMessage({type:'pad-view',top:-f.getBoundingClientRect().top,h:window.innerHeight},'*')}catch(x){}}
+function s(){if(!q)q=requestAnimationFrame(v)}
+window.addEventListener('scroll',s,{passive:true});window.addEventListener('resize',s);f.addEventListener('load',function(){setTimeout(v,300)});setInterval(v,1500);})();
 </script>
