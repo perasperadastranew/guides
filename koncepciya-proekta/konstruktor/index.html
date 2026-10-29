@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Конструктор концепции</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: слева станции маршрута и форма текущего шага, справа живая карта метафор (как в лекции «Следующая станция — метафора»). Тёмная система методичек школы. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --mcd:#5b8def;
+  --lv-vis:#34c759; --lv-fun:#ff9f0a; --lv-qual:#bf5af2; --lv-emo:#0a84ff;
+  --m-far:#151515; --m-work:#1d1d1d; --m-banal:#2b2b2b; --m-sys:#353535; --m-core:#414141;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:16px;line-height:1.45;margin:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 48px}
+.wrap{max-width:1360px;margin-inline:auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);letter-spacing:-.02em;text-wrap:balance}
+h1{font-size:clamp(32px,5vw,56px);line-height:1}
+h2{font-size:clamp(24px,3vw,34px);line-height:1.05}
+h3{font-size:18px;line-height:1.2;letter-spacing:-.01em}
+p{margin:0;max-width:64ch}
+b{font-weight:500;color:var(--ink)}
+.mono,.corner,.lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header{background:var(--panel);border-radius:14px;padding:26px 30px 26px;display:flex;flex-direction:column;gap:16px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.corner{display:flex;justify-content:space-between;gap:16px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+.lead{font-size:clamp(17px,1.8vw,21px);line-height:1.3;max-width:56ch}
+.lead b{font-weight:400}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{background:var(--card);color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-size:14px}
+.btn:hover{border-color:var(--faint)}
+.btn.main{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:500}
+.btn.ghost{background:transparent}
+.badge{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px dashed var(--faint);border-radius:6px;padding:5px 8px;color:var(--dim)}
+.badge.ex{border-color:var(--accent);color:var(--accent)}
+
+/* линия метро со станциями */
+.metro{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/16);right:calc(100%/16);top:15px;height:6px;border-radius:3px;background:var(--stroke)}
+.metro .fill{position:absolute;left:calc(100%/16);top:15px;height:6px;border-radius:3px;background:var(--accent);transition:width .4s}
+.metro li{position:relative;display:flex;justify-content:center}
+.metro button{display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;color:var(--dim);font-size:13px;line-height:1.15;padding:0 2px;text-align:center}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--stroke);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s,border-color .2s}
+.metro li.done .st{border-color:var(--accent)}
+.metro li.cur .st{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);transform:scale(1.12)}
+.metro li.cur button{color:var(--ink)}
+.metro button:hover .st{transform:scale(1.12)}
+@media (prefers-reduced-motion:reduce){.metro .st,.metro .fill{transition:none}}
+
+.grid{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:16px;align-items:start}
+.pane{background:var(--panel);border-radius:14px;padding:26px 28px 30px;display:flex;flex-direction:column;gap:20px;min-width:0}
+.mapwrap{position:sticky;top:16px;background:var(--panel);border-radius:14px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.maphead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.maphead h3{font-size:17px}
+#map{width:100%;height:auto;display:block}
+#map text{font-family:var(--body)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid currentColor}
+
+.stephead{display:flex;flex-direction:column;gap:6px}
+.stephead .num{font-family:var(--display);font-size:64px;line-height:.85;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint)}
+.hint{border-left:2px solid var(--accent);padding:2px 0 2px 14px;font-size:15px;color:var(--dim);max-width:64ch}
+.fieldset{display:flex;flex-direction:column;gap:14px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f label,.f .lab{font-size:14px;color:var(--ink)}
+.f small{font-size:13px;color:var(--faint);line-height:1.35}
+input[type=text],textarea,select{width:100%;background:var(--card);border:1px solid var(--stroke);border-radius:10px;color:var(--ink);font:inherit;font-size:15px;padding:10px 12px}
+textarea{min-height:72px;resize:vertical;line-height:1.45}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+
+/* поле с чипами */
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:7px;min-height:46px}
+.chips:focus-within{border-color:var(--faint)}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--well);color:var(--ink);border-radius:7px;padding:5px 6px 5px 9px;font-size:14px;line-height:1.2}
+.chip button{background:none;border:0;color:var(--faint);font-size:15px;line-height:1;padding:0 2px}
+.chip button:hover{color:var(--ink)}
+.chips input{flex:1 1 120px;min-width:110px;background:none;border:0;padding:5px 4px;font-size:14px}
+.chips input:focus{outline:none}
+
+.pairs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.pairs .pr{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:4px}
+.pairs button{background:none;border:0;border-radius:7px;color:var(--dim);font-size:14px;padding:7px 6px}
+.pairs button.on{background:var(--accent);color:var(--accent-ink)}
+
+.levels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.lvl{border:1px solid var(--stroke);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--card);min-width:0}
+.lvl .tag{align-self:flex-start;border-radius:6px;padding:4px 8px;font-size:13px;color:#101010;font-weight:500}
+.lvl .q{font-size:13px;color:var(--dim)}
+.lvl .chips{background:var(--panel)}
+
+/* метафоры */
+.adder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:12px}
+.adder .wide{grid-column:1/-1}
+.seg{display:flex;background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1;background:none;border:0;color:var(--dim);border-radius:7px;padding:7px 6px;font-size:13.5px}
+.seg button.on{background:var(--well);color:var(--ink)}
+.seg button.on[data-z=banal]{box-shadow:inset 0 0 0 1px var(--faint)}
+.seg button.on[data-z=work]{box-shadow:inset 0 0 0 1px var(--accent)}
+.lvlpick{display:flex;flex-wrap:wrap;gap:6px}
+.lvlpick button{border:1px solid var(--stroke);background:var(--panel);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13.5px;display:inline-flex;gap:6px;align-items:center}
+.lvlpick button i{width:9px;height:9px;border-radius:50%}
+.lvlpick button.on{color:var(--ink);border-color:var(--faint)}
+.mlist{display:flex;flex-direction:column;gap:6px}
+.mrow{display:grid;grid-template-columns:12px minmax(0,1fr) auto auto;gap:10px;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:8px 10px}
+.mrow .dot{width:10px;height:10px;border-radius:50%}
+.mrow .w{color:var(--ink);font-size:15px;min-width:0;overflow-wrap:anywhere}
+.mrow .w small{display:block;color:var(--faint);font-size:12.5px}
+.mrow .seg{padding:2px}
+.mrow .seg button{padding:4px 7px;font-size:12px}
+.x{background:none;border:0;color:var(--faint);font-size:18px;padding:2px 6px;border-radius:6px}
+.x:hover{color:var(--bad)}
+.counter{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.counter b{font-family:var(--display);font-size:34px;font-weight:400;letter-spacing:-.03em}
+.bar{height:6px;border-radius:3px;background:var(--well);overflow:hidden;flex:1 1 140px}
+.bar i{display:block;height:100%;background:var(--accent)}
+
+/* фильтр */
+.cand{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.cand.fin{border-color:var(--accent)}
+.cand .top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.cand .top b{font-size:17px;font-weight:400}
+.crit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.crit button{background:var(--panel);border:1px solid var(--stroke);border-radius:8px;color:var(--dim);padding:8px;font-size:13px;text-align:left;line-height:1.25}
+.crit button.on{border-color:var(--good);color:var(--ink)}
+.crit button.on::before{content:"✓ ";color:var(--good)}
+.status{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.status.ok{color:var(--accent)}
+
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+.scroll{overflow-x:auto}
+th,td{text-align:left;vertical-align:top;padding:8px 8px 8px 0;border-bottom:1px solid var(--stroke)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:400}
+td input{padding:7px 9px;font-size:14px}
+
+/* промпт */
+details.ai{background:var(--card);border:1px solid var(--stroke);border-radius:12px}
+details.ai summary{cursor:pointer;list-style:none;padding:13px 14px;display:flex;justify-content:space-between;gap:10px;color:var(--ink);font-size:15px}
+details.ai summary::-webkit-details-marker{display:none}
+details.ai summary::after{content:"+";color:var(--mcd);font-family:var(--mono)}
+details.ai[open] summary::after{content:"−"}
+details.ai summary span.k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mcd)}
+.aibody{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+.aibody pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13px;line-height:1.55;color:var(--ink);background:var(--panel);border-radius:8px;padding:12px;max-height:340px;overflow:auto}
+.aibody .you{font-size:13.5px;border-left:1px solid var(--mcd);padding-left:10px}
+
+.nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--stroke);padding-top:18px}
+.empty{border:1px dashed var(--stroke);border-radius:12px;padding:16px;font-size:14px;color:var(--faint)}
+.summary{background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.summary .t{font-family:var(--display);font-size:24px;color:var(--ink);letter-spacing:-.02em}
+.kws{display:flex;flex-wrap:wrap;gap:6px}
+.kws button{background:var(--panel);border:1px dashed var(--faint);border-radius:7px;color:var(--dim);padding:5px 9px;font-size:13px}
+.kws button:hover{color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:10px 16px;border-radius:10px;font-size:14px;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:grid;place-items:center;z-index:30;padding:16px}
+.modal>div{background:var(--panel);border:1px solid var(--stroke);border-radius:14px;padding:20px;max-width:640px;width:100%;display:flex;flex-direction:column;gap:12px}
+.modal textarea{min-height:200px;font-family:var(--mono);font-size:12.5px}
+.mapwrap.big{position:fixed;inset:0;z-index:25;border-radius:0;overflow:auto;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
+.mapwrap.big #map{max-width:min(100%,calc(100vh * 1.1));margin-inline:auto}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:6px 4px}
+
+@media (max-width:1060px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .mapwrap{position:static}
+}
+@media (max-width:760px){
+  header,.pane{padding:20px 16px 24px}
+  .metro{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:14px}
+  .metro::before,.metro .fill{display:none}
+  .two,.levels,.pairs,.adder{grid-template-columns:minmax(0,1fr)}
+  .crit{grid-template-columns:minmax(0,1fr)}
+  .mrow{grid-template-columns:12px minmax(0,1fr) auto;row-gap:6px}
+  .mrow .seg{grid-column:2/-1;grid-row:2}
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+КОНЦЕПЦИЯ ПРОЕКТА</span><span>КОНСТРУКТОР
+8 СТАНЦИЙ</span></div>
+  <h1>Конструктор концепции</h1>
+  <p class="lead"><b>Проходи станции по своей компании, а карта метафор соберётся рядом.</b> Те же шаги, что в методичке «Концепция проекта»: от брифа до финальной концепции. Всё сохраняется в этом браузере.</p>
+  <div class="toolbar">
+    <span class="badge" id="mode"></span>
+    <button class="btn main" id="newProj" type="button">Начать свой проект</button>
+    <button class="btn" id="loadEx" type="button">Показать пример «Лампа»</button>
+    <button class="btn ghost" id="copyText" type="button">Скопировать проект текстом</button>
+    <button class="btn ghost" id="codeBtn" type="button">Перенести на другой компьютер</button>
+  </div>
+  <ol class="metro" id="metro" aria-label="Станции"><span class="fill" id="mfill"></span></ol>
+</header>
+
+<div class="grid">
+  <main class="pane" id="pane" aria-live="polite"></main>
+  <aside class="mapwrap" aria-label="Карта метафор">
+    <div class="maphead"><h3 id="mapTitle">Карта метафор</h3><span class="lbl" id="mapCount"></span></div>
+    <svg id="map" viewBox="-110 -40 1220 1080" role="img" aria-label="Карта метафор проекта"></svg>
+    <div class="legend">
+      <span style="color:var(--lv-vis)"><i></i><em style="font-style:normal;color:var(--dim)">визуальный</em></span>
+      <span style="color:var(--lv-fun)"><i></i><em style="font-style:normal;color:var(--dim)">функциональный</em></span>
+      <span style="color:var(--lv-qual)"><i></i><em style="font-style:normal;color:var(--dim)">качественный</em></span>
+      <span style="color:var(--lv-emo)"><i></i><em style="font-style:normal;color:var(--dim)">эмоциональный</em></span>
+      <span style="color:var(--accent)"><i style="background:var(--accent)"></i><em style="font-style:normal;color:var(--dim)">в финале</em></span>
+      <span style="color:var(--mcd)"><i style="border-style:dashed"></i><em style="font-style:normal;color:var(--dim)">МЦД</em></span>
+    </div>
+    <div class="toolbar"><button class="btn" id="bigBtn" type="button" aria-pressed="false">Развернуть карту</button><button class="btn ghost" id="svgBtn" type="button">Скачать карту (SVG)</button></div>
+  </aside>
+</div>
+<footer>Perasperadastra · Конструктор к методичке «Концепция проекта»</footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+const LV={vis:{name:'Визуальный',q:'Как это выглядит?',qs:['Как выглядит?','Какой?','На что похоже?'],c:'var(--lv-vis)',hex:'#34c759',ang:-45},
+  fun:{name:'Функциональный',q:'Как это используют?',qs:['Чем помогает?','Какой похожий процесс?','Как использовать?'],c:'var(--lv-fun)',hex:'#ff9f0a',ang:-135},
+  qual:{name:'Качественный',q:'Какие качества?',qs:['Какие качества?','У чего есть похожие качества?','Какие преимущества?'],c:'var(--lv-qual)',hex:'#bf5af2',ang:135},
+  emo:{name:'Эмоциональный',q:'Как это ощущается?',qs:['Как ощущается?','Какие эмоции вызывает?','Что ощущается так же?'],c:'var(--lv-emo)',hex:'#0a84ff',ang:45}};
+const LVK=['vis','fun','qual','emo'];
+const PAIRS=[['Человечный','Корпоративный'],['Дружелюбный','Серьёзный'],['Тёплый','Холодный'],['Экспрессивный','Сдержанный'],['Прогрессивный','Консервативный'],['Весёлый','Строгий']];
+const STEPS=['Компания','Платформа','Ассоциации','Четыре уровня','Метафоры','Фильтр','Проверка','Концепция'];
+const KEY='perasperadastra-konstruktor-v1';
+
+const blank=()=>({v:1,example:false,name:'',product:'',audience:'',task:'',limits:'',
+  pod:[],pop:[],benR:[],benE:[],values:[],character:[],charExtra:[],positioning:'',
+  sup:[],sub:[],levels:{vis:[],fun:[],qual:[],emo:[]},metas:[],links:[],checks:[],
+  concept:{meta:'',title:'',idea:'',desc:'',keywords:[]},step:0});
+
+const example=()=>{let id=0;const m=(word,lv,from,zone,o)=>Object.assign({id:'m'+(++id),word,lv,from,zone,crit:{c:false,u:false,s:false}},o||{});
+  const s=blank();Object.assign(s,{example:true,name:'Tootem',product:'Лампа',audience:'Люди 25–35 лет, которые обустраивают квартиру под себя и любят вещи с характером',limits:'Запуск через 2 месяца, основной канал — соцсети',
+  task:'Придумать айдентику и лендинг для запуска модульной настольной лампы-конструктора',pop:['Свет','Таймер','Регулировка яркости'],pod:['Модули собираются в башню','Можно докупать кубики','Каждая сборка уникальна'],
+  benR:['Подстраивается под комнату','Растёт вместе с интерьером'],benE:['Радость от сборки','Своя вещь'],values:['Индивидуальность','Игра','Уют'],
+  character:['Дружелюбный','Тёплый','Экспрессивный'],positioning:'Модульная лампа для тех, кто обустраивает дом под себя: собираешь из кубиков свою башню света — тёплую и не похожую на чужие',
+  sup:['Дом','Комната','Атмосфера','Режим дня','Освещение'],sub:['Плафон','Основание','Выключатель','Провод','Лампочка'],
+  levels:{vis:['Тёплое свечение','Силуэт на столе','Модульная','Цилиндр'],fun:['Освещает','Собирают и настраивают','Регулярно включается','Будит и усыпляет'],qual:['Модульность','Индивидуальность','Надёжность','Постоянство'],emo:['Уют','Ритуал','Безопасность','Ностальгия']},
+  metas:[m('Свет','vis','Тёплое свечение','banal'),m('Лампочка','vis','Силуэт на столе','banal'),m('Тотем','vis','Модульная','work',{quality:'модульная и эффектная',crit:{c:true,u:true,s:true}}),m('Маяк','vis','Силуэт на столе','work',{crit:{c:true,u:true,s:false}}),m('Гриб','vis','Силуэт на столе','far'),
+   m('Светофор','fun','Регулярно включается','work',{quality:'регулярная и точная',crit:{c:true,u:true,s:true}}),m('Будильник','fun','Будит и усыпляет','work'),m('Таймер','fun','Регулярно включается','banal'),m('Шляпа','fun','Собирают и настраивают','far'),
+   m('Конструктор','qual','Модульность','work'),m('Дерево','qual','Постоянство','work'),m('Колыбельная','qual','Надёжность','far'),
+   m('Костёр','emo','Уют','work',{crit:{c:true,u:false,s:true}}),m('Очаг','emo','Уют','work'),m('Рассвет','emo','Ритуал','work'),m('Закрутка','emo','Ностальгия','far')],
+  links:[['m7','m15']],
+  checks:[{project:'Модульные светильники разных брендов',where:'Behance',link:'',match:'Модульность, но без образа тотема',diff:'У нас тотем и сборка как игра'}],
+  concept:{meta:'m3',title:'Tootem',idea:'Лампа как тотем: собираешь свою башню света из кубиков',desc:'Модульная лампа-конструктор. Каждый кубик — свой характер, вместе они складываются в тотем, который охраняет уют дома. Сборка — это игра, а результат не похож на чужие.',keywords:['тотем','кубики','башня','тёплый свет','игра','уют']},step:4});return s;};
+
+let S;
+try{const raw=localStorage.getItem(KEY);S=raw?JSON.parse(raw):example();}catch(e){S=example();}
+S=Object.assign(blank(),S);S.levels=Object.assign({vis:[],fun:[],qual:[],emo:[]},S.levels||{});S.concept=Object.assign(blank().concept,S.concept||{});
+let ui={lv:'vis',from:'',zone:'work',link:null};
+
+const $=(s,r=document)=>r.querySelector(s);
+const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let saveT;function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}},250);}
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),1800);}
+function copy(text,ok){const done=()=>toast(ok||'Скопировано');try{navigator.clipboard.writeText(text).then(done,()=>fallback(text));}catch(e){fallback(text);}}
+function fallback(text){showModal('Скопируй текст вручную',text,false);}
+const prod=()=>S.product||S.name||'[продукт]';
+const metaById=id=>S.metas.find(m=>m.id===id);
+const isFinal=m=>m.crit&&m.crit.c&&m.crit.u&&m.crit.s;
+const finals=()=>S.metas.filter(m=>m.zone!=='far'&&isFinal(m));
+const list=a=>a&&a.length?a.join(', '):'—';
+function formula(m){return '['+prod()+'] ['+(m.quality||m.from||'качество')+'] как ['+m.word+']';}
+
+/* ---------- контекст для промптов ---------- */
+function ctx(){
+  const L=[];L.push('Проект: '+(S.name||'—'));L.push('Продукт: '+(S.product||'—'));L.push('Аудитория: '+(S.audience||'—'));
+  if(S.task)L.push('Задача: '+S.task);if(S.limits)L.push('Ограничения: '+S.limits);return L.join('\n');}
+function platformText(){return ['Точки подобия: '+list(S.pop),'Точки отличия: '+list(S.pod),'Рациональные преимущества: '+list(S.benR),'Эмоциональные преимущества: '+list(S.benE),'Ценности: '+list(S.values),'Характер: '+list(S.character.concat(S.charExtra)),'Позиционирование: '+(S.positioning||'—')].join('\n');}
+function levelsText(){return LVK.map(k=>LV[k].name+': '+list(S.levels[k])).join('\n');}
+
+const PROMPTS=[
+ ()=>({t:'Подготовить вопросы к брифингу',p:'Ты — арт-директор брендинговой студии. Я готовлюсь к брифингу с клиентом.\n'+ctx()+'\n\nЗадай мне 3 уточняющих вопроса о проекте, по одному, и жди ответа. Потом составь список из 10 вопросов клиенту по темам: продукт, аудитория, конкуренты, ограничения. Отметь 3 вопроса, без которых концепцию придумывать нельзя.',y:'отбираешь вопросы, задаёшь клиенту и вписываешь ответы в поля этой станции.'}),
+ ()=>({t:'Докопаться до точек отличия',p:'Ты — стратег брендингового агентства.\n'+ctx()+'\n\nМоя платформа сейчас:\n'+platformText()+'\n\nНе заполняй платформу за меня. Задавай вопросы по одному. Если я отвечаю общими словами («качественно», «быстро»), переспрашивай «а почему?» и «чем это доказать?». В конце покажи, какие строки звучат как у любого конкурента.',y:'правишь строки платформы сам и пишешь позиционирование своими словами.'}),
+ ()=>({t:'Расширить системный оператор',p:ctx()+'\n\nМои слова по системному оператору.\nНадсистема (частью чего является): '+list(S.sup)+'\nПодсистема (из чего состоит): '+list(S.sub)+'\n\nДобавь по 10 слов в каждый уровень, включая прошлое и будущее продукта. Не делай выводов и не предлагай метафоры — только слова. В конце спроси, какой уровень мне кажется самым живым.',y:'переносишь в поля только те слова, которые тебе откликаются.'}),
+ ()=>({t:'Заполнить четыре уровня',p:ctx()+'\nПлатформа:\n'+platformText()+'\n\nМои характеристики по четырём уровням:\n'+levelsText()+'\n\nПродолжи каждую ветку ещё на 5 слов. Отдельно отметь слова из моей платформы, которые я не перенёс ни в один уровень, и спроси, почему.',y:'решаешь, какие слова пойдут в генерацию метафор.'}),
+ ()=>({t:'Отодвинуть метафоры от центра',p:'Тема: '+prod()+'\nМои метафоры по зонам:\n'+['banal','work','far'].map(z=>({banal:'Банально',work:'Рабочие',far:'Непонятно'})[z]+': '+list(S.metas.filter(m=>m.zone===z).map(m=>m.word+' ('+(m.from||LV[m.lv].name)+')'))).join('\n')+'\n\nПроверь, правильно ли я разложил метафоры по зонам: кольцевая банальностей, рабочая зона, заМКАДье непонимания. Потом возьми мои банальные и к каждой задай вопрос, который поможет мне самому уйти дальше от центра. Свои метафоры не предлагай.',y:'придумываешь новые варианты по вопросам и добавляешь их на станции.'}),
+ ()=>({t:'Проверить по трём критериям',p:ctx()+'\nПозиционирование: '+(S.positioning||'—')+'\n\nМои кандидаты:\n'+(S.metas.filter(m=>m.zone==='work').map(m=>'— '+formula(m)).join('\n')||'—')+'\n\nОцени каждую метафору: консистентность (отражает преимущества бренда), понятность для этой аудитории, масштабируемость в айдентике. Ставь «да / сомнительно / нет» и объясняй одной фразой. Затем сыграй скептичного клиента и найди, как каждую могут понять неправильно.',y:'отмечаешь критерии сам и оставляешь 1–3 метафоры в финале.'}),
+ ()=>({t:'Найти похожие проекты (Gemini)',p:'Ты помогаешь дизайнеру проверить идею на уникальность. Используй поиск Google.\n\nМоя идея:\n— Название: '+(S.concept.title||S.name||'[название]')+'\n— Продукт и отрасль: '+(S.product||'[продукт]')+'\n— Метафоры: '+(finals().map(formula).join('; ')||'[формула]')+'\n— Ключевые слова: '+(S.concept.keywords.length?S.concept.keywords.join(', '):list(S.values))+'\n\nНайди проекты, похожие по названию, метафоре или визуальному образу. Ищи на русском и английском:\n1. Behance (behance.net), раздел брендинга.\n2. Dprofile (dprofile.ru).\n3. Победители и шорт-листы фестивалей: «Среда», ADCR, Red Dot, D&AD, Pentawards, Cannes Lions.\n4. Сайты школ дизайна: Школа дизайна НИУ ВШЭ (design.hse.ru), Британская высшая школа дизайна и другие — разделы с проектами студентов.\n5. Действующие бренды с таким же названием в моей отрасли.\n\nВыдай таблицу: проект, где найден, ссылка, что совпадает (название / метафора / образ / графика), насколько похоже от 1 до 5. Давай только ссылки, которые реально нашёл. Не придумывай проекты. В конце задай мне вопрос: чем моя идея отличается от самого похожего проекта?',y:'открываешь каждую ссылку и вносишь реальные находки в таблицу этой станции.'}),
+ ()=>({t:'Описать концепцию и найти референсы',p:'Моя концепция: '+(metaById(S.concept.meta)?formula(metaById(S.concept.meta)):'[формула]')+'\n'+ctx()+'\nХарактер: '+list(S.character.concat(S.charExtra))+'\n\nЗадай мне 3 вопроса о том, какое ощущение должен оставлять бренд. После ответов:\n— предложи 12 поисковых запросов на английском для Pinterest и Behance по цвету, фактуре, типографике и фотостилю;\n— покажи, чего не хватает в моём описании концепции: название, концепция, описание, ключевые слова.',y:'собираешь мудборд и дописываешь описание концепции своими словами.'})
+];
+
+/* ---------- поля ---------- */
+function chipField(path,ph){const arr=get(path);return '<div class="chips" data-chips="'+path+'">'+arr.map((t,i)=>'<span class="chip">'+esc(t)+'<button type="button" data-rm="'+path+'" data-i="'+i+'" aria-label="Удалить «'+esc(t)+'»">×</button></span>').join('')+'<input type="text" placeholder="'+esc(ph)+'" aria-label="'+esc(ph)+'"></div>';}
+function get(path){return path.split('.').reduce((o,k)=>o[k],S);}
+function setv(path,v){const ks=path.split('.');const last=ks.pop();ks.reduce((o,k)=>o[k],S)[last]=v;}
+const inp=(path,ph,lab,small)=>'<div class="f"><label for="i-'+path+'">'+lab+'</label><input type="text" id="i-'+path+'" data-bind="'+path+'" value="'+esc(get(path))+'" placeholder="'+esc(ph)+'">'+(small?'<small>'+small+'</small>':'')+'</div>';
+const area=(path,ph,lab,small)=>'<div class="f"><label for="i-'+path+'">'+lab+'</label><textarea id="i-'+path+'" data-bind="'+path+'" placeholder="'+esc(ph)+'">'+esc(get(path))+'</textarea>'+(small?'<small>'+small+'</small>':'')+'</div>';
+const chipF=(path,ph,lab,small)=>'<div class="f"><span class="lab">'+lab+'</span>'+chipField(path,ph)+(small?'<small>'+small+'</small>':'')+'</div>';
+function aiBlock(i){const a=PROMPTS[i]();return '<details class="ai"><summary><span>'+esc(a.t)+'</span><span class="k">промпт с твоими данными</span></summary><div class="aibody"><pre id="aiText">'+esc(a.p)+'</pre><button class="btn" type="button" data-act="copyAi">Скопировать промпт</button><p class="you"><b>Что делаешь ты:</b> '+esc(a.y)+'</p></div></details>';}
+function head(i,title,hint){return '<div class="stephead"><span class="num">'+String(i+1).padStart(2,'0')+'</span><h2>'+title+'</h2></div><p class="hint">'+hint+'</p>';}
+function nav(i){return '<div class="nav">'+(i>0?'<button class="btn" type="button" data-go="'+(i-1)+'">← '+STEPS[i-1]+'</button>':'<span></span>')+(i<STEPS.length-1?'<button class="btn main" type="button" data-go="'+(i+1)+'">'+STEPS[i+1]+' →</button>':'<button class="btn main" type="button" data-act="copyText">Скопировать проект текстом</button>')+'</div>';}
+
+const R=[
+ i=>head(i,'Компания','Опиши, что за проект и для кого. Всё, что ты впишешь здесь, попадёт в промпты на следующих станциях и в центр карты.')+
+   '<div class="fieldset">'+inp('name','Например: Tootem','Название проекта или бренда')+inp('product','Например: модульная настольная лампа','Продукт','Что это, одной фразой. Это слово встанет в центр карты и в формулу метафоры.')+area('audience','Кто покупает, чего хочет, что мешает','Аудитория')+'<div class="two">'+area('task','Что просит клиент','Задача')+area('limits','Сроки, каналы, обязательные элементы','Ограничения')+'</div></div>',
+ i=>head(i,'Платформа бренда','Всегда начинаем с платформы. Из неё берутся слова для метафор. Пиши факты, а не «быстро и качественно».')+
+   '<div class="fieldset"><div class="two">'+chipF('pop','Есть у всех','Точки подобия','Без них продукт несостоятелен')+chipF('pod','Есть только у нас','Точки отличия','Спроси клиента «а почему?» до факта')+'</div><div class="two">'+chipF('benR','Экономит время…','Рациональные преимущества')+chipF('benE','Радость, удовольствие…','Эмоциональные преимущества')+'</div>'+chipF('values','Во что верит бренд','Ценности')+
+   '<div class="f"><span class="lab">Характер</span><div class="pairs">'+PAIRS.map((p,k)=>'<div class="pr">'+p.map(w=>'<button type="button" data-char="'+esc(w)+'" data-pair="'+k+'" class="'+(S.character.includes(w)?'on':'')+'">'+w+'</button>').join('')+'</div>').join('')+'</div><small>Выбери 2–3. Эти прилагательные потом станут визуальными критериями.</small></div>'+
+   chipF('charExtra','Свои прилагательные','Ещё про характер')+
+   area('positioning','[Продукт] для [кого], [чем лучше], [как ощущается]','Позиционирование')+'<button class="btn" type="button" data-act="buildPos" style="align-self:flex-start">Собрать черновик из полей</button></div>',
+ i=>head(i,'Ассоциации','Системный оператор из ТРИЗ: смотрим, частью чего является продукт и из чего он состоит. Эти слова лягут во внутреннее кольцо карты.')+
+   '<div class="fieldset">'+chipF('sup','Город, дом, комната…','Надсистема','Частью чего является: среда, в которой продукт живёт')+chipF('sub','Кирпичи, крыша, провод…','Подсистема','Из чего состоит: детали, части')+'<p class="empty">Сюда же можно добавить прошлое и будущее продукта: каким он был до и каким станет. Чаще всего хватает настоящего.</p></div>',
+ i=>head(i,'Четыре уровня','Разложи продукт на характеристики по четырём веткам. Это слова, к которым на следующей станции ищешь образы. На карте они встанут в кольцо банальностей.')+
+   '<div class="levels">'+LVK.map(k=>'<div class="lvl"><span class="tag" style="background:'+LV[k].c+'">'+LV[k].name+'</span><span class="q">'+LV[k].q+'</span>'+chipField('levels.'+k,'Добавь слово')+'</div>').join('')+'</div>',
+ i=>{const fromOpts=S.levels[ui.lv];if(!fromOpts.includes(ui.from))ui.from=fromOpts[0]||'';
+   const n=S.metas.length;
+   return head(i,'Метафоры','На каждую характеристику спроси «на что это похоже?». Набери десятки вариантов, не оценивая, и честно отметь зону: банально, рабочая или непонятно.')+
+   '<div class="counter"><b>'+n+'</b><span>из 30 сырых метафор</span><span class="bar"><i style="width:'+Math.min(100,n/30*100)+'%"></i></span></div>'+
+   '<div class="adder"><div class="wide lvlpick" role="group" aria-label="Уровень">'+LVK.map(k=>'<button type="button" data-lv="'+k+'" class="'+(ui.lv===k?'on':'')+'"><i style="background:'+LV[k].c+'"></i>'+LV[k].name+'</button>').join('')+'</div>'+
+   '<div class="f"><label for="mfrom">Характеристика</label>'+(fromOpts.length?'<select id="mfrom">'+fromOpts.map(t=>'<option'+(t===ui.from?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select>':'<p class="empty" style="padding:9px">Сначала добавь слова на станции «Четыре уровня»</p>')+'</div>'+
+   '<div class="f"><label for="mword">На что похоже?</label><input type="text" id="mword" placeholder="'+esc(LV[ui.lv].qs[2])+'"></div>'+
+   '<div class="wide seg" role="group" aria-label="Зона">'+[['banal','Банально'],['work','Рабочая'],['far','Непонятно']].map(z=>'<button type="button" data-z="'+z[0]+'" class="'+(ui.zone===z[0]?'on':'')+'">'+z[1]+'</button>').join('')+'</div>'+
+   '<button class="btn main wide" type="button" data-act="addMeta">Добавить на карту</button></div>'+
+   (n?'<div class="mlist">'+S.metas.map(m=>'<div class="mrow"><span class="dot" style="background:'+LV[m.lv].c+'"></span><span class="w">'+esc(m.word)+'<small>'+esc(m.from||LV[m.lv].name)+'</small></span><div class="seg">'+[['banal','банально'],['work','рабочая'],['far','непонятно']].map(z=>'<button type="button" data-mz="'+z[0]+'" data-id="'+m.id+'" class="'+(m.zone===z[0]?'on':'')+'" data-z="'+z[0]+'">'+z[1]+'</button>').join('')+'</div><button class="x" type="button" data-delm="'+m.id+'" aria-label="Удалить">×</button></div>').join('')+'</div>':'<p class="empty">Метафор пока нет. Начни с самой очевидной, потом уходи дальше от центра.</p>')+
+   '<div class="f"><span class="lab">МЦД: соединить две метафоры из разных веток</span><small>Сильная идея часто рождается на стыке. Выбери две метафоры — на карте появится синяя пунктирная линия.</small><div class="two"><select id="l1"><option value="">Первая</option>'+S.metas.map(m=>'<option value="'+m.id+'">'+esc(m.word)+'</option>').join('')+'</select><select id="l2"><option value="">Вторая</option>'+S.metas.map(m=>'<option value="'+m.id+'">'+esc(m.word)+'</option>').join('')+'</select></div><button class="btn" type="button" data-act="addLink" style="align-self:flex-start">Соединить</button>'+(S.links.length?'<div class="kws">'+S.links.map((l,k)=>'<button type="button" data-dell="'+k+'">'+esc((metaById(l[0])||{}).word)+' — '+esc((metaById(l[1])||{}).word)+' ×</button>').join('')+'</div>':'')+'</div>';},
+ i=>{const c=S.metas.filter(m=>m.zone==='work');return head(i,'Фильтр','Прогони рабочие метафоры через три критерия. В финал проходят те, что набрали все три. Оставь одну–три.')+
+   (c.length?c.map(m=>'<div class="cand'+(isFinal(m)?' fin':'')+'"><div class="top"><b>'+esc(m.word)+'</b><span class="status'+(isFinal(m)?' ok':'')+'">'+(isFinal(m)?'в финале':'кандидат')+'</span></div>'+
+     '<div class="f"><label for="q-'+m.id+'">Качество для формулы</label><input type="text" id="q-'+m.id+'" data-mq="'+m.id+'" value="'+esc(m.quality||m.from||'')+'" placeholder="модульная и эффектная"></div>'+
+     '<div class="lbl">'+esc(formula(m))+'</div><div class="crit">'+[['c','Консистентность','Отражает преимущества бренда'],['u','Понятность','Аудитория поймёт без объяснений'],['s','Масштаб','Можно развить в айдентике']].map(k=>'<button type="button" data-crit="'+k[0]+'" data-id="'+m.id+'" class="'+(m.crit[k[0]]?'on':'')+'"><b style="font-weight:400">'+k[1]+'</b><br><span style="color:var(--faint)">'+k[2]+'</span></button>').join('')+'</div></div>').join(''):'<p class="empty">Нет рабочих метафор. Вернись на станцию «Метафоры» и отметь зону «рабочая» у лучших.</p>')+
+   (finals().length>3?'<p class="hint">В финале '+finals().length+' метафор. Оставь не больше трёх: сними галочку у слабых.</p>':'');},
+ i=>head(i,'Проверка идеи','Проверь, не придумал ли кто-то твою метафору и название раньше. Скопируй промпт для Gemini ниже, а реальные находки внеси в таблицу. Каждую ссылку открой сам.')+
+   '<div class="scroll"><table><thead><tr><th>Проект</th><th>Где</th><th>Ссылка</th><th>Что совпадает</th><th>Чем ты отличаешься</th><th></th></tr></thead><tbody>'+
+   S.checks.map((r,k)=>'<tr>'+['project','where','link','match','diff'].map(f=>'<td><input type="text" data-ck="'+k+'" data-f="'+f+'" value="'+esc(r[f])+'" aria-label="'+f+'"></td>').join('')+'<td><button class="x" type="button" data-delck="'+k+'" aria-label="Удалить строку">×</button></td></tr>').join('')+
+   '</tbody></table></div><button class="btn" type="button" data-act="addCheck" style="align-self:flex-start">Добавить находку</button>'+
+   '<div class="empty">Та же метафора в другой отрасли — оставляй, но рисуй по-своему. Та же метафора в той же отрасли — вернись на станцию «Метафоры». Совпало название — меняй название.</div>',
+ i=>{const fs=finals();if(!S.concept.meta&&fs[0])S.concept.meta=fs[0].id;const m=metaById(S.concept.meta);
+   const sugg=[...new Set([].concat(m?[m.word]:[],S.values,S.character,S.levels.emo.slice(0,2),S.levels.qual.slice(0,2)))].filter(w=>!S.concept.keywords.includes(w)).slice(0,10);
+   return head(i,'Концепция','Выбери финальную метафору и опиши концепцию так, чтобы её понял клиент. Это описание ляжет рядом с мудбордом.')+
+   (fs.length?'<div class="f"><label for="cmeta">Финальная метафора</label><select id="cmeta">'+fs.map(x=>'<option value="'+x.id+'"'+(x.id===S.concept.meta?' selected':'')+'>'+esc(formula(x))+'</option>').join('')+'</select></div>':'<p class="empty">В финале пока пусто. На станции «Фильтр» отметь три критерия у лучшей метафоры.</p>')+
+   '<div class="fieldset">'+inp('concept.title','Название','Название')+area('concept.idea','Тотем — модульная башня света…','Креативная концепция','Одна-две фразы: метафора и что она говорит о бренде')+area('concept.desc','Описание для клиента','Описание')+chipF('concept.keywords','Ключевые слова','Ключевые слова')+(sugg.length?'<div class="kws">'+sugg.map(w=>'<button type="button" data-kw="'+esc(w)+'">+ '+esc(w)+'</button>').join('')+'</div>':'')+'</div>'+
+   (m?'<div class="summary"><span class="lbl">Итог</span><span class="t">'+esc(S.concept.title||S.name||'Без названия')+'</span><span class="lbl" style="color:var(--accent)">'+esc(formula(m))+'</span><p>'+esc(S.concept.idea||'')+'</p></div>':'');}
+];
+
+/* ---------- отрисовка ---------- */
+function filled(i){switch(i){case 0:return !!(S.product||S.name);case 1:return !!(S.pod.length||S.positioning);case 2:return !!(S.sup.length||S.sub.length);case 3:return LVK.some(k=>S.levels[k].length);case 4:return S.metas.length>0;case 5:return finals().length>0;case 6:return S.checks.some(r=>r.project);case 7:return !!(S.concept.idea||S.concept.title&&S.concept.meta);}}
+function renderMetro(){const m=$('#metro');m.querySelectorAll('li').forEach(e=>e.remove());
+  STEPS.forEach((t,i)=>{const li=document.createElement('li');li.className=(filled(i)?'done ':'')+(S.step===i?'cur':'');li.innerHTML='<button type="button" data-go="'+i+'"'+(S.step===i?' aria-current="step"':'')+'><span class="st">'+String(i+1).padStart(2,'0')+'</span>'+t+'</button>';m.appendChild(li);});
+  let last=-1;STEPS.forEach((_,i)=>{if(filled(i))last=i;});$('#mfill').style.width='calc((100% - 100%/8) * '+(Math.max(0,last)/7)+')';
+  const md=$('#mode');md.textContent=S.example?'Пример: лампа Tootem':'Твой проект';md.className='badge'+(S.example?' ex':'');}
+function render(focusSel){const p=$('#pane');p.innerHTML=R[S.step](S.step)+aiBlock(S.step)+nav(S.step);renderMetro();drawMap();save();if(focusSel){const el=p.querySelector(focusSel);if(el)el.focus();}}
+
+/* ---------- карта ---------- */
+const NS='http://www.w3.org/2000/svg';
+function el(tag,at,parent,text){const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const CX=500,CY=500,RC=88,R1=178,R2=292,R3=408,R4=480;
+const pol=(r,a)=>[CX+r*Math.cos(a*Math.PI/180),CY+r*Math.sin(a*Math.PI/180)];
+const trim=(t,n)=>t.length>n?t.slice(0,n-1)+'…':t;
+function label(g,x,y,a,text,o){const c=Math.cos(a*Math.PI/180),s=Math.sin(a*Math.PI/180);const anchor=Math.abs(c)<.3?'middle':c>0?'start':'end';
+  const dx=c*(o.off||14),dy=s*(o.off||14)+(Math.abs(c)<.3?(s>0?12:-4):5);
+  return el('text',{x:x+dx,y:y+dy,'text-anchor':anchor,'font-size':o.size||18,fill:o.fill||'#f4f4f2','font-weight':o.weight||400,opacity:o.op||1},g,trim(text,o.max||18));}
+function drawMap(){const svg=$('#map');svg.replaceChildren();const css=getComputedStyle(document.documentElement);const v=n=>css.getPropertyValue(n).trim();
+  const g=el('g',{},svg);
+  // кольца
+  el('circle',{cx:CX,cy:CY,r:R4,fill:v('--m-far'),stroke:'#333','stroke-width':2,'stroke-dasharray':'10 10'},g);
+  el('circle',{cx:CX,cy:CY,r:R3,fill:v('--m-work'),stroke:'#2e2e2e','stroke-width':6},g);
+  el('circle',{cx:CX,cy:CY,r:R2,fill:v('--m-banal'),stroke:'#3a3a3a','stroke-width':6},g);
+  el('circle',{cx:CX,cy:CY,r:R1,fill:v('--m-sys')},g);
+  el('circle',{cx:CX,cy:CY,r:RC,fill:v('--m-core')},g);
+  el('text',{x:-95,y:-12,'font-size':17,fill:'#6a6a6e','font-family':'JetBrains Mono, monospace'},g,'ЗАМКАДЬЕ НЕПОНИМАНИЯ');
+  el('text',{x:CX,y:CY-R2+30,'text-anchor':'middle','font-size':15,fill:'#8e8e8c','font-family':'JetBrains Mono, monospace'},g,'КОЛЬЦЕВАЯ БАНАЛЬНОСТЕЙ');
+  el('text',{x:CX,y:CY-R3+28,'text-anchor':'middle','font-size':15,fill:'#6a6a6e','font-family':'JetBrains Mono, monospace'},g,'РАБОЧИЕ МЕТАФОРЫ');
+  // разделители-«пути» по диагоналям
+  [-135,-45,45,135].forEach(a=>{const[p1,p2]=[pol(RC+8,a),pol(R2-6,a)];el('line',{x1:p1[0],y1:p1[1],x2:p2[0],y2:p2[1],stroke:'#555','stroke-width':8,'stroke-linecap':'round'},g);});
+  // надсистема / подсистема
+  el('text',{x:CX-R1+14,y:CY+5,'font-size':13,fill:'#8e8e8c','font-family':'JetBrains Mono, monospace'},g,'НАД');
+  el('text',{x:CX+R1-14,y:CY+5,'text-anchor':'end','font-size':13,fill:'#8e8e8c','font-family':'JetBrains Mono, monospace'},g,'ПОД');
+  const sysPlace=(arr,from,to)=>{const n=Math.min(arr.length,6);for(let k=0;k<n;k++){const a=from+(to-from)*(k+.5)/n;const[x,y]=pol(140,a);el('text',{x,y:y+6,'text-anchor':'middle','font-size':17,fill:'#c9c9c6'},g,trim(arr[k],10));}};
+  sysPlace(S.sup,118,242);sysPlace(S.sub,-62,62);
+  // центр
+  const t=el('text',{x:CX,y:CY-6,'text-anchor':'middle','font-size':13,fill:'#8e8e8c','font-family':'JetBrains Mono, monospace'},g,'ТЕМА ПРОЕКТА');
+  const words=trim(prod(),40).split(' ');let lines=[''];words.forEach(w=>{if((lines[lines.length-1]+' '+w).trim().length>12)lines.push(w);else lines[lines.length-1]=(lines[lines.length-1]+' '+w).trim();});lines=lines.slice(0,3);
+  lines.forEach((ln,k)=>el('text',{x:CX,y:CY+22+k*24-(lines.length-1)*9,'text-anchor':'middle','font-size':19,fill:'#f4f4f2'},g,ln));
+  // характеристики по секторам
+  const charPos={};
+  LVK.forEach(k=>{const c=LV[k].ang,arr=S.levels[k];const n=Math.min(arr.length,7);
+    for(let j=0;j<n;j++){const a=c-36+72*(j+.5)/n;const r=j%2?248:210;const[x,y]=pol(r,a);charPos[k+'|'+arr[j]]={x,y,a};
+      el('circle',{cx:x,cy:y,r:5,fill:LV[k].hex},g);
+      el('text',{x,y:y+(Math.sin(a*Math.PI/180)>0?24:-12),'text-anchor':'middle','font-size':17,fill:'#d6d6d3'},g,trim(arr[j],13));}
+    if(arr.length>7)el('text',{...(([x,y])=>({x,y}))(pol(268,c+40)),'text-anchor':'middle','font-size':13,fill:'#8e8e8c'},g,'+'+(arr.length-7));});
+  // метафоры
+  const metaPos={};const gl=el('g',{},g),gn=el('g',{},g);
+  LVK.forEach(k=>{const c=LV[k].ang;
+    [['banal',[276]],['work',[330,378]],['far',[450]]].forEach(([z,radii])=>{const arr=S.metas.filter(m=>m.lv===k&&m.zone===z);const n=arr.length;
+      arr.forEach((m,j)=>{const span=z==='far'?70:z==='banal'?60:74;const a=c-span/2+span*(j+.5)/Math.max(n,1)+(z==='banal'?4:0);const r=radii[j%radii.length];const[x,y]=pol(r,a);metaPos[m.id]={x,y,a};
+        const src=charPos[k+'|'+m.from];
+        if(src&&z!=='banal'){const mid=pol(R2+4,a);el('path',{d:'M'+src.x+' '+src.y+' L'+mid[0]+' '+mid[1]+' L'+x+' '+y,fill:'none',stroke:z==='far'?'#3a3a3a':'#4a4a4a','stroke-width':z==='far'?3:5,'stroke-linejoin':'round','stroke-linecap':'round','stroke-dasharray':z==='far'?'6 8':''},gl);}
+        const fin=m.zone!=='far'&&isFinal(m),chosen=S.concept.meta===m.id;
+        el('circle',{cx:x,cy:y,r:chosen?12:z==='banal'?6:9,fill:fin?'#eb7540':'#101010',stroke:fin?'#eb7540':LV[k].hex,'stroke-width':z==='banal'?2:4,opacity:z==='far'?.6:1},gn);
+        if(chosen)el('circle',{cx:x,cy:y,r:19,fill:'none',stroke:'#eb7540','stroke-width':2},gn);
+        label(gn,x,y,a,m.word+(z==='far'?'?':''),{size:z==='banal'?17:23,fill:fin?'#eb7540':z==='banal'?'#8e8e8c':z==='far'?'#6a6a6e':'#f4f4f2',weight:fin?500:400,off:chosen?24:z==='banal'?10:15,max:16});});});});
+  // МЦД
+  S.links.forEach(([a,b])=>{const p=metaPos[a],q=metaPos[b];if(!p||!q)return;const mx=(p.x+q.x)/2,my=(p.y+q.y)/2,dx=q.x-p.x,dy=q.y-p.y,len=Math.hypot(dx,dy)||1;let nx=-dy/len,ny=dx/len;if((mx+nx-CX)**2+(my+ny-CY)**2<(mx-nx-CX)**2+(my-ny-CY)**2){nx=-nx;ny=-ny;}const cx=mx+nx*len*.42,cy=my+ny*len*.42;
+    el('path',{d:'M'+p.x+' '+p.y+' Q'+cx+' '+cy+' '+q.x+' '+q.y,fill:'none',stroke:'#5b8def','stroke-width':4,'stroke-dasharray':'14 9','stroke-linecap':'round'},gl);});
+  // метки уровней
+  LVK.forEach(k=>{const[x,y]=pol(R1+2,LV[k].ang);const w=LV[k].name.length*10.4+26;el('rect',{x:x-w/2,y:y-17,width:w,height:34,rx:7,fill:LV[k].hex},g);el('text',{x,y:y+6,'text-anchor':'middle','font-size':17,fill:'#101010','font-weight':500},g,LV[k].name);});
+  const counts=['banal','work','far'].map(z=>S.metas.filter(m=>m.zone===z).length);
+  $('#mapCount').textContent='банально '+counts[0]+' · рабочих '+counts[1]+' · непонятно '+counts[2];
+  $('#mapTitle').textContent='Карта метафор'+(S.name?' · '+S.name:'');}
+
+/* ---------- события ---------- */
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.go!=null){S.step=+b.dataset.go;render();window.scrollTo({top:0,behavior:'smooth'});return;}
+  if(b.dataset.rm){const arr=get(b.dataset.rm);arr.splice(+b.dataset.i,1);refreshChips(b.dataset.rm,true);return;}
+  if(b.dataset.char){const w=b.dataset.char,pair=PAIRS[+b.dataset.pair];const had=S.character.includes(w);S.character=S.character.filter(x=>!pair.includes(x));if(!had)S.character.push(w);render();return;}
+  if(b.dataset.lv){ui.lv=b.dataset.lv;ui.from='';render();return;}
+  if(b.dataset.z&&b.closest('.adder')){ui.zone=b.dataset.z;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));return;}
+  if(b.dataset.mz){const m=metaById(b.dataset.id);m.zone=b.dataset.mz;render();return;}
+  if(b.dataset.delm){const id=b.dataset.delm;S.metas=S.metas.filter(m=>m.id!==id);S.links=S.links.filter(l=>!l.includes(id));if(S.concept.meta===id)S.concept.meta='';render();return;}
+  if(b.dataset.dell!=null){S.links.splice(+b.dataset.dell,1);render();return;}
+  if(b.dataset.crit){const m=metaById(b.dataset.id);m.crit[b.dataset.crit]=!m.crit[b.dataset.crit];render();return;}
+  if(b.dataset.delck!=null){S.checks.splice(+b.dataset.delck,1);render();return;}
+  if(b.dataset.kw){S.concept.keywords.push(b.dataset.kw);render();return;}
+  const act=b.dataset.act;
+  if(act==='copyAi'){copy($('#aiText').textContent,'Промпт скопирован');}
+  if(act==='addMeta'){const w=$('#mword').value.trim();if(!w){$('#mword').focus();return;}const fromSel=$('#mfrom');ui.from=fromSel?fromSel.value:'';
+    S.metas.push({id:'m'+Date.now().toString(36),word:w,lv:ui.lv,from:ui.from,zone:ui.zone,crit:{c:false,u:false,s:false}});render('#mword');toast('«'+w+'» на карте');}
+  if(act==='addLink'){const a=$('#l1').value,c=$('#l2').value;if(!a||!c||a===c){toast('Выбери две разные метафоры');return;}S.links.push([a,c]);render();}
+  if(act==='addCheck'){S.checks.push({project:'',where:'',link:'',match:'',diff:''});render();}
+  if(act==='buildPos'){S.positioning=prod()+' для '+(S.audience||'[аудитории]')+(S.pod.length?': '+S.pod.slice(0,2).join(', ').toLowerCase():'')+(S.character.length?' — '+S.character.slice(0,2).join(' и ').toLowerCase():'');render();}
+  if(act==='copyText')copyText();
+});
+document.addEventListener('keydown',e=>{const t=e.target;
+  if(t.closest&&t.closest('[data-chips]')&&t.tagName==='INPUT'&&(e.key==='Enter'||e.key===',')){e.preventDefault();addChip(t.closest('[data-chips]').dataset.chips,t.value,true);return;}
+  if(t.closest&&t.closest('[data-chips]')&&t.tagName==='INPUT'&&e.key==='Backspace'&&!t.value){const path=t.closest('[data-chips]').dataset.chips;const arr=get(path);if(arr.length){arr.pop();refreshChips(path,true);}}
+  if(t.id==='mword'&&e.key==='Enter'){e.preventDefault();document.querySelector('[data-act=addMeta]').click();}
+});
+document.addEventListener('focusout',e=>{const t=e.target;if(t.isConnected&&t.closest&&t.closest('[data-chips]')&&t.tagName==='INPUT'&&t.value.trim()){addChip(t.closest('[data-chips]').dataset.chips,t.value,false);}});
+document.addEventListener('input',e=>{const t=e.target;
+  if(t.dataset.bind){setv(t.dataset.bind,t.value);drawMap();renderMetro();save();const pre=document.getElementById('aiText');if(pre)pre.textContent=PROMPTS[S.step]().p;}
+  if(t.dataset.mq){metaById(t.dataset.mq).quality=t.value;const lb=t.closest('.cand').querySelector('.lbl');if(lb)lb.textContent=formula(metaById(t.dataset.mq));save();}
+  if(t.dataset.ck!=null){S.checks[+t.dataset.ck][t.dataset.f]=t.value;renderMetro();save();}
+});
+document.addEventListener('change',e=>{const t=e.target;if(t.id==='mfrom')ui.from=t.value;if(t.id==='cmeta'){S.concept.meta=t.value;render();}});
+
+function addChip(path,val,focus){const parts=String(val).split(',').map(x=>x.trim()).filter(Boolean);const arr=get(path);parts.forEach(v=>{if(!arr.includes(v))arr.push(v);});refreshChips(path,focus);}
+function refreshChips(path,focus){const box=document.querySelector('[data-chips="'+path+'"]');if(box&&box.isConnected&&box.parentNode){const ph=box.querySelector('input').placeholder;try{box.outerHTML=chipField(path,ph);}catch(e){}if(focus){const i=document.querySelector('[data-chips="'+path+'"] input');if(i)i.focus();}}
+  drawMap();renderMetro();save();const pre=document.getElementById('aiText');if(pre)pre.textContent=PROMPTS[S.step]().p;}
+/* ---------- проект целиком ---------- */
+function asText(){const L=['# '+(S.concept.title||S.name||'Проект'),'','## Компания',ctx(),'','## Платформа',platformText(),'','## Ассоциации','Надсистема: '+list(S.sup),'Подсистема: '+list(S.sub),'','## Четыре уровня',levelsText(),'','## Метафоры'];
+  [['work','Рабочие'],['banal','Банально'],['far','Непонятно']].forEach(([z,n])=>L.push(n+': '+list(S.metas.filter(m=>m.zone===z).map(m=>m.word))));
+  if(S.links.length)L.push('МЦД: '+S.links.map(l=>(metaById(l[0])||{}).word+' — '+(metaById(l[1])||{}).word).join('; '));
+  L.push('','## Финал');finals().forEach(m=>L.push('— '+formula(m)));
+  if(S.checks.length){L.push('','## Проверка');S.checks.forEach(r=>L.push('— '+[r.project,r.where,r.link,r.match,r.diff].filter(Boolean).join(' · ')));}
+  const m=metaById(S.concept.meta);L.push('','## Концепция','Название: '+(S.concept.title||'—'),'Метафора: '+(m?formula(m):'—'),'Концепция: '+(S.concept.idea||'—'),'Описание: '+(S.concept.desc||'—'),'Ключевые слова: '+list(S.concept.keywords));return L.join('\n');}
+function copyText(){copy(asText(),'Проект скопирован текстом');}
+function showModal(title,text,editable){const m=document.createElement('div');m.className='modal';m.innerHTML='<div role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><h3>'+esc(title)+'</h3>'+(editable?'<p style="font-size:14px">Скопируй код и вставь его здесь же на другом компьютере, затем нажми «Загрузить код».</p>':'')+'<textarea id="mcode">'+esc(text)+'</textarea><div class="toolbar">'+(editable?'<button class="btn main" type="button" id="mload">Загрузить код</button><button class="btn" type="button" id="mcopy">Скопировать код</button>':'')+'<button class="btn ghost" type="button" id="mclose">Закрыть</button></div></div>';document.body.appendChild(m);
+  const ta=m.querySelector('#mcode');ta.focus();ta.select();m.querySelector('#mclose').onclick=()=>m.remove();m.addEventListener('click',e=>{if(e.target===m)m.remove();});
+  if(editable){m.querySelector('#mcopy').onclick=()=>{try{navigator.clipboard.writeText(ta.value).then(()=>toast('Код скопирован'),()=>{ta.select();toast('Выделено, нажми Ctrl+C');});}catch(e){ta.select();}};
+    m.querySelector('#mload').onclick=()=>{try{const d=JSON.parse(decodeURIComponent(escape(atob(ta.value.trim()))));S=Object.assign(blank(),d);S.levels=Object.assign(blank().levels,d.levels||{});S.concept=Object.assign(blank().concept,d.concept||{});m.remove();render();toast('Проект загружен');}catch(e){toast('Не получилось прочитать код');}};}}
+$('#copyText').onclick=copyText;
+$('#codeBtn').onclick=()=>showModal('Код проекта',btoa(unescape(encodeURIComponent(JSON.stringify(S)))),true);
+$('#loadEx').onclick=()=>{if(!S.example&&(S.name||S.metas.length)){if(!askOnce('loadEx','Твой проект заменится примером. Нажми ещё раз, чтобы подтвердить.'))return;}S=example();render();toast('Загружен пример «Лампа»');};
+$('#newProj').onclick=()=>{if(!S.example&&(S.name||S.metas.length)){if(!askOnce('newProj','Текущий проект сотрётся. Нажми ещё раз, чтобы начать заново.'))return;}S=blank();render('#i-name');toast('Новый проект');};
+const pending={};function askOnce(k,msg){if(pending[k]&&Date.now()-pending[k]<4000){pending[k]=0;return true;}pending[k]=Date.now();toast(msg);return false;}
+$('#bigBtn').onclick=()=>{const w=document.querySelector('.mapwrap');const on=w.classList.toggle('big');const b=$('#bigBtn');b.textContent=on?'Свернуть карту':'Развернуть карту';b.setAttribute('aria-pressed',on);};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const w=document.querySelector('.mapwrap.big');if(w)$('#bigBtn').click();}});
+$('#svgBtn').onclick=()=>{const svg=$('#map').cloneNode(true);svg.setAttribute('xmlns',NS);svg.setAttribute('style','background:#101010');const blob=new Blob(['<?xml version="1.0" encoding="UTF-8"?>\n'+svg.outerHTML],{type:'image/svg+xml'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='karta-metafor'+(S.name?'-'+S.name.replace(/\s+/g,'-'):'')+'.svg';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);toast('Если файл не скачался, открой конструктор на весь экран');};
+render();
+})();
+</script>
+
+</body></html>
