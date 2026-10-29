@@ -148,6 +148,22 @@ a{color:var(--accent)}
 #smap .src a{color:var(--accent)}
 @media(max-width:760px){#smap .det{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){#smap .st{transition:none}#smap .st:hover{transform:none}}
+#smap .mz{position:relative}
+#smap .mz .scroll{transition:height .55s cubic-bezier(.2,.7,.2,1)}
+#smap .mz-out,#smap .mz-tap,#smap .mz-hint{display:none}
+#smap .mz.mob .map{will-change:transform}
+#smap .mz.fit .scroll{cursor:zoom-in}
+#smap .mz.fit .mz-tap{display:block;position:absolute;left:50%;bottom:10px;transform:translateX(-50%);font:12px "SF Mono",ui-monospace,Menlo,monospace;letter-spacing:.05em;text-transform:uppercase;background:var(--fg);color:var(--bg);padding:9px 14px;pointer-events:none;white-space:nowrap}
+#smap .mz.zoom .mz-out{display:block;position:absolute;right:8px;top:8px;z-index:5;font:12px var(--mono);letter-spacing:.05em;text-transform:uppercase;border:0;background:var(--fg);color:var(--bg);padding:9px 12px;cursor:pointer}
+#smap .mz.zoom .mz-hint{display:block;position:absolute;left:50%;top:120px;transform:translateX(-50%);z-index:5;font:13px "SF Mono",ui-monospace,Menlo,monospace;letter-spacing:.05em;text-transform:uppercase;background:var(--accent);color:var(--on);padding:10px 16px;pointer-events:none;opacity:0;transition:opacity .4s;white-space:nowrap}
+#smap .mz.zoom.hinting .mz-hint{opacity:1}
+#smap .mz-hint i{font-style:normal;display:inline-block;animation:mzs 1.1s ease-in-out infinite}
+#smap .mz-hint i:last-child{animation-direction:reverse}
+@keyframes mzs{0%,100%{transform:translateX(0)}50%{transform:translateX(-5px)}}
+#smap .mz.zoom:before,#smap .mz.zoom:after{content:"";position:absolute;top:0;bottom:0;width:22px;z-index:4;pointer-events:none}
+#smap .mz.zoom:before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+#smap .mz.zoom:after{right:0;background:linear-gradient(270deg,var(--bg),transparent)}
+@media(prefers-reduced-motion:reduce){#smap .mz .scroll{transition:none}#smap .mz-hint i{animation:none}}
 .scls{display:flex;flex-direction:column;gap:12px}
 .scl{background:var(--surface);padding:26px 28px;display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr);gap:20px 40px;align-items:center}
 .scl-h h3{margin:6px 0 6px}.scl-h p{margin:0;color:var(--muted);font-size:15px;line-height:1.45}
@@ -179,6 +195,7 @@ pre,code,.ex code,#smap pre{font-family:"SF Mono",ui-monospace,Menlo,Consolas,mo
 @media(max-width:640px){.ex{grid-template-columns:1fr;padding:18px}.ex img{width:110px}.ex dl{grid-template-columns:1fr;gap:2px}.ex dd{margin-bottom:8px}}
 #smap .plane{height:1380px}
 @media(max-width:999px){#smap .map{min-width:1060px}}
+#smap .hint{display:none!important}
 .ex3s{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .ex3{background:var(--surface);padding:18px;display:flex;flex-direction:column;gap:14px}
 .ex3 img{width:96px;height:140px;object-fit:cover;border-radius:4px;display:block}
@@ -433,7 +450,32 @@ function show(n,scroll){var s=S.filter(function(x){return x.n===n})[0];if(!s)ret
  if(scroll)$('det').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
  try{localStorage.setItem('smap-cur',n)}catch(e){}}
 pl.addEventListener('click',function(e){var b=e.target.closest('.st');if(!b)return;if(b.dataset.f!=null)return;else{var c=document.querySelector('[data-card="'+b.dataset.n+'"]');if(c)c.scrollIntoView({behavior:'smooth',block:'start'})}});
-paint();cards.forEach(function(b){b.hidden=true});layout();$('det').hidden=true;try{var st=localStorage.getItem('smap-cur');if(POS[st])cur=st}catch(e){}
+paint();cards.forEach(function(b){b.hidden=true});layout();$('det').hidden=true;
+(function(){var sc=document.querySelector('.scroll'),mp=$('map');if(!sc||!mp)return;
+var IF=window.parent!==window,wr=document.createElement('div');wr.className='mz';sc.parentNode.insertBefore(wr,sc);wr.appendChild(sc);
+wr.insertAdjacentHTML('beforeend','<button type="button" class="mz-out">Вся карта</button><div class="mz-tap">Нажмите, чтобы приблизить</div><div class="mz-hint"><i>←</i> листайте карту <i>→</i></div>');
+var out=wr.querySelector('.mz-out'),st='desk',s=1,auto=false,R=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function need(){return sc.clientWidth<mp.offsetWidth-8}
+function fit(anim){if(!need()){st='desk';wr.className='mz';mp.style.transform='';sc.style.height='';sc.style.overflowX='';return}
+ s=sc.clientWidth/mp.offsetWidth;var L=sc.scrollLeft;
+ if(anim&&!R&&st==='zoom'){mp.style.transition='none';sc.style.overflowX='hidden';sc.scrollLeft=0;mp.style.transform='translateX('+(-L)+'px)';mp.offsetWidth;mp.style.transition='transform .55s cubic-bezier(.2,.7,.2,1)'}
+ else{mp.style.transition='none';sc.scrollLeft=0;sc.style.overflowX='hidden'}
+ mp.style.transformOrigin='0 0';mp.style.transform='scale('+s+')';sc.style.height=Math.ceil(mp.offsetHeight*s)+'px';st='fit';wr.className='mz mob fit'}
+function zoom(px,py){if(st!=='fit')return;var cw=sc.clientWidth,W=mp.offsetWidth,L=Math.max(0,Math.min(W-cw,px-px*s));
+ if(px*s>cw*.66)L=Math.max(0,Math.min(W-cw,px-cw/2));
+ mp.style.transition=R?'none':'transform .6s cubic-bezier(.2,.7,.2,1)';mp.style.transform='translateX('+(-L)+'px) scale(1)';sc.style.height=mp.offsetHeight+'px';st='zooming';wr.className='mz mob zoom';
+ setTimeout(function(){mp.style.transition='none';mp.style.transform='';sc.style.overflowX='auto';sc.scrollLeft=L;st='zoom';wr.classList.add('hinting');setTimeout(function(){wr.classList.remove('hinting')},4200)},R?0:620)}
+sc.addEventListener('click',function(e){if(st!=='fit')return;e.preventDefault();e.stopPropagation();var r=mp.getBoundingClientRect();zoom((e.clientX-r.left)/s,(e.clientY-r.top)/s)},true);
+sc.addEventListener('scroll',function(){if(st==='zoom')wr.classList.remove('hinting')},{passive:true});
+out.addEventListener('click',function(){fit(true)});
+function center(){if(auto||st!=='fit')return;auto=true;var pl=$('plane');zoom(pl.offsetLeft+pl.offsetWidth/2,pl.offsetTop+pl.offsetHeight/2)}
+function seen(top,h){var r=wr.getBoundingClientRect(),y=r.top+(window.pageYOffset||0);if(top+h>y+r.height*.45&&top<y+r.height*.6)setTimeout(center,700)}
+if(IF)addEventListener('message',function(e){var d=e.data;if(d&&d.type==='pad-view')seen(d.top,d.h)});
+else if(window.IntersectionObserver)new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting)setTimeout(center,700)})},{threshold:.55}).observe(wr);
+var ft;addEventListener('resize',function(){clearTimeout(ft);ft=setTimeout(function(){if(st!=='zoom')fit(false);else if(!need())fit(false)},150)});
+window.SMAP_fit=fit;fit(false);})();
+
+try{var st=localStorage.getItem('smap-cur');if(POS[st])cur=st}catch(e){}
 
 window.SMAP_POS=POS;window.SMAP_ROWS=ROWS;window.SMAP_band=band;window.SMAP_xname=xname;
 })();
