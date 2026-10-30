@@ -49,6 +49,14 @@ def data():
                         i['src'] = m['src']
                 bl.append(b)
             s['blocks'] = bl
+        for s in x['sections']:
+            for bb in s['blocks']:
+                if bb.get('type') == 'case':
+                    bb['real'] = [i for i in bb.get('real', []) if man.get(i['img'], {}).get('kind') != 'stud']
+                    for i in bb['real']:
+                        m = man.get(i['img'])
+                        if m and m['kind'] == 'scrn':
+                            i['src'] = m['src']
         x['sections'] = [s for s in x['sections'] if s['id'] != 'real' or s['blocks']]
         L[x['id']] = x
     meta['lessons'] = L

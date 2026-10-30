@@ -1,5 +1,5 @@
 import json,sys
-TYPES={'p':['text'],'sub':['text'],'list':['items'],'quote':['text','who'],'formula':['parts'],'chain':['nodes'],'terms':['items'],'steps':['items'],'pairs':['groups'],'table':['head','rows'],'note':['title','text'],'two':['boxes'],'tree':['root','leaves'],'myths':['items'],'canvas':['columns'],'flow':['nodes'],'wire':['screens'],'shot':['img','title','text'],'case':['kind','title','steps'],'ai':['give','keep'],'task':['result','parts'],'check':['items'],'faq':['items'],'shots':['items'],'files':['items']}
+TYPES={'p':['text'],'sub':['text'],'list':['items'],'quote':['text','who'],'formula':['parts'],'chain':['nodes'],'terms':['items'],'steps':['items'],'pairs':['groups'],'table':['head','rows'],'note':['title','text'],'two':['boxes'],'tree':['root','leaves'],'myths':['items'],'canvas':['columns'],'flow':['nodes'],'wire':['screens'],'shot':['img','title','text'],'case':['kind','title','steps'],'ai':['give','keep'],'task':['result','parts'],'check':['items'],'faq':['items'],'shots':['items'],'files':['items'],'platforms':['pairs']}
 SK={'big','ttl','lbl','text','field','item','btn','ghost','chips','tabs','map','img','blk','timer','row','stars','sp','fab','cols','grid','home','gap'}
 def scr(bl,where,err):
     for b in bl:
