@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="ru"><head><meta name="color-scheme" content="dark"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex">
+<title>Стартер-пак дизайнера</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Old+Standard+TT:wght@400&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+/* Layout: one 1040px reading column, oversized red part numbers on the left, fixed rail of parts on wide screens — as in the Perasperadastra guides */
+@font-face{font-family:"PG Classic";src:url("../ai-start/f/classic.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"PG W3";src:url("../ai-start/f/w3.woff2") format("woff2");font-display:swap}
+:root{
+  --bg:#0B0B0B;--surface:#1A1A1A;--surface2:#141414;--fg:#F2F2F0;--muted:#A3A39D;--line:#2E2E2C;
+  --accent:#F0303B;--on-accent:#0B0B0B;--paper:#F2F2F0;--ink:#0B0B0B;--ink-muted:#5E5E5A;--ink-line:#CFCFC9;
+  --warn:#E6A23C;--ok:#45C46E;
+  --sans:"Golos Text",-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --serif:"PG Classic","Old Standard TT","Times New Roman",Georgia,serif;
+  --mono:"PG W3","IBM Plex Mono","SF Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+::selection{background:var(--accent);color:var(--on-accent)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.micro{font-family:var(--mono);font-size:12px;line-height:1.5;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.s{font-family:var(--serif);font-weight:400;font-size:1.12em;letter-spacing:-.01em}
+.red{color:var(--accent)}
+h1,h2,h3{font-weight:400;margin:0;text-wrap:balance}
+
+/* top */
+.top{display:flex;justify-content:space-between;gap:16px;padding-block:28px 0}
+.hero{padding-block:44px 40px}
+.hero h1{font-size:clamp(52px,10vw,104px);line-height:.92;letter-spacing:-.035em}
+.hero h1 span{display:block}
+.hero h1 .s{padding-left:clamp(0px,7vw,92px)}
+.lead{font-size:clamp(18px,2.2vw,22px);line-height:1.55;max-width:640px;margin:36px 0 0;text-indent:2.6em}
+.need{margin-top:22px;color:var(--muted);font-size:16px;max-width:640px}
+
+/* inside cards */
+.inside{margin-top:56px}
+.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
+.card{display:block;text-decoration:none;background:var(--surface);border-radius:10px;padding:16px 16px 22px;min-height:150px;transition:background .2s}
+.card:hover,.card:focus-visible{background:#222}
+.card b{display:block;font-weight:500;font-size:17px;line-height:1.3}
+.card b i{font-style:normal;font-family:var(--mono);color:var(--accent);font-size:12px;margin-right:6px}
+.card span{display:block;color:var(--muted);font-size:14px;line-height:1.5;margin-top:12px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* download strip */
+.strip{margin-top:40px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:var(--surface2);border-left:2px solid var(--accent);padding:16px 18px;border-radius:0 8px 8px 0;max-width:760px}
+.strip .dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--accent);flex:none;position:relative}
+.strip .dot::after{content:"";position:absolute;inset:2px;border-radius:50%;background:var(--accent)}
+.strip strong{font-weight:500}
+.strip .t{flex:1;min-width:200px;color:var(--muted);font-size:15px}
+.strip a{color:var(--accent);text-decoration:none;font-weight:500;font-size:15px;white-space:nowrap}
+
+/* rail */
+#rail{display:none}
+@media (min-width:1480px){
+  #rail{display:block;position:fixed;left:28px;top:96px;width:180px;font-size:13px;line-height:1.3;font-weight:500;z-index:5}
+  #rail ol{list-style:none;margin:0;padding:0}
+  #rail a{display:flex;gap:10px;color:var(--fg);text-decoration:none;padding:6px 0}
+  #rail a i{font-style:normal;font-family:var(--mono);color:var(--accent);font-size:11px;width:22px;flex:none}
+  #rail a:hover{color:var(--accent)}
+  #rail a.on{color:var(--accent)}
+}
+
+/* parts and steps */
+.part{border-top:1px solid var(--muted);margin-top:120px;padding-top:28px}
+.part h2{font-size:clamp(40px,7vw,72px);line-height:1;letter-spacing:-.03em}
+.part p{color:var(--muted);max-width:520px;margin:18px 0 0;font-size:17px}
+.step{display:grid;grid-template-columns:225px minmax(0,1fr);gap:0 0;margin-top:96px}
+.step .num{font-weight:400;font-size:clamp(76px,10vw,112px);line-height:.85;letter-spacing:-.04em;color:var(--accent)}
+.step .num + .micro{margin-top:14px}
+.step h3{font-size:clamp(32px,5vw,54px);line-height:1.02;letter-spacing:-.03em}
+.step .intro{margin:22px 0 0;max-width:600px;text-indent:2.6em}
+.body{margin-top:44px}
+.body > * + *{margin-top:28px}
+@media (max-width:760px){.step{grid-template-columns:1fr;gap:18px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.card{min-height:0}}
+@media (min-width:761px) and (max-width:980px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* path list */
+.path{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.path li{display:grid;grid-template-columns:56px minmax(0,1.25fr) minmax(0,1fr);gap:8px 24px;padding:22px 0;border-bottom:1px solid var(--line)}
+.path .n{font-family:var(--mono);color:var(--accent);font-size:13px;padding-top:4px}
+.path h4{margin:0;font-weight:500;font-size:19px;line-height:1.3}
+.path p{margin:6px 0 0;color:var(--muted);font-size:16px}
+.path .side{display:flex;flex-direction:column;gap:10px;font-size:15px}
+.chip{display:inline-flex;align-self:flex-start;gap:6px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg)}
+.risk{color:var(--muted)} .risk b{color:var(--fg);font-weight:500}
+@media (max-width:760px){.path li{grid-template-columns:40px minmax(0,1fr)}.path .side{grid-column:2}}
+
+/* callout */
+.note{border-left:2px solid var(--accent);padding:4px 0 4px 18px;max-width:640px;font-size:17px;color:var(--muted)}
+.note b{color:var(--fg);font-weight:500}
+.note.warn{border-color:var(--warn)} .note.warn b{color:var(--warn)}
+
+/* tables */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:16px;min-width:560px}
+th{text-align:left;font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 16px 12px 0;border-bottom:1px solid var(--muted)}
+td{padding:16px 16px 16px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:500}
+td .m{color:var(--muted)}
+.cmp td:first-child{color:var(--muted);font-weight:400;width:22%}
+.cmp td:nth-child(2){background:rgba(240,48,59,.08);padding-left:14px}
+.cmp th:nth-child(2){color:var(--accent);padding-left:14px}
+
+/* two cards (dark / paper) */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.duo > div{padding:26px 26px 18px;clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,0 calc(100% - 12px),0 12px)}
+.duo .dk{background:var(--surface)}
+.duo .lt{background:var(--paper);color:var(--ink)}
+.duo h4{margin:0;font-weight:500;font-size:28px;letter-spacing:-.02em}
+.duo .dk h4{color:var(--accent)}
+.duo .lt .micro{color:var(--ink-muted)}
+.duo ol{list-style:none;margin:18px 0 0;padding:0}
+.duo li{display:grid;grid-template-columns:34px minmax(0,1fr);padding:11px 0;border-top:1px solid var(--line);font-size:15.5px;line-height:1.45}
+.duo .lt li{border-color:var(--ink-line)}
+.duo li i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--accent);padding-top:3px}
+@media (max-width:760px){.duo{grid-template-columns:1fr}}
+
+/* slides grid */
+.slides{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.slide{aspect-ratio:16/10;max-width:100%;background:var(--surface);border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.slide i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--accent)}
+.slide b{font-weight:500;font-size:14px;line-height:1.2}
+.slide span{font-size:12px;color:var(--muted);line-height:1.35}
+@media (max-width:760px){.slides{grid-template-columns:repeat(2,minmax(0,1fr))}.slide{aspect-ratio:auto;min-height:96px}}
+
+/* from -> to rows */
+.ft{border-top:1px solid var(--muted)}
+.ft .h{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;padding:12px 0}
+.ft .row{display:grid;grid-template-columns:32px minmax(0,1fr) 28px minmax(0,1fr);gap:0 12px;padding:22px 0;border-top:1px solid var(--line)}
+.ft .row > i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:5px}
+.ft .q{font-weight:500;font-size:19px;line-height:1.35}
+.ft .ar{color:var(--accent);font-size:20px;line-height:1.2}
+.ft .a{border-left:2px solid var(--accent);padding-left:14px;font-size:16px;color:var(--fg)}
+.ft .a small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+@media (max-width:760px){.ft .h{display:none}.ft .row{grid-template-columns:28px minmax(0,1fr)}.ft .ar{display:none}.ft .a{grid-column:2;margin-top:10px}}
+
+/* three docs */
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.trio > div{background:var(--surface);border-radius:10px;padding:20px}
+.trio h4{margin:8px 0 0;font-weight:500;font-size:20px}
+.trio p{margin:10px 0 0;color:var(--muted);font-size:15px}
+@media (max-width:760px){.trio{grid-template-columns:1fr}}
+
+/* letters */
+.letter{background:var(--surface2);border:1px solid var(--line);border-radius:14px 14px 14px 4px;padding:18px 20px;max-width:640px;font-size:16.5px}
+.letter .micro{margin-bottom:10px}
+.copy{margin-top:12px;background:none;border:1px solid var(--line);color:var(--fg);border-radius:999px;padding:5px 12px;font:inherit;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.copy:hover{border-color:var(--accent);color:var(--accent)}
+ul.dash{list-style:none;margin:0;padding:0;max-width:680px}
+ul.dash li{position:relative;padding:8px 0 8px 26px;font-size:17px}
+ul.dash li::before{content:"→";position:absolute;left:0;color:var(--accent)}
+
+/* checklist */
+.checks{list-style:none;margin:0;padding:0;max-width:680px}
+.checks label{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:17px}
+.checks input{appearance:none;width:20px;height:20px;border:1.5px solid var(--muted);border-radius:4px;flex:none;margin-top:3px;display:grid;place-content:center;cursor:pointer}
+.checks input:checked{background:var(--accent);border-color:var(--accent)}
+.checks input:checked::after{content:"";width:6px;height:10px;border:solid var(--on-accent);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.checks input:checked + span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--accent)}
+.prog{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:14px;letter-spacing:.05em}
+
+/* quiz */
+details.qa{border-top:1px solid var(--line);padding:16px 0;max-width:760px}
+details.qa:last-of-type{border-bottom:1px solid var(--line)}
+details.qa summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:36px minmax(0,1fr) 20px;font-weight:500;font-size:18px}
+details.qa summary::-webkit-details-marker{display:none}
+details.qa summary i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--accent);padding-top:5px}
+details.qa summary::after{content:"+";color:var(--muted);font-weight:400}
+details.qa[open] summary::after{content:"−"}
+details.qa p{margin:10px 0 0 36px;color:var(--muted);font-size:16px}
+
+/* files */
+.files{border-top:1px solid var(--muted)}
+.file{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.file .ext{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.05em}
+.file b{font-weight:500;font-size:17px}
+.file span{display:block;color:var(--muted);font-size:14.5px;margin-top:2px}
+.dl{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:500;white-space:nowrap}
+.dl:hover{border-color:var(--accent);color:var(--accent)}
+.dl.all{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.dl.all:hover{background:var(--fg);border-color:var(--fg);color:var(--ink)}
+@media (max-width:560px){.file{grid-template-columns:36px minmax(0,1fr)}.file .dl{grid-column:2;justify-self:start;margin-top:8px}}
+.alltop{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+
+footer{margin-top:120px;border-top:1px solid var(--line);padding-block:28px 60px;color:var(--muted);font-size:14px}
+footer ol{margin:12px 0 0;padding-left:18px}
+footer li{margin:4px 0}
+footer a{color:var(--fg)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--paper);color:var(--ink);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20;max-width:calc(100% - 32px)}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<nav id="rail" aria-label="Части гайда">
+  <ol>
+    <li><a href="#p1"><i>I</i>Путь заказа</a></li>
+    <li><a href="#p2"><i>II</i>Бриф и КП</a></li>
+    <li><a href="#p3"><i>III</i>Документы</a></li>
+    <li><a href="#p4"><i>IV</i>Налоги</a></li>
+    <li><a href="#p5"><i>V</i>Клиент</a></li>
+    <li><a href="#p6"><i>→</i>Итог и файлы</a></li>
+  </ol>
+</nav>
+
+<main class="wrap">
+  <div class="top micro"><span>Гайд · Perasperadastra</span><span>Стартер-пак дизайнера</span></div>
+
+  <header class="hero">
+    <h1><span>Первый заказ</span><span class="s">от брифа до акта</span></h1>
+    <p class="lead">Стартер-пак для первого коммерческого проекта: как собрать задачу на брифинге, предложить цену в КП, оформить договор, легально получить деньги и не утонуть в бесконечных правках.</p>
+    <p class="need">Внутри семь файлов: бриф, шаблон КП, договор с заданием, акт, допсоглашение, счёт и инструкция. Всё, что нужно заполнить, в шаблонах выделено жёлтым.</p>
+
+    <div class="inside">
+      <div class="micro">Что внутри</div>
+      <div class="cards">
+        <a class="card" href="#p1"><b><i>I</i>Путь заказа</b><span>Восемь шагов и какой риск закрывает каждый</span></a>
+        <a class="card" href="#p2"><b><i>II</i>Бриф и КП</b><span>46 вопросов и коммерческое предложение из 10 слайдов</span></a>
+        <a class="card" href="#p3"><b><i>III</i>Документы</b><span>Договор, акт, допсоглашение и счёт: что куда вписать</span></a>
+        <a class="card" href="#p4"><b><i>IV</i>Налоги</b><span>Самозанятость или ИП, чеки и сроки</span></a>
+        <a class="card" href="#p5"><b><i>V</i>Клиент</b><span>Письма, правки и сложные ситуации</span></a>
+      </div>
+    </div>
+
+    <div class="strip">
+      <span class="dot" aria-hidden="true"></span>
+      <strong>Шаблоны</strong>
+      <span class="t">Все 7 файлов одним архивом — Word, Excel, PowerPoint и PDF</span>
+      <a href="#p6">К файлам →</a>
+    </div>
+  </header>
+
+  <!-- PART I -->
+  <section class="part" id="p1">
+    <h2>Часть I. <span class="s">Путь заказа</span></h2>
+    <p>В каком порядке идут документы и почему ни один шаг нельзя пропустить.</p>
+  </section>
+
+  <section class="step">
+    <div><div class="num">01</div><div class="micro">Путь заказа</div></div>
+    <div>
+      <h3>Восемь шагов <span class="s">от брифа до акта</span></h3>
+      <p class="intro">Порядок всегда один: сначала договорённости на бумаге и предоплата, потом работа. Каждый шаг закрывает конкретный риск. Пропустите шаг — и риск останется на вас.</p>
+    </div>
+  </section>
+  <div class="body">
+    <ol class="path">
+      <li><span class="n">01</span><div><h4>Знакомство и бриф</h4><p>Созвон на 30–60 минут, затем короткое резюме клиенту: задача, сроки, бюджет, кто согласует. Попросите подтвердить письменно.</p></div><div class="side"><span class="chip">01 · Бриф</span><span class="risk"><b>Закрывает:</b> разное понимание задачи</span></div></li>
+      <li><span class="n">02</span><div><h4>Коммерческое предложение</h4><p>За 1–3 дня собираете КП и отправляете в PDF с коротким письмом и предложением созвониться.</p></div><div class="side"><span class="chip">02 · КП</span><span class="risk"><b>Закрывает:</b> несовпадение ожиданий по цене и объёму</span></div></li>
+      <li><span class="n">03</span><div><h4>Договор, задание и счёт</h4><p>Состав работ из КП переносите в Задание, цену и проценты — в п. 4. Вместе с договором — счёт на предоплату.</p></div><div class="side"><span class="chip">03 · Договор</span><span class="chip">06 · Счёт</span><span class="risk"><b>Закрывает:</b> «а мы договаривались иначе»</span></div></li>
+      <li><span class="n">04</span><div><h4>Предоплата — и только потом старт</h4><p>Срок по договору считается с даты поступления предоплаты (п. 3.1). Самозанятый сразу формирует чек в «Мой налог».</p></div><div class="side"><span class="chip">Чек в «Мой налог»</span><span class="risk"><b>Закрывает:</b> работу без оплаты</span></div></li>
+      <li><span class="n">05</span><div><h4>Работа и согласования</h4><p>Показываете результат по этапам из КП. Замечания клиент присылает одним списком (п. 5.4), раунды правок считаете (п. 5.5).</p></div><div class="side"><span class="risk"><b>Закрывает:</b> бесконечные правки</span></div></li>
+      <li><span class="n">06</span><div><h4>Если проект вырос</h4><p>Новая страница, ещё одна концепция, правки сверх лимита — сначала допсоглашение и счёт на доплату, потом работа.</p></div><div class="side"><span class="chip">05 · Допсоглашение</span><span class="risk"><b>Закрывает:</b> работу «за те же деньги»</span></div></li>
+      <li><span class="n">07</span><div><h4>Сдача, акт и остаток</h4><p>Демонстрация, передача файлов, акт и счёт на остаток. Если клиент 3 рабочих дня молчит, работы считаются принятыми (п. 5.3).</p></div><div class="side"><span class="chip">04 · Акт</span><span class="chip">06 · Счёт</span><span class="risk"><b>Закрывает:</b> неоплату остатка</span></div></li>
+      <li><span class="n">08</span><div><h4>Кейс в портфолио</h4><p>Договор уже разрешает показывать работу (п. 6.3). Оформите кейс, пока проект свежий.</p></div><div class="side"><span class="chip">Шаблон кейсов курса</span><span class="risk"><b>Закрывает:</b> проект, который нельзя показать</span></div></li>
+    </ol>
+    <div class="note"><b>Главное правило.</b> Сначала договор и счёт на предоплату, потом работа, в конце акт и счёт на остаток.</div>
+  </div>
+
+  <!-- PART II -->
+  <section class="part" id="p2">
+    <h2>Часть II. <span class="s">Бриф и КП</span></h2>
+    <p>Как собрать задачу так, чтобы клиент узнал в ней свои слова, и предложить цену, из которой легко выбрать.</p>
+  </section>
+
+  <section class="step">
+    <div><div class="num">02</div><div class="micro">Бриф</div></div>
+    <div>
+      <h3>Бриф — <span class="s">точка «Б» проекта</span></h3>
+      <p class="intro">Один незаданный вопрос на брифинге может стоить десятков часов переделок. В шаблоне 46 вопросов в шести разделах, к каждому — зачем спрашиваем и пример ответа.</p>
+    </div>
+  </section>
+  <div class="body">
+    <div class="tw"><table>
+      <thead><tr><th>Раздел</th><th>Что выясняем</th><th>Вопрос-пример</th></tr></thead>
+      <tbody>
+        <tr><td>Организационные</td><td class="m">Задача, сроки, бюджет, кто согласует</td><td>Кто будет принимать решения и согласовывать дизайн?</td></tr>
+        <tr><td>Компания и продукт</td><td class="m">Чем занимается, сегмент, УТП</td><td>Чем вы гордитесь в своей компании?</td></tr>
+        <tr><td>Конкуренты</td><td class="m">Сильные и слабые стороны рынка</td><td>Что нравится и что не нравится на сайтах конкурентов?</td></tr>
+        <tr><td>Аудитория</td><td class="m">Кто покупает, почему и чего опасается</td><td>Какими словами люди рекомендуют вас друзьям?</td></tr>
+        <tr><td>Айдентика бренда</td><td class="m">Образы, характер, ограничения</td><td>Если сравнить бренд с человеком, какой у него характер?</td></tr>
+        <tr><td>Сайт</td><td class="m">Страницы, целевое действие, техника</td><td>Какое целевое действие на сайте?</td></tr>
+      </tbody>
+    </table></div>
+    <div class="duo">
+      <div class="dk">
+        <h4>Делать</h4><div class="micro">на брифинге</div>
+        <ol>
+          <li><i>01</i>Изучить сайт и соцсети клиента до созвона</li>
+          <li><i>02</i>Выбрать вопросы под проект: для лендинга сократить «Айдентику»</li>
+          <li><i>03</i>Брифовать голосом и самому записывать ответы</li>
+          <li><i>04</i>В конце спросить: «Что важного мы не обсудили?»</li>
+          <li><i>05</i>Отправить резюме и попросить подтвердить письменно</li>
+        </ol>
+      </div>
+      <div class="lt">
+        <h4>Не делать</h4><div class="micro">типичные ошибки</div>
+        <ol>
+          <li><i>01</i>Отправлять анкету «на самостоятельное заполнение» — её бросают на середине</li>
+          <li><i>02</i>Задавать все 46 вопросов подряд, даже лишние</li>
+          <li><i>03</i>Не спросить, кто согласует дизайн</li>
+          <li><i>04</i>Оставить колонки с подсказками в файле для клиента</li>
+          <li><i>05</i>Начинать КП без подтверждённой задачи</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <section class="step">
+    <div><div class="num">03</div><div class="micro">Коммерческое предложение</div></div>
+    <div>
+      <h3>КП, которое <span class="s">помогает выбрать</span></h3>
+      <p class="intro">Коммерческое предложение показывает, что вы поняли задачу, и переводит разговор с «да или нет» на «какой вариант». Шаблон — 10 слайдов, подсказки к каждому лежат в заметках.</p>
+    </div>
+  </section>
+  <div class="body">
+    <div class="slides">
+      <div class="slide"><i>01</i><b>Обложка</b><span>Имя клиента и ваше фото</span></div>
+      <div class="slide"><i>02</i><b>Задача</b><span>Словами клиента из брифа</span></div>
+      <div class="slide"><i>03</i><b>Решение</b><span>Список работ = будущее Задание</span></div>
+      <div class="slide"><i>04</i><b>Процесс</b><span>Этапы по неделям</span></div>
+      <div class="slide"><i>05</i><b>Стоимость</b><span>Три пакета или смета</span></div>
+      <div class="slide"><i>06</i><b>Оплата</b><span>50 % вперёд, 50 % после</span></div>
+      <div class="slide"><i>07</i><b>Доработки</b><span>Раунды правок и цена часа</span></div>
+      <div class="slide"><i>08</i><b>Кейсы</b><span>2–3 похожих проекта</span></div>
+      <div class="slide"><i>09</i><b>Дизайнер</b><span>О себе и навыки</span></div>
+      <div class="slide"><i>10</i><b>Контакты</b><span>И срок действия КП</span></div>
+    </div>
+    <ul class="dash">
+      <li><b>Три пакета вместо одной цены.</b> Средний выбирают чаще — сделайте его самым выгодным.</li>
+      <li><b>Цифры совпадают с договором:</b> процент предоплаты — как в п. 4.2, число правок — как в п. 5.5.</li>
+      <li><b>Отправляйте в PDF</b> и указывайте, до какой даты действует предложение.</li>
+      <li><b>Шапка с контактами</b> меняется один раз: «Вид → Образец слайдов».</li>
+    </ul>
+  </div>
+
+  <!-- PART III -->
+  <section class="part" id="p3">
+    <h2>Часть III. <span class="s">Документы</span></h2>
+    <p>Договор фиксирует договорённости из КП, а акт, допсоглашение и счёт оформляют сдачу, изменения и оплату.</p>
+  </section>
+
+  <section class="step">
+    <div><div class="num">04</div><div class="micro">Договор и задание</div></div>
+    <div>
+      <h3>Договор: <span class="s">что куда вписать</span></h3>
+      <p class="intro">Во всех шаблонах поля для заполнения выделены жёлтым. Заполните, снимите выделение и удалите серую строку-подсказку вверху. Тексты взяты из генератора «Документы дизайнера» — там можно ввести данные один раз на все документы.</p>
+    </div>
+  </section>
+  <div class="body">
+    <div class="tw"><table>
+      <thead><tr><th>Где</th><th>Что вписать</th></tr></thead>
+      <tbody>
+        <tr><td>Шапка</td><td>Номер (удобно «порядковый/год», например 03/2026), город, дата</td></tr>
+        <tr><td>Стороны</td><td>Заказчик с формой — ООО «Ромашка»; подписант в родительном падеже — «генерального директора Иванова Ивана Ивановича»; основание — «Устава». Ваше ФИО полностью</td></tr>
+        <tr><td>п. 1.1</td><td>Что создаёте, с маленькой буквы: «дизайн лендинга для кофейни»</td></tr>
+        <tr><td>п. 3.1</td><td>Срок в календарных днях — с даты предоплаты</td></tr>
+        <tr><td>п. 4.1–4.2</td><td>Стоимость и суммы цифрами и прописью, процент предоплаты и остатка</td></tr>
+        <tr><td>п. 5.5, 5.8</td><td>Сколько раундов правок входит и сколько часов на каждый</td></tr>
+        <tr><td>п. 6.4</td><td>Подпись «Дизайн — …» в подвале сайта. Не нужна — удалите пункт</td></tr>
+        <tr><td>п. 12.4, 13</td><td>Ответственные лица и реквизиты. Реквизиты компании попросите «карточкой организации», проверьте её по ИНН на сайте ФНС</td></tr>
+        <tr><td>Задание</td><td>Состав работ по пункту на строку, как в КП. Платные шрифты и фото — со ссылками на лицензии: покупает их заказчик</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <section class="step">
+    <div><div class="num">05</div><div class="micro">Защита</div></div>
+    <div>
+      <h3>Пункты, <span class="s">которые вас защищают</span></h3>
+      <p class="intro">Договор работает, когда вы на него ссылаетесь. Вот ситуации, которые случаются почти в каждом первом проекте, и пункт, который их решает.</p>
+    </div>
+  </section>
+  <div class="body">
+    <div class="ft">
+      <div class="h micro"><span>Ситуация</span><span class="red">Что говорит договор</span></div>
+      <div class="row"><i>01</i><div class="q">Клиент неделю не присылает материалы</div><span class="ar" aria-hidden="true">→</span><div class="a">Срок работ продлевается на время задержки, вы не отвечаете за просрочку.<small>п. 3.2</small></div></div>
+      <div class="row"><i>02</i><div class="q">Правки идут пятый раунд</div><span class="ar" aria-hidden="true">→</span><div class="a">В стоимость входит ограниченное число правок, всё сверх — по допсоглашению за отдельные деньги.<small>п. 5.5, 5.7</small></div></div>
+      <div class="row"><i>03</i><div class="q">Акт отправлен, клиент молчит</div><span class="ar" aria-hidden="true">→</span><div class="a">Через 3 рабочих дня без возражений работы считаются принятыми.<small>п. 5.3</small></div></div>
+      <div class="row"><i>04</i><div class="q">Клиент опубликовал макет, не заплатив остаток</div><span class="ar" aria-hidden="true">→</span><div class="a">Права на дизайн переходят только после полной оплаты. До неё публиковать нельзя.<small>п. 6.2</small></div></div>
+      <div class="row"><i>05</i><div class="q">Хочу показать проект в портфолио</div><span class="ar" aria-hidden="true">→</span><div class="a">Можно: договор разрешает показывать работу, логотип и название клиента.<small>п. 6.3</small></div></div>
+      <div class="row"><i>06</i><div class="q">Оплата просрочена на две недели</div><span class="ar" aria-hidden="true">→</span><div class="a">При просрочке больше 15 дней можно отказаться от договора.<small>п. 9.3</small></div></div>
+    </div>
+  </div>
+
+  <section class="step">
+    <div><div class="num">06</div><div class="micro">Закрывающие</div></div>
+    <div>
+      <h3>Акт, допсоглашение <span class="s">и счёт</span></h3>
+      <p class="intro">Три коротких документа, без которых проект не закрыть и не расширить.</p>
+    </div>
+  </section>
+  <div class="body">
+    <div class="trio">
+      <div><span class="chip">04 · Акт</span><h4>Работы сданы</h4><p>Период работ, итоговая сумма с учётом допсоглашений, ссылка на файлы. Если допсоглашений не было, удалите упоминание в п. 1.</p></div>
+      <div><span class="chip">05 · Допсоглашение</span><h4>Проект вырос</h4><p>Причина, новая общая стоимость и срок, отдельно — цена и список доп. работ. Новая сумма потом попадёт в акт.</p></div>
+      <div><span class="chip">06 · Счёт</span><h4>Перед оплатой</h4><p>Один счёт на каждый платёж: предоплата, остаток, доплата по допсоглашению. В назначении — номер счёта и договора.</p></div>
+    </div>
+    <div class="note"><b>Шаблоны написаны для самозанятого.</b> Если вы ИП на УСН, замените «плательщик налога на профессиональный доход» на «индивидуальный предприниматель, ОГРНИП …», а фразу про НДС — на «НДС не облагается в связи с применением упрощённой системы налогообложения». Или выберите статус «ИП на УСН» в генераторе.</div>
+  </div>
+
+  <!-- PART IV -->
+  <section class="part" id="p4">
+    <h2>Часть IV. <span class="s">Налоги</span></h2>
+    <p>Чтобы легально брать деньги за дизайн, нужен статус. Для старта большинству подходит самозанятость.</p>
+  </section>
+
+  <section class="step">
+    <div><div class="num">07</div><div class="micro">Статус</div></div>
+    <div>
+      <h3>Самозанятый <span class="s">или ИП</span></h3>
+      <p class="intro">Самозанятость оформляется за 10 минут в приложении «Мой налог», без отчётов и обязательных взносов. ИП нужен, когда доход переваливает за лимит или нужны сотрудники.</p>
+    </div>
+  </section>
+  <div class="body">
+    <div class="tw"><table class="cmp">
+      <thead><tr><th></th><th>Самозанятый (НПД)</th><th>ИП на УСН «Доходы»</th></tr></thead>
+      <tbody>
+        <tr><td>Регистрация</td><td>Приложение «Мой налог» или банк</td><td>Госуслуги или ФНС</td></tr>
+        <tr><td>Налог</td><td>4 % от физлиц, 6 % от компаний и ИП. Разовый вычет 10 000 ₽ снижает ставки до 3 и 4 %</td><td>6 % с доходов + фиксированные страховые взносы</td></tr>
+        <tr><td>Лимит дохода</td><td>2,4 млн ₽ в календарный год</td><td>Без НДС — пока доход не больше 20 млн ₽ в год</td></tr>
+        <tr><td>Отчётность</td><td>Нет — только чеки</td><td>Декларация раз в год, учёт доходов</td></tr>
+        <tr><td>Взносы на пенсию</td><td>Не обязательны, можно платить добровольно</td><td>Обязательны</td></tr>
+        <tr><td>Ограничения</td><td>Нельзя нанимать сотрудников и работать с текущим или бывшим (менее 2 лет) работодателем</td><td>Почти нет</td></tr>
+      </tbody>
+    </table></div>
+    <p class="micro">Данные на октябрь 2026 года. Перед регистрацией сверьтесь с сайтом ФНС</p>
+    <div class="duo">
+      <div class="dk">
+        <h4>Чеки</h4><div class="micro">для самозанятых</div>
+        <ol>
+          <li><i>01</i>Чек в «Мой налог» — на каждую оплату</li>
+          <li><i>02</i>При переводе на счёт — до 9-го числа следующего месяца, но удобнее сразу</li>
+          <li><i>03</i>Налог платите до 28-го числа следующего месяца</li>
+          <li><i>04</i>Чек не вовремя — штраф 20 % от суммы, минимум 200 ₽</li>
+        </ol>
+      </div>
+      <div class="lt">
+        <h4>Права</h4><div class="micro">и подписание</div>
+        <ol>
+          <li><i>01</i>Договор нужен даже с «хорошими знакомыми»</li>
+          <li><i>02</i>Права переходят к клиенту только после полной оплаты</li>
+          <li><i>03</i>Подписывать можно сканами по почте или в Telegram</li>
+          <li><i>04</i>Переписку ведите с адресов из договора — она пригодится в споре</li>
+        </ol>
+      </div>
+    </div>
+    <div class="note warn"><b>Это шаблон школы, а не консультация юриста.</b> Покажите договор юристу, если проект крупный, клиент — государственная компания или присылает свой договор, а также при передаче прав за рубеж.</div>
+  </div>
+
+  <!-- PART V -->
+  <section class="part" id="p5">
+    <h2>Часть V. <span class="s">Клиент</span></h2>
+    <p>Большинство конфликтов — не про дизайн, а про неназванные ожидания: сколько правок, когда платить, что входит в работу.</p>
+  </section>
+
+  <section class="step">
+    <div><div class="num">08</div><div class="micro">Письма</div></div>
+    <div>
+      <h3>Что написать <span class="s">клиенту</span></h3>
+      <p class="intro">Два письма, которые нужны в каждом проекте: отправка КП и ответ на просьбу сделать то, чего нет в задании.</p>
+    </div>
+  </section>
+  <div class="body">
+    <div class="letter" id="l1">
+      <div class="micro">Отправка КП</div>
+      <div class="txt">Анна, добрый день! Как и договорились, присылаю коммерческое предложение по сайту для студии. Внутри — этапы, сроки и три варианта по объёму работ. Предложение действует до 15 ноября. Давайте созвонимся в четверг на 20 минут и пройдёмся по нему — удобно в 12:00?</div>
+      <button class="copy" type="button" data-copy="l1">Скопировать</button>
+    </div>
+    <div class="letter" id="l2">
+      <div class="micro">Работа вне задания</div>
+      <div class="txt">Добавить страницу с вакансиями можно — это за рамками задания, поэтому оформим допсоглашением: плюс 12 000 ₽ и 4 рабочих дня. Пришлю документ и счёт, после оплаты начну.</div>
+      <button class="copy" type="button" data-copy="l2">Скопировать</button>
+    </div>
+    <ul class="dash">
+      <li>Клиент молчит больше трёх дней после КП — напишите один раз: получил ли он предложение и остались ли вопросы. Не снижайте цену в ответ на молчание.</li>
+      <li>Просите собирать замечания в одном сообщении — так записано в договоре (п. 5.4).</li>
+      <li>Ведите счёт вслух: «Это второй раунд правок из двух, которые входят в стоимость».</li>
+    </ul>
+  </div>
+
+  <section class="step">
+    <div><div class="num">09</div><div class="micro">Сложные ситуации</div></div>
+    <div>
+      <h3>Если что-то <span class="s">пошло не так</span></h3>
+      <p class="intro">Короткие ответы на ситуации, из-за которых новички чаще всего теряют деньги и нервы.</p>
+    </div>
+  </section>
+  <div class="body">
+    <div class="ft">
+      <div class="h micro"><span>Ситуация</span><span class="red">Что делать</span></div>
+      <div class="row"><i>01</i><div class="q">«Начните без предоплаты, мы надёжные»</div><span class="ar" aria-hidden="true">→</span><div class="a">Вежливо отказать: срок по договору идёт с даты предоплаты. Исключение — проверенный постоянный клиент, и то по этапам.</div></div>
+      <div class="row"><i>02</i><div class="q">«Сделайте ещё один вариант» в конце</div><span class="ar" aria-hidden="true">→</span><div class="a">Это новая работа: допсоглашение и счёт на доплату.</div></div>
+      <div class="row"><i>03</i><div class="q">Правка или новая работа?</div><span class="ar" aria-hidden="true">→</span><div class="a">Укладывается в Задание — правка. Новая страница, блок или концепция — допсоглашение.</div></div>
+      <div class="row"><i>04</i><div class="q">Клиент присылает свой договор</div><span class="ar" aria-hidden="true">→</span><div class="a">Сверьте с шаблоном: срок оплаты, переход прав, число правок, штрафы. Спорные пункты обсудите до подписания.</div></div>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <section class="part" id="p6">
+    <h2>Итог. <span class="s">Проверка и файлы</span></h2>
+    <p>Чек-лист перед стартом, вопросы для самопроверки и все шаблоны.</p>
+  </section>
+
+  <section class="step">
+    <div><div class="num">10</div><div class="micro">Чек-лист</div></div>
+    <div>
+      <h3>Перед стартом <span class="s">работы</span></h3>
+      <p class="intro">Отметьте все пять пунктов, прежде чем открывать Figma. Отметки сохраняются в вашем браузере.</p>
+    </div>
+  </section>
+  <div class="body">
+    <ul class="checks">
+      <li><label><input type="checkbox" id="c1"><span>Бриф заполнен, клиент подтвердил задачу письменно</span></label></li>
+      <li><label><input type="checkbox" id="c2"><span>КП отправлено и согласовано</span></label></li>
+      <li><label><input type="checkbox" id="c3"><span>Договор и Задание подписаны, цифры совпадают с КП</span></label></li>
+      <li><label><input type="checkbox" id="c4"><span>Предоплата пришла, чек сформирован и отправлен</span></label></li>
+      <li><label><input type="checkbox" id="c5"><span>Известно, кто согласует и как присылать правки</span></label></li>
+    </ul>
+    <div class="prog" id="prog">0 из 5</div>
+  </div>
+
+  <section class="step">
+    <div><div class="num">11</div><div class="micro">Самопроверка</div></div>
+    <div>
+      <h3>Проверьте <span class="s">себя</span></h3>
+      <p class="intro">Ответьте про себя, потом раскройте ответ.</p>
+    </div>
+  </section>
+  <div class="body">
+    <div>
+      <details class="qa"><summary><i>01</i>С какой даты считается срок по договору?</summary><p>С даты поступления предоплаты на счёт (п. 3.1). Поэтому до неё работу не начинают.</p></details>
+      <details class="qa"><summary><i>02</i>Вы не спросили на брифинге, кто согласует дизайн. Чем это грозит?</summary><p>Финальный макет может увидеть впервые человек, который ничего не согласовывал, и попросить переделать всё.</p></details>
+      <details class="qa"><summary><i>03</i>Зачем в КП три пакета, а не одна цена?</summary><p>Клиент выбирает «какой», а не решает «да или нет».</p></details>
+      <details class="qa"><summary><i>04</i>Клиент просит ещё одну страницу. Правка или новая работа?</summary><p>Новая работа: допсоглашение с новой ценой и сроком, счёт на доплату — и только после оплаты работа.</p></details>
+      <details class="qa"><summary><i>05</i>Когда права на дизайн переходят к клиенту?</summary><p>По акту, после полной оплаты (п. 6.2).</p></details>
+      <details class="qa"><summary><i>06</i>Самозанятый получил 60 000 ₽ от ООО. Сколько налога и до какого числа чек?</summary><p>6 % — 3 600 ₽ (2 400 ₽, пока действует вычет и ставка 4 %). Чек — до 9-го числа следующего месяца, налог — до 28-го.</p></details>
+    </div>
+  </div>
+
+  <section class="step">
+    <div><div class="num">12</div><div class="micro">Файлы</div></div>
+    <div>
+      <h3>Стартер-пак: <span class="s">7 шаблонов</span></h3>
+      <p class="intro">Скачайте архив целиком или нужный файл. Шаблоны открываются в Word, Excel и PowerPoint, а также в Google Документах и Таблицах.</p>
+    </div>
+  </section>
+  <div class="body" id="files">
+    <div class="alltop"><span class="micro">Все файлы · ZIP · 209 КБ</span><a class="dl all" href="files/starter-pack.zip" data-dl="Стартер-пак_дизайнера.zip">Скачать архив ↓</a></div>
+    <div class="files">
+      <div class="file"><span class="ext">PDF</span><div><b>00 · Инструкция «Первый заказ»</b><span>7 страниц: путь заказа, заполнение шаблонов, налоги, общение с клиентом</span></div><a class="dl" href="files/00-guide.pdf" data-dl="00_Инструкция_первый_заказ.pdf">Скачать</a></div>
+      <div class="file"><span class="ext">XLSX</span><div><b>01 · Бриф</b><span>46 вопросов в 6 разделах с пояснениями и примерами ответов</span></div><a class="dl" href="files/01-brief.xlsx" data-dl="01_Бриф.xlsx">Скачать</a></div>
+      <div class="file"><span class="ext">PPTX</span><div><b>02 · Коммерческое предложение</b><span>10 слайдов с подсказками в заметках</span></div><a class="dl" href="files/02-kp.pptx" data-dl="02_Коммерческое_предложение.pptx">Скачать</a></div>
+      <div class="file"><span class="ext">DOCX</span><div><b>03 · Договор и задание</b><span>Договор подряда на создание дизайна + Приложение № 1</span></div><a class="dl" href="files/03-contract.docx" data-dl="03_Договор_и_задание.docx">Скачать</a></div>
+      <div class="file"><span class="ext">DOCX</span><div><b>04 · Акт сдачи-приёмки</b><span>Работы сданы, права перешли</span></div><a class="dl" href="files/04-act.docx" data-dl="04_Акт_сдачи-приёмки.docx">Скачать</a></div>
+      <div class="file"><span class="ext">DOCX</span><div><b>05 · Допсоглашение</b><span>Новый объём, цена и срок + задание на доп. работы</span></div><a class="dl" href="files/05-addendum.docx" data-dl="05_Допсоглашение.docx">Скачать</a></div>
+      <div class="file"><span class="ext">DOCX</span><div><b>06 · Счёт на оплату</b><span>Предоплата, остаток или доплата</span></div><a class="dl" href="files/06-invoice.docx" data-dl="06_Счёт_на_оплату.docx">Скачать</a></div>
+    </div>
+    <p class="micro">Договор, акт, допсоглашение и счёт можно собрать и в генераторе «Документы дизайнера» — данные вводятся один раз</p>
+  </div>
+
+  <footer>
+    <div class="micro">Источники</div>
+    <ol>
+      <li><a href="https://perasperadastranew.github.io/guides/dokumenty/" target="_blank" rel="noopener">Генератор «Документы дизайнера»</a> — тексты договора, акта, допсоглашения и счёта</li>
+      <li>Конструктор брифа из урока «Брифинг» курса MISSION:TO:WEB</li>
+      <li><a href="https://konsol.ru/blog/chto-takoe-npd-stavki-limity-kak-platit-nalog" target="_blank" rel="noopener">Konsol: НПД — ставки, лимиты, сроки</a></li>
+      <li><a href="https://www.v2b.ru/2026/07/06/limit-dohodov-dlya-uplaty-nds-na-usn-sohranyon-na-urovne-20-mln/" target="_blank" rel="noopener">Закон № 228-ФЗ: порог НДС 20 млн ₽ для УСН сохранён</a></li>
+    </ol>
+    <p style="margin-top:24px">Perasperadastra · Стартер-пак дизайнера · 2026</p>
+  </footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var toastEl=document.getElementById('toast'),tt;
+  function toast(m){toastEl.textContent=m;toastEl.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){toastEl.classList.remove('on')},2600)}
+
+  // downloads: inside Claude artifacts use the downloads capability; on a normal site the links download directly
+  var dl=null, inClaude=!!(window.claude&&window.claude.use);
+  if(inClaude){window.claude.use('downloads').then(function(d){dl=d}).catch(function(){})}
+  document.querySelectorAll('a[data-dl]').forEach(function(a){ if(!inClaude) a.setAttribute('download',a.dataset.dl) });
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[data-dl]'); if(!a||!inClaude) return;
+    e.preventDefault();
+    if(!dl){toast('Скачивание в этом окне недоступно');return}
+    fetch(a.getAttribute('href')).then(function(r){if(!r.ok)throw new Error('fetch');return r.blob()})
+      .then(function(b){return dl.save({filename:a.dataset.dl,data:b})})
+      .then(function(){toast('Файл сохранён')})
+      .catch(function(err){ if(err&&err.code==='declined')return; if(err&&err.code==='rate_limited'){toast('Подождите секунду и попробуйте снова');return} toast('Не получилось скачать файл') });
+  });
+
+  // copy buttons
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.querySelector('#'+b.dataset.copy+' .txt'), t=el.textContent.trim();
+      function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);toast('Текст выделен — скопируйте его')}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){toast('Скопировано')},sel)}else sel();
+    });
+  });
+
+  // checklist (per-viewer)
+  var boxes=[].slice.call(document.querySelectorAll('.checks input')), KEY='sp-checks';
+  try{var saved=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach(function(b){b.checked=saved.indexOf(b.id)>-1})}catch(e){}
+  function upd(){var n=boxes.filter(function(b){return b.checked}).length;document.getElementById('prog').textContent=n+' из 5'+(n===5?' — можно начинать':'');
+    try{localStorage.setItem(KEY,JSON.stringify(boxes.filter(function(b){return b.checked}).map(function(b){return b.id})))}catch(e){}}
+  boxes.forEach(function(b){b.addEventListener('change',upd)}); upd();
+
+  // rail highlight
+  var links=[].slice.call(document.querySelectorAll('#rail a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){links.forEach(function(l){l.classList.toggle('on',l.getAttribute('href')==='#'+en.target.id)})}})},{rootMargin:'-20% 0px -70% 0px'});
+    ['p1','p2','p3','p4','p5','p6'].forEach(function(id){var s=document.getElementById(id);if(s)io.observe(s)});
+  }
+})();
+</script>
+
+</body>
+</html>
