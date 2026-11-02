@@ -41,6 +41,7 @@ def check(path):
     for q in L.get('quiz',[]):
         if sum(1 for o in q['opts'] if o['ok'])!=1: err.append('quiz: ровно один верный: '+q['q'])
     need={'task','check','pairs','prompt'}
+    if str(L.get('id','')).startswith('l0_'): need={'pairs'}  # модуль «Старт» в новом формате: без задания, чек-листа и готовых промптов
     miss=need-types
     if miss: err.append('нет обязательных блоков: '+', '.join(sorted(miss)))
     if len(L.get('quiz',[]))<4: err.append('в тесте меньше 4 вопросов')
