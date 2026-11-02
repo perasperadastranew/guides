@@ -11,7 +11,9 @@
 import os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-TITLES = {1: 'Тема и концепция', 2: 'Смысловой прототип', 3: 'Стайлборд', 4: 'Вайрфрейм', 5: 'Дизайн', 6: 'Кейс и публикация'}
+# этапы регламента 3 и 4 — один урок ZenClass «Вайрфрейм»: обе страницы показывают его целиком
+TITLES = {1: 'Концепция', 2: 'Смысловой прототип', 3: 'Вайрфрейм', 4: 'Вайрфрейм', 5: 'Дизайн', 6: 'Кейс'}
+LESSON = {1: 1, 2: 2, 3: 3, 4: 3, 5: 4, 6: 5}
 
 src = open(os.path.join(HERE, 'index.html'), encoding='utf-8').read()
 assert 'window.LEND_STAGE' in src, 'в index.html нет поддержки window.LEND_STAGE'
@@ -22,9 +24,9 @@ for n, title in TITLES.items():
     auto_fit = ("<script>try{if(window.self!==window.top&&!/(fit|embed)=/.test(location.search))"
                 "history.replaceState(null,'',location.pathname+(location.search?location.search+'&':'?')+'fit=1'+location.hash)}catch(e){}</script>")
     page = src.replace('<head>', f'<head><script>window.LEND_STAGE="{n}"</script>' + auto_fit, 1)
-    page = re.sub(r'<title>[^<]*</title>', f'<title>Этап {n}. {title} — Лендинг с нейросетями</title>', page)
+    page = re.sub(r'<title>[^<]*</title>', f'<title>Урок {LESSON[n]}. {title} — Лендинг с нейросетями</title>', page)
     # страница лежит на уровень глубже: поправить относительные ссылки на методички
-    page = page.replace('href="../../mtw-metodichki/', 'href="../../../mtw-metodichki/')
+    page = page.replace('href="../../', 'href="../../../')
     out = os.path.join(HERE, f'etap-{n}')
     os.makedirs(out, exist_ok=True)
     with open(os.path.join(out, 'index.html'), 'w', encoding='utf-8') as f:
