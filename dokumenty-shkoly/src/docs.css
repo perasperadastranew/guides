@@ -1,0 +1,23 @@
+@page{size:A4;margin:20mm 15mm 20mm 25mm;@bottom-center{content:counter(page);font:10pt "Times New Roman","Liberation Serif",serif}}
+@page:first{@bottom-center{content:none}}
+body{font:12pt/1.35 "Times New Roman","Liberation Serif",serif;color:#000;margin:0}
+p{margin:0 0 6pt;text-align:justify}
+h1{font-size:14pt;text-align:center;margin:0 0 4pt}
+h2{font-size:13pt;margin:14pt 0 6pt;break-after:avoid}
+h3{font-size:12pt;margin:10pt 0 4pt;break-after:avoid}
+ul,ol{margin:0 0 6pt;padding-left:22pt}li{margin:0 0 3pt;text-align:justify}
+table{width:100%;border-collapse:collapse;margin:4pt 0 8pt;font-size:10.5pt;break-inside:auto}
+th,td{border:.6pt solid #000;padding:3pt 5pt;vertical-align:top;text-align:left;font-weight:normal}
+thead tr:first-child th{background:#e7e7e7;font-weight:bold}
+tr{break-inside:avoid}
+.c{text-align:center}.r{text-align:right}.b{font-weight:bold}.small{font-size:10pt}
+.head{text-align:center;margin-bottom:16pt}.head p{text-align:center;margin:0}
+.approve{width:250pt;margin:24pt 0 0 auto;text-align:right}.approve p{text-align:right;margin:0}
+.signline{position:relative;display:inline-block}
+.sig{position:absolute;width:72pt;height:auto;left:4pt;top:-22pt}
+.title{margin:70pt 0 30pt;text-align:center}.title p{text-align:center;margin:0;font-weight:bold;font-size:14pt}
+.title .big{font-size:18pt;margin-top:8pt}
+.city{text-align:center;margin-top:120pt}
+.pb{break-before:page}
+.row{display:flex;justify-content:space-between;margin:6pt 0 18pt}
+.sign{margin-top:36pt}
