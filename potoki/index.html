@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<script>if(window.parent!==window)document.documentElement.classList.add("embed")</script>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Трекер потоков</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010; --accent-wash:rgba(235,117,64,.14);
+  --good:#34c759; --cool:#4a90d9; --done:#333332;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+  --label:260px;
+}
+*{box-sizing:border-box}
+html.embed{color-scheme:normal;background:transparent}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:16px;line-height:1.45;padding:16px 16px 64px}
+html.embed body{background:transparent;padding:0}
+.wrap{max-width:1560px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+h1{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);letter-spacing:-.02em;font-size:clamp(36px,5.6vw,68px);line-height:.98;text-wrap:balance}
+h1 em{font-style:normal;color:var(--dim)}
+h2{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);letter-spacing:-.02em;font-size:clamp(24px,3vw,36px);line-height:1.05}
+h3{margin:0;font-family:var(--display);font-weight:500;color:var(--ink);font-size:18px;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+
+header,section{background:var(--panel);border-radius:14px;padding:22px 26px 28px;display:flex;flex-direction:column;gap:20px;min-width:0;position:relative}
+header{padding-bottom:34px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:24px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+.lead{font-size:clamp(18px,2.2vw,24px);line-height:1.25;color:var(--dim);max-width:44ch;letter-spacing:-.01em}
+.head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 24px}
+.head p{max-width:64ch;font-size:15px}
+.sec-n{display:flex;align-items:baseline;gap:14px}
+.sec-n .mono{color:var(--accent)}
+
+.now{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+.now div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:18px;justify-content:space-between;min-height:108px}
+.now div.on{background:var(--accent);border-color:var(--accent)}
+.now div.on *{color:var(--accent-ink)!important}
+.now b{color:var(--ink);font:400 24px/1.1 var(--display);letter-spacing:-.02em;display:block}
+.now small{display:block;color:var(--dim);font-size:14px;margin-top:5px}
+
+/* шкала */
+.scroll{overflow-x:auto;padding-bottom:4px}
+.chart{position:relative;min-width:calc(var(--label) + 620px)}
+.months{display:grid;margin-left:var(--label);border-bottom:1px solid var(--stroke);padding-bottom:6px}
+.months div{font-family:var(--display);font-size:15px;color:var(--ink);padding-left:6px;border-left:1px solid var(--stroke);white-space:nowrap;overflow:hidden}
+.months div:first-child{border-left:0}
+.rows{position:relative;display:flex;flex-direction:column;gap:3px;padding-top:8px}
+.grid{position:absolute;left:var(--label);right:0;top:0;bottom:0;pointer-events:none}
+.gl{position:absolute;top:0;bottom:0;width:1px;background:var(--stroke)}
+.today{position:absolute;top:-30px;bottom:0;width:2px;margin-left:-1px;background:var(--accent);z-index:3}
+.today i{position:absolute;top:-26px;left:50%;transform:translateX(-50%);white-space:nowrap;font-style:normal;font:500 10px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:5px;padding:5px 7px}
+.row{display:grid;grid-template-columns:var(--label) minmax(0,1fr);align-items:center;min-height:42px;position:relative;z-index:2}
+.row .lab{padding:4px 14px 4px 0;min-width:0}
+.row .lab b{display:block;color:var(--ink);font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .lab span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-top:2px}
+.track{position:relative;height:30px}
+.bar{position:absolute;top:5px;height:20px;border-radius:5px;background:var(--done);border:1px solid var(--stroke);min-width:6px}
+.bar.live{background:var(--accent);border-color:var(--accent)}
+.bar.soon{background:transparent;border-style:dashed;border-color:var(--dim)}
+.bar.open{background:#2b2b2a;border-color:#3a3a39}
+.dot{position:absolute;top:13px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:rgba(255,255,255,.45);z-index:2}
+.bar.live .dot{background:rgba(16,16,16,.5)}
+.cap{position:absolute;top:7px;white-space:nowrap;font:500 11px/16px var(--body);color:var(--ink);padding-left:8px;z-index:2}
+.bar.live .cap{color:var(--accent-ink)}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;padding-top:14px;border-top:1px solid var(--stroke)}
+.legend span{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.sw{width:22px;height:11px;border-radius:3px;background:var(--done);border:1px solid var(--stroke);flex:none}
+.sw.live{background:var(--accent);border-color:var(--accent)}
+.sw.soon{background:transparent;border-style:dashed;border-color:var(--dim)}
+.sw.open{background:#2b2b2a;border-color:#3a3a39}
+
+/* карточки потоков */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px}
+.fl{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.fl.live{border-color:var(--accent)}
+.fl .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.fl .top .mono{color:var(--dim)}
+.badge{font:500 10px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;border-radius:5px;padding:5px 7px;background:var(--stroke);color:var(--dim);white-space:nowrap}
+.badge.live{background:var(--accent);color:var(--accent-ink)}
+.badge.soon{background:transparent;border:1px solid var(--dim);color:var(--dim)}
+.fl h3 span{color:var(--faint);font-weight:400}
+.fl .st{display:flex;flex-direction:column;gap:3px}
+.fl .st b{color:var(--ink);font:400 19px/1.2 var(--display);letter-spacing:-.01em}
+.fl .st small{font-size:14px;color:var(--dim)}
+.prog{height:5px;border-radius:3px;background:var(--stroke);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent)}
+.fl .meta{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:14px;color:var(--dim);margin-top:auto;padding-top:10px;border-top:1px solid var(--stroke)}
+.fl .meta b{color:var(--ink);font-weight:500}
+.fl details summary{cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);list-style:none}
+.fl details summary::-webkit-details-marker{display:none}
+.fl details summary:hover{color:var(--ink)}
+.fl details ol{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:5px;font-size:14px}
+.fl details li{display:flex;gap:10px;align-items:baseline;color:var(--dim)}
+.fl details li i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--stroke);transform:translateY(-2px)}
+.fl details li.past i{background:var(--dim)}
+.fl details li.cur{color:var(--ink)}
+.fl details li.cur i{background:var(--accent)}
+.fl details li.none{color:var(--faint)}
+.fl details li span{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--faint);white-space:nowrap;padding-left:10px}
+.fl details li.none span{color:#8a4a2a}
+
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 12px 9px 0;border-bottom:1px solid var(--stroke);white-space:nowrap}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:400}
+td b{color:var(--ink);font-weight:500}
+td.num{text-align:right;padding-right:0;font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px}
+.issues{display:flex;flex-direction:column;gap:8px}
+.issue{background:var(--card);border:1px solid var(--stroke);border-left:2px solid var(--accent);border-radius:10px;padding:13px 16px;display:flex;flex-direction:column;gap:4px}
+.issue b{color:var(--ink);font-weight:500;font-size:14px}
+.issue p{font-size:14px}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--stroke);background:var(--card);color:var(--ink);text-decoration:none;border-radius:10px;padding:10px 14px;font-size:15px}
+.links a:hover{border-color:var(--dim)}
+.foot{font-size:14px;color:var(--faint)}
+@media (max-width:760px){
+  header,section{padding:18px 16px 22px}
+  :root{--label:150px}
+  .row .lab b{font-size:13px}
+  .cap{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="corner"><span>Perasperadastra
+ZenClass</span><span id="c2"> </span></div>
+    <h1>Трекер потоков <em id="h1date"></em></h1>
+    <p class="lead">Все потоки школы на одной шкале: кто где находится прямо сейчас, что открылось последним и что откроется дальше.</p>
+    <div class="now" id="now"></div>
+  </header>
+
+  <section>
+    <div class="head">
+      <div class="sec-n"><span class="mono">01</span><h2>Общая шкала</h2></div>
+      <p>Полоса — от первой до последней открытой ступени потока. Точки — моменты открытия ступеней. Вертикальная линия — сегодня.</p>
+    </div>
+    <div class="scroll"><div class="chart" id="chart"></div></div>
+    <div class="legend">
+      <span><i class="sw live"></i>идёт</span>
+      <span><i class="sw soon"></i>скоро старт</span>
+      <span><i class="sw open"></i>весь контент открыт</span>
+      <span><i class="sw"></i>завершён</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <div class="sec-n"><span class="mono">02</span><h2>Где каждый поток</h2></div>
+      <p>Текущая ступень — последняя, которая успела открыться. Раскрой «все ступени», чтобы увидеть весь график потока.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section>
+    <div class="two">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="sec-n"><span class="mono">03</span><h2>Без расписания</h2></div>
+        <p style="font-size:15px">Курсы, где всё открыто сразу и поток один.</p>
+        <table id="selfp"></table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="sec-n"><span class="mono">04</span><h2 id="arcH">Архив</h2></div>
+        <p style="font-size:15px" id="arcP"></p>
+        <table id="arc"></table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <div class="sec-n"><span class="mono">05</span><h2>Что стоит поправить</h2></div>
+      <p>Замечено при выгрузке расписаний из ZenClass.</p>
+    </div>
+    <div class="issues" id="issues"></div>
+    <div class="links">
+      <a href="../mtw-calendar/">Календарь Mission to Web</a>
+      <a href="../mtm-calendar/">Календарь Mission to Motion</a>
+      <a href="../ai-calendar/">Календарь Mission to AI</a>
+      <a href="../mtw-diary/">Дневник обучения</a>
+    </div>
+    <p class="foot" id="foot"></p>
+  </section>
+</div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+var MS=["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"],
+    MF=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"],
+    DAY=864e5, TZ=3*36e5, NOW=Date.now();
+function P(s){return s?Date.parse(s+":00Z"):null}
+function M(t){return new Date(t+TZ)}                       // московское время
+function f(t){var d=M(t);return d.getUTCDate()+" "+MS[d.getUTCMonth()]}
+function fy(t){var d=M(t);return d.getUTCDate()+" "+MS[d.getUTCMonth()]+" "+d.getUTCFullYear()}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function plural(n,a,b,c){n=Math.abs(n)%100;var m=n%10;return n>10&&n<20?c:m===1?a:m>1&&m<5?b:c}
+
+// ---- собираем потоки
+var F=[];
+ZC.courses.forEach(function(c){
+  c.flows.forEach(function(fl){
+    var st=fl.stages.map(function(s){return {n:s[0],t:P(s[1]),k:s[2],side:/эфир/i.test(s[0])}});
+    var dated=st.filter(function(s){return s.t&&!s.side}).sort(function(a,b){return a.t-b.t});
+    if(!dated.length)return;
+    var first=dated[0].t, last=dated[dated.length-1].t;
+    var status = NOW<first ? "soon" : NOW<=last ? "live" : NOW<=last+90*DAY ? "open" : "done";
+    var opened=dated.filter(function(s){return s.t<=NOW});
+    F.push({course:c.name,short:c.short,flow:fl.name,students:fl.students,
+      stages:st,dated:dated,first:first,last:last,status:status,
+      cur:opened.length?opened[opened.length-1]:null,
+      next:dated.filter(function(s){return s.t>NOW})[0]||null,
+      opened:opened.length,total:dated.length,
+      empty:st.filter(function(s){return !s.t}).length});
+  });
+});
+var order={live:0,soon:1,open:2,done:3};
+F.sort(function(a,b){return order[a.status]-order[b.status] || b.first-a.first});
+
+// ---- шапка
+var live=F.filter(function(x){return x.status==="live"}),
+    openF=F.filter(function(x){return x.status==="open"}),
+    soonF=F.filter(function(x){return x.status==="soon"});
+var liveStud=live.reduce(function(s,x){return s+x.students},0),
+    workStud=liveStud+openF.reduce(function(s,x){return s+x.students},0);
+var nx=F.filter(function(x){return x.next}).sort(function(a,b){return a.next.t-b.next.t})[0];
+var totalStud=ZC.courses.reduce(function(s,c){return s+c.flows.reduce(function(q,fl){return q+fl.students},0)},0)
+  + ZC.archive.flows.reduce(function(s,a){return s+a[1]},0)
+  + ZC.selfpaced.reduce(function(s,a){return s+a[1]},0);
+document.getElementById("h1date").textContent="на "+fy(NOW);
+document.getElementById("c2").textContent=F.length+" потоков с расписанием\n"+totalStud.toLocaleString("ru")+" студентов всего";
+var nh='<div class="on"><span class="mono">Идут сейчас</span><span><b>'+live.length+" "+plural(live.length,"поток","потока","потоков")+'</b><small>'+live.map(function(x){return x.short}).join(", ")+'</small></span></div>';
+nh+='<div><span class="mono">Учатся прямо сейчас</span><span><b>'+workStud+'</b><small>'+liveStud+" на идущих, "+(workStud-liveStud)+" дорабатывают</small></span></div>";
+if(nx){var dl=Math.ceil((nx.next.t-NOW)/DAY);
+  nh+='<div><span class="mono">Ближайшее открытие · через '+dl+" "+plural(dl,"день","дня","дней")+'</span><span><b>'+esc(nx.next.n)+'</b><small>'+esc(nx.short+" · "+nx.flow)+", "+f(nx.next.t)+'</small></span></div>';}
+nh+='<div><span class="mono">Контент открыт полностью</span><span><b>'+openF.length+" "+plural(openF.length,"поток","потока","потоков")+'</b><small>'+(openF.length?openF.map(function(x){return x.short+" · "+x.flow}).join(", "):"—")+'</small></span></div>';
+document.getElementById("now").innerHTML=nh;
+
+// ---- шкала
+var show=F.filter(function(x){return x.status!=="done"});
+if(!show.length)show=F.slice(0,6);
+var lo=Math.min.apply(null,show.map(function(x){return x.first})), hi=Math.max.apply(null,show.map(function(x){return x.last}));
+lo=Math.min(lo,NOW); hi=Math.max(hi,NOW);
+var a=M(lo), b=M(hi);
+var m0=Date.UTC(a.getUTCFullYear(),a.getUTCMonth(),1)-TZ, m1=Date.UTC(b.getUTCFullYear(),b.getUTCMonth()+1,1)-TZ;
+var span=m1-m0, months=[], t=m0;
+while(t<m1){var d=M(t);months.push({t:t,n:MF[d.getUTCMonth()]});t=Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,1)-TZ}
+function pc(x){return (x-m0)/span*100}
+var H='<div class="months" style="grid-template-columns:repeat('+months.length+',minmax(0,1fr))">'+months.map(function(m){return "<div>"+m.n+"</div>"}).join("")+"</div>";
+H+='<div class="rows"><div class="grid">'+months.map(function(m,i){return i?'<i class="gl" style="left:'+pc(m.t)+'%"></i>':""}).join("")+
+   '<div class="today" style="left:'+pc(NOW)+'%"><i>сегодня</i></div></div>';
+show.forEach(function(x){
+  var l=pc(x.first), w=Math.max(pc(x.last)-l,.6);
+  var dots=x.dated.map(function(s){return '<i class="dot" style="left:'+((s.t-x.first)/(x.last-x.first||1)*100)+'%"></i>'}).join("");
+  var cap=x.cur?'<span class="cap" style="left:'+(l+w)+'%">'+esc(x.cur.n)+"</span>":"";
+  H+='<div class="row"><div class="lab"><b>'+esc(x.flow)+'</b><span>'+esc(x.course)+" · "+x.students+'</span></div><div class="track">'+
+     '<div class="bar '+x.status+'" style="left:'+l+"%;width:"+w+'%">'+dots+"</div>"+cap+"</div></div>";
+});
+H+="</div>";
+document.getElementById("chart").innerHTML=H;
+
+// ---- карточки
+var BD={live:["Идёт","live"],soon:["Скоро старт","soon"],open:["Контент открыт",""],done:["Завершён",""]};
+document.getElementById("cards").innerHTML=F.map(function(x){
+  var b=BD[x.status];
+  var st=x.cur?'<b>'+esc(x.cur.n)+'</b><small>открылась '+f(x.cur.t)+'</small>':'<b>Ещё не начался</b><small>старт '+f(x.first)+'</small>';
+  var nextTxt=x.next?"дальше <b>"+esc(x.next.n)+"</b>, "+f(x.next.t):(x.empty?"дальше ничего не запланировано":"все ступени открыты");
+  var list=x.stages.slice().sort(function(p,q){return (p.t||9e15)-(q.t||9e15)}).map(function(s){
+    var cl=!s.t?"none":s.t>NOW?"":(x.cur&&s.t===x.cur.t?"cur":"past");
+    return '<li class="'+cl+'"><i></i>'+esc(s.n)+"<span>"+(s.t?f(s.t):"без даты")+(s.k?"":" · пусто")+"</span></li>";
+  }).join("");
+  return '<div class="fl '+x.status+'"><div class="top"><div><h3>'+esc(x.flow)+'</h3><span class="mono">'+esc(x.course)+'</span></div><span class="badge '+b[1]+'">'+b[0]+'</span></div>'+
+    '<div class="st">'+st+'</div>'+
+    '<div class="prog"><i style="width:'+Math.round(x.opened/x.total*100)+'%"></i></div>'+
+    '<p style="font-size:14px">Ступень '+x.opened+" из "+x.total+(x.empty?" · "+x.empty+" без даты":"")+". "+nextTxt+'</p>'+
+    '<details><summary>Все ступени ↓</summary><ol>'+list+'</ol></details>'+
+    '<div class="meta"><span><b>'+x.students+'</b> '+plural(x.students,"студент","студента","студентов")+'</span><span>'+f(x.first)+" → "+fy(x.last)+'</span></div></div>';
+}).join("");
+
+// ---- таблицы
+document.getElementById("selfp").innerHTML="<tr><th>Курс</th><th class='num'>Студентов</th></tr>"+
+  ZC.selfpaced.map(function(r){return "<tr><td><b>"+esc(r[0])+"</b></td><td class='num'>"+r[1]+"</td></tr>"}).join("");
+document.getElementById("arcH").textContent=ZC.archive.name;
+document.getElementById("arcP").textContent="Курс закрыт, "+ZC.archive.flows.length+" потоков, "+ZC.archive.enrolled.toLocaleString("ru")+" студентов за всё время.";
+document.getElementById("arc").innerHTML="<tr><th>Поток</th><th>Старт</th><th class='num'>Студентов</th></tr>"+
+  ZC.archive.flows.map(function(r){var d=new Date(r[2]+"T12:00:00Z");
+    return "<tr><td><b>"+esc(r[0])+"</b></td><td>"+d.getUTCDate()+" "+MS[d.getUTCMonth()]+" "+d.getUTCFullYear()+"</td><td class='num'>"+r[1]+"</td></tr>"}).join("");
+document.getElementById("issues").innerHTML=ZC.issues.map(function(i){
+  return '<div class="issue"><b>'+esc(i[0])+"</b><p>"+esc(i[1])+"</p></div>"}).join("");
+document.getElementById("foot").textContent="Данные выгружены из ZenClass "+fy(Date.parse(ZC.generated))+". Состояние потоков пересчитывается при каждом открытии страницы, даты ступеней — на момент выгрузки.";
+})();
+</script>
+</body>
+</html>
