@@ -692,12 +692,31 @@ figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06e
     var stars=[];for(var i=0;i<260;i++)stars.push([(rnd()-.5)*9000,(rnd()-.5)*2600,rnd()*2+.6]);
     var dust=[];for(i=0;i<14;i++)dust.push([(rnd()-.5)*2400,(rnd()-.5)*500,rnd()*10+5]);
     var L=[
-      {n:"Звёзды",dz:2000,col:"#8a90a8",draw:function(s,X,Y){c.fillStyle="#cfd5e6";stars.forEach(function(p){var x=X(p[0]),y=Y(p[1]);if(x<-5||x>W+5)return;c.globalAlpha*=1;c.fillRect(x,y,p[2]*Math.max(s,.5),p[2]*Math.max(s,.5))})}},
-      {n:"Земля",dz:900,col:"#5b7bd5",draw:function(s,X,Y){var x=X(-420),y=Y(-80),r=230*s;c.fillStyle="#2c4c8c";c.beginPath();c.arc(x,y,r,0,7);c.fill();c.fillStyle="#3f7a5a";c.beginPath();c.ellipse(x-r*.3,y-r*.2,r*.35,r*.22,.5,0,7);c.fill();c.beginPath();c.ellipse(x+r*.35,y+r*.3,r*.25,r*.15,-.3,0,7);c.fill();c.strokeStyle="rgba(150,190,255,.5)";c.lineWidth=4*s;c.beginPath();c.arc(x,y,r+3*s,0,7);c.stroke()}},
-      {n:"Поверхность",dz:250,col:"#9a8f80",draw:function(s,X,Y){c.fillStyle="#3a3631";c.beginPath();c.ellipse(X(0),Y(520),2600*s,330*s,0,0,7);c.fill();c.fillStyle="#2c2925";[[-700,330,60],[-100,300,40],[520,340,70],[1200,320,50]].forEach(function(k){c.beginPath();c.ellipse(X(k[0]),Y(k[1]),k[2]*s,k[2]*.3*s,0,0,7);c.fill()})}},
-      {n:"Тарелка, космонавт",dz:0,col:ACC,draw:function(s,X,Y){var x=X(180),y=Y(-30);c.fillStyle="#d9d4ca";c.beginPath();c.ellipse(x,y,70*s,18*s,0,0,7);c.fill();c.fillStyle=ACC;c.beginPath();c.ellipse(x,y-12*s,30*s,22*s,0,Math.PI,0);c.fill();var ax=X(-120),ay=Y(170);c.fillStyle="#eee";c.beginPath();c.arc(ax,ay-38*s,15*s,0,7);c.fill();c.fillRect(ax-14*s,ay-24*s,28*s,34*s);c.fillRect(ax-12*s,ay+10*s,9*s,22*s);c.fillRect(ax+3*s,ay+10*s,9*s,22*s);c.fillStyle="#222";c.beginPath();c.arc(ax+3*s,ay-38*s,8*s,0,7);c.fill()}},
-      {n:"Камни",dz:-250,col:"#c9c2b5",draw:function(s,X,Y){c.fillStyle="#17161a";[[-560,120,90],[300,140,70],[820,110,110],[-1300,130,100]].forEach(function(k){var x=X(k[0]),y=Y(k[1]),r=k[2]*s;c.beginPath();c.moveTo(x-r,y+r);c.lineTo(x-r*.6,y-r*.4);c.lineTo(x,y-r*.7);c.lineTo(x+r*.7,y-r*.2);c.lineTo(x+r,y+r);c.fill()})}},
-      {n:"Частицы",dz:-420,col:"#ffffff",draw:function(s,X,Y){c.fillStyle="rgba(255,255,255,.55)";dust.forEach(function(p){c.beginPath();c.arc(X(p[0]),Y(p[1]),p[2]*s*.6,0,7);c.fill()})}}
+      {n:"Звёзды",dz:2000,col:"#8a90a8",draw:function(s,X,Y){
+        var nx=X(600),ny=Y(-260),ng=c.createRadialGradient(nx,ny,0,nx,ny,520*s);ng.addColorStop(0,"rgba(180,90,220,.35)");ng.addColorStop(.5,"rgba(90,60,180,.16)");ng.addColorStop(1,"rgba(40,30,90,0)");c.fillStyle=ng;c.fillRect(0,0,W,H);
+        var ng2=c.createRadialGradient(X(-1400),Y(-100),0,X(-1400),Y(-100),420*s);ng2.addColorStop(0,"rgba(60,170,220,.22)");ng2.addColorStop(1,"rgba(60,170,220,0)");c.fillStyle=ng2;c.fillRect(0,0,W,H);
+        stars.forEach(function(p,i){var x=X(p[0]),y=Y(p[1]);if(x<-5||x>W+5)return;var r=p[2]*Math.max(s,.5);c.fillStyle=i%9===0?"#ffd9a8":i%7===0?"#a8d8ff":"#eef1ff";c.beginPath();c.arc(x,y,r*.7,0,7);c.fill()})}},
+      {n:"Земля",dz:900,col:"#5b7bd5",draw:function(s,X,Y){var x=X(-420),y=Y(-80),r=230*s;
+        var gl=c.createRadialGradient(x,y,r*.9,x,y,r*1.25);gl.addColorStop(0,"rgba(90,200,255,.45)");gl.addColorStop(1,"rgba(90,200,255,0)");c.fillStyle=gl;c.beginPath();c.arc(x,y,r*1.25,0,7);c.fill();
+        var g=c.createRadialGradient(x-r*.4,y-r*.4,r*.1,x,y,r);g.addColorStop(0,"#5fb3ff");g.addColorStop(.6,"#2563c9");g.addColorStop(1,"#0f2a66");c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,7);c.fill();
+        c.save();c.beginPath();c.arc(x,y,r,0,7);c.clip();c.fillStyle="#4cc38a";
+        c.beginPath();c.ellipse(x-r*.3,y-r*.25,r*.38,r*.2,.5,0,7);c.fill();c.beginPath();c.ellipse(x+r*.38,y+r*.25,r*.28,r*.14,-.3,0,7);c.fill();c.beginPath();c.ellipse(x-r*.05,y+r*.55,r*.2,r*.08,0,0,7);c.fill();
+        c.fillStyle="rgba(255,255,255,.75)";c.beginPath();c.ellipse(x+r*.1,y-r*.55,r*.45,r*.06,-.2,0,7);c.fill();c.beginPath();c.ellipse(x-r*.4,y+r*.15,r*.3,r*.05,.3,0,7);c.fill();
+        var sh=c.createLinearGradient(x-r,y-r,x+r,y+r);sh.addColorStop(.45,"rgba(5,8,25,0)");sh.addColorStop(1,"rgba(5,8,25,.65)");c.fillStyle=sh;c.fillRect(x-r,y-r,2*r,2*r);c.restore();
+        var px2=X(700),py2=Y(-170),pr=60*s;var pg=c.createRadialGradient(px2-pr*.4,py2-pr*.4,pr*.1,px2,py2,pr);pg.addColorStop(0,"#ffd29a");pg.addColorStop(1,"#d2571f");c.fillStyle=pg;c.beginPath();c.arc(px2,py2,pr,0,7);c.fill();c.strokeStyle="rgba(255,214,160,.8)";c.lineWidth=5*s;c.beginPath();c.ellipse(px2,py2,pr*1.7,pr*.35,-.3,0,7);c.stroke()}},
+      {n:"Поверхность",dz:250,col:"#9a8f80",draw:function(s,X,Y){var g=c.createLinearGradient(0,Y(190),0,Y(520));g.addColorStop(0,"#6e6a86");g.addColorStop(1,"#2a2840");c.fillStyle=g;c.beginPath();c.ellipse(X(0),Y(520),2600*s,330*s,0,0,7);c.fill();
+        [[-700,330,60],[-100,300,40],[520,340,70],[1200,320,50],[-1500,320,55]].forEach(function(k){c.fillStyle="#3b3856";c.beginPath();c.ellipse(X(k[0]),Y(k[1]),k[2]*s,k[2]*.3*s,0,0,7);c.fill();c.strokeStyle="rgba(200,195,230,.35)";c.lineWidth=2*s;c.beginPath();c.ellipse(X(k[0]),Y(k[1])+1*s,k[2]*s,k[2]*.3*s,0,0,Math.PI);c.stroke()})}},
+      {n:"Тарелка, космонавт",dz:0,col:ACC,draw:function(s,X,Y){var x=X(180),y=Y(-30);
+        var bm=c.createLinearGradient(0,y,0,y+200*s);bm.addColorStop(0,"rgba(255,220,120,.45)");bm.addColorStop(1,"rgba(255,220,120,0)");c.fillStyle=bm;c.beginPath();c.moveTo(x-22*s,y+10*s);c.lineTo(x+22*s,y+10*s);c.lineTo(x+80*s,y+210*s);c.lineTo(x-80*s,y+210*s);c.fill();
+        var dg=c.createRadialGradient(x-8*s,y-26*s,2,x,y-14*s,30*s);dg.addColorStop(0,"#e6fbff");dg.addColorStop(1,"#3fb6d3");c.fillStyle=dg;c.beginPath();c.ellipse(x,y-10*s,30*s,26*s,0,Math.PI,0);c.fill();
+        var bg=c.createLinearGradient(0,y-18*s,0,y+18*s);bg.addColorStop(0,"#f1f3fa");bg.addColorStop(1,"#7a7f99");c.fillStyle=bg;c.beginPath();c.ellipse(x,y,74*s,18*s,0,0,7);c.fill();
+        c.fillStyle="#ffb15c";for(var k=-2;k<=2;k++){c.beginPath();c.arc(x+k*24*s,y+3*s,4*s,0,7);c.fill()}
+        var ax=X(-120),ay=Y(170);c.fillStyle="#f4f4f6";c.beginPath();c.arc(ax,ay-38*s,16*s,0,7);c.fill();c.beginPath();c.roundRect?c.roundRect(ax-15*s,ay-24*s,30*s,36*s,8*s):c.rect(ax-15*s,ay-24*s,30*s,36*s);c.fill();c.fillRect(ax-13*s,ay+10*s,10*s,22*s);c.fillRect(ax+3*s,ay+10*s,10*s,22*s);
+        c.fillStyle=ACC;c.fillRect(ax-15*s,ay-6*s,30*s,5*s);c.fillRect(ax-24*s,ay-22*s,10*s,26*s);
+        var vg=c.createLinearGradient(ax-6*s,ay-46*s,ax+12*s,ay-30*s);vg.addColorStop(0,"#ffcf7a");vg.addColorStop(1,"#7a3cff");c.fillStyle=vg;c.beginPath();c.ellipse(ax+4*s,ay-38*s,10*s,8*s,0,0,7);c.fill();c.fillStyle="rgba(255,255,255,.8)";c.beginPath();c.arc(ax,ay-41*s,2.5*s,0,7);c.fill();
+        var fx=X(-30),fy=Y(200);c.strokeStyle="#cfd2de";c.lineWidth=3*s;c.beginPath();c.moveTo(fx,fy);c.lineTo(fx,fy-80*s);c.stroke();c.fillStyle=ACC;c.beginPath();c.moveTo(fx,fy-80*s);c.lineTo(fx+40*s,fy-70*s);c.lineTo(fx,fy-58*s);c.fill()}},
+      {n:"Камни",dz:-250,col:"#c9c2b5",draw:function(s,X,Y){[[-560,120,90],[300,140,70],[820,110,110],[-1300,130,100]].forEach(function(k){var x=X(k[0]),y=Y(k[1]),r=k[2]*s;c.fillStyle="#1b1a2c";c.beginPath();c.moveTo(x-r,y+r);c.lineTo(x-r*.6,y-r*.4);c.lineTo(x,y-r*.7);c.lineTo(x+r*.7,y-r*.2);c.lineTo(x+r,y+r);c.fill();c.strokeStyle="rgba(255,170,110,.55)";c.lineWidth=2.5*s;c.beginPath();c.moveTo(x,y-r*.7);c.lineTo(x+r*.7,y-r*.2);c.lineTo(x+r,y+r);c.stroke()})}},
+      {n:"Частицы",dz:-420,col:"#ffffff",draw:function(s,X,Y){dust.forEach(function(p,i){c.fillStyle=i%2?"rgba(255,210,160,.45)":"rgba(200,220,255,.4)";c.beginPath();c.arc(X(p[0]),Y(p[1]),p[2]*s*.6,0,7);c.fill()})}}
     ];
     var Zof=function(){return st.lens*28};
     var drawLayers=function(camX,alpha){
@@ -710,7 +729,7 @@ figure.pic figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06e
       c.globalAlpha=1;
     };
     var draw=function(){
-      var g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"#05060b");g.addColorStop(1,"#141826");c.fillStyle=g;c.fillRect(0,0,W,H);
+      var g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"#0a0820");g.addColorStop(1,"#1d1640");c.fillStyle=g;c.fillRect(0,0,W,H);
       var cam=st.cx*6,pr=st.prev*6;
       if(st.mb&&Math.abs(cam-pr)>.5){var n=7,a=1-Math.pow(.05,1/n);for(var k=0;k<n;k++)drawLayers(pr+(cam-pr)*(k/(n-1)),a)}
       else drawLayers(cam,1);

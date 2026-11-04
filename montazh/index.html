@@ -685,21 +685,36 @@ PREMIERE</span></div>
     var N=["Детальный","Крупный","Средний","Общий","Дальний"];
     // world: character at x=0, head center y=-170 (height ~ 360 from feet y=0 to top y=-360)
     var F=[[18,-175,60],[0,-170,150],[0,-150,330],[0,-180,460],[0,-200,1500]]; // cx,cy,frame height
+    var rr=function(x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r);c.fill()};
     var world=function(){
-      c.fillStyle="#efe6d6";c.fillRect(-3000,-3000,6000,6000);
-      c.fillStyle="#e0d3bc";c.fillRect(-3000,0,6000,3000);
-      c.fillStyle="#d5c6ac";[[-900,-260,180,260],[-600,-180,120,180],[700,-300,200,300],[1000,-200,140,200],[-1400,-340,220,340]].forEach(function(b){c.fillRect(b[0],b[1],b[2],b[3])});
-      c.fillStyle=ACC;c.beginPath();c.arc(-1100,-520,60,0,7);c.fill();
-      // body
-      c.fillStyle=INK;c.beginPath();c.roundRect(-55,-290,110,170,30);c.fill();
-      c.fillRect(-45,-130,38,130);c.fillRect(7,-130,38,130);
-      c.beginPath();c.roundRect(-80,-280,24,120,12);c.fill();c.beginPath();c.roundRect(56,-280,24,120,12);c.fill();
-      // head
-      c.fillStyle="#e9b48f";c.beginPath();c.arc(0,-340,48,0,7);c.fill();
-      c.fillStyle=INK;c.beginPath();c.arc(-16,-345,6,0,7);c.arc(18,-345,6,0,7);c.fill();
-      c.fillStyle="#fff";c.beginPath();c.arc(20,-347,2,0,7);c.fill();
-      c.strokeStyle=INK;c.lineWidth=3;c.beginPath();c.arc(0,-325,12,.2,Math.PI-.2);c.stroke();
-      c.fillStyle=ACC;c.beginPath();c.arc(0,-392,30,Math.PI,0);c.fill();c.fillRect(-30,-394,70,8);
+      var g=c.createLinearGradient(0,-900,0,0);g.addColorStop(0,"#bfe0f2");g.addColorStop(1,"#fbe9d4");c.fillStyle=g;c.fillRect(-3000,-3000,6000,3000);
+      c.fillStyle="#ffd28a";c.beginPath();c.arc(-1100,-560,70,0,7);c.fill();
+      c.fillStyle="rgba(255,255,255,.85)";[[-300,-620,70],[500,-700,90],[1300,-560,60]].forEach(function(k){c.beginPath();c.ellipse(k[0],k[1],k[2]*1.6,k[2]*.5,0,0,7);c.fill()});
+      [[-1500,-380,240,380,"#9ab7c9"],[-1180,-280,170,280,"#c7a68c"],[-900,-330,200,330,"#8fa9a0"],[-640,-220,150,220,"#e3b58f"],[620,-340,210,340,"#a7b9d1"],[900,-250,170,250,"#d79b84"],[1150,-420,240,420,"#94aab6"]].forEach(function(b){c.fillStyle=b[4];c.fillRect(b[0],b[1],b[2],b[3]);c.fillStyle="rgba(255,255,255,.55)";for(var yy=b[1]+30;yy<-40;yy+=55)for(var xx=b[0]+24;xx<b[0]+b[2]-30;xx+=48)c.fillRect(xx,yy,22,28)});
+      c.fillStyle="#6b9a6a";c.beginPath();c.arc(-380,-170,80,0,7);c.arc(-330,-210,60,0,7);c.fill();c.fillStyle="#7a5a44";c.fillRect(-392,-120,24,120);
+      c.fillStyle="#d9c7ad";c.fillRect(-3000,0,6000,3000);c.fillStyle="#cdb99b";c.fillRect(-3000,0,6000,14);
+      c.fillStyle="rgba(0,0,0,.12)";c.beginPath();c.ellipse(0,4,90,14,0,0,7);c.fill();
+      // legs + sneakers
+      c.fillStyle="#2f3e5c";rr(-46,-140,40,132,12);rr(6,-140,40,132,12);
+      c.fillStyle="#ffffff";rr(-58,-18,54,20,9);rr(4,-18,54,20,9);c.fillStyle=ACC;c.fillRect(-58,-4,54,5);c.fillRect(4,-4,54,5);
+      // hoodie
+      c.fillStyle=ACC;rr(-62,-300,124,178,36);
+      rr(-90,-288,30,128,15);rr(60,-288,30,128,15);
+      c.fillStyle="#e9b48f";c.beginPath();c.arc(-75,-156,15,0,7);c.arc(75,-156,15,0,7);c.fill();
+      c.fillStyle="#d4612f";rr(-34,-200,68,34,12);c.strokeStyle="#fff";c.lineWidth=4;c.beginPath();c.moveTo(-12,-296);c.lineTo(-14,-250);c.moveTo(12,-296);c.lineTo(14,-250);c.stroke();
+      // neck + head
+      c.fillStyle="#e2a87f";c.fillRect(-14,-312,28,20);
+      c.fillStyle="#efbd98";c.beginPath();c.arc(0,-345,50,0,7);c.fill();
+      c.beginPath();c.arc(-49,-342,9,0,7);c.arc(49,-342,9,0,7);c.fill();
+      // hair
+      c.fillStyle="#3a2a22";c.beginPath();c.arc(0,-360,50,Math.PI*1.02,Math.PI*1.98);c.fill();c.beginPath();c.ellipse(-26,-382,26,14,-.4,0,7);c.ellipse(16,-388,30,14,.3,0,7);c.fill();
+      // face
+      c.fillStyle=INK;c.beginPath();c.arc(-17,-345,6.5,0,7);c.arc(18,-345,6.5,0,7);c.fill();
+      c.fillStyle="#fff";c.beginPath();c.arc(-15,-347,2.2,0,7);c.arc(20,-347,2.2,0,7);c.fill();
+      c.strokeStyle="#3a2a22";c.lineWidth=4;c.lineCap="round";c.beginPath();c.moveTo(-27,-361);c.lineTo(-9,-363);c.moveTo(9,-363);c.lineTo(27,-361);c.stroke();
+      c.fillStyle="rgba(240,120,110,.45)";c.beginPath();c.ellipse(-30,-327,9,5,0,0,7);c.ellipse(31,-327,9,5,0,0,7);c.fill();
+      c.strokeStyle="#c98a66";c.lineWidth=3;c.beginPath();c.moveTo(1,-340);c.lineTo(-3,-330);c.lineTo(3,-329);c.stroke();
+      c.strokeStyle=INK;c.lineWidth=3.5;c.beginPath();c.arc(0,-322,11,.25,Math.PI-.25);c.stroke();c.lineCap="butt";
     };
     F[0]=[18,-346,46];F[1]=[0,-345,150];F[2]=[0,-260,300];F[3]=[0,-200,470];F[4]=[0,-250,1500];
     var cur=F[3].slice(),a=1,b=3,raf=null,phase=0,t0=0;
