@@ -37,6 +37,8 @@ def data():
     names=[z['name'] for z in mods]
     ST=[('Старт','Профессия, стек, процесс, агенты, сервисы и оплата','Старт'),('Изображение','Nano Banana и GPT, съёмка с моделью, графика и key visual','Nano Banana и GPT'),('Видео','Концепция видео и препродакшн','Концепция видео'),('Проекты и кейс','Пять проектов курса','Проекты курса')]
     m['stages']=[{'n':i+1,'name':a,'what':b,'mod':names.index(c)} for i,(a,b,c) in enumerate(ST)]
+    SM={'Старт':1,'Сервисы и оплата':1,'Проекты курса':4,'Nano Banana и GPT':2,'Съёмка с моделью':2,'Графика и key visual':2,'Концепция видео':3,'Препродакшн':3}
+    for z in mods: z['stage']=SM[z['name']]
     m['modules']=mods; m['lessons']=L; m['titles']=titles; m['short']={}
     return m
 build.data=data
@@ -51,7 +53,7 @@ g=sub("function t(s){return typo(esc(s)).replace(/&lt;(\\/?)(b|i)&gt;/g,'<$1$2>'
 g=sub("var secs=[{id:'gde',nav:'Где мы',title:'Где мы сейчас',html:where(L)}];","var secs=[];",g)
 g=sub(r'<nav aria-label="Разделы">\'\+secs\.map.*?\'</nav>',"",g,True)
 g=sub(r'<a href="#/">← Все методички</a><span class="eyebrow">.*?</span></div>','<a href="#/">← К списку статей</a></div>',g,True)
-g=sub("corner('МОДУЛЬ «'+m.name.toUpperCase()+'»','МЕТОДИЧКА К УРОКУ')","corner('МОДУЛЬ «'+m.name.toUpperCase()+'»','СТАТЬЯ')",g)
+g=sub("corner('МОДУЛЬ «'+m.name.toUpperCase()+'»','МЕТОДИЧКА К УРОКУ')","corner('МОДУЛЬ «'+m.name.toUpperCase()+'»','БЛОК '+m.stage+' · '+D.stages[m.stage-1].name.toUpperCase())",g)
 g=sub("prev=ORDER[k-1], next=ORDER[k+1];","prev=ORDER.slice(0,k).filter(function(x){return D.lessons[x]}).pop(), next=ORDER.slice(k+1).filter(function(x){return D.lessons[x]})[0];",g)
 g=sub("← Предыдущий урок","← Предыдущая статья",g); g=sub("Следующий урок →","Следующая статья →",g)
 g=sub("← Оглавление<b>Все методички</b>","← К списку статей<b>Mission to AI</b>",g)
@@ -60,7 +62,7 @@ HEAD="var h='<header>'+corner('PERASPERADASTRA','MISSION TO AI')+'<span class=\"
 g=sub(r"var h='<header>'\+corner\('PERASPERADASTRA','МЕТОДИЧКИ К УРОКАМ'\).*?</header>';",HEAD.replace('\\','\\\\'),g,True)
 PLATE="h+='<section>'+corner('КАРТА КУРСА')+'<h2>Четыре блока курса</h2><p><b>Нейросеть делает варианты, решения принимаешь ты.</b> Курс идёт от рабочего места к кадру, от кадра к ролику и от ролика к кейсу. Нажми на блок, чтобы перейти к его модулям.</p><div class=\"stagebar\">'+D.stages.map(function(x){return '<a class=\"stg\" href=\"#/\" data-go=\"mod-'+x.mod+'\"><i>блок '+x.n+'</i><b>'+t(x.name)+'</b><small>'+t(x.what)+'</small><em>к модулям →</em></a>'}).join('')+'</div></section>';"
 g=sub(r"h\+='<section>'\+corner\('КАРТА КУРСА'\).*?</section>';",PLATE.replace('\\','\\\\'),g,True)
-g=sub("h+='<section>'+corner(m.code||('МОДУЛЬ '+('0'+mi).slice(-2)),'БЛОК '+m.stage)","h+='<section id=\"mod-'+mi+'\">'+corner('МОДУЛЬ '+"+json.dumps(NUMS)+"[mi],'СТАТЬИ ПО ПРОЕКТАМ')",g)
+g=sub("h+='<section>'+corner(m.code||('МОДУЛЬ '+('0'+mi).slice(-2)),'БЛОК '+m.stage)","h+='<section id=\"mod-'+mi+'\">'+corner(("+json.dumps(NUMS)+"[mi].length<=2?'МОДУЛЬ '+"+json.dumps(NUMS)+"[mi]:m.name.toUpperCase()),'БЛОК '+m.stage+' · '+D.stages[m.stage-1].name.toUpperCase())",g)
 #"corner('МОДУЛЬ '+"+json.dumps(NUMS)+"[mi],'СТАТЬИ ПО ПРОЕКТАМ')",g)
 g=sub("document.title='Методички курса'","app.querySelectorAll('[data-go]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var el=document.getElementById(a.getAttribute('data-go'));if(el)el.scrollIntoView({behavior:'smooth',block:'start'})})});document.title='Mission to AI'",g)
 g=g.replace('<title>Методички курса Mission to AI</title>','<title>Mission to AI</title>',1)
