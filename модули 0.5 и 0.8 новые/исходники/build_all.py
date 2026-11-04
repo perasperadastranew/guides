@@ -35,9 +35,9 @@ def data():
                 v=json.load(open(path,encoding='utf-8')); v['num']=n; v['sections']=[z for z in v['sections'] if z['id']!='zadanie']; v['lead']=re.sub(r'\s*После статьи у тебя будет.*$','',v['lead'],flags=re.S); v=json.loads(json.dumps(v,ensure_ascii=False).replace('Для задания это не страшно','Для учебной работы это не страшно').replace(' на кадр в задании.',' на кадр.')); L[id_]=v; titles[id_]=v['title']
             else: titles[id_]='Маскот'
     names=[z['name'] for z in mods]
-    ST=[('Старт','Профессия, стек, процесс, агенты, сервисы и оплата','Старт'),('Изображение','Nano Banana и GPT, съёмка с моделью, графика и key visual','Nano Banana и GPT'),('Видео','Концепция видео и препродакшн','Концепция видео'),('Проекты и кейс','Пять проектов курса','Проекты курса')]
-    m['stages']=[{'n':i+1,'name':a,'what':b,'mod':names.index(c)} for i,(a,b,c) in enumerate(ST)]
-    SM={'Старт':1,'Сервисы и оплата':1,'Проекты курса':4,'Nano Banana и GPT':2,'Съёмка с моделью':2,'Графика и key visual':2,'Концепция видео':3,'Препродакшн':3}
+    ST=[('Старт','Профессия, стек, процесс, агенты, сервисы, оплата и пять проектов курса','Старт'),('Изображение','Nano Banana и GPT, съёмка с моделью, графика и key visual','Nano Banana и GPT'),('Видео','Концепция видео и препродакшн','Концепция видео'),('Кейс и деньги','Упаковка кейса, продвижение, цены','')]
+    m['stages']=[{'n':i+1,'name':a,'what':b,'mod':(names.index(c) if c else -1)} for i,(a,b,c) in enumerate(ST)]
+    SM={'Старт':1,'Сервисы и оплата':1,'Проекты курса':1,'Nano Banana и GPT':2,'Съёмка с моделью':2,'Графика и key visual':2,'Концепция видео':3,'Препродакшн':3}
     for z in mods: z['stage']=SM[z['name']]
     m['modules']=mods; m['lessons']=L; m['titles']=titles; m['short']={}
     return m
@@ -60,7 +60,7 @@ g=sub("← Оглавление<b>Все методички</b>","← К спи�
 g=sub("Оглавление →<b>Все методички</b>","К списку статей →<b>Mission to AI</b>",g)
 HEAD="var h='<header>'+corner('PERASPERADASTRA','MISSION TO AI')+'<span class=\"kicker\">Методички курса</span><h1 class=\"brand\">Mission<br>to AI</h1><p class=\"lead\"><b>По одной статье на тему, сервис и проект.</b> Главное за минуту, пайплайн по шагам, пример, вопросы и тест.</p><div style=\"display:flex;gap:8px;flex-wrap:wrap\"><span class=\"save\">Сохрани, чтобы не потерять</span></div></header>';"
 g=sub(r"var h='<header>'\+corner\('PERASPERADASTRA','МЕТОДИЧКИ К УРОКАМ'\).*?</header>';",HEAD.replace('\\','\\\\'),g,True)
-PLATE="h+='<section>'+corner('КАРТА КУРСА')+'<h2>Четыре блока курса</h2><p><b>Нейросеть делает варианты, решения принимаешь ты.</b> Курс идёт от рабочего места к кадру, от кадра к ролику и от ролика к кейсу. Нажми на блок, чтобы перейти к его модулям.</p><div class=\"stagebar\">'+D.stages.map(function(x){return '<a class=\"stg\" href=\"#/\" data-go=\"mod-'+x.mod+'\"><i>блок '+x.n+'</i><b>'+t(x.name)+'</b><small>'+t(x.what)+'</small><em>к модулям →</em></a>'}).join('')+'</div></section>';"
+PLATE="h+='<section>'+corner('КАРТА КУРСА')+'<h2>Четыре блока курса</h2><p><b>Нейросеть делает варианты, решения принимаешь ты.</b> Курс идёт от рабочего места к кадру, от кадра к ролику и от ролика к кейсу. Нажми на блок, чтобы перейти к его модулям.</p><div class=\"stagebar\">'+D.stages.map(function(x){if(x.mod<0)return '<div><i>блок '+x.n+'</i><b>'+t(x.name)+'</b><small>'+t(x.what)+'</small><small>готовится</small></div>';return '<a class=\"stg\" href=\"#/\" data-go=\"mod-'+x.mod+'\"><i>блок '+x.n+'</i><b>'+t(x.name)+'</b><small>'+t(x.what)+'</small><em>к модулям →</em></a>'}).join('')+'</div></section>';"
 g=sub(r"h\+='<section>'\+corner\('КАРТА КУРСА'\).*?</section>';",PLATE.replace('\\','\\\\'),g,True)
 g=sub("h+='<section>'+corner(m.code||('МОДУЛЬ '+('0'+mi).slice(-2)),'БЛОК '+m.stage)","h+='<section id=\"mod-'+mi+'\">'+corner(("+json.dumps(NUMS)+"[mi].length<=2?'МОДУЛЬ '+"+json.dumps(NUMS)+"[mi]:m.name.toUpperCase()),'БЛОК '+m.stage+' · '+D.stages[m.stage-1].name.toUpperCase())",g)
 #"corner('МОДУЛЬ '+"+json.dumps(NUMS)+"[mi],'СТАТЬИ ПО ПРОЕКТАМ')",g)
