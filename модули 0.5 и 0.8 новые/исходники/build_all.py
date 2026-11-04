@@ -11,6 +11,8 @@ MODS=[ # (имя модуля в meta, номер, about, [(id, путь json, n
    [('pay_budget',K+'pay/pay_budget_new.json','01'),('pay_agg',K+'pay/pay_agg_new.json','02'),('pay_video',K+'pay/pay_video_new.json','03'),('pay_text',K+'pay/pay_text_new.json','04'),('pay_mj',K+'pay/pay_mj_new.json','05')]),
  ('Проекты курса','ПРОЕКТЫ','<b>Пять проектов, из которых собирается портфолио.</b> Для каждого: что это за работа, кто её заказывает, какие бывают темы и из каких статей проект собирается.',
    [('pr_photo',K+'pr/pr_photo_new.json','01'),('pr_product',K+'pr/pr_product_new.json','02'),('pr_illu',K+'pr/pr_illu_new.json','03'),('pr_motion',K+'pr/pr_motion_new.json','04'),('pr_video',K+'pr/pr_video_new.json','05')]),
+ ('Фундамент визуала','01','<b>Видеть, почему кадр работает, до того как писать промпт.</b> Иерархия, композиция, ракурсы, свет и цвет, сюжет кадра. По одной статье на тему: теория, пример, вопросы и тест.',
+   [('l1_1',K+'f1/l1_1_new.json','01'),('l1_2',K+'f1/l1_2_new.json','02'),('l1_3',K+'f1/l1_3_new.json','03'),('l1_4',K+'f1/l1_4_new.json','04'),('l1_5',K+'f1/l1_5_new.json','05')]),
  ('Nano Banana и финализация','03','<b>Править и собирать кадр, а не генерировать заново.</b> Три статьи: как работают Nano Banana и GPT, правки и исправления, сборка референсов.',
    [('m3_nano',K+'m3/m3_1.json','01'),('m3_edits',K+'m3/m3_2.json','02'),('m3_refs',K+'m3/m3_3.json','03')]),
  ('Съёмка с моделью','05','<b>Два типа проекта на кадры с людьми и продуктом.</b> У каждого своя статья: пайплайн по шагам, примеры, вопросы и тест.',
@@ -30,14 +32,15 @@ def data():
         x=[z for z in m['modules'] if z['name']==name][0]
         x['lessons']=[i[0] for i in items]; x['about']=about; mods.append(x)
         if num=='03': x['name']='Nano Banana и GPT'; x['short']='Nano Banana и GPT'
+        if num=='01': x['name']='Фундамент дизайна'; x['short']='Фундамент дизайна'
         for id_,path,n in items:
             if path:
-                v=json.load(open(path,encoding='utf-8')); v['num']=n; v['sections']=[z for z in v['sections'] if z['id']!='zadanie']; v['lead']=re.sub(r'\s*После статьи у тебя будет.*$','',v['lead'],flags=re.S); v=json.loads(json.dumps(v,ensure_ascii=False).replace('Для задания это не страшно','Для учебной работы это не страшно').replace(' на кадр в задании.',' на кадр.')); L[id_]=v; titles[id_]=v['title']
+                v=json.load(open(path,encoding='utf-8')); v['num']=n; v['sections']=[z for z in v['sections'] if z['id']!='zadanie']; v['lead']=re.sub(r'\s*После (?:статьи|урока) у тебя будет.*$','',v['lead'],flags=re.S); v=json.loads(json.dumps(v,ensure_ascii=False).replace('Для задания это не страшно','Для учебной работы это не страшно').replace(' на кадр в задании.',' на кадр.')); L[id_]=v; titles[id_]=v['title']
             else: titles[id_]='Маскот'
     names=[z['name'] for z in mods]
-    ST=[('Старт','Профессия, стек, процесс, агенты, сервисы, оплата и пять проектов курса','Старт'),('Изображение','Nano Banana и GPT, съёмка с моделью, графика и key visual','Nano Banana и GPT'),('Видео','Концепция видео и препродакшн','Концепция видео'),('Кейс и деньги','Упаковка кейса, продвижение, цены','')]
+    ST=[('Старт','Профессия, стек, процесс, агенты, сервисы, оплата и пять проектов курса','Старт'),('Изображение','Фундамент дизайна, Nano Banana и GPT, съёмка с моделью, графика и key visual','Фундамент дизайна'),('Видео','Концепция видео и препродакшн','Концепция видео'),('Кейс и деньги','Упаковка кейса, продвижение, цены','')]
     m['stages']=[{'n':i+1,'name':a,'what':b,'mod':(names.index(c) if c else -1)} for i,(a,b,c) in enumerate(ST)]
-    SM={'Старт':1,'Сервисы и оплата':1,'Проекты курса':1,'Nano Banana и GPT':2,'Съёмка с моделью':2,'Графика и key visual':2,'Концепция видео':3,'Препродакшн':3}
+    SM={'Старт':1,'Сервисы и оплата':1,'Проекты курса':1,'Фундамент дизайна':2,'Nano Banana и GPT':2,'Съёмка с моделью':2,'Графика и key visual':2,'Концепция видео':3,'Препродакшн':3}
     for z in mods: z['stage']=SM[z['name']]
     m['modules']=mods; m['lessons']=L; m['titles']=titles; m['short']={}
     return m
