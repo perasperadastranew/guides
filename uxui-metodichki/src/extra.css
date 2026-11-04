@@ -520,3 +520,4 @@ section>h2+h3,section>h2+p+h3{margin-top:12px;padding-top:0;border-top:0}
 /* настоящие экраны в кейсе */
 .casereal{margin:4px 0 18px}.casereal .shots{grid-template-columns:repeat(var(--n,2),minmax(0,1fr));max-width:calc(var(--n,2) * 214px);margin:0}
 @media (max-width:760px){.casereal .shots{grid-template-columns:1fr;max-width:240px}}
+.task .box .tcap{margin:22px 0 8px}.task .box .scroll{margin-bottom:6px}
