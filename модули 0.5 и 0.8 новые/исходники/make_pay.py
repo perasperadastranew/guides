@@ -118,8 +118,11 @@ ART={'0.1':'«Профессия AI-креатора»','0.2':'«Карта не
 
 def postpay(fid,d):
     S={x['id']:x for x in d['sections']}
-    if fid in('pay_mj','pay_budget'):
+    if fid in('pay_mj','pay_budget','pay_agg','pay_video'):
         d['sections']=[x for x in d['sections'] if x['id'] not in('primery','ai')]
+    if fid=='pay_video':
+        pp=S['glavnoe']['blocks'][1]
+        pp['text']=pp['text'].replace(' До этого хватает бесплатных кредитов, чтобы посмотреть интерфейс.','')
     if fid=='pay_mj':
         g=S['glavnoe']['blocks'][0]['nodes']
         g[3]={'b':'Проверить','small':'подписка и настройки'}; g[4]={'b':'Первая генерация','small':'одна-две картинки'}
