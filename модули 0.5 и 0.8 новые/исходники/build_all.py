@@ -19,6 +19,8 @@ MODS=[ # (имя модуля в meta, номер, about, [(id, путь json, n
    [('m7_base',K+'m7/m7_base.json','01'),('m7_product',K+'m7/m7_product.json','02'),('m7_ad',K+'m7/m7_ad.json','03'),('m7_creative',K+'m7/m7_creative.json','04')]),
  ('Препродакшн','08','<b>Три статьи препродакшна.</b> Персонаж, локация и раскадровка: всё, что готовится до первой генерации видео.',
    [('l8_1',K+'m8/l8_1.json','01'),('l8_2',K+'m8/l8_2.json','02'),('l8_3',K+'m8/l8_3.json','03')]),
+ ('Проекты курса','ПРОЕКТЫ','<b>Пять проектов, из которых собирается портфолио.</b> Для каждого: что это за работа, кто её заказывает, какие бывают темы и из каких статей проект собирается.',
+   [('pr_photo',K+'pr/pr_photo_new.json','01'),('pr_product',K+'pr/pr_product_new.json','02'),('pr_illu',K+'pr/pr_illu_new.json','03'),('pr_motion',K+'pr/pr_motion_new.json','04'),('pr_video',K+'pr/pr_video_new.json','05')]),
 ]
 NUMS=[m[1] for m in MODS]
 orig=build.data
