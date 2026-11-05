@@ -1,0 +1,514 @@
+{
+ "id": "l9_1",
+ "num": "9.1",
+ "title": "Seedance: структура промпта и простая сцена",
+ "card": "Собрать промпт Seedance из 8 блоков и получить шот, который встаёт в монтаж, за 4–8 генераций",
+ "lead": "<b>Модель ломает не размах движения, а число событий: один шот — одно действие и одно движение камеры.</b> После урока у тебя будет промпт Seedance из 8 блоков на один шот твоей раскадровки, две его версии и лучший дубль с понятным финалом под склейку.",
+ "stage": {
+  "input": "Раскадровка ролика из модуля 8 (строки с крупностью, ракурсом, движением и переходом), стиль-якорь проекта, стартовые кадры и карточка персонажа. Если своего ещё нет — кадр «корабли пришли» из ролика «Додо».",
+  "doing": "Разбираем, когда брать Seedance, режем шот до одного события, собираем промпт по 8 блокам, делаем 4 генерации, находим повторяющийся дефект и правим одну переменную.",
+  "output": "Простая сцена: промпт v1 и v2 по 8 блокам, 6–8 дублей одного шота, лучший дубль и строка «что поменял и почему».",
+  "next": "Урок 9.2: шоты с ударом и контактом уходят в Kling, а этот же шот станет контрольным для сравнения. В уроке 9.3 дубли попадут в буфер кадра и лог промптов.",
+  "agent": "Агент «Промптер видео» переводит строку раскадровки в 8 блоков на английском и считает события в шоте. За тобой — какое событие оставить, каким будет финал, какую одну переменную править и какой дубль идёт в монтаж."
+ },
+ "sections": [
+  {
+   "id": "glavnoe",
+   "nav": "Главное",
+   "title": "Главное за минуту",
+   "blocks": [
+    {
+     "type": "formula",
+     "parts": [
+      {"b": "<b>Одна строка</b> раскадровки", "small": "один шот, один переход"},
+      {"b": "→ <b>одно событие</b>", "small": "остальное — в соседние шоты"},
+      {"b": "→ <b>8 блоков</b> промпта", "small": "на английском, прозой"},
+      {"b": "→ <b>4 генерации</b> без правок", "small": "смотрим, что повторяется"},
+      {"b": "→ <b>одна правка</b>", "small": "ещё 2–4 дубля и выбор"}
+     ],
+     "example": "«Корабли пришли» → корабли подходят и встают на якорь, камера стоит → промпт по 8 блокам, финал HOLD → 4 дубля: в трёх кипит штриховка неба → в STYLE дописали «небо — плоская заливка» → 3 дубля, берём шестой.",
+     "copy": "Шот: … → Одно событие: … → Движение камеры: … → Финал (HOLD / EXIT / HANDOFF): … → Дефект в 3 из 4: … → Правка одной переменной: …"
+    },
+    {
+     "type": "p",
+     "text": "Ты загружаешь в Seedance хороший кадр додо на берегу и пишешь: «птица видит корабли, моряки высаживаются, она подходит к ним, эпично». Через минуту получаешь пять секунд цирка: корабли вырастают из воды, у птицы вторая голова, моряки слиплись в одну массу, штриховка кипит. Кадр был хороший. Сломал его промпт: четыре события на пять секунд, ни слова камере и ни слова о том, чем шот кончается."
+    },
+    {
+     "type": "p",
+     "text": "Птица может пролететь через весь кадр — это одно событие, модель справится. А поворот головы, машущие моряки, якорь и бегущие облака — четыре догадки, которые спорят друг с другом. Поэтому сокращаем события, а не амплитуду. Если в кадре нечему двигаться — двигаем камеру. Если движется герой — камера стоит или сопровождает его."
+    },
+    {
+     "type": "note",
+     "title": "Бытовое сравнение",
+     "text": "Seedance — оператор, которому дали пять секунд плёнки. Скажешь ему «сними, как все бегают» — он будет дёргаться между людьми и не снимет никого. Скажешь «стой на месте, снимай, как корабли встают на якорь, в конце держи кадр» — получишь план, который можно ставить в монтаж."
+    }
+   ]
+  },
+  {
+   "id": "kogda",
+   "nav": "Когда Seedance",
+   "title": "Когда брать Seedance, а когда нет",
+   "intro": "Seedance — режиссёр атмосферы: мультишот внутри одной генерации, диалог и звук, длинная режиссёрская проза. Kling — каскадёр: удар, контакт, резкая физика, первый и последний кадр (урок 9.2).",
+   "blocks": [
+    {
+     "type": "table",
+     "head": ["Бери Seedance", "Отдай другому инструменту"],
+     "rows": [
+      ["Атмосферный шот: туман, волны, ветер, меняется свет", "Удар, падение, всплеск, спорт, контакт тел — сильнее Kling"],
+      ["Несколько склеек в одной сцене (CUT 1 / CUT 2)", "Длинный эпизод больше 3–4 битов — режь на отдельные генерации"],
+      ["Реплика персонажа с синхроном губ, звук сцены", "Узнаваемые персонажи, бренды, лица знаменитостей — фильтр отклонит, обходить нельзя"],
+      ["Медленная камера по миру: наезд, облёт, проезд", "Толпа, рукопожатие, передача предмета из рук в руки — риск в любой модели, решай склейкой"]
+     ]
+    },
+    {
+     "type": "sub",
+     "text": "Длина шота: 5 / 8 / 10 / 15 секунд"
+    },
+    {
+     "type": "table",
+     "head": ["Длина", "Сколько событий", "Для чего", "Формат"],
+     "rows": [
+      ["5 с", "1 действие + 1 движение камеры", "Большинство шотов ролика, одна фраза текста", "Один план, 2 бита по секундам"],
+      ["8 с", "Действие + реакция или пауза", "Фраза с воздухом: герой делает — замирает", "Один план, 2–3 бита"],
+      ["10 с", "2 шота одной сцены", "Общий → крупный в одной локации", "CUT 1 / CUT 2"],
+      ["15 с", "3–4 шота одной сцены", "Мини-сцена, диалог, рекламная связка", "CUT 1–4, один location-референс"]
+     ]
+    },
+    {
+     "type": "p",
+     "text": "Набор длительностей и их цена зависят от версии модели и площадки, логика выбора от этого не меняется. Генерируй шот длиннее, чем он будет в монтаже: 5 с под 3 с на таймлайне. Запас в начале и в конце — это «ручки» для склейки. Ускорения и замедления делаем в монтаже, а не в промпте."
+    },
+    {
+     "type": "note",
+     "title": "Таймкоды — отличие моделей",
+     "text": "В Seedance биты по секундам («0–2 s — …, 2–5 s — …») и CUT 1 / CUT 2 работают. В Kling пишем цепочкой без секунд: «slowly…, then…». Перенесёшь привычку из одной модели в другую — получишь худший результат."
+    }
+   ]
+  },
+  {
+   "id": "bloki",
+   "nav": "8 блоков",
+   "title": "Промпт из 8 блоков",
+   "intro": "Промпт пишется на английском, блоками в фиксированном порядке. Внутри блока — 1–3 предложения режиссёрской прозы, не список тегов. Весь промпт — 4–8 содержательных предложений плюс якорь стиля и локи.",
+   "blocks": [
+    {
+     "type": "table",
+     "head": ["Блок", "Что пишем", "Как звучит"],
+     "rows": [
+      ["REFERENCES", "Какой @image за что отвечает. У каждого референса одна роль", "@image1 — start frame and strict identity reference: preserve exact silhouette, proportions and colors."],
+      ["STYLE", "Стиль-якорь проекта слово в слово + что в стиле неподвижно", "[стиль-якорь]. Linework and paper texture stay fixed; only the painted elements move."],
+      ["SCENE (beats)", "Планы кадра (передний / средний / дальний) и биты по секундам или CUT", "Foreground: … Midground: … Background: … 0–3 s — … 3–5 s — …"],
+      ["CAMERA", "Одно движение: высота, FOV в градусах, скорость, мотивация", "Static 84° wide at ground level, locked off."],
+      ["ACTION & PHYSICS", "Действие через видимое: масса, инерция, ветер, вода. Скорость числом", "Moves at 4 km/h, feathers ruffle in a steady 15 km/h breeze."],
+      ["ENDING", "Чем кончается шот — под конкретную склейку", "The frame settles and holds still; only the surf keeps moving."],
+      ["AUDIO", "Только нужный звук или реплика", "No music. Low steady surf, wind over sand."],
+      ["TECH & LOCKS", "Длительность, режим склеек, позитивные фиксаторы. Всегда в конце", "Duration 5 s. One continuous shot. Stable face throughout. Consistent lighting throughout."]
+     ]
+    },
+    {
+     "type": "sub",
+     "text": "ENDING: три финала под склейку"
+    },
+    {
+     "type": "p",
+     "text": "Шот, который обрывается на полушаге, не склеивается. Поэтому финал решаем заранее, по колонке «Переход» в раскадровке. В последнем шоте ролика камера останавливается, но одна деталь продолжает двигаться — иначе стоп-кадр читается как зависание."
+    },
+    {
+     "type": "terms",
+     "items": [
+      ["HOLD", "Герой замирает, кадр стоит, живёт одна деталь: дым, пыль, прибой, трава. Под склейку по свету или затемнение. «The ships come to rest at anchor, only the surf keeps moving»."],
+      ["EXIT", "Герой уходит из кадра, пустой кадр держится секунду. Под склейку по движению. «The bird leaves the frame to the right, the empty beach holds for 1 s»."],
+      ["HANDOFF", "Камера упирается в предмет, цвет или свет, который заполняет кадр. Под склейку по форме или цвету. «The camera settles on the amber glow, which fills the frame»."]
+     ]
+    },
+    {
+     "type": "sub",
+     "text": "Пиши видимое: физика вместо эмоций"
+    },
+    {
+     "type": "p",
+     "text": "Модель не знает, что такое «тревожно», но знает, как выглядит замершая птица со вжатыми перьями. Скорость — в километрах в час, туман — в процентах, высоту гиганта — в росте человека. Формулировки только позитивные: «no morphing» притягивает морфинг, «stable silhouette throughout» его держит."
+    },
+    {
+     "type": "table",
+     "head": ["Было", "Стало"],
+     "rows": [
+      ["tense moment", "the bird freezes mid-step, head turned toward the sea, feathers flattened by the wind"],
+      ["fast", "glides at 40 km/h"],
+      ["light fog", "fog density 30%, haze visible at 15 meters"],
+      ["huge ship", "the hull stands as tall as six people stacked head to toe"],
+      ["no morphing, no extra birds", "stable silhouette throughout, one bird throughout"]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "kamera",
+   "nav": "Камера",
+   "title": "Камера и референсы",
+   "blocks": [
+    {
+     "type": "table",
+     "head": ["По-русски", "В промпт", "Когда"],
+     "rows": [
+      ["Статика", "static, locked off", "Движется герой или стихия; финальный кадр"],
+      ["Медленный наезд", "slow push-in", "Нарастание, «вглядываемся»"],
+      ["Отъезд", "slow pull-back", "Раскрыть масштаб, одиночество"],
+      ["Проезд вбок", "tracking left / right", "Пейзаж, параллакс переднего плана"],
+      ["Следящая", "follows from behind at a fixed distance", "Герой идёт; лица не видно — меньше риска"],
+      ["Облёт", "slow orbit around", "Продукт, hero shot"],
+      ["Подъём / опускание", "crane up / pedestal down", "Смена масштаба в конце сцены"],
+      ["Перевод фокуса", "rack focus from … to …", "Передать внимание с детали на героя"],
+      ["Ручная", "handheld, subtle 1–2 cm tremor", "Репортаж, тревога"]
+     ]
+    },
+    {
+     "type": "p",
+     "text": "Крупность задаём углом обзора (FOV) в градусах: 84° — общий установочный, 47° — нейтральный средний, 29° — портрет и диалог, 18° — крупный с сохранением лица, 12° — деталь. Лево и право — всегда от камеры."
+    },
+    {
+     "type": "sub",
+     "text": "Референсы по ролям"
+    },
+    {
+     "type": "p",
+     "text": "Каждый @image отвечает за одно: identity (кто), outfit (одежда), location (где), prop (предмет). Тег ставим только в том шоте, где объект реально в кадре, иначе модель впихнёт его силой. Личность держим одной опорной картинкой — карточкой персонажа из модуля 8. Три фото одного лица модель усредняет, и получается четвёртый человек."
+    },
+    {
+     "type": "prompt",
+     "title": "Строки REFERENCES по ролям",
+     "tool": "Seedance",
+     "text": "@image1 — strict identity reference: preserve exact face, body proportions, hairstyle, skin tone. Stable face throughout.\n@image2 — exact outfit reference: preserve clothing, silhouette, fabric, colors, accessories.\n@image3 — exact location reference: preserve layout, architecture, lighting, materials, palette.\n@image4 — strict prop reference: preserve shape, proportions, material, color, details.",
+     "you": "Оставь только те строки, чьи объекты есть в этом шоте. Нет одежды крупно — нет outfit-референса."
+    },
+    {
+     "type": "sub",
+     "text": "Мультишот: три уровня контроля склеек"
+    },
+    {
+     "type": "steps",
+     "items": [
+      {"t": "Один план", "d": "«One continuous shot, the camera does not cut on its own.» Для большинства шотов на 5–8 с."},
+      {"t": "Склейки без секунд", "d": "«CUT 1 — … CUT 2 — … Cuts only at the specified points.» Модель сама делит время."},
+      {"t": "Склейки по секундам", "d": "«0.0–2.0 s — … HARD CUT at 2.0 s … 2.0–5.0 s — …» Когда склейка должна лечь на слово закадра."}
+     ]
+    },
+    {
+     "type": "note",
+     "title": "Где мультишот разваливается",
+     "text": "Внутри мультишота держи одну локацию, один свет и одну сторону съёмки. На каждый CUT — свой FOV и фраза «no drift mid-segment». После 2–3 битов мультишот начинает плыть: дальше режь на отдельные генерации."
+    }
+   ]
+  },
+  {
+   "id": "diagnostika",
+   "nav": "Диагностика",
+   "title": "Симптом → что делать",
+   "intro": "Сначала смотрим, повторяется ли дефект. Один раз из четырёх — лотерея, берём другой дубль. Три из четырёх — правим промпт, одну переменную за раз.",
+   "blocks": [
+    {
+     "type": "table",
+     "head": ["Симптом", "Что делать"],
+     "rows": [
+      ["Плывёт лицо", "Одна identity-картинка, «Stable face throughout», меньше событий, проще камера, FOV 18–29°"],
+      ["Меняется одежда", "Отдельный outfit-референс, описание одежды повторить в LOCKS"],
+      ["Сцена спешит", "Меньше событий, меньше CUT или один план, шот длиннее"],
+      ["Персонажи застыли", "Дать каждому одновременное действие, реплику — в движении"],
+      ["Рассинхрон губ", "Реплики по таймкодам в AUDIO, короткие фразы, крупный план 18°"],
+      ["Персонажи меняются местами", "Позиции от камеры в SCENE и в LOCKS"],
+      ["Кипит штриховка или фактура", "В STYLE: линия и бумага неподвижны; меньше движения камеры; в монтаже 8–12 к/с"]
+     ]
+    },
+    {
+     "type": "note",
+     "title": "Норма производства",
+     "text": "4–8 генераций на шот — норма, как и с картинками. Если шот не собирается за 8, дело не в удаче: упрости событие или перепиши строку раскадровки."
+    }
+   ]
+  },
+  {
+   "id": "primery",
+   "nav": "Примеры",
+   "title": "Эталон и антипример",
+   "blocks": [
+    {
+     "type": "pairs",
+     "groups": [
+      {
+       "rule": "Одно событие на шот",
+       "bad": {"q": "Dodo bird sees ships arriving, sailors land on the beach, the bird walks to them curiously, epic cinematic, no morphing.", "why": "Четыре события в пяти секундах. Птицу и моряков, которых нет на стартовом кадре, модель дорисовывает из воздуха. «Epic» тянет к фотореализму и ломает гравюру, «no morphing» притягивает морфинг, финала нет.", "src": "Додо, кадр «корабли пришли»"},
+       "good": {"q": "Корабли медленно подходят к бухте и встают на якорь. Камера стоит на уровне песка, 84°. Финал HOLD: движется только прибой.", "why": "Одно событие, камера отдала движение стихии, финал готов под склейку по свету. Моряки и птица ушли в соседние шоты."}
+      },
+      {
+       "rule": "Личность — одной картинкой",
+       "bad": {"q": "Загрузили три удачных кадра додо как identity «для надёжности».", "why": "Модель усреднила клюв и оперение — в ролике появилась другая птица."},
+       "good": {"q": "Одна карточка персонажа из модуля 8 как @image1 и «Stable silhouette throughout» в LOCKS.", "why": "Модели не из чего собирать среднее, силуэт держится весь шот."}
+      },
+      {
+       "rule": "Финал под склейку",
+       "bad": {"q": "Шот кончается, когда птица на полушаге, камера ещё едет.", "why": "Склейка режет движение и выглядит как ошибка монтажа."},
+       "good": {"q": "ENDING: «The bird stops at the waterline, the camera settles, only the surf moves.»", "why": "Последние 0,5–1 с спокойные — есть где резать, следующий шот встаёт без рывка."}
+      },
+      {
+       "rule": "Позитивные формулировки",
+       "bad": {"q": "no morphing, no extra birds, no flicker", "why": "В видео отрицание притягивает запрещённое: модель цепляется за слова «morphing» и «birds»."},
+       "good": {"q": "Stable silhouette throughout. One bird throughout. Linework stays fixed.", "why": "Описано то, что должно быть в кадре, — модели есть за что держаться."}
+      }
+     ]
+    },
+    {
+     "type": "prompt",
+     "title": "Эталон: «корабли пришли», 5 с",
+     "tool": "Seedance",
+     "text": "REFERENCES\n@image1 — start frame and exact location reference: preserve the shoreline, the two ships on the horizon, the engraving linework and the paper texture. 100% matches the reference.\n\nSTYLE\nHand-tinted 17th-century naturalist engraving, fine crosshatched ink lines, muted watercolor washes of ochre, sage and faded blue, aged paper texture, flat soft daylight. Linework and paper grain stay printed and still; only the painted elements move.\n\nSCENE\nGround-level view across a pale sand beach toward a calm bay. Foreground: wet sand and the edge of the surf. Midground: open turquoise water. Background: two sailing ships on the horizon, sails full.\n0–3 s — the ships glide slowly toward the bay, growing slightly larger against the pale sky.\n3–5 s — the ships slow down and hold their position; the surf keeps rolling onto the sand.\n\nCAMERA\nOne continuous shot. Static 84° wide at ground level, 20 cm above the sand, locked off. The horizon sits on the upper third.\n\nACTION & PHYSICS\nThe ships move at 4 km/h, sails stay filled by a steady breeze, hulls rock gently on a low swell. Small waves run up the wet sand in a slow rhythm and slide back, leaving a thin line of foam.\n\nENDING\nThe ships come to rest at anchor near the horizon, the frame is still, only the surf keeps moving — a clean hold for a cut on light.\n\nAUDIO\nNo music. Low steady surf, wind over sand, one distant ship's bell at 3 s.\n\nTECH & LOCKS\nDuration 5 s. The camera does not cut on its own. Exactly two ships throughout. Consistent lighting and environment throughout. Engraving linework and paper texture stay fixed. Natural motion. Realistic physics.",
+     "you": "Сделай 4 генерации без правок. В двух у кораблей могут появиться лишние мачты, в одной закипит небо — это нормально. Дефект, который повторяется, правишь одной строкой."
+    },
+    {
+     "type": "gallery",
+     "title": "Стартовые кадры, которым есть куда двигаться",
+     "lead": "Seedance оживляет то, что уже есть на кадре. Хороший стартовый кадр для атмосферного шота — герой с запасом места, стихия, которая может двигаться сама, и спокойный свет.",
+     "items": [
+      {"img": "case-dragonfly-2", "tag": "кейс студента", "title": "Rain Cloak Dragonfly: туман", "note": "Туман и ткань — готовое одно событие для Seedance: туман течёт, плёнка чуть колышется, камера медленно наезжает. Модель не стоит при этом поворачивать к камере — лицо плывёт первым."},
+      {"img": "case-pohjola-herbs-2", "tag": "кейс студента", "title": "Pohjola Herbs: сушильня", "note": "Интерьерная сцена с пучками трав и мягким светом — материал для проезда вбок с параллаксом переднего плана. Одно движение камеры, ничего больше."},
+      {"img": "case-unidentified-form-2", "tag": "кейс студента", "title": "Unidentified Form: круги на жидкости", "note": "Объект стоит, движется только жидкость. Это и есть правило «продукт стоит, мир движется»: круги расходятся, финал HOLD."}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "prompty",
+   "nav": "Промпты",
+   "title": "Конструктор и готовые промпты",
+   "blocks": [
+    {
+     "type": "builder",
+     "intro": "Выбери по одному варианту в каждом из 8 блоков — внизу соберётся промпт Seedance. Подставь свой стиль-якорь и описание сцены вместо примеров. Держи варианты одной сцены вместе: STYLE и SCENE гравюры не смешивай с продуктовой съёмкой.",
+     "layers": [
+      {"name": "REFERENCES", "hint": "кто за что отвечает", "opts": [
+       {"l": "только стартовый кадр", "v": "REFERENCES\n@image1 — start frame and exact location reference: preserve the layout, the light and the texture. 100% matches the reference."},
+       {"l": "кадр + персонаж", "v": "REFERENCES\n@image1 — start frame and exact location reference. @image2 — strict identity reference: preserve exact silhouette, proportions and colors. Stable silhouette throughout."},
+       {"l": "кадр + продукт", "v": "REFERENCES\n@image1 — strict product reference: preserve shape, proportions, material, color and details. @image2 — start frame and exact location reference."}
+      ]},
+      {"name": "STYLE", "hint": "якорь + что неподвижно", "opts": [
+       {"l": "гравюра", "v": "STYLE\nHand-tinted naturalist engraving, fine crosshatched ink lines, muted watercolor washes, aged paper texture, flat soft daylight. Linework and paper grain stay still; only the painted elements move."},
+       {"l": "продуктовая съёмка", "v": "STYLE\nPhotoreal commercial product film, cold diffused daylight around 6500K, a warm low sun as rim light, soft mist, one warm accent color."},
+       {"l": "пластилин", "v": "STYLE\nHandmade plasticine stop-motion, visible fingerprints on matte clay, miniature set, soft studio light. Clay textures stay fixed; motion is slightly stepped."}
+      ]},
+      {"name": "SCENE", "hint": "планы и биты", "opts": [
+       {"l": "берег и корабли", "v": "SCENE\nForeground: wet sand and the edge of the surf. Midground: open water. Background: two ships on the horizon.\n0–3 s — the ships glide slowly toward the bay.\n3–5 s — the ships hold their position, the surf keeps rolling."},
+       {"l": "предмет на мху", "v": "SCENE\nForeground: moss and ripe berries. Midground: the object from @image1 standing on the moss. Background: mist over rolling hills.\n0–3 s — the low sun edges above the horizon and lights the object from behind.\n3–5 s — the glow settles, mist keeps drifting."},
+       {"l": "герой идёт", "v": "SCENE\nForeground: tall dry grass. Midground: the character from @image2 seen from behind, walking along a path. Background: a pale sky and low hills.\n0–3 s — the character walks forward at an even pace.\n3–5 s — the character stops and stands still."}
+      ]},
+      {"name": "CAMERA", "hint": "одно движение", "opts": [
+       {"l": "статика, общий", "v": "CAMERA\nOne continuous shot. Static 84° wide at ground level, locked off."},
+       {"l": "медленный наезд", "v": "CAMERA\nOne continuous shot. 47°, slow push-in at walking pace toward the subject."},
+       {"l": "следит сзади", "v": "CAMERA\nOne continuous shot. 47°, the camera follows from behind at a fixed distance at walking pace."},
+       {"l": "четверть облёта", "v": "CAMERA\nOne continuous shot. 29°, slow quarter orbit around the subject at eye level, then a full stop."}
+      ]},
+      {"name": "ACTION & PHYSICS", "hint": "видимое и числа", "opts": [
+       {"l": "вода и ветер", "v": "ACTION & PHYSICS\nSmall waves run up the sand in a slow rhythm and slide back, leaving a thin line of foam; a steady 15 km/h breeze moves the grass."},
+       {"l": "туман и свет", "v": "ACTION & PHYSICS\nMist drifts left to right at 3 km/h, warm light slowly spreads through the scene, the object stands perfectly still."},
+       {"l": "шаги героя", "v": "ACTION & PHYSICS\nShort heavy steps at 4 km/h, the body sways slightly, each step leaves a shallow print, cloth moves in a light breeze."}
+      ]},
+      {"name": "ENDING", "hint": "финал под склейку", "opts": [
+       {"l": "HOLD", "v": "ENDING\nThe subject comes to rest, the frame holds still; only one detail keeps moving — a clean hold for the cut."},
+       {"l": "EXIT", "v": "ENDING\nThe subject leaves the frame to the right, the empty frame holds for 1 s — a cut on motion."},
+       {"l": "HANDOFF", "v": "ENDING\nThe camera settles on the warm glow, which fills the frame — a cut on color."}
+      ]},
+      {"name": "AUDIO", "hint": "только нужный звук", "opts": [
+       {"l": "шумы сцены", "v": "AUDIO\nNo music. Low steady ambience of the scene: wind, water, soft steps."},
+       {"l": "тишина, музыка в монтаже", "v": "AUDIO\nNo music. Quiet room tone only."},
+       {"l": "одна реплика", "v": "AUDIO\nAt 2 s, the character says quietly: \"They came back.\" Natural lip sync, stable face during speech."}
+      ]},
+      {"name": "TECH & LOCKS", "hint": "всегда в конце", "opts": [
+       {"l": "5 с, один план", "v": "TECH & LOCKS\nDuration 5 s. The camera does not cut on its own. Consistent lighting and environment throughout. Stable silhouette throughout. Natural motion. Realistic physics."},
+       {"l": "8 с, один план", "v": "TECH & LOCKS\nDuration 8 s. One continuous shot. Consistent lighting and environment throughout. Exact identity preserved. Natural motion."},
+       {"l": "10 с, две склейки", "v": "TECH & LOCKS\nDuration 10 s. Cuts only at the specified points, no drift mid-segment. Consistent lighting and environment throughout. Natural motion. Realistic physics."}
+      ]}
+     ],
+     "join": "\n",
+     "note": "Проверь колонку «Что движется»: если в SCENE и ACTION получилось два события, одно отдай камере или перенеси в соседний шот."
+    },
+    {
+     "type": "prompt",
+     "title": "Мультишот 10 с: общий → средний",
+     "tool": "Seedance",
+     "text": "REFERENCES\n@image1 — exact location reference for the beach and the ships. @image2 — strict identity reference for the grey flightless bird: preserve silhouette, plumage pattern, hooked beak. 100% matches the reference.\n\nSTYLE\n[вставь стиль-якорь]. Linework and paper texture stay fixed.\n\nSCENE\nCUT 1 — ground-level wide view of two ships approaching the bay, surf in the foreground.\nCUT 2 — medium shot from behind the bird as it steps onto wet sand toward the water, the ships small on the horizon.\n\nCAMERA\nCUT 1: static 84° wide, locked off, no drift mid-segment. CUT 2: 47°, the camera follows from behind at a fixed distance at walking pace, no drift mid-segment.\n\nACTION & PHYSICS\nShips move at 4 km/h. The bird walks at a slow, even pace, each step leaves a shallow print in wet sand, feathers ruffle in a steady breeze.\n\nENDING\nThe bird stops at the waterline, the camera settles, only the surf moves.\n\nAUDIO\nNo music. Surf, wind, soft steps on wet sand.\n\nTECH & LOCKS\nDuration 10 s. Cuts only at the specified points, the camera does not cut on its own. One bird throughout. Consistent lighting and environment throughout. Natural motion. Realistic physics.",
+     "you": "Тег @image2 стоит только там, где птица в кадре. Если второй CUT плывёт в 3 из 4 дублей — режь на две генерации по 5 с."
+    },
+    {
+     "type": "prompt",
+     "title": "Правка одной переменной",
+     "tool": "Seedance",
+     "text": "STYLE\n[вставь стиль-якорь]. The sky is a flat watercolor wash with sparse horizontal hatching. Linework and paper grain stay printed and still; only the painted elements move.",
+     "you": "Меняешь только блок, где живёт дефект. Остальные 7 блоков копируешь без изменений, иначе не поймёшь, что сработало."
+    }
+   ]
+  },
+  {
+   "id": "ai",
+   "nav": "С нейронкой",
+   "title": "В паре с нейронкой",
+   "blocks": [
+    {
+     "type": "ai",
+     "give": [
+      "Перевод строки раскадровки в 8 блоков на английском по твоим решениям.",
+      "Подсчёт событий в каждом бите: где их больше одного.",
+      "Варианты одной правки под повторяющийся дефект и в какой блок её ставить."
+     ],
+     "keep": [
+      "Какое событие остаётся в шоте, а какое уходит в соседний или камере.",
+      "Финал HOLD / EXIT / HANDOFF под переход из раскадровки.",
+      "Оценку дублей и выбор одной переменной для правки.",
+      "Решение, какой дубль идёт в монтаж и с какой по какую секунду."
+     ],
+     "mistake": "Попросить нейронку «написать красивый промпт к видео» без строки раскадровки и стиль-якоря. Получится атмосферный текст с тремя событиями и без финала."
+    },
+    {
+     "type": "prompt",
+     "title": "Шаг 1. Решить, что остаётся в шоте",
+     "tool": "Claude / ChatGPT",
+     "text": "Я делаю шот для Seedance. Вот строка моей раскадровки: [вставь строку: текст фразы, что в кадре, крупность, ракурс, движение, переход]. Вот стартовый кадр словами: [опиши, что на нём].\n\nНе пиши промпт. Задавай мне вопросы по одному и жди ответа:\n1) сколько событий я сейчас заложил в шот и какое из них главное;\n2) что можно отдать камере, а что перенести в соседний шот;\n3) какой финал (HOLD, EXIT или HANDOFF) подходит к переходу из моей раскадровки.\nПосле каждого моего ответа коротко скажи, где вижу риск, но решение оставь мне.",
+     "you": "Отвечаешь сам. На выходе у тебя одна фраза «в шоте происходит…», одно движение камеры и выбранный финал."
+    },
+    {
+     "type": "prompt",
+     "title": "Шаг 2. Собрать 8 блоков по твоим решениям",
+     "tool": "Claude / ChatGPT",
+     "text": "Ты — Промптер видео для Seedance. Мои решения: событие — [вставь], камера — [вставь], финал — [вставь], длительность — [5 / 8 / 10 с]. Стиль-якорь проекта (вставь его в STYLE слово в слово): [вставь]. Референсы и их роли: [перечисли].\n\nСобери промпт на английском строго по 8 блокам: REFERENCES, STYLE, SCENE (beats), CAMERA, ACTION & PHYSICS, ENDING, AUDIO, TECH & LOCKS. В каждом блоке 1–3 предложения прозы. Только позитивные формулировки, без усилителей качества, без текста в кадре. Ничего не добавляй от себя: если для блока не хватает данных, задай мне вопрос.",
+     "you": "Сверяешь: стиль-якорь не переписан, теги стоят только на объектах в кадре, в SCENE одно событие. Правишь руками и запускаешь 4 генерации."
+    },
+    {
+     "type": "prompt",
+     "title": "Шаг 3. Разобрать дефект",
+     "tool": "Claude / ChatGPT",
+     "text": "Вот мой промпт Seedance: [вставь]. Я сделал 4 генерации. Вот что вижу в каждой: [опиши дефект и секунду для каждого дубля].\n\nСначала спроси меня, какой дефект повторяется и в скольких дублях из четырёх. Если в одном — скажи, что это лотерея. Если в трёх и больше — предложи 2–3 варианта правки одной переменной и для каждого назови блок, куда она встаёт. Выбирать буду я.",
+     "you": "Выбираешь одну правку, меняешь только этот блок, делаешь ещё 2–4 генерации и записываешь строку «что поменял и почему»."
+    }
+   ]
+  },
+  {
+   "id": "mify",
+   "nav": "Мифы",
+   "title": "Мифы",
+   "blocks": [
+    {
+     "type": "myths",
+     "items": [
+      {"myth": "Чем меньше движения, тем лучше.", "truth": "Меньше событий, а не меньше амплитуды. Одно большое движение нормально: модель ломается на числе одновременных изменений, каждое событие — отдельная догадка."},
+      {"myth": "Длинный промпт даёт больше контроля.", "truth": "4–8 предложений прозы в 8 блоках. Длинное описание внешности спорит с референсом, и модель выбирает что-то среднее."},
+      {"myth": "Больше фото лица — надёжнее.", "truth": "Личность держим одной опорной картинкой. Несколько фото одного лица модель усредняет, получается новый персонаж."},
+      {"myth": "Не вышло с первого раза — промпт плохой.", "truth": "4–8 генераций на шот — норма производства. Промпт правим, когда одна и та же ошибка повторяется в 3 генерациях из 4."}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "zadanie",
+   "nav": "Задание",
+   "title": "Задание: простая сцена",
+   "blocks": [
+    {
+     "type": "task",
+     "result": "Один готовый шот своего ролика: промпт v1 и v2 по 8 блокам, все дубли, лучший дубль и строка «что поменял и почему».",
+     "need": "Раскадровка из модуля 8, стиль-якорь, стартовый кадр шота (или кадр «корабли пришли» из «Додо»), доступ к Seedance на любой площадке. 45–60 минут.",
+     "parts": [
+      {"title": "Часть 1. Выбрать шот", "steps": [
+       "Открой раскадровку и найди строку с самым простым действием: один субъект, одно движение, стартовый кадр готов.",
+       "Проверь стартовый кадр: у героя есть место для движения, он не упирается в край, стиль совпадает с якорем.",
+       "Запиши одной фразой событие шота. Если в колонке «Что движется» два слова — раздели шот или отдай одно движение камере."
+      ]},
+      {"title": "Часть 2. Промпт и первые генерации", "steps": [
+       "Собери промпт по 8 блокам на 5 секунд. В ENDING впиши финал под переход из раскадровки.",
+       "Сделай 4 генерации без правок промпта.",
+       "Отбери лучшую по трём критериям: субъект стабилен, физика без морфинга, первые и последние 0,5 с чистые."
+      ]},
+      {"title": "Часть 3. Одна правка", "steps": [
+       "Найди дефект, который повторяется в 3 дублях из 4.",
+       "Поправь в промпте одну переменную в одном блоке, сделай ещё 2–4 генерации.",
+       "Отметь, с какой по какую секунду лучший дубль пойдёт в монтаж."
+      ]}
+     ],
+     "submit": [
+      ["Промпт v1 и v2", "Текст на доске или в документе", "8 блоков, TECH & LOCKS в конце, отличие v1 и v2 — в одном блоке"],
+      ["Все дубли и лучший", "Ссылка на папку или доску", "Не меньше 6 генераций, лучший отмечен"],
+      ["Строка «что поменял и почему»", "Одна фраза под промптами", "Названы дефект, блок и правка"]
+     ],
+     "stuck": [
+      ["Шот не собирается за 8 генераций", "Упрости событие или перепиши строку раскадровки: скорее всего, событий два"],
+      ["Своей раскадровки ещё нет", "Возьми кадр «корабли пришли» и эталонный промпт урока, правь свою переменную"],
+      ["Модель отклоняет стартовый кадр", "Сработал фильтр: в кадре узнаваемый персонаж или бренд. Меняй героя по существу, фильтр не обходим"]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "check",
+   "nav": "Чек-лист",
+   "title": "Чек-лист",
+   "blocks": [
+    {
+     "type": "check",
+     "items": [
+      "В шоте одно главное действие и одно движение камеры",
+      "Все 8 блоков на месте, TECH & LOCKS — в конце",
+      "Блок ENDING описывает конкретный финал под склейку",
+      "В промпте нет усилителей и отрицаний: всё написано через то, что должно быть в кадре",
+      "Личность держится одной картинкой, теги стоят только на объектах в кадре",
+      "Сделано не меньше 4 генераций, лучшая выбрана по трём критериям"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "faq",
+   "nav": "Вопросы",
+   "title": "Вопросы",
+   "blocks": [
+    {
+     "type": "faq",
+     "items": [
+      ["Писать промпт по-русски нельзя?", "Можно попробовать, но курс работает на английском: формулировки камеры, физики и локов модель понимает точнее, а агент «Промптер видео» выдаёт их по-английски."],
+      ["Где искать Seedance?", "Внутри агрегаторов (Higgsfield, Syntx) и на площадке разработчика. Версии и настройки на площадках отличаются — разбираем в уроке 9.3."],
+      ["Звук из Seedance оставлять в ролике?", "Шумы сцены — можно как черновую подложку. Музыку лучше класть в монтаже, а в промпте писать только шумы. Нет реплики — не пиши lip sync."],
+      ["Что делать, если мерцает графичный стиль: гравюра, штрих, акварель?", "Камера почти стоит, в STYLE пишешь, что линия и бумага неподвижны, а в монтаже роняешь частоту до 8–12 кадров в секунду. Это и приём, и маскировка артефактов."],
+      ["Когда переходить на длинную структуру промпта?", "Когда 8 блоков перестанет хватать: диалоги, сложный грейд, костюм. У агента «Промптер видео» есть расширенная версия из 17 блоков, 8 блоков — её сжатый вариант."]
+     ]
+    }
+   ]
+  }
+ ],
+ "quiz": [
+  {"q": "В строке раскадровки: «птица поворачивает голову, моряки машут, корабль бросает якорь». Шот 5 секунд в Seedance. Что делаешь?", "opts": [
+   {"t": "Пишу всё в промпт, но прошу «slow, calm motion».", "ok": false, "why": "Медленнее не значит проще: четыре события остаются четырьмя догадками, которые спорят."},
+   {"t": "Оставляю одно событие, остальные переношу в соседние шоты.", "ok": true, "why": "Модель ломает число одновременных изменений. Одно событие — одна догадка."},
+   {"t": "Ставлю 15 секунд, чтобы всем хватило времени.", "ok": false, "why": "Длинный шот с четырьмя событиями разваливается так же, только дольше."}
+  ]},
+  {"q": "В 1 дубле из 4 у птицы на секунду появилась вторая голова. Остальные чистые. Что делать?", "opts": [
+   {"t": "Переписать промпт с нуля.", "ok": false, "why": "Дефект не повторяется — это лотерея, а не промпт."},
+   {"t": "Взять один из чистых дублей.", "ok": true, "why": "Правим промпт, только когда дефект повторяется в 3 дублях из 4."},
+   {"t": "Дописать «no extra heads».", "ok": false, "why": "Отрицание в видео притягивает запрещённое, и повода править нет."}
+  ]},
+  {"q": "Следующий шот склеивается с этим по движению: герой уходит вправо и появляется слева. Какой финал писать в ENDING?", "opts": [
+   {"t": "HOLD: герой замирает, живёт одна деталь.", "ok": false, "why": "HOLD подходит под склейку по свету или затемнение, а здесь нужна склейка по движению."},
+   {"t": "EXIT: герой уходит из кадра вправо, пустой кадр держится секунду.", "ok": true, "why": "Уход из кадра даёт чистую точку для склейки по движению."},
+   {"t": "Ничего, финал решу в монтаже.", "ok": false, "why": "Без финала шот обрывается на полушаге, резать будет негде."}
+  ]},
+  {"q": "Ты хочешь, чтобы лицо героя не плыло. Что положить в REFERENCES?", "opts": [
+   {"t": "Пять разных фото героя для надёжности.", "ok": false, "why": "Модель усреднит черты и создаст нового человека."},
+   {"t": "Одну карточку персонажа как identity и «Stable face throughout» в локах.", "ok": true, "why": "Одна опорная картинка — модели не из чего собирать среднее."},
+   {"t": "Подробное описание лица на 80 слов без картинки.", "ok": false, "why": "Длинное описание внешности спорит с кадром, а без референса лицо придумывается заново."}
+  ]},
+  {"q": "Студент написал в CAMERA: «slow push-in, then orbit, then crane up». Что не так?", "opts": [
+   {"t": "Нужно добавить градусы FOV.", "ok": false, "why": "FOV поможет крупности, но проблема в трёх движениях камеры."},
+   {"t": "В шоте три движения камеры, а нужно одно.", "ok": true, "why": "Один отрезок — одно действие и одно движение камеры."},
+   {"t": "Всё верно, Seedance любит сложную камеру.", "ok": false, "why": "Каждое движение камеры — ещё одно изменение кадра, модель начнёт их усреднять."}
+  ]},
+  {"q": "Где в промпте Seedance стоят длительность и локи?", "opts": [
+   {"t": "В самом начале, чтобы модель сразу их увидела.", "ok": false, "why": "Техтребования первым абзацем держатся хуже."},
+   {"t": "В блоке TECH & LOCKS, в конце промпта.", "ok": true, "why": "Порядок блоков фиксирован: техтребования и позитивные фиксаторы — в конце."},
+   {"t": "Только в интерфейсе, в промпт не пишем.", "ok": false, "why": "Длительность выбирается и в интерфейсе, но локи и режим склеек пишутся текстом."}
+  ]}
+ ]
+}
