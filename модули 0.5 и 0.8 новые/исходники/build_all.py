@@ -109,6 +109,6 @@ g=g.replace('</style>','.embed.hasmod .pager{display:grid!important;margin-top:2
 
 g=g.replace("← К списку статей<b>Mission to AI</b>","← К списку статей<b>'+t(m.name)+'</b>").replace("К списку статей →<b>Mission to AI</b>","К списку статей →<b>'+t(m.name)+'</b>")
 
-g=g.replace('</style>',':root.embed-root{--panel:#262c32;--card:#2d343b;--stroke:#3a434c;--faint:#6b7681;scrollbar-width:thin;scrollbar-color:#4a535c #262c32}:root.embed-root,body.embed{background:#262c32!important}.embed::-webkit-scrollbar{width:8px}.embed::-webkit-scrollbar-thumb{background:#4a535c;border-radius:4px}.embed::-webkit-scrollbar-track{background:#262c32}</style>',1)
+g=g.replace('</style>',':root.embed-root,body.embed{background:#101010!important}:root.embed-root{scrollbar-width:thin;scrollbar-color:#3a3a3a #101010}.embed::-webkit-scrollbar{width:8px}.embed::-webkit-scrollbar-thumb{background:#3a3a3a;border-radius:4px}.embed::-webkit-scrollbar-track{background:#101010}</style>',1)
 open(K+'mission-to-ai-metodichki-moduli-05-08.html','w',encoding='utf-8').write(g)
 print(len(IM),'images',len(g)//1024,'KB')
