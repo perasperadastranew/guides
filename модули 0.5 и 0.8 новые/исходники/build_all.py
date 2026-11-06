@@ -106,5 +106,7 @@ g=g.replace('</style>','.embed.hasmod .top{display:flex!important;margin:0 0 14p
 g=sub("var k=ORDER.indexOf(id), prev=ORDER.slice(0,k).filter(function(x){return D.lessons[x]}).pop(), next=ORDER.slice(k+1).filter(function(x){return D.lessons[x]})[0];","var k=ORDER.indexOf(id), prev=ORDER.slice(0,k).filter(function(x){return D.lessons[x]}).pop(), next=ORDER.slice(k+1).filter(function(x){return D.lessons[x]})[0];\n  if(/embed/.test(location.search)&&/[?&]mod=\\d+/.test(location.search)){var ml=m.lessons.filter(function(x){return D.lessons[x]}),k2=ml.indexOf(id);prev=ml[k2-1];next=ml[k2+1]}",g)
 g=g.replace("document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-top],[data-mi]');","addEventListener('message',function(e){if(e.data&&e.data.type==='paaa-cmd'&&e.data.cmd==='list'){try{history.pushState(null,'','#/')}catch(x){}FORCE='#/';route()}});\ndocument.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-top],[data-mi]');",1)
 g=g.replace('</style>','.embed.hasmod .pager{display:grid!important;margin-top:24px}</style>',1)
+
+g=g.replace("← К списку статей<b>Mission to AI</b>","← К списку статей<b>'+t(m.name)+'</b>").replace("К списку статей →<b>Mission to AI</b>","К списку статей →<b>'+t(m.name)+'</b>")
 open(K+'mission-to-ai-metodichki-moduli-05-08.html','w',encoding='utf-8').write(g)
 print(len(IM),'images',len(g)//1024,'KB')
