@@ -109,6 +109,8 @@ g=g.replace('</style>','.embed.hasmod .pager{display:grid!important;margin-top:2
 
 g=g.replace("← К списку статей<b>Mission to AI</b>","← К списку статей<b>'+t(m.name)+'</b>").replace("К списку статей →<b>Mission to AI</b>","К списку статей →<b>'+t(m.name)+'</b>")
 
-g=g.replace('</style>',':root.embed-root,body.embed{background:#101010!important}:root.embed-root{scrollbar-width:thin;scrollbar-color:#3a3a3a #101010}.embed::-webkit-scrollbar{width:8px}.embed::-webkit-scrollbar-thumb{background:#3a3a3a;border-radius:4px}.embed::-webkit-scrollbar-track{background:#101010}</style>',1)
+g=g.replace('</style>','.embed section{border-radius:0!important;border-top:1px solid #333!important;margin-top:8px}.embed header{border-radius:0!important}:root.embed-root{background:rgba(0,0,0,.004)!important;overflow:hidden;height:100%}body.embed{background:#101010!important;height:100%;overflow-y:auto;overflow-x:hidden;border-radius:16px;scrollbar-width:thin;scrollbar-color:#3a3a3a #101010}.embed::-webkit-scrollbar{width:8px}.embed::-webkit-scrollbar-thumb{background:#3a3a3a;border-radius:4px}.embed::-webkit-scrollbar-track{background:#101010}</style>',1)
+
+g=g.replace("function route(){","if(/embed/.test(location.search)){window.scrollTo=function(){document.body.scrollTop=0}}\nfunction route(){",1)
 open(K+'mission-to-ai-metodichki-moduli-05-08.html','w',encoding='utf-8').write(g)
 print(len(IM),'images',len(g)//1024,'KB')
