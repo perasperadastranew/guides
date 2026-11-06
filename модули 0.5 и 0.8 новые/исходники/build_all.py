@@ -101,5 +101,10 @@ g=sub("else{last='';home();window.scrollTo(0,0)}","else{last='';home();embedMod(
 g=sub("function route(){","function embedMod(){var m=/[?&]mod=(\\d+)/.exec(location.search); if(!m||!/embed/.test(location.search))return; Array.prototype.slice.call(app.children).forEach(function(c){if(c.id!=='mod-'+m[1])c.remove()})}\nfunction route(){",g)
 g=sub("document.body.className='embed'","document.body.className='embed'+(/[?&]mod=\\d+/.test(location.search)?' hasmod':'')",g)
 g=g.replace('</style>','.embed.hasmod .top{display:flex!important;margin:0 0 14px}</style>',1)
+
+# встраивание: соседние статьи только внутри модуля, команды от родительской страницы
+g=sub("var k=ORDER.indexOf(id), prev=ORDER.slice(0,k).filter(function(x){return D.lessons[x]}).pop(), next=ORDER.slice(k+1).filter(function(x){return D.lessons[x]})[0];","var k=ORDER.indexOf(id), prev=ORDER.slice(0,k).filter(function(x){return D.lessons[x]}).pop(), next=ORDER.slice(k+1).filter(function(x){return D.lessons[x]})[0];\n  if(/embed/.test(location.search)&&/[?&]mod=\\d+/.test(location.search)){var ml=m.lessons.filter(function(x){return D.lessons[x]}),k2=ml.indexOf(id);prev=ml[k2-1];next=ml[k2+1]}",g)
+g=g.replace("document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-top],[data-mi]');","addEventListener('message',function(e){if(e.data&&e.data.type==='paaa-cmd'&&e.data.cmd==='list'){try{history.pushState(null,'','#/')}catch(x){}FORCE='#/';route()}});\ndocument.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-top],[data-mi]');",1)
+g=g.replace('</style>','.embed.hasmod .pager{display:grid!important;margin-top:24px}</style>',1)
 open(K+'mission-to-ai-metodichki-moduli-05-08.html','w',encoding='utf-8').write(g)
 print(len(IM),'images',len(g)//1024,'KB')
