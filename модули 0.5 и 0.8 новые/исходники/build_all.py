@@ -95,5 +95,11 @@ g=g.replace("(window.IMGBASE||'img/')+s.img+'.webp'","(IMG[s.img]||(window.IMGBA
 g=sub("var h='<div class=\"top\"><a href=\"#/\">← К списку статей</a></div>';","var mi=D.modules.indexOf(m); var h='<div class=\"top\"><a href=\"#/\" data-mi=\"'+mi+'\">← К списку статей</a></div><div class=\"fab\"><button type=\"button\" data-mi=\"'+mi+'\">← К модулю</button><button type=\"button\" data-top=\"1\">↑ В начало статьи</button></div>';",g)
 g=g.replace('</style>','.fab{position:fixed;right:16px;bottom:16px;z-index:50;display:flex;flex-direction:column;gap:8px;align-items:flex-end}.fab button{background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:11px 16px;font:inherit;font-size:14px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.45)}.fab button:hover{filter:brightness(1.1)}body.embed .fab,.embed .fab{display:none}@media(max-width:560px){.fab{right:10px;bottom:10px}.fab button{padding:10px 13px;font-size:13px}}</style>',1)
 g=sub("window.addEventListener('popstate',function(){route()});","window.addEventListener('popstate',function(){route()});\ndocument.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-top],[data-mi]'); if(!b)return; e.preventDefault(); e.stopPropagation();\n  if(b.hasAttribute('data-top')){window.scrollTo({top:0,behavior:'smooth'});return}\n  var mi=b.getAttribute('data-mi'); try{ if(location.hash!=='#/'){ history.pushState(null,'','#/') } }catch(x){}\n  FORCE='#/'; route(); var el=document.getElementById('mod-'+mi); if(el)el.scrollIntoView()},true);",g)
+
+# режим «один модуль» для встраивания: ?embed=1&mod=N
+g=sub("else{last='';home();window.scrollTo(0,0)}","else{last='';home();embedMod();window.scrollTo(0,0)}",g)
+g=sub("function route(){","function embedMod(){var m=/[?&]mod=(\\d+)/.exec(location.search); if(!m||!/embed/.test(location.search))return; Array.prototype.slice.call(app.children).forEach(function(c){if(c.id!=='mod-'+m[1])c.remove()})}\nfunction route(){",g)
+g=sub("document.body.className='embed'","document.body.className='embed'+(/[?&]mod=\\d+/.test(location.search)?' hasmod':'')",g)
+g=g.replace('</style>','.embed.hasmod .top{display:flex!important;margin:0 0 14px}</style>',1)
 open(K+'mission-to-ai-metodichki-moduli-05-08.html','w',encoding='utf-8').write(g)
 print(len(IM),'images',len(g)//1024,'KB')
