@@ -196,7 +196,7 @@ function zadanie(id){
 function plural(n,a,b,c){var x=n%10,y=n%100;return x===1&&y!==11?a:x>=2&&x<=4&&(y<12||y>14)?b:c}
 function home(){
   var n=(ORDER[0]==='s0')?-1:0;
-  var h='<header>'+corner('PER ASPERA AD ASTRA','МЕТОДИЧКИ К УРОКАМ')+'<span class="kicker">Методички курса</span><h1 class="brand">Mission<br>to UX/UI</h1><p class="lead"><b>По одной на каждый урок.</b> Что прошли, что запомнить, шаблон, плохо и хорошо, два кейса по шагам, подробное задание и тест.</p><span class="save">Сохрани, чтобы не потерять</span></header>';
+  var h='<header>'+corner('PERASPERADASTRA','МЕТОДИЧКИ К УРОКАМ')+'<span class="kicker">Методички курса</span><h1 class="brand">Mission<br>to UX/UI</h1><p class="lead"><b>По одной на каждый урок.</b> Что прошли, что запомнить, шаблон, плохо и хорошо, два кейса по шагам, подробное задание и тест.</p><span class="save">Сохрани, чтобы не потерять</span></header>';
   h+='<section>'+corner('КАРТА КУРСА')+'<h2>Шесть этапов диплома</h2><p><b>Диплом — мобильное приложение.</b> Мы идём к нему шестью этапами. В каждой методичке первый блок показывает, на каком этапе ты сейчас и что на нём делаешь.</p><div class="stagebar">'+D.stages.map(function(x){return '<div><i>этап '+x.n+'</i><b>'+t(x.name)+'</b><small>'+t(x.what)+'</small></div>'}).join('')+'</div></section>';
   D.modules.forEach(function(m,mi){
     h+='<section>'+corner('МОДУЛЬ '+('0'+(mi+1)).slice(-2),'ЭТАП '+m.stage)+'<h2>'+t(m.name)+'</h2><p>'+t(m.about)+'</p><div class="cards">'+m.lessons.map(function(id){n++;var L=D.lessons[id];
