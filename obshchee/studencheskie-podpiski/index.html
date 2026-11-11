@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Студенческие подписки</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Раскладка: тёмные панели-уроки на чуть более светлом поле, как в остальных методичках школы. Маршрут методички нарисован как линия метро: каждая станция — шаг работы над идеей. */
+:root{
+  color-scheme:dark;
+  --field:#1c1c1c; --panel:#101010; --card:#191919; --stroke:#2a2a2a; --well:#222;
+  --ink:#f4f4f2; --dim:#8e8e8c; --faint:#5a5a58;
+  --accent:#eb7540; --accent-ink:#101010;
+  --good:#34c759; --bad:#ff3b4e; --line2:#5b8def;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--field);color:var(--dim);font-family:var(--body);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 64px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;color:var(--ink);text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(38px,7.4vw,84px);line-height:.95}
+h2{font-size:clamp(28px,4.6vw,48px);line-height:1}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:500;color:var(--ink)}
+a{color:var(--ink)}
+.corner,.kind,.cap,.lvl,th,.q .n,.task i,.say i,.pair i,.fm i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-style:normal}
+
+header,section{background:var(--panel);border-radius:14px;padding:34px 44px 60px;display:flex;flex-direction:column;gap:24px;min-width:0;position:relative}
+.corner{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}
+.corner span{white-space:pre-line;line-height:1.35}
+.corner span:last-child{text-align:right}
+header{padding-bottom:44px;background-image:radial-gradient(#262626 1.2px,transparent 1.3px);background-size:18px 18px}
+.lead{font-size:clamp(19px,2.4vw,26px);line-height:1.25;color:var(--dim);max-width:40ch;letter-spacing:-.01em}
+.lead b{font-weight:400}
+.save{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:7px 10px}
+
+/* линия метро вместо оглавления */
+.metro{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));position:relative}
+.metro::before{content:"";position:absolute;left:calc(100%/18);right:calc(100%/18);top:15px;height:6px;border-radius:3px;background:var(--accent)}
+.metro li{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.metro a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.2;padding:0 4px}
+.metro .st{width:36px;height:36px;border-radius:50%;background:var(--panel);border:5px solid var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--ink);position:relative;z-index:1;transition:transform .2s}
+.metro a:hover .st,.metro a:focus-visible .st{transform:scale(1.15);background:var(--accent);color:var(--accent-ink)}
+.metro a:focus-visible{outline:none}
+.metro li.end .st{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:760px){
+  .metro{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metro::before{left:15px;right:auto;top:18px;bottom:18px;width:6px;height:auto}
+  .metro li,.metro a{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .metro a{font-size:16px;padding:0}
+}
+
+.head{display:flex;align-items:center;gap:32px}
+.head-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.num{font-family:var(--display);font-size:clamp(84px,13vw,168px);line-height:.86;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--faint);font-variant-numeric:tabular-nums;user-select:none}
+.head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.quote{border-left:2px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--display);font-size:clamp(22px,3vw,32px);line-height:1.15;color:var(--ink);letter-spacing:-.02em;max-width:30ch}
+.sub{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 44px;margin-top:30px;padding-top:30px;border-top:1px solid var(--stroke)}
+.sub-b{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sub h3{position:sticky;top:20px;align-self:start}
+.sub.wide{grid-template-columns:minmax(0,1fr)}
+.sub.wide h3{position:static;font-size:clamp(24px,3vw,32px)}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>b{font-size:18px;font-weight:400}
+.box p,.box li{font-size:15px;line-height:1.4}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.box li::marker{color:var(--faint)}
+.box .kind{color:var(--accent)}
+.box .ask{color:var(--ink);font-size:15px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.box.hot{border-color:var(--accent)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.words.dim span{color:var(--dim)}
+
+.note{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.note b{color:var(--accent);font-weight:400}
+.why{border-left:1px solid var(--faint);padding-left:12px;max-width:70ch;font-size:15px}
+
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pair>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bad i{color:var(--bad)} .good i{color:var(--good)}
+.pair span{font-size:16px;color:var(--ink);line-height:1.4}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--stroke)}
+td:first-child{color:var(--ink)}
+th{font-weight:400}
+
+/* формула метафоры */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:var(--ink);letter-spacing:-.01em}
+.formula span{border:1px solid var(--stroke);background:var(--card);border-radius:10px;padding:8px 14px}
+.formula span.m{border-color:var(--accent);color:var(--accent)}
+.formula em{font-style:normal;color:var(--dim)}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm b{font-weight:400;font-size:16px;line-height:1.35}
+.fm b u{text-decoration:none;color:var(--accent)}
+
+/* примеры-картинки */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;background:var(--card);border:1px solid var(--stroke);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+figcaption b{font-weight:400;font-size:16px}
+figcaption b u{text-decoration:none;color:var(--accent)}
+
+/* карта метро ассоциаций */
+.map{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:10px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--body);fill:var(--ink)}
+.map .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+
+/* понятнометр */
+.meter{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.meter .track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--well),var(--accent) 50%,var(--well))}
+.meter .ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px}
+.meter .ends>div{display:flex;flex-direction:column;gap:4px}
+.meter .ends>div:nth-child(2){text-align:center}
+.meter .ends>div:last-child{text-align:right}
+.meter .ends b{font-weight:400;font-size:16px}
+.meter input{width:100%;accent-color:var(--accent)}
+.meter output{color:var(--ink);font-size:16px;min-height:2.8em}
+
+.tpl{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.tpl pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink)}
+button{font:500 15px var(--body);cursor:pointer}
+button.copy{align-self:flex-start;background:var(--ink);color:var(--panel);border:0;border-radius:10px;padding:11px 16px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.task{border:1px solid var(--accent);border-radius:10px;padding:26px;display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.task i{color:var(--accent)}
+.task b{font-size:19px;font-weight:400;line-height:1.25}
+.task p{font-size:16px}
+.next{font-size:15px;color:var(--faint)}
+.next a{color:var(--dim)}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--stroke);border-radius:50%;width:34px;height:34px;display:grid;place-items:center}
+ol.steps .t{color:var(--ink);font-size:18px}
+ol.steps .d{font-size:16px;max-width:64ch}
+
+.check{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.check label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--stroke);cursor:pointer;align-items:start;color:var(--ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.quiz{display:flex;flex-direction:column;gap:8px}
+.q{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.q .n{color:var(--accent)}
+.q .p{color:var(--ink);font-size:19px;line-height:1.3;max-width:56ch}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:11px 14px;font-weight:400;font-size:16px;line-height:1.35}
+.q .opts button:hover:not(:disabled){border-color:var(--accent)}
+.q .opts button:disabled{cursor:default;color:var(--dim)}
+.q .opts button.right{border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{border-color:var(--bad);color:var(--ink)}
+.q .exp{font-size:15px;line-height:1.4}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--display);font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score button{background:transparent;color:var(--dim);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400}
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:14px 8px 0}
+
+@media (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  header,section{padding:22px 18px 38px;gap:20px}
+  .corner{margin-bottom:28px}
+  .pair,.two,.three,.four,.shots{grid-template-columns:minmax(0,1fr)}
+  .sub{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:22px;padding-top:22px}
+  .sub h3{position:static}
+  .head{gap:14px}
+  .task{padding:18px;margin-top:22px}
+  .meter .ends{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.metro .st{transition:none}}
+
+/* навигация по разделам мини-методички */
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:7px 13px;font-size:14px;color:var(--ink);text-decoration:none}
+.toc a:hover,.toc a:focus-visible{border-color:var(--accent);outline:none}
+.series{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 14px}
+.series b{color:var(--accent);font-weight:400}
+
+/* соавторство с нейросетью */
+.ai{display:flex;flex-direction:column;gap:10px}
+.prompt{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prompt .kind{color:var(--line2)}
+.prompt>b{font-size:18px;font-weight:400;line-height:1.25}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--well);border-radius:8px;padding:14px;overflow-x:auto}
+.prompt pre em{font-style:normal;color:var(--accent)}
+.prompt .you{font-size:14px;line-height:1.4;border-left:1px solid var(--line2);padding-left:12px}
+.prompt .you b{color:var(--ink);font-weight:400}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rule>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.4}
+.rule>div i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--line2)}
+.rule>div b{font-weight:400;font-size:16px}
+@media (max-width:760px){.rule{grid-template-columns:minmax(0,1fr)}}
+
+/* пирамида и прочие схемы */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--card);border:1px solid var(--stroke);border-radius:8px;padding:10px 14px;text-align:center;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.pyr div small{color:var(--dim);font-size:13px}
+.pyr div.top{border-color:var(--accent)}
+.ice{display:grid;grid-template-columns:minmax(0,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--stroke)}
+.ice>div{padding:16px 18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.ice .up{background:var(--card)}
+.ice .water{background:color-mix(in srgb,var(--line2) 22%,var(--card));color:var(--ink)}
+.ice .down{background:var(--well)}
+.ice b{font-weight:400;font-size:17px}
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dodont>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.dodont .good i{color:var(--good)} .dodont .bad i{color:var(--bad)}
+.dodont i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+@media (max-width:760px){.dodont{grid-template-columns:minmax(0,1fr)}}
+.upd{border:1px dashed var(--faint);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.upd i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+</style>
+<style>
+/* ===== Живые UI-демо: макет «интерфейса» внутри методички ===== */
+.demo{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.demo .cap{color:var(--faint)}
+.stage{background:#f4f4f2;border-radius:8px;padding:28px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;min-height:120px;color:#101010}
+.stage.dark{background:var(--well)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--well);color:var(--dim);border:1px solid var(--stroke);border-radius:999px;padding:7px 12px;font-weight:400;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.demo output{font-size:15px;line-height:1.4;color:var(--dim);min-height:2.8em;display:block}
+.demo output b{color:var(--ink);font-weight:400}
+
+/* кнопки-образцы */
+.u-btn{font:500 16px var(--body);border-radius:10px;padding:14px 28px;border:1.5px solid transparent;cursor:default;transition:background .15s,transform .1s,box-shadow .15s,color .15s;line-height:1.2;white-space:nowrap}
+.u-primary{background:#eb7540;color:#101010}
+.u-secondary{background:transparent;color:#101010;border-color:#101010}
+.u-tertiary{background:transparent;color:#101010;padding-inline:4px;text-decoration:underline;text-underline-offset:6px}
+.u-danger{background:#e5383b;color:#fff}
+.u-btn.is-hover.u-primary{background:#d9612c}
+.u-btn.is-hover.u-secondary{background:#101010;color:#f4f4f2}
+.u-btn.is-hover.u-tertiary{color:#eb7540}
+.u-btn.is-focus{box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.u-btn.is-active{transform:translateY(1px) scale(.98);filter:brightness(.88)}
+.u-btn.is-disabled{background:#d6d6d3;color:#8e8e8c;border-color:transparent;text-decoration:none}
+.u-btn.is-loading{color:transparent;position:relative}
+.u-btn.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid #101010;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* поле ввода-образец */
+.u-field{display:flex;flex-direction:column;gap:6px;width:min(320px,100%);font-family:var(--body)}
+.u-field label{font-size:13px;color:#5a5a58}
+.u-field .in{height:52px;border-radius:10px;border:1px solid #c9c9c6;background:#fff;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#101010;transition:border-color .15s,box-shadow .15s}
+.u-field .in span.ph{color:#a3a3a0}
+.u-field .help{font-size:13px;color:#5a5a58;min-height:1.3em}
+.u-field.is-hover .in{border-color:#8e8e8c}
+.u-field.is-focus .in{border-color:#3b6ef0;box-shadow:0 0 0 3px rgba(59,110,240,.18)}
+.u-field.is-error .in{border-color:#e5383b}
+.u-field.is-error .help{color:#e5383b}
+.u-field.is-ok .in{border-color:#2fa84f}
+.u-field.is-ok .help{color:#2fa84f}
+.u-field.is-disabled .in{background:#ececea;color:#a3a3a0}
+.caret{display:inline-block;width:1.5px;height:20px;background:#101010;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* три инструмента: форма / обводка / детализация */
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tools3 .box .stage{min-height:96px;padding:20px 12px}
+.b-pill{border-radius:999px}
+.b-sq{border-radius:0}
+.b-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0}
+.b-thin{background:transparent;color:#101010;border:1px solid #bdbdba}
+.b-bold{background:transparent;color:#101010;border:2.5px solid #101010}
+.b-dash{background:transparent;color:#101010;border:1.5px dashed #101010}
+.b-grad{background:linear-gradient(120deg,#eb7540,#f2b33d 60%,#eb7540);color:#101010}
+.b-shadow{background:#f4f4f2;color:#101010;border:1.5px solid #101010;box-shadow:4px 4px 0 #101010}
+.b-icon{display:inline-flex;align-items:center;gap:10px;padding-right:8px}
+.b-icon i{width:30px;height:30px;border-radius:50%;background:#101010;color:#f4f4f2;display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* анатомия кнопки */
+.anat{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:12px;overflow-x:auto}
+.anat svg{display:block;width:100%;min-width:520px;height:auto}
+.anat text{font-family:var(--mono);font-size:12px;fill:var(--dim);letter-spacing:.04em}
+.anat .t{font-family:var(--body);font-size:18px;fill:#101010;letter-spacing:0}
+
+/* иерархия: хорошо / плохо */
+.hier{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hier>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hier i{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.hier .bad i{color:var(--bad)} .hier .good i{color:var(--good)}
+.hier .stage{min-height:0;padding:20px 14px;justify-content:flex-start}
+.hier .stage .u-btn{padding:12px 18px;font-size:15px}
+.hier p{font-size:15px}
+.modal{background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.modal b{color:#101010;font-size:17px;font-weight:600}
+.modal>span{font-size:14px;color:#5a5a58}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+
+/* мини-образцы элементов */
+.zoo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.zoo .box .stage{min-height:84px;padding:18px 12px}
+.tog{width:46px;height:28px;border-radius:999px;background:#2fa84f;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tog.off{background:#c9c9c6}.tog.off::after{right:auto;left:3px}
+.chk{width:22px;height:22px;border-radius:6px;background:#101010;color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.chk.off{background:#fff;border:1.5px solid #8e8e8c}
+.rad{width:22px;height:22px;border-radius:50%;border:1.5px solid #8e8e8c;background:#fff;display:grid;place-items:center;flex:none}
+.rad.on{border:6px solid #101010}
+.ctl{display:flex;align-items:center;gap:8px;font-size:14px;color:#101010}
+.crumbs{font-size:14px;color:#8e8e8c}.crumbs b{color:#101010;font-weight:500}
+.pages{display:flex;gap:4px}.pages span{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;color:#101010}.pages span.on{background:#101010;color:#fff}
+.tabs{display:flex;gap:2px;background:#e4e4e1;border-radius:10px;padding:3px}.tabs span{padding:7px 12px;border-radius:8px;font-size:14px;color:#5a5a58}.tabs span.on{background:#fff;color:#101010;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prog{width:100%;display:flex;flex-direction:column;gap:8px}.prog .bar{height:8px;border-radius:4px;background:#e4e4e1;overflow:hidden}.prog .bar i{display:block;height:100%;width:60%;background:#eb7540}
+.prog .lbl{font-size:13px;color:#5a5a58;display:flex;justify-content:space-between}
+.steps3{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a58}.steps3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-weight:500}.steps3 b.off{background:#e4e4e1;color:#8e8e8c}.steps3 hr{flex:1;border:0;height:1.5px;background:#c9c9c6;margin:0;min-width:14px}
+.chip{border:1px solid #c9c9c6;border-radius:999px;padding:6px 12px;font-size:13px;color:#101010}.chip.on{background:#101010;color:#fff;border-color:#101010}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#c9c9c6}.dots i.on{background:#101010;width:22px;border-radius:4px}
+.mini-card{background:#fff;border-radius:12px;overflow:hidden;width:150px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.mini-card .pic{height:72px;background:linear-gradient(135deg,#f2b33d,#eb7540)}
+.mini-card .tx{padding:10px;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a5a58}.mini-card .tx b{color:#101010;font-size:14px;font-weight:600}
+.lnk{color:#101010;font-size:15px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.lnk.h{color:#eb7540}
+
+/* UI-кит: токены */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--stroke);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.sw i{display:block;height:64px}
+.sw span{padding:8px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;gap:2px;word-break:break-all}
+.sw span b{color:var(--ink);font-weight:400;font-family:var(--body);font-size:14px;letter-spacing:0;word-break:normal}
+.typescale{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.typescale>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.typescale .cap{color:var(--faint)}
+.typescale span:last-child{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.space{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.space>div{display:flex;flex-direction:column;align-items:center;gap:8px}
+.space i{display:block;background:color-mix(in srgb,var(--accent) 35%,transparent);border:1px dashed var(--accent)}
+.space span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.layers{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.layers>div{border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--card);font-size:15px}
+.layers>div b{font-weight:400;color:var(--ink)}
+.layers>div.hot{border-color:var(--accent)}
+.variants{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;align-items:center;min-width:560px}
+.variants .cap{color:var(--faint)}
+.variants .u-btn{padding:10px 14px;font-size:14px;justify-self:start}
+.varwrap{background:#f4f4f2;border-radius:8px;padding:18px;overflow-x:auto;color:#101010;border:1px dashed #b78bff;outline-offset:-1px}
+.varwrap .cap{color:#5a5a58}
+.theme-demo{border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,color .25s;border:1px solid var(--stroke)}
+.theme-demo b{font-size:20px;font-weight:500}
+.theme-demo p{font-size:15px;max-width:none}
+.theme-demo .row{display:flex;gap:8px;flex-wrap:wrap}
+.theme-demo .u-btn{padding:11px 18px;font-size:15px}
+
+/* стили: карта и карточки стилей */
+.styles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lv{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--stroke)}
+.lv>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:15px;line-height:1.4}
+.lv>div>span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{background:var(--well);border-radius:6px;padding:4px 8px;font-size:14px;color:var(--ink)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--stroke)}
+.links a{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;padding:11px 0;border-bottom:1px solid var(--stroke);text-decoration:none;font-size:15px;color:var(--dim)}
+.links a span:first-child{color:var(--ink)}
+.links a:hover span:first-child,.links a:focus-visible span:first-child{color:var(--accent)}
+figure.tall img{aspect-ratio:auto}
+figure.map img{aspect-ratio:auto;object-fit:contain;background:#141414}
+
+@media (max-width:760px){
+  .tools3,.zoo,.hier,.styles-grid{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .typescale>div,.lv>div,.layers>div,.links a{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media (prefers-reduced-motion:reduce){.caret,.u-btn.is-loading::after{animation:none}.u-btn,.theme-demo{transition:none}}
+
+/* Обложка: точки тише и растворяются, сверху мягкие круги градиента */
+header{background-image:none;overflow:hidden;isolation:isolate}
+header::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(#2c2c2c 1.1px,transparent 1.2px);background-size:18px 18px;
+  -webkit-mask-image:radial-gradient(120% 90% at 0% 0%,#000 0%,rgba(0,0,0,.55) 35%,transparent 75%);
+  mask-image:radial-gradient(120% 90% at 0% 0%,#000 0%,rgba(0,0,0,.55) 35%,transparent 75%)}
+header::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:900px;height:900px;right:-360px;top:-420px;border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(235,117,64,.30) 0,rgba(235,117,64,.10) 22%,transparent 46%),
+    radial-gradient(circle at 30% 72%,rgba(196,72,110,.16) 0,transparent 32%),
+    repeating-radial-gradient(circle at 50% 50%,transparent 0 58px,rgba(244,244,242,.035) 59px 60px);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 30%,transparent 68%);
+  mask-image:radial-gradient(circle at 50% 50%,#000 30%,transparent 68%);
+  animation:hdrift 22s ease-in-out infinite alternate}
+@keyframes hdrift{from{transform:translate(0,0) scale(1)}to{transform:translate(-60px,40px) scale(1.08)}}
+@media (max-width:700px){header::after{width:560px;height:560px;right:-260px;top:-260px}}
+@media (prefers-reduced-motion:reduce){header::after{animation:none}}
+
+/* Внутри урока ZenClass: фон прозрачный, без боковых отступов, прокручивает сама страница урока */
+html.embed body{background:transparent;padding:0 0 8px}
+html.embed .wrap{max-width:none}
+
+/* Режим ?fit=1: страница-оболочка показывает только масштабируемый фрейм */
+html.shell body>*:not(iframe.shell-f){display:none!important}
+html.embed{color-scheme:normal;background:transparent}
+
+/* ===== Интерактив только для методички «Конкурентный анализ» ===== */
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;font-weight:400;font-size:14px;align-self:flex-start}
+button.ghost:hover{border-color:var(--accent)}
+.demo .warn{color:var(--bad)}
+.demo .okv{color:var(--good)}
+
+/* сортировка карточек */
+.cls-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.demo output.cls-n{min-height:0;color:var(--accent);font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.cls-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cls-card{background:var(--well);border:1px solid var(--stroke);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0;transition:border-color .2s}
+.cls-card b{color:var(--ink);font-weight:400;font-size:16px;line-height:1.3}
+.cls-card .d{font-size:14px;line-height:1.4}
+.cls-card .seg button{background:var(--card)}
+.cls-card .seg button:disabled{cursor:default;opacity:.55}
+.cls-card .seg button.right{border-color:var(--good);color:var(--ink);opacity:1}
+.cls-card .seg button.wrong{border-color:var(--bad);color:var(--ink);opacity:1}
+.cls-card.is-right{border-color:color-mix(in srgb,var(--good) 55%,var(--stroke))}
+.cls-card.is-wrong{border-color:color-mix(in srgb,var(--bad) 55%,var(--stroke))}
+.cls-card .e{font-size:14px;line-height:1.4;border-top:1px solid var(--stroke);padding-top:10px}
+.cls-card .e b{font-size:14px}
+.cls-win{grid-column:1/-1;border:1px solid var(--good);border-radius:10px;padding:14px 16px;color:var(--ink);font-size:15px}
+
+/* конструктор шаблона */
+.tplb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:20px;align-items:start}
+.tplb-ctrls{display:flex;flex-direction:column;gap:16px;min-width:0}
+.tplb-ctrls>div{display:flex;flex-direction:column;gap:8px}
+.tplb-f{display:flex;flex-direction:column;gap:8px}
+.tplb-f textarea{font:15px/1.45 var(--body);background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:10px 12px;resize:vertical;width:100%}
+.tplb-f textarea:focus{outline:none;border-color:var(--accent)}
+.tplb-crit{display:flex;flex-wrap:wrap;gap:6px}
+.tplb-crit label{display:inline-flex;align-items:center;gap:6px;background:var(--well);border:1px solid var(--stroke);border-radius:999px;padding:6px 12px 6px 9px;font-size:14px;color:var(--dim);cursor:pointer}
+.tplb-crit input{accent-color:var(--accent);margin:0;width:16px;height:16px}
+.tplb-crit label:has(input:checked){border-color:var(--accent);color:var(--ink)}
+.tplb-crit label:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.tplb-view{display:flex;flex-direction:column;gap:12px;min-width:0;position:sticky;top:16px}
+.tplb-view pre{margin:0;background:#f4f4f2;color:#101010;border-radius:8px;padding:16px;font:12.5px/1.55 var(--mono);white-space:pre-wrap;word-break:break-word;tab-size:14;max-height:420px;overflow:auto}
+
+/* таблица оценок */
+table.st{min-width:640px;font-size:14px}
+table.st th,table.st td{padding:6px 8px 6px 0;vertical-align:middle}
+table.st thead th{vertical-align:bottom}
+.st-in{font:14px var(--body);background:transparent;color:var(--ink);border:1px solid transparent;border-radius:6px;padding:6px 8px;width:100%;min-width:0}
+.st-in:hover{border-color:var(--stroke)}
+.st-in:focus{outline:none;border-color:var(--accent);background:var(--well)}
+thead .st-in{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);text-align:center}
+td.st-crit{width:34%}
+.st-cell{width:100%;min-width:52px;height:38px;border-radius:8px;border:1px solid var(--stroke);font:500 15px var(--mono);color:var(--ink);background:var(--well);transition:background .15s}
+.st-cell[data-v="1"]{background:color-mix(in srgb,var(--accent) 22%,var(--well))}
+.st-cell[data-v="2"]{background:color-mix(in srgb,var(--accent) 50%,var(--well))}
+.st-cell[data-v="3"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.st-tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;border-radius:6px;padding:4px 7px;white-space:nowrap;color:var(--faint);border:1px solid var(--stroke)}
+.st-tag.niche{color:var(--good);border-color:var(--good)}
+.st-tag.std{color:var(--ink);border-color:var(--faint)}
+.st-tag.spread{color:var(--line2);border-color:var(--line2)}
+tr.r-niche td.st-crit .st-in{color:var(--good)}
+tfoot td{font-family:var(--mono);font-size:13px;color:var(--ink);text-align:center;border-bottom:0;padding-top:12px}
+tfoot td:first-child{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+tfoot td.lead-c{color:var(--accent)}
+.verdict{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.verdict li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.verdict li::before{content:"●";font-size:10px;padding-top:5px;color:var(--faint)}
+.verdict li.ok::before{color:var(--good)} .verdict li.bad::before{color:var(--bad)} .verdict li.inf::before{color:var(--line2)} .verdict li.acc::before{color:var(--accent)}
+.verdict b{color:var(--ink);font-weight:400}
+
+/* карта позиционирования */
+.pm-wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:start}
+.pm-stage{padding:34px 34px;display:block}
+.pm{position:relative;width:100%;max-width:440px;margin:0 auto;aspect-ratio:1;touch-action:none;cursor:crosshair}
+.pm::before,.pm::after{content:"";position:absolute;background:#9a9a96;pointer-events:none}
+.pm::before{left:50%;top:0;bottom:0;width:1.5px;transform:translateX(-50%)}
+.pm::after{top:50%;left:0;right:0;height:1.5px;transform:translateY(-50%)}
+.pm-q{position:absolute;width:50%;height:50%;border-radius:4px;transition:background .25s;pointer-events:none}
+.pm-q.q0{left:0;top:0}.pm-q.q1{left:50%;top:0}.pm-q.q2{left:0;top:50%}.pm-q.q3{left:50%;top:50%}
+.pm-q.empty{background:repeating-linear-gradient(45deg,rgba(47,168,79,.13) 0 8px,transparent 8px 16px)}
+.pm-q span{position:absolute;inset:auto 8px 8px auto;font:11px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:#2fa84f;opacity:0;transition:opacity .25s}
+.pm-q.q0 span,.pm-q.q2 span{inset:auto auto 8px 8px}
+.pm-q.q0 span,.pm-q.q1 span{bottom:auto;top:8px}
+.pm-q.empty span{opacity:1}
+.pm-ax{position:absolute;font:11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#5a5a58;white-space:nowrap;pointer-events:none;z-index:1}
+.pm-top{left:50%;top:-24px;transform:translateX(-50%)}
+.pm-bot{left:50%;bottom:-24px;transform:translateX(-50%)}
+.pm-l{left:-24px;top:50%;transform:translate(-50%,-50%) rotate(-90deg)}
+.pm-r{right:-24px;top:50%;transform:translate(50%,-50%) rotate(90deg)}
+.pm-dot{position:absolute;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;border:2px solid #101010;background:#fff;color:#101010;font:500 14px var(--body);display:grid;place-items:center;cursor:grab;touch-action:none;z-index:2;padding:0;box-shadow:0 2px 6px rgba(0,0,0,.15);transition:box-shadow .15s}
+.pm-dot:active{cursor:grabbing}
+.pm-dot:focus-visible{outline:none;box-shadow:0 0 0 3px #f4f4f2,0 0 0 5px #3b6ef0}
+.pm-dot.you{width:46px;height:46px;margin:-23px 0 0 -23px;background:#eb7540;border-color:#eb7540;font-size:13px;z-index:3}
+.pm-dot.drag{box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.pm-side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.pm-legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.35}
+.pm-legend li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;align-items:center}
+.pm-legend i{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-style:normal;font-size:12px;color:var(--ink)}
+.pm-legend li.you i{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-size:9px}
+
+/* польза × усилия */
+.ie{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ie>div{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.ie>div.hot{border-color:var(--accent)}
+.ie .kind{color:var(--accent)}
+.ie b{font-weight:400;font-size:18px}
+.ie p{font-size:15px}
+
+@media (max-width:760px){
+  .cls-list,.tplb-grid,.pm-wrap{grid-template-columns:minmax(0,1fr)}
+  .tplb-view{position:static}
+  .pm-stage{padding:30px 28px}
+  .pm-dot{width:32px;height:32px;margin:-16px 0 0 -16px;font-size:13px}
+  .pm-dot.you{width:40px;height:40px;margin:-20px 0 0 -20px;font-size:12px}
+  .pm-q span{font-size:9.5px}
+  .pm-l{left:-15px}.pm-r{right:-15px}.pm-top{top:-20px}.pm-bot{bottom:-20px}
+}
+@media (max-width:420px){.ie{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.pm-q,.pm-q span,.st-cell,.cls-card{transition:none}}
+
+</style>
+<style>
+.sp-pick{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:16px}
+.sp-q{display:flex;flex-direction:column;gap:8px}
+.sp-opts{display:flex;flex-wrap:wrap;gap:6px}
+.sp-opts button{font:inherit;font-size:15px;background:var(--well);color:var(--ink);border:1px solid var(--stroke);border-radius:999px;padding:8px 14px;cursor:pointer;text-align:left}
+.sp-opts button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.sp-opts button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sp-res{border-top:1px solid var(--stroke);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.sp-res ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.sp-res li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;color:var(--ink);font-size:16px}
+.sp-res li::before{font-family:var(--mono);font-size:13px}
+.sp-res li.y::before{content:"✓";color:var(--good)}
+.sp-res li.n::before{content:"×";color:var(--bad)}
+.sp-res li.m::before{content:"?";color:var(--accent)}
+.sp-res li span{color:var(--dim)}
+.sp-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sp-cards dl{margin:0;display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--stroke);padding-top:10px}
+.sp-cards dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-top:6px}
+.sp-cards dd{margin:0;font-size:15px}
+.sp-cards dd.no{color:var(--bad)}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:16px}
+.sp-src{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.sp-src a{text-underline-offset:3px}
+@media (max-width:760px){.sp-cards{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<script>if(/fit=/.test(location.search)){window.PAAA_SHELL=1;(function(){var D=900,d=document,f=d.createElement('iframe');d.documentElement.style.cssText=d.body.style.cssText='margin:0;padding:0;height:100%;overflow:hidden;background:transparent;color-scheme:normal';f.className='shell-f';f.title='Методичка';f.src=location.pathname+'?embed=1'+location.hash;d.documentElement.className+=' shell';f.style.cssText='border:0;display:block;transform-origin:0 0;width:'+D+'px;height:100%';d.body.appendChild(f);function lay(){var w=innerWidth,h=innerHeight,c=f.contentDocument;if(!c||!c.body)return;if(w<600){f.style.width=w+'px';f.style.height=h+'px';f.style.transform='';f.style.marginLeft='0';return}c.documentElement.style.overflow='hidden';var H=c.body.offsetHeight,s=Math.min(w/D,h/H);f.style.width=D+'px';f.style.height=H+'px';f.style.transform='scale('+s+')';f.style.marginLeft=Math.max(0,(w-D*s)/2)+'px'}f.onload=function(){lay();try{new ResizeObserver(lay).observe(f.contentDocument.body)}catch(e){}setTimeout(lay,500);setTimeout(lay,2000)};addEventListener('resize',lay)})()}</script>
+<div class="wrap">
+<header>
+  <div class="corner"><span>PERASPERADASTRA
+МЕТОДИЧКА ДЛЯ СТУДЕНТОВ</span><span>ВСЕ КУРСЫ
+УСЛОВИЯ НА 11 НОЯБРЯ 2026</span></div>
+  <h1>Студенческие подписки</h1>
+  <p class="lead"><b>Figma, Framer и GitHub отдают студентам платные тарифы бесплатно.</b> Разбираем, кому они положены, что с ними в России и других странах СНГ и как подать заявку, чтобы её одобрили.</p>
+  <span class="save">Сохрани, чтобы не потерять</span>
+  <nav class="toc" aria-label="Разделы"><a href="#who">Кому положено</a><a href="#pick">Что доступно тебе</a><a href="#cis">Россия и СНГ</a><a href="#services">Сервисы</a><a href="#how">Как подать заявку</a><a href="#none">Если не дали</a><a href="#sources">Источники</a></nav>
+</header>
+
+<section id="who">
+  <div class="head"><div class="head-l"><span class="num">01</span><h2>Кому положено</h2></div></div>
+  <p>Студенческий тариф дают тем, кто учится в вузе, колледже, техникуме или старшей школе. Сервис проверяет это по почте учебного заведения или по документу об обучении.</p>
+  <div class="note"><b>Курсы Perasperadastra здесь не помогут</b><p>Сервисы просят почту учебного заведения или справку из вуза, колледжа или школы. У онлайн-курсов дополнительного образования их обычно нет. Если ты параллельно учишься в вузе или колледже, подавай заявку от них.</p></div>
+  <div class="three">
+    <div class="box"><span class="kind">Главное</span><b>Почта учебного заведения</b><p>Адрес на домене вуза или колледжа, например <i>ivanov@stud.university.ru</i>. Её выдают в деканате или IT-службе. Без неё не обойтись в Figma и Notion.</p></div>
+    <div class="box"><span class="kind">Запасной вариант</span><b>Документ с датой</b><p>Фото студенческого билета, где видны ФИО, название учебного заведения и срок действия. Или справка об обучении на текущий год. Подходит для GitHub и Framer.</p></div>
+    <div class="box"><span class="kind">Не подойдёт</span><b>Личная почта</b><p>Адреса на gmail.com, mail.ru, yandex.ru сервисы отклоняют сразу. Notion не принимает и документы: только почту учебного заведения.</p></div>
+  </div>
+</section>
+
+<section id="pick">
+  <div class="head"><div class="head-l"><span class="num">02</span><h2>Что доступно тебе</h2></div></div>
+  <p>Ответь на два вопроса, и мы покажем, на какие тарифы стоит подавать заявку.</p>
+  <div class="sp-pick">
+    <div class="sp-q"><span class="cap">Где ты живёшь</span><div class="sp-opts" data-q="country">
+      <button type="button" data-v="ru" aria-pressed="false">Россия</button>
+      <button type="button" data-v="by" aria-pressed="false">Беларусь</button>
+      <button type="button" data-v="other" aria-pressed="false">Другая страна СНГ</button>
+    </div></div>
+    <div class="sp-q"><span class="cap">Где ты учишься</span><div class="sp-opts" data-q="status">
+      <button type="button" data-v="edu" aria-pressed="false">В вузе, колледже или школе</button>
+      <button type="button" data-v="course" aria-pressed="false">Только на курсах</button>
+    </div></div>
+    <div class="sp-res" id="sp-res" aria-live="polite"><p>Выбери ответ на оба вопроса.</p></div>
+  </div>
+</section>
+
+<section id="cis">
+  <div class="head"><div class="head-l"><span class="num">03</span><h2>Россия и другие страны СНГ</h2></div></div>
+  <p>Студенческие программы зарубежных сервисов работают «в отдельных регионах». Список стран сервисы не публикуют, поэтому проверять приходится по форме заявки: если твоей страны нет в поле «Страна», заявку сейчас не примут.</p>
+  <div class="two">
+    <div class="box"><span class="kind">Россия</span><b>Figma и Notion — нет</b><ul>
+      <li>Figma Education из России оформить нельзя. В июле 2026 года поддержка Figma ответила студентам из России, что страны нет в списке и исключений не делают.</li>
+      <li>Notion в сентябре 2024 года закрыл работу для пользователей из России.</li>
+      <li>GitHub и Framer ограничений по странам в правилах не пишут. Подавай заявку и смотри на ответ.</li>
+    </ul></div>
+    <div class="box"><span class="kind">Беларусь и другие страны СНГ</span><b>Проверяй форму</b><ul>
+      <li>Открой форму заявки и посмотри, есть ли твоя страна в списке.</li>
+      <li>Если есть, подавай заявку по шагам из раздела «Как подать заявку».</li>
+      <li>Если нет, обходного пути у сервиса нет: так отвечает поддержка Figma.</li>
+    </ul></div>
+  </div>
+  <div class="note"><b>Без VPN и с настоящей страной</b><p>Figma прямо просит не включать VPN при проверке. Если указать чужую страну или подложить чужие документы, заявку отклонят или потом отзовут тариф. Студенческий статус проверяют каждый год.</p></div>
+</section>
+
+<section id="services">
+  <div class="head"><div class="head-l"><span class="num">04</span><h2>Сервисы</h2></div></div>
+  <p>Четыре сервиса, которые пригодятся дизайнеру. Условия сверены с официальными страницами на 11 ноября 2026 года.</p>
+  <div class="sp-cards">
+    <div class="box"><span class="kind">Figma Education</span><b>Professional на год</b>
+      <p>Платный тариф Professional, ИИ-функции Figma Make и агент в редакторе с 3 000 кредитов в месяц, один файл Figma Sites.</p>
+      <dl><dt>Как подтвердить</dt><dd>Заявка на figma.com/education/apply с почты учебного заведения. Студентов вузов и колледжей Figma проверяет через сервис SheerID: домен почты должен совпадать с учебным заведением. Если просят документ, загружай справку об обучении.</dd>
+      <dt>Срок</dt><dd>Год, потом заявка заново.</dd>
+      <dt>В России</dt><dd class="no">Не работает.</dd></dl></div>
+    <div class="box"><span class="kind">Framer</span><b>Basic на год</b>
+      <p>Тариф Basic для сайта-портфолио, полный доступ к редактору и CMS, 1 000 ИИ-кредитов в месяц.</p>
+      <dl><dt>Как подтвердить</dt><dd>Форма на framer.com/education/students: почта учебного заведения, ожидаемый год выпуска и фото студенческого, где видны ФИО и логотип. Ответ приходит в течение пяти рабочих дней.</dd>
+      <dt>Срок</dt><dd>Год. Новую заявку можно подать через 11 месяцев. Код работает только на новых аккаунтах.</dd>
+      <dt>В России</dt><dd>Ограничений в правилах нет.</dd></dl></div>
+    <div class="box"><span class="kind">GitHub Student Developer Pack</span><b>Набор бесплатных сервисов</b>
+      <p>Для дизайнера: GitHub Pages для сайта-портфолио, домен .me на год от Namecheap, три месяца Icons8, год Polypane для проверки адаптива и 60 иконок IconScout в месяц.</p>
+      <dl><dt>Как подтвердить</dt><dd>Заявка в настройках GitHub: раздел Education benefits. Нужно быть старше 13 лет и учиться по программе с дипломом. Подходят фото студенческого с датой, справка, расписание или выписка оценок. Если учебное заведение выдаёт почту, её попросят добавить в аккаунт.</dd>
+      <dt>Срок</dt><dd>Пока учишься. Сроки отдельных сервисов в наборе разные.</dd>
+      <dt>В России</dt><dd>Ограничений в правилах нет.</dd></dl></div>
+    <div class="box"><span class="kind">Notion Education</span><b>Бесплатный тариф для студента</b>
+      <p>Личное пространство без ограничений на блоки, до 100 гостей, загрузка файлов и публикация страниц.</p>
+      <dl><dt>Как подтвердить</dt><dd>Почта учебного заведения должна быть основной почтой аккаунта. Вуз должен быть в базе WHED. В приложении: Settings → Upgrade plan → Get free education plan. Документы Notion не принимает.</dd>
+      <dt>Срок</dt><dd>Год, потом подтверждение заново.</dd>
+      <dt>В России</dt><dd class="no">Не работает с сентября 2024 года.</dd></dl></div>
+  </div>
+  <p class="why">Webflow отменил студенческую скидку 28 февраля 2026 года. Студентам он предлагает обычный бесплатный тариф Starter.</p>
+</section>
+
+<section id="how">
+  <div class="head"><div class="head-l"><span class="num">05</span><h2>Как подать заявку</h2></div></div>
+  <p>Чаще всего заявки отклоняют из-за личной почты или документа без даты. Пять шагов помогут пройти проверку с первого раза.</p>
+  <ol class="steps">
+    <li><div><div class="t">Получи почту учебного заведения</div><div class="d">Спроси в деканате или IT-службе. Часто она уже есть в личном кабинете студента.</div></div></li>
+    <li><div><div class="t">Подготовь документ</div><div class="d">Фото студенческого или справка на текущий учебный год. ФИО, название учебного заведения и дата должны читаться. Если вуз выдаёт справку на английском, бери её.</div></div></li>
+    <li><div><div class="t">Заполни аккаунт так же, как в документе</div><div class="d">Имя и фамилия латиницей, как в студенческом или справке. Почту учебного заведения сделай основной.</div></div></li>
+    <li><div><div class="t">Подавай без VPN</div><div class="d">Указывай страну, где живёшь. Название учебного заведения выбирай из списка в форме.</div></div></li>
+    <li><div><div class="t">Поставь напоминание</div><div class="d">Figma и Notion просят подтвердить статус раз в год, Framer — подать новую заявку через 11 месяцев. Пропустишь срок — аккаунт вернётся на бесплатный тариф.</div></div></li>
+  </ol>
+  <div class="check">
+    <label><input type="checkbox"><span>Почта учебного заведения работает и стоит основной в аккаунте</span></label>
+    <label><input type="checkbox"><span>На документе видны ФИО, учебное заведение и текущая дата</span></label>
+    <label><input type="checkbox"><span>Имя в аккаунте совпадает с документом</span></label>
+    <label><input type="checkbox"><span>VPN выключен, страна указана настоящая</span></label>
+    <label><input type="checkbox"><span>Напоминание о продлении стоит в календаре</span></label>
+  </div>
+</section>
+
+<section id="none">
+  <div class="head"><div class="head-l"><span class="num">06</span><h2>Если тариф не дали</h2></div></div>
+  <div class="pair"><div class="bad"><i>Заявку отклонили</i><span>Почта не прошла проверку, или учебного заведения нет в базе сервиса.</span></div><div class="good"><i>Что делать</i><span>Проверь, что почта основная, и подай заявку ещё раз с документом. Если не помогло, напиши в поддержку сервиса: название учебного заведения, сайт и домен почты.</span></div></div>
+  <div class="pair"><div class="bad"><i>Страны нет в форме</i><span>Сервис не работает со студентами из твоей страны.</span></div><div class="good"><i>Что делать</i><span>Работай на бесплатном тарифе. Обходного пути через поддержку нет.</span></div></div>
+  <div class="pair"><div class="bad"><i>Ты учишься только на курсах</i><span>Студенческий статус тебе не положен.</span></div><div class="good"><i>Что делать</i><span>Работай на бесплатных тарифах. Прежде чем покупать подписку, спроси куратора, нужна ли она для задания.</span></div></div>
+</section>
+
+<section id="sources">
+  <div class="head"><div class="head-l"><span class="num">07</span><h2>Источники</h2></div></div>
+  <p>Условия меняются. Перед заявкой открой страницу сервиса и сверь, что ничего не поменялось.</p>
+  <ul class="sp-src">
+    <li><a href="https://help.figma.com/hc/en-us/articles/360041061214-Verify-your-eligibility-for-Figma-s-Education-plan" target="_blank" rel="noopener">Figma: условия Education</a></li>
+    <li><a href="https://forum.figma.com/ask-the-community-7/figma-education-plan-student-from-russia-56599" target="_blank" rel="noopener">Форум Figma: ответ поддержки студентам из России, июль 2026</a></li>
+    <li><a href="https://framer.com/education/students/" target="_blank" rel="noopener">Framer: тариф для студентов</a></li>
+    <li><a href="https://docs.github.com/en/education/about-github-education/github-education-for-students/apply-to-github-education-as-a-student" target="_blank" rel="noopener">GitHub: как подать заявку студенту</a></li>
+    <li><a href="https://education.github.com/pack" target="_blank" rel="noopener">GitHub Student Developer Pack: список сервисов</a></li>
+    <li><a href="https://www.notion.com/en-us/help/notion-for-education" target="_blank" rel="noopener">Notion: тариф для образования</a></li>
+    <li><a href="https://zona.media/news/2024/08/26/notion" target="_blank" rel="noopener">Notion закрывает аккаунты в России, август 2024</a></li>
+    <li><a href="https://help.webflow.com/hc/en-us/articles/33961230226963-Webflow-for-students" target="_blank" rel="noopener">Webflow: отмена студенческой скидки</a></li>
+  </ul>
+</section>
+<footer>Perasperadastra · Методичка для студентов всех курсов</footer>
+</div>
+
+<script>
+(function(){var e=false;try{e=window.self!==window.top;if(e&&window.parent.document.getElementById('view'))e=false}catch(x){e=true}if(e)document.documentElement.classList.add('embed')})();
+(function(){
+var st={country:null,status:null},res=document.getElementById('sp-res');
+function li(c,b,t){return '<li class="'+c+'"><div><b>'+b+'</b> <span>'+t+'</span></div></li>'}
+function draw(){
+ if(!st.country||!st.status){res.innerHTML='<p>Выбери ответ на оба вопроса.</p>';return}
+ if(st.status==='course'){res.innerHTML='<p><b>Студенческие тарифы тебе пока не положены.</b> Сервисы проверяют учёбу в вузе, колледже или школе, а у онлайн-курсов нет нужной почты и справки. Работай на бесплатных тарифах Figma, Framer и GitHub. Прежде чем покупать подписку, спроси куратора.</p>';return}
+ var h='';
+ if(st.country==='ru'){
+  h+=li('y','GitHub Student Developer Pack.','Ограничений по странам в правилах нет. Подходит справка или студенческий с датой.');
+  h+=li('y','Framer.','Ограничений по странам в правилах нет. Нужны почта учебного заведения и фото студенческого.');
+  h+=li('n','Figma Education.','Из России не оформить: поддержка подтвердила в июле 2026 года.');
+  h+=li('n','Notion Education.','Notion не работает в России с сентября 2024 года.');
+ }else{
+  h+=li('y','GitHub Student Developer Pack.','Подходит справка или студенческий с датой.');
+  h+=li('y','Framer.','Нужны почта учебного заведения и фото студенческого.');
+  h+=li('m','Figma Education.','Открой форму заявки и проверь, есть ли твоя страна в списке.');
+  h+=li('m','Notion Education.','Нужна почта учебного заведения, а вуз должен быть в базе WHED. Проверь в приложении.');
+ }
+ res.innerHTML='<ul>'+h+'</ul>';
+}
+document.querySelectorAll('.sp-opts').forEach(function(g){g.addEventListener('click',function(ev){var b=ev.target.closest('button');if(!b)return;g.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});st[g.dataset.q]=b.dataset.v;draw()})});
+})();
+</script>
+</body>
+</html>
