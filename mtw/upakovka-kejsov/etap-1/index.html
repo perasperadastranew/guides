@@ -378,6 +378,8 @@ html.embed .strip-in{flex-wrap:wrap;overflow:visible}html.embed .strip-in img{he
 .errs b{font-weight:500;font-size:16px}
 .errs span{font-size:14px;color:var(--muted);padding-left:14px;border-left:1px solid var(--good)}
 kbd{font-family:var(--mono);font-size:.85em;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;background:var(--panel-2)}
+.steps.cols3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:760px){.steps.cols3{grid-template-columns:1fr}}
 </style>
 
 <div class="wrap">
@@ -388,7 +390,7 @@ kbd{font-family:var(--mono);font-size:.85em;border:1px solid var(--line);border-
   <div class="hero hero-grid">
     <div style="display:flex;flex-direction:column;gap:22px">
     <h1>Кейс: от готового макета до Behance и Dprofile</h1>
-    <p>Как превратить проект в кейс, который досматривают до конца: контент, мокапы, стиль, ритм слайдов, обложка, анимация и публикация. Для лендинга, лонгрида, корпоративного сайта, приложения, 3D и AI-проектов. В каждом этапе — шаги, что можно отдать нейросети, чек-лист и готовые инструкции для чата.</p>
+    <p>Как превратить проект в кейс, который досматривают до конца: контент, мокапы, стиль, ритм слайдов, обложка, анимация и публикация. Для лендинга, лонгрида, приложения, 3D и AI-проектов. В каждом этапе — шаги, что можно отдать нейросети, чек-лист и готовые инструкции для чата.</p>
     <p class="note">Сохрани ссылку, чтобы не потерять: гайд нужен в конце каждого проекта.</p>
     </div>
     <div class="hlwrap"><div class="hlstage" data-fig="case-packaging"><span class="hlread">наведи курсор</span></div><p class="hlmeans"></p></div>
@@ -408,7 +410,7 @@ kbd{font-family:var(--mono);font-size:.85em;border:1px solid var(--line);border-
   </div>
   <div class="sec-head" style="margin-top:8px"><h3>Как пользоваться гайдом</h3>
   <p class="muted">Читать подряд не нужно. Открой свой тип проекта, затем иди по этапам: каждый заканчивается чек-листом.</p></div>
-  <ol class="steps">
+  <ol class="steps cols3">
     <li><b>Найди свой тип проекта</b><span>Какие слайды обязательны, что главное и в каком шаблоне собирать.</span></li>
     <li><b>Собери контент</b><span>Тексты, экраны, мокапы и фото — до того, как открываешь шаблон кейса.</span></li>
     <li><b>Смонтируй слайды</b><span>Стиль кейса, ритм планов, композиция каждого слайда.</span></li>
@@ -456,9 +458,6 @@ kbd{font-family:var(--mono);font-size:.85em;border:1px solid var(--line);border-
     </div>
   </article>
 
-  <article class="ptype" id="type-corp">
-    <div class="ptype-head"><span class="tag">Сайт</span><h3>Корпоративный сайт</h3><p>Главное — система: несколько страниц живут по одним правилам. Обязательно: обложка, задача и позиционирование компании, карта сайта, главная и 2–3 внутренние страницы, UI-кит, адаптив. Если сайт большой, раздели его на два кейса: например, айдентика и сайт отдельно.</p></div>
-  </article>
 
   <article class="ptype" id="type-app">
     <div class="ptype-head"><span class="tag">Интерфейс</span><h3>Приложение</h3><p>Главное — интерфейс и сценарий. На обложке сам интерфейс в мокапе, а не иконка приложения: так сразу понятно, о чём кейс. Обязательно: задача, исследование (персоны, JTBD, user flow), вайрфреймы, ключевые экраны крупно, дизайн-система, айдентика и промо-сайт, если он есть. Шаблон — <a href="https://www.figma.com/design/wKvOKiP4XhK7kdUJiy2Qqy" target="_blank" rel="noopener">«Кейсы для приложений»</a>.</p></div>
@@ -1691,7 +1690,7 @@ const GUIDE={corner:"ГАЙД · УПАКОВКА КЕЙСА"};
 const LNAME={1:"Контент",2:"Мокапы и фото",3:"Стиль кейса",4:"Оформление слайдов",5:"Обложка и название",6:"Анимация",7:"Публикация"};
 const P={
 packer:{title:"Упаковщик кейса",sub:"Структура кейса и подписи к слайдам из журнала проекта",mono:"УК",io:"<b>Вход:</b> паспорт проекта с журналом решений или просто твои заметки о проекте. <b>Выход:</b> раскадровка кейса: слайды, план каждого, подписи. Что главное и что попадёт в кейс, решаешь ты.",text:`Ты — арт-директор, который помогает упаковать учебный проект в кейс для Behance и Dprofile.
-Тип проекта: [вставь: лендинг / лонгрид / корпоративный сайт / приложение / 3D-продукт / 3D-постер / AI-проект].
+Тип проекта: [вставь: лендинг / лонгрид / приложение / 3D-продукт / 3D-постер / AI-проект].
 Источник — только мои материалы ниже. Ничего не додумывай.
 
 [вставь паспорт и журнал проекта или свои заметки]
