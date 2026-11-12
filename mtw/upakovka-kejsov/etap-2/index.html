@@ -1,0 +1,1831 @@
+<!doctype html><html lang="ru"><head><script>window.KEJS_STAGE="2"</script><script>try{if(window.self!==window.top&&!/(fit|embed)=/.test(location.search))history.replaceState(null,'',location.pathname+(location.search?location.search+'&':'?')+'fit=1'+location.hash)}catch(e){}</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><style>body{margin:0;padding:0}img{max-width:100%}[hidden]{display:none!important}
+html.shell body>*:not(iframe.shell-f){display:none!important}
+html.embed{color-scheme:normal;background:transparent}html.embed body{background:transparent;padding:0 0 8px}html.embed .wrap{max-width:none}html.embed .nav{display:none}
+.sec code{font-family:var(--mono);font-size:.88em;background:var(--panel-2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;word-break:break-word}
+.sec pre code{background:none;border:0;padding:0}
+.tbl.fit table{min-width:0}
+.tbl.fit td:first-child{width:30%}
+</style></head><body>
+<script>/* полный гайд не показываем внутри уроков ZenClass (во фрейме); страницы этапов etap-N и ?stage=N показываются */try{if(!window.KEJS_STAGE&&!/[?&](stage|part)=/.test(location.search)&&window.self!==window.top){document.documentElement.style.display='none';window.stop()}}catch(e){}</script><script>if(/fit=/.test(location.search)){window.PAAA_SHELL=1;(function(){var D=900,d=document,f=d.createElement('iframe');d.documentElement.style.cssText='margin:0;padding:0;overflow-x:hidden;overflow-y:auto;background:transparent;color-scheme:normal';d.body.style.cssText='margin:0;padding:0;position:relative;overflow:hidden;background:transparent';f.className='shell-f';f.title='Методичка';f.src=location.pathname+location.search.replace(/fit=1/,'embed=1')+location.hash;d.documentElement.className+=' shell';f.setAttribute('scrolling','no');f.style.cssText='border:0;display:block;position:absolute;top:0;left:0;transform-origin:0 0;width:'+D+'px;height:100%';d.body.appendChild(f);function lay(){var w=d.documentElement.clientWidth||innerWidth,c=f.contentDocument;if(!c||!c.body)return;c.documentElement.style.overflow='hidden';if(w<600){f.style.width=w+'px';f.style.transform='';var h0=c.body.offsetHeight;f.style.height=h0+'px';d.body.style.height=h0+'px';return}var H=c.body.offsetHeight,sw=w/D,sh=(innerHeight||1)/H,s=sw,whole=sh>=sw*0.8;if(whole)s=Math.min(sw,sh);d.documentElement.style.overflowY=whole?'hidden':'auto';f.style.width=D+'px';f.style.height=H+'px';f.style.transform='scale('+s+')';f.style.left=Math.max(0,(w-D*s)/2)+'px';d.body.style.height=whole?innerHeight+'px':Math.ceil(H*s)+'px'}f.onload=function(){lay();try{new ResizeObserver(lay).observe(f.contentDocument.body)}catch(e){}setTimeout(lay,500);setTimeout(lay,2000)};addEventListener('resize',lay)})()}</script>
+<script>(function(){var e=/embed=1/.test(location.search);try{if(!e&&window.self!==window.top)e=true}catch(x){e=true}if(e)document.documentElement.classList.add('embed')})();</script>
+
+<title>Кейс. Мокапы и фото</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Archivo+Black&family=DM+Serif+Display:ital@1&family=Unbounded:wght@700&family=Oswald:wght@700&display=swap">
+<style>
+/* Layout: одна колонка-методичка в стиле шаблона школы — тёмное поле, панели-карточки, моно-ярлыки с квадратом; единственный светлый объект на странице — карточка «С Claude». */
+:root{
+  color-scheme:dark;
+  --bg:#1c1c1c; --sec:#101010; --panel:#191919; --panel-2:#222; --line:#2a2a2a;
+  --fg:#f4f4f2; --muted:#8e8e8c; --dim:#5a5a58;
+  --paper:#191919; --ink:#f4f4f2; --accent:#eb7540; --good:#34c759; --bad:#ff3b4e;
+  --display:-apple-system,"SF Pro Display","Onest","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,"SF Pro Text","Onest","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r:14px;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:20px;padding-block:0 96px}
+.wrap{max-width:1080px;margin-inline:auto;display:flex;flex-direction:column;gap:88px}
+h1,h2,h3{font-family:var(--display);font-weight:500;text-wrap:balance;margin:0;letter-spacing:-.02em}
+h1{font-size:clamp(34px,6.2vw,68px);line-height:1.02}
+h2{font-size:clamp(26px,3.6vw,40px);line-height:1.08}
+h3{font-size:20px;line-height:1.25;letter-spacing:-.01em}
+p{margin:0;max-width:68ch}
+a{color:inherit}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:8px}
+.tag::before{content:"";width:7px;height:7px;background:currentColor;display:block}
+.muted{color:var(--muted)}
+.sec{display:flex;flex-direction:column;gap:28px;scroll-margin-top:72px}
+.sec-head{display:flex;flex-direction:column;gap:14px}
+
+.top{display:flex;justify-content:space-between;gap:16px;padding-block:22px;font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.hero{display:flex;flex-direction:column;gap:26px;padding-block:40px 0}
+.hero p{font-size:19px;color:var(--muted)}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-20px;padding:10px 20px;overflow-x:auto}
+.nav ul{list-style:none;margin:0 auto;padding:0;display:flex;gap:6px;max-width:1080px;white-space:nowrap}
+.nav a{display:block;padding:7px 12px;border-radius:99px;text-decoration:none;font-size:13px;color:var(--muted);border:1px solid transparent}
+.nav a:hover,.nav a:focus-visible{color:var(--fg);border-color:var(--line);outline:none}
+
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;counter-reset:s}
+.steps li{counter-increment:s;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.steps li::before{content:"0" counter(s);font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:99px;width:34px;height:34px;display:grid;place-items:center}
+.steps b{font-weight:500}
+.steps span{color:var(--muted);font-size:14px}
+
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.path{border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:22px;border:1px solid var(--line);background:var(--panel);min-width:0}
+.path.claude{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.path.claude .tag,.path.claude dt{color:#5b5a56}
+.path.claude dd{border-color:#cfcec8}
+.path h3{font-size:30px;letter-spacing:-.02em}.path>p{font-size:15.5px}
+.path dl{margin:0;display:flex;flex-direction:column}
+.path dt{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:14px}
+.path dd{margin:0;padding:4px 0 14px;border-bottom:1px solid var(--line);font-size:16px}
+.path dd:last-child{border-bottom:0;padding-bottom:0}
+.path .big{font-size:34px;font-weight:500;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+
+.cost{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.cost article{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.cost .price{font-size:32px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.cost p{font-size:14px;color:var(--muted)}
+.note{font-size:14px;color:var(--muted);border-left:1px solid var(--line);padding-left:16px}
+
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px}
+.two>div{display:flex;flex-direction:column;gap:14px;min-width:0}
+ul.plain{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+ul.plain li{padding-left:20px;position:relative;max-width:68ch}
+ul.plain li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;background:var(--dim)}
+ul.plain b{font-weight:500}
+
+.agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.agent{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:14px;text-decoration:none;min-width:0}
+.agent:hover,.agent:focus-visible{border-color:var(--muted);outline:none}
+.agent img,.agent .mono{width:76px;height:76px;border-radius:12px;background:var(--panel-2);display:block}
+.agent .mono{display:grid;place-items:center;font-family:var(--mono);font-size:18px;color:var(--muted);border:1px dashed var(--line)}
+.agent h3{font-size:18px}
+.agent p{font-size:14px;color:var(--muted)}
+.agent .tag{margin-top:auto}
+
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);scroll-margin-top:72px}
+.stage>summary{list-style:none;cursor:pointer;padding:24px;display:grid;grid-template-columns:auto 1fr auto;gap:8px 20px;align-items:center}
+.stage>summary::-webkit-details-marker{display:none}
+.stage>summary:focus-visible{outline:1px solid var(--muted);outline-offset:-4px;border-radius:var(--r)}
+.stage .num{font-family:var(--mono);font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:99px;width:42px;height:42px;display:grid;place-items:center}
+.stage .time{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.stage .time b{color:var(--fg);font-weight:500}
+.stage .chev{grid-column:3;justify-self:end;font-family:var(--mono);color:var(--dim);font-size:12px}
+.stage[open] .chev::after{content:"свернуть"} .stage:not([open]) .chev::after{content:"открыть"}
+.stage .body{padding:0 24px 28px;display:flex;flex-direction:column;gap:24px;border-top:1px solid var(--line);padding-top:24px}
+.stage .lead{color:var(--muted);font-size:17px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14.5px}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:400;padding:0 14px 10px 0}
+td{vertical-align:top;padding:12px 14px 12px 0;border-top:1px solid var(--line)}
+td:first-child{font-weight:500;width:26%}
+td.t{font-family:var(--mono);font-size:12.5px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.prompt{background:var(--panel-2);border-radius:12px;min-width:0}
+.prompt>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.prompt>summary::-webkit-details-marker{display:none}
+.prompt>summary:focus-visible{outline:1px solid var(--muted);border-radius:12px}
+.prompt img,.prompt .mono{width:40px;height:40px;border-radius:8px;flex:none}
+.prompt .mono{display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--muted);border:1px dashed var(--line)}
+.prompt .who{display:flex;flex-direction:column;min-width:0;flex:1 1 200px}
+.prompt .who b{font-weight:500}
+.prompt .who span{font-size:13px;color:var(--muted)}
+.prompt .hint{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.prompt[open] .hint::after{content:"скрыть инструкцию"} .prompt:not([open]) .hint::after{content:"показать инструкцию"}
+.prompt .in{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+.prompt .io{font-size:13.5px;color:var(--muted)}
+.prompt .io b{color:var(--fg);font-weight:500}
+pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+button.copy{align-self:flex-start;font:inherit;font-size:13px;background:var(--fg);color:var(--ink);border:0;border-radius:99px;padding:8px 16px;cursor:pointer}
+button.copy:focus-visible{outline:2px solid var(--muted);outline-offset:2px}
+.stages{display:flex;flex-direction:column;gap:12px}
+
+.smap{position:relative;width:100%;max-width:820px;aspect-ratio:1/1;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);margin-inline:auto}
+.smap::before{content:"";position:absolute;left:50%;top:7%;bottom:7%;border-left:1px dashed var(--dim)}
+.smap::after{content:"";position:absolute;top:50%;left:4%;right:4%;border-top:1px dashed var(--dim)}
+.smap .ax{position:absolute;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);z-index:1}
+.smap a{position:absolute;transform:translate(-50%,-50%);width:23%;display:flex;flex-direction:column;align-items:center;gap:0;text-decoration:none;z-index:2}
+.smap a img,.smap a .ph{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block;border:1px solid var(--line)}
+.smap a .ph{background:var(--panel-2);border-style:dashed}
+.smap a.bare span{margin-top:0}
+.smap a span{background:var(--fg);color:var(--ink);border-radius:99px;padding:5px 12px;font-size:13px;font-weight:500;white-space:nowrap;margin-top:-12px}
+.smap a:hover span,.smap a:focus-visible span{background:#fff}
+.smap a:focus-visible{outline:1px solid var(--fg);outline-offset:4px;border-radius:8px}
+.read{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;counter-reset:r}
+.read li{counter-increment:r;border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:6px;font-size:14.5px;color:var(--muted);min-width:0}
+.read li::before{content:"0" counter(r);font-family:var(--mono);font-size:11px;color:var(--dim)}
+.read b{color:var(--fg);font-weight:500;font-size:16px}
+.scards{display:flex;flex-direction:column;gap:12px}
+.scard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;grid-template-columns:240px 1fr;gap:26px;scroll-margin-top:72px;min-width:0}
+.scard .pic{display:flex;flex-direction:column;gap:12px;min-width:0}
+.scard img,.scard .ph{width:240px;max-width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:10px;display:block;border:1px solid var(--line)}
+.scard .ph{background:var(--panel-2);border-style:dashed;display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.scard .txt{display:flex;flex-direction:column;gap:14px;min-width:0}
+.scard h3{font-size:26px;letter-spacing:-.02em}
+.scard .idea{color:var(--muted);font-size:16px}
+.scard dl{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0 26px}
+.scard dl div{border-top:1px solid var(--line);padding:10px 0;font-size:14.5px}
+.scard dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+.scard dd{margin:0}
+.viz{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.vt{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.vt .k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.vt .v{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg);display:block;margin-top:2px}
+.vt .stage-box{height:104px;display:grid;place-items:center;position:relative;overflow:hidden;border-radius:6px}
+.vt .aa{font-size:64px;line-height:1;color:var(--fg)}
+.vt .comp{position:relative;width:100%;height:100%}
+.vt .comp i{position:absolute;display:block;background:var(--fg);opacity:.85;border-radius:2px}
+.vt .comp i.o{background:none;border:1px solid var(--fg);opacity:.7}
+.vt .comp i.t{background:none;border:3px solid var(--fg);opacity:1}
+.vt .comp i.dim{opacity:.35}
+.vt .sw{display:flex;align-items:center}
+.vt .sw b{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);margin-left:-8px;display:block}
+.vt .sw b:first-child{margin-left:0}
+.vt .ui{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px}
+.ex{display:flex;flex-direction:column;gap:8px}
+.ex .tag{color:var(--dim)}
+.ex ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.ex a,.ex .nolink{display:inline-flex;gap:6px;align-items:baseline;border:1px solid var(--line);border-radius:99px;padding:5px 12px;font-size:13.5px;text-decoration:none;color:var(--fg)}
+.ex a:hover,.ex a:focus-visible{border-color:var(--fg);outline:none}
+.ex a::after{content:"↗";color:var(--dim);font-size:11px}
+.ex small{color:var(--muted);font-size:12px}
+.extra{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.extra article{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.extra p{font-size:14.5px;color:var(--muted)}
+.scard .who{font-size:14.5px;color:var(--muted)}
+.scard .who b{color:var(--fg);font-weight:500}
+
+.lvl3{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:32px;align-items:center}
+.pyr{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pyr div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 10px;text-align:center;display:flex;flex-direction:column;gap:2px}
+.pyr b{font-weight:500;font-size:17px}.pyr span{font-size:12.5px;color:var(--muted)}
+.pyr div:nth-child(1){width:56%}.pyr div:nth-child(2){width:78%}.pyr div:nth-child(3){width:100%;background:var(--paper);color:var(--ink);border-color:var(--paper)}.pyr div:nth-child(3) span{color:#5b5a56}
+.story{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;counter-reset:f}
+.story figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.story img,.ladder img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--panel-2)}
+.story figcaption{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted)}
+.story figcaption b{color:var(--fg);font-weight:500;font-size:15.5px}
+.ladder{display:flex;flex-direction:column;gap:12px}
+.ladder article{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start;min-width:0;scroll-margin-top:72px}
+.ladder img{border-radius:10px;border:1px solid var(--line)}
+.ladder .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ladder .n{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.ladder h3{font-size:22px}
+.ladder .why{font-size:14.5px;color:var(--muted)}
+.ladder .why b{color:var(--fg);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:13px;color:var(--fg)}
+.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;counter-reset:q}
+.rules li{counter-increment:q;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:8px;font-size:14.5px;color:var(--muted);min-width:0}
+.rules li::before{content:"0" counter(q);font-family:var(--mono);font-size:11px;color:var(--dim)}
+.rules b{color:var(--fg);font-weight:500;font-size:16px}
+.pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.pick a{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:10px;text-decoration:none;min-width:0}
+.pick a:hover,.pick a:focus-visible{border-color:var(--muted);outline:none}
+.pick .if{font-size:15px}
+.pick .then{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg);margin-top:auto;padding-top:10px;border-top:1px solid var(--line)}
+.sum{background:var(--paper);color:var(--ink);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:10px}
+.sum p{font-size:17px}
+.sum .tag{color:#5b5a56}
+
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.checks li{display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1.3fr);gap:16px;padding:14px 0;border-top:1px solid var(--line);align-items:baseline}
+.checks .num{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.checks a{font-weight:500;text-decoration:none}
+.checks a:hover,.checks a:focus-visible{text-decoration:underline;outline:none}
+.checks span{font-size:14.5px;color:var(--muted)}
+@media (max-width:640px){.checks li{grid-template-columns:32px 1fr}.checks li span{grid-column:2}}
+footer{font-size:13px;color:var(--dim);border-top:1px solid var(--line);padding-top:24px}
+@media (max-width:640px){
+  .stage>summary{grid-template-columns:auto 1fr;padding:18px}
+  .stage .time{grid-column:1/-1;text-align:left}
+  .stage .chev{grid-column:1/-1;justify-self:start}
+  .stage .body{padding-inline:18px}
+  .smap a{width:25%}.smap a span{font-size:10px;padding:3px 7px;margin-top:-8px}.smap .ax{font-size:9px}
+  .scard{grid-template-columns:1fr}
+  .lvl3,.ladder article{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+/* ---- v2: дизайн-система методичек школы ---- */
+body{padding:16px 16px 120px;color:var(--muted)}
+.wrap{gap:12px;max-width:1040px}
+.steps{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+h1,h2,h3{font-weight:400;color:var(--fg)}
+h1{font-size:clamp(38px,7vw,80px);line-height:.95}
+h2{font-size:clamp(28px,4.4vw,46px);line-height:1}
+b,strong{color:var(--fg)}
+.tag{font-size:11px;letter-spacing:.06em;color:var(--dim)}
+.tag::before{display:none}
+.sec,header.hd{background:var(--sec);border-radius:var(--r);padding:22px 26px 34px;scroll-margin-top:64px;min-width:0}
+header.hd{background:var(--sec) radial-gradient(circle,#262626 1px,transparent 1.2px) 0 0/14px 14px}
+.corner{display:flex;justify-content:space-between;gap:16px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.corner span{white-space:pre-line;line-height:1.35}.corner span:last-child{text-align:right}
+.top{display:none}
+.hero{padding-block:34px 6px}
+.hero p{color:var(--muted)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:center}
+.nav{margin-inline:0;border-radius:12px;background:rgba(28,28,28,.92);backdrop-filter:blur(8px);border:1px solid var(--line);padding:8px 10px;top:8px}
+.nav a.on,.nav a:hover{color:var(--fg);border-color:var(--accent)}
+.path.claude{background:var(--panel);color:var(--fg);border-color:var(--accent)}
+.path.claude .tag,.path.claude dt{color:var(--accent)}
+.path.claude dd{border-color:var(--line)}
+.pyr div:nth-child(3){background:var(--panel);color:var(--fg);border-color:var(--accent)}.pyr div:nth-child(3) span{color:var(--muted)}
+.sum{background:var(--panel);color:var(--fg);border:1px solid var(--line);border-left:2px solid var(--accent)}
+.sum .tag{color:var(--accent)}
+.sum p[style]{color:var(--muted)!important}
+.smap{background:var(--panel)}
+.smap a span{background:var(--accent);color:#101010}
+.smap a:hover span,.smap a:focus-visible span{background:#ff8a55}
+button.copy{background:var(--accent);color:#101010;font-weight:500}
+.note{border-left:2px solid var(--accent)}
+.stage{background:var(--panel)}
+.stage[open]{border-color:#3a3a3a}
+.stage .num{color:var(--accent);border-color:var(--accent)}
+.prompt{background:var(--panel-2)}
+pre{background:#141414}
+footer{border:0;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding:18px 10px}
+kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;margin:0 1px;vertical-align:.08em;font:500 12px/1 var(--mono);color:var(--fg);background:linear-gradient(#2c2c2c,#1f1f1f);border:1px solid #3a3a3a;border-bottom-width:3px;border-radius:6px;white-space:nowrap}
+.lessons{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.lessons .tag{margin-right:4px}
+.lessons span:not(.tag),.lessons a{border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:13px;color:var(--fg);background:var(--panel-2)}
+.lessons a{text-decoration:none}
+.lessons a:hover{border-color:var(--accent)}
+.xbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.xbox article{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;font-size:14.5px;min-width:0}
+.xbox article .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.xbox article b{font-size:16px;font-weight:500}
+.funnel{display:flex;flex-direction:column;gap:6px}
+.funnel div{display:flex;justify-content:space-between;gap:12px;align-items:baseline;border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--panel-2);margin-inline:auto;width:100%}
+.funnel div:nth-child(2){width:84%}.funnel div:nth-child(3){width:68%;border-color:var(--accent)}
+.funnel b{font-size:22px;font-weight:400;font-variant-numeric:tabular-nums}
+.funnel span{font-size:13.5px;color:var(--muted);text-align:right}
+.formula{display:flex;flex-wrap:wrap;gap:8px}
+.formula span{flex:1 1 120px;border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center;font-size:15px;color:var(--fg);background:var(--panel-2)}
+.formula span.on{border-color:var(--accent)}
+.ol{list-style:none;margin:0;padding:0;counter-reset:o;display:flex;flex-direction:column}
+.ol li{counter-increment:o;display:grid;grid-template-columns:40px 1fr;gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:15px;color:var(--muted)}
+.ol li::before{content:counter(o,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--dim);padding-top:4px}
+.ol b{color:var(--fg);font-weight:500}
+.hlwrap{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0}
+.hlstage{position:relative;aspect-ratio:400/320;width:100%;max-width:440px;margin-inline:auto;border:1px solid var(--line);border-radius:12px;background:#141414;overflow:hidden}
+.hlstage>[data-hairline]{position:absolute;inset:0}
+.hlstage svg{width:100%;height:100%;display:block}
+.hlread{position:absolute;left:12px;top:10px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);pointer-events:none}
+.hlread.on{color:var(--accent)}
+.hlmeans{display:none}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center}
+.quiz{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.quiz .qn{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.quiz h3{font-size:20px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{font:400 16px var(--body);text-align:left;background:var(--panel-2);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:11px 14px;line-height:1.35;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.opt:hover:not(:disabled),.opt:focus-visible{border-color:var(--accent);outline:none}
+.opt:disabled{cursor:default;color:var(--muted)}
+.opt .ex{font-size:14.5px;color:var(--muted);display:none}
+.opt.shown .ex{display:block}
+.opt.right{border-color:var(--good);color:var(--fg)}.opt.wrong{border-color:var(--bad);color:var(--fg)}
+.qnav{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.qnav button{font:500 14px var(--body);background:var(--accent);color:#101010;border:0;border-radius:99px;padding:9px 18px;cursor:pointer}
+.qnav button:disabled{opacity:.35;cursor:default}
+.qnav span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+.chk{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.chk h3{font-size:18px;padding:16px 0 6px}
+.chk label{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer;align-items:start;color:var(--fg);font-size:15px}
+.chk input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent)}
+.chk input:checked+span{color:var(--dim);text-decoration:line-through}
+.stagebar{display:flex;flex-wrap:wrap;gap:6px}
+.stagebar a{text-decoration:none;transition:border-color .15s,color .15s}.stagebar a:hover{border-color:var(--accent);color:var(--fg,#edece7)}.stagebar a.on:hover{color:#101010}.stagebar span,.stagebar a{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:6px;padding:6px 9px;color:var(--dim);background:var(--panel)}
+.stagebar span.on,.stagebar a.on{background:var(--accent);border-color:var(--accent);color:#101010}
+html.stagemode .stage>summary .chev{display:none}
+html.stagemode .stage{border:0;background:transparent}
+html.stagemode .stage>summary{padding:0 0 18px;cursor:default}
+html.stagemode .stage .body{padding:22px 0 0}
+@media (max-width:760px){.hero-grid,.split{grid-template-columns:1fr}.sec,header.hd{padding:18px 16px 26px}}
+</style>
+<style>
+/* Кейс: дополнительные блоки поверх стилей гайда «Лендинг» */
+.ptype{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:20px;scroll-margin-top:72px}
+.ptype-head{display:flex;flex-direction:column;gap:10px}
+.ptype-head h3{font-size:26px;letter-spacing:-.02em}
+.ptype-head p{color:var(--muted);font-size:15.5px}
+.ptype-head a,.xbox a,.ptype a{color:var(--fg)}
+.covers{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.covers.wide{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.covers a,.covers figure{margin:0;display:flex;flex-direction:column;gap:6px;text-decoration:none;min-width:0}
+.covers img{width:100%;height:auto;aspect-ratio:900/594;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);display:block}
+.covers a:hover img,.covers a:focus-visible img{border-color:var(--accent)}
+.covers a:focus-visible{outline:none}
+.covers b{font-weight:500;font-size:15px}
+.covers span{font-size:13px;color:var(--muted)}
+.formula-box{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:12px}
+.formula-box>p:first-of-type{font-size:22px;line-height:1.3;letter-spacing:-.01em}
+.formula-box b{font-weight:500;color:var(--accent)}
+.plans{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.plans>div{display:flex;flex-direction:column;gap:8px;min-width:0}
+.plans svg{width:100%;height:auto;display:block;overflow:hidden;border-radius:8px}
+.plans .pf{fill:var(--panel-2);stroke:var(--line)}
+.plans .pm,.plans .pm rect{fill:var(--bg);stroke:var(--muted);stroke-width:1}
+.plans .pa{fill:var(--accent)}
+.plans .pl{fill:var(--dim)}
+.plans b{font-weight:500}
+.plans span{font-size:14px;color:var(--muted)}
+.rhythm{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.rhythm>div{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.rhythm .bad{border-left:3px solid var(--bad)}.rhythm .good{border-left:3px solid var(--good)}
+.rhythm p{display:flex;gap:6px;flex-wrap:wrap}
+.rhythm i{font-style:normal;font-family:var(--mono);font-size:12px;width:32px;height:44px;border:1px solid var(--muted);border-radius:6px;display:grid;place-items:center;color:var(--fg)}
+.rhythm .bad i{border-color:var(--dim);color:var(--muted)}
+.rhythm i.g{background:var(--accent);border-color:var(--accent);color:#111}
+.rhythm span.muted{font-size:14px}
+.strip{display:flex;flex-direction:column;gap:10px}
+.strip-in{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
+.strip-in img{height:360px;width:auto;aspect-ratio:1400/2000;flex:none;border-radius:6px;scroll-snap-align:start;background:var(--panel-2)}
+.strip-more{font-size:14px;color:var(--fg);align-self:flex-start}
+html.embed .strip-in{flex-wrap:wrap;overflow:visible}html.embed .strip-in img{height:auto;width:calc((100% - 32px)/5)}
+.names{display:flex;flex-wrap:wrap;gap:8px}
+.names span{font-family:var(--mono);font-size:13px;border:1px solid var(--line);border-radius:99px;padding:7px 13px;background:var(--panel-2)}
+.pubs{display:flex;flex-direction:column;gap:12px}
+.pubcard{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:10px}
+.pubcard p{font-size:18px;line-height:1.35}
+.pubcard .muted{font-size:14px}
+.errs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;counter-reset:e}
+.errs li{counter-increment:e;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.errs li::before{content:"Ошибка " counter(e,decimal-leading-zero);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--bad)}
+.errs b{font-weight:500;font-size:16px}
+.errs span{font-size:14px;color:var(--muted);padding-left:14px;border-left:1px solid var(--good)}
+kbd{font-family:var(--mono);font-size:.85em;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;background:var(--panel-2)}
+</style>
+
+<div class="wrap">
+<header class="hd">
+  <div class="corner"><span>PERASPERADASTRA
+ДЛЯ ВСЕХ ПРОЕКТОВ КУРСА</span><span>ГАЙД
+УПАКОВКА КЕЙСА</span></div>
+  <div class="hero hero-grid">
+    <div style="display:flex;flex-direction:column;gap:22px">
+    <h1>Кейс: от готового макета до Behance и Dprofile</h1>
+    <p>Как превратить проект в кейс, который досматривают до конца: контент, мокапы, стиль, ритм слайдов, обложка, анимация и публикация. Для лендинга, лонгрида, корпоративного сайта, приложения, 3D и AI-проектов. В каждом этапе — шаги, что можно отдать нейросети, чек-лист и готовые инструкции для чата.</p>
+    <p class="note">Сохрани ссылку, чтобы не потерять: гайд нужен в конце каждого проекта.</p>
+    </div>
+    <div class="hlwrap"><div class="hlstage" data-fig="case-packaging"><span class="hlread">наведи курсор</span></div><p class="hlmeans"></p></div>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Разделы"><ul>
+  <li><a href="#how">Как пользоваться</a></li><li><a href="#types">Типы проектов</a></li><li><a href="#stages">Этапы</a></li><li><a href="#errors">15 ошибок</a></li><li><a href="#ai">С нейросетью</a></li><li><a href="#review">Куратор</a></li><li><a href="#quiz">Квиз</a></li>
+</ul></nav>
+
+<section class="sec" id="how">
+  <div class="sec-head"><span class="tag">Начни отсюда</span><h2>Кейс — трейлер твоего проекта</h2>
+  <p class="muted">Работодатель или заказчик не откроет твой макет в Figma и не долистает его до конца. Он посмотрит кейс, секунд тридцать, и по ним решит, смотреть ли дальше. Как трейлер: из двух часов фильма монтируют две минуты, показывают лучшие сцены и чередуют общие и крупные планы.</p></div>
+  <div class="duo">
+    <article class="path"><span class="tag">Без упаковки</span><h3>Макет одной лентой</h3><p>Весь лендинг одной длинной картинкой, одинаковые скриншоты подряд, нет обложки и текста о проекте. Даже сильная работа тонет: зритель не понимает, что смотреть, и уходит на третьем экране.</p></article>
+    <article class="path claude"><span class="tag">С упаковкой</span><h3>Тот же макет в кейсе</h3><p>Обложка, идея одной фразой, лучшие места крупно, смена планов, адаптив на настоящих устройствах. Макет тот же, а проект выглядит сильнее. Хорошая подача вытягивает работу, плохая топит даже сильный проект.</p></article>
+  </div>
+  <div class="sec-head" style="margin-top:8px"><h3>Как пользоваться гайдом</h3>
+  <p class="muted">Читать подряд не нужно. Открой свой тип проекта, затем иди по этапам: каждый заканчивается чек-листом.</p></div>
+  <ol class="steps">
+    <li><b>Найди свой тип проекта</b><span>Какие слайды обязательны, что главное и в каком шаблоне собирать.</span></li>
+    <li><b>Собери контент</b><span>Тексты, экраны, мокапы и фото — до того, как открываешь шаблон кейса.</span></li>
+    <li><b>Смонтируй слайды</b><span>Стиль кейса, ритм планов, композиция каждого слайда.</span></li>
+    <li><b>Обложка и анимация</b><span>Афиша проекта и 3–4 ожившие сцены.</span></li>
+    <li><b>Опубликуй и сдай</b><span>Behance, Dprofile и ссылки куратору. Проект засчитан, когда куратор принял кейс.</span></li>
+  </ol>
+  <div class="sum"><span class="tag">Главная мысль</span><p>Кейс показывает лучшее в проекте крупно и в ритме, чтобы его захотелось досмотреть. Это отдельная задача проекта: закладывай на неё один рабочий день, 15–20% времени всего проекта. Лучше выпустить хороший кейс сейчас, чем никогда не выпустить идеальный.</p></div>
+  <div class="sec-head" style="margin-top:8px"><h3>Восемь правил хорошего кейса</h3></div>
+  <ol class="rules">
+    <li><b>Сначала контент</b>Тексты, экраны, мокапы и фото собраны до сборки слайдов.</li>
+    <li><b>Одна главная мысль</b>Концепция, графика или интерфейс: кейс строится вокруг самого сильного.</li>
+    <li><b>Послайдовая история</b>Проект разрезан на сюжеты, а не выложен одним полотном.</li>
+    <li><b>Смена планов</b>Один и тот же план не идёт три раза подряд.</li>
+    <li><b>Воздух</b>Макет занимает 50–60% слайда, вокруг — пустое поле.</li>
+    <li><b>Реальные пропорции</b>Телефон не больше ноутбука, экраны — твой настоящий макет.</li>
+    <li><b>Мало текста</b>Одна-две фразы на слайд. Остальное показывает картинка.</li>
+    <li><b>Честно</b>Строка об учебном проекте и разметка того, что сделала нейросеть.</li>
+  </ol>
+  <div class="xbox">
+    <article><span class="k">Формат</span><b>Ширина 1400–1920 px</b>Высота любая, но до 5000 px. Оптимально 1400 × 2000 px. Обычно в кейсе 10–20 слайдов.</article>
+    <article><span class="k">Время</span><b>6–8 часов, один рабочий день</b>С нейросетью — 4–6 часов: она быстро собирает черновик текстов и структуры из журнала проекта.</article>
+    <article><span class="k">Где собирать</span><b>Шаблон школы в Figma</b><span><a href="https://www.figma.com/design/Ws6lWnLZVlEi6xO71PyIlo" target="_blank" rel="noopener">«Шаблон кейсов Perasperadastra»</a>: методичка, разбор слайдов и готовые кейсы по типам проектов.</span></article>
+  </div>
+</section>
+
+<section class="sec" id="types">
+  <div class="sec-head"><span class="tag">Типы проектов</span><h2>Что показывать в твоём проекте</h2>
+  <p class="muted">Этапы упаковки у всех проектов общие. Отличается главное: что вынести на обложку, какие слайды обязательны и на чём держится ритм. Нажми на обложку, чтобы открыть кейс студента целиком.</p></div>
+
+  <article class="ptype" id="type-landing">
+    <div class="ptype-head"><span class="tag">Сайт</span><h3>Лендинг</h3><p>Главное — концепция и то, как она живёт в интерфейсе. Обязательно: обложка с главным экраном, задача и концепция, стиль, 3–4 ключевых блока, адаптив на десктопе, планшете и телефоне. Если метафора не влезла в интерфейс, покажи её здесь: обложка, история идеи, носители и мокапы.</p></div>
+    <div class="covers">
+      <a href="../../../mtw-diary/#case=bukashki" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/bukashki/cover.jpg" alt="Обложка кейса «Букашки»" loading="lazy" width="900" height="594"><b>Букашки</b><span>Софья Яковлева · частный детский сад</span></a>
+      <a href="../../../mtw-diary/#case=rainbow" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/rainbow/cover.jpg" alt="Обложка кейса Rainbow" loading="lazy" width="900" height="594"><b>Rainbow</b><span>Юля Голоунина · боулинг-центр</span></a>
+      <a href="../../../mtw-diary/#case=uyutniki" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/uyutniki/cover.jpg" alt="Обложка кейса «Уютники»" loading="lazy" width="900" height="594"><b>Уютники</b><span>Алина (@alinovui) · ремонт квартир</span></a>
+    </div>
+  </article>
+
+  <article class="ptype" id="type-longread">
+    <div class="ptype-head"><span class="tag">Сайт</span><h3>Лонгрид</h3><p>Главное — история и визуальный язык. Лонгрид длинный, поэтому его особенно важно разрезать на сюжеты: обложка, о проекте, дизайн-система, 3–5 самых сильных разворотов крупно, детали типографики и графики, мобильная версия. Целиком лонгрид в кейс не выкладывают.</p></div>
+    <div class="covers">
+      <a href="../../../mtw-diary/#case=kubrick" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/kubrick/cover.jpg" alt="Обложка кейса о фильмографии Стэнли Кубрика" loading="lazy" width="900" height="594"><b>Фильмография Кубрика</b><span>renssunn · лонгрид о режиссёре</span></a>
+      <a href="../../../mtw-diary/#case=nintendo" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/nintendo/cover.jpg" alt="Обложка кейса «История Nintendo»" loading="lazy" width="900" height="594"><b>История Nintendo</b><span>Софья (@sophdesign) · лонгрид о бренде</span></a>
+      <a href="../../../mtw-diary/#case=bjork" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/bjork/cover.jpg" alt="Обложка кейса Björk" loading="lazy" width="900" height="594"><b>Björk</b><span>Соня Яковлева · лонгрид о музыканте</span></a>
+    </div>
+  </article>
+
+  <article class="ptype" id="type-corp">
+    <div class="ptype-head"><span class="tag">Сайт</span><h3>Корпоративный сайт</h3><p>Главное — система: несколько страниц живут по одним правилам. Обязательно: обложка, задача и позиционирование компании, карта сайта, главная и 2–3 внутренние страницы, UI-кит, адаптив. Если сайт большой, раздели его на два кейса: например, айдентика и сайт отдельно.</p></div>
+  </article>
+
+  <article class="ptype" id="type-app">
+    <div class="ptype-head"><span class="tag">Интерфейс</span><h3>Приложение</h3><p>Главное — интерфейс и сценарий. На обложке сам интерфейс в мокапе, а не иконка приложения: так сразу понятно, о чём кейс. Обязательно: задача, исследование (персоны, JTBD, user flow), вайрфреймы, ключевые экраны крупно, дизайн-система, айдентика и промо-сайт, если он есть. Шаблон — <a href="https://www.figma.com/design/wKvOKiP4XhK7kdUJiy2Qqy" target="_blank" rel="noopener">«Кейсы для приложений»</a>.</p></div>
+    <div class="covers">
+      <a href="../../../mtw-diary/#case=woofy" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/woofy/cover.jpg" alt="Обложка кейса Woofy" loading="lazy" width="900" height="594"><b>Woofy</b><span>Студент курса · догситтер</span></a>
+      <a href="../../../mtw-diary/#case=abc" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/abc/cover.jpg" alt="Обложка кейса ABC app" loading="lazy" width="900" height="594"><b>ABC app</b><span>Варвара Кучерова · английский язык</span></a>
+      <a href="../../../mtw-diary/#case=yarnpaw" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/yarnpaw/cover.jpg" alt="Обложка кейса YarnPaw" loading="lazy" width="900" height="594"><b>YarnPaw</b><span>Валерия Г. · вязание</span></a>
+    </div>
+  </article>
+
+  <article class="ptype" id="type-3d">
+    <div class="ptype-head"><span class="tag">3D</span><h3>3D-продукт и 3D-постер</h3><p>Главное — объект и процесс. В 3D работает тот же принцип крупности, что и в кино: общий вид, средний план, деталь материала. Обязательно: концепция, референсы, скетчи и прототип из простых форм, сцена в Blender, финальные рендеры, продукт на носителях или в контексте, сайт продукта, если он есть. Этапы кейса — в файле <a href="https://www.figma.com/design/mq3XWaOIvTRgIDyhg1VuSP" target="_blank" rel="noopener">«3D-проекты»</a>.</p></div>
+    <div class="covers">
+      <a href="../../../mtw-diary/#case=heatcup" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/heatcup/cover.jpg" alt="Обложка кейса Heatcup" loading="lazy" width="900" height="594"><b>Heatcup</b><span>Sofiia Railian · 3D-продукт и сайт</span></a>
+      <a href="../../../mtw-diary/#case=travelkit" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/travelkit/cover.jpg" alt="Обложка кейса Travel Kit’ten" loading="lazy" width="900" height="594"><b>Travel Kit’ten</b><span>Арина Галимова · 3D и UX/UI</span></a>
+    </div>
+  </article>
+
+  <article class="ptype" id="type-ai">
+    <div class="ptype-head"><span class="tag">Mission to AI</span><h3>AI-проекты: фотосессия, продукт, иллюстрации, моушн, видео</h3><p>Главное — идея и метод. AI-кейс легко превращается в альбом картинок, поэтому у курса свой скелет из восьми экранов, и разметка «что сделала нейросеть, что сделал я» стоит до процесса, а не сноской в конце. Подробно — в методичке Mission to AI <a href="../../../ai-metodichki/#/l11_1" target="_blank" rel="noopener">«Оформление кейса»</a>.</p></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Экран</th><th>Что внутри</th><th>Правило</th></tr></thead>
+      <tbody>
+        <tr><td>1. Обложка</td><td>Название, подпись «AI concept», «AI photoshoot» или «AI video», самый сильный кадр</td><td>Одна картинка, одно название</td></tr>
+        <tr><td>2. Идея</td><td>Что за продукт, для кого, какая задача — 2–4 предложения</td><td>Идея одной фразой</td></tr>
+        <tr><td>3. AI-разметка</td><td>Слайд «Все изображения созданы с помощью AI» и колонка «что сделал я»</td><td>До процесса, крупно</td></tr>
+        <tr><td>4. Процесс: поиск</td><td>Мудборд, стиль-якорь, 2–3 отброшенных направления с подписью «почему нет»</td><td>Решения, а не свалка генераций</td></tr>
+        <tr><td>5. Процесс: опора</td><td>Карточка продукта, персонажа или локации; раскадровка для видео</td><td>Серия держится на опоре</td></tr>
+        <tr><td>6. До / после</td><td>Сырая генерация и финальный кадр после правок и вёрстки</td><td>1–3 пары</td></tr>
+        <tr><td>7. Результат</td><td>Финальные кадры, key visual, адаптации, мокапы, видео</td><td>Одна мысль — один экран</td></tr>
+        <tr><td>8. Контакты</td><td>Имя, роль, Telegram, почта и строка «что могу сделать для вас»</td><td>Кнопка, а не «спасибо за внимание»</td></tr>
+      </tbody>
+    </table></div>
+    <div class="covers">
+      <figure><img src="../../../ai-metodichki/img/pres-case-eaglips.webp" alt="Кейс Eaglips" loading="lazy"><b>Eaglips</b><span>Милана Гавриченко · метафора орла считывается с первого экрана</span></figure>
+      <figure><img src="../../../ai-metodichki/img/pres-case-lumera.webp" alt="Кейс Lumera" loading="lazy"><b>Lumera</b><span>Лейла Исхакова · от продукта к сайту</span></figure>
+      <figure><img src="../../../ai-metodichki/img/pres-case-form101.webp" alt="Кейс FORM 101" loading="lazy"><b>FORM 101</b><span>Яна Саввина · процесс в языке объекта</span></figure>
+    </div>
+  </article>
+</section>
+
+<section class="sec" id="stages">
+  <div class="sec-head"><span class="tag">Регламент упаковки</span><h2>Семь этапов кейса</h2>
+  <p class="muted">В таблицах — шаги, что можно отдать нейросети и что остаётся за тобой. Время — оценки без замера, у тебя может получиться иначе.</p></div>
+  <div class="stages">
+
+  <details class="stage" id="stage-1" open>
+    <summary><span class="num">01</span><h3>Контент</h3><span class="time">по регламенту <b>около 1 ч</b><br>с Claude <b>около 40 мин</b></span><span class="chev"></span></summary>
+    <div class="body"><p class="lead">Перед сборкой кейса реши, что в проекте главное, и собери всё, что покажешь. Самая частая ошибка — открыть шаблон кейса без готового контента и придумывать тексты и экраны на ходу.</p>
+      <div class="tbl"><table><thead><tr><th>Шаг</th><th>Отдаём нейросети</th><th>Оставляем себе</th><th>Время</th></tr></thead><tbody>
+        <tr><td>Главное и категория</td><td>—</td><td>Что в проекте самое сильное: концепция, графика или интерфейс. Категория на площадке, например веб-дизайн</td><td class="t">10 мин</td></tr>
+        <tr><td>Тексты кейса</td><td>Черновик «О проекте» по формуле и подписи к слайдам из паспорта и журнала</td><td>Выбор варианта и правка под свой голос</td><td class="t">20 мин</td></tr>
+        <tr><td>Экраны</td><td>—</td><td>Нарезать проект на десктоп, планшет и телефон, отметить лучшие блоки</td><td class="t">20 мин</td></tr>
+        <tr><td>Артефакты процесса</td><td>—</td><td>Мудборд, наброски, вайрфреймы, сцены из Blender, генерации — всё, что показывает путь</td><td class="t">10 мин</td></tr>
+      </tbody></table></div>
+      <div class="split">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <h3>Сколько текста нужно</h3>
+          <p class="muted">Немного. Обязательны два блока: тема проекта и концепция. Остальные — задача, процесс, решения — по желанию. Текст о проекте пиши по формуле позиционирования: продукт, аудитория, преимущества и характер. Прочитал одну-две фразы — и понятно, о чём проект.</p>
+          <p class="muted">Задачу пиши по схеме «сайт для кого, чтобы человек сделал что». Например: лендинг детского сада, чтобы родители записали ребёнка на пробный день.</p>
+        </div>
+        <div class="formula-box"><span class="tag">Формула текста о проекте</span><p><b>Продукт</b> + <b>аудитория</b> + <b>преимущества</b> + <b>характер</b></p><p class="muted">«Букашки» — частный детский сад, где каждый ребёнок находит своё место, как насекомое в саду: тёплый, дружелюбный, внимательный к ритму каждого.</p></div>
+      </div>
+      <div class="sec-head"><h3>Нарежь проект на экраны</h3><p class="muted">Сайт лучше показать не целиком, а последовательно: десктоп, планшет, телефон. Тогда ты сам расставляешь акценты, и блоки отделяются друг от друга. Если вёл журнал проекта в паспорте, половина работы уже сделана.</p></div>
+      <div class="xbox">
+        <article><span class="k">Принцип 1</span><b>Правильные пропорции</b>Экран телефона не может быть меньше по пропорциям, чем настоящее устройство, а больше — может. В одном слайде телефон не бывает больше планшета или десктопа: высота телефона — примерно 0,65 высоты планшета.</article>
+        <article><span class="k">Принцип 2</span><b>Скругления экрана</b>Небольшое скругление углов — и зритель сразу считывает экран устройства. Поэтому мокап нужен далеко не всегда.</article>
+        <article><span class="k">Принцип 3</span><b>Рамка</b>Тонкая рамка через Stroke или скруглённые края отделяют макет от фона. Не обязательно, но помогает.</article>
+        <article><span class="k">Инструмент Scale</span><b>Масштабируй, а не растрируй</b><span>Scale <kbd>K</kbd> уменьшает макет со всеми слоями. Оригинальные макеты не нужно переводить в картинки: их можно править до последнего.</span></article>
+      </div>
+      <div class="chk"><h3>Проверь перед следующим этапом</h3>
+        <label><input type="checkbox" data-ck="1-0"><span>Записано одной строкой, что в проекте самое сильное</span></label>
+        <label><input type="checkbox" data-ck="1-1"><span>Выбрана категория на площадке; если кейс большой, решено, делить ли его на две части</span></label>
+        <label><input type="checkbox" data-ck="1-2"><span>Есть текст «О проекте» по формуле и строка задачи</span></label>
+        <label><input type="checkbox" data-ck="1-3"><span>Проект нарезан на экраны десктопа, планшета и телефона</span></label>
+        <label><input type="checkbox" data-ck="1-4"><span>Собраны артефакты процесса: мудборд, наброски, вайрфреймы, генерации</span></label>
+      </div>
+      <div class="lessons"><span class="tag">Методички к этапу</span><a href="../../lending/#stage-6" target="_blank" rel="noopener">Лендинг с нейросетями: кейс</a><a href="../../../koncepciya-proekta/" target="_blank" rel="noopener">Концепция проекта</a><a href="../../adaptiv/" target="_blank" rel="noopener">Адаптив</a></div>
+      <div class="prompt-slot" data-prompt="packer"></div>
+      <div class="prompt-slot" data-prompt="about"></div>
+    </div>
+  </details>
+
+  <details class="stage" id="stage-2">
+    <summary><span class="num">02</span><h3>Мокапы и фото</h3><span class="time">по регламенту <b>около 1 ч</b><br>с Claude <b>около 40 мин</b></span><span class="chev"></span></summary>
+    <div class="body"><p class="lead">Мокап — картинка устройства, куда вставлен твой экран. Он помогает представить проект в жизни, а фото погружает в его мир. Но мокапов и фото должно быть немного: кейс — про твой дизайн, а не про чужие сцены.</p>
+      <div class="tbl"><table><thead><tr><th>Шаг</th><th>Отдаём нейросети</th><th>Оставляем себе</th><th>Время</th></tr></thead><tbody>
+        <tr><td>Мокапы устройств</td><td>Сцены с устройствами в стиле проекта: стол, рука, интерьер</td><td>Экран внутри мокапа — только твой макет, вставленный руками</td><td class="t">30 мин</td></tr>
+        <tr><td>Мокапы носителей</td><td>Варианты контекста: пакет, коробка, билборд, мерч</td><td>Выбор 2–3 мокапов, которые продолжают концепцию</td><td class="t">15 мин</td></tr>
+        <tr><td>Фото для фотостиля</td><td>Генерация кадров в стиле проекта</td><td>Отбор: без брака, в одной палитре и свете</td><td class="t">15 мин</td></tr>
+      </tbody></table></div>
+      <div class="xbox">
+        <article><span class="k">Актуальное устройство</span><b>Старый айфон старит кейс</b>Чёлка прошлых моделей сразу выдаёт старый мокап. Следи, какие устройства берёшь.</article>
+        <article><span class="k">Видимый ракурс</span><b>Интерфейс должен читаться</b>Сильная перспектива и экран под острым углом прячут твою работу. Ракурс выбирай так, чтобы экран было видно.</article>
+        <article><span class="k">Правильный контекст</span><b>Мокап продолжает проект</b>Для сервиса доставки — пакеты и коробки, для кофейни — стакан и меню. Случайный мокап «красивая комната» ничего не добавляет.</article>
+        <article><span class="k">Мало</span><b>Два-три мокапа на кейс</b>Мокапы перемежают слайды с интерфейсом. Кейс из одних мокапов выглядит как каталог устройств.</article>
+      </div>
+      <div class="two">
+        <div><h3>Фото и фотостиль</h3>
+          <ul class="plain">
+            <li>Фото высокого качества и не стоковые: никаких «счастливых людей с ноутбуком».</li>
+            <li>Кадры в одной палитре и одном свете, они отражают суть проекта.</li>
+            <li>Где искать: Unsplash, Pexels, Pixabay, Loon.site. Или сгенерировать в стиле проекта.</li>
+          </ul></div>
+        <div><h3>Что можно генерировать</h3>
+          <ul class="plain">
+            <li><b>Можно:</b> фон, сцену, руку с телефоном, предметы, фото для фотостиля.</li>
+            <li><b>Нельзя:</b> экран внутри мокапа. Там всегда твой макет из Figma, иначе в кейсе не твоя работа.</li>
+            <li>Сгенерированные кадры отметь плашкой «AI-генерация».</li>
+          </ul></div>
+      </div>
+      <div class="chk"><h3>Проверь перед следующим этапом</h3>
+        <label><input type="checkbox" data-ck="2-0"><span>Устройства в мокапах актуальные, экран хорошо видно</span></label>
+        <label><input type="checkbox" data-ck="2-1"><span>В мокапах только мой настоящий макет</span></label>
+        <label><input type="checkbox" data-ck="2-2"><span>Мокапов два-три, и каждый продолжает концепцию</span></label>
+        <label><input type="checkbox" data-ck="2-3"><span>Фото не стоковые, в одной палитре и свете</span></label>
+      </div>
+      <div class="lessons"><span class="tag">Методички к этапу</span><a href="../../../ai-metodichki/#/l6_5" target="_blank" rel="noopener">Мокапы, упаковка и мерч (Mission to AI)</a></div>
+      <div class="prompt-slot" data-prompt="mockup"></div>
+    </div>
+  </details>
+
+  <details class="stage" id="stage-3">
+    <summary><span class="num">03</span><h3>Стиль кейса</h3><span class="time">по регламенту <b>около 30 мин</b><br>с Claude <b>около 30 мин</b></span><span class="chev"></span></summary>
+    <div class="body"><p class="lead">Стиль кейса — это то, как слайды соединяются между собой и как выглядит навигация. Вариантов немного, и выбрать нужно один на весь кейс. Стиль продолжает айдентику проекта, которую ты придумал, но не спорит с ней.</p>
+      <div class="duo">
+        <article class="path"><span class="tag">Вариант 1</span><h3>Прямоугольные слайды без отступов</h3><p>Послайдовое повествование: каждый слайд на своём фоне, смена фона — резкая или мягкая. Зритель чувствует паузы между блоками, и кейс читается как последовательная история, а не бесконечное полотно.</p></article>
+        <article class="path"><span class="tag">Вариант 2</span><h3>Скругления, общий фон и поля</h3><p>Слайды-карточки на одном фоне, небольшие поля между ними. Структура получается цельной, но из-за множества бенто-блоков кейс легко перегрузить, и слайды начинают слипаться.</p></article>
+      </div>
+      <div class="two">
+        <div><h3>Отдели слайды фоном и композицией</h3>
+          <p class="muted">Цвет фона создаёт визуальный ритм. Меняй подложки от слайда к слайду, чтобы отделить сюжеты друг от друга. Бери цвета из палитры проекта.</p></div>
+        <div><h3>Навигация контрастнее проекта</h3>
+          <p class="muted">Частая ошибка — заголовки кейса по размеру и контрасту похожи на тексты самого проекта, и всё сливается в одну массу. Сделай навигацию совсем маленькой, чтобы не перебивать проект, или наоборот сыграй на очень крупных заголовках. В небольшом кейсе сложная навигация мешает.</p></div>
+      </div>
+      <div class="chk"><h3>Проверь перед следующим этапом</h3>
+        <label><input type="checkbox" data-ck="3-0"><span>Выбран один стиль кейса: слайды без отступов или карточки с полями</span></label>
+        <label><input type="checkbox" data-ck="3-1"><span>Фоны слайдов меняются и взяты из палитры проекта</span></label>
+        <label><input type="checkbox" data-ck="3-2"><span>Навигация кейса отличается от текстов проекта по размеру и контрасту</span></label>
+      </div>
+      <div class="lessons"><span class="tag">Методички к этапу</span><a href="../../cvet/" target="_blank" rel="noopener">Цвет</a><a href="../../tipografika/" target="_blank" rel="noopener">Типографика</a></div>
+    </div>
+  </details>
+
+  <details class="stage" id="stage-4">
+    <summary><span class="num">04</span><h3>Оформление слайдов</h3><span class="time">по регламенту <b>2–3 ч</b><br>с Claude <b>2–2,5 ч</b></span><span class="chev"></span></summary>
+    <div class="body"><p class="lead">Самое важное в кейсе — визуальный ритм. Когда подряд идут одинаковые слайды, зрителю скучно, и он уходит. Здесь ты работаешь как монтажёр: меняешь крупность планов, композицию и фон.</p>
+      <div class="tbl"><table><thead><tr><th>Шаг</th><th>Отдаём нейросети</th><th>Оставляем себе</th><th>Время</th></tr></thead><tbody>
+        <tr><td>Раскадровка</td><td>Разметка списка слайдов по планам, поиск провалов в ритме</td><td>Порядок слайдов и что в каждом главное</td><td class="t">20 мин</td></tr>
+        <tr><td>Референсы на каждый слайд</td><td>Подсказка, какую подачу искать</td><td>Поиск и отбор 5–7 референсов на слайд</td><td class="t">30–40 мин</td></tr>
+        <tr><td>Сборка слайдов</td><td>Сокращение подписей до одной-двух фраз</td><td>Композиция, крупность, фон</td><td class="t">1,5–2 ч</td></tr>
+        <tr><td>Проверка</td><td>Свежий взгляд: где скучно, где перегружено</td><td>Решение, что переделать</td><td class="t">10 мин</td></tr>
+      </tbody></table></div>
+
+      <div class="sec-head"><h3>Монтаж по крупности</h3><p class="muted">В кино базовых планов шесть: деталь, крупный, первый средний, второй средний, общий и дальний. Человек без напряжения воспринимает переход между кадрами, когда они заметно отличаются по крупности. В кейсе вместо кадров слайды, а крупность измеряем тем, сколько места макет занимает на слайде.</p></div>
+      <figure class="plans" aria-label="Три плана в кейсе">
+        <div><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="1" y="1" width="158" height="108" rx="6" class="pf"/><rect x="-20" y="18" width="120" height="120" rx="10" class="pm"/><rect x="2" y="40" width="70" height="14" rx="7" class="pa"/><rect x="2" y="62" width="50" height="8" rx="4" class="pl"/><rect x="108" y="24" width="40" height="5" rx="2.5" class="pl"/><rect x="108" y="34" width="32" height="5" rx="2.5" class="pl"/></svg><b>Крупный план</b><span>Деталь крупно: кнопка, карточка, иллюстрация, анимация. Бери самые насыщенные части проекта.</span></div>
+        <div><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="1" y="1" width="158" height="108" rx="6" class="pf"/><rect x="38" y="20" width="84" height="56" rx="4" class="pm"/><rect x="46" y="28" width="40" height="6" rx="3" class="pa"/><rect x="46" y="40" width="68" height="3" rx="1.5" class="pl"/><rect x="46" y="47" width="56" height="3" rx="1.5" class="pl"/><rect x="62" y="86" width="36" height="4" rx="2" class="pl"/></svg><b>Средний план</b><span>Экран или блок целиком, но не слишком далеко. Вокруг — воздух.</span></div>
+        <div><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="1" y="1" width="158" height="108" rx="6" class="pf"/><g class="pm"><rect x="14" y="16" width="20" height="40" rx="3"/><rect x="40" y="22" width="20" height="40" rx="3"/><rect x="66" y="12" width="20" height="40" rx="3"/><rect x="92" y="26" width="20" height="40" rx="3"/><rect x="118" y="18" width="20" height="40" rx="3"/><rect x="27" y="62" width="20" height="40" rx="3"/><rect x="53" y="66" width="20" height="40" rx="3"/><rect x="79" y="58" width="20" height="40" rx="3"/><rect x="105" y="70" width="20" height="40" rx="3"/></g></svg><b>Дальний план</b><span>Проект с высоты птичьего полёта: много экранов сразу. Такой слайд либо быстро пролистывают, либо разглядывают.</span></div>
+      </figure>
+      <div class="rhythm">
+        <div class="bad"><span class="tag">Плохо</span><p><i>С</i><i>С</i><i>С</i><i>С</i><i>С</i><i>С</i></p><span class="muted">Шесть одинаковых скриншотов подряд: через три слайда скучно.</span></div>
+        <div class="good"><span class="tag">Хорошо</span><p><i>О</i><i>К</i><i>С</i><i class="g">Г</i><i>Д</i><i>К</i><i>С</i></p><span class="muted">Общий, крупный, средний, графика, дальний… План не повторяется подряд, между интерфейсом — сюжеты с фирменным стилем, мокапами или фото.</span></div>
+      </div>
+      <p class="note">Прежде чем собирать слайды, подпиши у каждого в списке план: общий, средний или крупный. Видишь три одинаковых подряд — вставь между ними деталь или графику. Ритм проще поправить в списке, чем в готовых слайдах.</p>
+
+      <div class="sec-head"><h3>Как это выглядит в кейсе</h3><p class="muted">Кейс Woofy целиком: листай ленту и смотри, как меняются планы, фон и сюжеты — интерфейс, мокапы, фото, айдентика.</p></div>
+      <div class="strip" data-case="woofy" data-n="10" aria-label="Лента кейса Woofy"></div>
+
+      <div class="xbox">
+        <article><span class="k">Колонки</span><b>Два сюжета в ряд</b>Иллюстрация или фото рядом с экраном переключают внимание и добавляют динамику. Две картинки рядом показывают разное: блок и его мобильную версию с другим акцентом, экран и деталь из него. Один и тот же первый экран на ноутбуке и телефоне — повтор.</article>
+        <article><span class="k">Симметрия и асимметрия</span><b>Подбрось композиционный кубик</b>Найди скучные слайды и поменяй размер, положение, форму и цвет элементов. Симметричную композицию с экраном по центру повторяй не чаще раза в 2–3 слайда.</article>
+        <article><span class="k">Воздух</span><b>Макет на 50–60% слайда</b>Не бойся пустого поля. В кейсах, получивших награды, экраны часто намеренно небольшие: так их подчёркивает композиция. Макет до краёв слайда выглядит как сырой скриншот.</article>
+        <article><span class="k">Референсы</span><b>5–7 примеров на каждый слайд</b><span>Смотри, как другие подают первый экран, адаптив, деталь. Ищи на тех же площадках, где будешь публиковаться, и в файле <a href="https://www.figma.com/design/Ph0Ia22c7HVMmRyZzYS6Ko" target="_blank" rel="noopener">«Упаковка кейсов»</a> с подборками по стилям.</span></article>
+      </div>
+      <p class="note">Слайды подчиняются тем же принципам, что и любой проект: композиция, иерархия, контраст. Только проще — контент уже готов. Проверь готовый кейс по приборной панели дизайнера, как макет.</p>
+      <div class="chk"><h3>Проверь перед следующим этапом</h3>
+        <label><input type="checkbox" data-ck="4-0"><span>У каждого слайда в раскадровке подписан план, одинаковые не стоят три раза подряд</span></label>
+        <label><input type="checkbox" data-ck="4-1"><span>Интерфейс перемежается графикой, мокапами или фото</span></label>
+        <label><input type="checkbox" data-ck="4-2"><span>На сдвоенных слайдах две картинки показывают разное</span></label>
+        <label><input type="checkbox" data-ck="4-3"><span>Макеты занимают 50–60% слайда, вокруг есть воздух</span></label>
+        <label><input type="checkbox" data-ck="4-4"><span>На слайде одна-две короткие фразы, а не абзацы</span></label>
+      </div>
+      <div class="lessons"><span class="tag">Методички к этапу</span><a href="../../kompoziciya/" target="_blank" rel="noopener">Композиция</a><a href="../../../mtw-metodichki/#references-search-select-adapt" target="_blank" rel="noopener">Референсы</a></div>
+      <div class="prompt-slot" data-prompt="rhythm"></div>
+    </div>
+  </details>
+
+  <details class="stage" id="stage-5">
+    <summary><span class="num">05</span><h3>Обложка и название</h3><span class="time">по регламенту <b>30–40 мин</b><br>с Claude <b>около 30 мин</b></span><span class="chev"></span></summary>
+    <div class="body"><p class="lead">Обложка — афиша проекта. Её видят в ленте и подборках раньше, чем сам кейс, и по ней решают, открывать ли его. Обложку делай почти последней: когда кейс собран, проще понять, что вынести на афишу.</p>
+      <div class="two">
+        <div><h3>Покажи смысл через обложку</h3>
+          <ul class="plain">
+            <li><b>Сайт:</b> главный экран крупно, в мокапе или без него.</li>
+            <li><b>Приложение:</b> сам интерфейс в мокапе или с визуалом проекта, а не иконка. Так работодатель сразу поймёт, о чём кейс, и откроет его с большей вероятностью.</li>
+            <li><b>3D и AI:</b> самый сильный кадр продукта и название. Место под название закладывай в кадр заранее.</li>
+            <li>По обложке видно, что ты делал: сайт, приложение, айдентику.</li>
+          </ul></div>
+        <div><h3>Покажи смысл через название</h3>
+          <p class="muted">Отдели тип проекта от названия чертой или слешем:</p>
+          <div class="names"><span>Lumina | Promo site + App</span><span>Lumina | UX/UI</span><span>Lumina | Креативный лонгрид</span></div>
+          <p class="note">Не пиши Landing — лучше Website. На Behance обложка не меньше 808 × 632 px.</p></div>
+      </div>
+      <div class="covers wide">
+        <a href="../../../mtw-diary/#case=heatcup" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/heatcup/cover.jpg" alt="Обложка Heatcup" loading="lazy" width="900" height="594"><b>Продукт и название</b><span>Heatcup: термос крупно на камнях, гигантское название за ним</span></a>
+        <a href="../../../mtw-diary/#case=abc" target="_blank" rel="noopener"><img src="../../../mtw-diary/cases/abc/cover.jpg" alt="Обложка ABC app" loading="lazy" width="900" height="594"><b>Интерфейс, а не иконка</b><span>ABC app: экраны приложения сразу объясняют, что это за кейс</span></a>
+      </div>
+      <div class="chk"><h3>Проверь перед следующим этапом</h3>
+        <label><input type="checkbox" data-ck="5-0"><span>На обложке главный экран или интерфейс, а не иконка</span></label>
+        <label><input type="checkbox" data-ck="5-1"><span>Из названия понятно, что за продукт и что я делал</span></label>
+        <label><input type="checkbox" data-ck="5-2"><span>Обложка читается в маленьком размере на телефоне</span></label>
+      </div>
+      <div class="prompt-slot" data-prompt="names"></div>
+    </div>
+  </details>
+
+  <details class="stage" id="stage-6">
+    <summary><span class="num">06</span><h3>Анимация</h3><span class="time">по регламенту <b>около 1 ч</b><br>с Claude <b>около 1 ч</b></span><span class="chev"></span></summary>
+    <div class="body"><p class="lead">Трейлер без движения — слайд-шоу. Оживи 3–4 блока кейса в Jitter: анимация делает проект интереснее и показывает то, что не видно в статике. Как работать в Jitter, разобрано в мастер-классе курса.</p>
+      <div class="xbox">
+        <article><span class="k">Сюжет 1</span><b>Открытие страницы и прелоадер</b>Хороший способ показать логотип или другую фирменную графику.</article>
+        <article><span class="k">Сюжет 2</span><b>Фирменный стиль</b>Быстрое переключение элементов айдентики: цвета, паттерны, носители.</article>
+        <article><span class="k">Сюжет 3</span><b>Истории в соцсетях</b>Сторис в стиле проекта — универсальная цветовая схема и движение.</article>
+        <article><span class="k">Сюжет 4</span><b>Экраны и скролл</b>Переходы и взаимодействие между экранами приложения или скролл между блоками сайта.</article>
+      </div>
+      <div class="two">
+        <div><h3>Сколько длится</h3>
+          <ul class="plain">
+            <li>Каждая анимация — не дольше 12–15 секунд, чтобы её точно досмотрели.</li>
+            <li>Анимация интерфейса — оптимально до 10 секунд. Ролики на 40–60 секунд не смотрят.</li>
+          </ul></div>
+        <div><h3>Как вставить на площадки</h3>
+          <ul class="plain">
+            <li>Загрузи видео в Vimeo или Kinescope, скопируй код встраивания и вставь на Behance и Dprofile. Так работает автопроигрывание.</li>
+            <li>Короткий цикл можно поставить и вместо статичного слайда.</li>
+          </ul></div>
+      </div>
+      <div class="chk"><h3>Проверь перед следующим этапом</h3>
+        <label><input type="checkbox" data-ck="6-0"><span>Оживлены 3–4 блока кейса</span></label>
+        <label><input type="checkbox" data-ck="6-1"><span>Каждая анимация короче 15 секунд, интерфейс — короче 10</span></label>
+        <label><input type="checkbox" data-ck="6-2"><span>Видео загружено в Vimeo или Kinescope, код встраивания готов</span></label>
+      </div>
+    </div>
+  </details>
+
+  <details class="stage" id="stage-7">
+    <summary><span class="num">07</span><h3>Публикация</h3><span class="time">по регламенту <b>около 30 мин</b><br>с Claude <b>около 20 мин</b></span><span class="chev"></span></summary>
+    <div class="body"><p class="lead">Кейс готов — выпускаем фильм в прокат. Сначала Behance, потом импорт на Dprofile. Проект засчитан, когда куратор согласовал кейс и получил от тебя обе ссылки.</p>
+      <div class="split"><div style="display:flex;flex-direction:column;gap:12px"><h3>Публикация по шагам</h3><ol class="ol">
+        <li><span><b>Слайды 1920 px</b> в ширину, высота до 5000 px. Макеты масштабируй инструментом Scale <kbd>K</kbd>.</span></li>
+        <li><span><b>Нарежь кейс</b> инструментом Slice <kbd>S</kbd>: выдели область и двигай края маркерами.</span></li>
+        <li><span><b>Сожми картинки</b> плагином Image Compressor: JPG, до 2–3 МБ на файл. Иначе кейс будет долго грузиться.</span></li>
+        <li><span><b>Behance:</b> «Поделиться проектом», загрузи все картинки разом, в стилях поставь интервалы между блоками 0 px, чтобы кейс шёл одной лентой. Загрузи обложку не меньше 808 × 632.</span></li>
+        <li><span><b>Dprofile:</b> «Создать» → «Проект» → «Импортировать с Behance», отступы тоже 0.</span></li>
+        <li><span><b>Категория и теги:</b> выбери категорию, которую решил на этапе контента, и добавь теги по типу работы.</span></li>
+        <li><span><b>Проверь на телефоне:</b> площадки пережимают картинки, мелкий текст и зерно могут превратиться в кашу.</span></li>
+      </ol><p class="note">Интерфейсы площадок меняются. Если пункт меню называется иначе, ищи по смыслу.</p></div>
+      <div class="pubs"><div class="pubcard"><span class="tag">Обязательная строка</span><p>Кейс сделан в некоммерческих целях. Контент принадлежит авторам.</p><span class="muted">Нужна, если ты делал учебный концепт для реального бренда. Так никто не решит, что ты выдаёшь концепт за настоящий заказ.</span></div>
+      <div class="pubcard"><span class="tag">Если были генерации</span><p>Все изображения созданы с помощью AI. Моя работа: идея, стиль, отбор, правки, вёрстка.</p><span class="muted">Плашка «AI-генерация» на кадрах и честный абзац о том, что делала нейросеть, а что ты, — это плюс, а не минус.</span></div></div></div>
+      <div class="two">
+        <div><h3>Behance</h3><p class="muted">Международное портфолио: агентства, студии, зарубежные заказчики. Полный кейс, обложку готовь отдельно.</p></div>
+        <div><h3>Dprofile</h3><p class="muted">Русскоязычное портфолио и заказчики из России. Тот же кейс, текст на русском. Выпускники школы регулярно получают здесь награды — например, Ловись получил Dprofile Award.</p></div>
+      </div>
+      <div class="chk"><h3>Проверь перед сдачей куратору</h3>
+        <label><input type="checkbox" data-ck="7-0"><span>Слайды шириной 1920 px, высотой до 5000 px</span></label>
+        <label><input type="checkbox" data-ck="7-1"><span>Картинки сжаты до 2–3 МБ, кейс открывается быстро и на телефоне</span></label>
+        <label><input type="checkbox" data-ck="7-2"><span>Есть строка о том, что проект учебный и некоммерческий</span></label>
+        <label><input type="checkbox" data-ck="7-3"><span>Генерации отмечены, есть абзац «что делала нейросеть, что я»</span></label>
+        <label><input type="checkbox" data-ck="7-4"><span>Кейс опубликован на Behance и Dprofile, ссылки отправлены куратору</span></label>
+      </div>
+      <div class="lessons"><span class="tag">Методички к этапу</span><a href="../../../lichnyj-brend/" target="_blank" rel="noopener">Личный бренд дизайнера</a></div>
+      <div class="prompt-slot" data-prompt="post"></div>
+    </div>
+  </details>
+
+  </div>
+</section>
+
+<section class="sec" id="errors">
+  <div class="sec-head"><span class="tag">Ошибки</span><h2>15 ошибок упаковки и как их исправить</h2>
+  <p class="muted">Их кураторы видят чаще всего. Пройди по списку перед отправкой кейса.</p></div>
+  <ol class="errs">
+    <li data-s="1"><b>Не подготовить контент до упаковки</b><span>Сначала тексты, экраны, мокапы и артефакты, потом шаблон кейса.</span></li>
+    <li data-s="3"><b>Нет послайдового повествования</b><span>Раздели кейс на слайды со сменой фона, чтобы появились паузы между сюжетами.</span></li>
+    <li data-s="1"><b>Сайт не разделён на визуальные сюжеты</b><span>Режь проект под пропорции десктопа, планшета и телефона и показывай по частям.</span></li>
+    <li data-s="1"><b>Экраны не в реальных пропорциях</b><span>Телефон не меньше настоящего по пропорциям, высота телефона — около 0,65 высоты планшета.</span></li>
+    <li data-s="4"><b>Нет ритма, статичное повествование</b><span>Миксуй крупный, средний и дальний планы, разбавляй интерфейс графикой и фото.</span></li>
+    <li data-s="2"><b>Разные пропорции между мокапами</b><span>Определи похожие размеры устройств на всех слайдах.</span></li>
+    <li data-s="2"><b>Слишком «перспективная» подача</b><span>Экран под острым углом не читается. Показывай интерфейс фронтально, перспективу — дозированно.</span></li>
+    <li data-s="4"><b>Перегруженный слайд</b><span>Если есть что показать, разбей на несколько слайдов, чем лепить всё в один.</span></li>
+    <li data-s="4"><b>Нет воздуха</b><span>«Продуй» слайд: макет на 50–60% площади, вокруг пустое поле.</span></li>
+    <li data-s="4"><b>Не показаны интересные детали</b><span>Состояния кнопок, иконки, микроанимацию — крупным планом, иначе их никто не заметит.</span></li>
+    <li data-s="1"><b>Слишком много текста</b><span>Опиши суть концепции одной-двумя фразами и сделай акцент на визуал.</span></li>
+    <li data-s="5"><b>Обложка не отражает суть</b><span>На обложке — главный экран или интерфейс и понятное название с типом работы.</span></li>
+    <li data-s="0"><b>Мало времени на упаковку</b><span>Выдели 15–20% времени проекта. Кейс за вечер перед дедлайном видно сразу.</span></li>
+    <li data-s="6"><b>Нет анимации</b><span>Сделай простые сюжеты: прелоадер, фирменный стиль, сторис, экраны интерфейса.</span></li>
+    <li data-s="1"><b>Большой проект в одном кейсе</b><span>Раздели на несколько кейсов, у каждого своя категория: например, айдентика и сайт.</span></li>
+  </ol>
+</section>
+
+<section class="sec" id="ai">
+  <div class="sec-head"><span class="tag">С нейросетью</span><h2>Что отдать нейросети, а что оставить себе</h2>
+  <p class="muted">Монтаж твой: что главное, какие планы, как выглядит слайд. Нейросеть ускоряет черновик сюжета и текстов — и здесь окупается журнал проекта в паспорте.</p></div>
+  <div class="tbl"><table><thead><tr><th>Отдаём нейросети</th><th>Оставляем себе</th></tr></thead><tbody>
+    <tr><td>Черновик структуры кейса из паспорта и журнала</td><td>Что в проекте главное и что попадёт в кейс</td></tr>
+    <tr><td>3–5 вариантов текста о проекте по формуле</td><td>Выбор варианта и правку под свой голос</td></tr>
+    <tr><td>Сокращение подписей до одной-двух фраз</td><td>Композицию слайдов и смену планов</td></tr>
+    <tr><td>Разметку списка слайдов по планам</td><td>Мокапы с твоими настоящими экранами</td></tr>
+    <tr><td>Фоны и сцены для мокапов, варианты названия, текст поста</td><td>Обложку, анимацию и публикацию</td></tr>
+  </tbody></table></div>
+  <div class="two">
+    <div><h3>Что проверить в ответе</h3><ul class="plain">
+      <li>Нейросеть не придумала цифры и результаты. «Конверсия выросла» в учебном проекте не бывает.</li>
+      <li>Тексты не звучат как реклама: «уникальный» и «современный» вычёркивай.</li>
+      <li>В разметке нет трёх одинаковых планов подряд.</li>
+    </ul></div>
+    <div><h3>Ты, наверное, спросишь</h3><ul class="plain">
+      <li><b>Кейс и портфолио — одно и то же?</b> Нет. Кейс — один проект, портфолио — набор кейсов, как трейлер и фильмография.</li>
+      <li><b>В проекте нет ничего особенного.</b> Так кажется почти всем. Выбери самое аккуратное — форму, мобильную версию, иконки — и покажи крупно.</li>
+      <li><b>Стыдно выкладывать первую работу.</b> Публикация — часть задания, первый кейс есть у всех. Его всегда можно обновить.</li>
+    </ul></div>
+  </div>
+  <div class="prompt-slot" data-prompt="ai"></div>
+</section>
+
+<section class="sec" id="review">
+  <div class="sec-head"><span class="tag">Проверка куратором</span><h2>Нейросеть готовит, куратор принимает</h2>
+  <p class="muted">Кейс сдаётся в два шага. Сначала раскадровка — пока править дёшево. Потом готовый кейс и ссылки.</p></div>
+  <ol class="checks">
+    <li data-n="1"><span class="num">01</span><a href="#stage-1">Раскадровка</a><span>Один фрейм: главное в проекте, категория, текст о проекте, список слайдов серыми прямоугольниками с подписанными планами и черновик обложки.</span></li>
+    <li data-n="5"><span class="num">02</span><a href="#stage-5">Кейс в Figma</a><span>Собранный кейс с обложкой и анимацией. Куратор подскажет, как показать концепцию, которая не поместилась в сам проект.</span></li>
+    <li data-n="7"><span class="num">03</span><a href="#stage-7">Ссылки</a><span>Кейс на Behance и Dprofile. После этого проект засчитан.</span></li>
+  </ol>
+  <div class="two">
+    <div><h3>Что отправить вместе с кейсом</h3><ul class="plain">
+      <li>Ссылку на фрейм кейса в Figma.</li>
+      <li>Что делала нейросеть: например, «тексты — черновик агента, отредактированы».</li>
+      <li>Один конкретный вопрос: «Какая обложка сильнее?» работает лучше, чем «ну как?».</li>
+    </ul></div>
+    <div><h3>Если агент и куратор спорят</h3><ul class="plain">
+      <li>Прав куратор: он видел проект целиком и знает требования курса.</li>
+      <li>Правки куратора запиши в паспорт: пригодятся в следующем кейсе.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="sec" id="quiz">
+  <div class="sec-head"><span class="tag">Проверь себя</span><h2>Проверь себя</h2>
+  <p class="muted">Ошибся — открой этап, к которому относится вопрос.</p></div>
+  <div class="quiz" id="qbox"></div>
+</section>
+
+<footer>Perasperadastra · гайд «Кейс: от готового макета до Behance и Dprofile»</footer>
+</div>
+
+<script>
+const HLREG={};
+window.hairline=(f)=>{HLREG[f.name]=f};
+window.hlMount=function(){
+  const quiet=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll("[data-fig]").forEach((box)=>{
+    const figure=HLREG[box.getAttribute("data-fig")];
+    if(!figure||!window.HL||box.dataset.on) return; box.dataset.on=1;
+    HL.inject(document);
+    const stage=document.createElement("div"); box.appendChild(stage);
+    stage.setAttribute("data-hairline",figure.name); stage.setAttribute("data-hairline-theme","dark");
+    stage.setAttribute("role","img"); stage.setAttribute("aria-label",figure.means);
+    const svg=HL.mk("svg",{viewBox:"0 0 400 320","aria-hidden":"true"},stage);
+    const label=box.querySelector(".hlread");
+    const read={set textContent(v){const t=v==null?"":String(v);const idle=t==="rest"||t==="";label.textContent=idle?"наведи курсор":t;label.classList.toggle("on",!idle)}};
+    const side=box.parentElement.querySelector(".hlmeans"); if(side) side.textContent=figure.means;
+    figure.mount({stage,svg,read},figure.range[1]);
+    let played=quiet,playing=null;
+    const io=new IntersectionObserver((es)=>{es.forEach((e)=>{if(!e.isIntersecting||played)return;played=true;const stops=figure.tour||HL.LAP;
+      playing=HL.tour(stage,stops,(k)=>{if(k>=stops.length-1&&playing){playing.stop();playing=null}})})},{threshold:.4});
+    io.observe(stage);
+  });
+};
+</script>
+<script>
+/* Hairline kernel. Copyright (c) Lucas Marques, MIT License. */
+/* hairline kernel sha256:3a19aa2640ba8c6c306184d05fddfbd4f3323a6ebd9217dd3cbb38e9db74991c */
+/*
+ * HL: everything a figure may call. Read this index; the code under it is the
+ * package's src/core, unchanged, and a figure should not need to read it.
+ *
+ * Every figure is drawn in a 400 × 320 viewBox. World space is x/y on the
+ * ground and z up. Plates are filled with the ground colour and painted back
+ * to front, so a nearer one covers a farther one: append in that order. At
+ * the default camera, Cam(45, 0.5, S), +x runs down to the right and +y down
+ * to the left, so the corner with the largest x and y is nearest the viewer:
+ * append by ascending x + y, from the far corner (smallest x and y) to it.
+ *
+ * Camera
+ *   Cam(azDeg, k, S)                       a camera: azimuth in degrees, k = sin(elevation) (0.5 is the 2:1 view), S = scale
+ *   fit(C, points, cx, cy)                 centres the box of [x, y, z] points on (cx, cy); call it once, before proj
+ *                                          it only centres, it never scales: choose S by trying values, with the most extreme pose in points.
+ *                                          The six figures use S 1.42 to 2.12; the boxes they fit come out 230 to 310 wide and 180 to 245 tall
+ *   proj(C)                                returns P(x, y, z), which gives [sx, sy]
+ *   unproj(C, sx, sy, z)                   the world [x, y] under a screen point, on the plane at height z
+ *   facing(C)                              returns front(sample): whether a ring sample faces the camera
+ * Rounded solids
+ *   rrect(u0, v0, u1, v1, r, n)            a rounded rectangle, as a ring of samples {u, v, nu, nv}
+ *   circ(R, n)                             a circle, as a ring
+ *   rings(x0, y0, x1, y1, r, b)            [ring, inner]: a rounded footprint and its crease ring, inset by b
+ *                                          r, the corner radius, is cut to half the shorter side. b, the crease's inset in world units
+ *                                          (0.6 to 2.2 in the figures), must stay under half the shorter side or the crease turns inside out
+ *   prism(P, front, ring, inner, z0, z1)   {sil, crease}: a solid standing from z0 to z1, as two path strings
+ *   ringAt(P, ring, z)                     the ring's points, projected at height z
+ *   run(ring, keep)                        the one cyclic run of samples that pass keep
+ *   hull(points)                           the convex hull of screen points
+ *   extremes(P, ring)                      [left, right, nearest] samples: where dashed drops fall from
+ *   fillet(points, radii, n)               rounds every vertex of a closed polygon; returns the new points
+ *                                          radii is an array, one radius per vertex, each cut to half its shorter edge; a single number gives NaN.
+ *                                          n is the steps round each corner, default 4: each vertex becomes n + 1 points
+ *   ghost(P, front, ring, z0, depth)       a reflection's path {d, y0, y1}; reflect() draws it for you
+ * Paths and numbers
+ *   poly(points)                           a closed path string
+ *   open(points)                           an open polyline string
+ *   seg(a, b)                              one segment between two screen points [sx, sy], as its own subpath; project world points with P first
+ *   clamp(v, a, b)
+ *   lerp(a, b, t)
+ *   rad(deg)
+ *   r2(n)                                  two decimals
+ * The continuous clock: one spring per moving number
+ *   spring(x, opts)                        at rest on x; write .t to retarget; opts {k, c, m, eps}, default k 100, c 18, m 1
+ *   stepS(sp, dt)                          advances by dt seconds; returns whether it is still moving
+ * The discrete clock: a 700ms tween on (.32, .72, 0, 1)
+ *   tween(v, dur)                          at rest on v; dur defaults to 700 (ms)
+ *   tset(tw, to, now, delay)               retargets from where it is, after delay ms: the stagger
+ *                                          the same target again does nothing, so calling it on every pointer move is safe
+ *   tval(tw, now)                          its value at now
+ *   tdone(tw, now)                         whether it has landed
+ *   bezier(x1, y1, x2, y2)                 a CSS cubic-bezier, as a function of progress
+ *   EASE_LIFT                              the lift curve itself
+ *   reducedMotion()                        true when the reader asked for less motion; springs and tweens already land at once
+ *   setReducedMotion(on)                   the loop's business, not a figure's
+ * Drawing
+ *   mk(tag, attrs, parent)                 one svg element: the only way a figure makes a node
+ *   solid(parent)                          {g, sil, cr}: a group holding a silhouette path and a crease path
+ *   put(solid, paths)                      writes prism()'s {sil, crease} into solid()'s {sil, cr}: sil into sil, crease into cr
+ *   flatDot(parent, C, r, cls)             a dot lying on the ground plane; cls is "dot", "dot m" or "dot off"
+ *   place(el, point)                       moves a dot or a circle to [sx, sy]
+ *   reflect(svg, parent, P, front, ring, z0, depth)   a fading mirror under a solid
+ *   fade(svg, y0, y1, a0)                  a vertical fade, as a mask; returns the value for a mask attribute
+ * Life
+ *   register(stage, tick)                  joins the one frame loop; tick(dt in seconds, now in ms) returns true to ask for another frame; gives {wake, unregister}
+ *   pointer(stage, handlers)               {move(point), down(point), leave()}, points in viewBox units; returns its disposer
+ *   disposer()                             {add, on, dispose}: collects tear-down, so destroy is bag.dispose
+ * The bench's business, not a figure's
+ *   css(lightDark)
+ *   inject(root)
+ *   tour(stage, stops, onStop)             an unseen pointer that walks the stops, [x, y] in viewBox units or null to leave, and gives way to a real one; onStop(i) on each arrival; returns {stop}
+ *   LAP                                    the default stops: a diamond around the centre, then a leave
+ *
+ * Classes, on path, polygon, ellipse and line. They are the whole palette; a
+ * figure sets no colour, width or fill of its own.
+ *     (none)   filled with the ground colour, medium stroke
+ *     sil      the silhouette's stroke        hi    the bright stroke: the only highlight
+ *     lo       the dim stroke                 nf    no fill        fo   fill only, no stroke
+ *     dash     a dashed guide
+ *     dot      a bright dot                   dot m   a medium dot     dot off   a dim dot
+ */
+var HL = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+  // packages/hairline/src/core/kernel.ts
+  var kernel_exports = {};
+  __export(kernel_exports, {
+    Cam: () => Cam,
+    EASE_LIFT: () => EASE_LIFT,
+    LAP: () => LAP,
+    bezier: () => bezier,
+    circ: () => circ,
+    clamp: () => clamp,
+    css: () => css,
+    disposer: () => disposer,
+    extremes: () => extremes,
+    facing: () => facing,
+    fade: () => fade,
+    fillet: () => fillet,
+    fit: () => fit,
+    flatDot: () => flatDot,
+    ghost: () => ghost,
+    hull: () => hull,
+    inject: () => inject,
+    lerp: () => lerp,
+    mk: () => mk,
+    open: () => open,
+    place: () => place,
+    pointer: () => pointer,
+    poly: () => poly,
+    prism: () => prism,
+    proj: () => proj,
+    put: () => put,
+    r2: () => r2,
+    rad: () => rad,
+    reducedMotion: () => reducedMotion,
+    reflect: () => reflect,
+    register: () => register,
+    ringAt: () => ringAt,
+    rings: () => rings,
+    rrect: () => rrect,
+    run: () => run,
+    seg: () => seg,
+    setReducedMotion: () => setReducedMotion,
+    solid: () => solid,
+    spring: () => spring,
+    stepS: () => stepS,
+    tdone: () => tdone,
+    tour: () => tour,
+    tset: () => tset,
+    tval: () => tval,
+    tween: () => tween,
+    unproj: () => unproj
+  });
+
+  // packages/hairline/src/core/iso.ts
+  var clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  var lerp = (a, b, t) => a + (b - a) * t;
+  var rad = (d) => d * Math.PI / 180;
+  var r2 = (n) => Math.round(n * 100) / 100;
+  var poly = (pts) => "M" + pts.map((p) => r2(p[0]) + " " + r2(p[1])).join("L") + "Z";
+  var seg = (a, b) => `M${r2(a[0])} ${r2(a[1])}L${r2(b[0])} ${r2(b[1])}`;
+  var open = (pts) => pts.length < 2 ? "" : "M" + pts.map((p) => r2(p[0]) + " " + r2(p[1])).join("L");
+  var Cam = (azDeg, k, S) => ({ az: rad(azDeg), k, S, ox: 0, oy: 0 });
+  function proj(C) {
+    const c = Math.cos(C.az), s = Math.sin(C.az), zf = Math.sqrt(1 - C.k * C.k);
+    return (x, y, z) => {
+      const X = x * c - y * s, Y = x * s + y * c;
+      return [C.ox + C.S * X, C.oy + C.S * (Y * C.k - z * zf)];
+    };
+  }
+  function unproj(C, sx, sy, z) {
+    const c = Math.cos(C.az), s = Math.sin(C.az), zf = Math.sqrt(1 - C.k * C.k);
+    const X = (sx - C.ox) / C.S, Y = ((sy - C.oy) / C.S + z * zf) / C.k;
+    return [X * c + Y * s, -X * s + Y * c];
+  }
+  function fit(C, pts, cx, cy) {
+    C.ox = 0;
+    C.oy = 0;
+    const P = proj(C);
+    let a = 1e9, b = -1e9, c = 1e9, d = -1e9;
+    for (const p of pts) {
+      const q = P(p[0], p[1], p[2]);
+      a = Math.min(a, q[0]);
+      b = Math.max(b, q[0]);
+      c = Math.min(c, q[1]);
+      d = Math.max(d, q[1]);
+    }
+    C.ox = cx - (a + b) / 2;
+    C.oy = cy - (c + d) / 2;
+  }
+  function rrect(u0, v0, u1, v1, r, n = 4) {
+    r = Math.max(0, Math.min(r, (u1 - u0) / 2, (v1 - v0) / 2));
+    const out = [];
+    for (const [cu, cv, a0] of [[u1 - r, v1 - r, 0], [u0 + r, v1 - r, 90], [u0 + r, v0 + r, 180], [u1 - r, v0 + r, 270]])
+      for (let k = 0; k <= n; k++) {
+        const a = rad(a0 + 90 * k / n), ca = Math.cos(a), sa = Math.sin(a);
+        out.push({ u: cu + r * ca, v: cv + r * sa, nu: ca, nv: sa });
+      }
+    return out;
+  }
+  function circ(R, n = 96) {
+    const out = [];
+    for (let k = 0; k < n; k++) {
+      const a = k / n * Math.PI * 2, ca = Math.cos(a), sa = Math.sin(a);
+      out.push({ u: R * ca, v: R * sa, nu: ca, nv: sa });
+    }
+    return out;
+  }
+  function hull(input) {
+    const pts = input.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    const x = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    const lo = [], up = [];
+    for (const p of pts) {
+      while (lo.length > 1 && x(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop();
+      lo.push(p);
+    }
+    for (let i = pts.length - 1; i >= 0; i--) {
+      const p = pts[i];
+      while (up.length > 1 && x(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop();
+      up.push(p);
+    }
+    lo.pop();
+    up.pop();
+    return lo.concat(up);
+  }
+  var ringAt = (P, ring, z) => ring.map((q) => P(q.u, q.v, z));
+  var facing = (C) => {
+    const s = Math.sin(C.az), c = Math.cos(C.az);
+    return (q) => q.nu * s + q.nv * c >= -1e-6;
+  };
+  function run(ring, keep) {
+    const n = ring.length;
+    let s = -1;
+    for (let i = 0; i < n; i++) if (keep(ring[i]) && !keep(ring[(i + n - 1) % n])) {
+      s = i;
+      break;
+    }
+    if (s < 0) return keep(ring[0]) ? ring.slice() : [];
+    const out = [];
+    for (let k = 0; k < n && keep(ring[(s + k) % n]); k++) out.push(ring[(s + k) % n]);
+    return out;
+  }
+  function prism(P, front, ring, inner, z0, z1) {
+    return {
+      sil: poly(hull(ringAt(P, ring, z1).concat(ringAt(P, ring, z0)))),
+      crease: inner ? open(ringAt(P, run(inner, front), z1)) : ""
+    };
+  }
+  var rings = (x0, y0, x1, y1, r, b) => [
+    rrect(x0, y0, x1, y1, r),
+    rrect(x0 + b, y0 + b, x1 - b, y1 - b, Math.max(0.3, r - b))
+  ];
+  function extremes(P, ring) {
+    const pr = ring.map((q) => P(q.u, q.v, 0));
+    let a = 0, b = 0, c = 0;
+    pr.forEach((p, k) => {
+      if (p[0] < pr[a][0]) a = k;
+      if (p[0] > pr[b][0]) b = k;
+      if (p[1] > pr[c][1]) c = k;
+    });
+    return [ring[a], ring[b], ring[c]];
+  }
+  function fillet(pts, rs, n = 4) {
+    const m = pts.length, out = [];
+    for (let i = 0; i < m; i++) {
+      const a = pts[(i + m - 1) % m], p = pts[i], b = pts[(i + 1) % m];
+      const la = Math.hypot(a[0] - p[0], a[1] - p[1]), lb = Math.hypot(b[0] - p[0], b[1] - p[1]);
+      const t = Math.min(rs[i], la / 2, lb / 2);
+      const p1 = [p[0] + (a[0] - p[0]) / la * t, p[1] + (a[1] - p[1]) / la * t];
+      const p2 = [p[0] + (b[0] - p[0]) / lb * t, p[1] + (b[1] - p[1]) / lb * t];
+      for (let k = 0; k <= n; k++) {
+        const s = k / n, w = 1 - s;
+        out.push([w * w * p1[0] + 2 * w * s * p[0] + s * s * p2[0], w * w * p1[1] + 2 * w * s * p[1] + s * s * p2[1]]);
+      }
+    }
+    return out;
+  }
+  function ghost(P, front, ring, z0, depth) {
+    const f = run(ring, front), lowP = ringAt(P, f, z0 - depth);
+    return {
+      d: open(lowP) + [f[0], f[f.length - 1]].map((q) => seg(P(q.u, q.v, z0), P(q.u, q.v, z0 - depth))).join(""),
+      y0: Math.min(...ringAt(P, f, z0).map((p) => p[1])),
+      y1: Math.max(...lowP.map((p) => p[1])) + 2
+    };
+  }
+
+  // packages/hairline/src/core/motion.ts
+  var reduced = false;
+  var setReducedMotion = (on) => {
+    reduced = on;
+  };
+  var reducedMotion = () => reduced;
+  function spring(x, o = {}) {
+    return { x, v: 0, t: x, k: o.k ?? 100, c: o.c ?? 18, m: o.m ?? 1, eps: o.eps ?? 0.01 };
+  }
+  function stepS(sp, dt) {
+    if (reduced) {
+      sp.x = sp.t;
+      sp.v = 0;
+      return false;
+    }
+    const n = Math.max(1, Math.ceil(dt * 240)), h = dt / n;
+    for (let i = 0; i < n; i++) {
+      const a = (-sp.k * (sp.x - sp.t) - sp.c * sp.v) / sp.m;
+      sp.v += a * h;
+      sp.x += sp.v * h;
+    }
+    if (Math.abs(sp.x - sp.t) < sp.eps && Math.abs(sp.v) < sp.eps * 10) {
+      sp.x = sp.t;
+      sp.v = 0;
+      return false;
+    }
+    return true;
+  }
+  function bezier(x1, y1, x2, y2) {
+    const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+    const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+    const X = (u) => ((ax * u + bx) * u + cx) * u;
+    const Y = (u) => ((ay * u + by) * u + cy) * u;
+    const dX = (u) => (3 * ax * u + 2 * bx) * u + cx;
+    return (t) => {
+      if (t <= 0) return 0;
+      if (t >= 1) return 1;
+      let u = t;
+      for (let i = 0; i < 8; i++) {
+        const e = X(u) - t;
+        if (Math.abs(e) < 1e-5) break;
+        const d = dX(u);
+        if (Math.abs(d) < 1e-6) break;
+        u -= e / d;
+      }
+      if (!(u >= 0 && u <= 1) || Math.abs(X(u) - t) > 1e-4) {
+        let lo = 0, hi = 1;
+        u = t;
+        for (let i = 0; i < 24; i++) {
+          if (X(u) < t) lo = u;
+          else hi = u;
+          u = (lo + hi) / 2;
+        }
+      }
+      return Y(u);
+    };
+  }
+  var EASE_LIFT = bezier(0.32, 0.72, 0, 1);
+  var tween = (v, dur = 700) => ({ from: v, to: v, t0: -1e9, dur });
+  var tval = (tw, now) => {
+    const p = clamp((now - tw.t0) / tw.dur, 0, 1);
+    return tw.from + (tw.to - tw.from) * (reduced ? 1 : EASE_LIFT(p));
+  };
+  var tset = (tw, to, now, delay) => {
+    if (tw.to === to) return;
+    tw.from = tval(tw, now);
+    tw.to = to;
+    tw.t0 = now + delay;
+  };
+  var tdone = (tw, now) => reduced || now >= tw.t0 + tw.dur;
+
+  // packages/hairline/src/core/stage.ts
+  var NS = "http://www.w3.org/2000/svg";
+  function mk(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    if (attrs) for (const k in attrs) e.setAttribute(k, String(attrs[k]));
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function solid(parent) {
+    const g = mk("g", {}, parent);
+    return { g, sil: mk("path", { class: "sil" }, g), cr: mk("path", { class: "nf lo" }, g) };
+  }
+  var put = (el, s) => {
+    el.sil.setAttribute("d", s.sil);
+    el.cr.setAttribute("d", s.crease);
+  };
+  var flatDot = (parent, C, r, cls) => mk("ellipse", { rx: r2(r * C.S), ry: r2(r * C.S * C.k), class: cls }, parent);
+  var place = (el, q) => {
+    el.setAttribute("cx", String(r2(q[0])));
+    el.setAttribute("cy", String(r2(q[1])));
+  };
+  var fid = 0;
+  function fade(svg, y0, y1, a0 = 0.7) {
+    const id = "hl-fd" + ++fid, defs = mk("defs", {}, svg);
+    const lg = mk("linearGradient", { id: id + "g", gradientUnits: "userSpaceOnUse", x1: 0, y1: r2(y0), x2: 0, y2: r2(y1) }, defs);
+    mk("stop", { offset: 0, "stop-color": "#fff", "stop-opacity": a0 }, lg);
+    mk("stop", { offset: 1, "stop-color": "#fff", "stop-opacity": 0 }, lg);
+    const m = mk("mask", { id, maskUnits: "userSpaceOnUse", x: 0, y: 0, width: 400, height: 320 }, defs);
+    mk("rect", { x: 0, y: 0, width: 400, height: 320, fill: `url(#${id}g)` }, m);
+    return `url(#${id})`;
+  }
+  function reflect(svg, parent, P, front, ring, z0, depth) {
+    const r = ghost(P, front, ring, z0, depth);
+    const gh = mk("g", { class: "ghost", mask: fade(svg, r.y0, r.y1) }, parent);
+    mk("path", { d: r.d }, gh);
+  }
+  var boards = [];
+  var byStage = /* @__PURE__ */ new Map();
+  var raf = 0;
+  var last = 0;
+  var io = null;
+  var rm = null;
+  function frame(now) {
+    const dt = Math.min(0.05, Math.max(0, (now - last) / 1e3));
+    last = now;
+    let any = false;
+    for (const b of boards.slice()) if (b.vis && b.awake) {
+      try {
+        b.awake = !!b.tick(dt, now);
+      } catch (err) {
+        b.awake = false;
+        setTimeout(() => {
+          throw err;
+        });
+      }
+      any = any || b.awake;
+    }
+    raf = any ? requestAnimationFrame(frame) : 0;
+  }
+  function wake(b) {
+    b.awake = true;
+    if (!raf) {
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    }
+  }
+  var onMotion = () => {
+    setReducedMotion(!!rm?.matches);
+    boards.forEach(wake);
+  };
+  function start() {
+    if (io) return;
+    io = new IntersectionObserver((es) => {
+      for (const e of es) {
+        const set = byStage.get(e.target);
+        if (!set) continue;
+        for (const b of set) {
+          b.vis = e.isIntersecting;
+          if (b.vis) wake(b);
+        }
+      }
+    }, { rootMargin: "80px" });
+    rm = matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(rm.matches);
+    rm.addEventListener("change", onMotion);
+  }
+  function stop() {
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+    io?.disconnect();
+    io = null;
+    rm?.removeEventListener("change", onMotion);
+    rm = null;
+  }
+  function register(stage, tick) {
+    start();
+    const b = { stage, tick, vis: false, awake: true };
+    boards.push(b);
+    const peers = byStage.get(stage);
+    if (peers) {
+      for (const p of peers) b.vis = p.vis;
+      peers.add(b);
+      if (b.vis) wake(b);
+    } else {
+      byStage.set(stage, /* @__PURE__ */ new Set([b]));
+      io.observe(stage);
+    }
+    tick(0, performance.now());
+    let gone = false;
+    return {
+      wake: () => {
+        if (!gone) wake(b);
+      },
+      unregister: () => {
+        if (gone) return;
+        gone = true;
+        boards = boards.filter((x) => x !== b);
+        const set = byStage.get(stage);
+        if (set) {
+          set.delete(b);
+          if (!set.size) {
+            byStage.delete(stage);
+            io?.unobserve(stage);
+          }
+        }
+        if (!boards.length) stop();
+      }
+    };
+  }
+  var handlers = /* @__PURE__ */ new WeakMap();
+  var touring = /* @__PURE__ */ new WeakMap();
+  function pointer(stage, on) {
+    handlers.set(stage, on);
+    let tm = 0;
+    const pt = (e) => {
+      const r = stage.getBoundingClientRect();
+      return [(e.clientX - r.left) / r.width * 400, (e.clientY - r.top) / r.height * 320];
+    };
+    const move = (e) => {
+      clearTimeout(tm);
+      touring.get(stage)?.hold();
+      on.move(pt(e), e);
+    };
+    const down = (e) => {
+      clearTimeout(tm);
+      touring.get(stage)?.hold();
+      if (e.pointerType !== "mouse") stage.releasePointerCapture?.(e.pointerId);
+      if (on.down) on.down(pt(e), e);
+      else on.move(pt(e), e);
+    };
+    const leave = (e) => {
+      clearTimeout(tm);
+      tm = window.setTimeout(() => {
+        on.leave(e);
+        touring.get(stage)?.release();
+      }, e.pointerType === "mouse" ? 0 : 1400);
+    };
+    stage.addEventListener("pointermove", move);
+    stage.addEventListener("pointerdown", down);
+    stage.addEventListener("pointerleave", leave);
+    return () => {
+      clearTimeout(tm);
+      if (handlers.get(stage) === on) handlers.delete(stage);
+      stage.removeEventListener("pointermove", move);
+      stage.removeEventListener("pointerdown", down);
+      stage.removeEventListener("pointerleave", leave);
+    };
+  }
+  var LAP = [[128, 150], [200, 118], [272, 150], [200, 206], null];
+  var TRAVEL = 900;
+  var DWELL = 1200;
+  var REST = 1800;
+  var RESUME = 1200;
+  var STAGGER = 450;
+  var GHOST = { pointerType: "ghost" };
+  var started = 0;
+  function entry([x, y]) {
+    const dx = x - 200, dy = y - 160;
+    if (!dx && !dy) return [200, 320];
+    const k = Math.min(dx ? (dx > 0 ? 200 : -200) / dx : Infinity, dy ? (dy > 0 ? 160 : -160) / dy : Infinity);
+    return [200 + dx * k, 160 + dy * k];
+  }
+  function tour(stage, stops, onStop) {
+    let i = 0;
+    let wait = RESUME + STAGGER * (started++ % 4);
+    let t = -1;
+    let at = null;
+    let origin = [200, 320];
+    let hand = false, keys = stage.contains(stage.ownerDocument.activeElement);
+    let gone = false;
+    const leave = () => {
+      at = null;
+      t = -1;
+      handlers.get(stage)?.leave(GHOST);
+    };
+    const tick = (dt) => {
+      if (hand || keys || !stops.length) return false;
+      if (reducedMotion()) {
+        if (at) leave();
+        return false;
+      }
+      if (wait > 0) {
+        wait -= dt * 1e3;
+        return true;
+      }
+      const stop2 = stops[i];
+      if (stop2 === null) {
+        if (at) leave();
+        onStop?.(i);
+        i = (i + 1) % stops.length;
+        wait = REST;
+        return true;
+      }
+      const h = handlers.get(stage);
+      if (!h) return true;
+      if (t < 0) {
+        origin = at ?? entry(stop2);
+        t = 0;
+      }
+      t = Math.min(TRAVEL, t + dt * 1e3);
+      const k = EASE_LIFT(t / TRAVEL);
+      at = [origin[0] + (stop2[0] - origin[0]) * k, origin[1] + (stop2[1] - origin[1]) * k];
+      h.move(at, GHOST);
+      if (t < TRAVEL) return true;
+      onStop?.(i);
+      i = (i + 1) % stops.length;
+      t = -1;
+      wait = DWELL;
+      return true;
+    };
+    const take = () => {
+      at = null;
+      t = -1;
+    };
+    const give = () => {
+      if (hand || keys) return;
+      i = 0;
+      t = -1;
+      wait = RESUME;
+      board.wake();
+    };
+    const me = {
+      hold: () => {
+        hand = true;
+        take();
+      },
+      release: () => {
+        if (!hand) return;
+        hand = false;
+        give();
+      }
+    };
+    const focusIn = () => {
+      keys = true;
+      take();
+    };
+    const focusOut = (e) => {
+      if (keys && !stage.contains(e.relatedTarget)) {
+        keys = false;
+        give();
+      }
+    };
+    stage.addEventListener("focusin", focusIn);
+    stage.addEventListener("focusout", focusOut);
+    touring.set(stage, me);
+    const board = register(stage, tick);
+    return {
+      stop: () => {
+        if (gone) return;
+        gone = true;
+        board.unregister();
+        stage.removeEventListener("focusin", focusIn);
+        stage.removeEventListener("focusout", focusOut);
+        if (touring.get(stage) === me) touring.delete(stage);
+        if (at) leave();
+      }
+    };
+  }
+  function disposer() {
+    let fns = [];
+    return {
+      add: (fn) => {
+        fns.push(fn);
+      },
+      on: (target, type, fn, opts) => {
+        const h = fn;
+        target.addEventListener(type, h, opts);
+        fns.push(() => target.removeEventListener(type, h, opts));
+      },
+      dispose: () => {
+        const run2 = fns;
+        fns = [];
+        for (let i = run2.length - 1; i >= 0; i--) run2[i]();
+      }
+    };
+  }
+
+  // packages/hairline/src/core/styles.ts
+  var LIGHT = { plate: "#ffffff", hi: "#232327", edge: "#a4a4ac", mid: "#c3c3c9", lo: "#e0e0e4" };
+  var DARK = { plate: "#08090a", hi: "#d0d6e0", edge: "#5b5d64", mid: "#3e3e44", lo: "#29292d" };
+  var KEYS = ["plate", "hi", "edge", "mid", "lo"];
+  var vars = (p) => KEYS.map((k) => `--hl-${k}:var(--hairline-${k},${p[k]});`).join("");
+  var EASE = "cubic-bezier(0.5,0,0.1,1)";
+  var SVG = ":where([data-hairline]>svg)";
+  function css(lightDark) {
+    const both = Object.fromEntries(KEYS.map((k) => [k, `light-dark(${LIGHT[k]},${DARK[k]})`]));
+    return [
+      // the box, and the palette: light unless something below says otherwise
+      `:where([data-hairline]){display:block;position:relative;aspect-ratio:5/4;touch-action:pan-y;user-select:none;-webkit-user-select:none;--hl-sw:var(--hairline-stroke,0.9);${vars(LIGHT)}}`,
+      // the page's color-scheme
+      lightDark ? `:where([data-hairline]){${vars(both)}}` : "",
+      // an ancestor that says dark
+      `:where(.dark,[data-theme="dark"]) :where([data-hairline]){${vars(DARK)}}`,
+      // the figure's own theme option
+      `:where([data-hairline][data-hairline-theme="light"]){${vars(LIGHT)}}`,
+      `:where([data-hairline][data-hairline-theme="dark"]){${vars(DARK)}}`,
+      `:where([data-hairline]:focus-visible){outline:1.5px solid var(--hl-hi);outline-offset:2px}`,
+      `${SVG}{position:absolute;inset:0;width:100%;height:100%;display:block}`,
+      // Riffle's live region: read, not seen
+      `:where([data-hairline]>[data-hairline-live]){position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}`,
+      // the drawing: plates are filled with the plate colour and painted back to front
+      `${SVG} :where(path,polygon,ellipse,line){fill:var(--hl-plate);stroke:var(--hl-mid);stroke-width:var(--hl-sw);vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round;transition:stroke 260ms ${EASE}}`,
+      `${SVG} :where(.nf){fill:none}`,
+      `${SVG} :where(.fo){stroke:none}`,
+      `${SVG} :where(.sil){stroke:var(--hl-edge)}`,
+      `${SVG} :where(.hi){stroke:var(--hl-hi)}`,
+      `${SVG} :where(.lo){stroke:var(--hl-lo)}`,
+      `${SVG} :where(.dash){stroke-dasharray:1 3}`,
+      `${SVG} :where(.dot){stroke:none;fill:var(--hl-hi);transition:fill 260ms ${EASE}}`,
+      `${SVG} :where(.dot.m){fill:var(--hl-edge)}`,
+      `${SVG} :where(.dot.off){fill:var(--hl-lo)}`,
+      `${SVG} :where(.ghost path){fill:none;stroke:var(--hl-mid)}`
+    ].join("");
+  }
+  var done = /* @__PURE__ */ new WeakSet();
+  function inject(root) {
+    if (done.has(root)) return;
+    done.add(root);
+    const doc = root.nodeType === 9 ? root : root.ownerDocument;
+    const win = doc.defaultView;
+    const text = css(!!win?.CSS?.supports?.("color", "light-dark(#000,#fff)"));
+    if (win && "adoptedStyleSheets" in root) {
+      try {
+        const sheet = new win.CSSStyleSheet();
+        sheet.replaceSync(text);
+        root.adoptedStyleSheets = [...root.adoptedStyleSheets, sheet];
+        return;
+      } catch {
+      }
+    }
+    const style = doc.createElement("style");
+    style.setAttribute("data-hairline-style", "");
+    style.textContent = text;
+    (root.nodeType === 9 ? doc.head ?? doc.documentElement : root).appendChild(style);
+  }
+  return __toCommonJS(kernel_exports);
+})();
+/* /hairline kernel */
+
+</script>
+<script>
+(() => {
+/**
+ * Кейс: коробка с откидной крышкой на дальнем ребре и пятью планшетами-
+ * слайдами, стоящими внутри поперёк. Курсор по y поднимает крышку на пружине,
+ * по x собирает веер: слайд тем выше, чем ближе к курсору, дальние почти не
+ * выходят. В покое крышка откинута наполовину, а слайды стоят неровным веером,
+ * и самый высокий светится. Слайдер — высота подъёма слайдов.
+ *
+ * Паттерн: скрабом и выбором. Пружина на угол крышки и на каждый слайд
+ * (правило 08), спад по расстоянию до курсора (03), выбор по экранной середине
+ * слайда в покое, которая не движется (01), крышка закрашивается до слайдов (06).
+ */
+const {
+  Cam, clamp, facing, fillet, fit, poly, prism, proj, rad, rings, spring, stepS,
+  disposer, mk, pointer, put, register, solid,
+} = HL;
+
+const BX = 96, BY = 50, BT = 12, LPAD = 2, VD = BY + 2 * LPAD;
+const N = 5, SX = [12, 30, 48, 66, 84], ST = 3.2, SY0 = 6, SY1 = 44;
+const REST_H = [11, 17, 23, 15, 9], HMIN = 6, TALL = 2, R = 52;
+const LO = 52, HI = 86, AREST = 66;
+/** Доля подъёма на расстоянии u радиусов от курсора: 1 под ним, .22 на краю и дальше. R — в единицах кадра. */
+const falloff = (u) => (u <= 0 ? 1 : u <= 1 ? 1 - 0.78 * u : 0.22);
+/** Четыре угла крышки, откинутой на a градусов: петля на дальнем ребре. */
+const lidQuad = (a) => {
+  const c = Math.cos(rad(a)), s = Math.sin(rad(a));
+  return [[-LPAD, 0], [BX + LPAD, 0], [BX + LPAD, VD], [-LPAD, VD]]
+    .map(([u, v]) => [u, -LPAD + v * c, BT + v * s]);
+};
+
+function mount({ stage, svg, read }, value) {
+  const bag = disposer();
+  let LIFT = value, last = null;
+
+  const C = Cam(45, 0.5, 2.1);
+  fit(C, [[-LPAD, -LPAD, 0], [BX + LPAD, BY + LPAD, 0], [BX + LPAD, -LPAD, 0], [-LPAD, BY + LPAD, 0],
+    ...lidQuad(HI), ...lidQuad(LO), [SX[0], SY1, BT + 34], [SX[N - 1], SY0, BT + 34]], 200, 166);
+  const P = proj(C), front = facing(C);
+
+  const g = mk("g", {}, svg);
+  const [xr, xi] = rings(0, 0, BX, BY, 5, 1.8);
+  put(solid(g), prism(P, front, xr, xi, 0, BT));
+
+  // крышка: плоская плита, поэтому силуэт и одна внутренняя линия, скруглённые по углам
+  const lid = { sil: mk("path", { class: "sil" }, g), cr: mk("path", { class: "nf lo" }, g), sp: spring(AREST), drawn: NaN };
+  const slides = SX.map((cx, k) => {
+    const [r0, r1] = rings(cx - ST / 2, SY0, cx + ST / 2, SY1, 1.6, 0.9);
+    return { k, cx, sx: P(cx, (SY0 + SY1) / 2, BT + REST_H[k])[0], r0, r1, el: solid(g), sp: spring(REST_H[k], { eps: 0.03 }), drawn: NaN };
+  });
+
+  function drawLid() {
+    const a = lid.sp.x;
+    if (a === lid.drawn) return;
+    lid.drawn = a;
+    const q = lidQuad(a).map((p) => P(p[0], p[1], p[2]));
+    const c = Math.cos(rad(a)), s = Math.sin(rad(a));
+    const inner = [[2.6, 2.6], [BX - 2.6, 2.6], [BX - 2.6, VD - 2.6], [2.6, VD - 2.6]]
+      .map(([u, v]) => P(u - LPAD, -LPAD + v * c, BT + v * s));
+    lid.sil.setAttribute("d", poly(fillet(q, [7, 7, 7, 7], 4)));
+    lid.cr.setAttribute("d", poly(fillet(inner, [4.5, 4.5, 4.5, 4.5], 4)));
+  }
+  function drawSlide(sl) {
+    const h = Math.max(3, sl.sp.x);
+    if (h === sl.drawn) return;
+    sl.drawn = h;
+    put(sl.el, prism(P, front, sl.r0, sl.r1, BT, BT + h));
+  }
+
+  const B = register(stage, (dt) => {
+    let m = stepS(lid.sp, dt);
+    drawLid();
+    for (const sl of slides) { if (stepS(sl.sp, dt)) m = true; drawSlide(sl); }
+    return m;
+  });
+  bag.add(B.unregister);
+
+  // полоса кадра, в которой фигура отвечает: по низу борта и по верху поднятого слайда
+  const rim = [[0, 0], [BX, 0], [BX, BY], [0, BY]].map(([x, y]) => P(x, y, BT));
+  const X0 = Math.min(...rim.map((q) => q[0])) - 10, X1 = Math.max(...rim.map((q) => q[0])) + 10;
+  const Y1 = Math.max(...rim.map((q) => q[1])) + 10, Y0 = P(SX[0], SY0, BT + 40)[1];
+
+  /** Курсор в кадре: y задаёт угол крышки, x — центр веера; выбор по покою каждого слайда. */
+  function retarget(p) {
+    let pick = TALL;
+    if (p) {
+      lid.sp.t = LO + (HI - LO) * clamp((Y1 - p[1]) / (Y1 - Y0), 0, 1);
+      let bd = Infinity;
+      for (const sl of slides) {
+        const d = Math.abs(sl.sx - p[0]);
+        if (d < bd) { bd = d; pick = sl.k; }
+        sl.sp.t = HMIN + LIFT * falloff(d / R);
+      }
+    } else {
+      lid.sp.t = AREST;
+      for (const sl of slides) sl.sp.t = REST_H[sl.k];
+    }
+    for (const sl of slides) sl.el.sil.classList.toggle("hi", sl.k === pick);
+    read.textContent = p ? `слайд ${pick + 1}` : "rest";
+    B.wake();
+  }
+  retarget(null);
+
+  bag.add(pointer(stage, {
+    move: (p) => {
+      last = p[0] > X0 && p[0] < X1 && p[1] > Y0 && p[1] < Y1 ? p : null;
+      retarget(last);
+    },
+    leave: () => { last = null; retarget(null); },
+  }));
+  bag.add(() => svg.replaceChildren());
+
+  return {
+    set: (v) => { LIFT = v; retarget(last); },
+    destroy: bag.dispose,
+  };
+}
+
+hairline({
+  name: "case-packaging",
+  means: "Кейс с пятью слайдами: курсор приоткрывает крышку и собирает слайды веером — выше те, что ближе.",
+  rules: [1, 3, 5, 8],
+  range: [8, 15, 24],
+  tour: [[147, 156], [200, 110], [253, 213], null],
+  mount,
+});
+
+})();
+</script>
+<script>
+const ty=s=>String(s).replace(/(^|[\s(«>])(в|во|и|а|но|с|со|к|ко|о|об|у|на|не|ни|за|из|до|по|от|для|без|или|что|как|это|же|ли|бы|я|ты|он|мы)\s/gi,"$1$2\u00a0").replace(/(^|[\s(«>])(в|во|и|а|но|с|со|к|ко|о|об|у|на|не|ни|за|из|до|по|от|для|без|или|что|как|это|же|ли|бы|я|ты|он|мы)\s/gi,"$1$2\u00a0").replace(/ —/g,"\u00a0—");
+const GUIDE={corner:"ГАЙД · УПАКОВКА КЕЙСА"};
+const LNAME={1:"Контент",2:"Мокапы и фото",3:"Стиль кейса",4:"Оформление слайдов",5:"Обложка и название",6:"Анимация",7:"Публикация"};
+const P={
+packer:{title:"Упаковщик кейса",sub:"Структура кейса и подписи к слайдам из журнала проекта",mono:"УК",io:"<b>Вход:</b> паспорт проекта с журналом решений или просто твои заметки о проекте. <b>Выход:</b> раскадровка кейса: слайды, план каждого, подписи. Что главное и что попадёт в кейс, решаешь ты.",text:`Ты — арт-директор, который помогает упаковать учебный проект в кейс для Behance и Dprofile.
+Тип проекта: [вставь: лендинг / лонгрид / корпоративный сайт / приложение / 3D-продукт / 3D-постер / AI-проект].
+Источник — только мои материалы ниже. Ничего не додумывай.
+
+[вставь паспорт и журнал проекта или свои заметки]
+
+Работаем так:
+1. Сначала задай мне по одному вопросу, которых тебе не хватает: что в проекте самое сильное, в какую категорию я подаю кейс, какие экраны и артефакты у меня есть. Жди ответа на каждый.
+2. Потом собери раскадровку на 10–16 слайдов: обложка, задача, концепция, стиль, ключевые экраны или сцены, процесс, адаптив или носители, финал с контактами.
+3. Для каждого слайда — что на нём, подпись до двух предложений и план: общий, средний или крупный. Отметь места, где одинаковый план идёт три раза подряд.
+4. Если у решения нет объяснения в моих материалах — напиши об этом, не придумывай причину и не придумывай цифры.
+5. В конце — напоминание добавить строку о том, что проект учебный и некоммерческий.`},
+about:{title:"Текст о проекте",sub:"Идею формулируешь ты, нейросеть задаёт вопросы и проверяет",mono:"ТП",io:"<b>Вход:</b> тема проекта и концепция своими словами. <b>Выход:</b> одна-две фразы о проекте по формуле и строка задачи. Финальную формулировку выбираешь и правишь ты.",text:`Помоги мне написать текст «О проекте» для кейса.
+Формула: продукт + аудитория + преимущества + характер. Задача — по схеме «[что] для [кого], чтобы человек [сделал что]».
+
+Мой проект: [вставь тему и концепцию своими словами]
+
+Правила:
+- Задавай вопросы по одному и жди ответа: что за продукт, для кого, чем лучше других, какое по характеру.
+- Когда ответы есть, предложи 3 варианта по одной-две фразы. У каждого назови слабое место.
+- Без слов «уникальный», «современный», «инновационный» и цифр, которых я не называл.
+- Не выбирай за меня: выбор и правка — мои.`},
+mockup:{title:"Сцена для мокапа",sub:"Фон и контекст в стиле проекта, экран вставляешь сам",mono:"МК",io:"<b>Вход:</b> концепция, палитра и тип устройства. <b>Выход:</b> 3 описания сцен для генерации. Экран внутри мокапа — всегда твой макет из Figma.",text:`Ты — арт-директор. Мне нужна сцена для мокапа в кейсе.
+Проект: [вставь концепцию и палитру]. Устройство: [ноутбук / планшет / телефон / носитель: пакет, коробка, билборд].
+
+Предложи 3 сцены, которые продолжают концепцию проекта, а не просто «красивая комната».
+Для каждой: окружение, свет, ракурс (экран должен хорошо читаться, без сильной перспективы), где свободное место под экран.
+Затем напиши промпт для генерации на английском. Экран оставь пустым однотонным прямоугольником: я вставлю туда свой макет.`},
+rhythm:{title:"Проверка ритма",sub:"Разметка слайдов по планам и поиск провалов",mono:"РТ",io:"<b>Вход:</b> список слайдов кейса одной строкой каждый. <b>Выход:</b> план каждого слайда и места, где скучно. Что переставить и как переделать, решаешь ты.",text:`Вот список слайдов моего кейса, по одному на строку:
+[вставь список: что на каждом слайде]
+
+1. Подпиши у каждого слайда план: дальний (много экранов сразу), средний (экран или блок целиком с воздухом), крупный (деталь).
+2. Отметь места, где один и тот же план идёт три раза подряд или подряд идут только экраны интерфейса без графики, мокапов или фото.
+3. Отметь сдвоенные слайды, где две картинки показывают одно и то же.
+4. Для каждого проблемного места предложи 2 варианта, что поставить или как переделать. Не переписывай весь список.`},
+names:{title:"Название кейса",sub:"Варианты названия и подписи к обложке",mono:"НК",io:"<b>Вход:</b> название проекта и что ты делал. <b>Выход:</b> 5 вариантов названия кейса. Обложку собираешь сам.",text:`Предложи 5 вариантов названия кейса для Behance и Dprofile.
+Проект: [вставь название и о чём он]. Что я делал: [сайт / приложение / айдентика / 3D / AI-фотосессия…].
+
+Формат: «Название | тип работы», например «Lumina | UX/UI» или «Lumina | Promo site + App».
+Не используй слово Landing — пиши Website. Без «уникальный» и «инновационный».
+Для каждого варианта — одна строка, почему он понятен человеку, который видит обложку впервые.`},
+post:{title:"Описание и пост",sub:"Текст для площадок и Telegram по готовому кейсу",mono:"ПС",io:"<b>Вход:</b> текст «О проекте» и список слайдов. <b>Выход:</b> описание для Behance и Dprofile и пост. Перед публикацией вычитываешь и правишь сам.",text:`Вот текст «О проекте» и список слайдов моего кейса:
+[вставь]
+
+Сделай:
+1. Описание для Behance на английском и для Dprofile на русском — по 2–3 предложения: задача, идея, что я сделал.
+2. Пост для Telegram на 500–800 знаков: заход через задачу, главное решение, ссылка на кейс в конце.
+3. Абзац «Как я использовал нейросети»: на каком этапе, для чего, какие решения принял сам. Если я не указал, что делала нейросеть, — спроси, а не выдумывай.
+4. Строку: «Кейс сделан в некоммерческих целях. Контент принадлежит авторам».
+Без слов «уникальный», «современный» и цифр, которых нет в моих материалах.`},
+ai:{title:"Кейс AI-проекта",sub:"Восемь экранов по шаблону Mission to AI",mono:"AI",io:"<b>Вход:</b> материалы AI-проекта: мудборд, карточка-опора, финальные кадры. <b>Выход:</b> вопросы для идеи одной фразой и черновики текстов экранов. Идею, обложку и отбор кадров делаешь ты.",text:`Я собираю кейс AI-проекта по шаблону из 8 экранов: обложка, идея, AI-разметка, процесс: поиск, процесс: опора, до / после, результат, контакты.
+Проект: [вставь: AI-фотосессия / AI-продукт / иллюстрации / моушн / видео, о чём он].
+
+1. Задай мне по одному вопросу, из которых я сам сформулирую идею одной фразой. Не предлагай идею за меня.
+2. Когда идея есть, проверь мои черновики текстов для экранов 2, 3, 6 и 8: сократи, убери рекламные слова.
+3. Для экрана 3 помоги разделить работу на две колонки: «нейросеть» (какие сервисы и для чего) и «я» (идея, стиль-якорь, отбор, правки, вёрстка).
+4. Не пиши «фото» про сгенерированный кадр — только «кадр», «изображение», «key visual».`}
+};
+const QUIZ=[
+ {st:1,q:"С чего начинается упаковка кейса?",o:["С выбора шаблона и стиля слайдов","С того, что в проекте главное, и сбора всего контента","С обложки"],c:1,e:["Без готового контента шаблон заполняется на ходу, и кейс получается случайным.","Верно: сначала главное, тексты, экраны и артефакты — потом сборка.","Обложку делают почти последней, когда понятно, что вынести на афишу."]},
+ {st:1,q:"Какие тексты в кейсе обязательны?",o:["Тема и концепция проекта","Подробное описание каждого блока","История компании-заказчика"],c:0,e:["Верно: остальные смысловые блоки — по желанию.","Абзацы на слайдах не читают: одна-две фразы на слайд.","Это контент проекта, а не кейса."]},
+ {st:1,q:"Телефон и планшет на одном слайде. Какое соотношение высот реалистичное?",o:["Телефон такой же высоты, как планшет","Телефон примерно 0,65 высоты планшета","Телефон больше планшета, чтобы было видно интерфейс"],c:1,e:["Так нарушаются пропорции устройств, кейс выглядит нереалистично.","Верно. Если интерфейс мелкий, лучше покажи UI-элемент крупно отдельным слайдом.","Телефон больше планшета в одном слайде — ошибка пропорций."]},
+ {st:2,q:"Что можно сгенерировать нейросетью для мокапа?",o:["Экран интерфейса внутри устройства","Фон, сцену и руку с телефоном","Весь мокап вместе с интерфейсом"],c:1,e:["Экран — только твой макет из Figma, иначе в кейсе не твоя работа.","Верно: окружение можно, экран — только свой.","Тогда в кейсе будет интерфейс, которого ты не делал."]},
+ {st:4,q:"Как держится ритм кейса?",o:["Все слайды одной крупности, чтобы было единообразно","Один и тот же план не идёт подряд, интерфейс перемежается графикой и фото","Чем больше экранов на слайде, тем лучше"],c:1,e:["Одинаковые слайды подряд — скучно, зритель уходит.","Верно: монтаж по крупности, как в кино.","Перегруженный слайд — одна из частых ошибок. Лучше разбить на несколько."]},
+ {st:4,q:"Сдвоенный слайд: что поставить рядом?",o:["Первый экран на ноутбуке и тот же экран на телефоне","Блок и его мобильную версию с другим акцентом","Два одинаковых мокапа разного цвета"],c:1,e:["Это повтор: новой информации ноль.","Верно: две картинки рядом рассказывают разное.","Это тоже повтор, только с другим цветом."]},
+ {st:4,q:"Сколько места занимает макет на слайде среднего плана?",o:["Весь слайд до краёв","Примерно 50–60%, вокруг воздух","Не больше 20%"],c:1,e:["Макет до краёв выглядит как сырой скриншот.","Верно: пустое поле вокруг подчёркивает работу.","Так получится дальний план, а не средний."]},
+ {st:5,q:"Что поставить на обложку кейса приложения?",o:["Иконку приложения","Интерфейс в мокапе или с визуалом проекта","Логотип школы"],c:1,e:["По иконке непонятно, о чём кейс.","Верно: работодатель сразу видит, что это за проект.","Обложка показывает твой проект."]},
+ {st:5,q:"Какое название кейса лучше?",o:["Lumina | Website","Lumina Landing","Уникальный лендинг Lumina"],c:0,e:["Верно: название и тип работы через черту. Вместо Landing пишем Website.","Landing не пишем, и непонятно, где кончается название.","Оценочные слова в названии не работают."]},
+ {st:6,q:"Сколько длится анимация интерфейса в кейсе?",o:["40–60 секунд, чтобы показать всё","Оптимально до 10 секунд","Анимация в кейсе не нужна"],c:1,e:["Такие ролики не досматривают.","Верно: всего оживляют 3–4 блока, каждый не дольше 12–15 секунд.","Без анимации кейс — слайд-шоу. Это одна из 15 ошибок."]},
+ {st:7,q:"Какие отступы между изображениями ставить на Behance и Dprofile?",o:["0 px, чтобы кейс шёл одной лентой","Стандартные, как предлагает площадка","Побольше, чтобы слайды не слипались"],c:0,e:["Верно: паузы между сюжетами задаёшь сам — фоном и композицией.","Стандартные отступы режут кейс на куски.","Слайды отделяются фоном, а не белыми полосами площадки."]},
+ {st:7,q:"Ты сделал учебный концепт сайта для реального бренда. Что добавить в кейс?",o:["Ничего, это понятно и так","Строку: кейс сделан в некоммерческих целях, контент принадлежит авторам","Логотип бренда на обложку крупнее"],c:1,e:["Без строки можно решить, что ты выдаёшь концепт за настоящий заказ.","Верно: так ты честен перед зрителем и площадкой.","Это не решает вопрос честности."]}
+];
+const CASES={woofy:{t:"Woofy",n:10}};
+
+function promptBlock(key){const p=P[key];
+ return `<details class="prompt" id="p-${key}"><summary><span class="mono" aria-hidden="true">${p.mono}</span><span class="who"><b>${p.title}</b><span>${ty(p.sub)}</span></span><span class="hint"></span></summary>
+ <div class="in"><p class="io">${ty(p.io)}</p><pre id="t-${key}"></pre><button class="copy" type="button" data-copy="${key}" data-label="Скопировать инструкцию">Скопировать инструкцию</button></div></details>`}
+document.querySelectorAll(".prompt-slot").forEach(el=>{el.outerHTML=promptBlock(el.dataset.prompt)});
+Object.keys(P).forEach(k=>{const el=document.getElementById("t-"+k); if(el) el.textContent=P[k].text});
+document.querySelectorAll(".strip").forEach(el=>{const id=el.dataset.case,n=+el.dataset.n,base=el.dataset.base||"../../../mtw-diary/cases/";
+ let h="";for(let i=0;i<n;i++){const f=String(i).padStart(2,"0");h+=`<img src="${base}${id}/${f}.jpg" alt="" loading="lazy" width="1400" height="2000">`}
+ el.innerHTML=`<div class="strip-in">${h}</div><a class="strip-more" href="../../../mtw-diary/#case=${id}" target="_blank" rel="noopener">Открыть кейс целиком →</a>`});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-copy]"); if(!b) return;
+ const pre=document.getElementById("t-"+b.dataset.copy);const done=()=>{b.textContent="Скопировано";setTimeout(()=>b.textContent=b.dataset.label,1800)};
+ const sel=()=>{const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Выделено — нажми Ctrl+C"};
+ try{navigator.clipboard.writeText(pre.textContent).then(done,sel)}catch(_){sel()}});
+
+/* режим одного этапа (?stage=N или window.KEJS_STAGE) — для уроков ZenClass */
+const FULL="https://perasperadastranew.github.io/guides/mtw/upakovka-kejsov/";
+const STAGE_NS=(String(window.KEJS_STAGE||"")||(new URLSearchParams(location.search).get("stage"))||"").split(",").map(Number).filter(n=>n>=1&&n<=7);
+if(STAGE_NS.length){
+ document.documentElement.classList.add("stagemode");
+ const EXTRA={1:["types"],4:["errors"],7:["ai"]};
+ const keep=new Set(["stages","review","quiz"]); STAGE_NS.forEach(n=>(EXTRA[n]||[]).forEach(id=>keep.add(id)));
+ document.querySelectorAll("section.sec").forEach(sec=>{if(!keep.has(sec.id))sec.hidden=true});
+ const nav=document.querySelector(".nav"); if(nav) nav.hidden=true;
+ const types=document.getElementById("types"), stages=document.getElementById("stages");
+ if(types&&!types.hidden) stages.after(types);
+ document.querySelectorAll("details.stage").forEach(d=>{const n=+d.id.split("-")[1]; if(!STAGE_NS.includes(n)) d.remove(); else d.open=true});
+ const er=document.getElementById("errors"); if(er&&!er.hidden) er.querySelectorAll("li[data-s]").forEach(li=>{const s=+li.dataset.s; if(s&&!STAGE_NS.includes(s)&&!STAGE_NS.includes(4)) li.remove()});
+ const rv=document.getElementById("review"); if(rv){const hasPoint=[...rv.querySelectorAll("ol.checks li")].some(li=>STAGE_NS.includes(+li.dataset.n)); rv.querySelectorAll("ol.checks li").forEach(li=>{if(hasPoint&&!STAGE_NS.includes(+li.dataset.n)) li.remove()})}
+ const keepQ=new URLSearchParams(location.search);keepQ.delete("stage");
+ const stageHref=n=>{if(window.KEJS_STAGE){const q=keepQ.toString();return "../etap-"+n+"/"+(q?"?"+q:"")}const q=new URLSearchParams(keepQ);q.set("stage",n);return "?"+q.toString()};
+ const first=document.getElementById("stage-"+STAGE_NS[0]); const lead=first?first.querySelector(".lead"):null;
+ const hd=document.querySelector("header.hd");
+ hd.innerHTML=`<div class="corner"><span>PERASPERADASTRA\nУПАКОВКА КЕЙСА</span><span>ЭТАП ${STAGE_NS[0]} ИЗ 7</span></div>
+  <div class="hero" style="display:flex;flex-direction:column;gap:20px"><h1 style="font-size:clamp(34px,6vw,64px)">Кейс: ${STAGE_NS.map(n=>LNAME[n].toLowerCase()).join(" и ")}</h1>
+  <p>${lead?lead.innerHTML:""}</p>
+  <nav class="stagebar" aria-label="Этапы кейса">${Object.keys(LNAME).map(Number).map(n=>`<a href="${stageHref(n)}" class="${STAGE_NS.includes(n)?"on":""}"${STAGE_NS.includes(n)?' aria-current="page"':""}>${String(n).padStart(2,"0")} ${LNAME[n]}</a>`).join("")}</nav>
+  <p class="note">Это часть гайда «Кейс: от готового макета до Behance и Dprofile». Восемь правил кейса, типы проектов, 15 ошибок и квиз по всем этапам — <a href="${FULL}" target="_blank" rel="noopener">в полном гайде</a>.</p></div>`;
+ if(STAGE_NS.length===1&&lead) lead.remove();
+ const sh=document.querySelector("#stages .sec-head"); if(sh){sh.querySelector("h2").textContent="Шаги этапа"; const m=sh.querySelector("p"); if(m) m.textContent="Что делаешь сам, что можно отдать нейросети, готовые инструкции и чек-лист."}
+ for(let i=QUIZ.length-1;i>=0;i--) if(!STAGE_NS.includes(QUIZ[i].st)) QUIZ.splice(i,1);
+ if(!QUIZ.length) document.getElementById("quiz").hidden=true;
+ document.querySelectorAll('a[href^="#"]').forEach(a=>{const t=document.getElementById(a.getAttribute("href").slice(1)); if(!t||t.closest("[hidden]")){a.href=FULL+a.getAttribute("href");a.target="_blank";a.rel="noopener"}});
+}
+/* чек-листы запоминаются в браузере */
+document.querySelectorAll("[data-ck]").forEach(i=>{const k="kejs-ck-"+i.dataset.ck;try{i.checked=localStorage.getItem(k)==="1"}catch(e){}i.addEventListener("change",()=>{try{localStorage.setItem(k,i.checked?"1":"0")}catch(e){}})});
+/* уголки на разделах */
+[...document.querySelectorAll("section.sec")].filter(x=>!x.hidden).forEach((sec,i)=>{
+ const tag=(sec.querySelector(".sec-head .tag")||{}).textContent||"";
+ const c=document.createElement("div");c.className="corner";
+ c.innerHTML=`<span>PERASPERADASTRA\n${GUIDE.corner}</span><span>${String(i+1).padStart(2,"0")} · ${tag}</span>`;
+ sec.prepend(c); const t=sec.querySelector(".sec-head .tag"); if(t) t.style.display="none"});
+/* квиз */
+(function(){const box=document.getElementById("qbox"); if(!box||!QUIZ.length) return; let i=0,score=0;
+ const show=()=>{if(i>=QUIZ.length){box.innerHTML=`<span class="qn">Итог</span><h3>${score} из ${QUIZ.length}</h3><p class="muted">${score>=Math.ceil(QUIZ.length*.8)?"Ты готов упаковывать кейс.":"Вернись к этапам, где ошибся, и пройди квиз ещё раз."}</p><div class="qnav"><span></span><button type="button" id="qre">Пройти заново</button></div>`;document.getElementById("qre").onclick=()=>{i=0;score=0;show()};return}
+  const q=QUIZ[i];
+  box.innerHTML=`<span class="qn">Вопрос ${i+1} из ${QUIZ.length} · ${LNAME[q.st]}</span><h3>${ty(q.q)}</h3><div class="opts">${q.o.map((o,k)=>`<button type="button" class="opt" data-k="${k}"><span>${ty(o)}</span><span class="ex">${ty(q.e[k])}</span></button>`).join("")}</div><div class="qnav"><span>${score} верно</span><button type="button" id="qnext" disabled>Дальше</button></div>`;
+  box.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const k=+b.dataset.k; if(k===q.c)score++;
+   box.querySelectorAll(".opt").forEach(x=>{const xk=+x.dataset.k;x.disabled=true;if(xk===q.c)x.classList.add("right","shown");if(xk===k&&k!==q.c)x.classList.add("wrong","shown")});
+   const n=document.getElementById("qnext");n.disabled=false;n.focus()});
+  document.getElementById("qnext").onclick=()=>{i++;show()}};
+ show()})();
+
+</script>
+<script>if(window.hlMount)hlMount();</script>
+<script>if(document.documentElement.classList.contains('embed')){var op=function(){document.querySelectorAll('details').forEach(function(d){d.open=true})};op();setTimeout(op,300);document.addEventListener('click',function(e){var s=e.target.closest&&e.target.closest('summary');if(s)e.preventDefault()},true)}</script>
+</body></html>
