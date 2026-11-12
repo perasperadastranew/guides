@@ -380,6 +380,14 @@ html.embed .strip-in{flex-wrap:wrap;overflow:visible}html.embed .strip-in img{he
 kbd{font-family:var(--mono);font-size:.85em;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;background:var(--panel-2)}
 .steps.cols3{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media (max-width:760px){.steps.cols3{grid-template-columns:1fr}}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.shots.one{grid-template-columns:minmax(0,760px)}
+.shot{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.shot img,.vimg img{width:100%;height:auto;display:block;border-radius:10px;border:1px solid var(--line);background:var(--panel-2)}
+.shot a:hover img,.vimg:hover img{border-color:var(--accent)}
+.shot figcaption{display:flex;flex-direction:column;gap:2px}
+.shot b{font-weight:500;font-size:15px}.shot span,.vcap{font-size:13px;color:var(--muted)}
+.vimg{display:block;margin-top:4px}
 </style>
 
 <div class="wrap">
@@ -521,7 +529,9 @@ kbd{font-family:var(--mono);font-size:.85em;border:1px solid var(--line);border-
         </div>
         <div class="formula-box"><span class="tag">Формула текста о проекте</span><p><b>Продукт</b> + <b>аудитория</b> + <b>преимущества</b> + <b>характер</b></p><p class="muted">«Букашки» — частный детский сад, где каждый ребёнок находит своё место, как насекомое в саду: тёплый, дружелюбный, внимательный к ритму каждого.</p></div>
       </div>
+      <div class="shots one"><figure class="shot"><a href="../../../mtw-diary/#case=bukashki" target="_blank" rel="noopener"><img src="../img/tekst-o-proekte.jpg" alt="Текст о проекте в две фразы" loading="lazy" width="1000" height="714"></a><figcaption><b>Текст о проекте в две фразы</b><span>«Букашки», Софья Яковлева: задача и метафора, а рядом иллюстрация из проекта</span></figcaption></figure></div>
       <div class="sec-head"><h3>Нарежь проект на экраны</h3><p class="muted">Покажи сайт по частям: десктоп, планшет, телефон. Так ты сам расставляешь акценты, и блоки не сливаются друг с другом. Если ты вёл журнал проекта в паспорте, половина работы уже сделана.</p></div>
+      <div class="shots"><figure class="shot"><a href="../../../mtw-diary/#case=bukashki" target="_blank" rel="noopener"><img src="../img/adaptiv-ekrany.jpg" alt="Экраны в реальных пропорциях" loading="lazy" width="1000" height="886"></a><figcaption><b>Экраны в реальных пропорциях</b><span>«Букашки»: блок «О нас» на телефоне и планшете, углы скруглены, мокап не нужен</span></figcaption></figure><figure class="shot"><a href="../../../mtw-diary/#case=travelkit" target="_blank" rel="noopener"><img src="../img/nabroski.jpg" alt="Наброски с подписями" loading="lazy" width="1000" height="714"></a><figcaption><b>Наброски с подписями</b><span>Travel Kit’ten, Арина Галимова: процесс показан эскизами персонажей</span></figcaption></figure></div>
       <div class="xbox">
         <article><span class="k">Принцип 1</span><b>Правильные пропорции</b>Экран телефона может быть крупнее настоящего, но не мельче. На одном слайде телефон всегда меньше планшета и десктопа: его высота — примерно 0,65 высоты планшета.</article>
         <article><span class="k">Принцип 2</span><b>Скругления экрана</b>Скругли углы макета, и зритель сразу увидит в нём экран устройства. Мокап для этого нужен не всегда.</article>
@@ -555,6 +565,7 @@ kbd{font-family:var(--mono);font-size:.85em;border:1px solid var(--line);border-
         <article><span class="k">Правильный контекст</span><b>Мокап продолжает проект</b>Для сервиса доставки подойдут пакеты и коробки, для кофейни — стакан и меню. Случайная красивая комната ничего не говорит о проекте.</article>
         <article><span class="k">Мало</span><b>Два-три мокапа на кейс</b>Ставь мокапы между слайдами с интерфейсом. Кейс из одних мокапов похож на каталог устройств.</article>
       </div>
+      <div class="shots"><figure class="shot"><a href="../../../mtw-diary/#case=bukashki" target="_blank" rel="noopener"><img src="../img/mokap-kontekst.jpg" alt="Мокап в живой сцене" loading="lazy" width="1000" height="657"></a><figcaption><b>Мокап в живой сцене</b><span>«Букашки»: сайт на ноутбуке, экран читается, ракурс мягкий</span></figcaption></figure><figure class="shot"><a href="../../../mtw-diary/#case=uyutniki" target="_blank" rel="noopener"><img src="../img/mokap-planshet.jpg" alt="Устройство и городской носитель" loading="lazy" width="1000" height="557"></a><figcaption><b>Устройство и городской носитель</b><span>«Уютники»: планшет в руке и рекламный стенд в одном слайде</span></figcaption></figure><figure class="shot"><a href="../../../mtw-diary/#case=rainbow" target="_blank" rel="noopener"><img src="../img/nositeli-merch.jpg" alt="Мерч продолжает концепцию" loading="lazy" width="1000" height="614"></a><figcaption><b>Мерч продолжает концепцию</b><span>Rainbow, Юля Голоунина: значки и шопер с персонажем боулинга</span></figcaption></figure><figure class="shot"><a href="../../../mtw-diary/#case=uyutniki" target="_blank" rel="noopener"><img src="../img/nositeli-vyveska.jpg" alt="Вывеска и плакат" loading="lazy" width="1000" height="564"></a><figcaption><b>Вывеска и плакат</b><span>«Уютники»: персонажи бренда в городской среде</span></figcaption></figure></div>
       <div class="two">
         <div><h3>Фото и фотостиль</h3>
           <ul class="plain">
@@ -584,8 +595,8 @@ kbd{font-family:var(--mono);font-size:.85em;border:1px solid var(--line);border-
     <summary><span class="num">03</span><h3>Стиль кейса</h3><span class="time">по регламенту <b>около 30 мин</b><br>с Claude <b>около 30 мин</b></span><span class="chev"></span></summary>
     <div class="body"><p class="lead">Стиль кейса — это то, как слайды соединяются между собой и как выглядит навигация. Вариантов всего два, выбери один на весь кейс. Стиль продолжает айдентику проекта и не спорит с ней.</p>
       <div class="duo">
-        <article class="path"><span class="tag">Вариант 1</span><h3>Прямоугольные слайды без отступов</h3><p>У каждого слайда свой фон, переход между ними резкий или мягкий. Зритель чувствует паузы между блоками, и кейс читается как история по шагам.</p></article>
-        <article class="path"><span class="tag">Вариант 2</span><h3>Скругления, общий фон и поля</h3><p>Слайды-карточки лежат на одном фоне с небольшими полями. Кейс выглядит цельным, но его легко перегрузить мелкими блоками, и слайды начинают слипаться.</p></article>
+        <article class="path"><span class="tag">Вариант 1</span><h3>Прямоугольные слайды без отступов</h3><p>У каждого слайда свой фон, переход между ними резкий или мягкий. Зритель чувствует паузы между блоками, и кейс читается как история по шагам.</p><a class="vimg" href="../../../mtw-diary/#case=bukashki" target="_blank" rel="noopener"><img src="../img/slajdy-bez-otstupov.jpg" alt="«Букашки»: каждый слайд на своём фоне" loading="lazy" width="1000" height="543"></a><span class="vcap">«Букашки»: каждый слайд на своём фоне</span></article>
+        <article class="path"><span class="tag">Вариант 2</span><h3>Скругления, общий фон и поля</h3><p>Слайды-карточки лежат на одном фоне с небольшими полями. Кейс выглядит цельным, но его легко перегрузить мелкими блоками, и слайды начинают слипаться.</p><a class="vimg" href="../../../mtw-diary/#case=uyutniki" target="_blank" rel="noopener"><img src="../img/slajdy-kartochki.jpg" alt="«Уютники»: карточки со скруглением на общем светлом фоне" loading="lazy" width="1000" height="1000"></a><span class="vcap">«Уютники»: карточки со скруглением на общем светлом фоне</span></article>
       </div>
       <div class="two">
         <div><h3>Отдели слайды фоном и композицией</h3>

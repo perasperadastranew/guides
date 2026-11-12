@@ -24,6 +24,7 @@ for n, title in TITLES.items():
     page = re.sub(r'<title>[^<]*</title>', f'<title>Кейс. {title}</title>', page)
     # страница лежит на уровень глубже: поправить относительные ссылки и картинки
     page = page.replace('href="../', 'href="../../').replace('src="../', 'src="../../').replace('"../../mtw-diary/', '"../../../mtw-diary/')
+    page = page.replace('src="img/', 'src="../img/')
     page = page.replace('base=el.dataset.base||"../../mtw-diary/cases/"', 'base=el.dataset.base||"../../../mtw-diary/cases/"')
     page = page.replace('href="../../mtw-diary/#case=${id}"', 'href="../../../mtw-diary/#case=${id}"')
     out = os.path.join(HERE, f'etap-{n}')
