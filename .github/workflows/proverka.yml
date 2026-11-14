@@ -1,0 +1,33 @@
+name: Проверка методичек
+
+# Ошибки (нет noindex, шапки страницы, название школы не PERASPERADASTRA) — проверка красная.
+# Предупреждения («вы», цены, Readom/Grok, горизонтальный скролл на 390 px) — жёлтые пометки
+# у изменённых страниц, проверку не валят. Правила — tools/proverka.py.
+
+on:
+  push:
+    paths: ['**.html', 'tools/proverka.py', '.github/workflows/proverka.yml']
+  pull_request:
+    paths: ['**.html', 'tools/proverka.py', '.github/workflows/proverka.yml']
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Браузер для мобильной проверки
+        run: |
+          pip install -q playwright
+          python -m playwright install --with-deps chromium
+      - name: Проверка
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then BASE="origin/${{ github.base_ref }}";
+          elif [ "${{ github.event.before }}" != "" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then BASE="${{ github.event.before }}";
+          else BASE="HEAD~1"; fi
+          python3 tools/proverka.py --changed "$BASE" --mobile
